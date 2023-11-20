@@ -32,7 +32,7 @@ pipelines:
 
                 # COPY TO DEPLOYMENT
                 # Copy the built files to the repository
-                - cp -r ../data/build/* ./nimbit
+                - cp -r ../build/build/* ./nimbit
 
                 # Add and commit the changes
                 - git add .
