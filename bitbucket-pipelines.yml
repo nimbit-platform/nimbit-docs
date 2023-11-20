@@ -19,9 +19,10 @@ pipelines:
 
                 # MOVE UP
                 - cd ..
+                - ls -la
 
                 # CLONE DEPLOYMENT REPO              
-                - git clone git clone https://x-token-auth:$TOKEN@bitbucket.org/cparsinnovationlab/cparsinnovationlab.bitbucket.io.git
+                - git clone https://x-token-auth:$TOKEN@bitbucket.org/cparsinnovationlab/cparsinnovationlab.bitbucket.io.git
                 - git config user.email $TOKEN_ID@bots.bitbucket.org
                 - cd cparsinnovationlab.bitbucket.io
 
