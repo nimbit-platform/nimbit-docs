@@ -1,0 +1,40 @@
+#  Template NodeJS build
+
+#  This template allows you to validate your NodeJS code.
+#  The workflow allows running tests and code linting on the default branch.
+
+image: node:18
+
+pipelines:
+  branches:
+    master:
+      - parallel:
+          - step:
+              name: Build and Test
+              caches:
+                - node
+              script:
+                - npm install
+                - npm build
+
+                # MOVE UP
+                - cd ..
+
+                # CLONE DEPLOYMENT REPO              
+                - git clone git clone https://x-token-auth:$TOKEN@bitbucket.org/cparsinnovationlab/cparsinnovationlab.bitbucket.io.git
+                - git config user.email $TOKEN_ID@bots.bitbucket.org
+                - cd cparsinnovationlab.bitbucket.io
+
+                # MAKEDIR
+                - mkdir -p nimbit 
+
+                # COPY TO DEPLOYMENT
+                # Copy the built files to the repository
+                - cp -r ../nimbit-docs/build/* ./nimbit
+
+                # Add and commit the changes
+                - git add .
+                - git commit -m "Deploy Docusaurus documentation"
+
+                # Push the changes to the branch
+                - git push
