@@ -18,20 +18,21 @@ pipelines:
                 - npm run build
 
                 # MOVE UP
+                - pwd
                 - cd ..
                 - ls -la
 
                 # CLONE DEPLOYMENT REPO              
                 - git clone https://x-token-auth:$TOKEN@bitbucket.org/cparsinnovationlab/cparsinnovationlab.bitbucket.io.git
-                - git config user.email $TOKEN_ID@bots.bitbucket.org
                 - cd cparsinnovationlab.bitbucket.io
+                - git config user.email $TOKEN_ID@bots.bitbucket.org
 
                 # MAKEDIR
                 - mkdir -p nimbit 
 
                 # COPY TO DEPLOYMENT
                 # Copy the built files to the repository
-                - cp -r ../nimbit-docs/build/* ./nimbit
+                - cp -r ../data/build/* ./nimbit
 
                 # Add and commit the changes
                 - git add .
