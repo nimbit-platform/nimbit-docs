@@ -15,7 +15,7 @@ pipelines:
                 - node
               script:
                 - npm install
-                - npm build
+                - npm run build
 
                 # MOVE UP
                 - cd ..
