@@ -6,6 +6,7 @@ import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
 
 import styles from './index.module.css';
+import React from 'react';
 
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
@@ -20,7 +21,7 @@ function HomepageHeader() {
           <Link
             className="button button--secondary button--lg"
             to="/docs/intro">
-            Docusaurus Tutorial - 5min ⏱️
+            Get Started
           </Link>
         </div>
       </div>
@@ -32,8 +33,8 @@ export default function Home(): JSX.Element {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      title=""
+      description="This Documentation aims to be a complete guide to Nimbit IoT Platform">
       <HomepageHeader />
       <main>
         <HomepageFeatures />
