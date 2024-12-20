@@ -1,0 +1,92 @@
+import Admonition from '@theme/Admonition';
+
+# Hyperparameters
+
+Every model has certain settings, called "hyperparameters," that control how the model learns from data. In this section, we'll explain the hyperparameters for the models used in this project and what they do.
+
+## Darts Prophet Hyperparameters
+
+Prophet has a few important settings that affect how it detects trends and patterns in time series data:
+
+- **interval_width**: This controls how confident the model is in its predictions. A higher number (closer to 1) means the model gives a wider range of possible outcomes, showing more uncertainty.
+
+<Admonition type="info" title="Tip">
+  If you're dealing with unpredictable data, you might want to use a higher interval width to capture more possible future values.
+</Admonition>
+
+- **yearly_seasonality**: This tells the model whether to look for patterns that repeat every year. Set it to `true` for yearly trends, like holiday sales or yearly climate data.
+
+- **weekly_seasonality**: Similar to yearly seasonality, this setting looks for patterns that happen every week. It’s great for things like weekly customer visits to a store.
+
+---
+
+## Darts Linear Regression Model Hyperparameters
+
+Linear Regression is a simpler model but has a few key settings that control how it makes predictions:
+
+- **lags**: This tells the model how many past data points to look at when making predictions. A larger number means the model will use more past data to understand the trend.
+
+<Admonition type="caution" title="Be careful!">
+  Using too many lags can make the model slow and overcomplicate things. Start small and increase if needed.
+</Admonition>
+
+- **likelihood**: This setting decides whether the model should calculate the probability of different outcomes. If set to `true`, the model will not only predict values but also estimate the likelihood of those predictions.
+
+<Admonition type="success" title="Good to know!">
+  If you're making important decisions based on your predictions, using likelihood can give you more confidence in the results.
+</Admonition>
+
+---
+
+## Darts ARIMA Hyperparameters
+
+ARIMA is a powerful model with several settings that control how it breaks down time series data:
+
+- **p**: This is the number of past observations to use (autoregressive part). A higher value means the model will look further into the past to predict the future.
+
+- **d**: This is the differencing order, which helps the model make the data more stable by subtracting past observations from current ones. It helps with trends in data.
+
+<Admonition type="info" title="Pro Tip">
+  Start with a small `d` value and increase it only if your data shows a strong trend.
+</Admonition>
+
+- **q**: This is the moving average part, which tells the model how many past forecast errors to include in the prediction.
+
+- **trend**: This controls whether the model should consider trends in the data. You can set it to "none" (`n`), "constant" (`c`), or "time" (`t`), depending on how you want the model to behave.
+
+---
+
+## Darts RNN (Recurrent Neural Network) Hyperparameters
+
+RNN models have several settings that control how they work with time series data:
+
+- **lags**: Similar to Linear Regression, this tells the model how many past data points to use when making predictions.
+
+- **num_layers**: This controls how many layers the RNN has. More layers can make the model better at detecting complex patterns but can also make it slower to train.
+
+<Admonition type="info" title="Tip">
+  Start with 2 layers for a balance between performance and speed. Add more layers if your data is very complex.
+</Admonition>
+
+- **input_chunk_length**: This setting controls how much data the model looks at once. A larger chunk can help the model see more of the pattern but might slow it down.
+
+---
+
+## Darts K-Means Hyperparameters
+
+K-Means is a model used for grouping data points and detecting anomalies. Here are its key settings:
+
+- **k**: This tells the model how many groups (or clusters) to look for in the data. A higher `k` means more groups, which can make the model more sensitive to small differences in the data.
+
+- **window**: This controls how much data the model looks at for detecting patterns. A larger window means the model will use more past data.
+
+---
+
+## Darts Wasserstein Hyperparameters
+
+The Wasserstein model is used for detecting anomalies in time series data. It has just one key hyperparameter:
+
+- **window**: This controls how much data the model uses to
+
+
+

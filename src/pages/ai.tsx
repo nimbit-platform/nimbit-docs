@@ -14,7 +14,7 @@ export default function AIPage() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/ai/forecasting/intro">
+            to="/docs/NBML/getting-started/introduction">
             Get Started
           </Link>
         </div>

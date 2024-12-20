@@ -1,0 +1,75 @@
+import Admonition from '@theme/Admonition';
+
+# Forecasting Models
+
+This page gives a quick look at different time series models used in the project. Each model has different configurations that can help you get the best results from your data. No need to worry about the technical details – just focus on what each model can do!
+
+## Darts Prophet
+
+Darts Prophet is a model that helps predict time series data, like daily sales or website traffic. It's great for handling patterns that repeat, such as weekly or yearly trends.
+
+<Admonition type="info" title="Did you know?">
+  Prophet was originally created by Facebook to forecast trends like these!
+</Admonition>
+
+### Configurations
+
+- **Darts Prophet with Full Seasonality**: This setup looks for patterns that happen every year and every week. It's useful for predicting things like yearly sales trends.
+  
+- **Darts Prophet with Weekly Seasonality**: This one focuses on weekly patterns, without worrying about yearly trends. It's handy for things that change from week to week, like grocery store sales.
+
+- **Darts Prophet with Yearly Seasonality**: The focus here is on yearly changes, ignoring any weekly patterns. It's good for things like yearly holiday sales.
+
+---
+
+## Darts Linear Regression Model
+
+This model is great for looking at past data and using it to predict future events. It works well when you have information about other things (called "covariates") that may affect your predictions.
+
+<Admonition type="tip" title="Tip">
+  Use this model when you have a lot of past data and want to predict what's coming next!
+</Admonition>
+
+### Configurations
+
+- **Linear Regression with a Short Lookback**: This setup looks at a few recent points in time to make predictions. It's quick but doesn't consider a lot of past data.
+
+- **Linear Regression with a Longer Lookback**: This version looks further back in time, which can be more accurate if trends take longer to change.
+
+- **Linear Regression with Extra Information**: Here, the model takes into account other factors that might influence your data, like the weather or holidays.
+
+---
+
+## Darts ARIMA
+
+ARIMA is a more advanced model used when you need to break down a time series into trends and patterns. It can be very effective for making predictions in situations where data shows a clear trend over time.
+
+<Admonition type="warning" title="Pro Tip!">
+  ARIMA is powerful but can be tricky to set up. Start simple and add complexity as you go!
+</Admonition>
+
+### Configurations
+
+- **Basic ARIMA Setup**: This configuration uses a simple setup to detect trends and patterns in your data.
+
+- **Advanced ARIMA Setup**: For more complex situations, this setup digs deeper into the data, looking for hidden trends that aren't obvious at first glance.
+
+---
+
+## Darts RNN (Recurrent Neural Network)
+
+RNN is a type of neural network that can handle sequences of data, like time series. It's great for finding patterns over time and making long-term predictions.
+
+<Admonition type="caution" title="Heads Up!">
+  Neural networks can take longer to train, but they often give more accurate predictions for complex data!
+</Admonition>
+
+### Configurations
+
+- **RNN for Daily Patterns**: This configuration looks at daily trends and can be used for predicting things like daily website visits.
+  
+- **RNN for Weekly Patterns**: This version looks at patterns that happen over a week, which can be useful for weekly sales forecasts.
+
+---
+
+By using these models and their configurations, you'll be able to make accurate predictions and spot anomalies in your data!

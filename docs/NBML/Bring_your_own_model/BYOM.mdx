@@ -1,0 +1,63 @@
+# Bring Your Own Model (BYOM) Feature Documentation
+
+The Bring Your Own Model (BYOM) feature allows users to leverage their own custom models for time series forecasting and anomaly detection. This feature empowers users to integrate their expertise and models into the system, offering flexibility and control over how predictions and anomaly detection are performed.
+
+---
+
+## Overview
+The BYOM endpoints are designed to:
+
+- Enable **time series forecasting** using user-provided models, allowing for tailored forecasting strategies.
+- Support **anomaly detection** by integrating user-provided models to identify irregularities in datasets.
+
+With these endpoints, users can upload their models, process datasets, and retrieve results seamlessly.
+
+:::info What is BYOM?
+BYOM stands for "Bring Your Own Model," a feature that allows users to upload and utilize their custom-built machine learning models for forecasting and anomaly detection tasks.
+:::
+
+---
+
+## Time Series Forecasting
+
+### Purpose
+This endpoint allows users to upload their custom forecasting models to predict future values based on historical data. It is particularly useful for scenarios such as sales forecasting, demand planning, or trend analysis.
+
+### How It Works
+1. Users upload their model to the system.
+2. A dataset is processed to match the model’s requirements.
+3. The system generates predictions for a specified forecast horizon.
+4. Results are returned in a structured format, including the forecasted values.
+
+:::tip Example Use Case
+A retail business uploads their custom sales forecasting model to predict sales for the next quarter based on historical sales data.
+:::
+
+---
+
+## Anomaly Detection
+
+### Purpose
+This endpoint enables users to upload their custom anomaly detection models to identify unusual patterns or outliers in their datasets. This feature is ideal for monitoring systems, fraud detection, or quality control processes.
+
+### How It Works
+1. Users provide their anomaly detection model and a dataset.
+2. The dataset is preprocessed and scored by the model to identify anomalies.
+3. Anomalies are classified based on a threshold and returned to the user.
+
+:::note Why Anomaly Detection Matters
+Anomaly detection helps organizations identify critical issues early, whether it's detecting faulty sensors, fraudulent activities, or unexpected behaviors in systems.
+:::
+
+---
+
+## Why Use BYOM?
+- **Flexibility**: Tailor the system to meet specific business needs by using your own models.
+- **Control**: Maintain full control over the forecasting and anomaly detection algorithms.
+- **Integration**: Easily integrate your models with existing workflows and datasets.
+
+:::caution Important
+Ensure your models are compatible with the system and properly serialized (e.g., using `pickle`) to avoid integration issues.
+:::
+
+This feature provides a robust solution for businesses and individuals looking to enhance their analytics with custom models while leveraging the platform's processing capabilities.
