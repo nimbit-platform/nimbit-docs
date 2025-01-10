@@ -1,6 +1,8 @@
 import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
+import type * as Redocusaurus from "redocusaurus";
+import path from "path";
 
 const config: Config = {
   title: "NimBit Documentation",
@@ -27,13 +29,13 @@ const config: Config = {
     localeConfigs: {
       en: {
         htmlLang: "en-GB",
-        path: 'en',
+        path: "en",
         label: "English",
       },
       // You can omit a locale (e.g. fr) if you don't need to override the defaults
       de: {
         htmlLang: "de-DE",
-        path: 'de',
+        path: "de",
         label: "Deutsch",
       },
     },
@@ -60,6 +62,36 @@ const config: Config = {
         },
       } satisfies Preset.Options,
     ],
+    [
+      "redocusaurus",
+      {
+        config: path.join(__dirname, "redocly.yaml"),
+        // Plugin Options for loading OpenAPI files
+        openapi: {
+          path: "openapi",
+          routeBasePath: "/apis/",
+        },
+        specs: [
+          // Pass it a path to a local OpenAPI YAML file
+          // {
+          //   // Redocusaurus will automatically bundle your spec into a single file during the build
+          //   spec: 'openapi/index.yaml',
+          //   route: '/api/',
+          // },
+          // You can also pass it a OpenAPI spec URL
+          {
+            id: "dip-remote",
+            spec: "https://nightly.nimbit.de/dip/api-json",
+            route: "/apis/dip/",
+          },
+        ],
+        // Theme Options for modifying how redoc renders them
+        theme: {
+          // Change with your site colors
+          primaryColor: "#1890ff",
+        },
+      },
+    ] satisfies Redocusaurus.PresetEntry,
   ],
 
   themeConfig: {
@@ -73,13 +105,29 @@ const config: Config = {
       },
       items: [
         {
+          to: "/docs/ai/getting-started/Introduction",
+          label: "AI",
+          position: "left",
+          sidebarId: "aiSidebar",
+        },
+        {
+          label: "Apis",
+          position: "left",
+          items: [
+            {
+              label: "DIP - Data Integration Pipeline",
+              to: "/apis/dip",
+            },
+          ],
+        }, // New AI menu item
+        { to: "/blog", label: "Blog", position: "left" },
+        {
           type: "docSidebar",
           sidebarId: "tutorialSidebar",
           position: "right",
           label: "Tutorial",
         },
-        {to: '/blog', label: 'Blog', position: 'left'},
-        {to: '/ai', label: 'AI', position: 'left'},  // New AI menu item
+
         {
           to: "/docs/databases/Introduction",
           label: "Databases",
@@ -96,7 +144,7 @@ const config: Config = {
         },
       ],
     },
-    
+
     footer: {
       style: "dark",
       links: [
@@ -132,7 +180,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} NimBit GmbH. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} NimBit GmbH.`,
     },
     prism: {
       theme: prismThemes.github,

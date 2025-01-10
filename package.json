@@ -16,12 +16,16 @@
   },
   "dependencies": {
     "@docusaurus/core": "3.7.0",
+    "@docusaurus/faster": "^3.7.0",
     "@docusaurus/preset-classic": "3.7.0",
+    "@docusaurus/theme-common": "^3.7.0",
+    "@docusaurus/utils": "^3.7.0",
     "@mdx-js/react": "^3.1.0",
     "clsx": "^1.2.1",
     "prism-react-renderer": "^2.1.0",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "redocusaurus": "^2.2.0"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.7.0",
@@ -43,5 +47,6 @@
   },
   "engines": {
     "node": ">=18.0"
-  }
+  },
+  "packageManager": "pnpm@9.15.3+sha512.1f79bc245a66eb0b07c5d4d83131240774642caaa86ef7d0434ab47c0d16f66b04e21e0c086eb61e62c77efc4d7f7ec071afad3796af64892fae66509173893a"
 }
