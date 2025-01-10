@@ -1,104 +1,133 @@
-import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
-import type * as Preset from '@docusaurus/preset-classic';
+import { themes as prismThemes } from "prism-react-renderer";
+import type { Config } from "@docusaurus/types";
+import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
-  title: 'NimBit Documentation',
-  tagline: 'Learn how NimBit build it\'s IoT solution.',
-  favicon: 'img/favicon-cpars.ico',
+  title: "NimBit Documentation",
+  tagline: "Learn how NimBit build it's IoT solution.",
+  favicon: "img/favicon-cpars.ico",
 
   // Set the production url of your site here
-  url: 'https://cparsinnovationlab.bitbucket.io',
-  baseUrl: '/nimbit',
+  url: "https://cparsinnovationlab.bitbucket.io",
+  // Set the /<baseUrl>/ pathname under which your site is served
+  // For GitHub pages deployment, it is often '/<projectName>/'
+  baseUrl: "/nimbit",
 
-  organizationName: 'C.PARS GmbH', // Usually your GitHub org/user name.
-  projectName: 'nimbit-docs', // Usually your repo name.
+  // GitHub pages deployment config.
+  // If you aren't using GitHub pages, you don't need these.
+  organizationName: "Nimbit GmbH", // Usually your GitHub org/user name.
+  projectName: "nimbit-docs", // Usually your repo name.
 
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenLinks: "throw",
+  onBrokenMarkdownLinks: "warn",
 
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
+    defaultLocale: "en",
+    locales: ["en", "de"],
+    localeConfigs: {
+      en: {
+        htmlLang: "en-GB",
+        path: 'en',
+        label: "English",
+      },
+      // You can omit a locale (e.g. fr) if you don't need to override the defaults
+      de: {
+        htmlLang: "de-DE",
+        path: 'de',
+        label: "Deutsch",
+      },
+    },
   },
 
   presets: [
     [
-      'classic',
+      "classic",
       {
         docs: {
-          sidebarPath: './sidebars.ts',
-          editUrl:
-            'https://cparsinnovationlab.bitbucket.io/nimbit',
+          sidebarPath: "./sidebars.ts",
+          // Please change this to your repo.
+          // Remove this to remove the "edit this page" links.
+          editUrl: "https://cparsinnovationlab.bitbucket.io/nimbit",
         },
         blog: {
           showReadingTime: true,
-          editUrl:
-            'https://cparsinnovationlab.bitbucket.io/nimbit',
+          // Please change this to your repo.
+          // Remove this to remove the "edit this page" links.
+          editUrl: "https://cparsinnovationlab.bitbucket.io/nimbit",
         },
         theme: {
-          customCss: './src/css/custom.css',
+          customCss: "./src/css/custom.css",
         },
       } satisfies Preset.Options,
     ],
   ],
 
   themeConfig: {
-    image: 'img/docusaurus-social-card.jpg',
+    // Replace with your project's social card
+    image: "img/docusaurus-social-card.jpg",
     navbar: {
-      title: 'DOCS',
+      title: "",
       logo: {
-        alt: 'C.PARS Logo',
-        src: 'img/cpars-logo.svg',
+        alt: "Logo",
+        src: "img/nimbit.svg",
       },
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: 'Tutorial',
+          type: "docSidebar",
+          sidebarId: "tutorialSidebar",
+          position: "right",
+          label: "Tutorial",
         },
         {to: '/blog', label: 'Blog', position: 'left'},
         {to: '/ai', label: 'AI', position: 'left'},  // New AI menu item
         {
-          href: 'https://bitbucket.org/cparsinnovationlab/nimbit-docs',
-          label: 'Bitbucket',
-          position: 'right',
+          to: "/docs/databases/Introduction",
+          label: "Databases",
+          position: "right",
+        },
+        {
+          href: "https://bitbucket.org/cparsinnovationlab/nimbit-docs",
+          label: "Bitbucket",
+          position: "right",
+        },
+        {
+          type: "localeDropdown",
+          position: "right",
         },
       ],
     },
     
     footer: {
-      style: 'dark',
+      style: "dark",
       links: [
         {
-          title: 'Docs',
+          title: "Docs",
           items: [
             {
-              label: 'Tutorial',
-              to: '/docs/intro',
+              label: "Tutorial",
+              to: "/docs/intro",
             },
           ],
         },
         {
-          title: 'Community',
+          title: "Community",
           items: [
             {
-              label: 'C.PARS Portal',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              label: "C.PARS Portal",
+              href: "https://stackoverflow.com/questions/tagged/docusaurus",
             },
           ],
         },
         {
-          title: 'More',
+          title: "More",
           items: [
             {
-              label: 'Blog',
-              to: '/blog',
+              label: "Blog",
+              to: "/blog",
             },
             {
-              label: 'Cpars Innovation Lab',
-              href: 'https://bitbucket.org/cparsinnovationlab/nimbit-docs',
+              label: "Cpars Innovation Lab",
+              href: "https://bitbucket.org/cparsinnovationlab/nimbit-docs",
             },
           ],
         },
