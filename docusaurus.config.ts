@@ -95,33 +95,32 @@ const config: Config = {
   ],
 
   themeConfig: {
-
     algolia: {
       // The application ID provided by Algolia
-      appId: 'YW66QXP0SL',
+      appId: "YW66QXP0SL",
 
       // Public API key: it is safe to commit it
-      apiKey: '5adc7bceb43e099eaffc1bacb8b62f2d',
+      apiKey: "5adc7bceb43e099eaffc1bacb8b62f2d",
 
-      indexName: 'nimbit',
+      indexName: "nimbit",
 
       // Optional: see doc section below
       contextualSearch: true,
 
       // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
-      externalUrlRegex: 'external\\.com|domain\\.com',
+      externalUrlRegex: "external\\.com|domain\\.com",
 
       // Optional: Replace parts of the item URLs from Algolia. Useful when using the same search index for multiple deployments using a different baseUrl. You can use regexp or string in the `from` param. For example: localhost:3000 vs myCompany.com/docs
       replaceSearchResultPathname: {
-        from: '/docs/', // or as RegExp: /\/docs\//
-        to: '/',
+        from: "/docs/", // or as RegExp: /\/docs\//
+        to: "/",
       },
 
       // Optional: Algolia search parameters
       searchParameters: {},
 
       // Optional: path for search page that enabled by default (`false` to disable it)
-      searchPagePath: 'search',
+      searchPagePath: "search",
 
       // Optional: whether the insights feature is enabled or not on Docsearch (`false` by default)
       insights: false,
@@ -138,13 +137,36 @@ const config: Config = {
       },
       items: [
         {
+          //to: "/docs/user-manual/index",
+          //label: "User Manual",
+          position: "left",
+          type: "html",
+          value: '<p>test</p>', // The HTML to be rendered
+          //defaultStyle: true, // Use the default menu item styling
+        },
+        {
+          to: "/docs/developer-documentation/index",
+          label: "Developers",
+          position: "left",
+        },
+        {
+          to: "/docs/api-documentation/index",
+          label: "API Docs",
+          position: "left",
+        },
+        {
+          to: "/docs/changelog/index",
+          label: "Changelog",
+          position: "left",
+        },
+        {
           to: "/docs/ai/getting-started/Introduction",
           label: "AI",
           position: "left",
           sidebarId: "aiSidebar",
         },
         {
-          label: "Apis",
+          label: "APIs",
           position: "left",
           items: [
             {
