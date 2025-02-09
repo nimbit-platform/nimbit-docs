@@ -1,43 +1,61 @@
-import clsx from 'clsx';
-import Link from '@docusaurus/Link';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import Layout from '@theme/Layout';
-import HomepageFeatures from '@site/src/components/HomepageFeatures';
-import Heading from '@theme/Heading';
-
-import styles from './index.module.css';
 import React from 'react';
+import Layout from '@theme/Layout';
+import Link from '@docusaurus/Link';
+import clsx from 'clsx';
+import styles from './index.module.css';
 
-function HomepageHeader() {
-  const {siteConfig} = useDocusaurusContext();
+export default function Home() {
   return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)}>
-      <div className="container">
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
-        </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/intro">
-            Get Started
-          </Link>
+    <Layout title="NimBit Documentation" description="The official NimBit documentation hub">
+      <header className={styles.heroBanner}>
+        <div className="container">
+          <h1 className={styles.title}>NimBit Documentation</h1>
+          <p className={styles.subtitle}>
+            Welcome to the NimBit developer hub. You'll find comprehensive guides and documentation to help you start working with NimBit as quickly as possible.
+          </p>
         </div>
-      </div>
-    </header>
-  );
-}
-
-export default function Home(): JSX.Element {
-  const {siteConfig} = useDocusaurusContext();
-  return (
-    <Layout
-      title=""
-      description="This Documentation aims to be a complete guide to Nimbit IoT Platform">
-      <HomepageHeader />
+      </header>
       <main>
-        <HomepageFeatures />
+        <section className={styles.cardsContainer}>
+          <div className={styles.card}>
+            <Link to="/docs/developer-documentation/index">
+              <div className={styles.cardImage}>
+                <img src="/img/developer.png" alt="Developer Documentation" />
+                <span className={styles.label}>Developers</span>
+              </div>
+              <div className={styles.cardContent}>
+                <h3>Developer Documentation →</h3>
+                <p>A comprehensive guide for developers, covering software architecture, API usage, and code examples.</p>
+              </div>
+            </Link>
+          </div>
+
+          <div className={styles.card}>
+            <Link to="/docs/user-manual/index">
+              <div className={styles.cardImage}>
+                <img src="/img/user-manual.png" alt="User Manual" />
+                <span className={styles.label}>Business Users</span>
+              </div>
+              <div className={styles.cardContent}>
+                <h3>User Manual →</h3>
+                <p>Step-by-step instructions for end-users to navigate and utilize the software's features.</p>
+              </div>
+            </Link>
+          </div>
+
+          <div className={styles.card}>
+            <Link to="/docs/api-documentation/index">
+              <div className={styles.cardImage}>
+                <img src="/img/api-docs.png" alt="API Documentation" />
+                <span className={styles.label}>Developers</span>
+              </div>
+              <div className={styles.cardContent}>
+                <h3>API Documentation →</h3>
+                <p>Learn how to execute common tasks through NimBit API.</p>
+              </div>
+            </Link>
+          </div>
+        </section>
       </main>
     </Layout>
   );
