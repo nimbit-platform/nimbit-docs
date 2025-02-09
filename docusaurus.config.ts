@@ -137,12 +137,9 @@ const config: Config = {
       },
       items: [
         {
-          //to: "/docs/user-manual/index",
-          //label: "User Manual",
+          to: "/docs/user-manual/index",
+          label: "User Manual",
           position: "left",
-          type: "html",
-          value: '<p>test</p>', // The HTML to be rendered
-          //defaultStyle: true, // Use the default menu item styling
         },
         {
           to: "/docs/developer-documentation/index",
@@ -160,12 +157,6 @@ const config: Config = {
           position: "left",
         },
         {
-          to: "/docs/ai/getting-started/Introduction",
-          label: "AI",
-          position: "left",
-          sidebarId: "aiSidebar",
-        },
-        {
           label: "APIs",
           position: "left",
           items: [
@@ -174,20 +165,7 @@ const config: Config = {
               to: "/apis/dip",
             },
           ],
-        }, // New AI menu item
-        { to: "/blog", label: "Blog", position: "left" },
-        {
-          type: "docSidebar",
-          sidebarId: "tutorialSidebar",
-          position: "right",
-          label: "Tutorial",
-        },
-
-        {
-          to: "/docs/databases/Introduction",
-          label: "Databases",
-          position: "right",
-        },
+        }, 
         {
           href: "https://bitbucket.org/cparsinnovationlab/nimbit-docs",
           label: "Bitbucket",
