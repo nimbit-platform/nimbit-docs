@@ -13,6 +13,7 @@
   --ifm-color-primary-light: #60d1e1;
   --ifm-color-primary-lighter: #96e3ee;
   --ifm-color-primary-lightest: #c7f1f7;
+  --ifm-font-family-base: 'Inter', sans-serif;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 
@@ -59,4 +60,17 @@
 .card {
   width: 350px; /* Fixierte Breite für gleichmäßige Darstellung */
   text-align: center;
+}
+/* TOC auf kleinen Bildschirmen ausblenden */
+@media screen and (max-width: 1024px) {
+  .theme-doc-toc-desktop {
+    display: none;
+  }
+}
+
+/* TOC auf großen Bildschirmen sichtbar machen */
+@media screen and (min-width: 1025px) {
+  .theme-doc-toc-desktop {
+    display: block;
+  }
 }

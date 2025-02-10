@@ -40,7 +40,7 @@ const config: Config = {
       "classic",
       {
         docs: {
-          sidebarPath: require.resolve("./sidebars.ts"), // ✅ Sidebar KORREKT eingebunden
+          sidebarPath: require.resolve("./sidebars.ts"),
           editUrl: "https://cparsinnovationlab.bitbucket.io/nimbit",
         },
         blog: {
@@ -48,7 +48,7 @@ const config: Config = {
           editUrl: "https://cparsinnovationlab.bitbucket.io/nimbit",
         },
         theme: {
-          customCss: require.resolve("./src/css/custom.css"), // ✅ Custom CSS korrekt eingebunden
+          customCss: require.resolve("./src/css/custom.css"),
         },
       } satisfies Preset.Options,
     ],
@@ -75,6 +75,14 @@ const config: Config = {
   ],
 
   themeConfig: {
+    metadata: [
+      {
+        name: "Content-Security-Policy",
+        content:
+          "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; object-src 'none'; base-uri 'none';",
+      },
+    ],
+
     algolia: {
       appId: "YW66QXP0SL",
       apiKey: "5adc7bceb43e099eaffc1bacb8b62f2d",
@@ -105,8 +113,8 @@ const config: Config = {
         },
         {
           label: "Developers",
-          position: "left",
           to: "/docs/developer-documentation/dev-overview",
+          position: "left",
         },
         { label: "Changelog", to: "/docs/changelog/index", position: "left" },
         {
@@ -158,6 +166,20 @@ const config: Config = {
       darkTheme: prismThemes.dracula,
     },
   } satisfies Preset.ThemeConfig,
+
+  // ✅ Webpack-Plugin für `devtool: false`
+  plugins: [
+    function customWebpackPlugin() {
+      return {
+        name: "custom-webpack-plugin",
+        configureWebpack() {
+          return {
+            devtool: false, // Deaktiviert eval() und eval-source-map
+          };
+        },
+      };
+    },
+  ],
 };
 
 export default config;
