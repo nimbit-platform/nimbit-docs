@@ -54,37 +54,7 @@ const sidebars = {
       id: "developer-documentation/dev-overview",
       label: "Overview",
     },
-    {
-      type: "category",
-      label: "API Documentation",
-      collapsible: true,
-      collapsed: false,
-      items: [
-        {
-          type: "category",
-          label: "DIP API",
-          collapsible: true,
-          collapsed: true,
-          items: [
-            {
-              type: "doc",
-              id: "developer-documentation/api-documentation/dev-api-intro",
-              label: "API Introduction",
-            },
-            {
-              type: "doc",
-              id: "developer-documentation/api-documentation/dev-api-endpoints",
-              label: "API Endpoints",
-            },
-            {
-              type: "doc",
-              id: "developer-documentation/api-documentation/api-dip/api-dip-test",
-              label: "DIP API Test",
-            },
-          ],
-        },
-      ],
-    },
+
     {
       type: "category",
       label: "Deployment",
@@ -108,6 +78,42 @@ const sidebars = {
           type: "doc",
           id: "developer-documentation/dev-technical/dev-architecture",
           label: "Architecture",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "API Documentation",
+      collapsible: true,
+      collapsed: false,
+      items: [
+        {
+          type: "doc",
+          id: "developer-documentation/api-documentation/dev-api-intro",
+          label: "API Introduction",
+        },
+        {
+          type: "doc",
+          id: "developer-documentation/api-documentation/dev-api-endpoints",
+          label: "API Endpoints",
+        },
+        {
+          type: "category",
+          label: "API Reference",
+          collapsible: true,
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "developer-documentation/api-documentation/dev-api/dev-api-dip",
+              label: "Data Ingestion Pipeline mdx",
+            },
+            {
+              type: "link",
+              label: "Data Ingestion Pipeline",
+              href: "/apis/dip/",
+            },
+          ],
         },
       ],
     },
