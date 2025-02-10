@@ -40,7 +40,7 @@ const config: Config = {
       "classic",
       {
         docs: {
-          sidebarPath: "./sidebars.ts",
+          sidebarPath: require.resolve("./sidebars.ts"), // ✅ Sidebar KORREKT eingebunden
           editUrl: "https://cparsinnovationlab.bitbucket.io/nimbit",
         },
         blog: {
@@ -48,7 +48,7 @@ const config: Config = {
           editUrl: "https://cparsinnovationlab.bitbucket.io/nimbit",
         },
         theme: {
-          customCss: "./src/css/custom.css",
+          customCss: require.resolve("./src/css/custom.css"), // ✅ Custom CSS korrekt eingebunden
         },
       } satisfies Preset.Options,
     ],
@@ -98,19 +98,27 @@ const config: Config = {
       },
       items: [
         { label: "Home", to: "/", position: "left" },
-        { label: "User Manual", to: "/docs/user-manual/index", position: "left" },
+        {
+          label: "User Manual",
+          to: "/docs/user-manual/overview",
+          position: "left",
+        },
         {
           label: "Developers",
           position: "left",
-          items: [
-            { label: "Developer Documentation", to: "/docs/developer-documentation/index" },
-            { label: "Endpoints", to: "/docs/api-documentation/index" },
-            { label: "DIP - Data Integration Pipeline", to: "/apis/dip" },
-          ],
+          to: "/docs/developer-documentation/dev-overview",
         },
         { label: "Changelog", to: "/docs/changelog/index", position: "left" },
-        { href: "https://github.com/NimBit", label: "GitHub", position: "right" },
-        { href: "https://nimbit.com/demo", label: "Book a Demo", position: "right" },
+        {
+          href: "https://github.com/NimBit",
+          label: "GitHub",
+          position: "right",
+        },
+        {
+          href: "https://nimbit.com/demo",
+          label: "Book a Demo",
+          position: "right",
+        },
         { type: "search", position: "right" },
         { type: "localeDropdown", position: "right" },
       ],
@@ -125,13 +133,21 @@ const config: Config = {
         },
         {
           title: "Community",
-          items: [{ label: "C.PARS Portal", href: "https://stackoverflow.com/questions/tagged/docusaurus" }],
+          items: [
+            {
+              label: "C.PARS Portal",
+              href: "https://stackoverflow.com/questions/tagged/docusaurus",
+            },
+          ],
         },
         {
           title: "More",
           items: [
             { label: "Blog", to: "/blog" },
-            { label: "Cpars Innovation Lab", href: "https://bitbucket.org/cparsinnovationlab/nimbit-docs" },
+            {
+              label: "Cpars Innovation Lab",
+              href: "https://bitbucket.org/cparsinnovationlab/nimbit-docs",
+            },
           ],
         },
       ],
