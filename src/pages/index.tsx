@@ -1,61 +1,121 @@
 import React from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
-import clsx from 'clsx';
-import styles from './index.module.css';
+
+// Bilder aus static/img/ importieren
+import DeveloperImg from '@site/static/img/developer.png';
+import ApiDocsImg from '@site/static/img/api-docs.png';
+import UserManualImg from '@site/static/img/user-manual.png';
+
+// Style-Definitionen für das Layout
+const containerStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  textAlign: 'center' as const,
+  marginTop: '40px',
+  padding: '0 20px',
+};
+
+const gridContainerStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  gap: '20px',
+  maxWidth: '1200px',
+  width: '100%',
+  flexWrap: 'wrap' as const, // Sorgt für responsives Verhalten
+};
+
+const cardStyle = {
+  position: 'relative' as const,
+  borderRadius: '8px',
+  overflow: 'hidden',
+  backgroundColor: '#fff',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  transition: '0.3s',
+  textDecoration: 'none',
+  color: 'inherit',
+  width: '350px',
+};
+
+const cardHoverStyle = {
+  transform: 'scale(1.03)',
+  boxShadow: '0 8px 16px rgba(0, 0, 0, 0.15)',
+};
+
+const imageStyle = {
+  width: '100%',
+  height: '200px',
+  objectFit: 'cover' as const,
+};
+
+const textContainerStyle = {
+  padding: '20px',
+  textAlign: 'left' as const,
+};
+
+const labelStyle = {
+  position: 'absolute' as const,
+  top: '10px',
+  right: '10px',
+  backgroundColor: '#0366d6', // Blau für "Developers" & "Business Users"
+  color: 'white',
+  padding: '5px 10px',
+  borderRadius: '5px',
+  fontSize: '0.8rem',
+  fontWeight: 'bold' as const,
+};
 
 export default function Home() {
   return (
-    <Layout title="NimBit Documentation" description="The official NimBit documentation hub">
-      <header className={styles.heroBanner}>
-        <div className="container">
-          <h1 className={styles.title}>NimBit Documentation</h1>
-          <p className={styles.subtitle}>
-            Welcome to the NimBit developer hub. You'll find comprehensive guides and documentation to help you start working with NimBit as quickly as possible.
-          </p>
+    <Layout title="NimBit Documentation" description="Find all guides and resources for NimBit">
+      <main style={containerStyle}>
+        <div style={gridContainerStyle}>
+          {/* User Manual (jetzt an erster Stelle, links) */}
+          <Link 
+            to="/docs/user-manual/index" 
+            style={{ ...cardStyle }} 
+            onMouseOver={(e) => Object.assign(e.currentTarget.style, cardHoverStyle)}
+            onMouseOut={(e) => Object.assign(e.currentTarget.style, cardStyle)}
+          >
+            <div style={labelStyle}>Business Users</div>
+            <img src={UserManualImg} alt="User Manual" style={imageStyle} />
+            <div style={textContainerStyle}>
+              <h2>User Manual →</h2>
+              <p>The user manual provides step-by-step instructions for end-users to navigate and utilize NimBit's features.</p>
+            </div>
+          </Link>
+
+          {/* Developer Documentation */}
+          <Link 
+            to="/docs/developer-documentation/index" 
+            style={{ ...cardStyle }} 
+            onMouseOver={(e) => Object.assign(e.currentTarget.style, cardHoverStyle)}
+            onMouseOut={(e) => Object.assign(e.currentTarget.style, cardStyle)}
+          >
+            <div style={labelStyle}>Developers</div>
+            <img src={DeveloperImg} alt="Developer Documentation" style={imageStyle} />
+            <div style={textContainerStyle}>
+              <h2>Developer Documentation →</h2>
+              <p>A comprehensive guide for developers, detailing software architecture, API usage, and code examples.</p>
+            </div>
+          </Link>
+
+          {/* API Documentation */}
+          <Link 
+            to="/docs/api-documentation/index" 
+            style={{ ...cardStyle }} 
+            onMouseOver={(e) => Object.assign(e.currentTarget.style, cardHoverStyle)}
+            onMouseOut={(e) => Object.assign(e.currentTarget.style, cardStyle)}
+          >
+            <div style={labelStyle}>Developers</div>
+            <img src={ApiDocsImg} alt="API Documentation" style={imageStyle} />
+            <div style={textContainerStyle}>
+              <h2>API Documentation →</h2>
+              <p>Learn how to execute common tasks through NimBit’s API.</p>
+            </div>
+          </Link>
         </div>
-      </header>
-      <main>
-        <section className={styles.cardsContainer}>
-          <div className={styles.card}>
-            <Link to="/docs/developer-documentation/index">
-              <div className={styles.cardImage}>
-                <img src="/img/developer.png" alt="Developer Documentation" />
-                <span className={styles.label}>Developers</span>
-              </div>
-              <div className={styles.cardContent}>
-                <h3>Developer Documentation →</h3>
-                <p>A comprehensive guide for developers, covering software architecture, API usage, and code examples.</p>
-              </div>
-            </Link>
-          </div>
-
-          <div className={styles.card}>
-            <Link to="/docs/user-manual/index">
-              <div className={styles.cardImage}>
-                <img src="/img/user-manual.png" alt="User Manual" />
-                <span className={styles.label}>Business Users</span>
-              </div>
-              <div className={styles.cardContent}>
-                <h3>User Manual →</h3>
-                <p>Step-by-step instructions for end-users to navigate and utilize the software's features.</p>
-              </div>
-            </Link>
-          </div>
-
-          <div className={styles.card}>
-            <Link to="/docs/api-documentation/index">
-              <div className={styles.cardImage}>
-                <img src="/img/api-docs.png" alt="API Documentation" />
-                <span className={styles.label}>Developers</span>
-              </div>
-              <div className={styles.cardContent}>
-                <h3>API Documentation →</h3>
-                <p>Learn how to execute common tasks through NimBit API.</p>
-              </div>
-            </Link>
-          </div>
-        </section>
       </main>
     </Layout>
   );
