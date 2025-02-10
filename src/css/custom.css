@@ -35,3 +35,28 @@
   --ifm-color-primary-lightest: #c7f1f7;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+/* Navbar-Menüpunkte mit mehr Abstand vom Rand */
+.navbar__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+/* Korrektur für Karten-Grid: Sie bleiben mittig */
+.gridContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap; /* Sorgt für stabiles Verhalten bei kleineren Bildschirmen */
+  gap: 40px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Einzelne Karten fixieren */
+.card {
+  width: 350px; /* Fixierte Breite für gleichmäßige Darstellung */
+  text-align: center;
+}
