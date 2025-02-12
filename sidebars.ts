@@ -1,3 +1,5 @@
+import dipApiSidebar from "./docs/dip-api/sidebar"; // Importiere die generierte Sidebar
+
 const sidebars = {
   userManualSidebar: [
     {
@@ -48,13 +50,13 @@ const sidebars = {
       ],
     },
   ],
+
   developersSidebar: [
     {
       type: "doc",
       id: "developer-documentation/dev-overview",
       label: "Overview",
     },
-
     {
       type: "category",
       label: "Deployment",
@@ -104,14 +106,11 @@ const sidebars = {
           collapsed: true,
           items: [
             {
-              type: "doc",
-              id: "developer-documentation/api-documentation/dev-api/dev-api-dip",
-              label: "Data Ingestion Pipeline mdx",
-            },
-            {
-              type: "link",
-              label: "Data Ingestion Pipeline",
-              href: "/apis/dip/",
+              type: "category",
+              label: "DIP API Documentation",
+              collapsible: true,
+              collapsed: true,
+              items: dipApiSidebar, // 🚀 OpenAPI Docs werden hier automatisch eingebunden!
             },
           ],
         },
