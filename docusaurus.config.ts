@@ -1,7 +1,8 @@
 import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
-import type * as Redocusaurus from "redocusaurus";
+import type * as Plugin from "@docusaurus/types/src/plugin";
+import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
 import path from "path";
 
 const config: Config = {
@@ -22,16 +23,8 @@ const config: Config = {
     defaultLocale: "en",
     locales: ["en", "de"],
     localeConfigs: {
-      en: {
-        htmlLang: "en-GB",
-        path: "en",
-        label: "English",
-      },
-      de: {
-        htmlLang: "de-DE",
-        path: "de",
-        label: "Deutsch",
-      },
+      en: { htmlLang: "en-GB", path: "en", label: "English" },
+      de: { htmlLang: "de-DE", path: "de", label: "Deutsch" },
     },
   },
 
@@ -42,6 +35,7 @@ const config: Config = {
         docs: {
           sidebarPath: require.resolve("./sidebars.ts"),
           editUrl: "https://cparsinnovationlab.bitbucket.io/nimbit",
+          docItemComponent: "@theme/ApiItem", // OpenAPI Unterstützung
         },
         blog: {
           showReadingTime: true,
@@ -52,27 +46,38 @@ const config: Config = {
         },
       } satisfies Preset.Options,
     ],
+  ],
+
+  plugins: [
     [
-      "redocusaurus",
+      "docusaurus-plugin-openapi-docs",
       {
-        config: path.join(__dirname, "redocly.yaml"),
-        openapi: {
-          path: "openapi",
-          routeBasePath: "/apis/",
-        },
-        specs: [
-          {
-            id: "dip-remote",
-            spec: "https://nightly.nimbit.de/dip/api-json",
-            route: "/apis/dip/",
-          },
-        ],
-        theme: {
-          primaryColor: "#1890ff",
+        id: "api",
+        docsPluginId: "classic",
+        config: {
+          dip: {
+            specPath: "https://nightly.nimbit.de/dip/api-yaml", // Remote OpenAPI-Spezifikation
+            outputDir: "docs/dip-api", // Notwendig, auch wenn remote genutzt
+            sidebarOptions: {
+              groupPathsBy: "tag",
+            },
+          } satisfies OpenApiPlugin.Options,
         },
       },
-    ] satisfies Redocusaurus.PresetEntry,
+    ],
+    function customWebpackPlugin() {
+      return {
+        name: "custom-webpack-plugin",
+        configureWebpack() {
+          return {
+            devtool: false,
+          };
+        },
+      };
+    },
   ],
+
+  themes: ["docusaurus-theme-openapi-docs"], // Nur OpenAPI-Docs aktiv
 
   themeConfig: {
     metadata: [
@@ -106,27 +111,11 @@ const config: Config = {
       },
       items: [
         { label: "Home", to: "/", position: "left" },
-        {
-          label: "User Manual",
-          to: "/docs/user-manual/overview",
-          position: "left",
-        },
-        {
-          label: "Developers",
-          to: "/docs/developer-documentation/dev-overview",
-          position: "left",
-        },
+        { label: "User Manual", to: "/docs/user-manual/overview", position: "left" },
+        { label: "Developers", to: "/docs/developer-documentation/dev-overview", position: "left" },
         { label: "Changelog", to: "/docs/changelog/index", position: "left" },
-        {
-          href: "https://github.com/NimBit",
-          label: "GitHub",
-          position: "right",
-        },
-        {
-          href: "https://nimbit.com/demo",
-          label: "Book a Demo",
-          position: "right",
-        },
+        { href: "https://github.com/NimBit", label: "GitHub", position: "right" },
+        { href: "https://nimbit.com/demo", label: "Book a Demo", position: "right" },
         { type: "search", position: "right" },
         { type: "localeDropdown", position: "right" },
       ],
@@ -135,10 +124,7 @@ const config: Config = {
     footer: {
       style: "dark",
       links: [
-        {
-          title: "Docs",
-          items: [{ label: "Tutorial", to: "/docs/intro" }],
-        },
+        { title: "Docs", items: [{ label: "Tutorial", to: "/docs/intro" }] },
         {
           title: "Community",
           items: [
@@ -166,20 +152,6 @@ const config: Config = {
       darkTheme: prismThemes.dracula,
     },
   } satisfies Preset.ThemeConfig,
-
-  // ✅ Webpack-Plugin für `devtool: false`
-  plugins: [
-    function customWebpackPlugin() {
-      return {
-        name: "custom-webpack-plugin",
-        configureWebpack() {
-          return {
-            devtool: false, // Deaktiviert eval() und eval-source-map
-          };
-        },
-      };
-    },
-  ],
 };
 
 export default config;
