@@ -20,6 +20,10 @@
   font-size: 14px; /* Now 1em = 10px */
 }
 
+.navbar__logo {
+  height: 3rem;
+}
+
 .hero--primary {
   background-color: var(--ifm-color-primary-dark);
   color: white;
@@ -38,7 +42,7 @@
 }
 /* Navbar-Menüpunkte mit mehr Abstand vom Rand */
 .navbar__inner {
-  max-width: 1400px;
+  /* max-width: 1400px; */
   margin: 0 auto;
   padding-left: 40px;
   padding-right: 40px;
