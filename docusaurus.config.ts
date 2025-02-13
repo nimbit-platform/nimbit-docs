@@ -1,9 +1,7 @@
 import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
-import type * as Plugin from "@docusaurus/types/src/plugin";
 import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
-import path from "path";
 
 const config: Config = {
   title: "NimBit Documentation",
@@ -35,7 +33,7 @@ const config: Config = {
         docs: {
           sidebarPath: require.resolve("./sidebars.ts"),
           editUrl: "https://cparsinnovationlab.bitbucket.io/nimbit",
-          docItemComponent: "@theme/ApiItem", // OpenAPI Unterstützung
+          docItemComponent: "@theme/ApiItem",
         },
         blog: {
           showReadingTime: true,
@@ -56,13 +54,21 @@ const config: Config = {
         docsPluginId: "classic",
         config: {
           dip: {
-            specPath: "https://nightly.nimbit.de/dip/api-yaml", // Remote OpenAPI-Spezifikation
-            outputDir: "docs/dip-api", // Notwendig, auch wenn remote genutzt
+            specPath: "https://nightly.nimbit.de/dip/api-yaml",
+            outputDir: "docs/developer-documentation/api-documentation/dev-api-references/dip-api",
             sidebarOptions: {
               groupPathsBy: "tag",
+
             },
-          } satisfies OpenApiPlugin.Options,
-        },
+          }satisfies OpenApiPlugin.Options,
+          // ocb: {
+          //   specPath: "https://nightly.nimbit.de/ocb/api-yaml",
+          //   outputDir: "docs/ocb-api",
+          //   sidebarOptions: {
+          //     groupPathsBy: "tag",
+          //   },
+          // },
+        } 
       },
     ],
     function customWebpackPlugin() {
@@ -77,7 +83,7 @@ const config: Config = {
     },
   ],
 
-  themes: ["docusaurus-theme-openapi-docs"], // Nur OpenAPI-Docs aktiv
+  themes: ["docusaurus-theme-openapi-docs"],
 
   themeConfig: {
     metadata: [
@@ -93,7 +99,7 @@ const config: Config = {
       apiKey: "5adc7bceb43e099eaffc1bacb8b62f2d",
       indexName: "nimbit",
       contextualSearch: true,
-      externalUrlRegex: "external\\.com|domain\\.com",
+      externalUrlRegex: "external\.com|domain\.com",
       replaceSearchResultPathname: {
         from: "/docs/",
         to: "/",
@@ -115,7 +121,7 @@ const config: Config = {
         { label: "Developers", to: "/docs/developer-documentation/dev-overview", position: "left" },
         { label: "Changelog", to: "/docs/changelog/index", position: "left" },
         { href: "https://github.com/NimBit", label: "GitHub", position: "right" },
-        { href: "https://nimbit.com/demo", label: "Book a Demo", position: "right" },
+        { href: "https://outlook.office365.com/book/NimBitGmbHErstgesprchIhreDigitaleTransformation@cpars.de/", label: "Book a Demo", position: "right" },
         { type: "search", position: "right" },
         { type: "localeDropdown", position: "right" },
       ],
