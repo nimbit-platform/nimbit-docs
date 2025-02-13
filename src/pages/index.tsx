@@ -73,7 +73,7 @@ export default function Home() {
         <div style={gridContainerStyle}>
           {/* User Manual (jetzt an erster Stelle, links) */}
           <Link 
-            to="/docs/user-manual/overview" 
+            to="/docs/user/overview" 
             style={{ ...cardStyle }} 
             onMouseOver={(e) => Object.assign(e.currentTarget.style, cardHoverStyle)}
             onMouseOut={(e) => Object.assign(e.currentTarget.style, cardStyle)}
@@ -88,7 +88,7 @@ export default function Home() {
 
           {/* Developer Documentation */}
           <Link 
-            to="/docs/developer-documentation/dev-overview" 
+            to="/docs/developer/dev-overview" 
             style={{ ...cardStyle }} 
             onMouseOver={(e) => Object.assign(e.currentTarget.style, cardHoverStyle)}
             onMouseOut={(e) => Object.assign(e.currentTarget.style, cardStyle)}
@@ -103,7 +103,7 @@ export default function Home() {
 
           {/* API Documentation */}
           <Link 
-            to="/docs/developer-documentation/api-documentation/dev-api-intro" 
+            to="/docs/developer/api/dev-api-intro" 
             style={{ ...cardStyle }} 
             onMouseOver={(e) => Object.assign(e.currentTarget.style, cardHoverStyle)}
             onMouseOut={(e) => Object.assign(e.currentTarget.style, cardStyle)}
