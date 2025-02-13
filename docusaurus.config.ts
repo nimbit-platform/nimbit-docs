@@ -55,7 +55,7 @@ const config: Config = {
         config: {
           dip: {
             specPath: "https://nightly.nimbit.de/dip/api-yaml",
-            outputDir: "docs/dip-api",
+            outputDir: "docs/developer-documentation/api-documentation/dev-api-references/dip-api",
             sidebarOptions: {
               groupPathsBy: "tag",
 
