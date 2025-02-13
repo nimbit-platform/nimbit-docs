@@ -1,5 +1,6 @@
 ---
 title: "Developer Documentation"
+sidebar_position: 1
 ---
 
 # Developer Documentation

@@ -55,7 +55,7 @@ const config: Config = {
         config: {
           dip: {
             specPath: "https://nightly.nimbit.de/dip/api-yaml",
-            outputDir: "docs/developer-documentation/api-documentation/dev-api-references/dip-api",
+            outputDir: "docs/developer/api/references/dip-api",
             sidebarOptions: {
               groupPathsBy: "tag",
 
@@ -117,8 +117,8 @@ const config: Config = {
       },
       items: [
         { label: "Home", to: "/", position: "left" },
-        { label: "User Manual", to: "/docs/user-manual/overview", position: "left" },
-        { label: "Developers", to: "/docs/developer-documentation/dev-overview", position: "left" },
+        { label: "User Manual", to: "/docs/user/overview", position: "left" },
+        { label: "Developers", to: "/docs/developer/dev-overview", position: "left" },
         { label: "Changelog", to: "/docs/changelog/index", position: "left" },
         { href: "https://github.com/NimBit", label: "GitHub", position: "right" },
         { href: "https://outlook.office365.com/book/NimBitGmbHErstgesprchIhreDigitaleTransformation@cpars.de/", label: "Book a Demo", position: "right" },

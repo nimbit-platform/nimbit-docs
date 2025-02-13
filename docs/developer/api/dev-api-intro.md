@@ -1,5 +1,6 @@
 ---
-title: "Developer Documentation"
+title: "API Introduction"
+sidebar_position: 1
 ---
 
 # Developer Documentation
