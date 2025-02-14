@@ -1,0 +1,71 @@
+---
+id: data-input-controller-post-data
+title: "DataInputController_postData"
+description: "DataInputController_postData"
+sidebar_label: "DataInputController_postData"
+hide_title: true
+hide_table_of_contents: true
+api: eJylVtFu2zoM/RWDT3eDsyQdsAe/7a7DUAxbi633oQiMC8ZmbG22pEl0tiDwvw+U7dhtujZd/ZRIFHl0SB5qD8aSQ1ZGX+SQwDkyXmjb8Duj2ZmqIve/NZ5lHWKw6LAmJuchWe1BY02QwFurPtIOYnD0o1GOckjYNRSD0pBASZiTgxhy8plTVmJ1h6LulM9KqhGSPfDOij/PTukC2jY+hECrZltyXs4+4vfqIuotI6UjLinaGFcjJ9HNzc3N7NOn2fn5PVhHFKSbGpIVnC3OXs8Wb2aLJaTxEba0c0Ge/zX5Ts7d9ZgZzaRZttDaSmWB5vk3Lzj3x9dG51D4UEy1n6yb9TfKWNh3kixW1O0qYeZgpZt6fQ8d1yVFKo/MJjBRY1YqTXMuVSHcIEeeNHd75D0WBDHQL6xtJU6X0MaQS+6T/R3HeVcRWFWXm1AMD6JtY2DFwecH0uRUdtnZtWkbQ0HmOIAsnuwfKmTFTX4iI4P1Pbzo4lReKqOLp8QczJ8VFKun3HOwflZIb0mK+pR4wfRZwaSrpcFOCtcbPyNgOxWC1VhF0+xOSB/IGHGm08I2XTmr/FjM7sJXudw2IL0Oho8dGE3vgg5CEKJOHU6AHUT9nA208okDb432XfOcLZbH/Xd1+fU66nX/qVK2NqYi1EMwxkIGRgASBSQC73a4RyZPTVwamVCyFiYRl5DAHK2aO/I83y7nIkkzFdzH4MlthznVuAoSeAki2oL5yyjc74dqWA2KCks4aN6oTaO+hP1J74f/Y1uGv33LhN+Hiu4KXIpjzPGkAA6jJZUBtzGdxncZ/KzqteKo568gL6RFV8pSpTQd1cqf7YYZmsDi1aJPLGaSWMmTcFtjSGk/d8eMRWNeIrEbSuNW5EMBMP3iua1Qablz4H/f52wlwzwM4JDI7UB3n7k0hlJSnKxgv1+jp/9c1bay/KMht4NklcawRadwHdKW9qJBLuQwV142ckg2WHk6wneoZPjnS99DL6LxLXIv/O+0m75ytlg1YgTyPvm7eCe+UR5Ac/tBdAtSZ/CuCzwLxTVaHLXveOJtlpHlB23TSSOKPkAM6/71U5tQ/Q5/Sm7xp6CJwQQigsiENWkkXTSixAl0PuX7DcU4krI=
+sidebar_class_name: "post api-method"
+info_path: docs/developer-documentation/api-documentation/dev-api-references/dip-api/nimbit-data-ingestion-pipeline
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"DataInputController_postData"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"post"}
+  path={"/api/rest/v1/data-input"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+DataInputController_postData
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"ApiKey","required":true,"in":"header","description":"Api Key","schema":{"type":"string"}},{"name":"api-version","in":"header","description":"API version in the format: YYYY-MM-DD","required":true,"schema":{"enum":["2023-06-01"],"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={{"required":true,"content":{"application/json":{"schema":{"type":"array","items":{"type":"object","properties":{"time":{"type":"number","description":"The id of the machine/thign that sent the message","example":"1"},"data":{"description":"data","allOf":[{"type":"object","properties":{},"title":"GenericObject"}]},"geo":{"description":"geo","allOf":[{"type":"object","properties":{"latitude":{"type":"number","description":"The latitude of the machine/thing that sent the message","example":"1"},"longitude":{"type":"number","description":"The longitude of the machine/thing that sent the message","example":"1"},"altitude":{"type":"number","description":"The altitude of the machine/thing that sent the message","example":"1"},"speed":{"type":"number","description":"The speed of the machine/thing that sent the message","example":"1"},"heading":{"type":"number","description":"The heading of the machine/thing that sent the message","example":"1"}},"required":["latitude","longitude","altitude","speed","heading"],"title":"Geo"}]},"id":{"type":"string","description":"id"},"thingType":{"type":"string","description":"thingType"}},"required":["time","id","thingType"],"title":"DataInputDto"}}}}}}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"201":{"description":"POST Data","content":{"application/json":{"schema":{"type":"boolean"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      
