@@ -35,21 +35,21 @@
     "message": "Dashboard Funktionen und Visualisierungen.",
     "description": "The generated-index page description for category Dashboards in sidebar userManualSidebar"
   },
-  "sidebar.userManualSidebar.category.Verwaltung": {
-    "message": "Verwaltung",
-    "description": "The label for category Verwaltung in sidebar userManualSidebar"
+  "sidebar.userManualSidebar.category.User Management": {
+    "message": "User Management",
+    "description": "The label for category User Management in sidebar userManualSidebar"
   },
-  "sidebar.userManualSidebar.category.Verwaltung.link.generated-index.description": {
+  "sidebar.userManualSidebar.category.User Management.link.generated-index.description": {
     "message": "Benutzerverwaltung und Gruppenzuweisungen.",
-    "description": "The generated-index page description for category Verwaltung in sidebar userManualSidebar"
+    "description": "The generated-index page description for category User Management in sidebar userManualSidebar"
   },
-  "sidebar.userManualSidebar.category.Automatisierung": {
-    "message": "Automatisierung",
-    "description": "The label for category Automatisierung in sidebar userManualSidebar"
+  "sidebar.userManualSidebar.category.Automation": {
+    "message": "Automation",
+    "description": "The label for category Automation in sidebar userManualSidebar"
   },
-  "sidebar.userManualSidebar.category.Automatisierung.link.generated-index.description": {
+  "sidebar.userManualSidebar.category.Automation.link.generated-index.description": {
     "message": "Automatische Prozesse und Regeln einrichten.",
-    "description": "The generated-index page description for category Automatisierung in sidebar userManualSidebar"
+    "description": "The generated-index page description for category Automation in sidebar userManualSidebar"
   },
   "sidebar.userManualSidebar.category.ETL Pipeline": {
     "message": "ETL Pipeline",
@@ -59,13 +59,13 @@
     "message": "ETL Pipelines zur Datenverarbeitung.",
     "description": "The generated-index page description for category ETL Pipeline in sidebar userManualSidebar"
   },
-  "sidebar.userManualSidebar.category.Tenant Einstellungen": {
-    "message": "Tenant Einstellungen",
-    "description": "The label for category Tenant Einstellungen in sidebar userManualSidebar"
+  "sidebar.userManualSidebar.category.Tenant Settings": {
+    "message": "Tenant Settings",
+    "description": "The label for category Tenant Settings in sidebar userManualSidebar"
   },
-  "sidebar.userManualSidebar.category.Tenant Einstellungen.link.generated-index.description": {
+  "sidebar.userManualSidebar.category.Tenant Settings.link.generated-index.description": {
     "message": "Individuelle Einstellungen für deine Umgebung.",
-    "description": "The generated-index page description for category Tenant Einstellungen in sidebar userManualSidebar"
+    "description": "The generated-index page description for category Tenant Settings in sidebar userManualSidebar"
   },
   "sidebar.userManualSidebar.category.Dateien": {
     "message": "Dateien",
@@ -90,14 +90,6 @@
   "sidebar.userManualSidebar.category.Reporting / Berichte.link.generated-index.description": {
     "message": "Erstellung und Analyse von Berichten.",
     "description": "The generated-index page description for category Reporting / Berichte in sidebar userManualSidebar"
-  },
-  "sidebar.userManualSidebar.category.Administration": {
-    "message": "Administration",
-    "description": "The label for category Administration in sidebar userManualSidebar"
-  },
-  "sidebar.userManualSidebar.category.Administration.link.generated-index.description": {
-    "message": "Anleitungen zur Konfiguration und Installation.",
-    "description": "The generated-index page description for category Administration in sidebar userManualSidebar"
   },
   "sidebar.userManualSidebar.category.Getting Started": {
     "message": "Getting Started",
@@ -154,29 +146,5 @@
   "sidebar.developersSidebar.category.DIP.link.generated-index.description": {
     "message": "API-Dokumentation für das Data Ingestion Pipeline (DIP) Modul.",
     "description": "The generated-index page description for category DIP in sidebar developersSidebar"
-  },
-  "sidebar.userManualSidebar.category.User Management": {
-    "message": "User Management",
-    "description": "The label for category User Management in sidebar userManualSidebar"
-  },
-  "sidebar.userManualSidebar.category.User Management.link.generated-index.description": {
-    "message": "Benutzerverwaltung und Gruppenzuweisungen.",
-    "description": "The generated-index page description for category User Management in sidebar userManualSidebar"
-  },
-  "sidebar.userManualSidebar.category.Automation": {
-    "message": "Automation",
-    "description": "The label for category Automation in sidebar userManualSidebar"
-  },
-  "sidebar.userManualSidebar.category.Automation.link.generated-index.description": {
-    "message": "Automatische Prozesse und Regeln einrichten.",
-    "description": "The generated-index page description for category Automation in sidebar userManualSidebar"
-  },
-  "sidebar.userManualSidebar.category.Tenant Settings": {
-    "message": "Tenant Settings",
-    "description": "The label for category Tenant Settings in sidebar userManualSidebar"
-  },
-  "sidebar.userManualSidebar.category.Tenant Settings.link.generated-index.description": {
-    "message": "Individuelle Einstellungen für deine Umgebung.",
-    "description": "The generated-index page description for category Tenant Settings in sidebar userManualSidebar"
   }
 }

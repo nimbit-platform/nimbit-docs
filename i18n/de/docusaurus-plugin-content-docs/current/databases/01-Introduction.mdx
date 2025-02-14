@@ -1,0 +1,57 @@
+---
+title: Overview
+description: Database overview
+hide_table_of_contents: false
+---
+
+# Overview
+
+Our system offers two robust deployment options to suit various infrastructure needs and scalability requirements. Both options provide the same feature set, ensuring consistent functionality regardless of your chosen deployment method.
+
+## Deployment Options
+
+### 1. Edge Deployment
+- **Single Container Setup**: Optimized for edge computing scenarios. Contains both the timeseries database and the application database.
+- **Ideal for**: Applications requiring low-latency and limited computing capabilities.
+
+### 2. Managed Cloud Deployment
+- **Dual Database System**: Leverages a sophisticated two-database architecture.
+- **Ideal for**: Enterprise-grade applications with complex data management needs.
+
+## Database Architecture
+
+Both deployment options utilize PostgreSQL 16, offering powerful relational database capabilities with the latest features and optimizations.
+
+### Primary Application Database
+
+- **Based on**: Supabase architecture
+- **Purpose**: Stores application logic and main application data
+- **Key Features**:
+  - Schema-based data isolation
+  - Each application utilizes a separate schema for data storage
+  - Ensures data segregation and security between different applications
+
+### Time Series Database
+
+- **Technology**: TimescaleDB (PostgreSQL extension)
+- **Purpose**: Dedicated storage for time series data
+- **Key Features**:
+  - Optimized for time-based data storage and querying
+  - Additional extensions for enhanced time series data management
+
+## Database Comparison
+
+| Feature | Primary Database | Time Series Database |
+|---------|------------------|----------------------|
+| Base Technology | PostgreSQL 16 | PostgreSQL 16 with TimescaleDB |
+| Primary Use | Application logic and general data | Time series data storage |
+| Data Structure | Schema-based per application | Optimized for time-based entries |
+| Scalability | Horizontal scaling possible | Designed for high-volume time data |
+| Extensions | Standard PostgreSQL extensions | TimescaleDB and additional time-oriented extensions |
+
+## Choosing the Right Deployment
+
+- **Edge Deployment**: Choose this if you need low-latency data access and processing close to the data source or end-users.
+- **Managed Cloud Deployment**: Opt for this if you require advanced data management capabilities, especially for applications dealing with both relational and time series data.
+
+

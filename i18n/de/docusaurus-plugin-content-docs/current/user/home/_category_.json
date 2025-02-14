@@ -1,0 +1,9 @@
+{
+    "label": "Home",
+    "position": 1,
+    "link": {
+      "type": "generated-index",
+      "description": "Die zentrale Startseite mit allen wichtigen Infos."
+    }
+  }
+  

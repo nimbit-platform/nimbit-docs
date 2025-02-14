@@ -1,0 +1,167 @@
+# Forecasting API Documentation
+
+This project provides endpoints for creating datasets, analyzing time series data, and building and using forecasting models. Below is a step-by-step guide to the main features and an explanation of the key inputs required at each stage.
+
+## 1. Create a Dataset
+
+### Endpoint:
+POST /create-dataset
+
+bash
+Copy code
+
+### Request Body:
+```json
+{
+  "name": "new dataset",
+  "description": "hello there im creating this new dataset",
+  "type": "Nimbit",
+  "credentialId": "string",
+  "config": {
+    "measurement": "raptor",
+    "raw": false,
+    "measures": [
+      "matstrk"
+    ],
+    "precision": 2,
+    "aggregations": [
+      "count"
+    ],
+    "ids": [
+      "th_ikpq2lSiHyGzslvRF"
+    ],
+    "window": {
+      "start": "2024-07-05T08:43:26.965000Z",
+      "end": "2024-08-05T08:43:26.965000Z",
+      "bucket": 3600000
+    }
+  },
+  "tags": {},
+  "fileType": "parquet",
+  "storageType": "local"
+}
+
+```
+# test
+
+<!-- Input Breakdown:
+## name: This is the name of the dataset being created. It helps users identify their dataset.
+description: A brief description of the dataset, which can include any details or notes about its purpose.
+type: The type of dataset being created. In this case, "Nimbit" is used as a type, but this will vary based on your use case.
+credentialId: A reference to credentials stored in the system, used to access or authenticate any external data source if needed.
+config:
+measurement: The variable or feature being measured in the dataset. Here, "raptor" is the measurement.
+raw: Specifies whether raw data (unprocessed) should be used. A value of false means processed data is used.
+measures: An array listing the specific measures or columns being used from the dataset. In this case, "matstrk" is included.
+precision: The number of decimal places to retain in the data.
+aggregations: Defines the aggregation function(s) to apply to the data, such as "count", "average", etc.
+ids: A list of unique identifiers representing specific data entries or records to be included.
+window:
+start: The start timestamp for the data extraction.
+end: The end timestamp for the data extraction.
+bucket: The time interval (in milliseconds) for grouping the data, here it's set to 1 hour (3600000 ms).
+tags: Metadata tags to organize or classify the dataset (optional).
+fileType: The format of the file where the dataset will be stored, such as "parquet".
+storageType: Where the data will be stored. In this example, it is set to "local" storage, but it could also be cloud-based like S3 or Azure.
+
+## 2. Load Dataset
+Endpoint:
+bash
+Copy code
+POST /load-dataset
+Request Parameters:
+Id: The unique identifier of the dataset to be loaded, provided when the dataset is created.
+Input Breakdown:
+The Id identifies which dataset you are loading into the application. This ID is returned when the dataset is created. The dataset will be loaded into a local directory for analysis.
+
+3. Analyze Dataset
+Endpoint:
+bash
+Copy code
+POST /analyze-dataset
+Request Parameters:
+Id: The unique identifier of the dataset to be analyzed.
+Measure_agg: The aggregated measure from the dataset to be analyzed. In this case, it refers to the "matstrk_count", an aggregation from the dataset configuration.
+Input Breakdown:
+Id: This links to the dataset you're analyzing.
+Measure_agg: Specifies the metric (in aggregated form) from the dataset you want to analyze, such as counts, averages, or sums of the data. This will help analyze characteristics like linearity, seasonality, and autocorrelation in the data.
+4. Suggest Forecasting Model
+Endpoint:
+bash
+Copy code
+POST /suggest-model
+Request Parameters:
+dataset_id: The ID of the dataset for which a forecasting model will be suggested.
+Input Breakdown:
+dataset_id: The unique identifier for the dataset. The system will analyze this dataset and recommend forecasting models based on the data characteristics, such as whether it's univariate, multivariate, or suitable for specific algorithms.
+5. Train Forecasting Model
+Endpoint:
+bash
+Copy code
+POST /train-forecast
+Request Body:
+json
+Copy code
+{
+  "experimentId": "11",
+  "datasetId": "clzgr3m9f0000ipso1uk1tqt3",
+  "device": "cpu",
+  "id": "th_ikpq2lSiHyGzslvRF",
+  "timeseriesColumn": "time",
+  "valueCol": "matstrk_count",
+  "freq": "H",
+  "hyperparameterId": "clyo2xfkf0003ip9c3sffeh2h",
+  "normalizeTs": true,
+  "splitRatio": 0.2,
+  "rmvOutliers": true,
+  "limitDirection": "forward",
+  "interpolateMethod": "linear",
+  "ignorePreviousRuns": false,
+  "ignoreSteps": "",
+  "uri": "./pipeline/",
+  "forecastHorizon": 200
+}
+Input Breakdown:
+experimentId: A reference to the experiment being conducted, allowing for multiple runs and trials with different datasets or configurations.
+datasetId: The unique identifier of the dataset being used for training.
+device: The hardware on which the model will be trained, such as "cpu" or "gpu".
+id: The ID of the target variable or time series being used.
+timeseriesColumn: The column containing the time index of the dataset.
+valueCol: The column containing the target value (in this case, "matstrk_count") that will be forecasted.
+freq: The frequency of the time series data (e.g., hourly, denoted by "H").
+hyperparameterId: The identifier of the hyperparameters used for model training.
+normalizeTs: A boolean indicating whether the time series should be normalized before training.
+splitRatio: The ratio to split the data into training and validation sets.
+rmvOutliers: Whether or not to remove outliers in the data.
+limitDirection: Defines the direction to limit the data for the forecast (e.g., "forward").
+interpolateMethod: The method used to handle missing data, such as "linear" interpolation.
+ignorePreviousRuns: Whether to ignore results from previous training runs.
+uri: The location where training artifacts are saved.
+forecastHorizon: The number of future time steps for which forecasts will be made.
+6. Live Forecasting
+Endpoint:
+bash
+Copy code
+POST /live-forecast
+Request Body:
+json
+Copy code
+{
+  "datasetId": "clzgr3m9f0000ipso1uk1tqt3",
+  "runId": "e31b17d63e244fd081c049b1b750a003",
+  "tenant": "hinz",
+  "forecastHorizon": 40,
+  "uri": "./pipeline/",
+  "startDataset": "2024-08-01T08:55:21.405Z",
+  "bucket": 3600000,
+  "ignoreSteps": "hyperparameter_tuning,evaluation"
+}
+Input Breakdown:
+datasetId: The unique identifier of the dataset for which forecasts will be generated.
+runId: The identifier for the model run that is used for generating forecasts.
+tenant: A namespace or user group for which forecasts are generated.
+forecastHorizon: The number of time steps in the future for which predictions are generated.
+uri: The path to where forecast results will be saved.
+startDataset: The timestamp where forecasting begins in the dataset.
+bucket: The time interval for grouping the forecast data.
+ignoreSteps: Defines steps in the forecasting pipeline to be ignored, such as hyperparameter tuning or evaluation. -->
