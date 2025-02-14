@@ -143,9 +143,8 @@ const config: Config = {
         {
           title: "More",
           items: [
-            { label: "Blog", to: "/blog" },
             {
-              label: "Cpars Innovation Lab",
+              label: "C.PARS Innovation Lab",
               href: "https://bitbucket.org/cparsinnovationlab/nimbit-docs",
             },
           ],

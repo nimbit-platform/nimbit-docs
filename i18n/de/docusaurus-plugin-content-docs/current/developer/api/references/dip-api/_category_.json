@@ -1,0 +1,9 @@
+{
+    "label": "DIP",
+    "position": 1,
+    "link": {
+      "type": "generated-index",
+      "description": "API-Dokumentation für das Data Ingestion Pipeline (DIP) Modul."
+    }
+  }
+  

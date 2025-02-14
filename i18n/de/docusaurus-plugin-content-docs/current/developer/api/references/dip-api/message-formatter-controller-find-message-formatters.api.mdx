@@ -1,0 +1,71 @@
+---
+id: message-formatter-controller-find-message-formatters
+title: "MessageFormatterController_findMessageFormatters"
+description: "MessageFormatterController_findMessageFormatters"
+sidebar_label: "MessageFormatterController_findMessageFormatters"
+hide_title: true
+hide_table_of_contents: true
+api: eJylVcFuGjEQ/RVrTm1lCkmlHvaWlrZCbaqobQ4IoWrYHcDpru3YAypC/vdqloXdAFESlQuwfjP75s3M8xacp4BsnB0VkME1xYgL+uxChcwUPjrLwZUlhd9zY4vj4wgaPAasqP6TTbZgsSLIAL3prSlE4yxoMBYyWBIWFEBDQTEPxstLIYOrm5FqkMpYxUtS8zp/psbj8bh3fd0bDkFDoPuVCVRAxmFFGmK+pAoh2wLZVQXZBC4Hl+96g/e9wQVMNfDGC5HIwdgFpDSVFNE7GylK1OVgIF8PyXwzkZWbq6ZQ9aDS3FkmyxKF3pcmr3Xr30UJ3XYINa/GEHAj1TNVsfPcze4oZ5EuiPpsdoRM0cE0tI/FMgUk3Wj8FHZfw3xfg6rj0hHu5Wm650nDvs1tJruqZmc6/bP+vW+2hGLOZt0tZeZcSWhPQkdRNdikgXFxVs6HITUqaViF8ukiBSR8vPlKm6fhDS5pyAMhU3FVT8VOIsigQKYem4rgeA6PM7XxbbIPz2DQQqVEX/wXiTa+TfYcEi00pe6CTnYT2o7GodO7dsh2Gi7pjOEM2UGqP/s+T+DMMk4fmdKXGFdFvHRieguqlxF5CRn00Zt+oMj99UW/2oX1DrMPGiKF9d7s6tmCNyDmYuzc1ZI1lX031cywGiKjGtkFRWGqboyn0lg60fJx3GG/YPB20NgQ5tJrEcm7yBXW29dY74lcqhVDiRjn3e28KTD95b4v0djOLu2kmsga1MYcRb/1Ra3psWBTDUsXWeDb7Qwj3YYyJXl8v6KwgWwy1bDGYHAmsk2mSe9vClG4MFEOCsjmWEY6oXnwZHj1o5m/1+q5V8rZGv+IARzdX2ssV4KEpLcN4CrPyXPn7ORKkKE4zNiXT78gpX+VH5En
+sidebar_class_name: "get api-method"
+info_path: docs/developer-documentation/api-documentation/dev-api-references/dip-api/nimbit-data-ingestion-pipeline
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"MessageFormatterController_findMessageFormatters"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/api/rest/v1/message-formatter"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+MessageFormatterController_findMessageFormatters
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"api-version","in":"header","description":"API version in the format: YYYY-MM-DD","required":true,"schema":{"enum":["2023-06-01"],"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"List of Message Formatters","content":{"application/json":{"schema":{"type":"array","items":{"type":"object","properties":{"id":{"type":"string","description":"id"},"name":{"type":"string","description":"Message formatter name"},"description":{"type":"string","description":"Message formatter description"},"version":{"type":"number","description":"Script version"},"active":{"type":"boolean","description":"Is active"},"tags":{"type":"object","description":"tags"},"url":{"type":"string","description":"url"},"apiKey":{"type":"string","description":"apiKey"},"createdAt":{"format":"date-time","type":"string","description":"createdAt"},"createdBy":{"type":"string","description":"createdBy"},"updatedAt":{"format":"date-time","type":"string","description":"updatedAt"},"updatedBy":{"type":"string","description":"updatedBy"}},"required":["name","version","active","url"],"title":"MessageFormatterDto"}}}}}}}
+>
+  
+</StatusCodes>
+
+
+      
