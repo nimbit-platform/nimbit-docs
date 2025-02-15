@@ -1,48 +1,47 @@
 ---
 id: overview
-title: "Überblick"
+title: "Overview"
 toc_min_heading_level: 2
 toc_max_heading_level: 3
 sidebar_position: 1
 ---
 
-# Bedienungsanleitung
+# User Manual
 
-Willkommen im User Manual von NimBit! Hier findest du alle wichtigen Informationen zur Nutzung unserer IoT-Lösungen.
+Welcome to the NimBit User Manual! Here, you will find all the essential information about using our IoT solutions.
 
-## Einführung
+## Introduction
 
-NimBit ist ein Technologie-Spin-off, das "Digitalisierung" und "Internet der Dinge" greifbar macht. Wir entwickeln gemeinsam mit dir maßgeschneiderte Lösungen für dein Unternehmen.
+NimBit is a technology spin-off that makes "digitization" and the "Internet of Things" tangible. We develop customized solutions for your company in collaboration with you.
 
-## IoTBreeze – Dein IoT-Management-System
+## IoTBreeze – Your IoT Management System
 
-Mit unseren verwalteten IoT-Lösungen für Unternehmen kannst du deine Geräte innerhalb von Minuten integrieren, Daten senden, basierend auf diesen Daten Aktionen auslösen, Aufgaben automatisieren und Einblicke in deine Daten gewinnen – selbst in gemischten Flotten-Szenarien.
+With our managed IoT solutions for businesses, you can integrate your devices within minutes, send data, trigger actions based on that data, automate tasks, and gain insights – even in mixed fleet scenarios.
 
-### Kompatibilität
+### Compatibility
 
-IoTBreeze verbindet sich nahtlos mit IoT-Anbietern wie SAP, AWS oder Azure. Du verwaltest alles über eine benutzerfreundliche Oberfläche und behältst die volle Kontrolle über deine Daten.
+IoTBreeze seamlessly connects with IoT providers such as SAP, AWS, or Azure. You can manage everything through a user-friendly interface while maintaining full control over your data.
 
-## Anwendungsbeispiele
+## Use Cases
 
 ### HINZ Steuerungstechnik GmbH
 
-**Qualitätssteigerung durch präzise Anlagensteuerung**
+**Improved quality through precise system control**  
 
-HINZ Steuerungstechnik GmbH verfolgt eine klare Vision: Qualität und Durchsatz durch präzise, situationsgerechte Anlagensteuerung zu steigern. Durch den Einsatz von NimBit IoTBreeze wurde ihr Produkt MEBAS optimiert, indem Sensordaten in Echtzeit visualisiert und Kennzahlen berechnet sowie angezeigt wurden. Dies führte zu einer erhöhten Ausbringung und verbesserten Qualität der Endprodukte in einem Kieswerk.
+HINZ Steuerungstechnik GmbH pursues a clear vision: increasing quality and throughput through precise, situation-specific system control. By using NimBit IoTBreeze, their product MEBAS was optimized by visualizing sensor data in real-time and calculating as well as displaying key figures. This led to increased output and improved quality of end products in a gravel plant.
 
 ### ALLRECO GmbH
 
-**Grünes und effizientes Schreddern**
+**Green and efficient shredding**  
 
-ALLRECO GmbH setzt auf umweltfreundliche und effiziente Schreddertechnologien. Durch die Integration von IoTBreeze konnten Prozesse optimiert und die Effizienz gesteigert werden.
+ALLRECO GmbH relies on environmentally friendly and efficient shredding technologies. By integrating IoTBreeze, processes were optimized, and efficiency was increased.
 
-## Kontakt
+## Contact
 
-Hast du Interesse an unserem Produkt IoTBreeze oder Fragen zur Digitalisierung oder IoT? Unsere Experten stehen dir gerne zur Verfügung.
+Are you interested in our IoTBreeze product or have questions about digitization or IoT? Our experts are happy to assist you.
 
-- **E-Mail:** info@nimbit.de
-- **Telefon:** +49 211 650450 0
+- **Email:** info@nimbit.de  
+- **Phone:** +49 211 650450 0  
 
----
-*Hinweis: Diese Beispielseite basiert auf Informationen von nimbit.de.*
-
+---  
+*Note: This sample page is based on information from nimbit.de.*  

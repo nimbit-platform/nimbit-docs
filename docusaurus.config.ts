@@ -19,10 +19,10 @@ const config: Config = {
 
   i18n: {
     defaultLocale: "en",
-    locales: ["en", "de"],
+    locales: ["en","de"],
     localeConfigs: {
-      en: { htmlLang: "en-GB", path: "en", label: "English" },
-      de: { htmlLang: "de-DE", path: "de", label: "Deutsch" },
+      en: {label: "English" },
+      de: {label: "Deutsch" },
     },
   },
 
