@@ -60,6 +60,11 @@
   background-position: center;
 }
 
+/* Navbar-Icons im Dark Mode weiß einfärben */
+[data-theme="dark"] .navbar__link:before {
+  filter: invert(1); /* Invertiert schwarz zu weiß */
+}
+
 /* Spezifische Icons für Navbar-Links */
 
 .navbar-icon-user-manual:before {
@@ -147,6 +152,11 @@
 [data-theme="dark"] .menu__list .menu__list:before {
   background: rgba(255, 255, 255, 0.2);
 }
+/* Sidebar-Icons im Dark Mode invertieren */
+[data-theme="dark"] .menu__list-item-collapsible > .menu__link:before {
+  filter: invert(1);
+}
+
 
 
 /* Icons für Haupt- und Unterkategorien */
