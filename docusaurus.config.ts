@@ -117,9 +117,9 @@ const config: Config = {
       },
       items: [
         { label: "Home", to: "/", position: "left" },
-        { label: "User Manual", to: "/docs/user/overview", position: "left" },
-        { label: "Developers", to: "/docs/developer/dev-overview", position: "left" },
-        { label: "Changelog", to: "/docs/changelog/index", position: "left" },
+        { label: "User Manual", to: "/docs/user/overview",className: "navbar-icon-user-manual", position: "left" },
+        { label: "Developers", to: "/docs/developer/dev-overview",className: "navbar-icon-developers", position: "left" },
+        { label: "Changelog", to: "/docs/changelog/index",className: "navbar-icon-changelog", position: "left" },
         { href: "https://github.com/NimBit", label: "GitHub", position: "right" },
         { href: "https://outlook.office365.com/book/NimBitGmbHErstgesprchIhreDigitaleTransformation@cpars.de/", label: "Book a Demo", position: "right" },
         { type: "search", position: "right" },

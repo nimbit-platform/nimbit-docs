@@ -1,0 +1,17 @@
+<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M2 4V20H8V4H2ZM16 4V20H22V4H16ZM10 4V20H14V4H10Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M2 4H10M14 4H22" stroke="black" stroke-width="2" stroke-linecap="round"/>
+  <path d="M2 20H10M14 20H22" stroke="black" stroke-width="2" stroke-linecap="round"/>
+  <line x1="4" y1="6" x2="8" y2="6" stroke="black" stroke-width="1.5"/>
+  <line x1="4" y1="8" x2="8" y2="8" stroke="black" stroke-width="1.5"/>
+  <line x1="4" y1="10" x2="8" y2="10" stroke="black" stroke-width="1.5"/>
+  <line x1="4" y1="12" x2="8" y2="12" stroke="black" stroke-width="1.5"/>
+  <line x1="4" y1="14" x2="8" y2="14" stroke="black" stroke-width="1.5"/>
+  <line x1="4" y1="16" x2="8" y2="16" stroke="black" stroke-width="1.5"/>
+  <line x1="16" y1="6" x2="20" y2="6" stroke="black" stroke-width="1.5"/>
+  <line x1="16" y1="8" x2="20" y2="8" stroke="black" stroke-width="1.5"/>
+  <line x1="16" y1="10" x2="20" y2="10" stroke="black" stroke-width="1.5"/>
+  <line x1="16" y1="12" x2="20" y2="12" stroke="black" stroke-width="1.5"/>
+  <line x1="16" y1="14" x2="20" y2="14" stroke="black" stroke-width="1.5"/>
+  <line x1="16" y1="16" x2="20" y2="16" stroke="black" stroke-width="1.5"/>
+</svg>
