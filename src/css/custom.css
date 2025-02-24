@@ -48,6 +48,41 @@
   padding-right: 40px;
 }
 
+/* Standardgröße & Ausrichtung für Navbar-Icons */
+.navbar__link:before {
+  display: inline-block;
+  width: 16px; /* Größe anpassen */
+  height: 16px;
+  margin-right: 6px; /* Abstand zum Text */
+  vertical-align: middle; /* Vertikale Ausrichtung */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Navbar-Icons im Dark Mode weiß einfärben */
+[data-theme="dark"] .navbar__link:before {
+  filter: invert(1); /* Invertiert schwarz zu weiß */
+}
+
+/* Spezifische Icons für Navbar-Links */
+
+.navbar-icon-user-manual:before {
+  content: "";
+  background-image: url("/website/navbar/user-manual-icon.svg");
+}
+
+.navbar-icon-developers:before {
+  content: "";
+  background-image: url("/website/navbar/developers-icon.svg");
+}
+
+.navbar-icon-changelog:before {
+  content: "";
+  background-image: url("/website/navbar/changelog-icon.svg");
+}
+
+
 /* Korrektur für Karten-Grid: Sie bleiben mittig */
 .gridContainer {
   display: flex;
@@ -85,57 +120,106 @@
 }
 
 
-/* Sidebar */
-.theme-doc-sidebar-menu {
-  padding: 0 calc(var(--ifm-navbar-padding-horizontal) - 0.5rem);
-  font-size: 15px;
+/* ---- Sidebar Verbesserungen ---- */
+
+/* Standardgröße für Sidebar-Icons */
+.menu__list-item-collapsible > .menu__link:before {
+  display: inline-block;
+  width: 16px; /* Standardgröße */
+  height: 16px;
+  margin-right: 8px; /* Abstand vom Text */
+  background-size: contain;
 }
 
-.menu__link--sublist-caret:after {
-  margin-right: -8px;
-}
 
+/* Vertikale Linien für Untermenüs (Standard: Hellmodus = Schwarz) */
 .menu__list .menu__list {
   position: relative;
-  padding-left: 32px;
+  padding-left: 32px; /* Mehr Abstand für bessere Struktur */
 }
 
 .menu__list .menu__list:before {
   content: "";
   position: absolute;
   top: 0;
-  left: 24px;
+  left: 16px; /* Bessere Ausrichtung der Linien */
   bottom: 0;
-  width: 1px;
-  background: #525256;
+  width: 1.5px;
+  background: rgba(0, 0, 0, 0.2); /* Standard: Schwarz für hellen Modus */
 }
 
-.menu__caret {
-  padding: 0 8px;
+/* Vertikale Linien im Dunkelmodus = Weiß */
+[data-theme="dark"] .menu__list .menu__list:before {
+  background: rgba(255, 255, 255, 0.2);
+}
+/* Sidebar-Icons im Dark Mode invertieren */
+[data-theme="dark"] .menu__list-item-collapsible > .menu__link:before {
+  filter: invert(1);
 }
 
-.menu__link,
-.menu__caret,
-.menu__list-item-collapsible {
-  border-radius: 8px;
-}
 
-.menu__list-item-collapsible:has(> .menu__link--active) {
-  background-image: var(--brand-gradient-bg);
-}
 
-.theme-doc-sidebar-item-category-level-1
-  > .menu__list-item-collapsible
-  > .menu__link:before {
-  display: block;
+/* Icons für Haupt- und Unterkategorien */
+.theme-doc-sidebar-item-category-level-1 > .menu__list-item-collapsible > .menu__link:before {
+  display: inline-block;
   width: 16px;
   height: 16px;
+  margin-right: 10px;
+  opacity: 0.7;
+}
+.theme-doc-sidebar-item-category-level-2 > .menu__list-item-collapsible > .menu__link:before {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
   margin-right: 8px;
   opacity: 0.6;
 }
 
-.theme-doc-sidebar-item-category-level-1
-  > .menu__list-item-collapsible
-  > .menu__link--active:before {
-  opacity: 1;
+/* Spezifische Größe für Sidebar-Icons festlegen */
+.sidebar-icon {
+  width: 16px;
+  height: 16px;
+  /* Optional: Um sicherzustellen, dass das Bild die angegebenen Maße nicht überschreitet */
+  max-width: 100%;
+  max-height: 100%;
+}
+
+
+/* Setzt spezifische Icons für die Hauptkategorien */
+.theme-doc-sidebar-item-category-level-1:nth-child(1) > .menu__list-item-collapsible > .menu__link:before {
+  content: url("/website/sidebar/test-icon.svg");
+}
+
+/* Setzt spezifische Icons für die Unterkategorien */
+.menu__list-item-collapsible > .menu__link:before {
+  content: url("/website/sidebar/test-icon.svg");
+}
+
+
+/* Verbesserte Darstellung für aktive Menüpunkte */
+.menu__list-item-collapsible:has(> .menu__link--active) {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+}
+
+/* Pfeil-Icons für aufklappbare Menüs */
+.menu__caret:before,
+.menu__link--sublist-caret:after {
+  content: "▼"; /* Standard-Dreieck für aufklappbare Menüs */
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Dreht den Pfeil nach links, wenn das Menü geschlossen ist */
+.menu__list-item--collapsed > .menu__caret:before,
+.menu__list-item--collapsed > .menu__link--sublist-caret:after {
+  transform: rotate(-90deg);
+}
+
+/* Leichter Hover-Effekt für Menüpunkte */
+.menu__link:hover {
+  color: inherit; /* Keine Farbänderung, nur sanfte Animation */
+  opacity: 0.8;
+  transition: opacity 0.2s ease-in-out;
 }
