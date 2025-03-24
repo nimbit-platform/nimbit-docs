@@ -5,13 +5,15 @@ slug: /onboarding/thing-types
 
 # ThingType
 
+## Overview
+
 In the world of Industrial IoT, it's not enough to just connect machines — you need to understand them, manage them, and extract value from their data. That’s where **ThingTypes** come into play.
 
 A **ThingType** is the digital blueprint — the structural and semantic definition — of a class of physical devices in your IotBreeze environment. Think of it as the **Digital Twin definition**: it bridges the gap between your real-world equipment (like pumps, meters, or sensors) and their digital representations in IotBreeze. Every "thing" (device) you onboard is instantiated from a ThingType, inheriting its defined **measures**, **properties**, and **behavioral metadata**.
 
 This approach ensures consistency, reusability, and clear separation of concerns across your digital infrastructure. Whether you're managing hundreds of similar devices or building a complex automation pipeline, ThingTypes give you the foundation for scalable and insightful digital operations.
 
-## Create and Customize Your First ThingType
+## Create a ThingType
 
 Now that you know what ThingTypes are, let's take a look at how you can define one in IotBreeze. This isn’t just about filling out a form — it's where you shape what kind of data your devices will collect and how they behave in your system.
 
@@ -23,9 +25,9 @@ Head over to the sidebar and select **Onboarding → Thing Types**.
 
 Click the **"Create"** button in the top-right corner to open the ThingType configuration page.
 
-### Create a Thing Type
+### Thing Type form
 
-This is where the skeleton of your ThingType will be created. You're defining the basic values and optional relationships.
+This is where we define the basic values your ThingType.
 
 ![Filled ThingType Form](/screenshots/thing-types/create-filled.png)
 
@@ -45,6 +47,8 @@ Once you're done, hit **"Save"** in the bottom-right corner.
 Your newly created ThingType will now appear in the list:
 
 ![Updated List](/screenshots/thing-types/list-after-create.png)
+
+## Measures & Properties
 
 ### Add Measures to Track Live Data
 
