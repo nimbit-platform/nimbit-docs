@@ -23,7 +23,7 @@ Head over to the sidebar and select **Onboarding → Thing Types**.
 
 ![ThingType List](/screenshots/thing-types/list.png)
 
-Click the **"Create"** button in the top-right corner to open the ThingType configuration page.
+Click the **"Create"** button in the top-left corner to open the ThingType configuration page.
 
 ### Thing Type form
 
