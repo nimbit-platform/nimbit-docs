@@ -11,21 +11,21 @@ A **ThingType** is the digital blueprint — the structural and semantic definit
 
 This approach ensures consistency, reusability, and clear separation of concerns across your digital infrastructure. Whether you're managing hundreds of similar devices or building a complex automation pipeline, ThingTypes give you the foundation for scalable and insightful digital operations.
 
----
+## Create and Customize Your First ThingType
 
-## Step 1: Navigate to Thing Types
+Now that you know what ThingTypes are, let's take a look at how you can define one in IotBreeze. This isn’t just about filling out a form — it's where you shape what kind of data your devices will collect and how they behave in your system.
 
-In the sidebar, go to **Onboarding → Thing Types**.
+### Navigating to Thing Types
+
+Head over to the sidebar and select **Onboarding → Thing Types**.
 
 ![ThingType List](/screenshots/thing-types/list.png)
 
-Click the **"Create"** button in the top-right corner to open the ThingType creation form.
+Click the **"Create"** button in the top-right corner to open the ThingType configuration page.
 
----
+### Create a Thing Type
 
-## Step 2: Fill Out the Form
-
-You’ll now see a form for defining your ThingType. Start by entering a unique **Name** (used internally) and a **Display Name** (used in the UI). Optionally, you can add a description, search tags, and select another ThingType to extend from.
+This is where the skeleton of your ThingType will be created. You're defining the basic values and optional relationships.
 
 ![Filled ThingType Form](/screenshots/thing-types/create-filled.png)
 
@@ -38,34 +38,30 @@ You’ll now see a form for defining your ThingType. Start by entering a unique 
 | **Description**  | ❌ No    | Additional context for this ThingType. |
 | **Search Tags**  | ❌ No    | Keywords to support searching and filtering. |
 
----
-
-## Step 3: Save the ThingType
-
-Once you’ve filled in all the necessary fields, click the **"Save"** button in the bottom-right corner.
+Once you're done, hit **"Save"** in the bottom-right corner.
 
 ![ThingType Saved](/screenshots/thing-types/create.png)
 
-After saving, your new ThingType appears in the list view:
+Your newly created ThingType will now appear in the list:
 
 ![Updated List](/screenshots/thing-types/list-after-create.png)
 
----
+### Add Measures to Track Live Data
 
-## Step 4: Add Measures
+Measures define the dynamic data points your device can send — typically sensor values or readings. Each measure has a type and constraints that reflect how it's processed in IotBreeze.
 
-Measures represent **dynamic data points**, typically sensor values or readings from the thing. You can define multiple measures per ThingType.
+:::caution
+Make sure the data types of your measures match the actual values sent by the devices. Incorrect types may lead to the data being unusable in dashboards or result in other unwanted behavior.
+:::
 
-> ⚠️ Make sure the data types of your measures match the actual values sent by the devices. Incorrect types may lead to the data being unable to be used in dashboards or other unwanted behaviour!
+To get started:
 
-### Add a Measure
-
-1. Open your ThingType and go to the **Measures** tab.
-2. If no measures exist yet, you'll see:
+1. Open the ThingType and go to the **Measures** tab.
+2. If none exist yet, you’ll see:
 
    ![Empty Measures](/screenshots/thing-types/measures-empty.png)
 
-3. Click **"Add Measure"** and fill in the form. When everything is correct, hit save on the bottom-right corner:
+3. Click **"Add Measure"**, complete the form, and hit **"Save"**.
 
    ![Create Measure](/screenshots/thing-types/measure-create.png)
 
@@ -76,40 +72,34 @@ Measures represent **dynamic data points**, typically sensor values or readings 
 | **Type**         | ✅ Yes   | One of `numeric`, `string`, `boolean`. |
 | **Description**  | ❌ No    | Context or usage info. |
 
----
+#### Type-Specific Fields
 
-### Type-Specific Fields
+**Numeric**
+- Unit of Measure (e.g., °C, %, kWh)
+- Decimals for precision
+- Min/Max range
+- Ignore Outliers (optional)
+- Offset and Factor for value transformation
 
-#### Numeric
+**String**
+- Unit (optional label)
+- Min and Max Length
 
-- **Unit of Measure** – e.g., °C, %, kWh
-- **Decimals** – Precision of values (e.g., 2 → 12.34)
-- **Min/Max Value** – Valid range limits
-- **Ignore Outliers** – If `true`, values outside min/max are dropped from storage
-- **Offset** – Applied before storing
-- **Factor** – Multiply incoming value (useful for conversions)
+**Boolean**
+- Optional unit (e.g., ON/OFF)
 
-#### String
+### Add Properties to Describe Metadata
 
-- **Unit of Measure** – Optional string label
-- **Min Length / Max Length**
+Properties represent static or metadata attributes — things like device type, firmware version, or installation date.
 
-#### Boolean
+To define them:
 
-- **Unit of Measure** – Optional label (e.g., ON/OFF)
-
-## Step 5: Add Properties
-
-Properties describe **static or metadata attributes** of a thing (e.g., serial number, device mode, or firmware version). Like measures, multiple properties can be defined per ThingType.
-
-### Add a Property
-
-1. Open the **Properties** tab.
-2. If none exist:
+1. Go to the **Properties** tab.
+2. If it's empty:
 
    ![Empty Properties](/screenshots/thing-types/properties-empty.png)
 
-3. Click **"Add Property"** and fill out the form:
+3. Click **"Add Property"** and fill out the details:
 
    ![Create Property](/screenshots/thing-types/property-create.png)
 
@@ -119,26 +109,23 @@ Properties describe **static or metadata attributes** of a thing (e.g., serial n
 | **Display Name**       | ✅ Yes   | UI label. |
 | **Initial Value**      | ❌ No    | Default value assigned on thing creation. |
 | **Description**        | ❌ No    | Additional context. |
-| **Private**            | ❌ No    | If true, property is hidden in dashboards but still usable for filtering and logic. |
-| **Timeseries Relevant**| ❌ No    | If true, this property is included in all timeseries messages. |
-| **Has Precedence**     | ❌ No    | (Only shown when *Timeseries Relevant* is true) – UI value overwrites device-sent value if true. |
+| **Private**            | ❌ No    | Hidden from dashboards but usable for logic/filtering. |
+| **Timeseries Relevant**| ❌ No    | If true, included in all timeseries messages. |
+| **Has Precedence**     | ❌ No    | Overrides incoming device values (if *Timeseries Relevant* is true). |
 
----
+### Save and Publish Your Draft
 
-### Apply or Discard
-ThingTypes have a **single shared draft**. That means all changes to **properties and measures** are part of the same draft. You can add as many properties and measures as needed, but they will **not be active** until you click **"Apply"**.
+ThingTypes have a **shared draft** mechanism. You can freely add or adjust properties and measures, but changes won't go live until you're ready.
 
-- **Apply**: Saves all draft changes to the ThingType and makes them visible to Things.
-- **Discard**: Deletes all current draft changes. 
+- **Apply**: Publishes all changes to the active ThingType.
+- **Discard**: Deletes the current draft version.
 
-> ⚠️ New properties and measures will not be available in Things until the Draft is applied!
+:::caution
+New properties and measures will not be available in Things until the Draft is applied!
+:::
 
 ![Property Applied](/screenshots/thing-types/property-create-applied.png)
-
----
 
 ## What’s Next?
 
 - [Create a Thing](../../things/create)
-
----
