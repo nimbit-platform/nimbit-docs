@@ -17,7 +17,7 @@
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 
-  font-size: 14px; /* Now 1em = 10px */
+  font-size: 16px; /* Now 1em = 10px */
 }
 
 .navbar__logo {
@@ -67,9 +67,15 @@
 
 /* Spezifische Icons für Navbar-Links */
 
+.navbar__item.navbar__link{
+  display: flex !important;
+  align-items: center;
+}
+
 .navbar-icon-user-manual:before {
+  
   content: "";
-  background-image: url("/website/navbar/user-manual-icon.svg");
+  background-image: url("/phosphor/book-open.svg");
 }
 
 .navbar-icon-developers:before {
@@ -82,6 +88,23 @@
   background-image: url("/website/navbar/changelog-icon.svg");
 }
 
+.menu__link menu__link--sublist{
+  display: flex;
+  align-items: center;
+}
+
+
+.theme-doc-sidebar-item-category-level-1:nth-child(3)
+  > .menu__list-item-collapsible
+  > .menu__link:before {
+  content: url("/phosphor/graph.svg");
+}
+
+.theme-doc-sidebar-item-category-level-1:nth-child(6)
+> .menu__list-item-collapsible
+> .menu__link:before {
+  content: url("/phosphor/graph.svg");
+}
 
 /* Korrektur für Karten-Grid: Sie bleiben mittig */
 .gridContainer {
@@ -185,15 +208,6 @@
 }
 
 
-/* Setzt spezifische Icons für die Hauptkategorien */
-.theme-doc-sidebar-item-category-level-1:nth-child(1) > .menu__list-item-collapsible > .menu__link:before {
-  content: url("/website/sidebar/test-icon.svg");
-}
-
-/* Setzt spezifische Icons für die Unterkategorien */
-.menu__list-item-collapsible > .menu__link:before {
-  content: url("/website/sidebar/test-icon.svg");
-}
 
 
 /* Verbesserte Darstellung für aktive Menüpunkte */
