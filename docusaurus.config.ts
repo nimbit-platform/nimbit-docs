@@ -68,7 +68,7 @@ const config: Config = {
           //     groupPathsBy: "tag",
           //   },
           // },
-        } 
+        }
       },
     ],
     function customWebpackPlugin() {
@@ -78,6 +78,18 @@ const config: Config = {
           return {
             devtool: false,
           };
+        },
+      };
+    },
+    function tailwindPlugin() {
+      return {
+        name: "tailwind-plugin",
+        configurePostCss(postcssOptions) {
+          postcssOptions.plugins = [
+            require("@tailwindcss/postcss"),
+            require("autoprefixer"),
+          ];
+          return postcssOptions;
         },
       };
     },
