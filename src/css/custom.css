@@ -236,33 +236,91 @@ nav.navbar {
     font-size: 14px;
 }
 
-/* Navbar icons */
-.navbar__link:before {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    margin-right: 6px;
-    vertical-align: middle;
-    background-size: contain;
+/* "User Manual" pill/bordered style (like Dyte "Guides") */
+.navbar-item-guides {
+    margin-left: 1.5rem;
+    margin-right: 0.5rem;
+    border: 1px solid var(--docs-color-border);
+    border-radius: 6px;
+}
+
+/* Custom dropdown chevron (replaces default triangle) */
+.dropdown > .navbar__link {
+    display: flex;
+    align-items: center;
+}
+.dropdown > .navbar__link:after {
+    content: "";
+    border: none;
+    position: static;
+    top: auto;
+    transform: none;
+    width: 12px;
+    height: 12px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23646464' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-size: 12px;
     background-repeat: no-repeat;
-    background-position: center;
+}
+html[data-theme="dark"] .dropdown > .navbar__link:after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23b4b4b4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+.dropdown:hover > .navbar__link:after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%233dc1d3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
 }
 
-[data-theme="dark"] .navbar__link:before {
-    filter: invert(1);
+/* Dropdown menu styling */
+.dropdown__menu {
+    background: var(--docs-color-background);
+    border: 1px solid var(--docs-color-border);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 0.5rem;
+}
+html[data-theme="dark"] .dropdown__menu {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+.dropdown__link {
+    border-radius: 6px;
+    font-size: 14px;
+    padding: 0.5rem 0.75rem;
+}
+.dropdown__link:hover {
+    background: var(--docs-color-background-100);
+}
+.dropdown__link--active {
+    background: var(--docs-color-primary-tint);
+    color: var(--ifm-color-primary);
 }
 
-.navbar-icon-user-manual:before {
-    content: "";
-    background-image: url("/website/navbar/user-manual-icon.svg");
+/* "Book a Demo" CTA button */
+.navbar-book-demo {
+    background-color: var(--docs-color-primary);
+    color: #fff !important;
+    border-radius: 6px;
+    padding: 0.25rem 0.75rem !important;
+    font-weight: 500;
+    transition: background-color 0.2s;
 }
-.navbar-icon-developers:before {
-    content: "";
-    background-image: url("/website/navbar/developers-icon.svg");
+.navbar-book-demo:hover {
+    background-color: var(--ifm-color-primary-dark);
+    color: #fff !important;
 }
-.navbar-icon-changelog:before {
-    content: "";
-    background-image: url("/website/navbar/changelog-icon.svg");
+html[data-theme="dark"] .navbar-book-demo {
+    --ifm-navbar-link-hover-color: #fff;
+}
+
+/* Hide external link arrow icons */
+.navbar-book-demo svg {
+    display: none;
+}
+
+/* Mobile navbar sidebar */
+.navbar-sidebar__item {
+    padding-right: 0;
+}
+.navbar-sidebar__back {
+    background: none;
+    font-size: 14px;
 }
 
 /* Remove hover underlines globally */
@@ -287,8 +345,56 @@ ul.menu__list > li > a.menu__link--active {
 .menu__list-item-collapsible:hover {
     background: none;
 }
+
+/* Vertical line on nested sidebar levels */
+.menu__list .menu__list {
+    position: relative;
+    margin-left: 0.75rem;
+    padding-left: 0.75rem;
+    border-left: 1px solid var(--docs-color-border);
+}
+
 nav.menu {
     padding-right: 0;
+    scrollbar-gutter: auto;
+}
+
+/* Sidebar collapse/expand buttons */
+aside.theme-doc-sidebar-container {
+    position: relative;
+    clip-path: inset(0px -140px);
+}
+.theme-doc-sidebar-container button[title="Collapse sidebar"],
+.theme-doc-sidebar-container div[title="Expand sidebar"] {
+    position: absolute;
+    top: 95vh;
+    right: -14px;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border-radius: 4px;
+    z-index: 10;
+    background-size: 16px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: var(--docs-color-border);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23646464' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m15 18-6-6 6-6'/%3E%3C/svg%3E");
+}
+.theme-doc-sidebar-container div[title="Expand sidebar"] {
+    position: sticky;
+    margin-left: 16px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23646464' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E");
+}
+html[data-theme="dark"] .theme-doc-sidebar-container button[title="Collapse sidebar"] {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23b4b4b4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m15 18-6-6 6-6'/%3E%3C/svg%3E");
+    background-color: var(--docs-color-background-300);
+}
+html[data-theme="dark"] .theme-doc-sidebar-container div[title="Expand sidebar"] {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23b4b4b4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E");
+    background-color: var(--docs-color-background-300);
+}
+.theme-doc-sidebar-container :is(div[title="Expand sidebar"], button[title="Collapse sidebar"]) svg {
+    display: none;
 }
 
 /* Pagination */
@@ -347,20 +453,6 @@ img + em {
     text-align: center;
     display: block;
     margin-top: 1rem;
-}
-
-/* Footer */
-.footer__title,
-.footer__item {
-    font-size: 14px;
-    font-weight: normal;
-}
-.footer__link-item:hover {
-    text-decoration: none;
-}
-.footer__copyright {
-    margin-top: 2rem;
-    font-size: 14px;
 }
 
 /* Mobile */
