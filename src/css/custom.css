@@ -1,225 +1,463 @@
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * NimBit Documentation — Custom Styles
+ * Tailwind CSS v4 (CSS-based config) + Docusaurus Infima overrides
  */
 
-/* You can override the default Infima variables here. */
-:root {
-  --ifm-color-primary: #3dc1d3;
-  --ifm-color-primary-dark: #21b3c7;
-  --ifm-color-primary-darker: #1ca3b5;
-  --ifm-color-primary-darkest: #1d828f;
-  --ifm-color-primary-light: #60d1e1;
-  --ifm-color-primary-lighter: #96e3ee;
-  --ifm-color-primary-lightest: #c7f1f7;
-  --ifm-font-family-base: 'Inter', sans-serif;
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/plus-jakarta-sans";
+@import "@fontsource-variable/fira-code";
 
-  font-size: 14px; /* Now 1em = 10px */
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ============================================
+   Tailwind v4 Theme
+   ============================================ */
+
+@theme inline {
+    --font-sans:
+        "Inter Variable", "Inter", system-ui, -apple-system, Segoe UI, Roboto,
+        Ubuntu, Cantarell, Noto Sans, sans-serif;
+    --font-jakarta:
+        "Plus Jakarta Sans Variable", "Plus Jakarta Sans", system-ui,
+        -apple-system, Segoe UI, Roboto, sans-serif;
+    --font-mono:
+        "Fira Code Variable", "Fira Code", SFMono-Regular, Menlo, Monaco,
+        Consolas, "Liberation Mono", "Courier New", monospace;
+
+    --breakpoint-sm: 0px;
+    --breakpoint-lg: 997px;
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+    --radius-sm: calc(var(--radius) - 4px);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* ============================================
+   Design Tokens + Infima Overrides
+   ============================================ */
+
+:root {
+    /* shadcn/ui oklch tokens */
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.145 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0 0);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+    --primary: oklch(0.735 0.1 207);
+    --primary-foreground: oklch(1 0 0);
+    --secondary: oklch(0.97 0 0);
+    --secondary-foreground: oklch(0.205 0 0);
+    --muted: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.556 0 0);
+    --accent: oklch(0.97 0 0);
+    --accent-foreground: oklch(0.205 0 0);
+    --destructive: oklch(0.577 0.245 27.325);
+    --destructive-foreground: oklch(0.577 0.245 27.325);
+    --border: oklch(0.922 0 0);
+    --input: oklch(0.922 0 0);
+    --ring: oklch(0.735 0.1 207);
+    --radius: 0.625rem;
+    --chart-1: oklch(0.646 0.222 41.116);
+    --chart-2: oklch(0.6 0.118 184.704);
+    --chart-3: oklch(0.398 0.07 227.392);
+    --chart-4: oklch(0.828 0.189 84.429);
+    --chart-5: oklch(0.769 0.188 70.08);
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.145 0 0);
+    --sidebar-primary: oklch(0.735 0.1 207);
+    --sidebar-primary-foreground: oklch(1 0 0);
+    --sidebar-accent: oklch(0.97 0 0);
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-ring: oklch(0.708 0 0);
+
+    /* NimBit semantic tokens */
+    --docs-color-primary: #3dc1d3;
+    --docs-color-primary-tint: rgba(61, 193, 211, 0.16);
+    --docs-color-border: #dadde1;
+    --docs-color-text: #000000;
+    --docs-color-text-100: #646464;
+    --docs-color-background: #ffffff;
+    --docs-color-background-100: #f8f8f8;
+    --docs-color-background-200: #efefef;
+    --docs-color-background-300: #dcdcdc;
+    --docs-color-code-background: #f6f8fa;
+
+    /* Infima */
+    --ifm-font-family-base:
+        "Inter Variable", "Inter", system-ui, -apple-system, Segoe UI, Roboto,
+        sans-serif;
+    --ifm-font-family-monospace:
+        "Fira Code Variable", "Fira Code", SFMono-Regular, Menlo, Monaco,
+        Consolas, monospace;
+    --ifm-color-primary: #3dc1d3;
+    --ifm-color-primary-dark: #21b3c7;
+    --ifm-color-primary-darker: #1ca3b5;
+    --ifm-color-primary-darkest: #1d828f;
+    --ifm-color-primary-light: #60d1e1;
+    --ifm-color-primary-lighter: #96e3ee;
+    --ifm-color-primary-lightest: #c7f1f7;
+    --ifm-navbar-shadow: none;
+    --ifm-toc-border-color: #dedede;
+    --ifm-table-border-color: var(--docs-color-border);
+    --ifm-code-font-size: 92%;
+    --ifm-breadcrumb-item-background-active: transparent;
+    --ifm-breadcrumb-padding-horizontal: 0;
+    --docusaurus-highlighted-code-line-bg: rgba(61, 193, 211, 0.2);
+
+    font-size: 14px;
+}
+
+html[data-theme="dark"] {
+    /* shadcn/ui dark oklch tokens */
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.145 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.145 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.735 0.1 207);
+    --primary-foreground: oklch(1 0 0);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.396 0.141 25.723);
+    --destructive-foreground: oklch(0.637 0.237 25.331);
+    --border: oklch(0.269 0 0);
+    --input: oklch(0.269 0 0);
+    --ring: oklch(0.735 0.1 207);
+    --chart-1: oklch(0.488 0.243 264.376);
+    --chart-2: oklch(0.696 0.17 162.48);
+    --chart-3: oklch(0.769 0.188 70.08);
+    --chart-4: oklch(0.627 0.265 303.9);
+    --chart-5: oklch(0.645 0.246 16.439);
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 0);
+    --sidebar-primary: oklch(0.735 0.1 207);
+    --sidebar-primary-foreground: oklch(1 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(0.269 0 0);
+    --sidebar-ring: oklch(0.439 0 0);
+
+    /* NimBit dark tokens */
+    --docs-color-border: #2e2e2e;
+    --docs-color-text: #ffffff;
+    --docs-color-text-100: #b4b4b4;
+    --docs-color-background: #161616;
+    --docs-color-background-100: #1c1c1c;
+    --docs-color-background-200: #2a2a2a;
+    --docs-color-background-300: #2e2e2e;
+    --docs-color-code-background: #1e1e1e;
+
+    --ifm-color-primary: #60d1e1;
+    --ifm-link-color: #60d1e1;
+    --ifm-tabs-color-active-border: #60d1e1;
+    --ifm-tabs-color-active: #60d1e1;
+    --ifm-footer-background-color: #1c1c1c;
+    --ifm-background-surface-color: #161616;
+    --ifm-background-color: #161616;
+    --ifm-toc-border-color: #2e2e2e;
+    --ifm-color-content: #e7e7e7;
+    --docusaurus-highlighted-code-line-bg: rgba(105, 105, 105, 0.3);
+}
+
+/* ============================================
+   Base
+   ============================================ */
+
+body {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+}
+
+pre,
+code {
+    font-variant-ligatures: none;
+}
+
+/* ============================================
+   Docusaurus Overrides
+   (Targets internal classes we can't reach
+    with Tailwind — requires global CSS)
+   ============================================ */
+
+/* Navbar */
+nav.navbar {
+    border-bottom: 1px solid var(--ifm-toc-border-color);
 }
 
 .navbar__logo {
-  height: 3rem;
+    height: 3rem;
 }
 
-.hero--primary {
-  background-color: var(--ifm-color-primary-dark);
-  color: white;
+.navbar__item,
+.menu__link {
+    font-size: 14px;
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
-[data-theme="dark"] {
-  --ifm-color-primary: #3dc1d3;
-  --ifm-color-primary-dark: #21b3c7;
-  --ifm-color-primary-darker: #1ca3b5;
-  --ifm-color-primary-darkest: #1d828f;
-  --ifm-color-primary-light: #60d1e1;
-  --ifm-color-primary-lighter: #96e3ee;
-  --ifm-color-primary-lightest: #c7f1f7;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
-}
-/* Navbar-Menüpunkte mit mehr Abstand vom Rand */
-.navbar__inner {
-  /* max-width: 1400px; */
-  margin: 0 auto;
-  padding-left: 40px;
-  padding-right: 40px;
+/* "User Manual" pill/bordered style (like Dyte "Guides") */
+.navbar-item-guides {
+    margin-left: 1.5rem;
+    margin-right: 0.5rem;
+    border: 1px solid var(--docs-color-border);
+    border-radius: 6px;
 }
 
-/* Standardgröße & Ausrichtung für Navbar-Icons */
-.navbar__link:before {
-  display: inline-block;
-  width: 16px; /* Größe anpassen */
-  height: 16px;
-  margin-right: 6px; /* Abstand zum Text */
-  vertical-align: middle; /* Vertikale Ausrichtung */
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+/* Custom dropdown chevron (replaces default triangle) */
+.dropdown > .navbar__link {
+    display: flex;
+    align-items: center;
+}
+.dropdown > .navbar__link:after {
+    content: "";
+    border: none;
+    position: static;
+    top: auto;
+    transform: none;
+    width: 12px;
+    height: 12px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23646464' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-size: 12px;
+    background-repeat: no-repeat;
+}
+html[data-theme="dark"] .dropdown > .navbar__link:after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23b4b4b4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+.dropdown:hover > .navbar__link:after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%233dc1d3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
 }
 
-/* Navbar-Icons im Dark Mode weiß einfärben */
-[data-theme="dark"] .navbar__link:before {
-  filter: invert(1); /* Invertiert schwarz zu weiß */
+/* Dropdown menu styling */
+.dropdown__menu {
+    background: var(--docs-color-background);
+    border: 1px solid var(--docs-color-border);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 0.5rem;
+}
+html[data-theme="dark"] .dropdown__menu {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+.dropdown__link {
+    border-radius: 6px;
+    font-size: 14px;
+    padding: 0.5rem 0.75rem;
+}
+.dropdown__link:hover {
+    background: var(--docs-color-background-100);
+}
+.dropdown__link--active {
+    background: var(--docs-color-primary-tint);
+    color: var(--ifm-color-primary);
 }
 
-/* Spezifische Icons für Navbar-Links */
-
-.navbar-icon-user-manual:before {
-  content: "";
-  background-image: url("/website/navbar/user-manual-icon.svg");
+/* "Book a Demo" CTA button */
+.navbar-book-demo {
+    background-color: var(--docs-color-primary);
+    color: #fff !important;
+    border-radius: 6px;
+    padding: 0.25rem 0.75rem !important;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+.navbar-book-demo:hover {
+    background-color: var(--ifm-color-primary-dark);
+    color: #fff !important;
+}
+html[data-theme="dark"] .navbar-book-demo {
+    --ifm-navbar-link-hover-color: #fff;
 }
 
-.navbar-icon-developers:before {
-  content: "";
-  background-image: url("/website/navbar/developers-icon.svg");
-}
-
-.navbar-icon-changelog:before {
-  content: "";
-  background-image: url("/website/navbar/changelog-icon.svg");
-}
-
-
-/* Korrektur für Karten-Grid: Sie bleiben mittig */
-.gridContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap; /* Sorgt für stabiles Verhalten bei kleineren Bildschirmen */
-  gap: 40px;
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-/* Einzelne Karten fixieren */
-.card {
-  width: 350px; /* Fixierte Breite für gleichmäßige Darstellung */
-  text-align: center;
-}
-/* TOC auf kleinen Bildschirmen ausblenden */
-@media screen and (max-width: 1024px) {
-  .theme-doc-toc-desktop {
+/* Hide external link arrow icons */
+.navbar-book-demo svg {
     display: none;
-  }
 }
 
-/* TOC auf großen Bildschirmen sichtbar machen */
-@media screen and (min-width: 1025px) {
-  .theme-doc-toc-desktop {
-    display: block;
-  }
+/* Mobile navbar sidebar */
+.navbar-sidebar__item {
+    padding-right: 0;
+}
+.navbar-sidebar__back {
+    background: none;
+    font-size: 14px;
 }
 
-.menu__caret:before,
-.menu__link--sublist-caret:after {
-  background-size: 1.3rem;
+/* Remove hover underlines globally */
+.navbar__link,
+.menu__link,
+.table-of-contents__link,
+.pagination-nav,
+.footer {
+    --ifm-link-hover-decoration: none;
 }
 
-
-/* ---- Sidebar Verbesserungen ---- */
-
-/* Standardgröße für Sidebar-Icons */
-.menu__list-item-collapsible > .menu__link:before {
-  display: inline-block;
-  width: 16px; /* Standardgröße */
-  height: 16px;
-  margin-right: 8px; /* Abstand vom Text */
-  background-size: contain;
+/* Sidebar */
+.menu__link {
+    border-radius: 4px 0 0 4px;
+    --ifm-menu-color-background-active: var(--docs-color-primary-tint);
 }
 
+ul.menu__list > li > a.menu__link--active {
+    border-right: 1px solid var(--ifm-color-primary);
+}
 
-/* Vertikale Linien für Untermenüs (Standard: Hellmodus = Schwarz) */
+.menu__list-item-collapsible:hover {
+    background: none;
+}
+
+/* Vertical line on nested sidebar levels */
 .menu__list .menu__list {
-  position: relative;
-  padding-left: 32px; /* Mehr Abstand für bessere Struktur */
+    position: relative;
+    margin-left: 0.75rem;
+    padding-left: 0.75rem;
+    border-left: 1px solid var(--docs-color-border);
 }
 
-.menu__list .menu__list:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 16px; /* Bessere Ausrichtung der Linien */
-  bottom: 0;
-  width: 1.5px;
-  background: rgba(0, 0, 0, 0.2); /* Standard: Schwarz für hellen Modus */
+nav.menu {
+    padding-right: 0;
+    scrollbar-gutter: auto;
 }
 
-/* Vertikale Linien im Dunkelmodus = Weiß */
-[data-theme="dark"] .menu__list .menu__list:before {
-  background: rgba(255, 255, 255, 0.2);
+/* Sidebar collapse/expand buttons */
+aside.theme-doc-sidebar-container {
+    position: relative;
+    clip-path: inset(0px -140px);
 }
-/* Sidebar-Icons im Dark Mode invertieren */
-[data-theme="dark"] .menu__list-item-collapsible > .menu__link:before {
-  filter: invert(1);
+.theme-doc-sidebar-container button[title="Collapse sidebar"],
+.theme-doc-sidebar-container div[title="Expand sidebar"] {
+    position: absolute;
+    top: 95vh;
+    right: -14px;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border-radius: 4px;
+    z-index: 10;
+    background-size: 16px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: var(--docs-color-border);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23646464' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m15 18-6-6 6-6'/%3E%3C/svg%3E");
 }
-
-
-
-/* Icons für Haupt- und Unterkategorien */
-.theme-doc-sidebar-item-category-level-1 > .menu__list-item-collapsible > .menu__link:before {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  margin-right: 10px;
-  opacity: 0.7;
+.theme-doc-sidebar-container div[title="Expand sidebar"] {
+    position: sticky;
+    margin-left: 16px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23646464' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E");
 }
-.theme-doc-sidebar-item-category-level-2 > .menu__list-item-collapsible > .menu__link:before {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  margin-right: 8px;
-  opacity: 0.6;
+html[data-theme="dark"] .theme-doc-sidebar-container button[title="Collapse sidebar"] {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23b4b4b4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m15 18-6-6 6-6'/%3E%3C/svg%3E");
+    background-color: var(--docs-color-background-300);
 }
-
-/* Spezifische Größe für Sidebar-Icons festlegen */
-.sidebar-icon {
-  width: 16px;
-  height: 16px;
-  /* Optional: Um sicherzustellen, dass das Bild die angegebenen Maße nicht überschreitet */
-  max-width: 100%;
-  max-height: 100%;
+html[data-theme="dark"] .theme-doc-sidebar-container div[title="Expand sidebar"] {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23b4b4b4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E");
+    background-color: var(--docs-color-background-300);
 }
-
-
-/* Setzt spezifische Icons für die Hauptkategorien */
-.theme-doc-sidebar-item-category-level-1:nth-child(1) > .menu__list-item-collapsible > .menu__link:before {
-  content: url("/website/sidebar/test-icon.svg");
+.theme-doc-sidebar-container :is(div[title="Expand sidebar"], button[title="Collapse sidebar"]) svg {
+    display: none;
 }
 
-/* Setzt spezifische Icons für die Unterkategorien */
-.menu__list-item-collapsible > .menu__link:before {
-  content: url("/website/sidebar/test-icon.svg");
+/* Pagination */
+.pagination-nav__sublabel {
+    display: none;
+}
+.pagination-nav__link--next .pagination-nav__label::after {
+    content: " \203A";
+}
+.pagination-nav__link--prev .pagination-nav__label::before {
+    content: "\2039 ";
 }
 
-
-/* Verbesserte Darstellung für aktive Menüpunkte */
-.menu__list-item-collapsible:has(> .menu__link--active) {
-  background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 6px;
+/* Tables */
+table {
+    border-collapse: collapse;
+    border: none;
+    background: transparent;
+    font-size: 90%;
+}
+table :is(tr, td, th, thead) {
+    --ifm-table-stripe-background: transparent;
+    border: none;
+    background: transparent;
+    border-bottom: 1px solid var(--docs-color-border);
+}
+table th {
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--docs-color-text-100);
 }
 
-/* Pfeil-Icons für aufklappbare Menüs */
-.menu__caret:before,
-.menu__link--sublist-caret:after {
-  content: "▼"; /* Standard-Dreieck für aufklappbare Menüs */
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.5);
-  transition: transform 0.2s ease-in-out;
+/* Tabs */
+.tabs {
+    border-bottom: 1px solid var(--docs-color-border);
+}
+.tabs__item {
+    --ifm-tabs-padding-vertical: 0.75rem;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.tabs__item--active {
+    border-bottom: 2px solid var(--ifm-color-primary);
 }
 
-/* Dreht den Pfeil nach links, wenn das Menü geschlossen ist */
-.menu__list-item--collapsed > .menu__caret:before,
-.menu__list-item--collapsed > .menu__link--sublist-caret:after {
-  transform: rotate(-90deg);
+/* Lists in doc articles */
+article ol {
+    list-style-type: decimal !important;
+}
+article ul {
+    list-style-type: disc;
 }
 
-/* Leichter Hover-Effekt für Menüpunkte */
-.menu__link:hover {
-  color: inherit; /* Keine Farbänderung, nur sanfte Animation */
-  opacity: 0.8;
-  transition: opacity 0.2s ease-in-out;
+/* Image captions: ![alt](img)\n_caption_ */
+img + em {
+    text-align: center;
+    display: block;
+    margin-top: 1rem;
+}
+
+/* Mobile */
+@media (max-width: 996px) {
+    :root {
+        --ifm-spacing-horizontal: 1rem;
+    }
 }

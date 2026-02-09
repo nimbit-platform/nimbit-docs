@@ -37,7 +37,10 @@ const config: Config = {
         },
         blog: {
           showReadingTime: true,
-          editUrl: "https://cparsinnovationlab.bitbucket.io/nimbit",
+          blogTitle: "NimBit Blog",
+          blogDescription: "Updates, guides, and insights from the NimBit IoT platform team.",
+          blogSidebarTitle: "Recent Posts",
+          blogSidebarCount: 10,
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -68,7 +71,7 @@ const config: Config = {
           //     groupPathsBy: "tag",
           //   },
           // },
-        } 
+        }
       },
     ],
     function customWebpackPlugin() {
@@ -78,6 +81,18 @@ const config: Config = {
           return {
             devtool: false,
           };
+        },
+      };
+    },
+    function tailwindPlugin() {
+      return {
+        name: "tailwind-plugin",
+        configurePostCss(postcssOptions) {
+          postcssOptions.plugins = [
+            require("@tailwindcss/postcss"),
+            require("autoprefixer"),
+          ];
+          return postcssOptions;
         },
       };
     },
@@ -108,6 +123,12 @@ const config: Config = {
       searchPagePath: "search",
       insights: false,
     },
+    docs: {
+      sidebar: {
+        autoCollapseCategories: false,
+        hideable: true,
+      },
+    },
     image: "img/docusaurus-social-card.jpg",
     navbar: {
       title: "",
@@ -116,13 +137,38 @@ const config: Config = {
         src: "img/nimbit.svg",
       },
       items: [
-        { label: "Home", to: "/", position: "left" },
-        { label: "User Manual", to: "/docs/user/overview",className: "navbar-icon-user-manual", position: "left" },
-        { label: "Developers", to: "/docs/developer/dev-overview",className: "navbar-icon-developers", position: "left" },
-        { label: "Changelog", to: "/docs/changelog/index",className: "navbar-icon-changelog", position: "left" },
-        { href: "https://github.com/NimBit", label: "GitHub", position: "right" },
-        { href: "https://outlook.office365.com/book/NimBitGmbHErstgesprchIhreDigitaleTransformation@cpars.de/", label: "Book a Demo", position: "right" },
+        {
+          label: "User Manual",
+          to: "/docs/user/overview",
+          position: "left",
+          className: "navbar-item-guides",
+        },
+        {
+          label: "Developers",
+          type: "dropdown",
+          position: "left",
+          items: [
+            { label: "Overview", to: "/docs/developer/dev-overview" },
+            { label: "API Documentation", to: "/docs/developer/api/dev-api-intro" },
+          ],
+        },
+        {
+          label: "Changelog",
+          to: "/docs/changelog/index",
+          position: "left",
+        },
+        {
+          label: "Blog",
+          to: "/blog",
+          position: "left",
+        },
         { type: "search", position: "right" },
+        {
+          href: "https://outlook.office365.com/book/NimBitGmbHErstgesprchIhreDigitaleTransformation@cpars.de/",
+          label: "Book a Demo",
+          position: "right",
+          className: "navbar-book-demo",
+        },
         { type: "localeDropdown", position: "right" },
       ],
     },
@@ -130,27 +176,33 @@ const config: Config = {
     footer: {
       style: "dark",
       links: [
-        { title: "Docs", items: [{ label: "Tutorial", to: "/docs/intro" }] },
         {
-          title: "Community",
+          title: "Documentation",
           items: [
-            {
-              label: "C.PARS Portal",
-              href: "https://stackoverflow.com/questions/tagged/docusaurus",
-            },
+            { label: "User Manual", to: "/docs/user/overview" },
+            { label: "Developer Docs", to: "/docs/developer/dev-overview" },
+            { label: "API Reference", to: "/docs/developer/api/dev-api-intro" },
           ],
         },
         {
-          title: "More",
+          title: "Resources",
           items: [
+            { label: "Blog", to: "/blog" },
+            { label: "Changelog", to: "/docs/changelog/index" },
+          ],
+        },
+        {
+          title: "Company",
+          items: [
+            { label: "NimBit GmbH", href: "https://nimbit.de" },
             {
-              label: "C.PARS Innovation Lab",
-              href: "https://bitbucket.org/cparsinnovationlab/nimbit-docs",
+              label: "Book a Demo",
+              href: "https://outlook.office365.com/book/NimBitGmbHErstgesprchIhreDigitaleTransformation@cpars.de/",
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} NimBit GmbH.`,
+      copyright: `Copyright © ${new Date().getFullYear()} NimBit GmbH. All rights reserved.`,
     },
     prism: {
       theme: prismThemes.github,
