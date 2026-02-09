@@ -25,6 +25,7 @@
     "@fontsource-variable/plus-jakarta-sans": "^5.2.8",
     "@mdx-js/react": "^3.1.0",
     "class-variance-authority": "^0.7.1",
+    "@phosphor-icons/react": "^2.1.10",
     "clsx": "^1.2.1",
     "docusaurus-plugin-openapi-docs": "^4.3.3",
     "docusaurus-theme-openapi-docs": "^4.3.3",
