@@ -1,0 +1,9 @@
+{
+    "label": "API Documentation",
+    "position": 4,
+    "link": {
+      "type": "generated-index",
+      "description": "Informationen zur API-Nutzung."
+    }
+  }
+  

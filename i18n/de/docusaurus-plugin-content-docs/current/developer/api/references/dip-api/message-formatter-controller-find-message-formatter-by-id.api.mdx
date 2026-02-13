@@ -1,0 +1,71 @@
+---
+id: message-formatter-controller-find-message-formatter-by-id
+title: "MessageFormatterController_findMessageFormatterById"
+description: "MessageFormatterController_findMessageFormatterById"
+sidebar_label: "MessageFormatterController_findMessageFormatterById"
+hide_title: true
+hide_table_of_contents: true
+api: eJylVU2P2jAQ/SvWnNoqFHYr9ZDbbulWqKJa9eOAEKpMPIC3ie21B1QU+b9Xk4QECNXutrnkw28mz29mnkuwDr0kbc1EQQpTDEGu8c76QhKh/2ANeZvn6H+utFHny7f7iYIEnPSyQEIfIJ2XYGSBkILmJY+PW+1RQUp+iwloAyk4SRtIIGQbLCSkJdDecUQgr80aYkzaJNLpwQ590NZAE71BqdBDAgpD5rVj8pDCzf1ENEihjaANilXFMxWz2Ww2mE4H4/EFRh0LNNsC0jlcj67fDUbvB6MrWCQ9bgtOEZw1AQNHXY9GfDslc6eNEkWtVkOD0IvlXlSqZNYQGuI46Vyus6oCw4fAwWVfGLt8wIxYac/1Il3/Wqu+eOeyaAUxadR8CjvtEa7i4hnu5WmO12MCh4J2mcy2WF6o6bfq+VBWDpUZ6d3xVpbW5ihNL3QSRIONCZBch0tynoZUqJjA1udPb5JBzMfpz7h/Gt7gYgKZR0mobqrq1xJBCkoSDkgXCOcdd56pi++S3T6DQQflLTr1XyS6+C7Zc0h00BiPR3Fed2jXGm2l63LwHGrK8YJFjclC5OtQ5nnbgC0mcIKLTfpCpyuQNpaNco3VOLKRpTCUTg89BhrurobN1A/a7h+WWkW2O/S7g0VWLQZvgN1Em5WtlGs2+EUXS01iLEmKiVljYMbiXjvMtcGepH/HtWMGo7ejxnVkxiVnsZwNVMhqCBuv7ckmOlEEiyL6iNu9qIS5bBCEv2nocqnN0VzVos15JCo7Dqzk7qpS90w6SCDViou3sYE4qCyXMuAPn8fInx+36PeQzhcJ7KTXcskKzktQOvCzgnQl84A9fq0Bw6uvTRO+Fl3Xn/JuPkqzZ6Iy3/IbJPCLB78y2EVMDsfSP//9uefXRYo1ldPDsmXKx2kNuMkydHS01jt9uCHbJv/08TvE+AccDcvb
+sidebar_class_name: "get api-method"
+info_path: docs/developer-documentation/api-documentation/dev-api-references/dip-api/nimbit-data-ingestion-pipeline
+custom_edit_url: null
+---
+
+import MethodEndpoint from "@theme/ApiExplorer/MethodEndpoint";
+import ParamsDetails from "@theme/ParamsDetails";
+import RequestSchema from "@theme/RequestSchema";
+import StatusCodes from "@theme/StatusCodes";
+import OperationTabs from "@theme/OperationTabs";
+import TabItem from "@theme/TabItem";
+import Heading from "@theme/Heading";
+
+<Heading
+  as={"h1"}
+  className={"openapi__heading"}
+  children={"MessageFormatterController_findMessageFormatterById"}
+>
+</Heading>
+
+<MethodEndpoint
+  method={"get"}
+  path={"/api/rest/v1/message-formatter/{id}"}
+  context={"endpoint"}
+>
+  
+</MethodEndpoint>
+
+
+
+MessageFormatterController_findMessageFormatterById
+
+<Heading
+  id={"request"}
+  as={"h2"}
+  className={"openapi-tabs__heading"}
+  children={"Request"}
+>
+</Heading>
+
+<ParamsDetails
+  parameters={[{"name":"id","required":true,"in":"path","schema":{"type":"string"}},{"name":"api-version","in":"header","description":"API version in the format: YYYY-MM-DD","required":true,"schema":{"enum":["2023-06-01"],"type":"string"}}]}
+>
+  
+</ParamsDetails>
+
+<RequestSchema
+  title={"Body"}
+  body={undefined}
+>
+  
+</RequestSchema>
+
+<StatusCodes
+  id={undefined}
+  label={undefined}
+  responses={{"200":{"description":"Find message formatter by id","content":{"application/json":{"schema":{"type":"object","properties":{"id":{"type":"string","description":"id"},"name":{"type":"string","description":"Message formatter name"},"description":{"type":"string","description":"Message formatter description"},"version":{"type":"number","description":"Script version"},"active":{"type":"boolean","description":"Is active"},"tags":{"type":"object","description":"tags"},"url":{"type":"string","description":"url"},"apiKey":{"type":"string","description":"apiKey"},"createdAt":{"format":"date-time","type":"string","description":"createdAt"},"createdBy":{"type":"string","description":"createdBy"},"updatedAt":{"format":"date-time","type":"string","description":"updatedAt"},"updatedBy":{"type":"string","description":"updatedBy"}},"required":["name","version","active","url"],"title":"MessageFormatterDto"}}}}}}
+>
+  
+</StatusCodes>
+
+
+      

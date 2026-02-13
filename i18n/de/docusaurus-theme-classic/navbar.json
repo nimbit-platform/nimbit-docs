@@ -1,0 +1,30 @@
+{
+  "logo.alt": {
+    "message": "NimBit Logo",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.Home": {
+    "message": "Home",
+    "description": "Navbar item with label Home"
+  },
+  "item.label.User Manual": {
+    "message": "User Manual",
+    "description": "Navbar item with label User Manual"
+  },
+  "item.label.Developers": {
+    "message": "Developers",
+    "description": "Navbar item with label Developers"
+  },
+  "item.label.Changelog": {
+    "message": "Changelog",
+    "description": "Navbar item with label Changelog"
+  },
+  "item.label.GitHub": {
+    "message": "GitHub",
+    "description": "Navbar item with label GitHub"
+  },
+  "item.label.Book a Demo": {
+    "message": "Book a Demo",
+    "description": "Navbar item with label Book a Demo"
+  }
+}

@@ -1,43 +1,88 @@
 import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
+
 import type * as Redocusaurus from "redocusaurus";
-import path from "path";
+
+const redocSpecUrls = {
+  dip:
+    process.env.DIP_OPENAPI_URL ??
+    "https://demo.cloud.iotbreeze.com/dip/api/v1/api-json",
+  ocb:
+    process.env.OCB_OPENAPI_URL ??
+    "https://demo.cloud.iotbreeze.com/ocb/api-json",
+  nbq:
+    process.env.NBQ_OPENAPI_URL ??
+    "https://demo.cloud.iotbreeze.com/ocb/api-json",
+};
+
+// Remove this entire redocSpecs variable definition
+// const redocSpecs = [
+//   "redocusaurus",
+//   {
+//     theme: {
+//       // Change with your site colors
+//       primaryColor: "#1890ff",
+//       primaryColorDark: "#1890ff",
+//     },
+//     specs: [
+//       // Optionally provide individual files/urls to load
+//       {
+//         // Pass it a path to a local OpenAPI YAML file
+//         id: "dip",
+//         spec: redocSpecUrls.dip,
+//         route: "/docs/developer/api/redoc/dip",
+//       },
+//       // You can also pass it an OpenAPI spec URL
+//     ],
+//     // Theme Options for modifying how redoc renders them
+//   },
+// ] satisfies Redocusaurus.PresetEntry;
+
+// Remove this commented code block as well
+// const redocSpecs = [
+//   {
+//     id: "dip",
+//     spec: redocSpecUrls.dip,
+//     route: "/docs/developer/api/redoc/dip",
+//   },
+//   // {
+//   //   id: "ocb",
+//   //   spec: redocSpecUrls.ocb,
+//   //   route: "/docs/developer/api/redoc/ocb",
+//   // },
+//   {
+//     id: "nbq",
+//     spec: redocSpecUrls.nbq,
+//     route: "/docs/developer/api/redoc/nbq",
+//   },
+// ];
 
 const config: Config = {
   title: "NimBit Documentation",
-  tagline: "Learn how NimBit build it's IoT solution.",
-  favicon: "img/favicon-cpars.ico",
+  tagline: "Learn how NimBit builds its IoT solution.",
+  favicon: "img/favicon.ico",
 
-  // Set the production url of your site here
   url: "https://cparsinnovationlab.bitbucket.io",
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: "/nimbit",
+  baseUrl: "/",
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: "Nimbit GmbH", // Usually your GitHub org/user name.
-  projectName: "nimbit-docs", // Usually your repo name.
+  organizationName: "Nimbit GmbH",
+  projectName: "nimbit-docs",
 
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
+
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: "warn",
+    },
+  },
 
   i18n: {
     defaultLocale: "en",
     locales: ["en", "de"],
     localeConfigs: {
-      en: {
-        htmlLang: "en-GB",
-        path: "en",
-        label: "English",
-      },
-      // You can omit a locale (e.g. fr) if you don't need to override the defaults
-      de: {
-        htmlLang: "de-DE",
-        path: "de",
-        label: "Deutsch",
-      },
+      en: { label: "English" },
+      de: { label: "Deutsch" },
     },
   },
 
@@ -46,135 +91,182 @@ const config: Config = {
       "classic",
       {
         docs: {
-          sidebarPath: "./sidebars.ts",
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
+          sidebarPath: require.resolve("./sidebars.ts"),
           editUrl: "https://cparsinnovationlab.bitbucket.io/nimbit",
+          docItemComponent: "@theme/ApiItem",
         },
         blog: {
           showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl: "https://cparsinnovationlab.bitbucket.io/nimbit",
+          blogTitle: "NimBit Blog",
+          blogDescription:
+            "Updates, guides, and insights from the NimBit IoT platform team.",
+          blogSidebarTitle: "Recent Posts",
+          blogSidebarCount: 10,
         },
         theme: {
-          customCss: "./src/css/custom.css",
+          customCss: require.resolve("./src/css/custom.css"),
         },
       } satisfies Preset.Options,
     ],
     [
       "redocusaurus",
       {
-        config: path.join(__dirname, "redocly.yaml"),
-        // Plugin Options for loading OpenAPI files
-        openapi: {
-          path: "openapi",
-          routeBasePath: "/apis/",
-        },
         specs: [
-          // Pass it a path to a local OpenAPI YAML file
-          // {
-          //   // Redocusaurus will automatically bundle your spec into a single file during the build
-          //   spec: 'openapi/index.yaml',
-          //   route: '/api/',
-          // },
-          // You can also pass it a OpenAPI spec URL
           {
-            id: "dip-remote",
-            spec: "https://nightly.nimbit.de/dip/api-json",
-            route: "/apis/dip/",
+            id: "dip",
+            spec: "openapi/dip/.openapi.yaml",
+            // route: "/docs/developer/api/dip",
+          },
+          {
+            id: "ocb",
+            spec: "openapi/ocb/.openapi.yaml",
+          },
+          {
+            id: "nbq",
+            spec: "openapi/nbq/.openapi.yaml",
           },
         ],
-        // Theme Options for modifying how redoc renders them
         theme: {
-          // Change with your site colors
-          primaryColor: "#1890ff",
+          primaryColor: "#4fbbc9",
         },
       },
-    ] satisfies Redocusaurus.PresetEntry,
+    ],
   ],
 
+  plugins: [
+    [
+      "docusaurus-plugin-openapi-docs",
+      {
+        id: "api",
+        docsPluginId: "classic",
+        config: {
+          dip: {
+            specPath: "https://nightly.nimbit.de/dip/api-yaml",
+            outputDir: "docs/developer/api/references/dip-api",
+            sidebarOptions: {
+              groupPathsBy: "tag",
+            },
+          },
+          // ocb: {
+          //   specPath: "https://nightly.nimbit.de/ocb/api-yaml",
+          //   outputDir: "docs/ocb-api",
+          //   sidebarOptions: {
+          //     groupPathsBy: "tag",
+          //   },
+          // },
+        },
+      },
+    ],
+    function customWebpackPlugin() {
+      return {
+        name: "custom-webpack-plugin",
+        configureWebpack() {
+          return {
+            devtool: false,
+          };
+        },
+      };
+    },
+    function tailwindPlugin() {
+      return {
+        name: "tailwind-plugin",
+        configurePostCss(postcssOptions) {
+          postcssOptions.plugins = [
+            require("@tailwindcss/postcss"),
+            require("autoprefixer"),
+          ];
+          return postcssOptions;
+        },
+      };
+    },
+  ],
+
+  themes: ["docusaurus-theme-openapi-docs"],
+
   themeConfig: {
+    metadata: [
+      {
+        name: "Content-Security-Policy",
+        content:
+          "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; object-src 'none'; base-uri 'none';",
+      },
+    ],
 
     algolia: {
-      // The application ID provided by Algolia
-      appId: 'YW66QXP0SL',
-
-      // Public API key: it is safe to commit it
-      apiKey: '5adc7bceb43e099eaffc1bacb8b62f2d',
-
-      indexName: 'nimbit',
-
-      // Optional: see doc section below
+      appId: "YW66QXP0SL",
+      apiKey: "5adc7bceb43e099eaffc1bacb8b62f2d",
+      indexName: "nimbit",
       contextualSearch: true,
-
-      // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
-      externalUrlRegex: 'external\\.com|domain\\.com',
-
-      // Optional: Replace parts of the item URLs from Algolia. Useful when using the same search index for multiple deployments using a different baseUrl. You can use regexp or string in the `from` param. For example: localhost:3000 vs myCompany.com/docs
+      externalUrlRegex: "external\.com|domain\.com",
       replaceSearchResultPathname: {
-        from: '/docs/', // or as RegExp: /\/docs\//
-        to: '/',
+        from: "/docs/",
+        to: "/",
       },
-
-      // Optional: Algolia search parameters
       searchParameters: {},
-
-      // Optional: path for search page that enabled by default (`false` to disable it)
-      searchPagePath: 'search',
-
-      // Optional: whether the insights feature is enabled or not on Docsearch (`false` by default)
+      searchPagePath: "search",
       insights: false,
-
-      //... other Algolia params
     },
-    // Replace with your project's social card
+    docs: {
+      sidebar: {
+        autoCollapseCategories: false,
+        hideable: false,
+      },
+    },
     image: "img/docusaurus-social-card.jpg",
     navbar: {
       title: "",
       logo: {
-        alt: "Logo",
+        alt: "NimBit Logo",
         src: "img/nimbit.svg",
       },
       items: [
         {
-          to: "/docs/ai/getting-started/Introduction",
-          label: "AI",
+          label: "User Manual",
+          to: "/docs/user/overview",
           position: "left",
-          sidebarId: "aiSidebar",
+          className: "navbar-item-guides",
         },
         {
-          label: "Apis",
+          label: "API Docs",
+          type: "dropdown",
           position: "left",
           items: [
             {
-              label: "DIP - Data Integration Pipeline",
-              to: "/apis/dip",
+              label: "API Documentation",
+              to: "/docs/developer/intro",
+            },
+             {
+              label: "OCB API Documentation",
+              to: "/docs/developer/api/ocb",
+            },
+             {
+              label: "DIP API Documentation",
+              to: "/docs/developer/api/dip",
+            },
+             {
+              label: "NBQ API Documentation",
+              to: "/docs/developer/api/nbq",
             },
           ],
-        }, // New AI menu item
-        { to: "/blog", label: "Blog", position: "left" },
-        {
-          type: "docSidebar",
-          sidebarId: "tutorialSidebar",
-          position: "right",
-          label: "Tutorial",
-        },
-
-        {
-          to: "/docs/databases/Introduction",
-          label: "Databases",
-          position: "right",
         },
         {
-          href: "https://bitbucket.org/cparsinnovationlab/nimbit-docs",
-          label: "Bitbucket",
-          position: "right",
+          label: "Changelog",
+          to: "/docs/changelog/index",
+          position: "left",
         },
         {
-          type: "localeDropdown",
-          position: "right",
+          label: "Blog",
+          to: "/blog",
+          position: "left",
         },
+        { type: "search", position: "right" },
+        {
+          href: "https://outlook.office365.com/book/NimBitGmbHErstgesprchIhreDigitaleTransformation@cpars.de/",
+          label: "Book a Demo",
+          position: "right",
+          className: "navbar-book-demo",
+        },
+        { type: "localeDropdown", position: "right" },
       ],
     },
 
@@ -182,38 +274,32 @@ const config: Config = {
       style: "dark",
       links: [
         {
-          title: "Docs",
+          title: "Documentation",
           items: [
-            {
-              label: "Tutorial",
-              to: "/docs/intro",
-            },
+            { label: "User Manual", to: "/docs/user/overview" },
+            { label: "Developer Docs", to: "/docs/developer/dev-overview" },
+            { label: "API Reference", to: "/docs/developer/api/dev-api-intro" },
           ],
         },
         {
-          title: "Community",
+          title: "Resources",
           items: [
-            {
-              label: "C.PARS Portal",
-              href: "https://stackoverflow.com/questions/tagged/docusaurus",
-            },
+            { label: "Blog", to: "/blog" },
+            { label: "Changelog", to: "/docs/changelog/index" },
           ],
         },
         {
-          title: "More",
+          title: "Company",
           items: [
+            { label: "NimBit GmbH", href: "https://nimbit.de" },
             {
-              label: "Blog",
-              to: "/blog",
-            },
-            {
-              label: "Cpars Innovation Lab",
-              href: "https://bitbucket.org/cparsinnovationlab/nimbit-docs",
+              label: "Book a Demo",
+              href: "https://outlook.office365.com/book/NimBitGmbHErstgesprchIhreDigitaleTransformation@cpars.de/",
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} NimBit GmbH.`,
+      copyright: `Copyright © ${new Date().getFullYear()} NimBit GmbH. All rights reserved.`,
     },
     prism: {
       theme: prismThemes.github,
