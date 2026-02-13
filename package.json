@@ -15,6 +15,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@base-ui/react": "^1.2.0",
     "@docusaurus/core": "3.9.2",
     "@docusaurus/faster": "^3.9.2",
     "@docusaurus/preset-classic": "3.9.2",
@@ -24,8 +25,9 @@
     "@fontsource-variable/inter": "^5.2.8",
     "@fontsource-variable/plus-jakarta-sans": "^5.2.8",
     "@mdx-js/react": "^3.1.0",
-    "class-variance-authority": "^0.7.1",
     "@phosphor-icons/react": "^2.1.10",
+    "button": "link:@base-ui/react/button",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^1.2.1",
     "docusaurus-plugin-openapi-docs": "^4.3.3",
     "docusaurus-theme-openapi-docs": "^4.3.3",
