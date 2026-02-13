@@ -79,10 +79,9 @@ const config: Config = {
 
   i18n: {
     defaultLocale: "en",
-    locales: ["en", "de"],
+    locales: ["en"],
     localeConfigs: {
       en: { label: "English" },
-      de: { label: "Deutsch" },
     },
   },
 
@@ -235,15 +234,15 @@ const config: Config = {
               label: "API Documentation",
               to: "/docs/developer/intro",
             },
-             {
+            {
               label: "OCB API Documentation",
               to: "/docs/developer/api/ocb",
             },
-             {
+            {
               label: "DIP API Documentation",
               to: "/docs/developer/api/dip",
             },
-             {
+            {
               label: "NBQ API Documentation",
               to: "/docs/developer/api/nbq",
             },
@@ -277,8 +276,8 @@ const config: Config = {
           title: "Documentation",
           items: [
             { label: "User Manual", to: "/docs/user/overview" },
-            { label: "Developer Docs", to: "/docs/developer/dev-overview" },
-            { label: "API Reference", to: "/docs/developer/api/dev-api-intro" },
+            { label: "Developer Docs", to: "/docs/developer/intro" },
+            { label: "API Reference", to: "/docs/developer/api/dip" },
           ],
         },
         {

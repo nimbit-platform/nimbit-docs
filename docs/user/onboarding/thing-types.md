@@ -132,4 +132,4 @@ New properties and measures will not be available in Things until the Draft is a
 
 ## What’s Next?
 
-- [Create a Thing](../../things/create)
+- [Create a Thing](/docs/onboarding/things)

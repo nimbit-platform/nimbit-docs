@@ -111,5 +111,5 @@ A tabular history shows daily values for:
 
 ## What’s Next?
 
-- [Manage Users](/user-management/users)
-- [Configure Groups](/user-management/groups)
+- [Manage Users](/docs/user-management/users)
+- [Configure Groups](/docs/user-management/groups)

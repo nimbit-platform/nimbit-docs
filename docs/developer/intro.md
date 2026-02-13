@@ -114,6 +114,6 @@ The OCB API is the management layer of NimBit. It covers everything from device 
 
 Explore the full endpoint reference for each API:
 
-- [DIP API Reference →](/docs/developer/api/dip/data-input-controller-post-data)
+- [DIP API Reference →](/docs/developer/api/dip)
 - [NBQ API Reference →](/docs/developer/api/nbq)
 - [OCB API Reference →](/docs/developer/api/ocb)
