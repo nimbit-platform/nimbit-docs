@@ -97,5 +97,5 @@ This ensures precise access management tailored to operational needs.
 
 ## What's Next?
 
-- [Manage your ThingTypes](/onboarding/thing-types)
-- [Organize Things with Groups](/onboarding/groups)
+- [Manage your ThingTypes](/docs/onboarding/thing-types)
+- [Organize Things with Groups](/docs/user-management/groups)

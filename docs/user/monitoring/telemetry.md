@@ -92,6 +92,6 @@ Expand charts to the full width, hiding the config section for detailed inspecti
 
 ## What’s Next?
 
-- [Manage Users](/user-management/users)
-- [Configure Groups](/user-management/groups)
-- [Manage Things](/onboarding/things)
+- [Manage Users](/docs/user-management/users)
+- [Configure Groups](/docs/user-management/groups)
+- [Manage Things](/docs/onboarding/things)

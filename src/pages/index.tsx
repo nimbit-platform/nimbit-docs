@@ -50,7 +50,7 @@ const cards: FeatureCardItem[] = [
     title: "Developer Documentation",
     description:
       "A comprehensive guide detailing software architecture, API usage, deployment and code examples for building on the NimBit platform.",
-    to: "/docs/developer/dev-overview",
+    to: "/docs/developer/intro",
     features: [
       { icon: Code, label: "Architecture & Guides" },
       { icon: FileJson, label: "Integration Examples" },
@@ -64,7 +64,7 @@ const cards: FeatureCardItem[] = [
     title: "API Documentation",
     description:
       "Learn how to integrate with NimBit's REST APIs. Explore endpoints, authentication, and data models for the IoT platform.",
-    to: "/docs/developer/api/dev-api-intro",
+    to: "/docs/developer/api/dip",
     features: [
       { icon: FileJson, label: "REST API Reference" },
       { icon: Code, label: "Request & Response Models" },
@@ -201,7 +201,7 @@ export default function Home(): React.JSX.Element {
                   variant="link"
                   className="mt-5 h-auto p-0 text-[#3dc1d3] no-underline hover:text-[#60d1e1] hover:no-underline"
                 >
-                  <Link to="/docs/developer/api/dev-api-intro">
+                  <Link to="/docs/developer/api/dip">
                     Get started with NimBit APIs
                     <ArrowRight className="h-4 w-4" />
                   </Link>
