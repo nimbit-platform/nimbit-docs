@@ -194,6 +194,6 @@ To delete a group:
 
 ## What’s Next?
 
-- [Manage Users](/user-management/users)
-- [Manage Things](/onboarding/things)
-- [Manage ThingTypes](/onboarding/thing-types)
+- [Manage Users](/docs/user-management/users)
+- [Manage Things](/docs/onboarding/things)
+- [Manage ThingTypes](/docs/onboarding/thing-types)

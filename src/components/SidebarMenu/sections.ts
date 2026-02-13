@@ -20,7 +20,7 @@ export const SECTIONS: Section[] = [
         id: "developer",
         label: "Developer Docs",
         icon: Code,
-        to: "/docs/developer/dev-overview",
+        to: "/docs/developer/intro",
         description: "Architecture, APIs & deployment",
     },
     {

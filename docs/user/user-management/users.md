@@ -110,5 +110,5 @@ Proper group configuration ensures clear, secure, and efficient resource managem
 
 ## What's Next?
 
-- [Manage Groups](/onboarding/groups)
-- [Manage Things](/onboarding/things)
+- [Manage Groups](/docs/user-management/groups)
+- [Manage Things](/docs/onboarding/things)
