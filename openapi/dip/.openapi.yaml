@@ -1,0 +1,261 @@
+openapi: 3.0.1
+info:
+  version: "0.2.1"
+  title: Device Ingestion Pipeline API
+  contact:
+    name: Nimbit support
+    url: https://www.nimbit.de
+    email: iot@nimbit.de
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: /
+
+security:
+  - bearerAuth: []
+paths:
+  /api/v1/message/async-structured:
+    post:
+      operationId: postMessageAsyncStructured
+      summary: Asynchronously process single IoT message or array of messages
+      tags:
+      - IoT Message
+      description: |-
+        Asynchronously processes IoT messages. Returns immediately with a batch ID for tracking.
+        Accepts either a single message or an array of messages. Processing status is logged and
+        can be monitored via the batch ID. Messages are processed in the background with a 30-second timeout.
+      requestBody:
+        description: Array of IoT messages or single message
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/godip_internal_model.IotMessage'
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/src_internal_handlers_v1.SyncResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/src_internal_handlers_v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/src_internal_handlers_v1.ErrorResponse'
+      x-codegen-request-body-name: request
+  /api/v1/message/structured:
+    post:
+      summary: Process single IoT message or array of messages synchronously
+      operationId: postMessageStructured
+      tags:
+      - IoT Message
+      description: Process single IoT message or array of messages synchronously
+      requestBody:
+        description: Array of IoT messages or single message
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/godip_internal_model.IotMessage'
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/src_internal_handlers_v1.SyncResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/src_internal_handlers_v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/src_internal_handlers_v1.ErrorResponse'
+      x-codegen-request-body-name: request
+  /api/v1/{tenant}/{thingtype}/device/{id}/telemetry:
+    post:
+      
+      summary: Asynchronously process telemetry messages for a given tenant and device
+      operationId: postTelemetry
+      tags:
+      - Telemetry
+      description: |-
+        Asynchronously processes telemetry messages for a given tenant and device.
+        Returns immediately with a batch ID for tracking. Accepts either a single message or an array of messages.
+        Messages are processed in the background with a 30-second timeout.
+      parameters:
+      - name: tenant
+        in: path
+        description: Tenant Identifier
+        required: true
+        schema:
+          type: string
+      - name: thingtype
+        in: path
+        description: ThingType
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: Device ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Array of IoT messages or a single message
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/godip_internal_model.IotMessageBase'
+        required: true
+      responses:
+        "200":
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/src_internal_handlers_v1.SyncResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/src_internal_handlers_v1.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/src_internal_handlers_v1.ErrorResponse'
+      x-codegen-request-body-name: request
+components:
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT 
+  schemas:
+    godip_internal_model.Geo:
+      type: object
+      properties:
+        altitude:
+          type: number
+        heading:
+          type: number
+        latitude:
+          type: number
+        longitude:
+          type: number
+        speed:
+          type: number
+      description: "Geographic coordinates with latitude, longitude, altitude, heading,\
+        \ and speed"
+    godip_internal_model.IotMessage:
+      required:
+      - thingType
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            temperature: "25.5"
+        evolveSchema:
+          type: boolean
+        formatters:
+          type: object
+          additionalProperties:
+            type: string
+        geo:
+          $ref: '#/components/schemas/godip_internal_model.Geo'
+        id:
+          type: string
+          example: msg123
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            location: room1
+        tenant:
+          type: string
+          example: example_tenant
+        thingType:
+          type: string
+          example: sensor
+        time:
+          type: string
+          example: 2025-01-17T08:30:00Z
+      description: Representation of an IoT message
+    godip_internal_model.IotMessageBase:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            temperature: "25.5"
+        evolveSchema:
+          type: boolean
+        formatters:
+          type: object
+          additionalProperties:
+            type: string
+        geo:
+          $ref: '#/components/schemas/godip_internal_model.Geo'
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            location: room1
+        time:
+          type: string
+          example: 2025-01-17T08:30:00Z
+    src_internal_handlers_v1.ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: invalid request payload
+      description: Standard error response
+    src_internal_handlers_v1.SyncResponse:
+      type: object
+      properties:
+        elapsed_ms:
+          type: integer
+          example: 1234
+        message:
+          type: string
+          example: success
+        processed:
+          type: integer
+          example: 2
+      description: Response for synchronous message processing
+x-original-swagger-version: "2.0"
