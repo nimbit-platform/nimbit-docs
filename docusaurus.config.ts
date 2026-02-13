@@ -1,28 +1,88 @@
 import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
-import type * as OpenApiPlugin from "docusaurus-plugin-openapi-docs";
+
+import type * as Redocusaurus from "redocusaurus";
+
+const redocSpecUrls = {
+  dip:
+    process.env.DIP_OPENAPI_URL ??
+    "https://demo.cloud.iotbreeze.com/dip/api/v1/api-json",
+  ocb:
+    process.env.OCB_OPENAPI_URL ??
+    "https://demo.cloud.iotbreeze.com/ocb/api-json",
+  nbq:
+    process.env.NBQ_OPENAPI_URL ??
+    "https://demo.cloud.iotbreeze.com/ocb/api-json",
+};
+
+// Remove this entire redocSpecs variable definition
+// const redocSpecs = [
+//   "redocusaurus",
+//   {
+//     theme: {
+//       // Change with your site colors
+//       primaryColor: "#1890ff",
+//       primaryColorDark: "#1890ff",
+//     },
+//     specs: [
+//       // Optionally provide individual files/urls to load
+//       {
+//         // Pass it a path to a local OpenAPI YAML file
+//         id: "dip",
+//         spec: redocSpecUrls.dip,
+//         route: "/docs/developer/api/redoc/dip",
+//       },
+//       // You can also pass it an OpenAPI spec URL
+//     ],
+//     // Theme Options for modifying how redoc renders them
+//   },
+// ] satisfies Redocusaurus.PresetEntry;
+
+// Remove this commented code block as well
+// const redocSpecs = [
+//   {
+//     id: "dip",
+//     spec: redocSpecUrls.dip,
+//     route: "/docs/developer/api/redoc/dip",
+//   },
+//   // {
+//   //   id: "ocb",
+//   //   spec: redocSpecUrls.ocb,
+//   //   route: "/docs/developer/api/redoc/ocb",
+//   // },
+//   {
+//     id: "nbq",
+//     spec: redocSpecUrls.nbq,
+//     route: "/docs/developer/api/redoc/nbq",
+//   },
+// ];
 
 const config: Config = {
   title: "NimBit Documentation",
   tagline: "Learn how NimBit builds its IoT solution.",
-  favicon: "img/favicon-cpars.ico",
+  favicon: "img/favicon.ico",
 
   url: "https://cparsinnovationlab.bitbucket.io",
-  baseUrl: "/nimbit",
+  baseUrl: "/",
 
   organizationName: "Nimbit GmbH",
   projectName: "nimbit-docs",
 
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
+
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: "warn",
+    },
+  },
 
   i18n: {
     defaultLocale: "en",
-    locales: ["en","de"],
+    locales: ["en", "de"],
     localeConfigs: {
-      en: {label: "English" },
-      de: {label: "Deutsch" },
+      en: { label: "English" },
+      de: { label: "Deutsch" },
     },
   },
 
@@ -38,7 +98,8 @@ const config: Config = {
         blog: {
           showReadingTime: true,
           blogTitle: "NimBit Blog",
-          blogDescription: "Updates, guides, and insights from the NimBit IoT platform team.",
+          blogDescription:
+            "Updates, guides, and insights from the NimBit IoT platform team.",
           blogSidebarTitle: "Recent Posts",
           blogSidebarCount: 10,
         },
@@ -46,6 +107,29 @@ const config: Config = {
           customCss: require.resolve("./src/css/custom.css"),
         },
       } satisfies Preset.Options,
+    ],
+    [
+      "redocusaurus",
+      {
+        specs: [
+          {
+            id: "dip",
+            spec: "openapi/dip/.openapi.yaml",
+            // route: "/docs/developer/api/dip",
+          },
+          {
+            id: "ocb",
+            spec: "openapi/ocb/.openapi.yaml",
+          },
+          {
+            id: "nbq",
+            spec: "openapi/nbq/.openapi.yaml",
+          },
+        ],
+        theme: {
+          primaryColor: "#4fbbc9",
+        },
+      },
     ],
   ],
 
@@ -61,9 +145,8 @@ const config: Config = {
             outputDir: "docs/developer/api/references/dip-api",
             sidebarOptions: {
               groupPathsBy: "tag",
-
             },
-          }satisfies OpenApiPlugin.Options,
+          },
           // ocb: {
           //   specPath: "https://nightly.nimbit.de/ocb/api-yaml",
           //   outputDir: "docs/ocb-api",
@@ -71,7 +154,7 @@ const config: Config = {
           //     groupPathsBy: "tag",
           //   },
           // },
-        }
+        },
       },
     ],
     function customWebpackPlugin() {
@@ -126,7 +209,7 @@ const config: Config = {
     docs: {
       sidebar: {
         autoCollapseCategories: false,
-        hideable: true,
+        hideable: false,
       },
     },
     image: "img/docusaurus-social-card.jpg",
@@ -144,12 +227,26 @@ const config: Config = {
           className: "navbar-item-guides",
         },
         {
-          label: "Developers",
+          label: "API Docs",
           type: "dropdown",
           position: "left",
           items: [
-            { label: "Overview", to: "/docs/developer/dev-overview" },
-            { label: "API Documentation", to: "/docs/developer/api/dev-api-intro" },
+            {
+              label: "API Documentation",
+              to: "/docs/developer/intro",
+            },
+             {
+              label: "OCB API Documentation",
+              to: "/docs/developer/api/ocb",
+            },
+             {
+              label: "DIP API Documentation",
+              to: "/docs/developer/api/dip",
+            },
+             {
+              label: "NBQ API Documentation",
+              to: "/docs/developer/api/nbq",
+            },
           ],
         },
         {

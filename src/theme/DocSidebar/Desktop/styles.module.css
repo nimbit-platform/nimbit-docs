@@ -11,11 +11,6 @@
         padding-top: 0;
     }
 
-    .sidebarHidden {
-        opacity: 0;
-        visibility: hidden;
-    }
-
     .sidebarLogo {
         display: flex !important;
         align-items: center;

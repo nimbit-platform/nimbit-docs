@@ -2,19 +2,15 @@ import React from "react";
 import clsx from "clsx";
 import { useThemeConfig } from "@docusaurus/theme-common";
 import Logo from "@theme/Logo";
-import CollapseButton from "@theme/DocSidebar/Desktop/CollapseButton";
 import Content from "@theme/DocSidebar/Desktop/Content";
 import type { Props } from "@theme/DocSidebar/Desktop";
 import SidebarMenu from "@site/src/components/SidebarMenu";
 
 import styles from "./styles.module.css";
 
-function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
+function DocSidebarDesktop({ path, sidebar }: Props) {
     const {
         navbar: { hideOnScroll },
-        docs: {
-            sidebar: { hideable },
-        },
     } = useThemeConfig();
 
     return (
@@ -22,7 +18,6 @@ function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
             className={clsx(
                 styles.sidebar,
                 hideOnScroll && styles.sidebarWithHideableNavbar,
-                isHidden && styles.sidebarHidden,
             )}
         >
             {hideOnScroll && (
@@ -30,7 +25,6 @@ function DocSidebarDesktop({ path, sidebar, onCollapse, isHidden }: Props) {
             )}
             <SidebarMenu />
             <Content path={path} sidebar={sidebar} />
-            {hideable && <CollapseButton onClick={onCollapse} />}
         </div>
     );
 }

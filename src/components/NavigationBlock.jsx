@@ -1,5 +1,5 @@
 import React from "react";
-import { CaretRight } from "@phosphor-icons/react";
+import { CaretRightIcon } from "@phosphor-icons/react";
 
 const NavigationBlock = ({ link, title }) => {
   return (
@@ -18,7 +18,7 @@ const NavigationBlock = ({ link, title }) => {
       }}
       href={link}
     >
-      {title} <CaretRight size={24} />
+      {title} <CaretRightIcon size={24} />
     </a>
   );
 };
