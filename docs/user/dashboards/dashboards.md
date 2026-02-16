@@ -280,5 +280,5 @@ Dashboards support different viewing modes:
 ## What's Next?
 
 - [Dashboard Hierarchy](/docs/dashboards/hierarchy) - Learn about organizing dashboards
-- [Dashboard Widgets](/docs/dashboards/widgets) - Explore available widget types
+- [Widgets Overview](/docs/widgets) - Explore available widget types
 - [Create Things](/docs/onboarding/things) - Set up devices to display on dashboards
