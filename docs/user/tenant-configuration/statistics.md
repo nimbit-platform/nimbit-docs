@@ -22,7 +22,9 @@ A tabular history shows daily values for:
 - Number of records (rows)
 - Storage size in megabytes
 
-> 📉 **Tip**: You may see **storage decrease** while **row count increases**. This is due to our **automatic database compression**, which reduces size without deleting any data.
+:::info
+You may see **storage decrease** while **row count increases**. This is due to our **automatic database compression**, which reduces size without deleting any data.
+:::
 
 ---
 

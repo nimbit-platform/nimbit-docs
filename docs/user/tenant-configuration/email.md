@@ -6,7 +6,7 @@ sidebar_position: 4
 
 # Email Settings
 
-Configure outgoing email settings for your tenant on the **Email** page. If not yet active, you must **enable SMTP** before configuration.
+Configure outgoing email settings for your tenant on the **Email** page. If not yet active, you must **enable custom SMTP** before configuration.
 
 ![Initial SMTP Disabled State](/screenshots/tenant/smtp1.png)
 
@@ -23,11 +23,13 @@ Once enabled, enter the SMTP configuration details:
 | **From**      | ✅ Yes   | Default sender address used in all emails.                                                                                                        |
 | **Username**  | ✅ Yes   | SMTP username.                                                                                                                                    |
 | **Password**  | ✅ Yes   | SMTP password.                                                                                                                                    |
-| **Secure**    | ✅ Yes   | Choose between `Yes`, `No`, or `Depends`. Affects TLS usage. Note: "Secure" refers to protocol encryption, not whether data is protected overall. |
+| **Secure**    | ✅ Yes   | Choose between `Yes` or `No`. Affects TLS usage. Note: "Secure" refers to protocol encryption, not whether data is protected overall. |
 
 After saving your configuration, use the **Test Email** function to validate the connection and credentials.
 
-> 🛠️ **Important**: The test button becomes active only **after saving** your configuration.
+:::info
+The test button becomes active only **after saving** your configuration.
+:::
 
 ## Save or Reset
 
