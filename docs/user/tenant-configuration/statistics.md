@@ -12,8 +12,8 @@ The **Statistics** page shows your tenant's data usage and growth over time.
 
 ## Current Overview
 
-- **Row Count** – The total number of stored records.
-- **Storage Usage** – Amount of database space used.
+- **Row Count** - The total number of stored records.
+- **Storage Usage** - Amount of database space used.
 
 ## Last 30 Days Table
 

@@ -14,9 +14,9 @@ Welcome to the NimBit User Manual! Here, you will find all the essential informa
 
 NimBit is a technology spin-off that makes "digitization" and the "Internet of Things" tangible. We develop customized solutions for your company in collaboration with you.
 
-## IoTBreeze – Your IoT Management System
+## IoTBreeze - Your IoT Management System
 
-With our managed IoT solutions for businesses, you can integrate your devices within minutes, send data, trigger actions based on that data, automate tasks, and gain insights – even in mixed fleet scenarios.
+With our managed IoT solutions for businesses, you can integrate your devices within minutes, send data, trigger actions based on that data, automate tasks, and gain insights - even in mixed fleet scenarios.
 
 ### Compatibility
 
@@ -26,13 +26,13 @@ IoTBreeze seamlessly connects with IoT providers such as SAP, AWS, or Azure. You
 
 ### HINZ Steuerungstechnik GmbH
 
-**Improved quality through precise system control**  
+**Improved quality through precise system control**
 
 HINZ Steuerungstechnik GmbH pursues a clear vision: increasing quality and throughput through precise, situation-specific system control. By using NimBit IoTBreeze, their product MEBAS was optimized by visualizing sensor data in real-time and calculating as well as displaying key figures. This led to increased output and improved quality of end products in a gravel plant.
 
 ### ALLRECO GmbH
 
-**Green and efficient shredding**  
+**Green and efficient shredding**
 
 ALLRECO GmbH relies on environmentally friendly and efficient shredding technologies. By integrating IoTBreeze, processes were optimized, and efficiency was increased.
 
@@ -40,8 +40,9 @@ ALLRECO GmbH relies on environmentally friendly and efficient shredding technolo
 
 Are you interested in our IoTBreeze product or have questions about digitization or IoT? Our experts are happy to assist you.
 
-- **Email:** info@nimbit.de  
-- **Phone:** +49 211 650450 0  
+- **Email:** info@nimbit.de
+- **Phone:** +49 211 650450 0
 
----  
-*Note: This sample page is based on information from nimbit.de.*  
+---
+
+_Note: This sample page is based on information from nimbit.de._
