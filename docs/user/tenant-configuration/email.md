@@ -16,13 +16,13 @@ Once enabled, enter the SMTP configuration details:
 
 ## Configuration Fields
 
-| Field         | Required | Description                                                                                                                                       |
-| ------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **SMTP Host** | ✅ Yes   | The mail server hostname (e.g., `smtp.example.com`).                                                                                              |
-| **Port**      | ✅ Yes   | Port for communication (`25`, `465`, or `587`).                                                                                                   |
-| **From**      | ✅ Yes   | Default sender address used in all emails.                                                                                                        |
-| **Username**  | ✅ Yes   | SMTP username.                                                                                                                                    |
-| **Password**  | ✅ Yes   | SMTP password.                                                                                                                                    |
+| Field         | Required | Description                                                                                                                           |
+| ------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| **SMTP Host** | ✅ Yes   | The mail server hostname (e.g., `smtp.example.com`).                                                                                  |
+| **Port**      | ✅ Yes   | Port for communication (`25`, `465`, or `587`).                                                                                       |
+| **From**      | ✅ Yes   | Default sender address used in all emails.                                                                                            |
+| **Username**  | ✅ Yes   | SMTP username.                                                                                                                        |
+| **Password**  | ✅ Yes   | SMTP password.                                                                                                                        |
 | **Secure**    | ✅ Yes   | Choose between `Yes` or `No`. Affects TLS usage. Note: "Secure" refers to protocol encryption, not whether data is protected overall. |
 
 After saving your configuration, use the **Test Email** function to validate the connection and credentials.
