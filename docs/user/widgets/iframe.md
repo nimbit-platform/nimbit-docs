@@ -89,4 +89,4 @@ Some websites prevent embedding via X-Frame-Options headers:
 ## What's Next?
 
 - [Container Widget](/docs/widgets/container) - For organizing widgets
-- [Dashboards](/docs/dashboards/dashboards) - Learn about dashboard features
+- [Dashboards](/docs/dashboards) - Learn about dashboard features

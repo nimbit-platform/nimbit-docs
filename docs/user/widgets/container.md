@@ -103,4 +103,4 @@ Build complex layouts with nested containers:
 
 - [Title Widget](/docs/widgets/title) - For section headings
 - [Text Widget](/docs/widgets/text) - For text content
-- [Dashboards](/docs/dashboards/dashboards) - Learn about dashboard organization
+- [Dashboards](/docs/dashboards) - Learn about dashboard organization
