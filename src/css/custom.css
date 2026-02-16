@@ -21,7 +21,7 @@
   --font-jakarta: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   --font-mono: "Fira Code Variable", "Fira Code", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-  --breakpoint-sm: 0px;
+  --breakpoint-sm: 640px;
   --breakpoint-lg: 997px;
 
   --color-background: var(--background);
