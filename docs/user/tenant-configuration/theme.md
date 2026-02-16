@@ -65,10 +65,7 @@ Define colors used throughout data visualizations and charts:
 
 Customize:
 
-- Primary chart series colors
-- Data point colors
-- Graph line colors
-- Visualization accents
+- Different chart colors
 
 ### Sidebar Colors
 
@@ -93,10 +90,8 @@ The **Layout** tab controls structural aspects of your interface:
 
 Adjust layout properties including:
 
-- Spacing and padding
-- Border radius and corner roundness
-- Component sizing
-- Grid and container widths
+- Spacing
+- Border radius
 
 ---
 
@@ -110,7 +105,7 @@ Fine-tune shadow properties:
 
 - Shadow intensity and blur
 - Elevation levels for different components
-- Drop shadow colors and opacity
+- Shadow colors and opacity
 - Depth perception effects
 
 Your custom theme will be applied across the entire tenant environment for all users once saved.

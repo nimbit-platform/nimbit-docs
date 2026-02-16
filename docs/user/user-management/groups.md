@@ -157,9 +157,9 @@ When a **user is added** to a group via the **Users** tab, they are assigned a d
 
 ### Default Permissions
 
-- **Read** (Mandatory) – Grants viewing rights.
-- **Update** – Allows editing existing records.
-- **Execute** – Enables performing actions (e.g., triggering workflows).
+- **Read** (Mandatory) - Grants viewing rights.
+- **Update** - Allows editing existing records.
+- **Execute** - Enables performing actions (e.g., triggering workflows).
 
 These permissions ensure users can interact with the group's assigned things and ThingTypes effectively.
 

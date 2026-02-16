@@ -1,0 +1,8 @@
+{
+    "label": "Widgets",
+    "position": 5,
+    "link": {
+        "type": "generated-index",
+        "description": "Dashboard widgets for visualizing and interacting with your IoT data."
+    }
+}
