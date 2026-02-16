@@ -215,6 +215,5 @@ Using separate hierarchy entities to organize dashboards provides multiple benef
 
 ## What's Next?
 
-- [Dashboard Widgets](/docs/dashboards/widgets)
-- [Dashboard Sharing](/docs/dashboards/sharing)
+- [Widgets Overview](/docs/widgets)
 - [Create Things](/docs/onboarding/things)
