@@ -56,7 +56,7 @@ const config: Config = {
   favicon: "img/favicon.ico",
 
   url: "https://cparsinnovationlab.bitbucket.io",
-  baseUrl: "/",
+  baseUrl: "/nimbit/",
 
   organizationName: "Nimbit GmbH",
   projectName: "nimbit-docs",
