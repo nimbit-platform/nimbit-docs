@@ -30,9 +30,9 @@ This section provides basic information and editable configuration fields:
 
 You can upload brand-specific visuals to personalize your tenant's UI:
 
-- **Favicon** – Small icon shown in the browser tab.
-- **Logo** – Displayed in the header and login screen.
-- **Cover Image** – Used as a background on the login screen.
+- **Favicon** - Small icon shown in the browser tab.
+- **Logo** - Displayed in the header and login screen.
+- **Cover Image** - Used as a background on the login screen.
 
 All uploaded images will be reset when the tenant settings are restored to default.
 
