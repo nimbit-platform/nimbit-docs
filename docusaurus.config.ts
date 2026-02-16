@@ -1,19 +1,11 @@
-import { themes as prismThemes } from "prism-react-renderer";
-import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
-
-import type * as Redocusaurus from "redocusaurus";
+import type { Config } from "@docusaurus/types";
+import { themes as prismThemes } from "prism-react-renderer";
 
 const redocSpecUrls = {
-  dip:
-    process.env.DIP_OPENAPI_URL ??
-    "https://demo.cloud.iotbreeze.com/dip/api/v1/api-json",
-  ocb:
-    process.env.OCB_OPENAPI_URL ??
-    "https://demo.cloud.iotbreeze.com/ocb/api-json",
-  nbq:
-    process.env.NBQ_OPENAPI_URL ??
-    "https://demo.cloud.iotbreeze.com/ocb/api-json",
+  dip: process.env.DIP_OPENAPI_URL ?? "https://demo.cloud.iotbreeze.com/dip/api/v1/api-json",
+  ocb: process.env.OCB_OPENAPI_URL ?? "https://demo.cloud.iotbreeze.com/ocb/api-json",
+  nbq: process.env.NBQ_OPENAPI_URL ?? "https://demo.cloud.iotbreeze.com/ocb/api-json",
 };
 
 // Remove this entire redocSpecs variable definition
@@ -97,8 +89,7 @@ const config: Config = {
         blog: {
           showReadingTime: true,
           blogTitle: "NimBit Blog",
-          blogDescription:
-            "Updates, guides, and insights from the NimBit IoT platform team.",
+          blogDescription: "Updates, guides, and insights from the NimBit IoT platform team.",
           blogSidebarTitle: "Recent Posts",
           blogSidebarCount: 10,
         },
@@ -156,6 +147,7 @@ const config: Config = {
         },
       },
     ],
+    "docusaurus-plugin-image-zoom",
     function customWebpackPlugin() {
       return {
         name: "custom-webpack-plugin",
@@ -170,10 +162,7 @@ const config: Config = {
       return {
         name: "tailwind-plugin",
         configurePostCss(postcssOptions) {
-          postcssOptions.plugins = [
-            require("@tailwindcss/postcss"),
-            require("autoprefixer"),
-          ];
+          postcssOptions.plugins = [require("@tailwindcss/postcss"), require("autoprefixer")];
           return postcssOptions;
         },
       };
@@ -183,11 +172,21 @@ const config: Config = {
   themes: ["docusaurus-theme-openapi-docs"],
 
   themeConfig: {
+    zoom: {
+      selector: ".markdown img",
+      background: {
+        light: "rgb(255, 255, 255)",
+        dark: "rgb(22, 22, 22)",
+      },
+      config: {
+        margin: 24,
+        scrollOffset: 0,
+      },
+    },
     metadata: [
       {
         name: "Content-Security-Policy",
-        content:
-          "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; object-src 'none'; base-uri 'none';",
+        content: "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; object-src 'none'; base-uri 'none';",
       },
     ],
 
