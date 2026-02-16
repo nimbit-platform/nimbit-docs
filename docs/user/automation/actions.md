@@ -289,4 +289,3 @@ Configure action widgets in dashboards to provide users with interactive control
 
 - [Create a ThingType](/docs/onboarding/thing-types)
 - [Create a Thing](/docs/onboarding/things)
-- [Automation Overview](/docs/automation/overview)
