@@ -1,0 +1,20 @@
+
+> nimbit-iot-documentation-ts@0.0.0 build /home/breustedt/projects/nimbit-docs
+> docusaurus build
+
+[INFO] [en] Creating an optimized production build...
+Browserslist: browsers data (caniuse-lite) is 12 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+[webpackbar] ℹ Compiling Client
+[webpackbar] ℹ Compiling Server
+[webpackbar] ✔ Server: Compiled successfully in 1.01m
+Browserslist: browsers data (caniuse-lite) is 12 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+[webpackbar] ✔ Client: Compiled successfully in 1.55m
+Incompatible types in allOf at "#/components/schemas/nbq_internal_models.TimeseriesQuery/properties/gapFill": "object" and "string"
+Incompatible types in allOf at "#/components/schemas/nbq_internal_models.TimeseriesQuery/properties/gapFill": "object" and "string"
+Incompatible types in allOf at "#/components/schemas/nbq_internal_models.TimeseriesQuery/properties/gapFill": "object" and "string"
+[SUCCESS] Generated static files in "build".
+[INFO] Use `npm run serve` command to test your build locally.
