@@ -1,53 +1,52 @@
 ---
 title: State
 slug: /widgets/state
-sidebar_position: 20
 ---
 
 # State Widget
 
 ## Overview
 
-The State widget displays the current state of a measure with visual indicators. It provides a clear, prominent display of a single measurement's current value, ideal for monitoring critical parameters at a glance.
+The State widget displays the current snapshot values of one or more measures as value cards. It supports carousel (swipeable) and stacked (grid) layouts, with horizontal or vertical orientation. It provides a clear, prominent display of current measurement values, ideal for monitoring critical parameters at a glance.
 
 ## Use Cases
 
 - **Critical Monitoring** - Display important measurements prominently
-- **Status Display** - Show current operational states
-- **Value Tracking** - Monitor specific sensor readings
+- **Multi-Measure Dashboard** - Show several measure values in a compact layout
 - **KPI Display** - Present key performance indicators
-- **Alert Indication** - Visual cues for threshold violations
+- **Value Tracking** - Monitor specific sensor readings
+- **Status Overview** - Quickly see current values for multiple measures
 
 ## Key Features
 
 - Large value display
-- Color-coded states
-- Threshold indicators
+- Multiple measures support
+- Carousel or stacked layout modes
+- Horizontal and vertical orientation
 - Unit display
 - Real-time updates
-- Compact widget size
 
 ## Configuration
 
 ### Basic Settings
 
-| Field         | Required | Description                 |
-| ------------- | -------- | --------------------------- |
-| **Title**     | No       | Display name for the widget |
-| **Asset**     | No       | Select Thing to monitor (optional, can display multiple measures from different Things) |
-| **Measures**  | ✅ Yes   | Add measures to display. Each measure requires: measure ID and optional aggregation |
+| Field        | Required | Description                                                                             |
+| ------------ | -------- | --------------------------------------------------------------------------------------- |
+| **Title**    | ❌ No    | Display name for the widget                                                             |
+| **Thing**    | ❌ No    | Select Thing to monitor (optional, can display multiple measures from different Things) |
+| **Measures** | ✅ Yes   | Add measures to display. Each measure requires: measure ID and optional aggregation     |
 
 ### Display Options
 
-| Field         | Required | Description                 |
-| ------------- | -------- | --------------------------- |
-| **Mode**      | No       | Choose 'stacked' (default) or 'carousel' display mode |
-| **Orientation** | No     | Choose 'vertical' (default) or 'horizontal' layout |
-| **Compact Number** | No  | Display large numbers in compact format (e.g., 1.23K). Default: true |
-| **Transparent** | No     | Remove widget background |
-| **Border Color** | No    | Custom border color |
-| **Background Color** | No | Custom background color |
-| **Translations** | No    | Custom translations for the widget name |
+| Field                | Required | Description                                                             |
+| -------------------- | -------- | ----------------------------------------------------------------------- |
+| **Carousel mode**    | ❌ No    | Toggle between stacked (default) and carousel display mode              |
+| **Orientation**      | ❌ No    | Choose 'vertical' (default) or 'horizontal' layout                      |
+| **Compact number**   | ❌ No    | Display large numbers in compact format (e.g., 1.23K). Default: enabled |
+| **Transparent**      | ❌ No    | Remove widget background                                                |
+| **Border color**     | ❌ No    | Custom border color                                                     |
+| **Background Color** | ❌ No    | Custom background color                                                 |
+| **Translations**     | ❌ No    | Custom translations for the widget name                                 |
 
 ## Best Practices
 

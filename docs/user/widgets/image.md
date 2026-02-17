@@ -1,14 +1,13 @@
 ---
 title: Image
 slug: /widgets/image
-sidebar_position: 52
 ---
 
 # Image Widget
 
 ## Overview
 
-The Image widget displays static or dynamic images in your dashboard, supporting various image sources including URLs, Thing attributes, and uploaded files. Use it to show product images, diagrams, logos, or visual references.
+The Image widget displays a static image in your dashboard from either an uploaded file (OCB storage) or an external URL. Use it to show product images, diagrams, logos, or visual references with configurable scaling (cover or contain).
 
 ## Use Cases
 
@@ -20,12 +19,11 @@ The Image widget displays static or dynamic images in your dashboard, supporting
 
 ## Key Features
 
-- Multiple image sources
-- Dynamic image loading from Things
-- Image scaling and positioning
-- Link support (clickable images)
-- Image caching
-- Fallback image support
+- Upload images or link external URLs
+- Image scaling: cover or contain modes
+- Customizable border and background
+- Standalone widget (no measures required)
+- Responsive sizing
 
 ## Configuration
 
@@ -33,36 +31,25 @@ The Image widget is a standalone widget that doesn't require measures or propert
 
 ### Basic Settings
 
-| Field          | Required | Description                                      |
-| -------------- | -------- | ------------------------------------------------ |
-| **Type**       | ✅ Yes   | Image type: `image` or `3d`                      |
-| **Object Fit** | ✅ Yes   | How the image fits: `contain` or `cover`         |
-| **File Type**  | ✅ Yes   | Source type: `ocb` (uploaded) or `external` (URL)|
-
-### Image Source Options
-
-Choose one of the following:
-
-**OCB File (Uploaded)**
-- **File Type**: Set to `ocb`
-- **File ID**: ID of the uploaded file in the system
-
-**External URL**
-- **File Type**: Set to `external`
-- **URL**: Direct URL to the image file
+| Field          | Required | Description                               |
+| -------------- | -------- | ----------------------------------------- |
+| **Object Fit** | ✅ Yes   | How the image fits: `contain` or `cover`  |
+| **File**       | ✅ Yes   | Source type: `upload` or `external` (URL) |
 
 ### Display Settings
 
-| Field          | Description                                      |
-| -------------- | ------------------------------------------------ |
+| Field          | Description                                                |
+| -------------- | ---------------------------------------------------------- |
 | **Object Fit** | `contain` - Fit image within bounds, preserve aspect ratio |
-|                | `cover` - Fill entire area, may crop image       |
+|                | `cover` - Fill entire area, may crop image                 |
 
 ### Display Options
 
-- **Transparent Background** - Remove widget background using the `transparent` style property
-- **Background Color** - Set custom background color
-- **Border Color** - Set custom border color
+| Field                | Required | Description              |
+| -------------------- | -------- | ------------------------ |
+| **Transparent**      | ❌ No    | Remove widget background |
+| **Border color**     | ❌ No    | Custom border color      |
+| **Background Color** | ❌ No    | Custom background color  |
 
 ## Best Practices
 
@@ -76,5 +63,4 @@ Choose one of the following:
 
 ## What's Next?
 
-- [Image Overlay Widget](/docs/widgets/image-overlay) - For interactive image overlays
 - [Canvas Widget](/docs/widgets/canvas) - For custom graphics

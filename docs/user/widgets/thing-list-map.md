@@ -1,7 +1,6 @@
 ---
 title: Thing List Map
 slug: /widgets/thing-list-map
-sidebar_position: 59
 ---
 
 # Thing List Map Widget
@@ -33,13 +32,15 @@ The Thing List Map widget is a standalone widget that requires no specific confi
 
 ### Basic Settings
 
-| Field | Required | Description |
-| ----- | -------- | ----------- |
+| Field | Required | Description               |
+| ----- | -------- | ------------------------- |
 | None  | N/A      | No configuration required |
 
 ### Display Options
 
-The widget has no configurable style options. It uses default widget styling and automatically adapts its layout based on available space.
+| Field            | Type   | Description                        |
+| ---------------- | ------ | ---------------------------------- |
+| **Border color** | String | Custom border color for the widget |
 
 ## Best Practices
 
@@ -83,4 +84,3 @@ A toggle button group in the widget header allows switching between views:
 ## What's Next?
 
 - [Map Widget](/docs/widgets/map) - For map-only view
-- [Table Widget](/docs/widgets/table) - For advanced list features

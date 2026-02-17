@@ -1,7 +1,6 @@
 ---
 title: Combination
 slug: /widgets/combination
-sidebar_position: 33
 ---
 
 # Combination Widget
@@ -31,34 +30,36 @@ The Combination widget combines different chart types (e.g., bars + line) with d
 
 ### Basic Settings
 
-| Field         | Required | Description                         |
-| ------------- | -------- | ----------------------------------- |
-| **Title**     | No       | Display name for the widget         |
-| **Asset**     | ✅ Yes   | Select Thing to display data from (not required for ThingType dashboards)  |
-| **Time Window** | ✅ Yes | Time range (from/to) for data display |
+| Field         | Required | Description                                                                                                                      |
+| ------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| **Title**     | ❌ No    | Display name for the widget                                                                                                      |
+| **Thing**     | ✅ Yes   | Select Thing to display data from (not required for ThingType dashboards)                                                        |
+| **Timeframe** | ✅ Yes   | Time range (from/to) for data display                                                                                            |
 | **Measures**  | ✅ Yes   | Add measures to display. Each measure requires: measure ID, aggregation, chart type (line/bar), line type (for lines), and color |
 
 ### Chart Settings
 
-| Field         | Required | Description                         |
-| ------------- | -------- | ----------------------------------- |
-| **Y-Axis Min** | No      | Minimum value for Y-axis |
-| **Y-Axis Max** | No      | Maximum value for Y-axis |
-| **Gap Fill**   | No      | Handle missing data (NONE, TIME, LOCF) |
-| **Bucket Type** | ✅ Yes | Choose 'dynamic' or 'fixed' time bucket aggregation |
-| **Bucket Size/Density** | ✅ Yes | Aggregation interval (depends on bucket type) |
-| **Thresholds** | No      | Define threshold lines with colors and values |
+| Field                             | Required | Description                                         |
+| --------------------------------- | -------- | --------------------------------------------------- |
+| **Y-Axis Min**                    | ❌ No    | Minimum value for Y-axis                            |
+| **Y-Axis Max**                    | ❌ No    | Maximum value for Y-axis                            |
+| **Gapfill**                       | ❌ No    | Handle missing data (NONE, TIME, LOCF)              |
+| **Bucket type**                   | ✅ Yes   | Choose 'dynamic' or 'fixed' time bucket aggregation |
+| **Bucketsize** / **Data density** | ✅ Yes   | Aggregation interval (depends on bucket type)       |
+| **Thresholds**                    | ❌ No    | Define threshold lines with colors and values       |
 
 ### Display Options
 
-| Field         | Required | Description                         |
-| ------------- | -------- | ----------------------------------- |
-| **Show Markers** | No    | Display data point markers on lines |
-| **Zoomable**   | No      | Enable zoom functionality (default: true) |
-| **Display Mode** | No    | Choose chart, table, or split view |
-| **Transparent** | No     | Remove widget background |
-| **Border Color** | No    | Custom border color |
-| **Background Color** | No | Custom background color |
+| Field                  | Required | Description                                                     |
+| ---------------------- | -------- | --------------------------------------------------------------- |
+| **Show chart markers** | ❌ No    | Display data point markers on lines                             |
+| **Zoom allowed**       | ❌ No    | Enable zoom functionality (default: true)                       |
+| **Show Table**         | ❌ No    | Display data in table format below the chart                    |
+| **Display mode**       | ❌ No    | Choose chart, table, or split view                              |
+| **Override**           | ❌ No    | Use widget-specific time settings instead of dashboard defaults |
+| **Transparent**        | ❌ No    | Remove widget background                                        |
+| **Border color**       | ❌ No    | Custom border color                                             |
+| **Background Color**   | ❌ No    | Custom background color                                         |
 
 ## Best Practices
 

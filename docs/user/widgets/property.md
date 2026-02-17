@@ -1,14 +1,13 @@
 ---
-title: Property State
-slug: /widgets/property-state
-sidebar_position: 12
+title: Property
+slug: /widgets/property
 ---
 
-# Property State Widget
+# Property Widget
 
 ## Overview
 
-The Property State widget displays individual Thing property values with their current state. Unlike measure-based widgets, this widget works directly with Thing properties, making it ideal for displaying device metadata, configuration values, and static attributes.
+The Property widget displays individual Thing property values with their current state. Unlike measure-based widgets, this widget works directly with Thing properties, making it ideal for displaying device metadata, configuration values, and static attributes.
 
 ## Use Cases
 
@@ -31,23 +30,25 @@ The Property State widget displays individual Thing property values with their c
 
 ### Basic Settings
 
-| Field        | Required | Description                             |
-| ------------ | -------- | --------------------------------------- |
-| **Title**    | No       | Display name for the widget (optional)  |
-| **Thing**    | Yes      | Select the Thing to display property from |
-| **Property** | Yes      | Choose which Thing property to display  |
+| Field        | Required | Description                               |
+| ------------ | -------- | ----------------------------------------- |
+| **Title**    | ❌ No    | Display name for the widget (optional)    |
+| **Thing**    | ✅ Yes   | Select the Thing to display property from |
+| **Property** | ✅ Yes   | Choose which Thing property to display    |
 
 ### Display Options
 
-- **Background Color** - Customize widget background color
-- **Border Color** - Set widget border color
-- **Transparent Background** - Remove widget background for clean display
+| Field                | Required | Description             |
+| -------------------- | -------- | ----------------------- |
+| **Border color**     | ❌ No    | Custom border color     |
+| **Background Color** | ❌ No    | Custom background color |
 
 ## Schema Information
 
 **Widget Type:** `propertyState`
 
 **Required Configuration:**
+
 - `name` - Widget display name (optional in UI, but part of schema)
 - `config.id` - Unique identifier for the configuration
 - `config.property` - Property name to display
@@ -68,5 +69,5 @@ The Property State widget displays individual Thing property values with their c
 
 ## What's Next?
 
-- [Property State Table](/docs/widgets/property-state-table) - Display all properties of a Thing in table format
+- [Property List](/docs/widgets/property-list) - Display all properties of a Thing in table format
 - [State Widget](/docs/widgets/state) - For displaying measure state values

@@ -1,7 +1,6 @@
 ---
 title: Container
 slug: /widgets/container
-sidebar_position: 55
 ---
 
 # Container Widget
@@ -33,17 +32,17 @@ The Container widget is a standalone widget that primarily serves as a visual gr
 
 ### Basic Settings
 
-| Field     | Required | Description                         |
-| --------- | -------- | ----------------------------------- |
-| **Variant** | ❌ No  | Container type (`page` or `container`) |
+| Field       | Required | Description                            |
+| ----------- | -------- | -------------------------------------- |
+| **Variant** | ❌ No    | Container type (`page` or `container`) |
 
 ### Display Options
 
-| Field                | Type    | Description                              |
-| -------------------- | ------- | ---------------------------------------- |
-| **Transparent**      | Boolean | Remove background (default: true)        |
-| **Background Color** | String  | Custom background color                  |
-| **Border Color**     | String  | Custom border color                      |
+| Field                | Type    | Description                       |
+| -------------------- | ------- | --------------------------------- |
+| **Transparent**      | Boolean | Remove background (default: true) |
+| **Background Color** | String  | Custom background color           |
+| **Border color**     | String  | Custom border color               |
 
 ### Variant Types
 
@@ -101,6 +100,5 @@ Build complex layouts with nested containers:
 
 ## What's Next?
 
-- [Title Widget](/docs/widgets/title) - For section headings
 - [Text Widget](/docs/widgets/text) - For text content
 - [Dashboards](/docs/dashboards) - Learn about dashboard organization

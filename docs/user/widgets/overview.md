@@ -15,9 +15,8 @@ Widgets are the building blocks of dashboards in IotBreeze, providing various wa
 These widgets focus on presenting data in tabular or structured formats, ideal for detailed data analysis and property monitoring.
 
 - [Pivot Table](/docs/widgets/pivot-table) - Multi-dimensional data analysis
-- [Table](/docs/widgets/table) - Structured data display
-- [Property State](/docs/widgets/property-state) - Individual property monitoring
-- [Property State Table](/docs/widgets/property-state-table) - Multiple property overview
+- [Property](/docs/widgets/property) - Individual property monitoring
+- [Property List](/docs/widgets/property-list) - Multiple property overview
 - [Snapshot](/docs/widgets/snapshot) - Point-in-time data capture
 - [File List](/docs/widgets/file-list) - File management and display
 
@@ -59,7 +58,6 @@ Execute actions and monitor events directly from your dashboard.
 Enhance dashboards with images, overlays, and custom drawings.
 
 - [Image](/docs/widgets/image) - Static image display
-- [Image Overlay](/docs/widgets/image-overlay) - Data on images
 - [Canvas](/docs/widgets/canvas) - Free-form drawing
 
 ### Layout & Navigation Widgets
@@ -67,7 +65,6 @@ Enhance dashboards with images, overlays, and custom drawings.
 Organize dashboard content with structural and informational elements.
 
 - [Container](/docs/widgets/container) - Widget grouping
-- [Title](/docs/widgets/title) - Section headers
 - [Text](/docs/widgets/text) - Text and labels
 
 ### External Content Widgets
@@ -96,15 +93,30 @@ For detailed information on dashboard editing, see [Dashboards](/docs/dashboards
 
 ## Widget Configuration
 
-Each widget type has its own configuration options including:
+Each widget type has its own configuration options. Detailed configuration options are documented in each widget's individual page.
+
+### Common Fields
+
+Many widgets share these display options, though not all widgets include every field. See each widget's page for its exact configuration.
+
+| Field                | Required | Description                                                     |
+| -------------------- | -------- | --------------------------------------------------------------- |
+| **Transparent**      | ❌ No    | Remove the widget background for a clean look                   |
+| **Background Color** | ❌ No    | Custom background color for the widget                          |
+| **Border color**     | ❌ No    | Custom border color for the widget                              |
+| **Compact number**   | ❌ No    | Display large numbers in compact format (e.g., 1.23K)           |
+| **Override**         | ❌ No    | Use widget-specific time settings instead of dashboard defaults |
+
+### Widget-Specific Fields
+
+Beyond the common fields, widgets may include:
 
 - **Title** - Display name for the widget
-- **Data Source** - Selection of Things and measures/properties
+- **Thing** - Selection of Things to display data from
+- **Measures / Properties** - Data source configuration
+- **Timeframe** - Time range for data display (timeseries widgets)
+- **Aggregation** - Data aggregation method
 - **Visualization Settings** - Chart types, colors, and display options
-- **Time Settings** - Time windows and refresh intervals
-- **Advanced Options** - Widget-specific customization
-
-Detailed configuration options are documented in each widget's individual page.
 
 ---
 

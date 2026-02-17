@@ -1,7 +1,6 @@
 ---
 title: Fill Level
 slug: /widgets/fill-level
-sidebar_position: 39
 ---
 
 # Fill Level Widget
@@ -33,29 +32,29 @@ The Fill Level widget provides visual representation of fill levels or capacity,
 
 | Field       | Required | Description                                                   |
 | ----------- | -------- | ------------------------------------------------------------- |
-| **Name**    | No       | Display name for the widget                                   |
-| **Asset**   | Yes      | Select Thing to monitor                                       |
-| **Measure** | Yes      | Choose measure representing level (with id, measure, thingId) |
+| **Name**    | ❌ No    | Display name for the widget                                   |
+| **Thing**   | ✅ Yes   | Select Thing to monitor                                       |
+| **Measure** | ✅ Yes   | Choose measure representing level (with id, measure, thingId) |
 
 ### Level Settings
 
-| Field                   | Required | Description                                  |
-| ----------------------- | -------- | -------------------------------------------- |
-| **Min Value**           | Yes      | Minimum level value                          |
-| **Max Value**           | Yes      | Maximum level value (100%)                   |
-| **Warning Level**       | Yes      | Warning threshold value                      |
-| **Critical Level**      | Yes      | Critical threshold value                     |
-| **Color**               | Yes      | Base color for the fill level visualization  |
-| **Convert to Percentage** | No    | Display value as percentage                  |
+| Field                     | Required | Description                                 |
+| ------------------------- | -------- | ------------------------------------------- |
+| **Min Value**             | ✅ Yes   | Minimum level value                         |
+| **Max Value**             | ✅ Yes   | Maximum level value (100%)                  |
+| **Warning Level**         | ✅ Yes   | Warning threshold value                     |
+| **Critical Level**        | ✅ Yes   | Critical threshold value                    |
+| **Color**                 | ✅ Yes   | Base color for the fill level visualization |
+| **Convert to Percentage** | ❌ No    | Display value as percentage                 |
 
 ### Display Options
 
-| Field                 | Required | Description                              | Default Value |
-| --------------------- | -------- | ---------------------------------------- | ------------- |
-| **Display Mode**      | No       | Container style: 'circular' or 'linear'  | 'linear'      |
-| **Transparent**       | No       | Remove widget background                 | false         |
-| **Border Color**      | No       | Widget border color                      | -             |
-| **Background Color**  | No       | Widget background color                  | -             |
+| Field                | Required | Description                             | Default Value |
+| -------------------- | -------- | --------------------------------------- | ------------- |
+| **Display mode**     | ❌ No    | Container style: 'circular' or 'linear' | 'linear'      |
+| **Transparent**      | ❌ No    | Remove widget background                | false         |
+| **Border color**     | ❌ No    | Widget border color                     | -             |
+| **Background Color** | ❌ No    | Widget background color                 | -             |
 
 ## Best Practices
 

@@ -1,50 +1,56 @@
 ---
 title: Compare
 slug: /widgets/compare
-sidebar_position: 23
 ---
 
 # Compare Widget
 
 ## Overview
 
-The Compare widget allows you to compare values across different time periods or Things side-by-side. It's ideal for identifying changes, trends, and differences between measurements or time ranges.
+The Compare widget displays a single measure's current value alongside the change from a previous time period. It prominently shows the current value, the numeric difference, a trend arrow (up or down), and the percentage change — providing immediate insight into whether a metric is improving or declining.
 
 ## Use Cases
 
-- **Period Comparison** - Compare values across time periods (day vs. day, month vs. month)
-- **Device Comparison** - Compare measurements between different Things
-- **Baseline Analysis** - Compare current values against historical baselines
-- **Performance Metrics** - Compare KPIs across time or devices
-- **Trend Identification** - Identify improving or declining trends
+- **Trend Monitoring** - See if a value is going up or down compared to a previous period
+- **KPI Tracking** - Display a KPI with its percentage change over time
+- **Performance Comparison** - Compare current performance against a prior baseline
+- **Quick Insights** - Get an at-a-glance view of value direction and magnitude
+- **Operational Metrics** - Monitor metrics like throughput, temperature, or efficiency trends
 
 ## Key Features
 
-- Side-by-side value comparison
-- Multiple comparison sources
-- Percentage change calculation
-- Visual difference indicators
-- Time period selection
+- Prominent current value display
+- Trend arrow (up/down) indicator
+- Numeric difference calculation
+- Percentage change display
+- Configurable comparison timeframe
+- Compact number formatting
 
 ## Configuration
 
 ### Basic Settings
 
-| Field         | Required | Description                         |
-| ------------- | -------- | ----------------------------------- |
-| **Title**     | No       | Display name for the widget         |
-| **Asset**     | ✅ Yes   | Select Thing to display data from (not required for ThingType dashboards)  |
-| **Measure**   | ✅ Yes   | Choose measure to compare           |
-| **Time Window** | ✅ Yes | Time range (from/to) for data display |
+| Field         | Required | Description                                                               |
+| ------------- | -------- | ------------------------------------------------------------------------- |
+| **Title**     | ❌ No    | Display name for the widget                                               |
+| **Thing**     | ✅ Yes   | Select Thing to display data from (not required for ThingType dashboards) |
+| **Measure**   | ✅ Yes   | Choose measure to compare                                                 |
+| **Timeframe** | ✅ Yes   | Time range (from/to) for data display                                     |
+
+### Chart Settings
+
+| Field       | Required | Description                            |
+| ----------- | -------- | -------------------------------------- |
+| **Gapfill** | ❌ No    | Handle missing data (NONE, TIME, LOCF) |
 
 ### Display Options
 
-| Field         | Required | Description                         |
-| ------------- | -------- | ----------------------------------- |
-| **Compact Number** | No  | Display numbers in compact format   |
-| **Transparent** | No     | Remove widget background            |
-| **Border Color** | No    | Custom border color                 |
-| **Background Color** | No | Custom background color           |
+| Field                | Required | Description                                                       |
+| -------------------- | -------- | ----------------------------------------------------------------- |
+| **Compact number**   | ❌ No    | Display numbers in compact format (e.g., 1.23K). Default: enabled |
+| **Transparent**      | ❌ No    | Remove widget background                                          |
+| **Border color**     | ❌ No    | Custom border color                                               |
+| **Background Color** | ❌ No    | Custom background color                                           |
 
 ## Best Practices
 

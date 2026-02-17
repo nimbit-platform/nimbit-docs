@@ -1,7 +1,6 @@
 ---
 title: Pivot Table
 slug: /widgets/pivot-table
-sidebar_position: 10
 ---
 
 # Pivot Table Widget
@@ -33,20 +32,21 @@ The Pivot Table widget provides a powerful tabular display that groups and aggre
 
 | Field         | Required | Description                        |
 | ------------- | -------- | ---------------------------------- |
-| **Title**     | No       | Display name for the widget        |
-| **Assets**    | ✅ Yes   | Select Things to display data from |
+| **Title**     | ❌ No    | Display name for the widget        |
+| **Things**    | ✅ Yes   | Select Things to display data from |
 | **Telemetry** | ✅ Yes   | Choose measures to include         |
 
 ### Data Settings
 
-| Field            | Required | Type                     | Description                                |
-| ---------------- | -------- | ------------------------ | ------------------------------------------ |
-| **Time Window**  | ✅ Yes   | WidgetRelativeWindow     | Relative time frame for data display       |
-| **Aggregation**  | ✅ Yes   | TimeseriesAggregation    | Method to aggregate data (AVG, SUM, MIN, MAX, COUNT) |
-| **Gap Fill**     | No       | GapFill                  | Handle missing data (NONE, TIME, LOCF)     |
-| **Table Config** | ✅ Yes   | any                      | Table configuration settings (columns, sorting, etc.) |
+| Field            | Required | Type                  | Description                                           |
+| ---------------- | -------- | --------------------- | ----------------------------------------------------- |
+| **Timeframe**    | ✅ Yes   | WidgetRelativeWindow  | Relative time frame for data display                  |
+| **Aggregation**  | ✅ Yes   | TimeseriesAggregation | Method to aggregate data (AVG, SUM, MIN, MAX, COUNT)  |
+| **Gapfill**      | ❌ No    | GapFill               | Handle missing data (NONE, TIME, LOCF)                |
+| **Table Config** | ✅ Yes   | any                   | Table configuration settings (columns, sorting, etc.) |
 
 Each measure in the configuration requires:
+
 - **id** - Unique identifier
 - **measure** - Telemetry measure name
 - **thingId** - Associated Thing ID
@@ -56,11 +56,14 @@ Each measure in the configuration requires:
 
 ### Display Options
 
-- **Show Toolbar** - Enable widget toolbar for quick actions
-- **Transparent Background** - Remove widget background
-- **Date Alias** - Custom label for the date column
-- **Date Format** - Format string for date display
-- **Override Dashboard Settings** - Use widget-specific time settings instead of dashboard defaults
+| Field                | Required | Description                                                     |
+| -------------------- | -------- | --------------------------------------------------------------- |
+| **Date Alias**       | ❌ No    | Custom label for the date column                                |
+| **Date Format**      | ❌ No    | Format string for date display                                  |
+| **Override**         | ❌ No    | Use widget-specific time settings instead of dashboard defaults |
+| **Transparent**      | ❌ No    | Remove widget background                                        |
+| **Border color**     | ❌ No    | Custom border color                                             |
+| **Background Color** | ❌ No    | Custom background color                                         |
 
 ## Best Practices
 
@@ -74,5 +77,4 @@ Each measure in the configuration requires:
 
 ## What's Next?
 
-- [Table Widget](/docs/widgets/table) - For simpler tabular displays
 - [Dashboards](/docs/dashboards) - Learn about dashboard management

@@ -1,7 +1,6 @@
 ---
 title: Line
 slug: /widgets/line
-sidebar_position: 32
 ---
 
 # Line Widget
@@ -31,40 +30,41 @@ The Line widget displays connected data points as a line, perfect for showing ti
 
 ### Basic Settings
 
-| Field         | Required | Description                         |
-| ------------- | -------- | ----------------------------------- |
-| **Title**     | No       | Display name for the widget         |
-| **Asset**     | ✅ Yes   | Select Thing to display data from (not required for ThingType dashboards)  |
-| **Mode**      | ✅ Yes   | Choose 'line' or 'area' display mode |
-| **Time Window** | ✅ Yes | Time range (from/to) for data display |
-| **Measures**  | ✅ Yes   | Add measures to display as lines. Each measure requires: measure ID, aggregation, line type, and color |
+| Field         | Required | Description                                                                                         |
+| ------------- | -------- | --------------------------------------------------------------------------------------------------- |
+| **Title**     | ❌ No    | Display name for the widget                                                                         |
+| **Thing**     | ✅ Yes   | Select Thing to display data from (not required for Thing Type dashboards)                          |
+| **Mode**      | ✅ Yes   | Choose 'Line' or 'Area' display mode                                                                |
+| **Timeframe** | ✅ Yes   | Time range (from/to) for data display                                                               |
+| **Measures**  | ✅ Yes   | Add measures to display as lines. Each measure requires: measure, aggregation, line type, and color |
 
 ### Chart Settings
 
-| Field         | Required | Description                         |
-| ------------- | -------- | ----------------------------------- |
-| **Y-Axis Min** | No      | Minimum value for Y-axis |
-| **Y-Axis Max** | No      | Maximum value for Y-axis |
-| **Gap Fill**   | No      | Handle missing data (NONE, TIME, LOCF) |
-| **Bucket Type** | ✅ Yes | Choose 'dynamic' or 'fixed' time bucket aggregation |
-| **Bucket Size/Density** | ✅ Yes | Aggregation interval (depends on bucket type) |
-| **Thresholds** | No      | Define threshold lines with colors and values |
+| Field                             | Required | Description                                         |
+| --------------------------------- | -------- | --------------------------------------------------- |
+| **Y-Axis Min**                    | ❌ No    | Minimum value for Y-axis                            |
+| **Y-Axis Max**                    | ❌ No    | Maximum value for Y-axis                            |
+| **Gapfill**                       | ❌ No    | Handle missing data (NONE, TIME, LOCF)              |
+| **Bucket type**                   | ✅ Yes   | Choose 'Dynamic' or 'Fixed' time bucket aggregation |
+| **Bucketsize** / **Data density** | ✅ Yes   | Aggregation interval (depends on bucket type)       |
+| **Thresholds**                    | ❌ No    | Define threshold lines with colors and values       |
 
 ### Display Options
 
-| Field         | Required | Description                         |
-| ------------- | -------- | ----------------------------------- |
-| **Show Markers** | No    | Display data point markers on the line |
-| **Zoomable**   | No      | Enable zoom functionality (default: true) |
-| **Show Table** | No      | Display data in table format |
-| **Display Mode** | No    | Choose chart, table, or split view |
-| **Transparent** | No     | Remove widget background |
-| **Border Color** | No    | Custom border color |
-| **Background Color** | No | Custom background color |
+| Field                  | Required | Description                                                     |
+| ---------------------- | -------- | --------------------------------------------------------------- |
+| **Show chart markers** | ❌ No    | Display data point markers on the line                          |
+| **Zoom allowed**       | ❌ No    | Enable zoom functionality (default: true)                       |
+| **Show Table**         | ❌ No    | Display data in table format below the chart                    |
+| **Display mode**       | ❌ No    | Choose chart, table, or split view                              |
+| **Override**           | ❌ No    | Use widget-specific time settings instead of dashboard defaults |
+| **Transparent**        | ❌ No    | Remove widget background                                        |
+| **Border color**       | ❌ No    | Custom border color                                             |
+| **Background Color**   | ❌ No    | Custom background color                                         |
 
 ## Best Practices
 
-1. **Appropriate Time Windows** - Match time range to data frequency
+1. **Appropriate Timeframes** - Match time range to data frequency
 2. **Multiple Lines** - Limit to 3-5 lines for readability
 3. **Color Distinction** - Use distinct colors for each line
 4. **Axis Scaling** - Set appropriate Y-axis ranges

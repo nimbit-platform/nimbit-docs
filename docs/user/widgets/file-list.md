@@ -1,7 +1,6 @@
 ---
 title: File List
 slug: /widgets/file-list
-sidebar_position: 15
 ---
 
 # File List Widget
@@ -31,11 +30,11 @@ The File List widget displays and manages files associated with Things. It provi
 
 ### Basic Settings
 
-| Field            | Required | Description                                   |
-| ---------------- | -------- | --------------------------------------------- |
-| **Files**        | ❌ No    | Select specific files to display              |
-| **Search Labels**| ❌ No    | Filter files by tags (comma-separated)        |
-| **Allow Upload** | ❌ No    | Enable file upload functionality (default: true) |
+| Field             | Required | Description                                      |
+| ----------------- | -------- | ------------------------------------------------ |
+| **Files**         | ❌ No    | Select specific files to display                 |
+| **Search Labels** | ❌ No    | Filter files by tags (comma-separated)           |
+| **Allow Upload**  | ❌ No    | Enable file upload functionality (default: true) |
 
 ### File Selection
 
@@ -48,20 +47,21 @@ You can populate the File List widget in two ways:
 
 ### Display Options
 
-| Field                       | Required | Description                  |
-| --------------------------- | -------- | ---------------------------- |
-| **Background Color**        | ❌ No    | Custom background color      |
-| **Border Color**            | ❌ No    | Custom border color          |
+| Field            | Required | Description         |
+| ---------------- | -------- | ------------------- |
+| **Border color** | ❌ No    | Custom border color |
 
 ### Schema Details
 
 **Widget Type:** `fileList`
 
 **Config Properties:**
+
 - `file` (required) - File ID to display
 - `imported` (required) - Boolean indicating if file was imported
 
 **Optional Properties:**
+
 - `searchLabels` - Comma-separated string of label names for filtering files
 - `allowUpload` - Boolean to enable/disable file upload (default: `false`)
 - `bgColor` - Background color
