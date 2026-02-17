@@ -1,0 +1,8 @@
+{
+  "label": "Canvas",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Visual canvas for IoT asset management and diagramming."
+  }
+}

@@ -1,0 +1,9 @@
+{
+    "label": "Events",
+    "position": 11,
+    "link": {
+      "type": "generated-index",
+      "description": "Events & Event types: Definition, management, and usage in Nimbit."
+    }
+  }
+  
