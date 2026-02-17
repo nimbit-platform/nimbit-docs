@@ -92,9 +92,8 @@ The widget selection dialog will only show widgets compatible with your current 
 **Data Display Widgets:**
 
 - [**Pivot Table**](/docs/widgets/pivot-table) - Tabular display with rows and columns that groups and aggregates data by various dimensions. Perfect for analyzing large datasets, creating cross-tabulations, and quick summaries. Allows pivoting data fields for different views.
-- [**Table**](/docs/widgets/table) - Standard tabular view displaying data in rows and columns with sorting and filtering capabilities.
-- [**Property State**](/docs/widgets/property-state) - Show individual Thing property values with current state.
-- [**Property State Table**](/docs/widgets/property-state-table) - Display multiple properties in a table format with their current states.
+- [**Property**](/docs/widgets/property) - Show individual Thing property values with current state.
+- [**Property List**](/docs/widgets/property-list) - Display multiple properties in a table format with their current states.
 - [**Snapshot**](/docs/widgets/snapshot) - Capture and display a point-in-time view of selected data.
 - [**File List**](/docs/widgets/file-list) - Display and manage files associated with Things.
 
@@ -128,13 +127,11 @@ The widget selection dialog will only show widgets compatible with your current 
 **Visual & Media Widgets:**
 
 - [**Image**](/docs/widgets/image) - Display static images or graphics.
-- [**Image Overlay**](/docs/widgets/image-overlay) - Overlay data visualizations on top of images, useful for floor plans or equipment diagrams.
 - [**Canvas**](/docs/widgets/canvas) - Free-form drawing and annotation canvas for custom visualizations.
 
 **Layout & Navigation Widgets:**
 
 - [**Container**](/docs/widgets/container) - Group multiple widgets together for organized layouts and visual hierarchy.
-- [**Title**](/docs/widgets/title) - Display titles, headers, or section labels to organize dashboard content.
 - [**Text**](/docs/widgets/text) - Display static text, labels, descriptions, or instructions.
 
 **External Content Widgets:**

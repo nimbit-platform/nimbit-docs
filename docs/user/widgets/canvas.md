@@ -1,7 +1,6 @@
 ---
 title: Canvas
 slug: /widgets/canvas
-sidebar_position: 54
 ---
 
 # Canvas Widget
@@ -33,19 +32,19 @@ The Canvas widget requires a reference to an existing Canvas object. The canvas 
 
 ### Basic Settings
 
-| Field        | Required | Description                                    |
-| ------------ | -------- | ---------------------------------------------- |
-| **Canvas**   | ✅ Yes   | Select a Canvas object to display              |
+| Field      | Required | Description                       |
+| ---------- | -------- | --------------------------------- |
+| **Canvas** | ✅ Yes   | Select a Canvas object to display |
 
 The Canvas selector shows canvases that match the dashboard's Thing Type and have type `ThingType`.
 
 ### Display Options
 
-| Field                | Type    | Description                              |
-| -------------------- | ------- | ---------------------------------------- |
-| **Transparent**      | Boolean | Remove background (default: false)       |
-| **Background Color** | String  | Custom background color                  |
-| **Border Color**     | String  | Custom border color                      |
+| Field                | Type    | Description                        |
+| -------------------- | ------- | ---------------------------------- |
+| **Transparent**      | Boolean | Remove background (default: false) |
+| **Background Color** | String  | Custom background color            |
+| **Border color**     | String  | Custom border color                |
 
 ### Canvas Configuration
 
@@ -114,5 +113,4 @@ Build custom monitoring displays:
 
 ## What's Next?
 
-- [Image Overlay Widget](/docs/widgets/image-overlay) - For interactive overlays
 - [Container Widget](/docs/widgets/container) - For organizing dashboard layouts

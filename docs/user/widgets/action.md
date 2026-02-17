@@ -1,7 +1,6 @@
 ---
 title: Action
 slug: /widgets/action
-sidebar_position: 51
 ---
 
 # Action Widget
@@ -31,30 +30,32 @@ The Action widget allows you to execute actions on Things directly from the dash
 
 ### Basic Settings
 
-| Field       | Required | Description                         |
-| ----------- | -------- | ----------------------------------- |
-| **Name**    | ❌ No    | Display name for the widget         |
-| **Thing**   | ✅ Yes   | Select Thing to execute action on   |
-| **Action**  | ✅ Yes   | Select action to execute            |
+| Field      | Required | Description                       |
+| ---------- | -------- | --------------------------------- |
+| **Name**   | ❌ No    | Display name for the widget       |
+| **Thing**  | ✅ Yes   | Select Thing to execute action on |
+| **Action** | ✅ Yes   | Select action to execute          |
 
 ### Display Options
 
-| Field                       | Required | Description                  |
-| --------------------------- | -------- | ---------------------------- |
-| **Transparent Background**  | ❌ No    | Remove widget background     |
-| **Background Color**        | ❌ No    | Custom background color      |
-| **Border Color**            | ❌ No    | Custom border color          |
+| Field                      | Required | Description              |
+| -------------------------- | -------- | ------------------------ |
+| **Transparent Background** | ❌ No    | Remove widget background |
+| **Background Color**       | ❌ No    | Custom background color  |
+| **Border color**           | ❌ No    | Custom border color      |
 
 ### Schema Details
 
 **Widget Type:** `action`
 
 **Config Properties:**
+
 - `id` (required) - Widget configuration identifier
 - `actionId` (required) - ID of the action to execute
 - `lastRun` (optional) - Timestamp of last execution
 
 **Optional Properties:**
+
 - `name` - Widget display name
 - `transparent` - Enable transparent background
 - `bgColor` - Background color

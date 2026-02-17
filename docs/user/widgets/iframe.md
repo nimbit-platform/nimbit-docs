@@ -1,7 +1,6 @@
 ---
 title: iFrame
 slug: /widgets/iframe
-sidebar_position: 60
 ---
 
 # iFrame Widget
@@ -35,9 +34,11 @@ The iFrame widget is a standalone widget that doesn't require measures or proper
 
 ### Display Options
 
-- **Transparent Background** - Remove widget background using the `transparent` style property
-- **Background Color** - Set custom background color
-- **Border Color** - Set custom border color
+| Field                | Required | Description              |
+| -------------------- | -------- | ------------------------ |
+| **Transparent**      | ❌ No    | Remove widget background |
+| **Border color**     | ❌ No    | Custom border color      |
+| **Background Color** | ❌ No    | Custom background color  |
 
 ## Security Considerations
 

@@ -1,7 +1,6 @@
 ---
 title: Status
 slug: /widgets/status
-sidebar_position: 21
 ---
 
 # Status Widget
@@ -30,32 +29,32 @@ The Status widget shows status information with color-coded indicators. It provi
 
 ### Basic Settings
 
-| Field           | Required | Description                            |
-| --------------- | -------- | -------------------------------------- |
-| **Name**        | No       | Display name for the widget            |
-| **Asset**       | Yes      | Select Thing to monitor                |
-| **Measure**     | Yes      | Choose measure for status (with id, measure, thingId) |
+| Field       | Required | Description                                           |
+| ----------- | -------- | ----------------------------------------------------- |
+| **Name**    | ❌ No    | Display name for the widget                           |
+| **Thing**   | ✅ Yes   | Select Thing to monitor                               |
+| **Measure** | ✅ Yes   | Choose measure for status (with id, measure, thingId) |
 
 ### Status Condition Mappings
 
 Each status condition requires the following fields:
 
-| Field         | Required | Description                                           |
-| ------------- | -------- | ----------------------------------------------------- |
-| **Name**      | Yes      | Status name/label                                     |
-| **Condition** | Yes      | Condition type: 'Range' or 'Value'                    |
-| **Icon**      | Yes      | Icon to display ('error', 'warning', 'check')         |
-| **Color**     | Yes      | Color for the status indicator                        |
-| **Display Text** | No    | Additional text to display with the status            |
-| **Data**      | Yes      | Value or range (from/to) for condition matching       |
+| Field            | Required | Description                                     |
+| ---------------- | -------- | ----------------------------------------------- |
+| **Name**         | ✅ Yes   | Status name/label                               |
+| **Condition**    | ✅ Yes   | Condition type: 'Range' or 'Value'              |
+| **Icon**         | ✅ Yes   | Icon to display ('error', 'warning', 'check')   |
+| **Color**        | ✅ Yes   | Color for the status indicator                  |
+| **Display Text** | ❌ No    | Additional text to display with the status      |
+| **Data**         | ✅ Yes   | Value or range (from/to) for condition matching |
 
 ### Display Options
 
-| Field                 | Required | Description                    | Default Value |
-| --------------------- | -------- | ------------------------------ | ------------- |
-| **Transparent**       | No       | Remove widget background       | false         |
-| **Border Color**      | No       | Widget border color            | -             |
-| **Background Color**  | No       | Widget background color        | -             |
+| Field                | Required | Description              | Default Value |
+| -------------------- | -------- | ------------------------ | ------------- |
+| **Transparent**      | ❌ No    | Remove widget background | false         |
+| **Border color**     | ❌ No    | Widget border color      | -             |
+| **Background Color** | ❌ No    | Widget background color  | -             |
 
 ## Best Practices
 
