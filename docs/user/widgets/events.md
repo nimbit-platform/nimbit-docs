@@ -1,7 +1,6 @@
 ---
 title: Events
 slug: /widgets/events
-sidebar_position: 50
 ---
 
 # Events Widget
@@ -31,28 +30,30 @@ The Events widget displays and manages events from your Things with timestamps a
 
 ### Basic Settings
 
-| Field           | Required | Description                          |
-| --------------- | -------- | ------------------------------------ |
-| **Name**        | ❌ No    | Display name for the widget          |
-| **Event Types** | ✅ Yes   | Filter specific event types to show  |
+| Field           | Required | Description                         |
+| --------------- | -------- | ----------------------------------- |
+| **Name**        | ❌ No    | Display name for the widget         |
+| **Event Types** | ✅ Yes   | Filter specific event types to show |
 
 ### Display Options
 
-| Field                       | Required | Description                  |
-| --------------------------- | -------- | ---------------------------- |
-| **Transparent Background**  | ❌ No    | Remove widget background     |
-| **Background Color**        | ❌ No    | Custom background color      |
-| **Border Color**            | ❌ No    | Custom border color          |
+| Field                      | Required | Description              |
+| -------------------------- | -------- | ------------------------ |
+| **Transparent Background** | ❌ No    | Remove widget background |
+| **Background Color**       | ❌ No    | Custom background color  |
+| **Border color**           | ❌ No    | Custom border color      |
 
 ### Schema Details
 
 **Widget Type:** `events`
 
 **Config Properties:**
+
 - `id` (required) - Widget configuration identifier
 - `eventTypes` (required) - Array of event type IDs to display
 
 **Optional Properties:**
+
 - `name` - Widget display name
 - `transparent` - Enable transparent background
 - `bgColor` - Background color
@@ -61,13 +62,14 @@ The Events widget displays and manages events from your Things with timestamps a
 ### Event Type Filtering
 
 The widget automatically filters system events based on dashboard type:
+
 - **General Dashboards** - Shows all event types including system events
 - **Thing/ThingType Dashboards** - Excludes system-initiated events (`initiator!=SYSTEM`)
 
 ## Best Practices
 
 1. **Event Filtering** - Filter to relevant event types
-2. **Time Windows** - Use appropriate time ranges
+2. **Timeframes** - Use appropriate time ranges
 3. **Regular Review** - Review events regularly for patterns
 4. **Alert Response** - Establish procedures for critical events
 5. **Event Archiving** - Archive old events for performance

@@ -1,7 +1,6 @@
 ---
 title: Map
 slug: /widgets/map
-sidebar_position: 58
 ---
 
 # Map Widget
@@ -33,15 +32,15 @@ The Map widget is a standalone widget that displays Thing locations on an intera
 
 ### Basic Settings
 
-| Field | Required | Description |
-| ----- | -------- | ----------- |
+| Field | Required | Description                     |
+| ----- | -------- | ------------------------------- |
 | None  | N/A      | No basic configuration required |
 
 ### Display Options
 
-| Field                | Type    | Description                              |
-| -------------------- | ------- | ---------------------------------------- |
-| **Border Color**     | String  | Custom border color for the widget       |
+| Field            | Type   | Description                        |
+| ---------------- | ------ | ---------------------------------- |
+| **Border color** | String | Custom border color for the widget |
 
 The Map widget automatically displays all Things from the dashboard that have location data. It uses the dashboard's global Thing selection.
 
@@ -74,4 +73,3 @@ The Map widget automatically displays Things that have location attributes confi
 ## What's Next?
 
 - [Thing List Map Widget](/docs/widgets/thing-list-map) - For map with Thing list
-- [Image Overlay Widget](/docs/widgets/image-overlay) - For non-geographic overlays

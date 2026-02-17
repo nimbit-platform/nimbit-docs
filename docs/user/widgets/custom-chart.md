@@ -1,7 +1,6 @@
 ---
 title: Custom Chart
 slug: /widgets/custom-chart
-sidebar_position: 40
 ---
 
 # Custom Chart Widget
@@ -35,29 +34,29 @@ This widget is intended for advanced users with specific visualization needs. St
 
 ### Basic Settings
 
-| Field         | Required | Description                         |
-| ------------- | -------- | ----------------------------------- |
-| **Title**     | No       | Display name for the widget         |
-| **Time Window** | ✅ Yes | Time range (from/to) for data display |
-| **Transform Function** | ✅ Yes | JavaScript function to transform data |
-| **Data Source** | ✅ Yes | Data source identifier (e.g., 'plotly', 'echarts') |
-| **Measures**  | ✅ Yes   | Add measures to include. Each measure requires: measure ID, Thing ID, and aggregation |
+| Field                  | Required | Description                                                                           |
+| ---------------------- | -------- | ------------------------------------------------------------------------------------- |
+| **Title**              | ❌ No    | Display name for the widget                                                           |
+| **Timeframe**          | ✅ Yes   | Time range (from/to) for data display                                                 |
+| **Transform Function** | ✅ Yes   | JavaScript function to transform data                                                 |
+| **Data Source**        | ✅ Yes   | Data source identifier (e.g., 'plotly', 'echarts')                                    |
+| **Measures**           | ✅ Yes   | Add measures to include. Each measure requires: measure ID, Thing ID, and aggregation |
 
 ### Chart Settings
 
-| Field         | Required | Description                         |
-| ------------- | -------- | ----------------------------------- |
-| **Gap Fill**   | No      | Handle missing data (NONE, TIME, LOCF) |
-| **Bucket Type** | ✅ Yes | Choose 'dynamic' or 'fixed' time bucket aggregation |
-| **Bucket Size/Density** | ✅ Yes | Aggregation interval (depends on bucket type) |
+| Field                             | Required | Description                                         |
+| --------------------------------- | -------- | --------------------------------------------------- |
+| **Gapfill**                       | ❌ No    | Handle missing data (NONE, TIME, LOCF)              |
+| **Bucket type**                   | ✅ Yes   | Choose 'dynamic' or 'fixed' time bucket aggregation |
+| **Bucketsize** / **Data density** | ✅ Yes   | Aggregation interval (depends on bucket type)       |
 
 ### Display Options
 
-| Field         | Required | Description                         |
-| ------------- | -------- | ----------------------------------- |
-| **Transparent** | No     | Remove widget background            |
-| **Border Color** | No    | Custom border color                 |
-| **Background Color** | No | Custom background color           |
+| Field                | Required | Description              |
+| -------------------- | -------- | ------------------------ |
+| **Transparent**      | ❌ No    | Remove widget background |
+| **Border color**     | ❌ No    | Custom border color      |
+| **Background Color** | ❌ No    | Custom background color  |
 
 ## Best Practices
 

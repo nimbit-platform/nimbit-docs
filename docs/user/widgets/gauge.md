@@ -1,14 +1,13 @@
 ---
 title: Gauge
 slug: /widgets/gauge
-sidebar_position: 35
 ---
 
 # Gauge Widget
 
 ## Overview
 
-The Gauge widget features a semi-circular scale with a pointer, similar to a tachometer. It's ideal for displaying KPIs and performance indicators, comparing target values with current values, and creating status dashboards.
+The Gauge widget displays a measure value on a gauge with configurable threshold color zones. It supports both radial (semi-circular, like a tachometer) and linear gauge shapes. It's ideal for displaying KPIs, performance indicators, and values that need to be compared against defined ranges.
 
 ## Use Cases
 
@@ -20,7 +19,7 @@ The Gauge widget features a semi-circular scale with a pointer, similar to a tac
 
 ## Key Features
 
-- Semi-circular gauge display
+- Radial and linear gauge shapes
 - Threshold color zones
 - Current value pointer
 - Min/max value indicators
@@ -31,29 +30,29 @@ The Gauge widget features a semi-circular scale with a pointer, similar to a tac
 
 ### Basic Settings
 
-| Field         | Required | Description                       |
-| ------------- | -------- | --------------------------------- |
-| **Title**     | No       | Display name for the widget       |
-| **Asset**     | ✅ Yes   | Select Thing to display data from (not required for ThingType dashboards) |
-| **Measure**   | ✅ Yes   | Choose measure to display         |
-| **Shape**     | ✅ Yes   | Choose 'arc' (semi-circular) or 'linear' (horizontal bar) display |
+| Field       | Required | Description                                                               |
+| ----------- | -------- | ------------------------------------------------------------------------- |
+| **Title**   | ❌ No    | Display name for the widget                                               |
+| **Thing**   | ✅ Yes   | Select Thing to display data from (not required for ThingType dashboards) |
+| **Measure** | ✅ Yes   | Choose measure to display                                                 |
+| **Shape**   | ✅ Yes   | Choose 'arc' (semi-circular) or 'linear' (horizontal bar) display         |
 
 ### Gauge Settings
 
-| Field         | Required | Description                       |
-| ------------- | -------- | --------------------------------- |
-| **Min Value** | ✅ Yes   | Minimum gauge value |
-| **Max Value** | ✅ Yes   | Maximum gauge value (must be greater than min) |
-| **Thresholds** | ✅ Yes  | Define color zones with name, min value, max value, and color. Each threshold must be within the gauge min/max range |
-| **Compact Number** | No   | Display large numbers in compact format (e.g., 1.23K) |
+| Field              | Required | Description                                                                                                          |
+| ------------------ | -------- | -------------------------------------------------------------------------------------------------------------------- |
+| **Min Value**      | ✅ Yes   | Minimum gauge value                                                                                                  |
+| **Max Value**      | ✅ Yes   | Maximum gauge value (must be greater than min)                                                                       |
+| **Thresholds**     | ✅ Yes   | Define color zones with name, min value, max value, and color. Each threshold must be within the gauge min/max range |
+| **Compact number** | ❌ No    | Display large numbers in compact format (e.g., 1.23K)                                                                |
 
 ### Display Options
 
-| Field         | Required | Description                       |
-| ------------- | -------- | --------------------------------- |
-| **Transparent** | No     | Remove widget background |
-| **Border Color** | No    | Custom border color |
-| **Background Color** | No | Custom background color |
+| Field                | Required | Description              |
+| -------------------- | -------- | ------------------------ |
+| **Transparent**      | ❌ No    | Remove widget background |
+| **Border color**     | ❌ No    | Custom border color      |
+| **Background Color** | ❌ No    | Custom background color  |
 
 ## Best Practices
 

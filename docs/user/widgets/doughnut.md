@@ -1,7 +1,6 @@
 ---
 title: Doughnut
 slug: /widgets/doughnut
-sidebar_position: 34
 ---
 
 # Doughnut Widget
@@ -25,27 +24,26 @@ The Doughnut widget is a ring chart with segments showing proportions of a whole
 - Color-coded segments
 - Percentage labels
 - Interactive legends
-- Compact number formatting
 
 ## Configuration
 
 ### Basic Settings
 
-| Field         | Required | Description                        |
-| ------------- | -------- | ---------------------------------- |
-| **Name**      | No       | Display name for the widget        |
-| **Asset**     | Yes      | Select Thing to display data from  |
-| **Measures**  | Yes      | Choose measures for segments (each with measure, thingId, color) |
-| **Unit of Measure** | Yes | Unit to display for values   |
+| Field               | Required | Description                                                      |
+| ------------------- | -------- | ---------------------------------------------------------------- |
+| **Name**            | ❌ No    | Display name for the widget                                      |
+| **Thing**           | ✅ Yes   | Select Thing to display data from                                |
+| **Measures**        | ✅ Yes   | Choose measures for segments (each with measure, thingId, color) |
+| **Unit of measure** | ✅ Yes   | Unit to display for values                                       |
 
 ### Display Options
 
-| Field                 | Required | Description                           | Default Value |
-| --------------------- | -------- | ------------------------------------- | ------------- |
-| **Display Mode**      | Yes      | Pie chart style: 'pie' or 'variablepie' | 'variablepie' |
-| **Transparent**       | No       | Remove widget background              | false         |
-| **Border Color**      | No       | Widget border color                   | -             |
-| **Background Color**  | No       | Widget background color               | -             |
+| Field                | Required | Description                             | Default Value |
+| -------------------- | -------- | --------------------------------------- | ------------- |
+| **Display mode**     | ✅ Yes   | Pie chart style: 'pie' or 'variablepie' | 'variablepie' |
+| **Transparent**      | ❌ No    | Remove widget background                | false         |
+| **Border color**     | ❌ No    | Widget border color                     | -             |
+| **Background Color** | ❌ No    | Widget background color                 | -             |
 
 ## Best Practices
 

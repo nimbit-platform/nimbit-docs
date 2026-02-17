@@ -1,7 +1,6 @@
 ---
 title: Heatmap
 slug: /widgets/heatmap
-sidebar_position: 37
 ---
 
 # Heatmap Widget
@@ -31,32 +30,32 @@ The Heatmap widget displays a matrix of color-coded cells where color intensity 
 
 ### Basic Settings
 
-| Field         | Required | Description                         |
-| ------------- | -------- | ----------------------------------- |
-| **Title**     | No       | Display name for the widget         |
-| **Asset**     | ✅ Yes   | Select Thing to display data from (not required for ThingType dashboards)  |
-| **Measure**   | ✅ Yes   | Choose measure to visualize         |
-| **Aggregation** | ✅ Yes | Data aggregation method (AVG, MIN, MAX, SUM) |
-| **Color**     | ✅ Yes   | Color for the heatmap scale         |
+| Field           | Required | Description                                                               |
+| --------------- | -------- | ------------------------------------------------------------------------- |
+| **Title**       | ❌ No    | Display name for the widget                                               |
+| **Thing**       | ✅ Yes   | Select Thing to display data from (not required for ThingType dashboards) |
+| **Measure**     | ✅ Yes   | Choose measure to visualize                                               |
+| **Aggregation** | ✅ Yes   | Data aggregation method (AVG, MIN, MAX, SUM)                              |
+| **Color**       | ✅ Yes   | Color for the heatmap scale                                               |
 
 ### Heatmap Settings
 
-| Field         | Required | Description                         |
-| ------------- | -------- | ----------------------------------- |
-| **Unit**      | ✅ Yes   | Time granularity (hour, day, week, month, year) |
-| **Amount**    | ✅ Yes   | Number of units to display (max 100) |
-| **Clustering Mode** | ✅ Yes | Y-axis clustering mode (byHour, byDay, byWeek, byMonth) |
-| **Min**       | No       | Minimum value for color scale       |
-| **Max**       | No       | Maximum value for color scale       |
-| **Gap Fill**  | No       | Handle missing data (NONE, TIME, LOCF) |
+| Field               | Required | Description                                             |
+| ------------------- | -------- | ------------------------------------------------------- |
+| **Unit**            | ✅ Yes   | Time granularity (hour, day, week, month, year)         |
+| **Amount**          | ✅ Yes   | Number of units to display (max 100)                    |
+| **Clustering mode** | ✅ Yes   | Y-axis clustering mode (byHour, byDay, byWeek, byMonth) |
+| **Min**             | ❌ No    | Minimum value for color scale                           |
+| **Max**             | ❌ No    | Maximum value for color scale                           |
+| **Gapfill**         | ❌ No    | Handle missing data (NONE, TIME, LOCF)                  |
 
 ### Display Options
 
-| Field         | Required | Description                         |
-| ------------- | -------- | ----------------------------------- |
-| **Transparent** | No     | Remove widget background            |
-| **Border Color** | No    | Custom border color                 |
-| **Background Color** | No | Custom background color           |
+| Field                | Required | Description              |
+| -------------------- | -------- | ------------------------ |
+| **Transparent**      | ❌ No    | Remove widget background |
+| **Border color**     | ❌ No    | Custom border color      |
+| **Background Color** | ❌ No    | Custom background color  |
 
 ## Best Practices
 

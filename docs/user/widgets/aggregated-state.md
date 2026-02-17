@@ -1,7 +1,6 @@
 ---
 title: Aggregated State
 slug: /widgets/aggregated-state
-sidebar_position: 22
 ---
 
 # Aggregated State Widget
@@ -30,32 +29,32 @@ The Aggregated State widget displays aggregated state information across multipl
 
 ### Basic Settings
 
-| Field                  | Required | Description                                          |
-| ---------------------- | -------- | ---------------------------------------------------- |
-| **Name**               | No       | Display name for the widget                          |
-| **Asset**              | Yes      | Select Thing to aggregate from                       |
-| **Measure**            | Yes      | Choose measure to aggregate (with id, measure, thingId) |
-| **Aggregation Method** | Yes      | Average, sum, min, max, count, etc.                  |
+| Field                  | Required | Description                                             |
+| ---------------------- | -------- | ------------------------------------------------------- |
+| **Name**               | ❌ No    | Display name for the widget                             |
+| **Thing**              | ✅ Yes   | Select Thing to aggregate from                          |
+| **Measure**            | ✅ Yes   | Choose measure to aggregate (with id, measure, thingId) |
+| **Aggregation Method** | ✅ Yes   | Average, sum, min, max, count, etc.                     |
 
-### Time Window Settings
+### Timeframe Settings
 
-| Field        | Required | Description                                         |
-| ------------ | -------- | --------------------------------------------------- |
-| **Window**   | Yes      | Time window configuration with type, from, to       |
-| **Bucket**   | No       | Bucket size for cumulative aggregations             |
-| **Override** | No       | Allow dashboard time override                       |
+| Field        | Required | Description                                                     |
+| ------------ | -------- | --------------------------------------------------------------- |
+| **Window**   | ✅ Yes   | Time window configuration with type, from, to                   |
+| **Bucket**   | ❌ No    | Bucket size for cumulative aggregations                         |
+| **Override** | ❌ No    | Use widget-specific time settings instead of dashboard defaults |
 
 ### Display Options
 
-| Field                 | Required | Description                              | Default Value |
-| --------------------- | -------- | ---------------------------------------- | ------------- |
-| **Mode**              | No       | Display mode: 'carousel' or 'stacked'    | -             |
-| **Orientation**       | No       | Layout: 'horizontal' or 'vertical'       | -             |
-| **Compact Number**    | No       | Display large numbers compactly          | true          |
-| **Gap Fill**          | No       | Fill gaps in data                        | -             |
-| **Transparent**       | No       | Remove widget background                 | false         |
-| **Border Color**      | No       | Widget border color                      | -             |
-| **Background Color**  | No       | Widget background color                  | -             |
+| Field                | Required | Description                           | Default Value |
+| -------------------- | -------- | ------------------------------------- | ------------- |
+| **Mode**             | ❌ No    | Display mode: 'carousel' or 'stacked' | -             |
+| **Orientation**      | ❌ No    | Layout: 'horizontal' or 'vertical'    | -             |
+| **Compact number**   | ❌ No    | Display large numbers compactly       | true          |
+| **Gapfill**          | ❌ No    | Fill gaps in data                     | -             |
+| **Transparent**      | ❌ No    | Remove widget background              | false         |
+| **Border color**     | ❌ No    | Widget border color                   | -             |
+| **Background Color** | ❌ No    | Widget background color               | -             |
 
 ## Best Practices
 
