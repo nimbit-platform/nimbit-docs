@@ -5,6 +5,8 @@ slug: /widgets/custom-chart
 
 # Custom Chart Widget
 
+![Custom Chart Widget](/screenshots/widgets/widget-custom-chart-preview.png)
+
 ## Overview
 
 The Custom Chart widget allows you to create custom visualizations with user-defined chart configurations and data representations. It provides advanced flexibility for specialized visualization needs that aren't covered by standard widget types.
@@ -31,6 +33,8 @@ This widget is intended for advanced users with specific visualization needs. St
 :::
 
 ## Configuration
+
+![Custom Chart Widget Configuration Form](/screenshots/widgets/widget-custom-chart-form.png)
 
 ### Basic Settings
 

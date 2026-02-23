@@ -5,6 +5,8 @@ slug: /widgets/action
 
 # Action Widget
 
+![Action Widget](/screenshots/widgets/widget-action-preview.png)
+
 ## Overview
 
 The Action widget allows you to execute actions on Things directly from the dashboard with configurable buttons and controls. It provides immediate access to device commands, remote operations, and automated workflows.
@@ -27,6 +29,8 @@ The Action widget allows you to execute actions on Things directly from the dash
 - Status feedback
 
 ## Configuration
+
+![Action Widget Configuration Form](/screenshots/widgets/widget-action-form.png)
 
 ### Basic Settings
 

@@ -5,9 +5,11 @@ slug: /widgets/compare
 
 # Compare Widget
 
+![Compare Widget](/screenshots/widgets/widget-compare-preview.png)
+
 ## Overview
 
-The Compare widget displays a single measure's current value alongside the change from a previous time period. It prominently shows the current value, the numeric difference, a trend arrow (up or down), and the percentage change — providing immediate insight into whether a metric is improving or declining.
+The Compare widget displays a single measure's current value alongside the change from a previous time period. It prominently shows the current value, the numeric difference, a trend arrow (up or down), and the percentage change - providing immediate insight into whether a metric is improving or declining.
 
 ## Use Cases
 
@@ -27,6 +29,8 @@ The Compare widget displays a single measure's current value alongside the chang
 - Compact number formatting
 
 ## Configuration
+
+![Compare Widget Configuration Form](/screenshots/widgets/widget-compare-form.png)
 
 ### Basic Settings
 

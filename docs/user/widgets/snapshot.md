@@ -5,6 +5,8 @@ slug: /widgets/snapshot
 
 # Snapshot Widget
 
+![Snapshot Widget](/screenshots/widgets/widget-snapshot-preview.png)
+
 ## Overview
 
 The Snapshot widget displays a searchable table of all measures for a selected Thing, showing each measure's latest (snapshot) value and timestamp. It provides a comprehensive real-time overview of all telemetry data from a device in a compact tabular format.
@@ -27,6 +29,8 @@ The Snapshot widget displays a searchable table of all measures for a selected T
 - Click-through to chart queries
 
 ## Configuration
+
+![Snapshot Widget Configuration Form](/screenshots/widgets/widget-snapshot-form.png)
 
 ### Basic Settings
 

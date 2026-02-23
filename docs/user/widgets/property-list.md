@@ -5,6 +5,8 @@ slug: /widgets/property-list
 
 # Property List Widget
 
+![Property List Widget](/screenshots/widgets/widget-property-list-preview.png)
+
 ## Overview
 
 The Property List widget displays all properties of a selected Thing in a table format. Unlike measure-based table widgets, this widget automatically shows all Thing properties without requiring individual property selection, making it ideal for comprehensive device information displays.
@@ -27,6 +29,8 @@ The Property List widget displays all properties of a selected Thing in a table 
 - Compact table format
 
 ## Configuration
+
+![Property List Widget Configuration Form](/screenshots/widgets/widget-property-list-form.png)
 
 ### Basic Settings
 

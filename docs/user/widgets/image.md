@@ -5,6 +5,8 @@ slug: /widgets/image
 
 # Image Widget
 
+![Image Widget](/screenshots/widgets/widget-image-preview.png)
+
 ## Overview
 
 The Image widget displays a static image in your dashboard from either an uploaded file (OCB storage) or an external URL. Use it to show product images, diagrams, logos, or visual references with configurable scaling (cover or contain).
@@ -26,6 +28,8 @@ The Image widget displays a static image in your dashboard from either an upload
 - Responsive sizing
 
 ## Configuration
+
+![Image Widget Configuration Form](/screenshots/widgets/widget-image-form.png)
 
 The Image widget is a standalone widget that doesn't require measures or properties. It displays static images from uploaded files or external URLs.
 
