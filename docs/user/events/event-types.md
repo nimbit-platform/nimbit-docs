@@ -6,7 +6,7 @@ sidebar_position: 2
 
 # Event Types
 
-Event Types define the categories of events in your IoT system. While [events](/events) are the individual records of things that happened, event types are the templates that classify those events and determine what automated actions should be triggered when they occur.
+Event Types define the categories of events in your IoT system. While [events](./events) are the individual records of things that happened, event types are the templates that classify those events and determine what automated actions should be triggered when they occur.
 
 ## Why Event Types Matter
 
