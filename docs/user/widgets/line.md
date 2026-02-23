@@ -5,6 +5,8 @@ slug: /widgets/line
 
 # Line Widget
 
+![Line Widget](/screenshots/widgets/widget-line-preview.png)
+
 ## Overview
 
 The Line widget displays connected data points as a line, perfect for showing time series data, trends over periods, and visualizing continuous data development. It's one of the most commonly used widgets for temporal data.
@@ -27,6 +29,8 @@ The Line widget displays connected data points as a line, perfect for showing ti
 - Interactive legends
 
 ## Configuration
+
+![Line Widget Configuration Form](/screenshots/widgets/widget-line-form.png)
 
 ### Basic Settings
 

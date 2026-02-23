@@ -5,6 +5,8 @@ slug: /widgets/timeline
 
 # Timeline Widget
 
+![Timeline Widget](/screenshots/widgets/widget-timeline-preview.png)
+
 ## Overview
 
 The Timeline widget displays measure states over time as colored horizontal bars in a Gantt-like X-Range chart. Each bar represents a time period during which a measure matched a defined condition (value range or exact value), making it ideal for visualizing operational states, machine run/stop cycles, and condition-based status history.
@@ -27,6 +29,8 @@ The Timeline widget displays measure states over time as colored horizontal bars
 - Chart, table, or split display mode
 
 ## Configuration
+
+![Timeline Widget Configuration Form](/screenshots/widgets/widget-timeline-form.png)
 
 ### Basic Settings
 

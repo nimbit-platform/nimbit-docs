@@ -5,6 +5,8 @@ slug: /widgets/combination
 
 # Combination Widget
 
+![Combination Widget](/screenshots/widgets/widget-combination-preview.png)
+
 ## Overview
 
 The Combination widget combines different chart types (e.g., bars + line) with different Y-axes in a single visualization. It's ideal for displaying different metrics with varying scales simultaneously and visualizing complex relationships.
@@ -27,6 +29,8 @@ The Combination widget combines different chart types (e.g., bars + line) with d
 - Legend management
 
 ## Configuration
+
+![Combination Widget Configuration Form](/screenshots/widgets/widget-combination-form.png)
 
 ### Basic Settings
 

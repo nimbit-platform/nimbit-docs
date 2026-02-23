@@ -5,6 +5,8 @@ slug: /widgets/container
 
 # Container Widget
 
+![Container Widget](/screenshots/widgets/widget-container-preview.png)
+
 ## Overview
 
 The Container widget provides a visual boundary for grouping and organizing other widgets on your dashboard. It acts as a styled frame that can contain nested widgets, allowing you to create visual hierarchy and logical sections in your dashboard layout.
@@ -27,6 +29,8 @@ The Container widget provides a visual boundary for grouping and organizing othe
 - Lightweight and performant
 
 ## Configuration
+
+![Container Widget Configuration Form](/screenshots/widgets/widget-container-form.png)
 
 The Container widget is a standalone widget that primarily serves as a visual grouping element. It has optional styling properties but no complex configuration.
 

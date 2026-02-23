@@ -5,6 +5,8 @@ slug: /widgets/property
 
 # Property Widget
 
+![Property Widget](/screenshots/widgets/widget-property-preview.png)
+
 ## Overview
 
 The Property widget displays individual Thing property values with their current state. Unlike measure-based widgets, this widget works directly with Thing properties, making it ideal for displaying device metadata, configuration values, and static attributes.
@@ -27,6 +29,8 @@ The Property widget displays individual Thing property values with their current
 - Supports all Thing property types
 
 ## Configuration
+
+![Property Widget Configuration Form](/screenshots/widgets/widget-property-form.png)
 
 ### Basic Settings
 

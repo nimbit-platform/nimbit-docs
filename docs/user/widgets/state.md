@@ -5,6 +5,8 @@ slug: /widgets/state
 
 # State Widget
 
+![State Widget](/screenshots/widgets/widget-state-preview.png)
+
 ## Overview
 
 The State widget displays the current snapshot values of one or more measures as value cards. It supports carousel (swipeable) and stacked (grid) layouts, with horizontal or vertical orientation. It provides a clear, prominent display of current measurement values, ideal for monitoring critical parameters at a glance.
@@ -27,6 +29,8 @@ The State widget displays the current snapshot values of one or more measures as
 - Real-time updates
 
 ## Configuration
+
+![State Widget Configuration Form](/screenshots/widgets/widget-state-form.png)
 
 ### Basic Settings
 

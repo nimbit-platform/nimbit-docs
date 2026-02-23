@@ -5,9 +5,11 @@ slug: /widgets/counter
 
 # Counter Widget
 
+![Counter Widget](/screenshots/widgets/widget-counter-preview.png)
+
 ## Overview
 
-The Counter widget displays the total count of a platform resource type — Things, ThingTypes, Groups, or Users. It provides a prominent numerical display with an icon representing the selected resource, giving a quick overview of how many resources exist in the system.
+The Counter widget displays the total count of a platform resource type - Things, ThingTypes, Groups, or Users. It provides a prominent numerical display with an icon representing the selected resource, giving a quick overview of how many resources exist in the system.
 
 ## Use Cases
 
@@ -25,6 +27,8 @@ The Counter widget displays the total count of a platform resource type — Thin
 - Real-time count updates
 
 ## Configuration
+
+![Counter Widget Configuration Form](/screenshots/widgets/widget-counter-form.png)
 
 ### Basic Settings
 
