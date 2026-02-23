@@ -36,13 +36,13 @@ The Canvases Management page displays all existing canvases in a table format wi
 
 ### Table Columns
 
-| Column          | Description                                                      |
-| --------------- | ---------------------------------------------------------------- |
-| **Name**        | Canvas name with description shown below                         |
-| **Resources**   | Things associated with this canvas, displayed as tags             |
-| **Modified at** | Date and time of the last modification                           |
-| **Changed by**  | Email of the user who last modified the canvas                   |
-| **Type**        | Canvas type (Multi Asset or Thing Type)                          |
+| Column          | Description                                           |
+| --------------- | ----------------------------------------------------- |
+| **Name**        | Canvas name with description shown below              |
+| **Resources**   | Things associated with this canvas, displayed as tags |
+| **Modified at** | Date and time of the last modification                |
+| **Changed by**  | Email of the user who last modified the canvas        |
+| **Type**        | Canvas type (Multi Asset or Thing Type)               |
 
 :::info Sorting
 Click the **Name** or **Type** column headers to sort the table. Click again to reverse the sort order.
@@ -56,25 +56,25 @@ Use the **Search** box at the top of the table to filter canvases by name.
 
 The right sidebar displays:
 
-- **Canvas count** — Total number of canvases
-- **Canvas Types** — Breakdown by type with counts:
-  - **Multi Asset** — Canvases linked to multiple things
-  - **Thing Type** — Canvases linked to a specific thing type
+- **Canvas count** - Total number of canvases
+- **Canvas Types** - Breakdown by type with counts:
+  - **Multi Asset** - Canvases linked to multiple things
+  - **Thing Type** - Canvases linked to a specific thing type
 
 ### Row Actions
 
 Each canvas row provides two action buttons:
 
-- **Edit** (pencil icon) — Opens the canvas settings for editing
-- **Delete** (trash icon) — Deletes the canvas
+- **Edit** (pencil icon) - Opens the canvas settings for editing
+- **Delete** (trash icon) - Deletes the canvas
 
 ### Pagination
 
 The table footer provides pagination controls:
 
-- **Show [N] per page** — Dropdown to select items per page (default: 50)
-- **Page navigation** — Previous, page numbers, next, and last page buttons
-- **Item counter** — Displays "X of Y" total canvases
+- **Show [N] per page** - Dropdown to select items per page (default: 50)
+- **Page navigation** - Previous, page numbers, next, and last page buttons
+- **Item counter** - Displays "X of Y" total canvases
 
 ## Creating a Canvas
 
@@ -85,16 +85,16 @@ To create a new canvas:
 
 ![Create Canvas Dialog](/screenshots/canvas/canvas-create-dialog.png)
 
-| Field           | Required | Description                                                                  |
-| --------------- | -------- | ---------------------------------------------------------------------------- |
-| **Name**        | ✅ Yes   | Enter a descriptive name for the canvas                                      |
-| **Description** | ❌ No    | Optional description of the canvas purpose                                   |
-| **Type**        | ✅ Yes   | Select the canvas type: **MultiAsset** or **ThingType**                      |
-| **Things**      | ✅ Yes   | Select one or more things to associate with the canvas from the dropdown     |
+| Field           | Required | Description                                                              |
+| --------------- | -------- | ------------------------------------------------------------------------ |
+| **Name**        | ✅ Yes   | Enter a descriptive name for the canvas                                  |
+| **Description** | ❌ No    | Optional description of the canvas purpose                               |
+| **Type**        | ✅ Yes   | Select the canvas type: **MultiAsset** or **ThingType**                  |
+| **Things**      | ✅ Yes   | Select one or more things to associate with the canvas from the dropdown |
 
 3. Fill in the required fields. The **Things** field allows you to select multiple things from a searchable dropdown
 
-![Create Canvas — Filled Form](/screenshots/canvas/canvas-create-filled.png)
+![Create Canvas - Filled Form](/screenshots/canvas/canvas-create-filled.png)
 
 4. Click **Save** to create the canvas
 
@@ -104,8 +104,8 @@ The new canvas appears in the Canvases Management table with its name, associate
 
 Two canvas types are available:
 
-- **MultiAsset** — Create a canvas linked to multiple things. Use this type when you want to visualize relationships between different IoT devices or create a combined view of several assets.
-- **ThingType** — Create a canvas linked to a specific thing type. Use this type to create visual templates or documentation that applies to all devices of a particular type.
+- **MultiAsset** - Create a canvas linked to multiple things. Use this type when you want to visualize relationships between different IoT devices or create a combined view of several assets.
+- **ThingType** - Create a canvas linked to a specific thing type. Use this type to create visual templates or documentation that applies to all devices of a particular type.
 
 ## Canvas Detail View
 
@@ -115,32 +115,32 @@ Click on a canvas name in the Canvases Management table to open its detail view.
 
 ### Navigation
 
-- **Breadcrumb** — Shows the navigation path: Canvas > [Canvas Name]
-- **Back arrow** — Returns to the Canvases Management page
+- **Breadcrumb** - Shows the navigation path: Canvas > [Canvas Name]
+- **Back arrow** - Returns to the Canvases Management page
 
 ### Canvas Controls
 
 Three toggle buttons control the canvas behavior:
 
-| Control        | Description                                                                                     |
-| -------------- | ----------------------------------------------------------------------------------------------- |
-| **Edit**       | Toggles edit mode. When enabled, the full drawing toolbar and style panel become available       |
-| **Show Grid**  | Toggles a dot-grid overlay for precise element alignment and placement                          |
-| **Focus**      | Toggles focused mode, hiding the sidebar for a distraction-free canvas experience               |
+| Control       | Description                                                                                |
+| ------------- | ------------------------------------------------------------------------------------------ |
+| **Edit**      | Toggles edit mode. When enabled, the full drawing toolbar and style panel become available |
+| **Show Grid** | Toggles a dot-grid overlay for precise element alignment and placement                     |
+| **Focus**     | Toggles focused mode, hiding the sidebar for a distraction-free canvas experience          |
 
 Additional controls in the top-right corner:
 
-- **Fullscreen** — Expands the canvas to fill the entire screen
-- **Save Button** — Saves the current canvas state
+- **Fullscreen** - Expands the canvas to fill the entire screen
+- **Save Button** - Saves the current canvas state
 
 ## View Mode
 
 When edit mode is off, the canvas is in read-only view mode with minimal controls:
 
-- **Select tool** — Click and drag to select and inspect elements
-- **Hand tool** — Click and drag to pan around the canvas
-- **Zoom control** — Shows the current zoom level (e.g., 100%) with click to adjust
-- **Toggle minimap** — Shows or hides a minimap for navigation on large canvases
+- **Select tool** - Click and drag to select and inspect elements
+- **Hand tool** - Click and drag to pan around the canvas
+- **Zoom control** - Shows the current zoom level (e.g., 100%) with click to adjust
+- **Toggle minimap** - Shows or hides a minimap for navigation on large canvases
 
 ## Edit Mode
 
@@ -152,14 +152,14 @@ Click the **Edit** button to enable full editing capabilities.
 
 The top action bar provides quick access to common operations:
 
-| Action                      | Shortcut          | Description                              |
-| --------------------------- | ----------------- | ---------------------------------------- |
-| **Menu**                    | —                 | Opens the main menu with additional options |
-| **Undo**                    | Ctrl + Z          | Undo the last action                     |
-| **Redo**                    | Ctrl + Shift + Z  | Redo the last undone action              |
-| **Delete**                  | Backspace         | Delete selected elements                 |
-| **Duplicate**               | Ctrl + D          | Duplicate selected elements              |
-| **Actions**                 | —                 | Additional action options                |
+| Action        | Shortcut         | Description                                 |
+| ------------- | ---------------- | ------------------------------------------- |
+| **Menu**      | -                | Opens the main menu with additional options |
+| **Undo**      | Ctrl + Z         | Undo the last action                        |
+| **Redo**      | Ctrl + Shift + Z | Redo the last undone action                 |
+| **Delete**    | Backspace        | Delete selected elements                    |
+| **Duplicate** | Ctrl + D         | Duplicate selected elements                 |
+| **Actions**   | -                | Additional action options                   |
 
 ### Drawing Tools
 
@@ -167,32 +167,32 @@ The bottom toolbar provides drawing and shape tools:
 
 **Primary tools:**
 
-| Tool          | Description                                        |
-| ------------- | -------------------------------------------------- |
-| **Select**    | Select, move, and resize elements                  |
-| **Hand**      | Pan around the canvas without selecting elements   |
-| **Eraser**    | Erase elements by clicking or dragging over them   |
-| **Text**      | Add text labels and annotations                    |
-| **Rectangle** | Draw rectangular shapes                            |
-| **Ellipse**   | Draw circular and elliptical shapes                |
-| **Triangle**  | Draw triangular shapes                             |
-| **Media**     | Insert images and media files                      |
+| Tool          | Description                                      |
+| ------------- | ------------------------------------------------ |
+| **Select**    | Select, move, and resize elements                |
+| **Hand**      | Pan around the canvas without selecting elements |
+| **Eraser**    | Erase elements by clicking or dragging over them |
+| **Text**      | Add text labels and annotations                  |
+| **Rectangle** | Draw rectangular shapes                          |
+| **Ellipse**   | Draw circular and elliptical shapes              |
+| **Triangle**  | Draw triangular shapes                           |
+| **Media**     | Insert images and media files                    |
 
 **Additional tools** (accessible via the **More** button):
 
 ![More Tools](/screenshots/canvas/canvas-more-tools.png)
 
-| Tool          | Description                                        |
-| ------------- | -------------------------------------------------- |
-| **Media**     | Insert images and media files                      |
-| **Embed**     | Embed external content (websites, videos, etc.)    |
-| **Frame**     | Create frames to group and organize elements       |
-| **Note**      | Add sticky note-style annotations                  |
-| **Line**      | Draw straight lines                                |
-| **Arrow**     | Draw arrows for connections and flow indicators    |
-| **Draw**      | Freehand drawing tool                              |
-| **Oval**      | Draw oval shapes                                   |
-| **Highlight** | Highlight areas with a semi-transparent marker     |
+| Tool          | Description                                     |
+| ------------- | ----------------------------------------------- |
+| **Media**     | Insert images and media files                   |
+| **Embed**     | Embed external content (websites, videos, etc.) |
+| **Frame**     | Create frames to group and organize elements    |
+| **Note**      | Add sticky note-style annotations               |
+| **Line**      | Draw straight lines                             |
+| **Arrow**     | Draw arrows for connections and flow indicators |
+| **Draw**      | Freehand drawing tool                           |
+| **Oval**      | Draw oval shapes                                |
+| **Highlight** | Highlight areas with a semi-transparent marker  |
 
 ### Style Panel
 
@@ -207,22 +207,22 @@ Adjust element transparency from 0% to 100% using the opacity slider.
 **Fill**
 Control the fill style of shapes:
 
-| Option      | Description                           |
-| ----------- | ------------------------------------- |
-| **None**    | No fill (outline only)                |
-| **Semi**    | Semi-transparent fill                 |
-| **Solid**   | Solid color fill                      |
-| **Pattern** | Patterned fill                        |
+| Option      | Description            |
+| ----------- | ---------------------- |
+| **None**    | No fill (outline only) |
+| **Semi**    | Semi-transparent fill  |
+| **Solid**   | Solid color fill       |
+| **Pattern** | Patterned fill         |
 
 **Dash**
 Control the line/border style:
 
-| Option      | Description                           |
-| ----------- | ------------------------------------- |
-| **Draw**    | Hand-drawn style line                 |
-| **Dashed**  | Dashed line                           |
-| **Dotted**  | Dotted line                           |
-| **Solid**   | Solid continuous line                 |
+| Option     | Description           |
+| ---------- | --------------------- |
+| **Draw**   | Hand-drawn style line |
+| **Dashed** | Dashed line           |
+| **Dotted** | Dotted line           |
+| **Solid**  | Solid continuous line |
 
 **Size**
 Set the stroke/element size: **S** (Small), **M** (Medium), **L** (Large), **XL** (Extra Large).
@@ -233,16 +233,16 @@ The menu (hamburger icon) provides access to additional features:
 
 ![Canvas Menu](/screenshots/canvas/canvas-menu.png)
 
-| Menu Item              | Shortcut   | Description                                      |
-| ---------------------- | ---------- | ------------------------------------------------ |
-| **Edit**               | —          | Submenu with editing operations                   |
-| **View**               | —          | Submenu with view options                         |
-| **Export**              | —          | Submenu with export formats                       |
-| **Insert embed**       | Ctrl + I   | Embed external content into the canvas            |
-| **Upload media**       | Ctrl + U   | Upload an image or media file to the canvas       |
-| **Preferences**        | —          | Canvas preferences and settings                   |
-| **Language**           | —          | Change the canvas interface language               |
-| **Keyboard shortcuts** | —          | View all available keyboard shortcuts              |
+| Menu Item              | Shortcut | Description                                 |
+| ---------------------- | -------- | ------------------------------------------- |
+| **Edit**               | -        | Submenu with editing operations             |
+| **View**               | -        | Submenu with view options                   |
+| **Export**             | -        | Submenu with export formats                 |
+| **Insert embed**       | Ctrl + I | Embed external content into the canvas      |
+| **Upload media**       | Ctrl + U | Upload an image or media file to the canvas |
+| **Preferences**        | -        | Canvas preferences and settings             |
+| **Language**           | -        | Change the canvas interface language        |
+| **Keyboard shortcuts** | -        | View all available keyboard shortcuts       |
 
 ## Text Formatting
 
@@ -252,16 +252,16 @@ When you create a text element and select text within it, a **floating rich-text
 
 ### Toolbar Options
 
-| Option         | Description                                                      |
-| -------------- | ---------------------------------------------------------------- |
-| **Size**       | Font size dropdown (e.g., 12, 16, 24, etc.)                     |
-| **Bold** (B)   | Toggle bold formatting on selected text                          |
-| **Italic** (I) | Toggle italic formatting on selected text                        |
-| **Code** (`</>`)| Toggle monospace/code formatting                                |
-| **List** (≡)   | Bulleted list formatting                                         |
-| **Highlight**  | Highlight selected text                                          |
-| **Bind value** | Open the Bind Value dialog to link text to live IoT data         |
-| **Remove** (×) | Remove an existing binding from the selected text                |
+| Option           | Description                                              |
+| ---------------- | -------------------------------------------------------- |
+| **Size**         | Font size dropdown (e.g., 12, 16, 24, etc.)              |
+| **Bold** (B)     | Toggle bold formatting on selected text                  |
+| **Italic** (I)   | Toggle italic formatting on selected text                |
+| **Code** (`</>`) | Toggle monospace/code formatting                         |
+| **List** (≡)     | Bulleted list formatting                                 |
+| **Highlight**    | Highlight selected text                                  |
+| **Bind value**   | Open the Bind Value dialog to link text to live IoT data |
+| **Remove** (×)   | Remove an existing binding from the selected text        |
 
 ## Bind Value
 
@@ -277,7 +277,7 @@ To bind text to a live data source:
 
 1. In edit mode, create a **Text** element on the canvas
 2. Type your placeholder text (e.g., "Temperature: value")
-3. **Select the text** you want to bind (here the "value") — the text formatting toolbar appears
+3. **Select the text** you want to bind (here the "value") - the text formatting toolbar appears
 4. Click the **Bind value** button in the toolbar
 5. The **Bind Value dialog** opens
 
@@ -287,49 +287,49 @@ To bind text to a live data source:
 
 The Bind Value dialog presents a searchable tree of all available data sources:
 
-| Category       | Description                                                           |
-| -------------- | --------------------------------------------------------------------- |
-| **tenant**     | Tenant information: `tenantName`, `tenantId`                          |
-| **time**       | Time values: `currentDate`, `month`, `day`, `year`, `timestamp`, `dateTime`, `formattedTime`, `formattedDate`, `dayOfWeek`, `dayOfWeekName`, and more |
-| **device**     | Device data (single-device canvas): `displayName`, `status`, `lastUpdate`, plus nested `thingType`, `properties`, and `measures` |
-| **devices**    | Device data (multi-asset canvas): same structure as device, organized by device ID |
+| Category    | Description                                                                                                                                           |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **tenant**  | Tenant information: `tenantName`, `tenantId`                                                                                                          |
+| **time**    | Time values: `currentDate`, `month`, `day`, `year`, `timestamp`, `dateTime`, `formattedTime`, `formattedDate`, `dayOfWeek`, `dayOfWeekName`, and more |
+| **device**  | Device data (single-device canvas): `displayName`, `status`, `lastUpdate`, plus nested `thingType`, `properties`, and `measures`                      |
+| **devices** | Device data (multi-asset canvas): same structure as device, organized by device ID                                                                    |
 
 To select a value:
 
 1. **Search** using the search bar at the top, or **expand** tree nodes to browse
 2. Navigate through the hierarchy (e.g., device → measures → temperature → value)
-3. Click the target value — the **Path** at the bottom of the dialog shows your selection
+3. Click the target value - the **Path** at the bottom of the dialog shows your selection
 4. Click **Save** to apply the binding
 
-![Bind Value — Value Selected](/screenshots/canvas/canvas-bind-value-selected.png)
+![Bind Value - Value Selected](/screenshots/canvas/canvas-bind-value-selected.png)
 
 #### Device Data Sources
 
 Under each device, you can access:
 
-- **Properties** — Static device properties, each with `displayName` and `value`
-- **Measures** — Live telemetry data, each with:
-  - `value` — The current measurement value (updates in real time)
-  - `lastUpdate` — Timestamp of the last data update
-  - `displayName` — Human-readable name of the measure
-  - `unit` / `uom` — Unit of measurement
-  - `type`, `name`, `id`, `tags` — Additional metadata
+- **Properties** - Static device properties, each with `displayName` and `value`
+- **Measures** - Live telemetry data, each with:
+  - `value` - The current measurement value (updates in real time)
+  - `lastUpdate` - Timestamp of the last data update
+  - `displayName` - Human-readable name of the measure
+  - `unit` / `uom` - Unit of measurement
+  - `type`, `name`, `id`, `tags` - Additional metadata
 
 ### Configuring Thresholds
 
 When binding to a numeric value (such as a measure's `value`), you can optionally configure **thresholds** to change the text and background color based on the data value.
 
-| Setting             | Description                                              |
-| ------------------- | -------------------------------------------------------- |
-| **Operator**        | Comparison operator: `>`, `<`, `=`, `≤`, `≥`, or `range` |
-| **Value**           | The threshold value to compare against                    |
-| **Value 2**         | Upper bound (only for `range` operator)                   |
-| **Background color**| Background color applied when threshold is met            |
-| **Text color**      | Text color applied when threshold is met                  |
+| Setting              | Description                                              |
+| -------------------- | -------------------------------------------------------- |
+| **Operator**         | Comparison operator: `>`, `<`, `=`, `≤`, `≥`, or `range` |
+| **Value**            | The threshold value to compare against                   |
+| **Value 2**          | Upper bound (only for `range` operator)                  |
+| **Background color** | Background color applied when threshold is met           |
+| **Text color**       | Text color applied when threshold is met                 |
 
 You can add multiple thresholds. The first matching threshold determines the styling.
 
-**Example:** Set operator `>`, value `50`, background color red, text color white — when the bound measure exceeds 50, the text displays with a red background and white text.
+**Example:** Set operator `>`, value `50`, background color red, text color white - when the bound measure exceeds 50, the text displays with a red background and white text.
 
 ### Removing a Binding
 

@@ -5,6 +5,8 @@ slug: /widgets/status
 
 # Status Widget
 
+![Status Widget](/screenshots/widgets/widget-status-preview.png)
+
 ## Overview
 
 The Status widget shows status information with color-coded indicators. It provides visual feedback on the operational state or health of devices, making it easy to identify issues at a glance.
@@ -26,6 +28,8 @@ The Status widget shows status information with color-coded indicators. It provi
 - Real-time status updates
 
 ## Configuration
+
+![Status Widget Configuration Form](/screenshots/widgets/widget-status-form.png)
 
 ### Basic Settings
 

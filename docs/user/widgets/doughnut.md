@@ -5,6 +5,8 @@ slug: /widgets/doughnut
 
 # Doughnut Widget
 
+![Doughnut Widget](/screenshots/widgets/widget-doughnut-preview.png)
+
 ## Overview
 
 The Doughnut widget is a ring chart with segments showing proportions of a whole, featuring an empty center. It's used for percentage distributions, visualizing shares, and can display additional information in the center area.
@@ -26,6 +28,8 @@ The Doughnut widget is a ring chart with segments showing proportions of a whole
 - Interactive legends
 
 ## Configuration
+
+![Doughnut Widget Configuration Form](/screenshots/widgets/widget-doughnut-form.png)
 
 ### Basic Settings
 

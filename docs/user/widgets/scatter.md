@@ -5,6 +5,8 @@ slug: /widgets/scatter
 
 # Scatter Widget
 
+![Scatter Widget](/screenshots/widgets/widget-scatter-preview.png)
+
 ## Overview
 
 The Scatter widget displays points in a coordinate system where X and Y axes represent different variables. It's perfect for identifying correlations between variables, detecting outliers, and uncovering trends and patterns in data.
@@ -27,6 +29,8 @@ The Scatter widget displays points in a coordinate system where X and Y axes rep
 - Color-coded series
 
 ## Configuration
+
+![Scatter Widget Configuration Form](/screenshots/widgets/widget-scatter-form.png)
 
 ### Basic Settings
 

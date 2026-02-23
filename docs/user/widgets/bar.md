@@ -5,6 +5,8 @@ slug: /widgets/bar
 
 # Bar Widget
 
+![Bar Widget](/screenshots/widgets/widget-bar-preview.png)
+
 ## Overview
 
 The Bar widget displays data using horizontal or vertical bars whose length or height represents values. It's ideal for comparing categories, displaying rankings, and visualizing discrete data with clear visual differences.
@@ -27,6 +29,8 @@ The Bar widget displays data using horizontal or vertical bars whose length or h
 - Export to PDF, Excel, CSV
 
 ## Configuration
+
+![Bar Widget Configuration Form](/screenshots/widgets/widget-bar-form.png)
 
 ### Basic Settings
 

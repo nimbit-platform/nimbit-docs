@@ -5,6 +5,8 @@ slug: /widgets/pivot-table
 
 # Pivot Table Widget
 
+![Pivot Table Widget](/screenshots/widgets/widget-pivot-table-preview.png)
+
 ## Overview
 
 The Pivot Table widget provides a powerful tabular display that groups and aggregates data by various dimensions. It's perfect for analyzing large datasets, creating cross-tabulations, and generating quick summaries with the ability to pivot data fields for different analytical views.
@@ -27,6 +29,8 @@ The Pivot Table widget provides a powerful tabular display that groups and aggre
 - Export to PDF, Excel, or CSV
 
 ## Configuration
+
+![Pivot Table Widget Configuration Form](/screenshots/widgets/widget-pivot-table-form.png)
 
 ### Basic Settings
 

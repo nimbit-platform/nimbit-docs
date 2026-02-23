@@ -5,6 +5,8 @@ slug: /widgets/events
 
 # Events Widget
 
+![Events Widget](/screenshots/widgets/widget-events-preview.png)
+
 ## Overview
 
 The Events widget displays and manages events from your Things with timestamps and details. It provides a centralized view of system events, alerts, state changes, and other significant occurrences for monitoring and troubleshooting.
@@ -27,6 +29,8 @@ The Events widget displays and manages events from your Things with timestamps a
 - Export capabilities
 
 ## Configuration
+
+![Events Widget Configuration Form](/screenshots/widgets/widget-events-form.png)
 
 ### Basic Settings
 

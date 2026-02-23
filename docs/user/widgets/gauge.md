@@ -5,6 +5,8 @@ slug: /widgets/gauge
 
 # Gauge Widget
 
+![Gauge Widget](/screenshots/widgets/widget-gauge-preview.png)
+
 ## Overview
 
 The Gauge widget displays a measure value on a gauge with configurable threshold color zones. It supports both radial (semi-circular, like a tachometer) and linear gauge shapes. It's ideal for displaying KPIs, performance indicators, and values that need to be compared against defined ranges.
@@ -27,6 +29,8 @@ The Gauge widget displays a measure value on a gauge with configurable threshold
 - Compact number formatting
 
 ## Configuration
+
+![Gauge Widget Configuration Form](/screenshots/widgets/widget-gauge-form.png)
 
 ### Basic Settings
 

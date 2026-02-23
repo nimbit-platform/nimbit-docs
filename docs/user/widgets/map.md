@@ -5,6 +5,8 @@ slug: /widgets/map
 
 # Map Widget
 
+![Map Widget](/screenshots/widgets/widget-map-preview.png)
+
 ## Overview
 
 The Map widget displays geographic locations of Things on an interactive map with markers, info windows, and real-time position updates. Use it for asset tracking, location monitoring, and geographic visualization.
@@ -27,6 +29,8 @@ The Map widget displays geographic locations of Things on an interactive map wit
 - Clustering for multiple markers
 
 ## Configuration
+
+![Map Widget Configuration Form](/screenshots/widgets/widget-map-form.png)
 
 The Map widget is a standalone widget that displays Thing locations on an interactive map. It requires no specific configuration beyond styling options.
 

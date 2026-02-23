@@ -5,6 +5,8 @@ slug: /widgets/aggregated-state
 
 # Aggregated State Widget
 
+![Aggregated State Widget](/screenshots/widgets/widget-aggregated-state-preview.png)
+
 ## Overview
 
 The Aggregated State widget displays aggregated state information across multiple data points or Things. It provides a consolidated view of states, useful for monitoring groups of devices or summarizing multiple measurements.
@@ -26,6 +28,8 @@ The Aggregated State widget displays aggregated state information across multipl
 - Real-time updates
 
 ## Configuration
+
+![Aggregated State Widget Configuration Form](/screenshots/widgets/widget-aggregated-state-form.png)
 
 ### Basic Settings
 
