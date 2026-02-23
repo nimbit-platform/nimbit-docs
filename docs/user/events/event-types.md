@@ -6,7 +6,7 @@ sidebar_position: 2
 
 # Event Types
 
-Event Types define the categories of events in your IoT system. While [events](./events) are the individual records of things that happened, event types are the templates that classify those events and determine what automated actions should be triggered when they occur.
+Event Types define the categories of events in your IoT system. While [events](/docs/events) are the individual records of things that happened, event types are the templates that classify those events and determine what automated actions should be triggered when they occur.
 
 ## Why Event Types Matter
 
@@ -87,13 +87,13 @@ Click the **+** button at the top of the left panel to open the Create dialog.
 
 ### Fields
 
-| Field            | Required | Description                                                                                            |
-| ---------------- | -------- | ------------------------------------------------------------------------------------------------------ |
-| **Name**         | ✅ Yes   | A descriptive name for the event type (max 128 characters)                                             |
-| **Search tags**  | ❌ No    | Tags for categorizing and finding the event type                                                       |
+| Field            | Required | Description                                                                                                                                                                                                              |
+| ---------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Name**         | ✅ Yes   | A descriptive name for the event type (max 128 characters)                                                                                                                                                               |
+| **Search tags**  | ❌ No    | Tags for categorizing and finding the event type                                                                                                                                                                         |
 | **Group**        | ❌ No    | Assign the event type to one or more groups. **Users can only see events whose event type is in one of their groups.** While technically optional, this field is required in practice for events to be visible to users. |
-| **Description**  | ❌ No    | A description of the event type's purpose. Supports multiple languages (EN/DE) via a language selector |
-| **Display type** | ✅ Yes   | Controls how events of this type are displayed in the UI. Options: **Default** or **Rule Evaluation**  |
+| **Description**  | ❌ No    | A description of the event type's purpose. Supports multiple languages (EN/DE) via a language selector                                                                                                                   |
+| **Display type** | ✅ Yes   | Controls how events of this type are displayed in the UI. Options: **Default** or **Rule Evaluation**                                                                                                                    |
 
 Click **Save** to create the event type. It will immediately appear in the left panel list.
 
@@ -258,6 +258,6 @@ Attach **Webhook** actions to Thing event types to synchronize resource changes 
 
 ## Related Pages
 
-- [Events](/events) - View and manage event instances (Monitor > Events)
+- [Events](/docs/events) - View and manage event instances (Monitor > Events)
 - **Rule Designer** - Create automation rules that can generate events (Automation > Rule Designer)
 - **Mail Template** - Configure email templates used by email actions (Manage > Mail Template)
