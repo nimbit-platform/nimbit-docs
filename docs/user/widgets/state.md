@@ -30,14 +30,12 @@ The State widget displays the current snapshot values of one or more measures as
 
 ## Configuration
 
-![State Widget Configuration Form](/screenshots/widgets/widget-state-form.png)
 
 ### Basic Settings
 
 | Field        | Required | Description                                                                             |
 | ------------ | -------- | --------------------------------------------------------------------------------------- |
 | **Title**    | ❌ No    | Display name for the widget                                                             |
-| **Thing**    | ❌ No    | Select Thing to monitor (optional, can display multiple measures from different Things) |
 | **Measures** | ✅ Yes   | Add measures to display. Each measure requires: measure ID and optional aggregation     |
 
 ### Display Options

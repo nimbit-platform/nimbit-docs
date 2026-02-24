@@ -30,7 +30,6 @@ The Map widget displays geographic locations of Things on an interactive map wit
 
 ## Configuration
 
-![Map Widget Configuration Form](/screenshots/widgets/widget-map-form.png)
 
 The Map widget is a standalone widget that displays Thing locations on an interactive map. It requires no specific configuration beyond styling options.
 
@@ -70,7 +69,7 @@ The widget displays an interactive map with the following capabilities:
 
 ### Location Data
 
-The Map widget automatically displays Things that have location attributes configured in their Thing Type. Location coordinates should be stored as Thing attributes.
+The Map widget automatically displays Things that have location attributes configured.
 
 ---
 

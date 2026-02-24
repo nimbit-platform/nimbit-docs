@@ -15,7 +15,6 @@ The Heatmap widget displays a matrix of color-coded cells where color intensity 
 
 - **Pattern Recognition** - Identify patterns in time-series data
 - **Temporal Analysis** - Visualize data across time periods
-- **Correlation Matrices** - Show relationships between variables
 - **Usage Patterns** - Display usage over time (hourly, daily, weekly)
 - **Anomaly Detection** - Spot unusual patterns in data
 
@@ -23,14 +22,12 @@ The Heatmap widget displays a matrix of color-coded cells where color intensity 
 
 - Color intensity mapping
 - Time-based clustering
-- Customizable color scales
 - Hourly, daily, weekly, monthly views
 - Interactive cell details
 - Aggregation options
 
 ## Configuration
 
-![Heatmap Widget Configuration Form](/screenshots/widgets/widget-heatmap-form.png)
 
 ### Basic Settings
 
@@ -51,7 +48,6 @@ The Heatmap widget displays a matrix of color-coded cells where color intensity 
 | **Clustering mode** | ✅ Yes   | Y-axis clustering mode (byHour, byDay, byWeek, byMonth) |
 | **Min**             | ❌ No    | Minimum value for color scale                           |
 | **Max**             | ❌ No    | Maximum value for color scale                           |
-| **Gapfill**         | ❌ No    | Handle missing data (NONE, TIME, LOCF)                  |
 
 ### Display Options
 

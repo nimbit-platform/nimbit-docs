@@ -30,15 +30,13 @@ The Pivot Table widget provides a powerful tabular display that groups and aggre
 
 ## Configuration
 
-![Pivot Table Widget Configuration Form](/screenshots/widgets/widget-pivot-table-form.png)
 
 ### Basic Settings
 
 | Field         | Required | Description                        |
 | ------------- | -------- | ---------------------------------- |
 | **Title**     | ❌ No    | Display name for the widget        |
-| **Things**    | ✅ Yes   | Select Things to display data from |
-| **Telemetry** | ✅ Yes   | Choose measures to include         |
+| **Measures** | ✅ Yes   | Choose measures to include from different Things         |
 
 ### Data Settings
 
@@ -74,8 +72,6 @@ Each measure in the configuration requires:
 1. **Limit Dimensions** - Use 2-3 dimensions for optimal readability
 2. **Choose Appropriate Aggregation** - Select aggregation that matches your analysis needs
 3. **Use Filters** - Apply filters to focus on relevant data
-4. **Regular Exports** - Export data for further analysis in spreadsheet tools
-5. **Performance** - Be mindful of data volume with large time windows
 
 ---
 

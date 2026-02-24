@@ -5,7 +5,7 @@ slug: /widgets/line
 
 # Line Widget
 
-![Line Widget](/screenshots/widgets/widget-line-preview.png)
+![Line Widget](/screenshots/widgets/widget-line-preview.svg)
 
 ## Overview
 
@@ -30,7 +30,6 @@ The Line widget displays connected data points as a line, perfect for showing ti
 
 ## Configuration
 
-![Line Widget Configuration Form](/screenshots/widgets/widget-line-form.png)
 
 ### Basic Settings
 
@@ -39,7 +38,7 @@ The Line widget displays connected data points as a line, perfect for showing ti
 | **Title**     | ❌ No    | Display name for the widget                                                                         |
 | **Thing**     | ✅ Yes   | Select Thing to display data from (not required for Thing Type dashboards)                          |
 | **Mode**      | ✅ Yes   | Choose 'Line' or 'Area' display mode                                                                |
-| **Timeframe** | ✅ Yes   | Time range (from/to) for data display                                                               |
+| **Timeframe** | ✅ Yes   | Time range for data display                                                               |
 | **Measures**  | ✅ Yes   | Add measures to display as lines. Each measure requires: measure, aggregation, line type, and color |
 
 ### Chart Settings

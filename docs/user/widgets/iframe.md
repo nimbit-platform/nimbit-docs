@@ -26,7 +26,6 @@ The iFrame widget embeds external web content directly into your dashboard, allo
 
 ## Configuration
 
-![iFrame Widget Configuration Form](/screenshots/widgets/widget-iframe-form.png)
 
 The iFrame widget is a standalone widget that doesn't require measures or properties. It embeds external web content directly into your dashboard.
 

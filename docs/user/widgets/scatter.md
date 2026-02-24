@@ -5,7 +5,7 @@ slug: /widgets/scatter
 
 # Scatter Widget
 
-![Scatter Widget](/screenshots/widgets/widget-scatter-preview.png)
+![Scatter Widget](/screenshots/widgets/widget-scatter-preview.svg)
 
 ## Overview
 
@@ -30,7 +30,6 @@ The Scatter widget displays points in a coordinate system where X and Y axes rep
 
 ## Configuration
 
-![Scatter Widget Configuration Form](/screenshots/widgets/widget-scatter-form.png)
 
 ### Basic Settings
 
@@ -71,7 +70,6 @@ The Scatter widget displays points in a coordinate system where X and Y axes rep
 2. **Scale Appropriately** - Set axis ranges to highlight patterns
 3. **Multiple Series** - Use colors to distinguish data series
 4. **Outlier Analysis** - Investigate outliers for insights
-5. **Regular Updates** - Refresh data to track changing correlations
 
 ---
 

@@ -5,7 +5,7 @@ slug: /widgets/doughnut
 
 # Doughnut Widget
 
-![Doughnut Widget](/screenshots/widgets/widget-doughnut-preview.png)
+![Doughnut Widget](/screenshots/widgets/widget-doughnut-preview.svg)
 
 ## Overview
 
@@ -29,7 +29,6 @@ The Doughnut widget is a ring chart with segments showing proportions of a whole
 
 ## Configuration
 
-![Doughnut Widget Configuration Form](/screenshots/widgets/widget-doughnut-form.png)
 
 ### Basic Settings
 
@@ -53,13 +52,9 @@ The Doughnut widget is a ring chart with segments showing proportions of a whole
 
 1. **Limited Segments** - Use 3-7 segments for clarity
 2. **Color Distinction** - Use clearly distinguishable colors
-3. **Percentage Labels** - Always show percentages for context
-4. **Central Information** - Use center area for total or summary
-5. **Legend Placement** - Position legend for easy reference
 
 ---
 
 ## What's Next?
 
 - [Gauge Widget](/docs/widgets/gauge) - For KPI visualization
-- [Pie Chart Alternative] - Consider for full circle displays

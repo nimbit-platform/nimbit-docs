@@ -30,7 +30,6 @@ The Action widget allows you to execute actions on Things directly from the dash
 
 ## Configuration
 
-![Action Widget Configuration Form](/screenshots/widgets/widget-action-form.png)
 
 ### Basic Settings
 

@@ -3,9 +3,11 @@ title: Compare
 slug: /widgets/compare
 ---
 
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
 # Compare Widget
 
-![Compare Widget](/screenshots/widgets/widget-compare-preview.png)
+<img src={useBaseUrl("/screenshots/widgets/widget-compare-preview.png")} alt="Compare Widget" style={{ width: "50%" }} />
 
 ## Overview
 
@@ -30,7 +32,6 @@ The Compare widget displays a single measure's current value alongside the chang
 
 ## Configuration
 
-![Compare Widget Configuration Form](/screenshots/widgets/widget-compare-form.png)
 
 ### Basic Settings
 
@@ -40,12 +41,6 @@ The Compare widget displays a single measure's current value alongside the chang
 | **Thing**     | ✅ Yes   | Select Thing to display data from (not required for ThingType dashboards) |
 | **Measure**   | ✅ Yes   | Choose measure to compare                                                 |
 | **Timeframe** | ✅ Yes   | Time range (from/to) for data display                                     |
-
-### Chart Settings
-
-| Field       | Required | Description                            |
-| ----------- | -------- | -------------------------------------- |
-| **Gapfill** | ❌ No    | Handle missing data (NONE, TIME, LOCF) |
 
 ### Display Options
 

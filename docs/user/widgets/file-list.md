@@ -30,7 +30,6 @@ The File List widget displays and manages files associated with Things. It provi
 
 ## Configuration
 
-![File List Widget Configuration Form](/screenshots/widgets/widget-file-list-form.png)
 
 ### Basic Settings
 

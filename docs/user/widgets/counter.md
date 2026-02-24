@@ -28,7 +28,6 @@ The Counter widget displays the total count of a platform resource type - Things
 
 ## Configuration
 
-![Counter Widget Configuration Form](/screenshots/widgets/widget-counter-form.png)
 
 ### Basic Settings
 
