@@ -24,20 +24,16 @@ The Boolean widget displays boolean values with clear on/off or true/false indic
 - Clear binary state display
 - Customizable on/off labels
 - Color-coded indicators
-- Icon support
-- Real-time updates
 
 ## Configuration
 
-![Boolean Widget Configuration Form](/screenshots/widgets/widget-boolean-form.png)
 
 ### Basic Settings
 
 | Field        | Required | Description                                                                             |
 | ------------ | -------- | --------------------------------------------------------------------------------------- |
-| **Title**    | ❌ No    | Display name for the widget                                                             |
-| **Thing**    | ❌ No    | Select Thing to monitor (optional, can display multiple measures from different Things) |
-| **Measures** | ✅ Yes   | Add measures to display. Each measure requires: measure ID                              |
+| **Thing**    | ✅ Yes   | Select Thing to monitor |
+| **Measures** | ✅ Yes   | Add measures to display.                  |
 
 ### Display Options
 

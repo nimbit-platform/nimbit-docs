@@ -30,7 +30,6 @@ The Events widget displays and manages events from your Things with timestamps a
 
 ## Configuration
 
-![Events Widget Configuration Form](/screenshots/widgets/widget-events-form.png)
 
 ### Basic Settings
 

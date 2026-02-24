@@ -3,9 +3,11 @@ title: Snapshot
 slug: /widgets/snapshot
 ---
 
+import useBaseUrl from "@docusaurus/useBaseUrl";
+
 # Snapshot Widget
 
-![Snapshot Widget](/screenshots/widgets/widget-snapshot-preview.png)
+<img src={useBaseUrl("/screenshots/widgets/widget-snapshot-preview.png")} alt="Snapshot Widget" style={{ width: "100%", maxWidth: "800px" }} />
 
 ## Overview
 
@@ -27,34 +29,6 @@ The Snapshot widget displays a searchable table of all measures for a selected T
 - Unit of measure display
 - Last update timestamps
 - Click-through to chart queries
-
-## Configuration
-
-![Snapshot Widget Configuration Form](/screenshots/widgets/widget-snapshot-form.png)
-
-### Basic Settings
-
-| Field     | Required | Type   | Description                       |
-| --------- | -------- | ------ | --------------------------------- |
-| **Title** | ✅ Yes   | string | Display name for the widget       |
-| **Thing** | ✅ Yes   | string | Select Thing to capture data from |
-
-### Widget Schema (WidgetSnapshotTableSchema)
-
-The Snapshot widget uses a simplified configuration structure:
-
-| Field      | Required | Type                  | Description                       |
-| ---------- | -------- | --------------------- | --------------------------------- |
-| **type**   | ✅ Yes   | 'snapshot'            | Widget type identifier            |
-| **name**   | ✅ Yes   | string                | Display name for the widget       |
-| **config** | ✅ Yes   | Array of config items | Configuration array with Thing ID |
-
-Each config item requires:
-
-- **id** - Unique identifier for the configuration item
-- **thingId** - The ID of the Thing to snapshot (required unless using a ThingType dashboard)
-
-Note: The Snapshot widget displays the current/latest state of the selected Thing's telemetry data. For ThingType dashboards, the thingId is automatically inferred from the dashboard context.
 
 ## Best Practices
 

@@ -5,6 +5,8 @@ slug: /widgets/canvas
 
 # Canvas Widget
 
+![Canvas Widget](/screenshots/widgets/widget-canvas-preview.png)
+
 ## Overview
 
 The Canvas widget displays a visual canvas that can be used to create custom diagrams, flowcharts, or visual representations of your IoT infrastructure. It references a Canvas object that contains the visual elements and layout.
@@ -12,10 +14,7 @@ The Canvas widget displays a visual canvas that can be used to create custom dia
 ## Use Cases
 
 - **Custom Diagrams** - Draw process flows or system diagrams
-- **Annotations** - Add notes and highlights to dashboards
 - **Visual Design** - Create custom graphics
-- **Planning Sketches** - Rough out ideas visually
-- **Explanatory Graphics** - Illustrate concepts
 
 ## Key Features
 
@@ -28,7 +27,7 @@ The Canvas widget displays a visual canvas that can be used to create custom dia
 
 ## Configuration
 
-The Canvas widget requires a reference to an existing Canvas object. The canvas must be created separately and associated with a Thing Type.
+The Canvas widget requires a reference to an existing Canvas object. The canvas must be created separately and associated with a Thing Type/Thing.
 
 ### Basic Settings
 
@@ -56,32 +55,14 @@ The referenced Canvas object contains:
 - **Type** - Dashboard type (typically `ThingType`)
 - **Visual Elements** - Canvas content (shapes, text, connections)
 
-## Best Practices
-
-1. **Canvas Creation** - Create and configure canvases before adding the widget
-2. **Thing Type Matching** - Ensure canvas Thing Type matches the dashboard
-3. **Visual Clarity** - Design clear, understandable canvas layouts
-4. **Performance** - Keep canvas complexity reasonable for dashboard performance
-5. **Background Styling** - Use the lines background for visual guidance
-
 ## Canvas Features
 
 ### Visual Canvas Editor
 
 The widget integrates with the Canvas Editor component, providing:
 
-- **Interactive Elements** - Clickable and interactive visual elements
 - **Thing Integration** - Link canvas elements to Thing data
 - **Real-time Updates** - Canvas reflects current Thing states
-- **Lines Background** - Grid lines for visual reference (shown when dashboard is unlocked)
-
-### Canvas Display
-
-The canvas is displayed with:
-
-- **Responsive Sizing** - Adapts to widget dimensions
-- **Locked/Unlocked Modes** - Different behaviors based on dashboard lock state
-- **Query Link Actions** - Navigation to detailed Thing views
 
 ## Use Case Examples
 
@@ -107,7 +88,6 @@ Build custom monitoring displays:
 
 - Equipment status visualization
 - Facility maps with sensor locations
-- Custom dashboard overlays
 
 ---
 

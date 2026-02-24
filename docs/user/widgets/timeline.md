@@ -30,7 +30,6 @@ The Timeline widget displays measure states over time as colored horizontal bars
 
 ## Configuration
 
-![Timeline Widget Configuration Form](/screenshots/widgets/widget-timeline-form.png)
 
 ### Basic Settings
 

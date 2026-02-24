@@ -14,7 +14,6 @@ The Property List widget displays all properties of a selected Thing in a table 
 ## Use Cases
 
 - **Complete Device Overview** - Display all properties of a Thing in one widget
-- **Configuration Dashboard** - Show all device configuration settings at once
 - **Asset Information Panel** - Present comprehensive device metadata
 - **Thing Type Dashboards** - Automatically display properties for any Thing of a type
 - **Device Documentation** - Create complete property reference views
@@ -30,7 +29,6 @@ The Property List widget displays all properties of a selected Thing in a table 
 
 ## Configuration
 
-![Property List Widget Configuration Form](/screenshots/widgets/widget-property-list-form.png)
 
 ### Basic Settings
 
@@ -39,21 +37,6 @@ The Property List widget displays all properties of a selected Thing in a table 
 | **Thing** | ✅ Yes\* | Select the Thing to display all properties from |
 
 **Note:** On Thing Type dashboards, Thing selection is automatic and not required in the configuration form.
-
-## Schema Information
-
-**Widget Type:** `propertyStateTable`
-
-**Required Configuration:**
-
-- `name` - Widget display name
-- `config.id` - Unique identifier for the configuration
-- `config.thingId` - ID of the Thing to display properties from
-
-**Special Behavior:**
-
-- On Thing Type dashboards, `thingId` can be empty - the widget automatically displays properties for the currently viewed Thing
-- All properties of the selected Thing are displayed automatically - no manual property selection needed
 
 ## Best Practices
 

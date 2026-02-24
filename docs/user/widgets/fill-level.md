@@ -30,7 +30,6 @@ The Fill Level widget provides visual representation of fill levels or capacity,
 
 ## Configuration
 
-![Fill Level Widget Configuration Form](/screenshots/widgets/widget-fill-level-form.png)
 
 ### Basic Settings
 

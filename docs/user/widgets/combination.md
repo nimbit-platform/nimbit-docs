@@ -5,7 +5,7 @@ slug: /widgets/combination
 
 # Combination Widget
 
-![Combination Widget](/screenshots/widgets/widget-combination-preview.png)
+![Combination Widget](/screenshots/widgets/widget-combination-preview.svg)
 
 ## Overview
 
@@ -30,7 +30,6 @@ The Combination widget combines different chart types (e.g., bars + line) with d
 
 ## Configuration
 
-![Combination Widget Configuration Form](/screenshots/widgets/widget-combination-form.png)
 
 ### Basic Settings
 
