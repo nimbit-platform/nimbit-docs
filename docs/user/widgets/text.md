@@ -29,7 +29,6 @@ The Text widget displays rich text content directly in your dashboard using a WY
 
 ## Configuration
 
-![Text Widget Configuration Form](/screenshots/widgets/widget-text-form.png)
 
 The Text widget is a standalone widget that doesn't require measures or properties. It displays static or dynamic text content.
 
@@ -38,7 +37,6 @@ The Text widget is a standalone widget that doesn't require measures or properti
 | Field       | Required | Description                          |
 | ----------- | -------- | ------------------------------------ |
 | **Content** | ✅ Yes   | Rich text content                    |
-| **Title**   | ❌ No    | Optional display name for the widget |
 
 ### Display Options
 

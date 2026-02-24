@@ -1,0 +1,28 @@
+<svg viewBox="-20 0 340 220" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml" style="background: #ffffff;">
+  <style>
+    :root {
+      --muted: #e2e8f0;
+      --foreground: #0f172a;
+      --muted-foreground: #64748b;
+    }
+  </style>
+  <path d="M 30 169.99999999999997 A 120 120 0 0 1 269.99981722959456 169.7905605960922" fill="none" stroke-width="20" stroke-linecap="butt" style="stroke: var(--muted);"></path>
+  <path d="M 112.83829419375311 55.89913400166519 A 120 120 0 0 1 186.96250572774613 55.83444840790925" fill="none" stroke="#80cbc4" stroke-width="20" stroke-linecap="butt"></path>
+  <path d="M 30 169.99999999999997 A 120 120 0 0 1 111.05165073608882 56.49658115450271" fill="none" stroke="#ffee58" stroke-width="20" stroke-linecap="butt"></path>
+  <path d="M 188.7501892056605 56.42877637127654 A 120 120 0 0 1 269.99981722959456 169.7905605960922" fill="none" stroke="#e53935" stroke-width="20" stroke-linecap="butt"></path>
+  <text x="2" y="170.99999999999997" text-anchor="middle" font-size="15" class="select-none" style="fill: var(--muted-foreground);">0</text>
+  <text x="30.235126115444615" y="84.04958319009309" text-anchor="middle" font-size="15" class="select-none" style="fill: var(--muted-foreground);">40</text>
+  <text x="104.16722950562882" y="30.27559860205372" text-anchor="middle" font-size="15" class="select-none" style="fill: var(--muted-foreground);">80</text>
+  <text x="195.58709039755354" y="30.19581970308809" text-anchor="middle" font-size="15" class="select-none" style="fill: var(--muted-foreground);">120</text>
+  <text x="269.6129344433824" y="83.84068659148869" text-anchor="middle" font-size="15" class="select-none" style="fill: var(--muted-foreground);">160</text>
+  <text x="297.9997745831666" y="170.74169140184708" text-anchor="middle" font-size="15" class="select-none" style="fill: var(--muted-foreground);">200</text>
+  <g cursor="pointer" style="transform-origin: 150px 170px; will-change: transform; transform: rotate(-4.10675deg);">
+    <path d="M 146.5 80 L 150 31 L 153.5 80 Z" style="fill: var(--foreground);"></path>
+    <path d="M 140 86 L 150 25 L 160 86 Z" fill="transparent"></path>
+  </g>
+  <g cursor="pointer">
+    <rect x="90" y="120" width="120" height="60" fill="transparent" rx="4"></rect>
+    <text x="150" y="158" text-anchor="middle" font-size="22" font-weight="600" style="fill: var(--foreground);">95.49</text>
+  </g>
+  <text x="150" y="210" text-anchor="middle" font-size="22" font-weight="600" letter-spacing="0.05em" class="select-none" style="fill: var(--foreground);">cosine</text>
+</svg>

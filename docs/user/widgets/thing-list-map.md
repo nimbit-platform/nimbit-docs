@@ -5,6 +5,10 @@ slug: /widgets/thing-list-map
 
 # Thing List Map Widget
 
+![Thing List Map Widget](/screenshots/widgets/widget-thing-list-map-preview.png)
+
+![Thing List Map Widget 2](/screenshots/widgets/widget-thing-list-map-preview2.png)
+
 ## Overview
 
 The Thing List Map widget provides a dual-view interface with a toggle between list and map views of your Things. Users can switch between a paginated table view showing Thing details and an interactive map view displaying Thing locations.

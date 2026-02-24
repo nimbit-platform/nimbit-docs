@@ -34,7 +34,6 @@ This widget is intended for advanced users with specific visualization needs. St
 
 ## Configuration
 
-![Custom Chart Widget Configuration Form](/screenshots/widgets/widget-custom-chart-form.png)
 
 ### Basic Settings
 

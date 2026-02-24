@@ -29,7 +29,6 @@ The Image widget displays a static image in your dashboard from either an upload
 
 ## Configuration
 
-![Image Widget Configuration Form](/screenshots/widgets/widget-image-form.png)
 
 The Image widget is a standalone widget that doesn't require measures or properties. It displays static images from uploaded files or external URLs.
 

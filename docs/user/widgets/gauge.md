@@ -6,6 +6,7 @@ slug: /widgets/gauge
 # Gauge Widget
 
 ![Gauge Widget](/screenshots/widgets/widget-gauge-preview.png)
+![Gauge Widget](/screenshots/widgets/widget-gauge-preview2.svg)
 
 ## Overview
 
@@ -30,7 +31,6 @@ The Gauge widget displays a measure value on a gauge with configurable threshold
 
 ## Configuration
 
-![Gauge Widget Configuration Form](/screenshots/widgets/widget-gauge-form.png)
 
 ### Basic Settings
 

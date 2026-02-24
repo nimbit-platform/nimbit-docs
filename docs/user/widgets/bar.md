@@ -5,7 +5,7 @@ slug: /widgets/bar
 
 # Bar Widget
 
-![Bar Widget](/screenshots/widgets/widget-bar-preview.png)
+![Bar Widget](/screenshots/widgets/widget-bar-preview.svg)
 
 ## Overview
 
@@ -26,11 +26,10 @@ The Bar widget displays data using horizontal or vertical bars whose length or h
 - Y-axis customization
 - Zoom capabilities
 - Time-based grouping
-- Export to PDF, Excel, CSV
+- Export to CSV
 
 ## Configuration
 
-![Bar Widget Configuration Form](/screenshots/widgets/widget-bar-form.png)
 
 ### Basic Settings
 
@@ -39,7 +38,7 @@ The Bar widget displays data using horizontal or vertical bars whose length or h
 | **Title**     | ❌ No    | Display name for the widget                                                                |
 | **Thing**     | ✅ Yes   | Select Thing to display data from (not required for ThingType dashboards)                  |
 | **Mode**      | ✅ Yes   | Choose 'clustered' or 'stacked' bar display                                                |
-| **Timeframe** | ✅ Yes   | Time range (from/to) for data display                                                      |
+| **Timeframe** | ✅ Yes   | Time range for data display                                                      |
 | **Measures**  | ✅ Yes   | Add measures to display as bars. Each measure requires: measure ID, aggregation, and color |
 
 ### Chart Settings
@@ -69,9 +68,8 @@ The Bar widget displays data using horizontal or vertical bars whose length or h
 
 1. **Limited Categories** - Use for 3-10 categories for clarity
 2. **Consistent Colors** - Use meaningful color coding
-3. **Axis Labels** - Always label axes clearly
-4. **Appropriate Grouping** - Choose grouping that highlights comparisons
-5. **Stacking** - Use stacked bars for part-to-whole relationships
+3. **Appropriate Grouping** - Choose grouping that highlights comparisons
+4. **Stacking** - Use stacked bars for part-to-whole relationships
 
 ---
 

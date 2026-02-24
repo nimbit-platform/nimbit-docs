@@ -30,7 +30,6 @@ The Property widget displays individual Thing property values with their current
 
 ## Configuration
 
-![Property Widget Configuration Form](/screenshots/widgets/widget-property-form.png)
 
 ### Basic Settings
 
@@ -46,19 +45,6 @@ The Property widget displays individual Thing property values with their current
 | -------------------- | -------- | ----------------------- |
 | **Border color**     | ❌ No    | Custom border color     |
 | **Background Color** | ❌ No    | Custom background color |
-
-## Schema Information
-
-**Widget Type:** `propertyState`
-
-**Required Configuration:**
-
-- `name` - Widget display name (optional in UI, but part of schema)
-- `config.id` - Unique identifier for the configuration
-- `config.property` - Property name to display
-- `config.thingId` - ID of the Thing containing the property
-
-**Note:** This widget uses Thing properties directly, not measurement data. Properties are defined at the Thing level and represent metadata or configuration attributes.
 
 ## Best Practices
 
