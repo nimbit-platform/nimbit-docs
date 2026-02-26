@@ -10,6 +10,10 @@ Each Thing Type can have a **Transformation Pipeline** - a visual, graph-based d
 
 The pipeline is optional. If none is configured or none is active, incoming data is stored as-is.
 
+:::info
+The Transformation Pipeline is powered by [GoRules](https://docs.gorules.io/), an open-source business rules engine. Refer to the GoRules documentation for in-depth details on expression syntax, decision table behavior, and the rules engine internals.
+:::
+
 ## Why Use a Transformation Pipeline
 
 Raw telemetry from machines is often unstructured, uses different units, or needs enrichment before it becomes useful. The Transformation Pipeline lets you:
@@ -429,3 +433,4 @@ Use a **Function** node when the transformation logic requires iteration, extern
 
 - [Thing Types](/docs/onboarding/thing-types) - Create and manage Thing Type definitions
 - [Rule Designer](/docs/automation/rule-designer) - Define validation rules that evaluate telemetry data and trigger actions
+- [GoRules Documentation](https://docs.gorules.io/) - Reference documentation for the rules engine powering the Transformation Pipeline
