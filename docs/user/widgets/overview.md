@@ -6,7 +6,7 @@ sidebar_position: 1
 
 # Widgets Overview
 
-Widgets are the building blocks of dashboards in IotBreeze, providing various ways to visualize, interact with, and monitor your IoT data. Each widget type is designed for specific use cases and data presentation needs.
+Widgets are the building blocks of dashboards in IotBreeze, providing various ways to visualize, interact with and monitor your IoT data. Each widget type is designed for specific use cases and data presentation needs.
 
 ## Widget Categories
 
@@ -33,7 +33,7 @@ Monitor the current state and status of your Things with visual indicators and c
 
 ### Chart Widgets
 
-Visualize time-series data, trends, and patterns with various chart types.
+Visualize time-series data, trends and patterns with various chart types.
 
 - [Bar](/docs/widgets/bar) - Bar charts for comparisons
 - [Scatter](/docs/widgets/scatter) - Scatter plots for correlations
@@ -55,7 +55,7 @@ Execute actions and monitor events directly from your dashboard.
 
 ### Visual & Media Widgets
 
-Enhance dashboards with images, overlays, and custom drawings.
+Enhance dashboards with images, overlays and custom drawings.
 
 - [Image](/docs/widgets/image) - Static image display
 - [Canvas](/docs/widgets/canvas) - Free-form drawing
@@ -116,7 +116,7 @@ Beyond the common fields, widgets may include:
 - **Measures / Properties** - Data source configuration
 - **Timeframe** - Time range for data display (timeseries widgets)
 - **Aggregation** - Data aggregation method
-- **Visualization Settings** - Chart types, colors, and display options
+- **Visualization Settings** - Chart types, colors and display options
 
 ---
 

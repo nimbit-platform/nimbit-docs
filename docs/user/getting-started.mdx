@@ -6,11 +6,11 @@ sidebar_label: Getting Started
 title: Getting started
 ---
 
-import NavigationBlock from '@site/src/components/NavigationBlock';
+import NavigationBlock from "@site/src/components/NavigationBlock";
 
 # Getting Started with IotBreeze
 
-Welcome to IotBreeze! This guide will walk you through the fundamental concepts and basic setup to help you start managing your IoT devices effectively. IotBreeze is designed to simplify IoT device management while providing powerful tools for data visualization, analysis, and automation.
+Welcome to IotBreeze! This guide will walk you through the fundamental concepts and basic setup to help you start managing your IoT devices effectively. IotBreeze is designed to simplify IoT device management while providing powerful tools for data visualization, analysis and automation.
 
 :::note
 
@@ -34,7 +34,7 @@ ThingTypes are templates or models that define the structure and capabilities of
 
 - **ETL Rules**: Extract, Transform, Load pipelines for processing incoming data in real-time (unit conversion, calculating derived values, filtering, aggregation, etc.)
 
-**Real-world example:** A "Smart Thermostat" ThingType might define properties like model number and installation date, measures like current temperature and humidity, actions like "set temperature" and "change mode", and ETL rules to convert temperature units and calculate comfort indices.
+**Real-world example:** A "Smart Thermostat" ThingType might define properties like model number and installation date, measures like current temperature and humidity, actions like "set temperature" and "change mode" and ETL rules to convert temperature units and calculate comfort indices.
 
 ### Things: Your Digital Devices
 
@@ -48,7 +48,7 @@ Things are the actual instances of devices created from a ThingType. When you ad
 - Supports **tagging and grouping** for easier management of large device fleets
 - Can have **custom alerts and thresholds** configured for its specific deployment context
 
-**Real-world example:** "Living Room Thermostat" would be a Thing created from the "Smart Thermostat" ThingType. It would have specific values for its location, installation date, current temperature readings, and other attributes defined by the ThingType.
+**Real-world example:** "Living Room Thermostat" would be a Thing created from the "Smart Thermostat" ThingType. It would have specific values for its location, installation date, current temperature readings and other attributes defined by the ThingType.
 
 ### Dashboards: Visualize and Control
 
@@ -102,6 +102,7 @@ The most straightforward approach for getting started is to use the web interfac
 <NavigationBlock link="/docs/onboarding/things" title="Register Things" />
 
 This method provides a guided experience with form validation and instant feedback, making it ideal for:
+
 - Initial system setup
 - Small to medium deployments
 - Testing and prototyping
@@ -117,6 +118,7 @@ For rapid deployment or situations where device specifications may not be fully 
 - As devices evolve and send new data fields, IotBreeze will **automatically update the schema** to accommodate these changes
 
 This approach is particularly useful for:
+
 - Rapid prototyping
 - Exploratory IoT projects
 - Devices with evolving capabilities
@@ -134,6 +136,7 @@ For advanced users and system integrators, IotBreeze provides comprehensive API 
 - **Update device configurations** systematically
 
 The API approach is ideal for:
+
 - Large-scale industrial deployments
 - OEMs integrating IotBreeze into their products
 - System integrators building complete IoT solutions

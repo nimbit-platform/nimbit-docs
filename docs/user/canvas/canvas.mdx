@@ -6,18 +6,18 @@ sidebar_position: 1
 
 # Canvas
 
-The Canvas feature provides an interactive visual workspace for creating diagrams, layouts, and visual representations of your IoT assets. Built on a powerful drawing engine, Canvas allows you to visually organize and annotate your things, embed media, and build rich visual documentation for your IoT deployments.
+The Canvas feature provides an interactive visual workspace for creating diagrams, layouts and visual representations of your IoT assets. Built on a powerful drawing engine, Canvas allows you to visually organize and annotate your things, embed media and build rich visual documentation for your IoT deployments.
 
 ## Overview
 
 The Canvas feature enables you to:
 
 - **Create visual workspaces** linked to your IoT things for visual asset management
-- **Draw and annotate** using shapes, text, arrows, and freehand tools
-- **Bind live IoT data** to text elements, replacing placeholders with real-time values from device measures, properties, and system information
+- **Draw and annotate** using shapes, text, arrows and freehand tools
+- **Bind live IoT data** to text elements, replacing placeholders with real-time values from device measures, properties and system information
 - **Embed media and external content** directly into your canvas
-- **Organize layouts** with frames, notes, and grouping tools
-- **Customize styling** with colors, fills, dash styles, and sizes
+- **Organize layouts** with frames, notes and grouping tools
+- **Customize styling** with colors, fills, dash styles and sizes
 - **Toggle grid alignment** for precise element placement
 - **Export your work** in various formats
 
@@ -73,7 +73,7 @@ Each canvas row provides two action buttons:
 The table footer provides pagination controls:
 
 - **Show [N] per page** - Dropdown to select items per page (default: 50)
-- **Page navigation** - Previous, page numbers, next, and last page buttons
+- **Page navigation** - Previous, page numbers, next and last page buttons
 - **Item counter** - Displays "X of Y" total canvases
 
 ## Creating a Canvas
@@ -98,7 +98,7 @@ To create a new canvas:
 
 4. Click **Save** to create the canvas
 
-The new canvas appears in the Canvases Management table with its name, associated resources, creation date, and type.
+The new canvas appears in the Canvases Management table with its name, associated resources, creation date and type.
 
 ## Canvas Types
 
@@ -169,7 +169,7 @@ The bottom toolbar provides drawing and shape tools:
 
 | Tool          | Description                                      |
 | ------------- | ------------------------------------------------ |
-| **Select**    | Select, move, and resize elements                |
+| **Select**    | Select, move and resize elements                 |
 | **Hand**      | Pan around the canvas without selecting elements |
 | **Eraser**    | Erase elements by clicking or dragging over them |
 | **Text**      | Add text labels and annotations                  |
@@ -287,12 +287,12 @@ To bind text to a live data source:
 
 The Bind Value dialog presents a searchable tree of all available data sources:
 
-| Category    | Description                                                                                                                                           |
-| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **tenant**  | Tenant information: `tenantName`, `tenantId`                                                                                                          |
-| **time**    | Time values: `currentDate`, `month`, `day`, `year`, `timestamp`, `dateTime`, `formattedTime`, `formattedDate`, `dayOfWeek`, `dayOfWeekName`, and more |
-| **device**  | Device data (single-device canvas): `displayName`, `status`, `lastUpdate`, plus nested `thingType`, `properties`, and `measures`                      |
-| **devices** | Device data (multi-asset canvas): same structure as device, organized by device ID                                                                    |
+| Category    | Description                                                                                                                                          |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **tenant**  | Tenant information: `tenantName`, `tenantId`                                                                                                         |
+| **time**    | Time values: `currentDate`, `month`, `day`, `year`, `timestamp`, `dateTime`, `formattedTime`, `formattedDate`, `dayOfWeek`, `dayOfWeekName` and more |
+| **device**  | Device data (single-device canvas): `displayName`, `status`, `lastUpdate`, plus nested `thingType`, `properties` and `measures`                      |
+| **devices** | Device data (multi-asset canvas): same structure as device, organized by device ID                                                                   |
 
 To select a value:
 

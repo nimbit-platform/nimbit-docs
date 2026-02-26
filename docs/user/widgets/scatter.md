@@ -9,7 +9,7 @@ slug: /widgets/scatter
 
 ## Overview
 
-The Scatter widget displays points in a coordinate system where X and Y axes represent different variables. It's perfect for identifying correlations between variables, detecting outliers, and uncovering trends and patterns in data.
+The Scatter widget displays points in a coordinate system where X and Y axes represent different variables. It's perfect for identifying correlations between variables, detecting outliers and uncovering trends and patterns in data.
 
 ## Use Cases
 
@@ -30,15 +30,14 @@ The Scatter widget displays points in a coordinate system where X and Y axes rep
 
 ## Configuration
 
-
 ### Basic Settings
 
-| Field         | Required | Description                                                                                          |
-| ------------- | -------- | ---------------------------------------------------------------------------------------------------- |
-| **Title**     | ❌ No    | Display name for the widget                                                                          |
-| **Thing**     | ✅ Yes   | Select Thing to display data from (not required for ThingType dashboards)                            |
-| **Timeframe** | ✅ Yes   | Time range (from/to) for data display                                                                |
-| **Measures**  | ✅ Yes   | Add measures to display as scatter points. Each measure requires: measure ID, aggregation, and color |
+| Field         | Required | Description                                                                                         |
+| ------------- | -------- | --------------------------------------------------------------------------------------------------- |
+| **Title**     | ❌ No    | Display name for the widget                                                                         |
+| **Thing**     | ✅ Yes   | Select Thing to display data from (not required for ThingType dashboards)                           |
+| **Timeframe** | ✅ Yes   | Time range (from/to) for data display                                                               |
+| **Measures**  | ✅ Yes   | Add measures to display as scatter points. Each measure requires: measure ID, aggregation and color |
 
 ### Chart Settings
 
