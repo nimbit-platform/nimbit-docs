@@ -58,7 +58,7 @@ Events carry a severity level that indicates their importance:
 
 ### Event Visibility and Groups
 
-You can only see events whose event type is assigned to at least one of your groups. If an event type is not in any of your groups, its events will not appear in your Events list. Administrators should ensure that event types — especially custom ones for rules and external sources — are assigned to the correct groups so the right users have visibility. See [Event Types](/docs/events/event-types) for details.
+You can only see events whose event type is assigned to at least one of your groups. If an event type is not in any of your groups, its events will not appear in your Events list. Administrators should ensure that event types - especially custom ones for rules and external sources - are assigned to the correct groups so the right users have visibility. See [Event Types](/docs/events/event-types) for details.
 
 ## Accessing Events
 
