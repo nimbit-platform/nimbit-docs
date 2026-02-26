@@ -7,15 +7,16 @@ position: 4
 
 ## What are Runs?
 
-In the context of machine learning, a **run** represents an individual execution of an experiment. Each run captures the input parameters, the model being trained, and the resulting metrics (such as accuracy, loss, or error) after the execution completes.
+In the context of machine learning, a **run** represents an individual execution of an experiment. Each run captures the input parameters, the model being trained and the resulting metrics (such as accuracy, loss, or error) after the execution completes.
 
 Runs help you keep track of how each model performs, making it easy to compare different attempts, whether you are testing different datasets, hyperparameters, or models.
 
 :::info
-A run is a record of a single experiment execution. It logs key details such as the model’s performance, metrics, and parameters used during the training or inference process.
+A run is a record of a single experiment execution. It logs key details such as the model’s performance, metrics and parameters used during the training or inference process.
 :::
 
 In our system, runs allow you to:
+
 - Track the performance of each model iteration.
 - Log and store input parameters and results for future comparison.
 - Compare the performance across different models, datasets, or configurations.
@@ -32,10 +33,9 @@ Consider tagging your runs with meaningful names or metadata to easily identify 
 Our system provides a variety of features to manage your machine learning runs. Here’s what you can do:
 
 - **View all runs**: Retrieve a list of all the runs you’ve executed within your experiments. This provides a comprehensive overview of all model attempts.
-  
 - **Retrieve runs for a specific experiment**: You can focus on runs within a specific experiment to analyze how different runs performed under similar conditions.
 
-- **Retrieve a run by ID**: Look up the details of a specific run, including its performance metrics, parameters, and status, which helps in deeper analysis of a particular execution.
+- **Retrieve a run by ID**: Look up the details of a specific run, including its performance metrics, parameters and status, which helps in deeper analysis of a particular execution.
 
 - **Find the best run**: Identify the run with the best performance based on a specific metric. This is useful when optimizing models for a certain goal, such as minimizing error or maximizing accuracy.
 
@@ -48,12 +48,13 @@ The **best run** feature helps you quickly identify which model configuration pe
 - **Delete a run**: If you no longer need a run, you can delete it to keep your workspace organized.
 
 :::danger
-Be careful when deleting runs, as this action is permanent, and the run data cannot be recovered once deleted.
+Be careful when deleting runs, as this action is permanent and the run data cannot be recovered once deleted.
 :::
 
 ### How These Endpoints Work
 
 These features are powered by **endpoints** that allow you to interact with the runs in your system. Through these endpoints, you can:
+
 - Retrieve lists of runs or details of specific runs.
 - Track performance metrics and input parameters for each run.
 - Compare multiple runs to find the best-performing model.

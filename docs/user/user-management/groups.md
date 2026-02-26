@@ -7,11 +7,11 @@ slug: /user-management/groups
 
 ## Overview
 
-Groups in IotBreeze provide a structured way to manage user access and device visibility. By assigning users, things, and thing types to groups, administrators can control which devices and features are accessible to them.
+Groups in IotBreeze provide a structured way to manage user access and device visibility. By assigning users, things and thing types to groups, administrators can control which devices and features are accessible to them.
 
 Groups are **hierarchical**, meaning permissions can be inherited from parent groups, ensuring a scalable and organized access management system.
 
-This guide explains how to create groups, assign users and resources (including things, thing types, and event types), and understand the hierarchy structure.
+This guide explains how to create groups, assign users and resources (including things, thing types and event types) and understand the hierarchy structure.
 
 ---
 
@@ -201,7 +201,7 @@ IotBreeze's group system supports **permission inheritance**, allowing users to 
 
 When a user is a member of multiple groups in a hierarchy, they inherit permissions from **all parent groups** they belong to. This means:
 
-- If a user is in **Group A** (child) and **Group B** (parent), and Group B grants them certain permissions, those permissions apply to Group A as well.
+- If a user is in **Group A** (child) and **Group B** (parent) and Group B grants them certain permissions, those permissions apply to Group A as well.
 - Inherited permissions **cannot be revoked** at the child group level. They must be modified at the parent group where they were originally granted.
 - Users retain the **highest level of permissions** across all groups they belong to in the hierarchy.
 
@@ -224,7 +224,7 @@ Organization (Parent)
 
 **User Sarah** is a member of both:
 
-- **Organization** group (with Read, Update, and Execute permissions)
+- **Organization** group (with Read, Update and Execute permissions)
 - **Team 1** group (with only Read permission directly assigned)
 
 When viewing Sarah's permissions in **Team 1**:

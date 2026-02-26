@@ -7,7 +7,7 @@ slug: /automation/rule-designer
 
 ## Overview
 
-The **Rule Designer** is a visual, flow-based editor that lets you define automated **validation rules** for your IoT data. Rules evaluate incoming measurements from Things or Thing Types, trigger on configurable conditions, and execute actions such as sending notifications, emails, webhook calls, or creating events.
+The **Rule Designer** is a visual, flow-based editor that lets you define automated **validation rules** for your IoT data. Rules evaluate incoming measurements from Things or Thing Types, trigger on configurable conditions and execute actions such as sending notifications, emails, webhook calls, or creating events.
 
 A rule consists of:
 
@@ -16,7 +16,7 @@ A rule consists of:
 - A **Trigger** - the timing or state-change logic that fires the rule
 - One or more **Actions** - what happens when the rule is triggered
 
-Rules are versioned, support a draft/active workflow, and run continuously once activated.
+Rules are versioned, support a draft/active workflow and run continuously once activated.
 
 ---
 
@@ -24,7 +24,7 @@ Rules are versioned, support a draft/active workflow, and run continuously once 
 
 Navigate to **Automation → Rule Designer** to reach the rule management table.
 
-![Rule Designer Management table showing rule list with status, version count, and tags](/screenshots/rule-designer/rule-list.png)
+![Rule Designer Management table showing rule list with status, version count and tags](/screenshots/rule-designer/rule-list.png)
 
 ### Table Columns
 
@@ -74,7 +74,7 @@ The header at the top of the editor provides the following controls:
 | **New version**           | Creates a new version of the rule (disabled while viewing the active flow)                                               |
 | **Switch version**        | Opens the version overview to switch between or inspect previous versions                                                |
 | **Activate / Deactivate** | Toggles the rule between active and inactive states. Activating saves the current draft. Disabled if the flow is invalid |
-| **Edit rule**             | Opens a drawer to edit the rule's name, description, severity, and tags                                                  |
+| **Edit rule**             | Opens a drawer to edit the rule's name, description, severity and tags                                                   |
 
 ### Draft vs. Active Mode
 
@@ -234,15 +234,15 @@ Sends an in-app notification to selected users or groups.
 
 Configuration uses a 2-step wizard: **General** (message content) → **Users and Groups** (recipients).
 
-| Field           | Description                                                    |
-| --------------- | -------------------------------------------------------------- |
-| **Name**        | Internal label for this action node                            |
-| **Description** | Optional note                                                  |
-| **Subject**     | Notification subject line (required)                           |
-| **Severity**    | `Information`, `Warning`, `Error`, or `Critical`               |
-| **Message**     | Notification body text (required)                              |
-| **Recipients**  | Individual users to notify (step 2 — Users and Groups)         |
-| **Groups**      | User groups to notify (step 2 — Users and Groups)              |
+| Field           | Description                                            |
+| --------------- | ------------------------------------------------------ |
+| **Name**        | Internal label for this action node                    |
+| **Description** | Optional note                                          |
+| **Subject**     | Notification subject line (required)                   |
+| **Severity**    | `Information`, `Warning`, `Error`, or `Critical`       |
+| **Message**     | Notification body text (required)                      |
+| **Recipients**  | Individual users to notify (step 2 — Users and Groups) |
+| **Groups**      | User groups to notify (step 2 — Users and Groups)      |
 
 ![Notification action configuration — General step](/screenshots/rule-designer/action-email-notification.png)
 
@@ -252,18 +252,18 @@ Sends an email using plain text content or a configured mail template.
 
 Configuration uses a 2-step wizard: **General** (message content) → **Users and Groups** (recipients).
 
-| Field           | Description                                              |
-| --------------- | -------------------------------------------------------- |
-| **Name**        | Internal label for this action node                      |
-| **Description** | Optional note                                            |
-| **Bcc**         | Blind copy recipients                                    |
-| **Cc**          | Copy recipients                                          |
-| **Format Type** | `Plain` or `Mail Template`                               |
-| **From**        | Sender address                                           |
-| **Subject**     | Email subject (required)                                 |
-| **Body**        | Email content (required for Plain format)                |
-| **Recipients**  | Individual email recipients (step 2 — Users and Groups)  |
-| **Groups**      | User groups to email (step 2 — Users and Groups)         |
+| Field           | Description                                             |
+| --------------- | ------------------------------------------------------- |
+| **Name**        | Internal label for this action node                     |
+| **Description** | Optional note                                           |
+| **Bcc**         | Blind copy recipients                                   |
+| **Cc**          | Copy recipients                                         |
+| **Format Type** | `Plain` or `Mail Template`                              |
+| **From**        | Sender address                                          |
+| **Subject**     | Email subject (required)                                |
+| **Body**        | Email content (required for Plain format)               |
+| **Recipients**  | Individual email recipients (step 2 — Users and Groups) |
+| **Groups**      | User groups to email (step 2 — Users and Groups)        |
 
 ![Email action configuration — General step](/screenshots/rule-designer/action-email-config.png)
 
@@ -273,13 +273,13 @@ Makes an **HTTP request** to an external endpoint.
 
 Configuration uses a 3-step wizard: **Request** → **Authorization** → **Test**.
 
-| Field           | Description                                                     |
-| --------------- | --------------------------------------------------------------- |
-| **Name**        | Internal label for this action node                             |
-| **Description** | Optional note                                                   |
-| **Method**      | `GET`, `POST`, `PUT`, `PATCH`, or `DELETE` (required)           |
-| **URL**         | Target endpoint (required)                                      |
-| **Headers**     | Custom key-value HTTP headers (add with **+ Add Header**)       |
+| Field             | Description                                                     |
+| ----------------- | --------------------------------------------------------------- |
+| **Name**          | Internal label for this action node                             |
+| **Description**   | Optional note                                                   |
+| **Method**        | `GET`, `POST`, `PUT`, `PATCH`, or `DELETE` (required)           |
+| **URL**           | Target endpoint (required)                                      |
+| **Headers**       | Custom key-value HTTP headers (add with **+ Add Header**)       |
 | **Authorization** | `None`, `Bearer Token`, `Basic`, `Query Parameter`, or `OAuth2` |
 
 **OAuth2 grant types:** `Client Credentials`, `Password`, `Refresh Token`, `JWT Bearer`.
@@ -312,7 +312,7 @@ This action is only available when the Context Selector is set to **Thing Type**
 
 ![Update Measures action — JSON editor pre-populated with Thing Type measures](/screenshots/rule-designer/action-update-measure-config.png)
 
-![Complete rule flow showing Context Selector, Condition, multiple Triggers, and multiple Actions](/screenshots/rule-designer/rule-complete.png)
+![Complete rule flow showing Context Selector, Condition, multiple Triggers and multiple Actions](/screenshots/rule-designer/rule-complete.png)
 
 ---
 
@@ -322,7 +322,7 @@ The Rule Designer supports multiple versions per rule, enabling safe iteration w
 
 ### Viewing Versions
 
-Click **Switch version** in the header to open the **Version Overview** panel. This lists all existing versions with their status (active/inactive), creation date, and version number.
+Click **Switch version** in the header to open the **Version Overview** panel. This lists all existing versions with their status (active/inactive), creation date and version number.
 
 ### Creating a New Version
 

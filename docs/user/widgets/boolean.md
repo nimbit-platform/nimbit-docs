@@ -9,7 +9,7 @@ slug: /widgets/boolean
 
 ## Overview
 
-The Boolean widget displays boolean values with clear on/off or true/false indicators. It provides immediate visual feedback for binary states, making it perfect for switches, alarms, and digital inputs.
+The Boolean widget displays boolean values with clear on/off or true/false indicators. It provides immediate visual feedback for binary states, making it perfect for switches, alarms and digital inputs.
 
 ## Use Cases
 
@@ -27,13 +27,12 @@ The Boolean widget displays boolean values with clear on/off or true/false indic
 
 ## Configuration
 
-
 ### Basic Settings
 
-| Field        | Required | Description                                                                             |
-| ------------ | -------- | --------------------------------------------------------------------------------------- |
-| **Thing**    | ✅ Yes   | Select Thing to monitor |
-| **Measures** | ✅ Yes   | Add measures to display.                  |
+| Field        | Required | Description              |
+| ------------ | -------- | ------------------------ |
+| **Thing**    | ✅ Yes   | Select Thing to monitor  |
+| **Measures** | ✅ Yes   | Add measures to display. |
 
 ### Display Options
 

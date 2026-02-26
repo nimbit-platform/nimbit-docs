@@ -16,7 +16,7 @@ NimBit is a technology spin-off that makes "digitization" and the "Internet of T
 
 ## IoTBreeze - Your IoT Management System
 
-With our managed IoT solutions for businesses, you can integrate your devices within minutes, send data, trigger actions based on that data, automate tasks, and gain insights - even in mixed fleet scenarios.
+With our managed IoT solutions for businesses, you can integrate your devices within minutes, send data, trigger actions based on that data, automate tasks and gain insights - even in mixed fleet scenarios.
 
 ### Compatibility
 
@@ -34,7 +34,7 @@ HINZ Steuerungstechnik GmbH pursues a clear vision: increasing quality and throu
 
 **Green and efficient shredding**
 
-ALLRECO GmbH relies on environmentally friendly and efficient shredding technologies. By integrating IoTBreeze, processes were optimized, and efficiency was increased.
+ALLRECO GmbH relies on environmentally friendly and efficient shredding technologies. By integrating IoTBreeze, processes were optimized and efficiency was increased.
 
 ## Contact
 

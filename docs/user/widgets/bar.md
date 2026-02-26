@@ -9,7 +9,7 @@ slug: /widgets/bar
 
 ## Overview
 
-The Bar widget displays data using horizontal or vertical bars whose length or height represents values. It's ideal for comparing categories, displaying rankings, and visualizing discrete data with clear visual differences.
+The Bar widget displays data using horizontal or vertical bars whose length or height represents values. It's ideal for comparing categories, displaying rankings and visualizing discrete data with clear visual differences.
 
 ## Use Cases
 
@@ -30,16 +30,15 @@ The Bar widget displays data using horizontal or vertical bars whose length or h
 
 ## Configuration
 
-
 ### Basic Settings
 
-| Field         | Required | Description                                                                                |
-| ------------- | -------- | ------------------------------------------------------------------------------------------ |
-| **Title**     | ❌ No    | Display name for the widget                                                                |
-| **Thing**     | ✅ Yes   | Select Thing to display data from (not required for ThingType dashboards)                  |
-| **Mode**      | ✅ Yes   | Choose 'clustered' or 'stacked' bar display                                                |
-| **Timeframe** | ✅ Yes   | Time range for data display                                                      |
-| **Measures**  | ✅ Yes   | Add measures to display as bars. Each measure requires: measure ID, aggregation, and color |
+| Field         | Required | Description                                                                               |
+| ------------- | -------- | ----------------------------------------------------------------------------------------- |
+| **Title**     | ❌ No    | Display name for the widget                                                               |
+| **Thing**     | ✅ Yes   | Select Thing to display data from (not required for ThingType dashboards)                 |
+| **Mode**      | ✅ Yes   | Choose 'clustered' or 'stacked' bar display                                               |
+| **Timeframe** | ✅ Yes   | Time range for data display                                                               |
+| **Measures**  | ✅ Yes   | Add measures to display as bars. Each measure requires: measure ID, aggregation and color |
 
 ### Chart Settings
 

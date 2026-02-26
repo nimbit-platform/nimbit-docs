@@ -9,7 +9,7 @@ slug: /widgets/fill-level
 
 ## Overview
 
-The Fill Level widget provides visual representation of fill levels or capacity, often displayed as tank or container graphics. It's ideal for monitoring liquid levels, capacity utilization, and any metric representing fullness or completion.
+The Fill Level widget provides visual representation of fill levels or capacity, often displayed as tank or container graphics. It's ideal for monitoring liquid levels, capacity utilization and any metric representing fullness or completion.
 
 ## Use Cases
 
@@ -29,7 +29,6 @@ The Fill Level widget provides visual representation of fill levels or capacity,
 - Real-time updates
 
 ## Configuration
-
 
 ### Basic Settings
 

@@ -18,16 +18,16 @@ Navigate to **Reporting** in the sidebar to see all reports you have access to.
 
 Each row shows:
 
-| Column | Description |
-|--------|-------------|
-| **Name** | The report name. |
-| **Status** | Published ✅ or Not published. |
-| **Published at** | Date/time of the last publication. |
-| **Schedule** | Calendar icon - click to open the time frame settings. |
-| **Groups** | Access groups shown as avatar chips. |
-| **Users** | Assigned users shown as avatar chips. |
-| **Things** | Number of Things associated with the report. |
-| **Tags** | Search tags as chips. |
+| Column           | Description                                            |
+| ---------------- | ------------------------------------------------------ |
+| **Name**         | The report name.                                       |
+| **Status**       | Published ✅ or Not published.                         |
+| **Published at** | Date/time of the last publication.                     |
+| **Schedule**     | Calendar icon - click to open the time frame settings. |
+| **Groups**       | Access groups shown as avatar chips.                   |
+| **Users**        | Assigned users shown as avatar chips.                  |
+| **Things**       | Number of Things associated with the report.           |
+| **Tags**         | Search tags as chips.                                  |
 
 Row actions (right side of each row):
 
@@ -47,43 +47,43 @@ Click **Create report** to open the creation drawer.
 
 ### Basic Information
 
-| Field | Required | Description |
-|-------|----------|-------------|
-| **Name** | ✅ Yes | Unique report name (up to 126 characters). Supports translations. |
-| **Description** | ❌ No | Short description of the report's purpose. |
+| Field           | Required | Description                                                       |
+| --------------- | -------- | ----------------------------------------------------------------- |
+| **Name**        | ✅ Yes   | Unique report name (up to 126 characters). Supports translations. |
+| **Description** | ❌ No    | Short description of the report's purpose.                        |
 
 ### File Settings
 
 These settings control how generated PDF files are named and where they are saved in the [Files](/docs/files) explorer.
 
-| Field | Required | Description |
-|-------|----------|-------------|
-| **File Name** | ✅ Yes | The filename used when generating PDFs (up to 128 characters). Supports dynamic variables - type `@` to insert a mention. |
-| **Folder** | ✅ Yes | The path in the Files explorer where PDFs are stored (e.g. `/reports/monthly/`). |
+| Field         | Required | Description                                                                                                               |
+| ------------- | -------- | ------------------------------------------------------------------------------------------------------------------------- |
+| **File Name** | ✅ Yes   | The filename used when generating PDFs (up to 128 characters). Supports dynamic variables - type `@` to insert a mention. |
+| **Folder**    | ✅ Yes   | The path in the Files explorer where PDFs are stored (e.g. `/reports/monthly/`).                                          |
 
 **Dynamic filename variables** - type `@` in the File Name field to insert:
 
-| Variable | Example output |
-|----------|---------------|
-| `{{date}}` | `2025-01-15` |
-| `{{date_time}}` | `2025-01-15_14:30:00` |
-| `{{day}}` | `15` |
-| `{{month}}` | `1` |
-| `{{month_long}}` | `January` |
-| `{{month_short}}` | `Jan` |
-| `{{year}}` | `2025` |
-| `{{timestamp}}` | Unix timestamp |
-| `{{tenant}}` | Tenant name |
-| `{{uuid}}` | Unique ID |
+| Variable          | Example output        |
+| ----------------- | --------------------- |
+| `{{date}}`        | `2025-01-15`          |
+| `{{date_time}}`   | `2025-01-15_14:30:00` |
+| `{{day}}`         | `15`                  |
+| `{{month}}`       | `1`                   |
+| `{{month_long}}`  | `January`             |
+| `{{month_short}}` | `Jan`                 |
+| `{{year}}`        | `2025`                |
+| `{{timestamp}}`   | Unix timestamp        |
+| `{{tenant}}`      | Tenant name           |
+| `{{uuid}}`        | Unique ID             |
 
 ### Access & Data
 
-| Field | Required | Description |
-|-------|----------|-------------|
-| **Things** | ✅ Yes | One or more Things whose data appears in the report widgets. |
-| **Users** | ❌ No | Users who can access this report. |
-| **Groups** | ❌ No | Groups that can access this report. |
-| **Search Tags** | ❌ No | Tags for filtering in the reports list. |
+| Field           | Required | Description                                                  |
+| --------------- | -------- | ------------------------------------------------------------ |
+| **Things**      | ✅ Yes   | One or more Things whose data appears in the report widgets. |
+| **Users**       | ❌ No    | Users who can access this report.                            |
+| **Groups**      | ❌ No    | Groups that can access this report.                          |
+| **Search Tags** | ❌ No    | Tags for filtering in the reports list.                      |
 
 Click **Save** to create the report and open the editor.
 
@@ -91,7 +91,7 @@ Click **Save** to create the report and open the editor.
 
 ## Report Editor
 
-After creation, the report opens in edit mode. This is where you add and arrange widgets, configure the schedule, and manage publishing.
+After creation, the report opens in edit mode. This is where you add and arrange widgets, configure the schedule and manage publishing.
 
 ![Report in edit mode](/screenshots/report/report-filled.png)
 
@@ -99,13 +99,13 @@ After creation, the report opens in edit mode. This is where you add and arrange
 
 The top toolbar contains:
 
-| Button | Description |
-|--------|-------------|
-| **Save** | Saves unsaved widget changes. Disabled when there are no changes or when in diff view. |
-| **Print** | Opens the browser print dialog. Only available when edit mode is locked. |
-| **Test PDF** | Triggers an async PDF generation. The file is saved to the Files explorer in ~1–2 minutes. Has a 30-second cooldown after triggering. |
-| **Publish / Unpublish** | Toggles the report's published status. Requires a schedule (time frame) to be configured before publishing. |
-| **Manage Subscriptions** | Opens the subscriptions drawer to configure who receives report deliveries. |
+| Button                   | Description                                                                                                                           |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| **Save**                 | Saves unsaved widget changes. Disabled when there are no changes or when in diff view.                                                |
+| **Print**                | Opens the browser print dialog. Only available when edit mode is locked.                                                              |
+| **Test PDF**             | Triggers an async PDF generation. The file is saved to the Files explorer in ~1–2 minutes. Has a 30-second cooldown after triggering. |
+| **Publish / Unpublish**  | Toggles the report's published status. Requires a schedule (time frame) to be configured before publishing.                           |
+| **Manage Subscriptions** | Opens the subscriptions drawer to configure who receives report deliveries.                                                           |
 
 The **schedule pill** in the toolbar shows the current time frame at a glance. Click it to open the time frame settings drawer.
 
@@ -117,12 +117,12 @@ The **schedule pill** in the toolbar shows the current time frame at a glance. C
 
 The time frame determines **what data window** the report captures and **when it recurs**.
 
-| Setting | Description |
-|---------|-------------|
+| Setting             | Description                                                                                            |
+| ------------------- | ------------------------------------------------------------------------------------------------------ |
 | **Lookback period** | How far back the report looks from its run time. For example, "7 days" captures the past week of data. |
-| **Start date** | When the schedule begins. |
-| **Start time** | Time of day the first run occurs. |
-| **Repeat interval** | How often the report recurs (e.g. every 1 week, every 1 month). |
+| **Start date**      | When the schedule begins.                                                                              |
+| **Start time**      | Time of day the first run occurs.                                                                      |
+| **Repeat interval** | How often the report recurs (e.g. every 1 week, every 1 month).                                        |
 
 Time periods use ISO 8601 duration notation internally (e.g. `P7D` = 7 days, `P1W` = 1 week, `P1M` = 1 month).
 
@@ -138,10 +138,10 @@ Toggle the report's published status with the **Publish** / **Unpublish** button
 
 ![Publish report](/screenshots/report/report-publish.png)
 
-| State | Behavior |
-|-------|----------|
-| **Not published** | The report exists but does not run automatically. Subscribers receive no deliveries. |
-| **Published** | The report runs on the configured schedule and generates PDFs. Subscribers are notified or emailed as configured. |
+| State             | Behavior                                                                                                          |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------- |
+| **Not published** | The report exists but does not run automatically. Subscribers receive no deliveries.                              |
+| **Published**     | The report runs on the configured schedule and generates PDFs. Subscribers are notified or emailed as configured. |
 
 The **Status** column in the reports list shows the current state with a green checkmark (published) or orange no-entry icon (not published).
 
@@ -163,10 +163,10 @@ Type a user's name to select an internal user, or type an email address to add a
 
 Each subscription can be configured with:
 
-| Option | Description |
-|--------|-------------|
-| **Send email** | Sends the report PDF as an email attachment when the report runs. Requires SMTP to be configured. |
-| **Send notification** | Sends an in-app notification when the report runs. Only available for internal users. |
+| Option                | Description                                                                                       |
+| --------------------- | ------------------------------------------------------------------------------------------------- |
+| **Send email**        | Sends the report PDF as an email attachment when the report runs. Requires SMTP to be configured. |
+| **Send notification** | Sends an in-app notification when the report runs. Only available for internal users.             |
 
 ### Managing Subscriptions
 
@@ -189,7 +189,7 @@ Opened from the **Edit** row action or directly from the editor. Shows the full 
 
 ### Read-only (View) mode
 
-Opened from the **View** row action. Shows the report with a simplified header: the report name, a back button, and a **Print** button. No editing tools are shown.
+Opened from the **View** row action. Shows the report with a simplified header: the report name, a back button and a **Print** button. No editing tools are shown.
 
 ![Report in view mode](/screenshots/report/report-view.png)
 
@@ -213,10 +213,10 @@ Widgets are the content building blocks of a report. Reports use the same widget
 
 The report canvas size is configured via **Page Settings** (accessible from the report form):
 
-| Setting | Description |
-|---------|-------------|
-| **Page size** | Predefined paper size (A4, A3, etc.) or custom dimensions. |
-| **Frame width / height** | Canvas dimensions in pixels for custom page sizes. |
+| Setting                  | Description                                                |
+| ------------------------ | ---------------------------------------------------------- |
+| **Page size**            | Predefined paper size (A4, A3, etc.) or custom dimensions. |
+| **Frame width / height** | Canvas dimensions in pixels for custom page sizes.         |
 
 ### Adding Widgets
 
@@ -236,5 +236,5 @@ Use the **Test PDF** button to preview how the report will look when generated o
 - A toast notification confirms that generation has started.
 
 :::tip
-Use Test PDF before publishing to verify that layout, data, and filename variables render correctly.
+Use Test PDF before publishing to verify that layout, data and filename variables render correctly.
 :::

@@ -34,7 +34,7 @@ The test button becomes active only **after saving** your configuration.
 ## Save or Reset
 
 - **Save**: Applies all changes.
-- **Reset to Default**: Resets **all tenant settings**, including email config, uploaded images, and theme preferences.
+- **Reset to Default**: Resets **all tenant settings**, including email config, uploaded images and theme preferences.
 
 ---
 

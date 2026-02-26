@@ -1,16 +1,18 @@
 # Forecasting API Documentation
 
-This project provides endpoints for creating datasets, analyzing time series data, and building and using forecasting models. Below is a step-by-step guide to the main features and an explanation of the key inputs required at each stage.
+This project provides endpoints for creating datasets, analyzing time series data and building and using forecasting models. Below is a step-by-step guide to the main features and an explanation of the key inputs required at each stage.
 
 ## 1. Create a Dataset
 
 ### Endpoint:
+
 POST /create-dataset
 
 bash
 Copy code
 
 ### Request Body:
+
 ```json
 {
   "name": "new dataset",
@@ -20,16 +22,10 @@ Copy code
   "config": {
     "measurement": "raptor",
     "raw": false,
-    "measures": [
-      "matstrk"
-    ],
+    "measures": ["matstrk"],
     "precision": 2,
-    "aggregations": [
-      "count"
-    ],
-    "ids": [
-      "th_ikpq2lSiHyGzslvRF"
-    ],
+    "aggregations": ["count"],
+    "ids": ["th_ikpq2lSiHyGzslvRF"],
     "window": {
       "start": "2024-07-05T08:43:26.965000Z",
       "end": "2024-08-05T08:43:26.965000Z",
@@ -40,8 +36,8 @@ Copy code
   "fileType": "parquet",
   "storageType": "local"
 }
-
 ```
+
 # test
 
 <!-- Input Breakdown:
@@ -84,7 +80,7 @@ Id: The unique identifier of the dataset to be analyzed.
 Measure_agg: The aggregated measure from the dataset to be analyzed. In this case, it refers to the "matstrk_count", an aggregation from the dataset configuration.
 Input Breakdown:
 Id: This links to the dataset you're analyzing.
-Measure_agg: Specifies the metric (in aggregated form) from the dataset you want to analyze, such as counts, averages, or sums of the data. This will help analyze characteristics like linearity, seasonality, and autocorrelation in the data.
+Measure_agg: Specifies the metric (in aggregated form) from the dataset you want to analyze, such as counts, averages, or sums of the data. This will help analyze characteristics like linearity, seasonality and autocorrelation in the data.
 4. Suggest Forecasting Model
 Endpoint:
 bash

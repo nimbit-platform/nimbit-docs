@@ -34,16 +34,15 @@ This widget is intended for advanced users with specific visualization needs. St
 
 ## Configuration
 
-
 ### Basic Settings
 
-| Field                  | Required | Description                                                                           |
-| ---------------------- | -------- | ------------------------------------------------------------------------------------- |
-| **Title**              | ❌ No    | Display name for the widget                                                           |
-| **Timeframe**          | ✅ Yes   | Time range (from/to) for data display                                                 |
-| **Transform Function** | ✅ Yes   | JavaScript function to transform data                                                 |
-| **Data Source**        | ✅ Yes   | Data source identifier (e.g., 'plotly', 'echarts')                                    |
-| **Measures**           | ✅ Yes   | Add measures to include. Each measure requires: measure ID, Thing ID, and aggregation |
+| Field                  | Required | Description                                                                          |
+| ---------------------- | -------- | ------------------------------------------------------------------------------------ |
+| **Title**              | ❌ No    | Display name for the widget                                                          |
+| **Timeframe**          | ✅ Yes   | Time range (from/to) for data display                                                |
+| **Transform Function** | ✅ Yes   | JavaScript function to transform data                                                |
+| **Data Source**        | ✅ Yes   | Data source identifier (e.g., 'plotly', 'echarts')                                   |
+| **Measures**           | ✅ Yes   | Add measures to include. Each measure requires: measure ID, Thing ID and aggregation |
 
 ### Chart Settings
 

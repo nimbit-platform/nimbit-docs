@@ -3,6 +3,7 @@ title: Application Database
 description: Application database
 hide_table_of_contents: false
 ---
+
 # Application Database Structure
 
 This page details the structure and components of our primary application database, which is based on PostgreSQL 16.
@@ -21,47 +22,49 @@ All other schemas in the database have access to the `extensions` schema, allowi
 
 Our application database is organized into several schemas, each serving a specific purpose. Below is a list of the available schemas and their descriptions:
 
-| Schema Name | Description 
+| Schema Name | Description
 |
 |
--------------
-|
--------------
+
+---
+
+## |
+
 |
 |
 `public`
 |
- Default schema for PostgreSQL. Used for common tables and functions. 
+Default schema for PostgreSQL. Used for common tables and functions.
 |
 |
 `auth`
 |
- Contains authentication and authorization related tables and functions. 
+Contains authentication and authorization related tables and functions.
 |
 |
 `application_data`
 |
- Stores core application data and business logic. 
+Stores core application data and business logic.
 |
 |
 `audit`
 |
- Houses audit logs and tracking information. 
+Houses audit logs and tracking information.
 |
 |
 `reporting`
 |
- Contains views and materialized views for reporting purposes. 
+Contains views and materialized views for reporting purposes.
 |
 |
 `api`
 |
- Includes stored procedures and functions exposed via the API. 
+Includes stored procedures and functions exposed via the API.
 |
 |
 `cache`
 |
- Used for temporary tables and caching mechanisms. 
+Used for temporary tables and caching mechanisms.
 |
 
 To create a new schema, use the following SQL command:
@@ -75,62 +78,64 @@ CREATE SCHEMA schema_name;
 Our database system utilizes several dedicated users, each with specific roles and permissions. Here's an overview of the system users:
 
 |
- Username 
+Username
 |
- Purpose 
+Purpose
 |
 |
-----------
-|
----------
+
+---
+
+## |
+
 |
 |
 `app_user`
 |
- Main application user. Has read and write access to 
+Main application user. Has read and write access to
 `application_data`
-, 
+,
 `public`
-, and 
+and
 `cache`
- schemas. 
+schemas.
 |
 |
 `read_only_user`
 |
- Used for reporting and analytics. Has read-only access to 
+Used for reporting and analytics. Has read-only access to
 `reporting`
- and 
+and
 `public`
- schemas. 
+schemas.
 |
 |
 `admin_user`
 |
- Database administrator. Has full access to all schemas and can manage other users. 
+Database administrator. Has full access to all schemas and can manage other users.
 |
 |
 `auth_service`
 |
- Dedicated user for authentication service. Has access to 
+Dedicated user for authentication service. Has access to
 `auth`
- schema. 
+schema.
 |
 |
 `audit_service`
 |
- Used for audit logging. Has write access to 
+Used for audit logging. Has write access to
 `audit`
- schema and read access to all other schemas. 
+schema and read access to all other schemas.
 |
 |
 `api_service`
 |
- Executes API-related stored procedures. Has execute permissions on 
+Executes API-related stored procedures. Has execute permissions on
 `api`
- schema and read/write on 
+schema and read/write on
 `application_data`
-. 
+.
 |
 
 To create a new user and grant schema access, use the following SQL commands:

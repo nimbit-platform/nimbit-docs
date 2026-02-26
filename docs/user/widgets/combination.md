@@ -30,15 +30,14 @@ The Combination widget combines different chart types (e.g., bars + line) with d
 
 ## Configuration
 
-
 ### Basic Settings
 
-| Field         | Required | Description                                                                                                                      |
-| ------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| **Title**     | ❌ No    | Display name for the widget                                                                                                      |
-| **Thing**     | ✅ Yes   | Select Thing to display data from (not required for ThingType dashboards)                                                        |
-| **Timeframe** | ✅ Yes   | Time range (from/to) for data display                                                                                            |
-| **Measures**  | ✅ Yes   | Add measures to display. Each measure requires: measure ID, aggregation, chart type (line/bar), line type (for lines), and color |
+| Field         | Required | Description                                                                                                                     |
+| ------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| **Title**     | ❌ No    | Display name for the widget                                                                                                     |
+| **Thing**     | ✅ Yes   | Select Thing to display data from (not required for ThingType dashboards)                                                       |
+| **Timeframe** | ✅ Yes   | Time range (from/to) for data display                                                                                           |
+| **Measures**  | ✅ Yes   | Add measures to display. Each measure requires: measure ID, aggregation, chart type (line/bar), line type (for lines) and color |
 
 ### Chart Settings
 

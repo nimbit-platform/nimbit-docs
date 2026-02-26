@@ -9,7 +9,7 @@ slug: /widgets/file-list
 
 ## Overview
 
-The File List widget displays and manages files associated with Things. It provides easy access to documents, images, manuals, certificates, and other files related to your IoT devices, all within the dashboard interface.
+The File List widget displays and manages files associated with Things. It provides easy access to documents, images, manuals, certificates and other files related to your IoT devices, all within the dashboard interface.
 
 ## Use Cases
 
@@ -29,7 +29,6 @@ The File List widget displays and manages files associated with Things. It provi
 - Delete and manage files
 
 ## Configuration
-
 
 ### Basic Settings
 
