@@ -7,7 +7,7 @@ position: 8
 
 ## What is Anomaly Detection?
 
-**Anomaly detection** is the process of identifying unusual patterns or outliers in data that don't follow expected behavior. This technique is widely used in areas like fraud detection, network security, and quality control. By detecting anomalies, the system can alert users to potential issues, helping to prevent problems before they escalate.
+**Anomaly detection** is the process of identifying unusual patterns or outliers in data that don't follow expected behavior. This technique is widely used in areas like fraud detection, network security and quality control. By detecting anomalies, the system can alert users to potential issues, helping to prevent problems before they escalate.
 
 In our system, anomaly detection models can be trained automatically based on your data, or you can bring your own model to perform custom anomaly detection.
 
@@ -28,15 +28,19 @@ Our system provides several features to help you manage and perform anomaly dete
 Here’s an overview of the main actions you can take with anomaly detection models in the system:
 
 #### Get Model Suggestions
+
 The system can analyze your dataset's metadata and provide suggestions for anomaly detection models that are most suitable for your data. This feature helps when you’re unsure which model to use.
 
 #### Train an Anomaly Detection Model
+
 You can train an anomaly detection model on your dataset, allowing the model to learn from the data and detect outliers or unusual patterns. This helps you evaluate the model's performance in identifying anomalies.
 
 #### Run Anomaly Detection with a Pre-trained Model
+
 Once your model is trained, you can use it to detect anomalies in new data. This feature is particularly useful when you have real-time or batch data and need to monitor for unusual patterns.
 
 #### Bring Your Own Model
+
 If you have already trained an anomaly detection model outside of the system, you can upload it in `pkl` format and use it to analyze your data. This provides flexibility in case you have custom models that you want to apply to your datasets.
 
 :::tip
@@ -46,15 +50,19 @@ When bringing your own model, ensure it has a `score` method that the system can
 ### Anomaly Detection Management Features
 
 #### Get Model Suggestions
+
 The system can suggest anomaly detection models based on your dataset’s metadata. This feature is helpful when you need guidance on which models might work best for your data.
 
 #### Train a Model and Detect Anomalies
+
 You can train a new anomaly detection model using your dataset. After training, you can use the model to detect anomalies in the data and evaluate its effectiveness.
 
 #### Detect Anomalies with a Pre-trained Model
+
 This feature allows you to use a previously trained model to detect anomalies in new data, making it easier to identify unusual behavior over time.
 
 #### Use Your Own Model
+
 You can bring in your own anomaly detection model by uploading it in `pkl` format. This allows you to use custom-built models that may be tailored to your specific needs.
 
 ---

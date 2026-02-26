@@ -7,9 +7,9 @@ slug: /onboarding/things
 
 ## Overview
 
-In the Industrial IoT landscape, connecting and managing your devices efficiently is essential. Each device, or **Thing**, is an individual instance based on a predefined **ThingType**. A Thing inherits specific measures, properties, and behaviors from its ThingType, ensuring consistency and scalability throughout your IoT environment.
+In the Industrial IoT landscape, connecting and managing your devices efficiently is essential. Each device, or **Thing**, is an individual instance based on a predefined **ThingType**. A Thing inherits specific measures, properties and behaviors from its ThingType, ensuring consistency and scalability throughout your IoT environment.
 
-This documentation covers how you can create, manage, and effectively organize your Things within IotBreeze.
+This documentation covers how you can create, manage and effectively organize your Things within IotBreeze.
 
 ## Create a Thing
 
@@ -29,17 +29,17 @@ This form allows you to define the basic details and associations of your Thing:
 
 ![Filled Thing Form](/screenshots/things/create-filled.png)
 
-| Field                  | Required | Description                                                                                                                       |
-| ---------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| **Name**               | ✅ Yes   | Unique identifier used throughout the system (no spaces, special characters except underscore, and must not start with a number). |
-| **Thing Alternate Id** | ✅ Yes   | A secondary unique identifier (often device serial or external ID).                                                               |
-| **Description**        | ❌ No    | Additional context or details about the Thing.                                                                                    |
-| **Thing Type**         | ✅ Yes   | Select the appropriate ThingType to inherit measures, properties, and metadata.                                                   |
-| **Provider**           | ✅ Yes   | Automatically prefilled based on the chosen ThingType.                                                                            |
-| **Parent**             | ❌ No    | Select an optional parent Thing to establish hierarchical relationships.                                                          |
-| **Organization**       | ✅ Yes   | Special group representing your organization for administrative control.                                                          |
-| **Group**              | ✅ Yes   | One or more groups used to manage user access and visibility.                                                                     |
-| **Search Tags**        | ❌ No    | Keywords to facilitate easy searching and filtering.                                                                              |
+| Field                  | Required | Description                                                                                                                      |
+| ---------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| **Name**               | ✅ Yes   | Unique identifier used throughout the system (no spaces, special characters except underscore and must not start with a number). |
+| **Thing Alternate Id** | ✅ Yes   | A secondary unique identifier (often device serial or external ID).                                                              |
+| **Description**        | ❌ No    | Additional context or details about the Thing.                                                                                   |
+| **Thing Type**         | ✅ Yes   | Select the appropriate ThingType to inherit measures, properties and metadata.                                                   |
+| **Provider**           | ✅ Yes   | Automatically prefilled based on the chosen ThingType.                                                                           |
+| **Parent**             | ❌ No    | Select an optional parent Thing to establish hierarchical relationships.                                                         |
+| **Organization**       | ✅ Yes   | Special group representing your organization for administrative control.                                                         |
+| **Group**              | ✅ Yes   | One or more groups used to manage user access and visibility.                                                                    |
+| **Search Tags**        | ❌ No    | Keywords to facilitate easy searching and filtering.                                                                             |
 
 After completing the form, click **"Save"** at the bottom-right corner.
 
@@ -62,7 +62,7 @@ To set a location:
 
 ![Set Location](/screenshots/things/location-manually.png)
 
-Once set, the location information can be used for geographical filtering, proximity-based automation, and visual representation on dashboards.
+Once set, the location information can be used for geographical filtering, proximity-based automation and visual representation on dashboards.
 
 ---
 
@@ -123,13 +123,13 @@ To update multiple measure values at once:
 
 ![Update Multiple Measures](/screenshots/things/measure-multiple-manually.png)
 
-Manually entered values are stored in the database just like automatically received data and can be used in dashboards, rules, and analytics.
+Manually entered values are stored in the database just like automatically received data and can be used in dashboards, rules and analytics.
 
 ---
 
 ## Files
 
-The **Files** tab enables you to upload and manage thing-specific documents and files. This is useful for storing important documentation such as maintenance manuals, calibration certificates, installation guides, warranty documents, and other reference materials related to the specific device.
+The **Files** tab enables you to upload and manage thing-specific documents and files. This is useful for storing important documentation such as maintenance manuals, calibration certificates, installation guides, warranty documents and other reference materials related to the specific device.
 
 ![Files Overview](/screenshots/things/files.png)
 
@@ -185,7 +185,7 @@ This ensures precise access management tailored to operational needs.
 
 ## Actions
 
-The **Actions** tab allows you to manage and execute operations on your Thing. Actions enable remote control, command execution, and integration with external systems.
+The **Actions** tab allows you to manage and execute operations on your Thing. Actions enable remote control, command execution and integration with external systems.
 
 ![Actions Overview](/screenshots/things/actions.png)
 

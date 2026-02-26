@@ -9,7 +9,7 @@ slug: /widgets/line
 
 ## Overview
 
-The Line widget displays connected data points as a line, perfect for showing time series data, trends over periods, and visualizing continuous data development. It's one of the most commonly used widgets for temporal data.
+The Line widget displays connected data points as a line, perfect for showing time series data, trends over periods and visualizing continuous data development. It's one of the most commonly used widgets for temporal data.
 
 ## Use Cases
 
@@ -30,16 +30,15 @@ The Line widget displays connected data points as a line, perfect for showing ti
 
 ## Configuration
 
-
 ### Basic Settings
 
-| Field         | Required | Description                                                                                         |
-| ------------- | -------- | --------------------------------------------------------------------------------------------------- |
-| **Title**     | ❌ No    | Display name for the widget                                                                         |
-| **Thing**     | ✅ Yes   | Select Thing to display data from (not required for Thing Type dashboards)                          |
-| **Mode**      | ✅ Yes   | Choose 'Line' or 'Area' display mode                                                                |
-| **Timeframe** | ✅ Yes   | Time range for data display                                                               |
-| **Measures**  | ✅ Yes   | Add measures to display as lines. Each measure requires: measure, aggregation, line type, and color |
+| Field         | Required | Description                                                                                        |
+| ------------- | -------- | -------------------------------------------------------------------------------------------------- |
+| **Title**     | ❌ No    | Display name for the widget                                                                        |
+| **Thing**     | ✅ Yes   | Select Thing to display data from (not required for Thing Type dashboards)                         |
+| **Mode**      | ✅ Yes   | Choose 'Line' or 'Area' display mode                                                               |
+| **Timeframe** | ✅ Yes   | Time range for data display                                                                        |
+| **Measures**  | ✅ Yes   | Add measures to display as lines. Each measure requires: measure, aggregation, line type and color |
 
 ### Chart Settings
 

@@ -9,7 +9,7 @@ slug: /widgets/heatmap
 
 ## Overview
 
-The Heatmap widget displays a matrix of color-coded cells where color intensity represents values. It's excellent for identifying patterns in large datasets, displaying correlation matrices, and visualizing geographic or temporal distributions.
+The Heatmap widget displays a matrix of color-coded cells where color intensity represents values. It's excellent for identifying patterns in large datasets, displaying correlation matrices and visualizing geographic or temporal distributions.
 
 ## Use Cases
 
@@ -27,7 +27,6 @@ The Heatmap widget displays a matrix of color-coded cells where color intensity 
 - Aggregation options
 
 ## Configuration
-
 
 ### Basic Settings
 

@@ -6,7 +6,7 @@ sidebar_position: 3
 
 # Theme Settings
 
-The **Theme** page provides comprehensive control over your tenant's visual design and brand identity. Theme customization is organized into three main tabs: **Colors**, **Layout**, and **Shadows**.
+The **Theme** page provides comprehensive control over your tenant's visual design and brand identity. Theme customization is organized into three main tabs: **Colors**, **Layout** and **Shadows**.
 
 ## Accessing Theme Configuration
 

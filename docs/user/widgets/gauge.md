@@ -10,7 +10,7 @@ slug: /widgets/gauge
 
 ## Overview
 
-The Gauge widget displays a measure value on a gauge with configurable threshold color zones. It supports both radial (semi-circular, like a tachometer) and linear gauge shapes. It's ideal for displaying KPIs, performance indicators, and values that need to be compared against defined ranges.
+The Gauge widget displays a measure value on a gauge with configurable threshold color zones. It supports both radial (semi-circular, like a tachometer) and linear gauge shapes. It's ideal for displaying KPIs, performance indicators and values that need to be compared against defined ranges.
 
 ## Use Cases
 
@@ -31,7 +31,6 @@ The Gauge widget displays a measure value on a gauge with configurable threshold
 
 ## Configuration
 
-
 ### Basic Settings
 
 | Field       | Required | Description                                                               |
@@ -43,12 +42,12 @@ The Gauge widget displays a measure value on a gauge with configurable threshold
 
 ### Gauge Settings
 
-| Field              | Required | Description                                                                                                          |
-| ------------------ | -------- | -------------------------------------------------------------------------------------------------------------------- |
-| **Min Value**      | ✅ Yes   | Minimum gauge value                                                                                                  |
-| **Max Value**      | ✅ Yes   | Maximum gauge value (must be greater than min)                                                                       |
-| **Thresholds**     | ✅ Yes   | Define color zones with name, min value, max value, and color. Each threshold must be within the gauge min/max range |
-| **Compact number** | ❌ No    | Display large numbers in compact format (e.g., 1.23K)                                                                |
+| Field              | Required | Description                                                                                                         |
+| ------------------ | -------- | ------------------------------------------------------------------------------------------------------------------- |
+| **Min Value**      | ✅ Yes   | Minimum gauge value                                                                                                 |
+| **Max Value**      | ✅ Yes   | Maximum gauge value (must be greater than min)                                                                      |
+| **Thresholds**     | ✅ Yes   | Define color zones with name, min value, max value and color. Each threshold must be within the gauge min/max range |
+| **Compact number** | ❌ No    | Display large numbers in compact format (e.g., 1.23K)                                                               |
 
 ### Display Options
 

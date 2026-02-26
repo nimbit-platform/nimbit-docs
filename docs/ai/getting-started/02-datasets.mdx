@@ -10,15 +10,14 @@ position: 2
 A **dataset** is a collection of structured timeseries data, usually organized into a specific format, which can be analyzed or used for various purposes, such as training models, generating forecasts, or detecting anomalies. In our system, datasets are essential for performing time series forecasting and anomaly detection tasks.
 
 :::info
-Datasets are crucial in time series forecasting and anomaly detection because they contain the structured data used to train models, generate forecasts, and find unusual patterns.
+Datasets are crucial in time series forecasting and anomaly detection because they contain the structured data used to train models, generate forecasts and find unusual patterns.
 :::
 
 ### Dataset Management
 
 Our system provides a set of features to help you manage your datasets efficiently. Here’s what you can do:
 
-- **Create a new dataset**: You can add new datasets to the system by providing necessary information such as the name, description, config, file_type, and target storage.
-  
+- **Create a new dataset**: You can add new datasets to the system by providing necessary information such as the name, description, config, file_type and target storage.
 - **View datasets**: You can easily retrieve and view a list of all the datasets you’ve added to the system. This allows you to track all your data assets in one place.
 
 - **Get the total number of datasets**: If you need a quick overview of how many datasets you have in the system, this feature provides a simple count of all your datasets.
@@ -30,7 +29,7 @@ Our system provides a set of features to help you manage your datasets efficient
 - **Delete a dataset**: If you no longer need a dataset, you can remove it from the system.
 
 :::warning
-Be cautious when **deleting a dataset**—this action is permanent, and the dataset cannot be recovered once removed.
+Be cautious when **deleting a dataset**—this action is permanent and the dataset cannot be recovered once removed.
 :::
 
 - **Estimate the size of a dataset**: This feature gives you an idea of how much space a dataset is occupying in storage, helping you manage your storage resources effectively.
@@ -47,37 +46,35 @@ Use the **Analyze a dataset** feature to quickly identify the most suitable mode
 
 Here’s a simple explanation of the fields that are used to describe a dataset in the system:
 
-| **Field Name**           | **Description**                                                                                       |
-|--------------------------|-------------------------------------------------------------------------------------------------------|
-| `id`                     | A unique identifier for the dataset that helps distinguish it from other datasets in the system.       |
-| `tenant`                 | The organization or entity to which the dataset belongs.                                               |
-| `name`                   | The name of the dataset, used to easily identify it.                                                   |
-| `description`            | A brief description that explains what the dataset contains or its purpose.                           |
-| `credential_id`          | The ID of the credentials used to securely access the dataset's source (e.g., database or cloud storage).|
-| `config`                 | Configuration details that define how the dataset is processed or queried. See below for further details.|
-| **`config.measurement`**  | Defines the primary variable being measured in the dataset, such as temperature or stock prices.      |
-| **`config.raw`**          | Specifies whether to use raw (unprocessed) data (`True`) or processed data (`False`, default).        |
-| **`config.measures`**     | A list of additional variables or metrics to include in the analysis, allowing multi-variable analysis.|
-| **`config.precision`**    | Sets the number of decimal places for the data, with a default of 2, ensuring accurate calculations.   |
-| **`config.aggregations`** | A list of aggregation methods (e.g., sum, average) to be applied to the dataset for summarization.     |
-| **`config.ids`**          | An optional list of unique identifiers to filter or track specific data points within the dataset.     |
-| **`config.window`**       | Defines the time window over which the data will be analyzed. See below for further details.           |
-| **`window.start`**        | Defines the start time of the window. Can be a specific date (`datetime`) or a relative time (`int`).  |
-| **`window.end`**          | Defines the end time of the window. Can be a specific date (`datetime`) or a relative time (`int`).    |
+| **Field Name**            | **Description**                                                                                            |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `id`                      | A unique identifier for the dataset that helps distinguish it from other datasets in the system.           |
+| `tenant`                  | The organization or entity to which the dataset belongs.                                                   |
+| `name`                    | The name of the dataset, used to easily identify it.                                                       |
+| `description`             | A brief description that explains what the dataset contains or its purpose.                                |
+| `credential_id`           | The ID of the credentials used to securely access the dataset's source (e.g., database or cloud storage).  |
+| `config`                  | Configuration details that define how the dataset is processed or queried. See below for further details.  |
+| **`config.measurement`**  | Defines the primary variable being measured in the dataset, such as temperature or stock prices.           |
+| **`config.raw`**          | Specifies whether to use raw (unprocessed) data (`True`) or processed data (`False`, default).             |
+| **`config.measures`**     | A list of additional variables or metrics to include in the analysis, allowing multi-variable analysis.    |
+| **`config.precision`**    | Sets the number of decimal places for the data, with a default of 2, ensuring accurate calculations.       |
+| **`config.aggregations`** | A list of aggregation methods (e.g., sum, average) to be applied to the dataset for summarization.         |
+| **`config.ids`**          | An optional list of unique identifiers to filter or track specific data points within the dataset.         |
+| **`config.window`**       | Defines the time window over which the data will be analyzed. See below for further details.               |
+| **`window.start`**        | Defines the start time of the window. Can be a specific date (`datetime`) or a relative time (`int`).      |
+| **`window.end`**          | Defines the end time of the window. Can be a specific date (`datetime`) or a relative time (`int`).        |
 | **`window.bucket`**       | Defines the time interval for data aggregation (e.g., `1 hour`, `1 day`, or in seconds for finer control). |
-| `tags`                   | Additional metadata that helps categorize or add context to the dataset.                               |
-| `path`                   | The file path where the dataset is stored, particularly if it is a file-based dataset.                 |
-| `file_type`              | The format of the dataset, such as CSV or Parquet, which defines how the data is structured.           |
-| `error`                  | Any error information related to the dataset, such as issues encountered during loading or processing.  |
-| `created_at`             | The date and time when the dataset was added to the system.                                            |
-| `modified_at`            | The date and time when the dataset was last updated.                                                   |
-| `_status`                | The current state of the dataset, such as whether it is being processed or has finished loading.        |
-| `_loading_percentage`    | The progress of the dataset loading process, shown as a percentage.                                     |
-
-
-
+| `tags`                    | Additional metadata that helps categorize or add context to the dataset.                                   |
+| `path`                    | The file path where the dataset is stored, particularly if it is a file-based dataset.                     |
+| `file_type`               | The format of the dataset, such as CSV or Parquet, which defines how the data is structured.               |
+| `error`                   | Any error information related to the dataset, such as issues encountered during loading or processing.     |
+| `created_at`              | The date and time when the dataset was added to the system.                                                |
+| `modified_at`             | The date and time when the dataset was last updated.                                                       |
+| `_status`                 | The current state of the dataset, such as whether it is being processed or has finished loading.           |
+| `_loading_percentage`     | The progress of the dataset loading process, shown as a percentage.                                        |
 
 ### How These Fields Are Used:
+
 - The **`name`** and **`description`** fields help you keep track of what the dataset is and its purpose.
 - **`credential_id`** ensures that your data is securely accessed using the appropriate credentials.
 - **`path`** and **`file_type`** give details about where the dataset is stored and how it’s formatted.
