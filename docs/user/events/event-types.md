@@ -52,7 +52,7 @@ By attaching actions (notifications, webhooks, emails) to custom event types, yo
 An event type must be assigned to at least one group for users to see its events. Users can only see events whose event type belongs to one of their groups. If an event type is not in any of a user's groups, the corresponding events will be invisible to that user.
 :::
 
-When creating or editing an event type, use the **Group** field to assign it to the appropriate groups. This is especially important for custom event types used with the Rules Engine — if you forget to assign a group, no one will see the rule-generated events.
+When creating or editing an event type, use the **Group** field to assign it to the appropriate groups. This is especially important for custom event types used with the Rules Engine - if you forget to assign a group, no one will see the rule-generated events.
 
 ## Accessing Event Types
 
