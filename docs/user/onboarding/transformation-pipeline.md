@@ -11,7 +11,7 @@ Each Thing Type can have a **Transformation Pipeline** - a visual, graph-based d
 The pipeline is optional. If none is configured or none is active, incoming data is stored as-is.
 
 :::info
-The Transformation Pipeline is powered by [GoRules](https://docs.gorules.io/), an open-source business rules engine. Refer to the GoRules documentation for in-depth details on expression syntax, decision table behavior, and the rules engine internals.
+The Transformation Pipeline is powered by [GoRules](https://docs.gorules.io/), an open-source business rules engine. Refer to the GoRules documentation for in-depth details on expression syntax, decision table behavior and the rules engine internals.
 :::
 
 ## Why Use a Transformation Pipeline
@@ -42,7 +42,7 @@ The editor opens under the breadcrumb **Onboarding > Thing Types > [ThingType] >
 
 ### Header Toolbar
 
-![Pipeline editor header toolbar showing version badge, save, new version, switch version, and activate controls](/screenshots/transformation-pipeline/header-toolbar.png)
+![Pipeline editor header toolbar showing version badge, save, new version, switch version and activate controls](/screenshots/transformation-pipeline/header-toolbar.png)
 
 | Control                   | Description                                                                                                 |
 | ------------------------- | ----------------------------------------------------------------------------------------------------------- |
@@ -248,7 +248,7 @@ Click **Add row** to add more key-expression pairs.
 
 #### Expression Syntax (ZEN)
 
-Expressions use the ZEN expression language. The same syntax is available in Expression nodes, Decision Table conditions, and Switch conditions.
+Expressions use the ZEN expression language. The same syntax is available in Expression nodes, Decision Table conditions and Switch conditions.
 
 **Data access** - use dot notation and array indexing:
 
@@ -423,7 +423,7 @@ Use a **Decision Table** to map raw numeric sensor codes to human-readable label
 
 ### Conditional Routing
 
-Use a **Switch** node to separate high-priority alerts from normal data. Connect the high-priority output to a **Function** node that calls an external HTTP endpoint, and the normal output directly to **Response**.
+Use a **Switch** node to separate high-priority alerts from normal data. Connect the high-priority output to a **Function** node that calls an external HTTP endpoint and the normal output directly to **Response**.
 
 ### Complex Transformation with JavaScript
 

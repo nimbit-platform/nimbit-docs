@@ -12,7 +12,7 @@ Dashboards in IotBreeze provide a powerful way to visualize and monitor your IoT
 
 Key features include:
 
-- **Multiple Widget Types** - Display data in various formats including charts, maps, properties, and more
+- **Multiple Widget Types** - Display data in various formats including charts, maps, properties and more
 - **Real-time Updates** - Configure automatic refresh intervals to keep data current
 - **Hierarchical Organization** - Organize dashboards in a tree structure for easy navigation
 - **Asset-based** - Each dashboard is associated with one or more Things to display their data
@@ -91,7 +91,7 @@ The widget selection dialog will only show widgets compatible with your current 
 
 **Data Display Widgets:**
 
-- [**Pivot Table**](/docs/widgets/pivot-table) - Tabular display with rows and columns that groups and aggregates data by various dimensions. Perfect for analyzing large datasets, creating cross-tabulations, and quick summaries. Allows pivoting data fields for different views.
+- [**Pivot Table**](/docs/widgets/pivot-table) - Tabular display with rows and columns that groups and aggregates data by various dimensions. Perfect for analyzing large datasets, creating cross-tabulations and quick summaries. Allows pivoting data fields for different views.
 - [**Property**](/docs/widgets/property) - Show individual Thing property values with current state.
 - [**Property List**](/docs/widgets/property-list) - Display multiple properties in a table format with their current states.
 - [**Snapshot**](/docs/widgets/snapshot) - Capture and display a point-in-time view of selected data.
@@ -108,14 +108,14 @@ The widget selection dialog will only show widgets compatible with your current 
 
 **Chart Widgets:**
 
-- [**Bar**](/docs/widgets/bar) - Horizontal or vertical bars whose length/height represents values. Ideal for comparing categories, displaying rankings, and visualizing discrete data. Works best for few categories with clear differences.
-- [**Scatter**](/docs/widgets/scatter) - Points in a coordinate system where X and Y axes represent different variables. Use to identify correlations between variables, detect outliers, and uncover trends and patterns in data.
-- [**Line**](/docs/widgets/line) - Connected data points as a line. Perfect for displaying time series, showing trends over periods, and visualizing continuous data development.
+- [**Bar**](/docs/widgets/bar) - Horizontal or vertical bars whose length/height represents values. Ideal for comparing categories, displaying rankings and visualizing discrete data. Works best for few categories with clear differences.
+- [**Scatter**](/docs/widgets/scatter) - Points in a coordinate system where X and Y axes represent different variables. Use to identify correlations between variables, detect outliers and uncover trends and patterns in data.
+- [**Line**](/docs/widgets/line) - Connected data points as a line. Perfect for displaying time series, showing trends over periods and visualizing continuous data development.
 - [**Combination**](/docs/widgets/combination) - Combines different chart types (e.g., bars + line) with different Y-axes. Use to display different metrics with varying scales simultaneously and visualize complex relationships.
-- [**Doughnut**](/docs/widgets/doughnut) - Ring chart with segments showing proportions of a whole, with empty center. Use for percentage distributions, visualizing shares, and can display additional information in the center.
-- [**Gauge**](/docs/widgets/gauge) - Semi-circular scale with pointer, similar to a tachometer. Use for displaying KPIs and performance indicators, comparing target values with current values, and status dashboards.
-- [**Heatmap**](/docs/widgets/heatmap) - Matrix of color-coded cells where color intensity represents values. Use to identify patterns in large datasets, display correlation matrices, and visualize geographic or temporal distributions.
-- [**Timeline**](/docs/widgets/timeline) - Horizontal or vertical line with events marked in chronological order. Use to display project plans, show historical developments, and visualize milestones and deadlines.
+- [**Doughnut**](/docs/widgets/doughnut) - Ring chart with segments showing proportions of a whole, with empty center. Use for percentage distributions, visualizing shares and can display additional information in the center.
+- [**Gauge**](/docs/widgets/gauge) - Semi-circular scale with pointer, similar to a tachometer. Use for displaying KPIs and performance indicators, comparing target values with current values and status dashboards.
+- [**Heatmap**](/docs/widgets/heatmap) - Matrix of color-coded cells where color intensity represents values. Use to identify patterns in large datasets, display correlation matrices and visualize geographic or temporal distributions.
+- [**Timeline**](/docs/widgets/timeline) - Horizontal or vertical line with events marked in chronological order. Use to display project plans, show historical developments and visualize milestones and deadlines.
 - [**Fill Level**](/docs/widgets/fill-level) - Visual representation of fill levels or capacity, often displayed as tank or container graphics.
 - [**Custom Chart**](/docs/widgets/custom-chart) - Create custom visualizations with user-defined chart configurations and data representations.
 

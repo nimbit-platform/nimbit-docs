@@ -9,7 +9,7 @@ slug: /widgets/text
 
 ## Overview
 
-The Text widget displays rich text content directly in your dashboard using a WYSIWYG editor (Lexical). It supports formatted text including headings, lists, links, and styling. Dynamic content from Things can be injected using Mustache template syntax.
+The Text widget displays rich text content directly in your dashboard using a WYSIWYG editor (Lexical). It supports formatted text including headings, lists, links and styling. Dynamic content from Things can be injected using Mustache template syntax.
 
 ## Use Cases
 
@@ -29,14 +29,13 @@ The Text widget displays rich text content directly in your dashboard using a WY
 
 ## Configuration
 
-
 The Text widget is a standalone widget that doesn't require measures or properties. It displays static or dynamic text content.
 
 ### Basic Settings
 
-| Field       | Required | Description                          |
-| ----------- | -------- | ------------------------------------ |
-| **Content** | ✅ Yes   | Rich text content                    |
+| Field       | Required | Description       |
+| ----------- | -------- | ----------------- |
+| **Content** | ✅ Yes   | Rich text content |
 
 ### Display Options
 

@@ -9,15 +9,15 @@ slug: /widgets/timeline
 
 ## Overview
 
-The Timeline widget displays measure states over time as colored horizontal bars in a Gantt-like X-Range chart. Each bar represents a time period during which a measure matched a defined condition (value range or exact value), making it ideal for visualizing operational states, machine run/stop cycles, and condition-based status history.
+The Timeline widget displays measure states over time as colored horizontal bars in a Gantt-like X-Range chart. Each bar represents a time period during which a measure matched a defined condition (value range or exact value), making it ideal for visualizing operational states, machine run/stop cycles and condition-based status history.
 
 ## Use Cases
 
-- **Machine States** - Visualize run, idle, and stop periods as colored bars
+- **Machine States** - Visualize run, idle and stop periods as colored bars
 - **Condition Monitoring** - Show when measures were in normal, warning, or critical ranges
 - **Boolean State History** - Display on/off or true/false states over time
 - **Multi-Measure Comparison** - Compare state timelines across multiple measures as parallel swim lanes
-- **Operational Analysis** - Analyze uptime, downtime, and state transitions
+- **Operational Analysis** - Analyze uptime, downtime and state transitions
 
 ## Key Features
 
@@ -30,15 +30,14 @@ The Timeline widget displays measure states over time as colored horizontal bars
 
 ## Configuration
 
-
 ### Basic Settings
 
-| Field          | Required | Description                                                                                                                                                                      |
-| -------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Title**      | ❌ No    | Display name for the widget                                                                                                                                                      |
-| **Thing**      | ✅ Yes   | Select Thing to display data from (not required for ThingType dashboards)                                                                                                        |
-| **Timeframe**  | ✅ Yes   | Time range (from/to) for data display                                                                                                                                            |
-| **Conditions** | ✅ Yes   | Define timeline conditions. Each condition requires: measures (array), aggregation, name, condition (Range/Value), data (from/to for range, specific value for value), and color |
+| Field          | Required | Description                                                                                                                                                                     |
+| -------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Title**      | ❌ No    | Display name for the widget                                                                                                                                                     |
+| **Thing**      | ✅ Yes   | Select Thing to display data from (not required for ThingType dashboards)                                                                                                       |
+| **Timeframe**  | ✅ Yes   | Time range (from/to) for data display                                                                                                                                           |
+| **Conditions** | ✅ Yes   | Define timeline conditions. Each condition requires: measures (array), aggregation, name, condition (Range/Value), data (from/to for range, specific value for value) and color |
 
 ### Chart Settings
 

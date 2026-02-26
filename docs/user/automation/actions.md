@@ -7,7 +7,7 @@ slug: /automation/actions
 
 ## Overview
 
-Actions are **executable operations** that enable remote control, command execution, and integration with external systems in IotBreeze. They provide a powerful way to interact with your IoT devices and integrate with third-party services.
+Actions are **executable operations** that enable remote control, command execution and integration with external systems in IotBreeze. They provide a powerful way to interact with your IoT devices and integrate with third-party services.
 
 Actions can be created and used in multiple contexts:
 
@@ -156,7 +156,7 @@ Before saving, review your webhook configuration:
 
 ![Webhook Summary](/screenshots/actions/action-webhook-finished.png)
 
-Once confirmed, the webhook action is created and becomes available for use in things, dashboards, events, and rules.
+Once confirmed, the webhook action is created and becomes available for use in things, dashboards, events and rules.
 
 ---
 

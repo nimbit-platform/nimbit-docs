@@ -9,7 +9,7 @@ slug: /widgets/iframe
 
 ## Overview
 
-The iFrame widget embeds external web content directly into your dashboard, allowing integration of third-party applications, reports, and web pages alongside your IoT data.
+The iFrame widget embeds external web content directly into your dashboard, allowing integration of third-party applications, reports and web pages alongside your IoT data.
 
 ## Use Cases
 
@@ -25,7 +25,6 @@ The iFrame widget embeds external web content directly into your dashboard, allo
 - Responsive sizing
 
 ## Configuration
-
 
 The iFrame widget is a standalone widget that doesn't require measures or properties. It embeds external web content directly into your dashboard.
 
