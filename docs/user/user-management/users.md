@@ -7,13 +7,13 @@ slug: /user-management/users
 
 ## Overview
 
-Users represent individuals who have access to your IotBreeze platform. Assigning appropriate roles and group memberships defines user permissions, ensuring secure, organized and efficient management of your resources. Groups are structured hierarchically, allowing users to inherit access rights based on group relationships.
+Users represent individuals who have access to your IoTBreeze platform. Assigning appropriate roles and group memberships defines user permissions, ensuring secure, organized and efficient management of your resources. Groups are structured hierarchically, allowing users to inherit access rights based on group relationships.
 
 This page guides you through inviting, managing and editing users, along with detailed instructions on managing roles, permissions and hierarchical group assignments.
 
 ## Invite Users
 
-To invite new users into your IotBreeze instance, follow these steps:
+To invite new users into your IoTBreeze instance, follow these steps:
 
 ### Navigating to Users
 
@@ -72,7 +72,7 @@ Click **"Save"** to apply your changes.
 
 ## Roles Overview
 
-Roles determine specific user permissions in IotBreeze. Available roles include:
+Roles determine specific user permissions in IoTBreeze. Available roles include:
 
 - **Admin**: Full administrative access.
 - **System Admin**: Manages system and technical configurations.
@@ -90,7 +90,7 @@ View assigned roles and corresponding permissions under the **Roles** tab.
 
 ## Understanding Groups & Hierarchy
 
-Groups in IotBreeze are organized hierarchically, forming a pyramid-like structure. Users inherit access from child groups within the hierarchy. For example:
+Groups in IoTBreeze are organized hierarchically, forming a pyramid-like structure. Users inherit access from child groups within the hierarchy. For example:
 
 - If a user is assigned to **Group A** (parent) and **Group B** (child) contains a specific Thing, the user gains access to that Thing through inheritance, even if not directly assigned to **Group B**.
 

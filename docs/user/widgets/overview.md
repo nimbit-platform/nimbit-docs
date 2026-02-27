@@ -6,7 +6,7 @@ sidebar_position: 1
 
 # Widgets Overview
 
-Widgets are the building blocks of dashboards in IotBreeze, providing various ways to visualize, interact with and monitor your IoT data. Each widget type is designed for specific use cases and data presentation needs.
+Widgets are the building blocks of dashboards in IoTBreeze, providing various ways to visualize, interact with and monitor your IoT data. Each widget type is designed for specific use cases and data presentation needs.
 
 ## Widget Categories
 

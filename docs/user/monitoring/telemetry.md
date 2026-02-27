@@ -7,7 +7,7 @@ slug: /monitoring/telemetry
 
 ## Overview
 
-Telemetry in IotBreeze allows you to visualize historical and real-time data across multiple Things. Instead of focusing on a single device, telemetry views aggregate **measures** from **various Things** - giving you a powerful and flexible dashboard for data analysis.
+Telemetry in IoTBreeze allows you to visualize historical and real-time data across multiple Things. Instead of focusing on a single device, telemetry views aggregate **measures** from **various Things** - giving you a powerful and flexible dashboard for data analysis.
 
 You can create reusable views tailored to specific **ThingTypes**, **Things**, **Measures** and **Aggregations** and visualize them using different **chart types**.
 
