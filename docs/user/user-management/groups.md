@@ -7,7 +7,7 @@ slug: /user-management/groups
 
 ## Overview
 
-Groups in IotBreeze provide a structured way to manage user access and device visibility. By assigning users, things and thing types to groups, administrators can control which devices and features are accessible to them.
+Groups in IoTBreeze provide a structured way to manage user access and device visibility. By assigning users, things and thing types to groups, administrators can control which devices and features are accessible to them.
 
 Groups are **hierarchical**, meaning permissions can be inherited from parent groups, ensuring a scalable and organized access management system.
 
@@ -167,7 +167,7 @@ These permissions ensure users can interact with the group's assigned things and
 
 ## Managing Permissions
 
-Permissions define what group members can do within IotBreeze. Each group member can have their permissions adjusted individually.
+Permissions define what group members can do within IoTBreeze. Each group member can have their permissions adjusted individually.
 
 ### Changing Individual User Permissions
 
@@ -195,7 +195,7 @@ To adjust the default permissions that new users receive when being added to a g
 
 ## Understanding Inherited Permissions
 
-IotBreeze's group system supports **permission inheritance**, allowing users to automatically receive permissions from parent groups without manually assigning them at each level.
+IoTBreeze's group system supports **permission inheritance**, allowing users to automatically receive permissions from parent groups without manually assigning them at each level.
 
 ### How Permission Inheritance Works
 

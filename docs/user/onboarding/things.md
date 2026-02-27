@@ -9,11 +9,11 @@ slug: /onboarding/things
 
 In the Industrial IoT landscape, connecting and managing your devices efficiently is essential. Each device, or **Thing**, is an individual instance based on a predefined **ThingType**. A Thing inherits specific measures, properties and behaviors from its ThingType, ensuring consistency and scalability throughout your IoT environment.
 
-This documentation covers how you can create, manage and effectively organize your Things within IotBreeze.
+This documentation covers how you can create, manage and effectively organize your Things within IoTBreeze.
 
 ## Create a Thing
 
-Follow these steps to create a new Thing within your IotBreeze dashboard:
+Follow these steps to create a new Thing within your IoTBreeze dashboard:
 
 ### Navigating to Things
 
