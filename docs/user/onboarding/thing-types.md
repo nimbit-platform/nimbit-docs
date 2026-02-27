@@ -9,7 +9,7 @@ slug: /onboarding/thing-types
 
 In the world of Industrial IoT, it's not enough to just connect machines - you need to understand them, manage them and extract value from their data. That’s where **ThingTypes** come into play.
 
-A **ThingType** is the digital blueprint - the structural and semantic definition - of a class of physical devices in your IoTBreeze environment. Think of it as the **Digital Twin definition**: it bridges the gap between your real-world equipment (like pumps, meters, or sensors) and their digital representations in IoTBreeze. Every "thing" (device) you onboard is instantiated from a ThingType, inheriting its defined **measures**, **properties** and **behavioral metadata**.
+A **ThingType** is the digital blueprint - the structural and semantic definition - of a class of physical devices in your IoTBreeze environment. Think of it as the **Digital Twin definition**: it bridges the gap between your real-world equipment (like pumps, meters or sensors) and their digital representations in IoTBreeze. Every "thing" (device) you onboard is instantiated from a ThingType, inheriting its defined **measures**, **properties** and **behavioral metadata**.
 
 This approach ensures consistency, reusability and clear separation of concerns across your digital infrastructure. Whether you're managing hundreds of similar devices or building a complex automation pipeline, ThingTypes give you the foundation for scalable and insightful digital operations.
 
@@ -121,7 +121,7 @@ New measures won't be available in Things until the Draft is applied!
 
 ### Add Properties to Describe Metadata
 
-Properties represent static or metadata attributes - things like device type, firmware version, or installation date.
+Properties represent static or metadata attributes - things like device type, firmware version or installation date.
 
 To define them:
 
