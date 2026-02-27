@@ -63,7 +63,7 @@ Make sure the data types of your measures match the actual values sent by the de
 :::
 
 :::info ThingType Evolution
-IoTBreeze supports **automatic measure definition** through ThingType Evolution. When a device sends data containing measures that aren't yet defined in the system, the **Data Ingestion Pipeline (DIP)** can automatically create these measures for you. This allows for flexible onboarding where devices can define their own data structure as they send information, reducing manual configuration overhead.
+IoTBreeze supports **automatic measure definition** through ThingType Evolution. When a device sends data containing measures that aren't yet defined in the system, the **Data Ingestion Pipeline (DIP)** can automatically create these measures for you. This enables flexible onboarding, allowing devices to define their own data structure when sending information, thereby reducing the effort required for manual configuration.
 :::
 
 To get started:
