@@ -7,7 +7,7 @@ slug: /onboarding/things
 
 ## Overview
 
-In the Industrial IoT landscape, connecting and managing your devices efficiently is essential. Each device, or **Thing**, is an individual instance based on a predefined **ThingType**. A Thing inherits specific measures, properties and behaviors from its ThingType, ensuring consistency and scalability throughout your IoT environment.
+In an industrial IoT landscape, connecting and managing your devices efficiently is essential. Each device, or **Thing**, is an individual instance based on a predefined **ThingType**. A Thing inherits specific measures, properties and behaviors from its ThingType, ensuring consistency and scalability throughout your IoT environment.
 
 This documentation covers how you can create, manage and effectively organize your Things within IoTBreeze.
 
@@ -212,17 +212,17 @@ For detailed information on how to configure Webhook and Azure C2D actions, see 
 
 ### Executing Actions
 
-To execute an action on your Thing, click the **"Fire Action"** button next to the desired action. A confirmation modal will appear before the action is executed.
+To execute an action on your Thing, click the **"Fire Action"** button next to the desired action. A confirmation modal window will appear before the action is executed.
 
 #### Normal Actions
 
-For standard actions, a confirmation modal opens where you can review and confirm the action execution:
+For standard actions, a confirmation modal window opens where you can review and confirm the action execution:
 
 ![Fire Action - Normal](/screenshots/things/actions-fre.png)
 
 #### Toggle Actions
 
-For toggle actions (such as C2D toggle actions), the confirmation modal allows you to select the desired state before execution:
+For toggle actions (such as C2D toggle actions), the confirmation modal window allows you to select the desired state before execution:
 
 ![Fire Action - Toggle](/screenshots/things/actions-fire-toggle.png)
 
