@@ -12,7 +12,7 @@ Welcome to the NimBit User Manual! Here, you will find all the essential informa
 
 ## Introduction
 
-NimBit is a technology spin-off that makes "digitization" and the "Internet of Things" tangible. We develop customized solutions for your company in collaboration with you.
+NimBit is a technology spin-off that makes "digitalisation" and the "Internet of Things" tangible. We develop customized solutions for your company in collaboration with you.
 
 ## IoTBreeze - Your IoT Management System
 
@@ -41,7 +41,7 @@ ALLRECO GmbH relies on environmentally friendly and efficient shredding technolo
 Are you interested in our IoTBreeze product or have questions about digitization or IoT? Our experts are happy to assist you.
 
 - **Email:** info@nimbit.de
-- **Phone:** +49 211 650450 0
+- **Phone:** +49 211 650450 20
 
 ---
 
