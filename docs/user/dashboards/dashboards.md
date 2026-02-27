@@ -8,7 +8,7 @@ sidebar_position: 2
 
 ## Overview
 
-Dashboards in IotBreeze provide a powerful way to visualize and monitor your IoT data in real-time. Each dashboard can display multiple widgets showing data from your connected devices (Things), allowing you to create customized views tailored to your specific monitoring needs.
+Dashboards in IoTBreeze provide a powerful way to visualize and monitor your IoT data in real-time. Each dashboard can display multiple widgets showing data from your connected devices (Things), allowing you to create customized views tailored to your specific monitoring needs.
 
 Key features include:
 
