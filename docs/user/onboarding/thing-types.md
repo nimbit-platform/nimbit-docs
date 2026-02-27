@@ -31,7 +31,7 @@ Click the **"Create Thing Type"** button in the top-right corner to open the Thi
 
 ### Thing Type form
 
-This is where we define the basic values your ThingType.
+The core values of your ThingType are defined here.
 
 ![Filled ThingType Form](/screenshots/thing-types/create-filled.png)
 
