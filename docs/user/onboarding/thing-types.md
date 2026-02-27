@@ -121,7 +121,7 @@ New measures won't be available in Things until the Draft is applied!
 
 ### Add Properties to Describe Metadata
 
-Properties represent static or metadata attributes - things like device type, firmware version or installation date.
+Properties represent static or metadata attributes like device type, firmware version or installation date.
 
 To define them:
 
