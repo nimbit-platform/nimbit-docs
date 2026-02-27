@@ -12,7 +12,7 @@ Welcome to the NimBit User Manual! Here, you will find all the essential informa
 
 ## Introduction
 
-NimBit is a technology spin-off that makes "digitalisation" and the "Internet of Things" tangible. We develop customized solutions for your company in collaboration with you.
+NimBit is a technology spin-off that makes "digitalisation", the "Internet of Things" an "AI" relatable. We develop customized solutions for your company in collaboration with you.
 
 ## IoTBreeze - Your IoT Management System
 
