@@ -7,7 +7,7 @@ slug: /automation/actions
 
 ## Overview
 
-Actions are **executable operations** that enable remote control, command execution and integration with external systems in IotBreeze. They provide a powerful way to interact with your IoT devices and integrate with third-party services.
+Actions are **executable operations** that enable remote control, command execution and integration with external systems in IoTBreeze. They provide a powerful way to interact with your IoT devices and integrate with third-party services.
 
 Actions can be created and used in multiple contexts:
 
@@ -16,7 +16,7 @@ Actions can be created and used in multiple contexts:
 - **Event Types**: Trigger actions automatically based on specific events
 - **Rules**: Execute actions as part of automated workflows and business logic
 
-IotBreeze supports two types of actions:
+IoTBreeze supports two types of actions:
 
 1. **[Webhook Actions](#webhook-actions)** - Call external HTTP endpoints
 2. **[Azure C2D (Cloud-to-Device) Actions](#azure-c2d-actions)** - Send commands directly to Azure IoT devices
@@ -54,7 +54,7 @@ After configuring the basic settings, you can add authentication to secure your 
 
 ![Webhook Authentication Selection](/screenshots/actions/action-webhook-auth.png)
 
-IotBreeze supports the following authentication methods:
+IoTBreeze supports the following authentication methods:
 
 ### Authentication Types
 
@@ -257,7 +257,7 @@ This enables highly dynamic and context-aware device control.
 
 ## Where Actions Can Be used/created
 
-Actions are versatile and can be configured in multiple places throughout IotBreeze:
+Actions are versatile and can be configured in multiple places throughout IoTBreeze:
 
 ### In ThingTypes
 

@@ -9,7 +9,7 @@ slug: /onboarding/thing-types
 
 In the world of Industrial IoT, it's not enough to just connect machines - you need to understand them, manage them and extract value from their data. That’s where **ThingTypes** come into play.
 
-A **ThingType** is the digital blueprint - the structural and semantic definition - of a class of physical devices in your IotBreeze environment. Think of it as the **Digital Twin definition**: it bridges the gap between your real-world equipment (like pumps, meters, or sensors) and their digital representations in IotBreeze. Every "thing" (device) you onboard is instantiated from a ThingType, inheriting its defined **measures**, **properties** and **behavioral metadata**.
+A **ThingType** is the digital blueprint - the structural and semantic definition - of a class of physical devices in your IoTBreeze environment. Think of it as the **Digital Twin definition**: it bridges the gap between your real-world equipment (like pumps, meters, or sensors) and their digital representations in IoTBreeze. Every "thing" (device) you onboard is instantiated from a ThingType, inheriting its defined **measures**, **properties** and **behavioral metadata**.
 
 This approach ensures consistency, reusability and clear separation of concerns across your digital infrastructure. Whether you're managing hundreds of similar devices or building a complex automation pipeline, ThingTypes give you the foundation for scalable and insightful digital operations.
 
@@ -19,7 +19,7 @@ This approach ensures consistency, reusability and clear separation of concerns 
 
 ## Create a ThingType
 
-Now that you know what ThingTypes are, let's take a look at how you can define one in IotBreeze. This isn’t just about filling out a form - it's where you shape what kind of data your devices will collect and how they behave in your system.
+Now that you know what ThingTypes are, let's take a look at how you can define one in IoTBreeze. This isn’t just about filling out a form - it's where you shape what kind of data your devices will collect and how they behave in your system.
 
 ### Navigating to Thing Types
 
@@ -56,14 +56,14 @@ Your newly created ThingType will now appear in the list:
 
 ### Add Measures to Track Live Data
 
-Measures define the dynamic data points your device can send - typically sensor values or readings. Each measure has a type and constraints that reflect how it's processed in IotBreeze.
+Measures define the dynamic data points your device can send - typically sensor values or readings. Each measure has a type and constraints that reflect how it's processed in IoTBreeze.
 
 :::caution
 Make sure the data types of your measures match the actual values sent by the devices. Incorrect types may lead to the data being unusable in dashboards or result in other unwanted behavior.
 :::
 
 :::info ThingType Evolution
-IotBreeze supports **automatic measure definition** through ThingType Evolution. When a device sends data containing measures that aren't yet defined in the system, the **Data Ingestion Pipeline (DIP)** can automatically create these measures for you. This allows for flexible onboarding where devices can define their own data structure as they send information, reducing manual configuration overhead.
+IoTBreeze supports **automatic measure definition** through ThingType Evolution. When a device sends data containing measures that aren't yet defined in the system, the **Data Ingestion Pipeline (DIP)** can automatically create these measures for you. This allows for flexible onboarding where devices can define their own data structure as they send information, reducing manual configuration overhead.
 :::
 
 To get started:
@@ -186,7 +186,7 @@ This centralized view makes it easy to manage all devices of the same type and i
 
 Actions are **executable operations** that can be triggered on things of this ThingType. They enable remote control, command execution and integration with external systems.
 
-IotBreeze supports two types of actions:
+IoTBreeze supports two types of actions:
 
 1. **Webhook Actions** - Call external HTTP endpoints for integration with third-party services
 2. **Azure C2D (Cloud-to-Device) Actions** - Send commands directly to Azure IoT devices
