@@ -24,14 +24,10 @@ IoTBreeze is designed to turn machine and asset data into concrete operational v
 ## Recommended Reading Path
 
 1. [Getting started](/docs/user/getting-started)
-2. [Onboarding: Thing Types](/docs/user/onboarding/thing-types)
-3. [Onboarding: Things](/docs/user/onboarding/things)
-4. [Dashboards](/docs/user/dashboards/dashboards)
-5. [Automation and Rule Designer](/docs/user/automation/rule-designer)
-
-## Customer References
-
-Explore customer implementations in [Success Stories](/docs/user/success-stories/overview).
+2. [Onboarding: Thing Types](/docs/onboarding/thing-types)
+3. [Onboarding: Things](/docs/onboarding/things)
+4. [Dashboards](/docs/dashboards)
+5. [Automation and Rule Designer](/docs/automation/rule-designer)
 
 ## Contact
 

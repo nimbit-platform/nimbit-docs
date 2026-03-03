@@ -347,7 +347,7 @@ export default function Home(): React.JSX.Element {
                     in minutes.
                   </p>
                 </div>
-                <Link to="/docs/user/getting-started/overview">
+                <Link to="/docs/user/getting-started">
                   <Button size="lg" className="no-underline hover:no-underline">
                     Get started
                     <ArrowRight className="h-4 w-4" />
