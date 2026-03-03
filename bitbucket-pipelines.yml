@@ -2,10 +2,10 @@ image: node:24
 
 pipelines:
   branches:
-    master:
+    development:
       - parallel:
           - step:
-              name: Build and Test
+              name: Build and Deploy to Bitbucket Pages
               caches:
                 - node
                 - pnpm
@@ -43,6 +43,33 @@ pipelines:
                 - git add .
                 - git commit -m "Deploy Docusaurus documentation" || echo "No changes to commit"
                 - git push
+
+    master:
+      - step:
+          name: Build and Deploy via FTP
+          caches:
+            - node
+            - pnpm
+          script:
+            # Enable corepack
+            - corepack enable
+            - corepack prepare pnpm@latest --activate
+
+            # Install dependencies
+            - pnpm install
+
+            # Build project
+            - pnpm run build
+
+            # Install lftp for FTP upload
+            - apt-get update && apt-get install -y lftp
+
+            # Upload build output to FTP server
+            - lftp -c "
+              set ftp:ssl-allow no;
+              open -u $FTP_USER,$FTP_PASSWORD $FTP_HOST;
+              mirror --reverse --delete --verbose build/ $FTP_REMOTE_PATH
+              "
 
 definitions:
   caches:
