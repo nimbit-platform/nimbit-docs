@@ -2,17 +2,17 @@ image: node:24
 
 pipelines:
   branches:
-    master:
+    development:
       - parallel:
           - step:
-              name: Build and Test
+              name: Build and Deploy to Bitbucket Pages
               caches:
                 - node
                 - pnpm
               script:
                 # Enable corepack (recommended for pnpm on Node 16+)
                 - corepack enable
-                - corepack prepare pnpm@latest --activate
+                - corepack prepare pnpm@10.3.0 --activate
 
                 # Install dependencies
                 - pnpm install
@@ -43,6 +43,50 @@ pipelines:
                 - git add .
                 - git commit -m "Deploy Docusaurus documentation" || echo "No changes to commit"
                 - git push
+
+    master:
+      - step:
+          name: Build and Deploy via FTP
+          caches:
+            - node
+            - pnpm
+          script:
+            # Corepack aktivieren
+            - corepack enable
+            - corepack prepare pnpm@10.3.0 --activate
+
+            # Abhängigkeiten installieren
+            - pnpm install
+
+            # Projekt bauen
+            - pnpm run build
+
+            # lftp für FTP-Upload installieren
+            - apt-get update && apt-get install -y lftp
+
+            # Pflichtumgebungsvariablen und sicheren Remote-Pfad prüfen
+            - |
+              for var in FTP_USER FTP_PASSWORD FTP_HOST FTP_REMOTE_PATH; do
+                val="${!var}"
+                if [ -z "$val" ]; then
+                  echo "Fehler: $var ist nicht gesetzt oder leer." >&2
+                  exit 1
+                fi
+              done
+              case "$FTP_REMOTE_PATH" in
+                /|.|..)
+                  echo "Fehler: FTP_REMOTE_PATH '$FTP_REMOTE_PATH' ist nicht erlaubt." >&2
+                  exit 1
+                  ;;
+              esac
+
+            # Build-Ausgabe per FTPS (TLS erzwungen) auf den FTP-Server hochladen
+            - lftp -c "
+              set ftp:ssl-force yes;
+              set ssl:verify-certificate yes;
+              open -u \"$FTP_USER\",\"$FTP_PASSWORD\" \"$FTP_HOST\";
+              mirror --reverse --delete build/ \"$FTP_REMOTE_PATH\"
+              "
 
 definitions:
   caches:
