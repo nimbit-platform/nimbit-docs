@@ -66,26 +66,20 @@ pipelines:
 
             # Pflichtumgebungsvariablen und sicheren Remote-Pfad prüfen
             - |
-              for var in FTP_USER FTP_PASSWORD FTP_HOST FTP_REMOTE_PATH; do
+              for var in FTP_USER FTP_PASSWORD FTP_HOST; do
                 val="${!var}"
                 if [ -z "$val" ]; then
                   echo "Fehler: $var ist nicht gesetzt oder leer." >&2
                   exit 1
                 fi
               done
-              case "$FTP_REMOTE_PATH" in
-                /|.|..)
-                  echo "Fehler: FTP_REMOTE_PATH '$FTP_REMOTE_PATH' ist nicht erlaubt." >&2
-                  exit 1
-                  ;;
-              esac
 
             # Build-Ausgabe per FTPS (TLS erzwungen) auf den FTP-Server hochladen
             - lftp -c "
               set ftp:ssl-force yes;
               set ssl:verify-certificate yes;
               open -u \"$FTP_USER\",\"$FTP_PASSWORD\" \"$FTP_HOST\";
-              mirror --reverse --delete build/ \"$FTP_REMOTE_PATH\"
+              mirror --reverse --delete build/ .
               "
 
 definitions:
