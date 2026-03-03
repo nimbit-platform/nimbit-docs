@@ -82,7 +82,7 @@ pipelines:
               set net:max-retries 2;
               set net:reconnect-interval-base 5;
               open -u \"$FTP_USER\",\"$FTP_PASSWORD\" \"$FTP_HOST\";
-              mirror --reverse --delete build/ .;
+              mirror --reverse --delete --parallel=10 build/ .;
               bye
               "
 
