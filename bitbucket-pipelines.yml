@@ -61,8 +61,8 @@ pipelines:
             # Projekt bauen (baseUrl auf / für FTP-Deployment überschreiben)
             - DOCUSAURUS_BASE_URL=/ pnpm run build
 
-            # lftp, zip und sshpass installieren
-            - apt-get update && apt-get install -y lftp zip sshpass
+            # lftp installieren
+            - apt-get update && apt-get install -y lftp
 
             # Pflichtumgebungsvariablen prüfen
             - |
@@ -74,10 +74,7 @@ pipelines:
                 fi
               done
 
-            # Build-Ausgabe zippen
-            - cd build && zip -r ../deploy.zip . && cd ..
-
-            # ZIP per FTPS hochladen
+            # Build-Ausgabe per FTPS in nimbit/ hochladen
             - lftp -c "
               set ftp:ssl-force yes;
               set ssl:verify-certificate yes;
@@ -85,17 +82,9 @@ pipelines:
               set net:max-retries 2;
               set net:reconnect-interval-base 5;
               open -u \"$FTP_USER\",\"$FTP_PASSWORD\" \"$FTP_HOST\";
-              put deploy.zip;
+              mirror --reverse --delete build/ .;
               bye
               "
-
-            # Per SSH entzippen, in nimbit/ ablegen und ZIP löschen
-            - mkdir -p ~/.ssh && chmod 700 ~/.ssh
-            - ssh-keyscan -H "$FTP_HOST" >> ~/.ssh/known_hosts
-            - SSHPASS="$FTP_PASSWORD" sshpass -e ssh "$FTP_USER@$FTP_HOST" "rm -rf nimbit && mkdir -p nimbit && unzip -o deploy.zip -d nimbit && rm deploy.zip"
-
-            # Lokale ZIP-Datei löschen
-            - rm deploy.zip
 
 definitions:
   caches:
