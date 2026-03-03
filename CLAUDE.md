@@ -54,8 +54,16 @@ OpenAPI docs are auto-generated via `docusaurus-plugin-openapi-docs`:
 
 ### Deployment
 
-- CI/CD via Bitbucket Pipelines (`bitbucket-pipelines.yml`), triggers on `master` branch
-- Builds with Node 18, deploys static output to `cparsinnovationlab.bitbucket.io/nimbit`
+CI/CD is handled via Bitbucket Pipelines (`bitbucket-pipelines.yml`) with two branch-based targets:
+
+| Branch | Trigger | Target |
+|--------|---------|--------|
+| `development` | push | Deploys to `cparsinnovationlab.bitbucket.io/nimbit` (Bitbucket Pages, staging) |
+| `master` | push | Deploys to production FTP webserver via `lftp` — this is the public release |
+
+- The `development` pipeline clones the Bitbucket Pages repo and copies the static build into `nimbit/`
+- The `master` pipeline uploads the `build/` directory to the FTP server using the repository variables `FTP_HOST`, `FTP_USER`, `FTP_PASSWORD`, and `FTP_REMOTE_PATH`
+- A push to `master` constitutes a **production release**
 - Search powered by Algolia (configured in `docusaurus.config.ts`)
 
 ## Key Configuration Files
