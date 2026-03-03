@@ -75,7 +75,6 @@ CI/CD is handled via Bitbucket Pipelines (`bitbucket-pipelines.yml`) with two br
 
 ## Conventions
 
-- Code comments in source files are written in German
 - File naming: kebab-case for docs, PascalCase for React components
 - Documentation files use `.mdx` for pages needing React components, `.md` for pure markdown
 - Static assets (images, icons) go in `static/img/` and `static/website/`
