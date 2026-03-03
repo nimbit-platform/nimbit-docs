@@ -12,7 +12,7 @@ pipelines:
               script:
                 # Enable corepack (recommended for pnpm on Node 16+)
                 - corepack enable
-                - corepack prepare pnpm@latest --activate
+                - corepack prepare pnpm@10.3.0 --activate
 
                 # Install dependencies
                 - pnpm install
@@ -51,24 +51,41 @@ pipelines:
             - node
             - pnpm
           script:
-            # Enable corepack
+            # Corepack aktivieren
             - corepack enable
-            - corepack prepare pnpm@latest --activate
+            - corepack prepare pnpm@10.3.0 --activate
 
-            # Install dependencies
+            # Abhängigkeiten installieren
             - pnpm install
 
-            # Build project
+            # Projekt bauen
             - pnpm run build
 
-            # Install lftp for FTP upload
+            # lftp für FTP-Upload installieren
             - apt-get update && apt-get install -y lftp
 
-            # Upload build output to FTP server
+            # Pflichtumgebungsvariablen und sicheren Remote-Pfad prüfen
+            - |
+              for var in FTP_USER FTP_PASSWORD FTP_HOST FTP_REMOTE_PATH; do
+                val="${!var}"
+                if [ -z "$val" ]; then
+                  echo "Fehler: $var ist nicht gesetzt oder leer." >&2
+                  exit 1
+                fi
+              done
+              case "$FTP_REMOTE_PATH" in
+                /|.|..)
+                  echo "Fehler: FTP_REMOTE_PATH '$FTP_REMOTE_PATH' ist nicht erlaubt." >&2
+                  exit 1
+                  ;;
+              esac
+
+            # Build-Ausgabe per FTPS (TLS erzwungen) auf den FTP-Server hochladen
             - lftp -c "
-              set ftp:ssl-allow no;
-              open -u $FTP_USER,$FTP_PASSWORD $FTP_HOST;
-              mirror --reverse --delete --verbose build/ $FTP_REMOTE_PATH
+              set ftp:ssl-force yes;
+              set ssl:verify-certificate yes;
+              open -u \"$FTP_USER\",\"$FTP_PASSWORD\" \"$FTP_HOST\";
+              mirror --reverse --delete build/ \"$FTP_REMOTE_PATH\"
               "
 
 definitions:
