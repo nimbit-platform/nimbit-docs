@@ -1,7 +1,6 @@
 import React from "react";
 import Link from "@docusaurus/Link";
 import Layout from "@theme/Layout";
-import { cn } from "@site/src/lib/utils";
 import {
   ArrowRight,
   BarChart3,
@@ -25,6 +24,7 @@ import {
   CardTitle,
 } from "@site/src/components/ui/card";
 import { Button } from "@site/src/components/ui/button";
+import ParticleEffectForHero from "@site/src/components/ui/particle-effect-for-hero";
 import { FeatureCard } from "@site/src/components/FeatureCard";
 import type { FeatureCardItem } from "@site/src/components/FeatureCard";
 
@@ -139,17 +139,9 @@ export default function Home(): React.JSX.Element {
           } as React.CSSProperties
         }
       >
-        <div
-          className={cn(
-            "absolute inset-0 h-full w-full",
-            "[background-size:60px_60px]",
-            "[background-image:linear-gradient(to_right,#cdcdcf_1px,transparent_1px),linear-gradient(to_bottom,#cdcdcf_1px,transparent_1px)]",
-            "dark:[background-image:linear-gradient(to_right,#737373_1px,transparent_1px),linear-gradient(to_bottom,#737373_1px,transparent_1px)]",
-          )}
-        />
-        <div className="pointer-events-none absolute inset-0 h-full w-full bg-[var(--docs-color-background)] [mask-image:radial-gradient(circle_at_50%_center,transparent_10%,black)] dark:[mask-image:radial-gradient(circle_at_50%_center,transparent_10%,black)]" />
+        <ParticleEffectForHero />
 
-        <main className="relative mx-auto max-w-300 px-6 pb-20">
+        <main className="relative z-10 mx-auto max-w-300 px-6 pb-20">
           <section className="mx-auto max-w-2xl pb-12 pt-16 text-center">
             <h1 className="text-7xl! text-foreground">NimBit Documentation</h1>
             <p className="text-2xl! mt-4 leading-relaxed text-muted-foreground dark:text-foreground">

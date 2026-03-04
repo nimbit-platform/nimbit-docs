@@ -191,15 +191,10 @@ const config: Config = {
     ],
 
     algolia: {
-      appId: "YW66QXP0SL",
-      apiKey: "5adc7bceb43e099eaffc1bacb8b62f2d",
+      appId: "PQ4HIT202I",
+      apiKey: "425c313b3d611544d4e416ba7bee0a7c",
       indexName: "nimbit",
       contextualSearch: true,
-      externalUrlRegex: "external\.com|domain\.com",
-      replaceSearchResultPathname: {
-        from: "/docs/",
-        to: "/",
-      },
       searchParameters: {},
       searchPagePath: "search",
       insights: false,
@@ -216,6 +211,7 @@ const config: Config = {
       logo: {
         alt: "NimBit Logo",
         src: "img/nimbit.svg",
+        srcDark: "img/nimbit-dark.svg",
       },
       items: [
         {
