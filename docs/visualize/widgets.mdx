@@ -278,9 +278,9 @@ How did it change?
 | **Time range** | The period and the bucket size. Follows the dashboard unless you override it. |
 | **Thresholds** | Horizontal lines with colour and label. |
 | **Display** | Chart or table. |
-| **Markers, Zoomable, Compact Y-axis** | Show points, allow zoom and pan, shorten large axis values. |
+| **Show chart markers**, **Zoom allowed**, **Compact Y-axis labels** | Show points, allow zoom and pan, shorten large axis values. |
 | **Legend placement** | Bottom, right or hidden. |
-| **Y-axis range** | Minimum and maximum. |
+| **Y-Axis min value**, **Y-Axis max value** | The range of the Y axis. |
 
 Older dashboards may contain separate line, bar, scatter and combination widgets. They keep working; new ones are layouts of this widget.
 
@@ -303,9 +303,9 @@ Older dashboards may contain separate line, bar, scatter and combination widgets
 | Setting | What it does |
 | --- | --- |
 | **Aggregation** | How values are combined. |
-| **Merge consecutive points** | Join neighbouring segments with the same state. |
+| **Merge consecutive datapoints** | Join neighbouring segments with the same state. |
 | **Time range** | The period to show. |
-| **Timeline rules** | Map value ranges to colours and labels. |
+| **Rules** | Map value ranges to colours and labels. |
 
 ### Heatmap
 
@@ -377,7 +377,7 @@ Older dashboards may contain separate line, bar, scatter and combination widgets
 | **Time range** | The period and the bucket size. |
 | **Gap fill** | Fill gaps in the time series. |
 | **Pivot configuration** | Row groups, column groups, values and calculated columns. |
-| **Date alias, Date format** | Label and format of the date column. |
+| **Date Alias**, **Date format** | Label and format of the date column. |
 
 ### Custom
 
@@ -425,7 +425,7 @@ What is it doing, and what can I do?
 | Setting | What it does |
 | --- | --- |
 | **Measure** | One measure to evaluate. |
-| **Status rules** | Conditions that map value ranges to icons, text and colours. |
+| **Rules** | Conditions that map value ranges to icons, text and colours. |
 | **Title, Alignment, Text size** | How it is drawn. |
 
 ### Action
@@ -1068,9 +1068,9 @@ To draw geofences and use the full map, see [Show things on a map](./map.mdx).
 
 | Setting | What it does |
 | --- | --- |
-| **VNC server** | The server to show. Required. |
-| **Quality** | **Server Default**, **Low**, **Balanced** or **High**. |
-| **Auto connect** | Connect when the dashboard opens. |
+| **VNC Server** | The server to show. Required. |
+| **Quality Override** | **Server Default**, **Low**, **Balanced** or **High**. |
+| **Auto-connect on load** | Connect when the dashboard opens. |
 | **Show toolbar** | Show the connection toolbar. |
 
 Whether you can type into the screen is set on the VNC server, not on the widget. Manage VNC servers under **Settings › Configuration › VNC Servers**.
