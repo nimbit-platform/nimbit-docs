@@ -161,6 +161,22 @@ const config: Config = {
   themes: ["@docusaurus/theme-mermaid"],
 
   themeConfig: {
+    // Diagrams in the docs palette instead of Mermaid's default purple.
+    mermaid: {
+      theme: { light: "base", dark: "dark" },
+      options: {
+        fontFamily: "Inter Variable, Inter, system-ui, sans-serif",
+        themeVariables: {
+          primaryColor: "#e6f4f6",
+          primaryBorderColor: "#197a87",
+          primaryTextColor: "#0d0f12",
+          lineColor: "#5d646d",
+          secondaryColor: "#eef0f2",
+          tertiaryColor: "#ffffff",
+          edgeLabelBackground: "#ffffff",
+        },
+      },
+    },
     zoom: {
       selector: ".markdown img",
       background: {

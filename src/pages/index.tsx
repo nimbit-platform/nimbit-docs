@@ -194,20 +194,20 @@ export default function Home(): React.JSX.Element {
                   </Translate>
                 </p>
                 <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm">
-                  <Link to="/docs/connect/mqtt" className="inline-flex items-center gap-1 text-[#3dc1d3] no-underline hover:no-underline">
+                  <Link to="/docs/connect/mqtt" className="inline-flex items-center gap-1 text-[#3dc1d3]! no-underline hover:no-underline">
                     <Translate id="home.first.mqtt">Send data over MQTT</Translate> <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
-                  <Link to="/docs/connect/http" className="inline-flex items-center gap-1 text-[#3dc1d3] no-underline hover:no-underline">
+                  <Link to="/docs/connect/http" className="inline-flex items-center gap-1 text-[#3dc1d3]! no-underline hover:no-underline">
                     <Translate id="home.first.http">Send data over HTTP</Translate> <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
-                  <Link to="/docs/api" className="inline-flex items-center gap-1 text-[#3dc1d3] no-underline hover:no-underline">
+                  <Link to="/docs/api" className="inline-flex items-center gap-1 text-[#3dc1d3]! no-underline hover:no-underline">
                     <Translate id="home.first.api">API overview</Translate> <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
                 </div>
               </div>
               <div className="flex flex-1 items-center p-6 lg:p-10">
-                <pre className="m-0 w-full overflow-x-auto rounded-xl border border-[#27272a] bg-[#18181b] p-5 text-xs leading-relaxed text-[#d4d4d8]">
-                  <code>{curl}</code>
+                <pre className="m-0 w-full overflow-x-auto rounded-xl border border-[#27272a] bg-[#18181b]! p-5 text-xs leading-relaxed text-[#d4d4d8]!">
+                  <code className="bg-transparent! p-0! text-inherit! border-0!">{curl}</code>
                 </pre>
               </div>
             </div>
