@@ -5,7 +5,7 @@ sidebar_position: 6
 type: how-to
 app:
   routes: ["/onboarding/gateways"]
-translated_from: 06bddd1
+translated_from: 439fe04
 ---
 
 Aktualisieren Sie eingerichtete Boxen auf eine Periscope-Version, die den Namespace des Gateways und die eigenen Datenzugangsdaten des Gateways verwendet. Die Reihenfolge zählt: erst die Boxen, dann der Tenant-Schlüssel.
@@ -42,7 +42,7 @@ Aktualisieren Sie eingerichtete Boxen auf eine Periscope-Version, die den Namesp
 | Ingest-Tokens | HTTP- und Stream-Ingest verwenden ein Token von höchstens 10 Minuten. Ein widerrufenes Gateway stoppt innerhalb einer Token-Lebensdauer. |
 | Zustandsintervall | `agent.health_interval` beträgt höchstens `5m`. Ein längerer Wert wird abgelehnt. |
 
-Eine Box mit der alten Version, die keine zwischengespeicherten Zugangsdaten hat, etwa eine neue Box oder eine mit zurückgesetztem State, bekommt keine: Die Plattform lehnt das Token eines Gateways für die Tenant-Zugangsdaten ab. Darum aktualisieren Sie zuerst die Boxen. Siehe [Ausgänge-Referenz](../outputs.mdx#the-gateway-credential).
+Eine Box mit der alten Version, die keine zwischengespeicherten Zugangsdaten hat, etwa eine neue Box oder eine mit zurückgesetztem State, bekommt gar keine Zugangsdaten: Die Plattform gibt dem Token eines Gateways keine Tenant-Zugangsdaten mehr, und die alte Version fordert keine Gateway-Zugangsdaten an. Darum aktualisieren Sie zuerst die Boxen. Siehe [Ausgänge-Referenz](../outputs.mdx#the-gateway-credential).
 
 Entspricht `agent.name` schon dem Namespace des Gateways, ändern sich die Alternate-IDs nicht, und kein Thing wird doppelt vorgeschlagen.
 
