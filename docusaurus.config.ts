@@ -229,7 +229,7 @@ const config: Config = {
         { label: "Blog", to: "/blog", position: "left" },
         { type: "search", position: "right" },
         {
-          href: "https://id.iotbreeze.de",
+          href: "https://iotbreeze.nimbit.ai",
           label: "Open IoT Breeze",
           position: "right",
           className: "navbar-book-demo",
