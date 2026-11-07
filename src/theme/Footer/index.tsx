@@ -56,9 +56,9 @@ export default function Footer(): React.JSX.Element | null {
         </div>
       </div>
       <div className="border-0 border-t border-solid border-[var(--docs-color-border)]">
-        <p className="mx-auto my-0 max-w-[1360px] px-6 py-4 font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--docs-color-text-100)] lg:px-10">
-          {copyright}
-        </p>
+        <div className="mx-auto max-w-[1360px] px-6 py-4 lg:px-10">
+          <p className="m-0 font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--docs-color-text-100)]">{copyright}</p>
+        </div>
       </div>
     </footer>
   );

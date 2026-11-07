@@ -1,51 +1,30 @@
 {
-  "api.backToOverview": {
-    "message": "API-Übersicht"
+  "api.ref.host": {
+    "message": "Auf {host}"
   },
-  "api.eyebrow": {
-    "message": "API"
+  "api.ref.nbq.text": {
+    "message": "Zeitreihen, Snapshots, Positionen, Events und Metriken lesen."
   },
-  "api.loading": {
-    "message": "API-Referenz wird geladen …"
+  "api.ref.nbq.title": {
+    "message": "Query-API (nbq)"
   },
-  "api.nbq.description": {
-    "message": "Zeitreihendaten zurücklesen: Abfragen, Aggregationen und Zeiträume."
+  "api.ref.ocb.text": {
+    "message": "Things, Thing-Typen, Regeln, Dashboards, Benutzer und den Rest des Tenants verwalten."
   },
-  "api.nbq.eyebrow": {
-    "message": "Abfrage"
-  },
-  "api.nbq.select": {
-    "message": "Query-API (NBQ)"
-  },
-  "api.nbq.title": {
-    "message": "Query-API-Referenz"
-  },
-  "api.ocb.description": {
-    "message": "Things, Thing-Typen, Dashboards, Benutzer und den Rest der Plattform verwalten."
-  },
-  "api.ocb.eyebrow": {
-    "message": "Plattform"
-  },
-  "api.ocb.select": {
+  "api.ref.ocb.title": {
     "message": "Plattform-API (OCB)"
   },
-  "api.ocb.title": {
-    "message": "Plattform-API-Referenz"
+  "api.ref.ocbV1.text": {
+    "message": "Die älteren REST-Endpunkte, die v2 noch nicht abdeckt."
   },
-  "api.switch": {
-    "message": "API wechseln"
+  "api.ref.ocbV1.title": {
+    "message": "Plattform-API (OCB), v1"
   },
-  "api.tsflux.description": {
-    "message": "Gerätedaten senden: strukturiertes JSON, Line Protocol und InfluxDB-kompatible Writes."
+  "api.ref.tsflux.text": {
+    "message": "Gerätenachrichten als JSON, Line Protocol oder InfluxDB-kompatible Writes senden."
   },
-  "api.tsflux.eyebrow": {
-    "message": "Ingest"
-  },
-  "api.tsflux.select": {
+  "api.ref.tsflux.title": {
     "message": "Ingest-API (tsflux)"
-  },
-  "api.tsflux.title": {
-    "message": "Ingest-API-Referenz"
   },
   "app.address.change": {
     "message": "Ihre IoT-Breeze-Adresse ändern"
@@ -393,7 +372,7 @@
     "message": "Für Entwickler"
   },
   "home.path.develop.text": {
-    "message": "Protokolle, Nachrichtenformate, Ingest-, Abfrage- und Plattform-APIs, Webhooks."
+    "message": "Protokolle, Nachrichtenformate, Ingest-, Query- und Plattform-APIs, Webhooks."
   },
   "home.path.develop.title": {
     "message": "Entwickeln"

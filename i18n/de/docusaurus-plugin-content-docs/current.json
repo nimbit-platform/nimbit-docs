@@ -58,21 +58,5 @@
   "sidebar.docsSidebar.doc.Downloads": {
     "message": "Downloads",
     "description": "The label for the doc item 'Downloads' in sidebar 'docsSidebar', linking to the doc downloads"
-  },
-  "sidebar.apiSidebar.category.Reference": {
-    "message": "Referenz",
-    "description": "The label for category 'Reference' in sidebar 'apiSidebar'"
-  },
-  "sidebar.apiSidebar.link.Ingest API (tsflux)": {
-    "message": "Ingest-API (tsflux)",
-    "description": "The label for link 'Ingest API (tsflux)' in sidebar 'apiSidebar', linking to '/api/reference/tsflux'"
-  },
-  "sidebar.apiSidebar.link.Query API (NBQ)": {
-    "message": "Query-API (NBQ)",
-    "description": "The label for link 'Query API (NBQ)' in sidebar 'apiSidebar', linking to '/api/reference/nbq'"
-  },
-  "sidebar.apiSidebar.link.Platform API (OCB)": {
-    "message": "Plattform-API (OCB)",
-    "description": "The label for link 'Platform API (OCB)' in sidebar 'apiSidebar', linking to '/api/reference/ocb'"
   }
 }

@@ -1,0 +1,16 @@
+---
+title: API reference
+description: Every endpoint of the ingest, query and platform APIs, served by your own IoT Breeze.
+type: reference
+sidebar_position: 6
+---
+
+import ApiReferenceLinks from "@site/src/components/ApiReferenceLinks";
+
+Each API serves its own reference on the host you open IoT Breeze on. The references are generated from the version your installation runs, so they always match it, and **Test Request** sends the call to your own API.
+
+<ApiReferenceLinks />
+
+The links use your IoT Breeze address. If they point to the wrong host, set yours with the arrow next to **Open IoT Breeze** at the top of the page.
+
+To call an endpoint from the reference, authenticate first: an API key or a user token for the query and platform APIs, device or tenant credentials for the ingest API. See [Authentication](./authentication.mdx) for the headers each one takes.

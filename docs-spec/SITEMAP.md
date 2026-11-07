@@ -184,5 +184,5 @@ apps/periscope/README.md and apps/periscope/docs/ (served in the agent at /ui/do
 | api-keys.mdx | concept | API keys | administration/api-keys, apps/identity-directory |
 | authentication.mdx | reference | Authentication | developer/intro, administration/api-keys, onboarding/connections |
 | webhooks.mdx | reference | Webhook payloads | monitoring/notification-channels, automation/actions (HMAC, payload) |
-| errors-and-limits.mdx | reference | Errors and limits | onboarding/connections (status codes), API specs in openapi/ |
-| reference/tsflux.mdx, nbq.mdx, ocb.mdx | reference | Ingest API (tsflux) / Query API (nbq) / Platform API (OCB) | Scalar page at /api/reference/<id>, spec in static/openapi/ |
+| errors-and-limits.mdx | reference | Errors and limits | onboarding/connections (status codes) |
+| reference.mdx | reference | API reference | Links to each service's own Scalar page on the reader's host: /tsflux/swagger, /nbq/docs, /ocb/api/v2, /ocb/api/v1 |
