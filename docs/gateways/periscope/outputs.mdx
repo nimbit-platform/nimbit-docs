@@ -100,7 +100,7 @@ qos = 1
 
 ### The gateway credential
 
-On a gateway (`[ocb] gateway = true`), the three platform outputs request the gateway's own data credential and cache it in `state_dir`. It identifies the gateway: the broker lets it publish only on the gateway's topics, and the platform accepts only the gateway's things with it. Revoking the gateway's key revokes it.
+On a gateway (`[ocb] gateway = true`), the three platform outputs request the gateway's own data credential and cache it in `state_dir/nimbit-gateway-credential.json`. They share one credential. It identifies the gateway: the broker lets it publish only on the gateway's topics, and the platform accepts only the gateway's things with it. Revoking the gateway's key revokes it, and a revoked gateway is issued none.
 
 | | Tenant credential | Gateway credential |
 | --- | --- | --- |
@@ -108,9 +108,18 @@ On a gateway (`[ocb] gateway = true`), the three platform outputs request the ga
 | Default topic | `tenant/{tenant}/device/{thing}/telemetry` | `tenant/{tenant}/gateway/{gateway}/device/{thing}/telemetry` |
 | Health message topic | `tenant/<t>/device/gateway-<g>/telemetry` | `tenant/<t>/gateway/<g>/device/gateway-<g>/telemetry` |
 
-Tokens for HTTP and stream ingest last at most 10 minutes. The stream ends at the token's expiry and the next stream carries a new one.
+A custom `topic` may use `{gateway}` on a gateway only. Anywhere else the output refuses to start. On a gateway, the broker accepts only topics that contain the gateway's ID, so start a custom topic with `tenant/{tenant}/gateway/{gateway}/`.
 
-The gateway's health message goes out live and is never queued, so a replayed backlog can't keep a dead gateway online. `nimbit_mqtt` publishes it at QoS 0 on its connection, `tsflux` posts it once, and `tsflux_stream` sends it as a batch of its own on a short separate stream. A gateway with none of the three outputs sends no health and logs a warning. Over `tsflux_stream` the health tags (`sw_version`, `link_type`, `config_hash`, `last_apply`) aren't carried.
+**Tokens.** `tsflux` and `tsflux_stream` don't send the credential itself. The platform refuses a gateway's basic credential on HTTP and stream ingest, because it never expires. They send a token of at most 10 minutes that they request with the gateway's sign-in, hold in memory and renew a minute before it expires and after a refusal. A revoked gateway gets no new token, so its writes end within one token lifetime. The stream ends at the token's expiry and the next stream carries a new one. `nimbit_mqtt` uses the credential as the broker's password.
+
+**Fallback rules.**
+
+- A gateway's sign-in is only issued its own credential. If an output asks for the tenant credential, the platform answers `403 GATEWAY_SCOPE_REQUIRED`. Periscope never falls back after a 403: a revoked gateway, for example, is retried.
+- A platform that predates the gateway credential answers `400` for the unknown field, or issues a tenant credential. Then the output uses the tenant credential, the tenant client ID and the tenant topics, warns once, and asks for the gateway credential again at the next start. A custom topic with `{gateway}` can't be served then, and its batches stay queued.
+- The tenant credential cached in `nimbit-mqtt-credential.json` stays for an output that runs as a service account on the same box.
+- The outputs read the gateway's ID when they start. A change of `[ocb] gateway` restarts them. Onboarding the box as another gateway needs a restart of the agent.
+
+**Health message.** The gateway's health message goes out live and is never queued, so a replayed backlog can't keep a dead gateway online. `nimbit_mqtt` publishes it at QoS 0 on its connection, `tsflux` posts it once, and `tsflux_stream` sends it as a batch of its own on a short separate stream. The first of these outputs in the file carries it. A gateway with none of the three outputs sends no health and logs a warning. The dry run sends none. Over `tsflux_stream` the health tags (`sw_version`, `link_type`, `config_hash`, `last_apply`) aren't carried.
 
 ## file and stdout
 

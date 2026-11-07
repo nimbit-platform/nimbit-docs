@@ -3,7 +3,7 @@ title: Check gateway health and traffic
 sidebar_label: Gateway health and traffic
 description: See which gateways are online, whether data is flowing and why messages are discarded, from the gateway list and a gateway's Health tab.
 type: how-to
-sidebar_position: 5
+sidebar_position: 7
 app:
   routes: ["/onboarding/gateways", "/onboarding/gateways/:id"]
 ---
@@ -40,10 +40,10 @@ Find out which gateways are alive, whether they are sending data, and what the p
   alt="The Health tab with Connectivity and the Traffic card"
 />
 
-5. If **Discards per minute** is above zero, read the reason next to it and open the **Events** tab. Each refused thing create is listed there.
-6. Open **Scope** to see **Refused creates**: the count by reason and when the last one happened.
+5. If **Discards per minute** is above zero, read the reason next to it. Reasons are listed in the [Gateway reference](./gateway-reference.mdx#discard-reasons). Discarded messages are counted, not listed one by one.
+6. Open **Scope** to see **Refused creates**: the count by reason and when the last one happened. The **Events** tab lists each refused thing create, and changes to the gateway.
 
-Traffic is counted by the platform and written to the gateway thing about every minute. It never turns a gateway online. Only the gateway's own health message does, so a gateway that is **Offline** while **Last data** is recent is a gateway whose health reporter has stopped, not one that is silent.
+Traffic is counted by the platform and written to the gateway thing about every minute. With several ingest instances, each writes its own share, so a reading can be one instance's view. It never turns a gateway online. Only the gateway's own health message does, so a gateway that is **Offline** while **Last data** is recent is a gateway whose health reporter has stopped, not one that is silent.
 
 ## Check that it worked
 
@@ -52,7 +52,7 @@ A healthy gateway is **Online**, shows **Messages per minute** above zero while 
 ## If it doesn't work
 
 - **No traffic counted yet**: the platform hasn't stored a message from this gateway. Check that the gateway is **Online** first. For an MQTT device, check its topics in [Send data for many devices through one MQTT gateway](./mqtt-gateway.mdx).
-- **Online, but a thing shows no data**: look at the discard reasons. `not_member` means the thing isn't assigned to this gateway, `unknown_thing` that it or its thing type doesn't exist, `invalid` that the message failed validation, `identity_mismatch` that the message names another organization or thing than its connection.
+- **Online, but a thing shows no data**: look at the discard reasons. `not_member` means the thing isn't assigned to this gateway (see [Manage the things behind a gateway](./things-behind-a-gateway.mdx)), `unknown_thing` that it or its thing type doesn't exist, `invalid` that the message failed validation, `identity_mismatch` that the message names another organization or thing than its connection, `id_missing` that a batch element has no `id`.
 - **Offline, but the box is running**: a Periscope gateway needs its health reporter running and a valid key; open **Access & keys** for **Last sign-in**. An MQTT device must publish to its **Status topic** every 5 minutes.
 - **Waiting for onboarding**: the box hasn't enrolled with its code yet, or the code expired. See [Add a gateway](./add-a-gateway.mdx).
 - **Things are active but a value is missing**: the thing type may lack the measure, so the platform dropped it. Check the thing type in [Thing types, things and interfaces](../model/things-and-types.mdx).
@@ -62,3 +62,4 @@ A healthy gateway is **Online**, shows **Messages per minute** above zero while 
 - [Gateway reference](./gateway-reference.mdx) for every discard reason and traffic measure
 - [Check a thing's health](../watch/thing-health.mdx) for the gateway thing's own history
 - [Explore telemetry](../watch/explore-telemetry.mdx)
+- [Revoke, replace or remove a gateway](./revoke-and-replace.mdx)

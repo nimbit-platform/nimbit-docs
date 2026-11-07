@@ -3,7 +3,7 @@ title: Install Periscope and stream your first source
 sidebar_label: Install and stream your first source
 description: Install Periscope on an edge box, connect it as a gateway with an onboarding code, discover a source, apply it and see values in IoT Breeze.
 type: tutorial
-sidebar_position: 3
+sidebar_position: 2
 app:
   routes: ["/onboarding/gateways"]
 ---
@@ -29,7 +29,7 @@ Periscope is one static binary for Linux that also runs as a container. Write a 
 
 ```toml
 [agent]
-name = "werk-altena-01"            # prefixes thing IDs until the gateway's namespace is known
+name = "werk-altena-01"            # names this agent; the gateway's namespace prefixes thing IDs
 
 [ocb]
 url     = "https://nimbit.example.com"
@@ -46,7 +46,7 @@ include  = ["Machines/**"]
 [[outputs.tsflux_stream]]
 ```
 
-Replace `url` with your platform's address. For another kind of source, use the matching page, such as [Read a Siemens S7 PLC](./s7.mdx). `agent.name` and `mount` become part of every thing's identity, so choose them once.
+Replace `url` with your platform's address. For another kind of source, use the matching page, such as [Read a Siemens S7 PLC](./s7.mdx). An input's own `mount` and, for a gateway, its namespace are part of every thing's identity. `mount` under `[ocb]` is where the things sit in your hierarchy. Choose them before the first apply.
 
 Start the agent as a container:
 
@@ -66,7 +66,7 @@ docker exec periscope periscope version
 docker exec periscope periscope validate -config /etc/periscope/periscope.toml -offline
 ```
 
-`validate` ends with `configuration is valid`. The agent keeps its state in `/var/lib/periscope`. Keep that directory on a volume and back it up.
+`validate` ends with `configuration is valid`. The agent keeps its state in `/var/lib/periscope`. Keep that directory on a volume and back it up. This page is for a first trial. For a production box, use [Deploy Periscope](./deploy/index.mdx): requirements, running as a service, upgrades and replacing a box.
 
 ## 3. Connect the box with the onboarding code
 
@@ -76,9 +76,9 @@ Run the enroll command on the box:
 docker exec periscope periscope enroll -code ONB-XXXX-XXXX-XXXX-XXXX
 ```
 
-The box creates its own key pair, redeems the code and keeps the gateway's IDs. It prints the gateway's namespace and gateway thing. The code is now spent and no secret is stored on the box. The box's setup screen accepts the code too, as [Add a gateway](../add-a-gateway.mdx) describes.
+The box creates its own key pair, redeems the code and keeps the gateway's IDs. It prints the gateway's namespace and gateway thing. The code is now spent, and the box holds no password. The box's setup screen accepts the code too, as [Add a gateway](../add-a-gateway.mdx) describes.
 
-Restart or reload the agent. In IoT Breeze, the gateway shows **Online** within about 5 minutes, when its first health message arrives.
+The agent reloads its file on its own; to be sure, run `docker restart periscope`. The agent first asks the platform for the gateway's record and, until it answers, discovers nothing. In IoT Breeze, the gateway shows **Online** within about 5 minutes, when its first health message arrives.
 
 <Screenshot
   page="gateways/install"
@@ -129,4 +129,5 @@ Periscope runs on your box as a gateway of your organization. It discovered a so
 
 - [Approve what Periscope discovers](./approve-discoveries.mdx), and connect more sources: [OPC UA](./opc-ua.mdx), [Modbus](./modbus.mdx), [S7](./s7.mdx), [Sparkplug B and MQTT](./sparkplug-and-mqtt.mdx), [HTTP](./http.mdx)
 - [Transform values before they leave the edge](./processors.mdx)
+- [Deploy Periscope](./deploy/index.mdx): requirements, running as a service, upgrades and replacing a box
 - [Check gateway health and traffic](../fleet-health.mdx)

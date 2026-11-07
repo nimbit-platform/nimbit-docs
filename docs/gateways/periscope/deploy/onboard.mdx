@@ -1,0 +1,95 @@
+---
+title: Onboard a box with an onboarding code
+sidebar_label: Onboard with a code
+description: Connect an installed Periscope agent to IoT Breeze as a gateway with a one-time onboarding code, from the command line or the setup screen, and wait for Online.
+sidebar_position: 4
+type: how-to
+app:
+  routes: ["/onboarding/gateways"]
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Connect an installed box to IoT Breeze as a gateway, using the one-time code of a gateway that you created. When you finish, the gateway shows **Online**. For the background, read [How gateways work](../../how-gateways-work.mdx).
+
+## Before you start
+
+- A gateway of type **Periscope** with an onboarding code that has not expired or been used. See [Add a gateway](../../add-a-gateway.mdx). The code starts with `ONB-`.
+- Periscope runs on the box, [in a container](./run-in-a-container.mdx) or [as a service](./run-as-a-service.mdx), and the box reaches the platform. See the [requirements](./requirements.mdx).
+- `[ocb] url` is set in `periscope.toml`, and none of `email`, `password` or `token` is. A configuration with a second credential is refused.
+
+## Steps
+
+<Tabs groupId="onboard">
+<TabItem value="command" label="Command line" default>
+
+1. Run the enroll command with the code. In a container, prefix it with `docker exec periscope`. As a service, run it as the service's user, with `sudo -u periscope`.
+
+   ```sh
+   periscope enroll -config /etc/periscope/periscope.toml -code ONB-XXXX-XXXX-XXXX-XXXX
+   ```
+
+   `-code -` reads the code from standard input, which keeps it out of the shell history.
+2. Read the output. It names the gateway and its tenant, and the box's key file. Then it prints the namespace and the gateway thing:
+
+   ```text
+   namespace hall-3 (prefixes the alternateIds), gateway thing gateway-<id> (<thing id>, type <type>)
+   ```
+
+3. Set `gateway = true` under `[ocb]` in `periscope.toml`. The agent reloads the file on its own, or restart it. A box that already runs with `gateway = true` signs in with the new key without a reload.
+
+   ```toml
+   [ocb]
+   url     = "https://nimbit.example.com"
+   gateway = true
+   ```
+
+</TabItem>
+<TabItem value="screen" label="Setup screen">
+
+1. Read the one-time setup code in the agent's log: `docker logs periscope` or `journalctl -u periscope`. If you are signed in to the web UI as an admin, you don't need it.
+2. Open `http://<box>:8400/ui/setup` and enter the setup code.
+3. Under **Platform**, enter the platform's address, and next to **Sign in with** choose **an onboarding code**.
+4. Paste the onboarding code. The screen shows each check with its result.
+5. Pick where the box's things sit under **Mount**, choose the output, and select **Write and reload**.
+
+The screen writes `ocb.gateway = true` and, when no file sets one, `agent.name` from the namespace, into `state_dir/config.ui.toml`. If `periscope.toml` sets `email`, `password` or `token`, the screen refuses before it uses the code. Remove that key first.
+
+</TabItem>
+</Tabs>
+
+## What onboarding sets
+
+| Result | Where | What it does |
+| --- | --- | --- |
+| A key pair | `gateway_key.pem` | The box signs in with it. No password exists. |
+| The gateway's IDs | `gateway.json` | Names the gateway, its tenant and the endpoints it signs in at. |
+| The namespace | `gateway.json`, from `gateways.me` | Prefixes the alternate ID of every thing the box discovers, in place of `agent.name`. |
+| The gateway thing | `gateway.json`, from `gateways.me` | The thing that receives the box's health message. Its status is the gateway's status. |
+
+The code is spent when the identity directory accepts it. The files are described in [What Periscope keeps on the box](./state-and-backup.mdx).
+
+## How long until Online
+
+After the agent starts with `gateway = true`, it asks the platform for the gateway's record (`gateways.me`). Until the platform answers, the agent discovers and applies nothing, and asks again every minute. This keeps a thing from being created under the wrong prefix.
+
+The agent then sends its first health message about 15 seconds after it started and every 30 seconds until one is accepted. Later messages follow every `agent.health_interval`, which is 5 minutes by default and can be 1 to 5 minutes. The gateway is **Online** when the first message arrives and **Offline** after 15 minutes without one. It usually shows **Online** within 5 minutes of the start.
+
+The health message is sent live through the first output of type `tsflux_stream`, `tsflux` or `nimbit_mqtt` in the file. Without one of them the gateway never goes online.
+
+## Check that it worked
+
+In IoT Breeze, open **Settings › Onboarding › Gateways**. The row changes from **Waiting for onboarding** to **Online**. After you confirm and apply proposals, the gateway's **Things** tab lists the things of the box. See [Check gateway health and traffic](../../fleet-health.mdx).
+
+## If it doesn't work
+
+- **The code is refused**: it is unknown, used or expired. Issue a new one in IoT Breeze with **New onboarding code**.
+- **`the gateway's namespace is not known yet`**: the platform hasn't answered `gateways.me`. Check the box's route to the platform. The agent asks again every minute.
+- **The gateway stays Offline**: check that `gateway = true` is set and an output is configured. See [Troubleshoot Periscope](../troubleshooting.mdx).
+- **`Not connected to Nimbit` banner**: `gateway = true` is set but `gateway.json` is missing. Enroll with a new code.
+
+## Related
+
+- [Add a gateway](../../add-a-gateway.mdx) · [Command-line reference](../commands.mdx#enroll)
+- [Upgrade a box](./upgrade.mdx) · [Replace a box](./replace-a-box.mdx)

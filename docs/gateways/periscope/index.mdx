@@ -1,7 +1,7 @@
 ---
 title: Periscope
 description: Periscope is the edge agent that discovers OPC UA, Sparkplug B, MQTT, S7, Modbus and HTTP sources and streams their values to IoT Breeze.
-sidebar_position: 1
+sidebar_position: 0
 type: landing
 app:
   routes: ["/onboarding/gateways"]
@@ -24,9 +24,12 @@ The agent serves its full documentation at `http://<listen>/ui/docs`, so an engi
 
 ## Understand
 - [How Periscope works](./how-periscope-works.mdx): the stages, and whether an instance is a gateway.
+- [What Periscope keeps on the box](./deploy/state-and-backup.mdx): the gateway's key, its queues and what to back up.
 
 ## Do
 - [Install Periscope and stream your first source](./install.mdx): a tutorial from container to values in IoT Breeze.
+- [Deploy Periscope](./deploy/index.mdx): requirements, container or service, onboarding, upgrades, and replacing a box.
+- [Onboard a box with an onboarding code](./deploy/onboard.mdx)
 - [Connect an OPC UA server](./opc-ua.mdx)
 - [Read Modbus registers](./modbus.mdx)
 - [Read a Siemens S7 PLC](./s7.mdx)
@@ -41,3 +44,4 @@ The agent serves its full documentation at `http://<listen>/ui/docs`, so an engi
 - [Configuration reference](./configuration.mdx): every table and key of `periscope.toml`.
 - [Outputs reference](./outputs.mdx): where values go and how they are queued.
 - [Command-line reference](./commands.mdx): every `periscope` command and exit code.
+- [Requirements for an edge box](./deploy/requirements.mdx): systems, disk, network and clock.

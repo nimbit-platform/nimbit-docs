@@ -2,7 +2,7 @@
 title: Gateway reference
 description: Gateway types, fields, statuses, limits, health and traffic measures, discard reasons and refusal reasons for gateways in IoT Breeze.
 type: reference
-sidebar_position: 6
+sidebar_position: 9
 app:
   routes: ["/onboarding/gateways", "/onboarding/gateways/:id"]
 ---
@@ -23,13 +23,13 @@ Every gateway has one thing of its own, with the alternate ID `gateway-<id>`. It
 | Field | Applies to | Rules |
 | --- | --- | --- |
 | **Name** | Both | 1 to 100 characters, unique in the organization. |
-| **Namespace** | Both | 1 to 64 characters from `a-z`, `0-9`, `_` and `-`. Without one, it follows the name. Can't be `gateway`. It can't equal another gateway's namespace, start with it, or extend it with `-`. Fixed once the gateway has things or its box has enrolled. Renaming doesn't move existing things. |
+| **Namespace** | Both | 1 to 64 characters from `a-z`, `0-9`, `_` and `-`. Without one, it follows the name. Can't be `gateway`. It can't equal another gateway's namespace, start with it, or extend it with `-`. Fixed once the gateway has things or, for Periscope, its box has enrolled. Renaming doesn't move existing things. Things of a Periscope gateway must have an alternate ID that equals it or starts with `<namespace>-`. For an MQTT device gateway this is not checked. |
 | **Roles** | Periscope | The roles the gateway acts with, narrowed to what a gateway may do. Default: **Modeler**. You can't give a role with permissions you lack. |
 | **Code valid for** | Periscope | 1 hour to 7 days. Default 1 day. |
 | **Config file format** | MQTT device | **Environment file (.env)**, **JSON (.json)** or **eWON Flexy BASIC parameters (.bas)**. |
 | **Allowed thing types** | Scope | Up to 200. Empty means any thing type. |
 | **Thing limit** | Scope | 0 to 100,000, besides the gateway's own thing. Empty means only the organization's limits apply. |
-| **Creation policy** | Scope | **Open** creates things inside the scope. **Locked** creates none by any path: data for an unknown thing is discarded and counted, and existing things keep working. |
+| **Creation policy** | Scope | **Open** creates things inside the scope. **Locked** creates none by any path: data for an unknown thing is discarded and counted, and existing things keep working. It doesn't apply when you assign things. MQTT device messages never create things. |
 
 ## Statuses
 
@@ -38,7 +38,7 @@ Every gateway has one thing of its own, with the alternate ID `gateway-<id>`. It
 | **Online** | The gateway thing is connected: its own health message arrived in the last 15 minutes. |
 | **Offline** | Enrolled, and the gateway thing is not connected or has no health message yet. |
 | **Waiting for onboarding** | An onboarding code is pending. |
-| **Not enrolled** | No live key and no pending code. |
+| **Not enrolled** | Periscope: no live key and no pending code. MQTT device: its credential is revoked. |
 | **Incomplete, delete it** | Only the identity directory knows the gateway. Delete it and add it again. |
 
 ## Limits
@@ -49,8 +49,12 @@ Every gateway has one thing of its own, with the alternate ID `gateway-<id>`. It
 | Gateways a thing belongs to | 1 |
 | Things assigned in one action | 200 |
 | Alternate ID length | 128 characters |
-| Access token lifetime | 5 minutes |
-| MQTT batch | 500 elements, 1 MiB |
+| Sign-in token of a Periscope box | 5 minutes |
+| Gateway token for HTTP and stream ingest | 10 minutes at most |
+| MQTT session of a gateway | 10 minutes at most |
+| Onboarding code validity | 1 hour to 7 days |
+| Allowed thing types per gateway | 200 |
+| MQTT batch | 1 MiB, and 500 elements by default |
 | Events per page | up to 200 |
 
 ## MQTT connection
@@ -75,14 +79,14 @@ The gateway reports these about itself every 5 minutes (interface `GatewayHealth
 | `buffer_oldest_s` | Oldest buffered message | s |
 | `errors_per_min` | Errors per minute | 1/min |
 | `clock_offset_ms` | Clock offset | ms |
-| `sw_version` | Software version (tag) | |
-| `link_type` | Link type (tag) | |
+| `sw_version` | Software version (property) | |
+| `link_type` | Link type (property) | |
 
 A Periscope gateway adds the interface `PeriscopeAgent`: `outputs_failing`, `inputs_failing`, `output_p95_ms`, `restart_required`, `config_hash` and `last_apply`.
 
 ## Traffic measures
 
-The platform writes these to the gateway thing about every minute (interface `GatewayTraffic`). They never make a gateway online.
+The platform writes these to the gateway thing about every minute (interface `GatewayTraffic`). They never make a gateway online. With several ingest instances, each writes its own share, so a reading can be one instance's view.
 
 | Measure | Meaning |
 | --- | --- |
@@ -100,12 +104,12 @@ The platform writes these to the gateway thing about every minute (interface `Ga
 | `identity_mismatch` | The message names another organization or thing than its connection |
 | `not_member` | The thing's record names another gateway, or none |
 | `unknown_thing` | The thing or its thing type doesn't exist |
-| `invalid` | Anything else refused for good: undecodable, malformed, failing validation, wrong thing type for the thing |
+| `invalid` | Anything else refused for good: undecodable, malformed, no `thingType`, no data or location, a batch that is not an array or object, the wrong thing type for the thing |
 | `id_missing` | A batch element has no `id` |
-| `too_large` | A batch is over 1 MiB, dropped whole |
-| `too_many` | A batch has more than 500 elements, dropped whole |
+| `too_large` | A batch is over 1 MiB, dropped whole, counted once |
+| `too_many` | A batch has more elements than the limit (500 by default), dropped whole, counted once |
 
-A lookup the platform couldn't answer is retried, not discarded.
+A lookup the platform couldn't answer is retried, not discarded. A batch element is checked on its own: a bad one is dropped and the rest are stored.
 
 ## Refused creates
 
@@ -117,6 +121,42 @@ A Periscope gateway's attempt to create a thing can be refused. **Refused create
 | **Creation locked** | The creation policy is **Locked**. |
 | **Outside the namespace** | The thing's alternate ID doesn't start with the gateway's namespace. |
 | **Thing type not allowed** | The thing type isn't in the allowed list. |
+
+## Assignment refusals
+
+When you assign things, IoT Breeze names the reason for each thing it leaves as it was.
+
+| Message | Meaning |
+| --- | --- |
+| **Thing limit reached** | The gateway has as many things as its limit allows. |
+| **Thing type not allowed** | The thing type isn't in the allowed list. |
+| **Outside the namespace** | A Periscope gateway's thing needs an alternate ID inside the namespace. |
+| **A gateway's own thing stays with its gateway** | Gateway things can't be moved. |
+| **Not found, or not yours to change** | The thing doesn't exist or you can't change it. |
+| **Its provider keeps its alternate ID** | **Move alternate IDs into the namespace** needs a thing of the NimBit provider. |
+| **The moved alternate ID is another thing's** | The new alternate ID is in use. |
+| **No alternate ID inside the namespace can be made from it** | The moved ID would be empty or over 128 characters. |
+
+## API error codes
+
+These codes come back in the `code` field of an API error.
+
+| Code | Status | Meaning |
+| --- | --- | --- |
+| `GATEWAY_NAME_TAKEN` | 409 | A gateway with this name exists. |
+| `GATEWAY_LIMIT_REACHED` | 409 | The tenant has the most gateways it may have. |
+| `GATEWAY_NAMESPACE_TAKEN` | 409 | The namespace equals, starts with or extends another gateway's, or is reserved. |
+| `GATEWAY_NAMESPACE_LOCKED` | 409 | The namespace is in use: the gateway has things, or its Periscope box has enrolled. |
+| `GATEWAY_TYPE_MISMATCH` | 409 | The call doesn't fit the gateway type: an MQTT device gets a new credential, a Periscope box a new code. |
+| `GATEWAY_NOT_IN_DIRECTORY` | 409 | The identity directory doesn't know the gateway. |
+| `GATEWAY_TOKEN_REQUIRED` | 403 | Only a gateway's own token may ask for the gateway credential or its `me` call. |
+| `GATEWAY_SCOPE_REQUIRED` | 403 | A gateway's token may ask only for the gateway credential, not the tenant one. |
+| `GATEWAY_SCOPE_NAMESPACE` | 403 | The alternate ID is outside the namespace. |
+| `GATEWAY_SCOPE_THING_TYPE` | 403 | The thing type is not allowed. |
+| `GATEWAY_LOCKED` | 403 | The creation policy is **Locked**. |
+| `GATEWAY_SCOPE_LIMIT` | 409 | The thing limit is reached. |
+| `GATEWAY_THING_PROTECTED` | 403 | A gateway's own thing can't be deleted, and a gateway can't change it. |
+| `GATEWAY_DEVICE_CREDENTIAL_REFUSED` | 403 | A gateway's token may not create per-device credentials. |
 
 ## Events
 

@@ -1,0 +1,59 @@
+---
+title: Replace a box
+description: Put a gateway's Periscope on new hardware, or onboard a box again, without changing the gateway's namespace or things.
+sidebar_position: 8
+type: how-to
+app:
+  routes: ["/onboarding/gateways"]
+---
+
+Replace the hardware behind a gateway, or give a box a new key, and keep the gateway's namespace, gateway thing and things. You replace the box, not the gateway: a new gateway has a new namespace and new things.
+
+## Before you start
+
+- The **Gateway** permission in IoT Breeze.
+- The old box's `periscope.toml`, and if you have them, `edits.yaml`, `proposals.yaml` and `mapping.json` from its [state directory](./state-and-backup.mdx). Without the last three, the new box proposes everything again and, in `confirm` mode, waits for you to confirm it.
+- If the old box was lost or compromised, first revoke its key. See [Revoke, replace or remove a gateway](../../revoke-and-replace.mdx).
+
+## Steps
+
+1. In IoT Breeze, open **Settings › Onboarding › Gateways**, open the row menu of the gateway, and select **New onboarding code**. Copy the code. An earlier code stops working at once.
+2. Install Periscope on the new box, [in a container](./run-in-a-container.mdx) or [as a service](./run-as-a-service.mdx), with the old `periscope.toml` and the files you kept in the state directory.
+3. Onboard the new box with the new code. Its state directory has no gateway, so you don't need `-force`:
+
+   ```sh
+   periscope enroll -config /etc/periscope/periscope.toml -code ONB-XXXX-XXXX-XXXX-XXXX
+   ```
+
+4. Start the agent with `gateway = true`.
+5. Switch the old box off. When the new box has onboarded, the platform drops the old key, and the old box fails at its next sign-in. A token it already holds works for a short time: see [Revoke, replace or remove a gateway](../../revoke-and-replace.mdx) for how fast each step takes effect. Don't run both: they would send under the same client ID and disconnect each other.
+
+## Onboard the same box again
+
+When the box and its state stay but you want a new key, run the command with `-force`:
+
+```sh
+periscope enroll -config /etc/periscope/periscope.toml -code ONB-XXXX-XXXX-XXXX-XXXX -force
+```
+
+Without `-force`, the command refuses because the box is already a gateway. The platform then drops the old key. A running agent signs in with the new key at its next sign-in, without a restart. From the setup screen, select **Disconnect** first.
+
+## What stays the same
+
+The namespace, the gateway thing and the things keep their IDs, so the new box derives the same alternate IDs and links the existing things instead of creating them twice. Values that were queued on the old box and not sent are lost with it.
+
+{/* TODO(product): Can a backed-up gateway_key.pem be restored on new hardware instead of onboarding with a new code, and is that supported? */}
+
+## Check that it worked
+
+The gateway is **Online** again, and `periscope verify -since 5m` exits 0. See [Verify that data arrived](../verify.mdx).
+
+## If it doesn't work
+
+- **The code is refused**: it is unknown, used or expired. Issue another with **New onboarding code**.
+- **The state belongs to another organization**: the new state directory has a `tenant.json` from another organization. Start with an empty directory.
+- **The gateway stays Offline**: see [Onboard a box with an onboarding code](./onboard.mdx#if-it-doesnt-work).
+
+## Related
+
+- [Revoke, replace or remove a gateway](../../revoke-and-replace.mdx) · [Upgrade a box](./upgrade.mdx)

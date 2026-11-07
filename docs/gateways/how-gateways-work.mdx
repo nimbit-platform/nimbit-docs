@@ -7,8 +7,6 @@ app:
   routes: ["/onboarding/gateways", "/onboarding/gateways/:id"]
 ---
 
-{/* TODO(product): confirm after PRs #1613–#1623 merge */}
-
 A gateway is one box on site that speaks for many devices. Instead of giving every device its own credential, you give the box one credential. The platform lets that credential send data only for the things assigned to the gateway, and watches the box's own heartbeat to tell you whether it is alive.
 
 ```mermaid
@@ -27,22 +25,22 @@ flowchart LR
 | --- | --- |
 | **Gateway** | A record in your organization with a name, a type, a namespace and a scope. You manage it under **Settings › Onboarding › Gateways**. |
 | **Type** | **Periscope**: a [Periscope](./periscope/index.mdx) agent that signs in with its own key. **MQTT device**: a device that connects over MQTT with a username and password, for example an eWON Flexy. |
-| **Gateway thing** | One thing that IoT Breeze creates with the gateway, with the alternate ID `gateway-<gateway id>`. Its connection status is the gateway's status. It is removed with the gateway, and you can't delete it on its own. |
-| **Namespace** | The prefix of the alternate IDs of the gateway's things: they equal the namespace or start with `<namespace>-`. IoT Breeze derives it from the name unless you type one. |
-| **Scope** | What the gateway may create: things inside its namespace, of the allowed thing types, up to a thing limit. The **Creation policy** is **Open** or **Locked**. |
-| **Membership** | A thing belongs to at most one gateway. The record decides, not where the data arrived. |
+| **Gateway thing** | One thing that IoT Breeze creates with the gateway, with the alternate ID `gateway-<gateway id>`. Its connection status is the gateway's status. It is removed with the gateway. Nobody can delete it on its own: **Delete** is disabled and says **Removed with its gateway**. |
+| **Namespace** | The prefix of the alternate IDs of the gateway's things: they equal the namespace or start with `<namespace>-`. IoT Breeze derives it from the name unless you type one. It is enforced for **Periscope** gateways. For an **MQTT device** gateway it is not checked when you assign things. |
+| **Scope** | What the gateway may have: things inside its namespace (Periscope), of the allowed thing types, up to a thing limit. The **Creation policy** is **Open** or **Locked**. |
+| **Membership** | A thing belongs to at most one gateway. The record decides, not where the data arrived. See [Manage the things behind a gateway](./things-behind-a-gateway.mdx). |
 
 ## How they work together
 
 **Signing in.** For a Periscope gateway you get a one-time onboarding code. The box redeems it once, creates its own key pair, and from then on signs in with that key. For an MQTT device you get a broker username and password, shown once, and a config file that holds them.
 
-**Sending data.** Over MQTT, a gateway's credential can publish only on topics that contain its own gateway ID. Over HTTP and stream ingest, a Periscope gateway's token names the gateway. For each message, the platform then checks that the thing belongs to the gateway. A message for a thing of another gateway, for a thing that doesn't exist, or one that is malformed is discarded and counted by reason. See [Check gateway health and traffic](./fleet-health.mdx).
+**Sending data.** Over MQTT, a gateway's credential can publish only on topics that contain its own gateway ID. An MQTT device can publish per thing, or one batch for several things; see [Send data for many devices through one MQTT gateway](./mqtt-gateway.mdx). Over HTTP and stream ingest, a Periscope gateway's token names the gateway. For each message, the platform then checks that the thing belongs to the gateway. A message for a thing of another gateway, for a thing that doesn't exist, or one that is malformed is discarded and counted by reason. See [Check gateway health and traffic](./fleet-health.mdx).
 
-**Creating things.** A Periscope box creates its own thing types and things, and every thing it creates is stamped with the gateway. An MQTT device has no API access, so you create its things in IoT Breeze and assign them to the gateway. A **Locked** gateway creates no new things by any path. Things it already has keep working.
+**Creating things.** A Periscope box creates its own thing types and things, and every thing it creates is stamped with the gateway. An MQTT device has no API access and its messages never create things, so you create its things in IoT Breeze and assign them to the gateway. A **Locked** gateway creates no new things by any path. Things it already has keep working.
 
-**Being alive.** The gateway thing goes **Online** when the box's own health message arrives, which is every 5 minutes, and **Offline** after 15 minutes without one. The platform's traffic counts are written to the same thing but never make it online, so a dead box can't look alive. Each thing behind a gateway has its own timeout, so a gateway can be online while one device behind it is offline.
+**Being alive.** The gateway thing goes **Online** when the box's own health message arrives, which is every 5 minutes, and **Offline** after 15 minutes without one. The platform's traffic counts are written to the same thing but never make it online, so a dead box can't look alive. Each thing behind a gateway has its own timeout, so a gateway can be online while one device behind it is offline. See [Presence of things behind a gateway](./things-behind-a-gateway.mdx#presence-of-things-behind-a-gateway).
 
-**Cutting a gateway off.** Revoke a key, issue a new onboarding code or credential, or delete the gateway. An already connected MQTT session ends within ten minutes. A Periscope box's HTTP and stream tokens last at most ten minutes.
+**Cutting a gateway off.** Revoke a key, issue a new MQTT credential, or delete the gateway. A new login is refused at once. An already connected MQTT session ends within ten minutes. A Periscope box's HTTP and stream tokens last at most ten minutes. See [Revoke, replace or remove a gateway](./revoke-and-replace.mdx).
 
 ## Is a Periscope instance a gateway?
 
@@ -55,19 +53,22 @@ A Periscope agent can also run as a service account (an email and password enrol
 | You have | Use |
 | --- | --- |
 | A machine next to the equipment that can run Periscope | A **Periscope** gateway. It discovers sources and creates things. |
-| A device that speaks MQTT and can't run software of ours | An **MQTT device** gateway. You model the things in IoT Breeze. |
+| A device that speaks MQTT and can't run software of ours | An **MQTT device** gateway. You model the things in IoT Breeze. For an eWON Flexy, see [Connect an eWON Flexy](./ewon-flexy.mdx). |
 | One device that sends only its own data | No gateway. [Send data over MQTT](../connect/mqtt.mdx) with a device credential. |
 
 ## Limits
 
 - At most 1000 Periscope gateways per organization.
 - A thing belongs to at most one gateway.
-- An MQTT device can send for a thing only after the thing exists and is assigned to the gateway. Unknown things are not created from its messages.
+- An MQTT device can send for a thing only after the thing exists and is assigned to the gateway. Unknown things are not created from its messages: they are discarded and counted as `unknown_thing`.
+- An MQTT gateway batch holds at most 1 MiB and 500 elements by default. A larger publish is dropped whole. See [Send data for many devices through one MQTT gateway](./mqtt-gateway.mdx#batch-limits-and-checks).
 - Gateways need API keys. If your operator has turned them off, the page says **Gateways are not enabled**.
 
 ## Related
 
 - [Add a gateway](./add-a-gateway.mdx)
 - [Send data for many devices through one MQTT gateway](./mqtt-gateway.mdx)
+- [Manage the things behind a gateway](./things-behind-a-gateway.mdx)
+- [Revoke, replace or remove a gateway](./revoke-and-replace.mdx)
 - [Gateway reference](./gateway-reference.mdx)
 - [Thing types, things and interfaces](../model/things-and-types.mdx)

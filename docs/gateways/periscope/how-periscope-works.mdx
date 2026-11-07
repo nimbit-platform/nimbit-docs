@@ -2,7 +2,7 @@
 title: How Periscope works
 description: How Periscope discovers sources, proposes things, applies them, maps values and streams them, and when an instance is a gateway.
 type: concept
-sidebar_position: 2
+sidebar_position: 1
 app:
   routes: ["/onboarding/gateways"]
 ---
@@ -46,23 +46,28 @@ flowchart LR
 
 Only when you onboard it with an onboarding code from **Settings › Onboarding › Gateways**. Set `[ocb] gateway = true` and the agent signs in with its own key, sends with a credential that names the gateway, and may create and update only its own things. IoT Breeze shows it as a gateway with a status, a namespace and a scope. See [How gateways work](../how-gateways-work.mdx).
 
+On a gateway, the agent also does three things that the other mode doesn't. It asks the platform for its gateway's record (`gateways.me`) and uses the namespace from it as the prefix of every alternate ID. Until the platform answers, it discovers and applies nothing. It requests the gateway's own data credential for its outputs, and renews the short-lived tokens that ingest needs. And it sends a health message every `agent.health_interval`, which turns the gateway **Online**. [Onboard a box](./deploy/onboard.mdx) shows the steps.
+
 Without that, the agent runs in service-account mode: it signs in as a user of your organization with the `modeler` role, is not a gateway, and has no gateway thing, namespace or scope. New installations should use a gateway.
 
 | | Gateway mode | Service-account mode |
 | --- | --- | --- |
 | Sign-in | Key pair, onboarding code | Email and password, enrolled once |
 | Thing alternate IDs start with | The gateway's namespace | `agent.name` |
+| Data credential | The gateway's own, valid only for its things | The tenant's, valid for every thing |
 | Appears in **Gateways** | Yes | No |
 | Health shown in IoT Breeze | Yes, on the gateway thing | No |
+| Placement posted to Contexus | No, the gateway's token is for the platform backend only | Yes, when the organization has Contexus on |
 
 ## Limits
 
 - The agent reads sources and never writes to them.
-- `agent.name` and `mount` become part of every thing's identity. Changing them later creates new things.
+- A thing's identity, its alternate ID, starts with `agent.name`, or with the gateway's namespace on a gateway, and may include an input's own `mount`. Changing any of them later creates new things. The `mount` under `[ocb]` sets where things sit, and is not part of the alternate ID.
 - In gateway mode the agent sends health live, never from a queue, so a replayed backlog can't keep a dead agent online.
 
 ## Related
 
 - [Install Periscope and stream your first source](./install.mdx)
+- [Deploy Periscope](./deploy/index.mdx)
 - [Configuration reference](./configuration.mdx)
 - [Add a gateway](../add-a-gateway.mdx)

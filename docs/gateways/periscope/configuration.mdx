@@ -30,9 +30,9 @@ Periscope reads one TOML file: `-config`, else `$PERISCOPE_CONFIG`, else `perisc
 | `log_encoding` | `json` | `json` or `console`. |
 | `dry_run` | `false` | Start dry: nothing is written to the platform and no output sends. The plan is kept in `plan.json`. |
 | `watch_config` | `true` | `serve`: reload when `periscope.toml` or the overlay changes. |
-| `health_interval` | `5m` | Gateway only: how often to send the health message. At least `1m`. |
+| `health_interval` | `5m` | Gateway only: how often to send the health message, from `1m` to `5m`. A longer interval is refused: the gateway thing goes Offline after 15 minutes without a message, so it would flap. A change applies from the next message. |
 
-`agent.name` and the mount are part of every thing's identity. Choose them once.
+The alternate ID of every thing starts with `agent.name`, or with the gateway's namespace on a gateway, and may include an input's own `mount`. Changing them creates new things and never renames old ones. Choose them before the first apply.
 
 ## `[ocb]`
 
@@ -56,10 +56,11 @@ The connection to the platform. With a `url`, exactly one credential is required
 
 `gateway = true` means:
 
-- The agent signs in with its own key pair, with no secret on the box. Its token lasts 5 minutes and is for the platform backend only.
-- The gateway's namespace prefixes every alternate ID instead of `agent.name`: `<namespace>/<address>`, or `<namespace>/<input mount>/<address>`. `enroll` reads the namespace and keeps it in `gateway.json`.
+- The agent signs in with its own key pair and no password. Its token lasts 5 minutes and is for the platform backend only. The key is valid for a year, and the agent registers the next one 30 days before it expires, without your help.
+- The gateway's namespace prefixes every alternate ID instead of `agent.name`: `<namespace>/<address>`, or `<namespace>/<input mount>/<address>`. `enroll` reads the namespace and keeps it in `gateway.json`. Until the platform has answered, the agent discovers and applies nothing and asks again every minute. A platform without the `gateways.me` route keeps `agent.name` as the prefix.
 - The agent sends a health message every `agent.health_interval`.
-- The platform outputs publish with the gateway's own credential, on the gateway's topics. See [Outputs reference](./outputs.mdx).
+- The platform outputs publish with the gateway's own credential, on the gateway's topics. See [Outputs reference](./outputs.mdx#the-gateway-credential).
+- A file that also sets `email`, `password` or `token` is refused: exactly one credential is allowed.
 - `require_input = false` on the `heartbeat` processor is refused.
 - Placement in Contexus is off, because the token is for the backend only.
 
@@ -144,7 +145,7 @@ Each plugin instance is a table in an array: `[[inputs.<name>]]`, `[[processors.
 
 `serve` takes a changed configuration without a restart. Three triggers share one path: SIGHUP, the file watch (`agent.watch_config`), and `POST /api/v1/agent/reload` or the **Reload** button on the UI's **Config** page.
 
-A reload is validated first. A configuration that doesn't load never stops the agent: it keeps running on the last good one, logs the error and shows it on the **Overview**. Only the plugin instances whose settings changed restart. An output that restarts loses nothing, because its queue is closed and the new instance sends what it holds.
+A reload is validated first. A configuration that doesn't load never stops the agent: it keeps running on the last good one, logs the error and shows it on the **Overview**. Only the plugin instances whose settings changed restart. An output that restarts loses nothing, because its queue is closed and the new instance sends what it holds. A change under `[ocb]`, `gateway` included, restarts every output, which then asks for the credential that fits.
 
 These keys apply only at the next start, and the **Overview** shows `restart required` until the file matches the running value:
 
@@ -161,7 +162,12 @@ Everything the agent keeps is in `agent.state_dir`. Back it up: it holds the age
 | `edits.yaml` | Renames, merges, units and scales made in the UI. | To go back to the discovered names. |
 | `mapping.json` | Address to thing, thing type and measure. | The next apply rebuilds it. |
 | `apply-log.jsonl` | One line per applied, skipped or failed item. | It is an audit trail. |
-| `gateway_key.pem`, `gateway.json` | A gateway's key and its IDs, namespace and endpoints. | Only with a new onboarding code. |
+| `gateway_key.pem`, `gateway.json` | A gateway's key and its IDs, namespace, gateway thing and endpoints. | Only with a new onboarding code. |
+| `gateway_key.next.pem` | The next key while a rotation registers it. | Not while a rotation is under way. |
+| `tenant.json` | The organization this state is pinned to. | Only to connect to another organization. |
+| `nimbit-gateway-credential.json` | A gateway's cached data credential. | Yes. A new one is requested. |
+| `nimbit-mqtt-credential.json` | The cached tenant credential of a service-account box. | Yes. A new one is requested. |
+| `setup-code.json` | The hash of the setup screen's one-time code. | Yes. |
 | `enrollment.json` | The service account's session. | `periscope enroll -revoke` ends it. |
 | `config.ui.toml` | The overlay written by the setup screen. | The agent is then disconnected at the next reload. |
 | `tsflux-stream/<output>/` | The stream output's disk queue. | Loses values not sent yet. |
@@ -172,4 +178,5 @@ Everything the agent keeps is in `agent.state_dir`. Back it up: it holds the age
 ## Related
 
 - [Command-line reference](./commands.mdx) · [Outputs reference](./outputs.mdx)
+- [What Periscope keeps on the box](./deploy/state-and-backup.mdx) · [Deploy Periscope](./deploy/index.mdx)
 - [How Periscope works](./how-periscope-works.mdx)

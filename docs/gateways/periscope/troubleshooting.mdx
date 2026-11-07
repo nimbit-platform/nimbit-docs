@@ -27,6 +27,8 @@ Find your symptom in the group that matches.
 - **`deadband "…" comes after heartbeat "…"`**: move `[[processors.heartbeat]]` to the end.
 - **A `mount` is refused**: it has empty elements, a leading or trailing `/`, `.` or `..`, or spaces. Write it as `a/b/c`.
 - **`password=unset` although it is in the environment**: `${NAME}` reads the agent's own environment. Use `EnvironmentFile=` or `--env-file`.
+- **`agent.health_interval` is refused**: it must be from `1m` to `5m`. A longer interval would let a healthy gateway go Offline between messages.
+- **`require_input = false` on a `heartbeat` processor is refused**: a gateway can't re-send the last value of a dead source. Remove the key.
 - **`ocb: set exactly one credential`**: with `[ocb] url`, keep one of `gateway = true`, `email` or `token`.
 - **Overview shows `periscope.toml rejected: …; running the config from 10:42`**: the agent kept its last good configuration. Fix what the error names, then save again.
 - **Overview shows `restart required: …`**: a key changed that a running agent can't change. Restart the agent, or set the key back.
@@ -41,12 +43,30 @@ Find your symptom in the group that matches.
 - **Service account: `has no active tenant`, or `belongs to tenant …`**: the account must be a member of this agent's organization and of no other. Use an account of that organization or an empty state directory.
 - **Service account: `not enrolled`**: run `periscope enroll -password-stdin`. If the platform revoked the session, enroll again. A running `serve` picks it up without a restart.
 
+### The gateway is held or its credential is refused
+
+These apply to a box with `[ocb] gateway = true`. See [Gateway reference](../gateway-reference.mdx) for the platform's side.
+
+- **`the gateway's namespace is not known yet (gateways.me has not answered)`**: the agent asks the platform for its gateway's record and discovers and applies nothing until it answers, so no thing gets the wrong prefix. `discover` and `apply` fail with this message, and `serve` asks again every minute. Check that `[ocb] url` is set and that the box reaches the platform. In a container, run `docker exec periscope periscope validate`.
+- **`OCB has no record of this gateway yet; asked again before the next discovery`**: the platform knows the route but not the gateway. Check in **Settings › Onboarding › Gateways** that the gateway exists, and that this box was onboarded with its code. The agent asks again before each discovery, at most once a minute.
+- **`the platform has no /rest/v2/gateways/me (an older OCB)`**: the platform predates the gateway's record. The agent keeps `agent.name` as the prefix and sends its health to `gateway-<gateway id>`. Upgrade the platform, then restart the agent.
+- **`403 GATEWAY_SCOPE_REQUIRED`**: the box asked for the tenant credential, and the platform issues a gateway only its own. Upgrade Periscope. See [Upgrade a box](./deploy/upgrade.mdx).
+- **`403 GATEWAY_TOKEN_REQUIRED`**: the request asked for the gateway credential with a token that isn't a gateway's. Check that `periscope validate` shows the gateway as the credential and that the box was onboarded as this gateway.
+- **`403 GATEWAY_CREDENTIAL_REVOKED`**: the gateway's data credential is revoked. Onboard the box again with a new code. See [Revoke, replace or remove a gateway](../revoke-and-replace.mdx).
+- **The broker refuses the connection or a topic**: with the gateway credential the broker accepts only topics that contain the gateway's ID. A custom `topic` must start with `tenant/{tenant}/gateway/{gateway}/`. See [Outputs reference](./outputs.mdx#the-gateway-credential).
+- **The gateway is Offline although the agent runs**: the agent sends its health message through the first platform output. Check that one is configured and `ok` on the **Overview**, and that `agent.health_interval` is at most `5m`.
+
 ### Apply fails
 
-A failed item stays `confirmed` with its reason, and the next apply retries it.
+A failed item stays `confirmed` with its reason, and the next apply retries it. A platform that refuses a gateway's create names a code, which the list below explains.
 
 - **`Root group not found` (400)**: the service account lacks read access to the organization's root group. Thing types are already created.
-- **`403` on every item**: the account's role can't create thing types or things. Give it the `modeler` role. On a gateway, check the gateway's **Scope**: **Locked**, an exhausted **Thing limit**, a thing type outside **Allowed thing types** and an alternate ID outside the namespace are all refused. See [Check gateway health and traffic](../fleet-health.mdx).
+- **`403` on every item**: the account's role can't create thing types or things. Give it the `modeler` role. On a gateway, the platform's reason names the cause. See [Check gateway health and traffic](../fleet-health.mdx).
+- **`GATEWAY_LOCKED`, `The gateway is locked: it may create no thing`**: the gateway's **Creation policy** is **Locked**. Set it to **Open** on the gateway's **Scope** tab. The next apply creates the things. A locked gateway also doesn't get a deleted thing back when it sends for it again.
+- **`GATEWAY_SCOPE_NAMESPACE`**: the thing's alternate ID is outside the gateway's namespace, which it must equal or start with `<namespace>-`. The box discovered with another prefix, for example `agent.name` on a platform without `gateways.me`. Upgrade the platform and discover again.
+- **`GATEWAY_SCOPE_THING_TYPE`, `GATEWAY_SCOPE_LIMIT` (409)**: the thing type isn't in the gateway's **Allowed thing types**, or the gateway has as many things as its **Thing limit**. Change the scope, or confirm fewer things.
+- **`ALTERNATE_ID_RESERVED` (403)**: alternate IDs that start with `gateway-`, in any case, belong to the platform's gateway things. It happens when `agent.name`, or a source address, makes every ID start that way, for instance `agent.name = "gateway-1"` on a box without a namespace. Rename `agent.name`, discover again, and remove the refused proposals. The new names create new things.
+- **`the names "Oven1" and "Oven1 (hall-3)" are both held by other things`**: thing names are unique in the organization. On a gateway, the platform is first asked for `<name> (<namespace>)`. Rename the proposal and apply again.
 - **`a thing named "…" already exists`**: thing names are unique in the organization. Rename the proposal and apply again.
 - **`the agent is busy applying or planning`**: try again in a moment.
 - **Things `skipped`**: their thing type isn't applied. Confirm the type too.
@@ -60,7 +80,7 @@ Start with `periscope verify -since 5m`. Its `PROBLEM` column names the thing an
 - **Everything is held and `dry_run_values` grows**: the dry run is on. Switch it off on the **Dry run** screen.
 - **`tsflux refused part of a batch … thing not found`**: the platform stores values only for things and measures it knows, and refuses the rest for good. The thing isn't applied yet, a processor writes a measure the thing type lacks, or a value's type differs from the measure's. Apply, add the measure, or use a `convert` processor.
 - **A value is in the future, or nothing arrives from a local-time source**: the source sends local time without an offset. For MQTT, set `timezone`.
-- **On a gateway, data arrives but the gateway is Offline**: the health message goes through an output with a live path. A gateway with no `tsflux_stream`, `tsflux` or `nimbit_mqtt` output sends no health. See [Outputs reference](./outputs.mdx).
+- **On a gateway, data arrives but the gateway is Offline**: the health message goes through an output with a live path. A gateway with no `tsflux_stream`, `tsflux` or `nimbit_mqtt` output sends no health, and a queue that is replayed never counts. See [Outputs reference](./outputs.mdx#the-gateway-credential).
 - **Discards appear on the gateway's Health tab**: read the reason. See [Gateway reference](../gateway-reference.mdx).
 
 ## Check that it worked
