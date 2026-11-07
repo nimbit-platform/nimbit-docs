@@ -80,6 +80,19 @@ Generated from `TODO(product)` markers in docs/. Answer here or in the page; rem
 
 ## Found while translating
 
-- [ ] `gateways/*`: token lifetimes read as contradictory. how-gateways-work says HTTP and stream tokens last "at most ten minutes", gateway-reference and periscope/configuration say the gateway access token lasts 5 minutes, periscope/outputs says ingest tokens last "at most 10 minutes". Which token lasts how long?
+- [x] `gateways/*`: token lifetimes read as contradictory. Resolved from the code (nimbit 3eac9e9a2): a gateway's sign-in token lives 5 minutes, its ingest (gateway) token at most 10 minutes, and an MQTT gateway session ends after at most 10 minutes; the pages now say so. how-gateways-work says HTTP and stream tokens last "at most ten minutes", gateway-reference and periscope/configuration say the gateway access token lasts 5 minutes, periscope/outputs says ingest tokens last "at most 10 minutes". Which token lasts how long?
 - [ ] `gateways/periscope/*`: is Periscope's own web UI English only? The German docs keep its labels in English.
 - [ ] `administer/roles.mdx`: the German app shows role names Administrator, Modellierer, Manager, Viewer. Are role names localized everywhere (matrix, invitations), or do they come untranslated from the backend?
+
+## Edge gateways (checked against nimbit `development` 3eac9e9a2)
+
+- [ ] `gateways/revoke-and-replace.mdx`: Does enrolling with a new onboarding code end the MQTT credential the old box holds, or only a key revoke? The code bumps no credential serial on enrol.
+- [ ] `gateways/revoke-and-replace.mdx`: Is the gateway thing's health and traffic history deleted with it when the gateway is removed?
+- [ ] `gateways/things-behind-a-gateway.mdx`: What does the UI call the thing type's offline timeout?
+- [ ] `gateways/ewon-flexy.mdx`: Is `flexy-sim.mjs` available to customers, and from where?
+- [ ] `gateways/ewon-flexy.mdx`: The BASIC program is not in the repository. How is it distributed, which firmware was it tested on, what is the final .bas parameter layout?
+- [ ] `gateways/periscope/deploy/requirements.mdx`: Which architectures does the published container image cover? Minimum CPU and RAM? Do the gRPC stream and MQTT connections go through an HTTP proxy? How much clock skew is tolerated?
+- [ ] `gateways/periscope/deploy/upgrade.mdx`: Where in IoT Breeze does a tenant admin rotate the tenant key, and who may?
+- [ ] `gateways/periscope/deploy/move-to-a-gateway.mdx`: Is there a supported way to keep existing things and history when a service-account box becomes a gateway (namespace = `agent.name`, then assign the things)?
+- [ ] `gateways/periscope/deploy/replace-a-box.mdx`: Can a backed-up `gateway_key.pem` be restored on new hardware instead of onboarding with a new code?
+- [ ] `connect/mqtt-topics.mdx`: Commands via a gateway (plan D12) are not built; nothing publishes on the gateway cmd topics yet.

@@ -35,6 +35,12 @@ Sidebar ordering and metadata are controlled by `_category_.json` files in each 
 
 The docs hold no OpenAPI specs. Each service serves its own Scalar reference on the host the reader opens IoT Breeze on (`/tsflux/swagger`, `/nbq/docs`, `/ocb/api/v2`, `/ocb/api/v1`). `docs/api/reference.mdx` links to them through `src/components/ApiReferenceLinks`, built on the reader's app address (`src/lib/appUrl.ts`), so the reference always matches their installation.
 
+### IoT Breeze help panel
+
+IoT Breeze shows these docs in its help panel. Two things serve it, and both are a contract with the app:
+- `plugins/app-routes.js` writes `app-routes.json` at each locale's root from every page's `app.routes` (and `app.tour`) front matter. Keep `app.routes` accurate when a page covers an app screen.
+- `?embed=1` (`src/lib/embed.ts`, `src/theme/Root.tsx`, `html[data-embed]` in `custom.css`) hides the site chrome and posts `{ type: "nimbit-docs:page", permalink, title, locale }` to the app on every page.
+
 ### Source Code (`src/`)
 
 - `src/pages/` — Custom pages: `index.tsx` (homepage with card navigation to User Manual, Developer Docs, API Docs), `ai.tsx` (AI section landing)
