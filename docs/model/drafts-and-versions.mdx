@@ -47,10 +47,7 @@ Aliases exist only on interface fields. A thing type's measure and property form
 
 ## How they work together
 
-1. You edit the schema. The header shows **Draft v2 · 3 changes**, and rows that differ are marked **Draft: new** or **Draft: changed**.
-2. You select **Compare with v1** to see exactly what changed.
-3. You select **Publish v2**, enter a **Changelog** and confirm. The dialog tells you how many things (and, for an interface, thing types) the new version affects.
-4. Version 1 becomes **Archived**. Devices now use v2.
+While a draft is open, the header shows **Draft v2 · 3 changes** and changed rows are marked **Draft: new** or **Draft: changed**. **Compare with v1** shows exactly what differs. **Publish v2** asks for a **Changelog**, tells you how many things (and, for an interface, thing types) the version affects, and archives v1. Devices use v2 from then on.
 
 **Discard draft** deletes the draft and leaves the published version as it was. **Restore** on an archived version copies it into a new draft and takes you to the schema to review it. On an interface, restoring replaces a draft that is already open. Nothing goes live until you publish.
 

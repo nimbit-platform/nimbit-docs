@@ -30,7 +30,7 @@ flowchart LR
 | --- | --- | --- |
 | Personal key | You | Never has more rights than you hold. Always expires within a year. Stops working when you are no longer a usable member. Tenant policy can switch personal keys off. |
 | Service account key | A service account | The account is a member that never signs in and holds the roles you give it. Its keys survive staff changes. Can be allowed scopes marked **Sensitive** and, if the policy sets no maximum, no expiry. |
-| Gateway credential | A gateway | Not an `nbk_` key. A box such as Periscope redeems a one-time onboarding code, then signs its requests with its own key pair. Managed on the gateways page, see [Connect devices through a gateway](../connect/gateways.mdx). |
+| Gateway credential | A gateway | Not an `nbk_` key. A box such as Periscope redeems a one-time onboarding code, then signs its requests with its own key pair. Managed on the gateways page, see [Connect devices through a gateway](../gateways/index.mdx). |
 
 Two things look similar and are different. **Connected apps** on the API keys page are AI assistants that you allowed to act as you through a consent screen. Device credentials (basic and JWT) belong to one thing and only send data; see [Authentication](./authentication.mdx#device-and-tenant-credentials-tsflux).
 

@@ -1,1179 +1,3381 @@
-openapi: 3.0.1
+openapi: 3.0.3
 info:
-  title: Nimbit Query Engine
-  description: Nimbit IoT query engine.
-  contact:
-    name: Nimbit support
-    url: https://www.nimbit.de
-    email: iot@nimbit.de
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: "1.0"
-externalDocs:
-  description: OpenAPI
-  url: https://swagger.io/resources/open-api/
+  title: NBQ API
+  version: '2.0'
+  description: |
+    NBQ IoT Platform — geo location and timeseries data querying.
+    All `/api/v1/` endpoints require a Bearer JWT in the `Authorization` header.
+    Tenant tokens must carry `cell` matching CELL and valid `perms`. Queries need
+    Thing:r (still scoped per thing); raw and tag queries need Thing:u; cache status and
+    cache metrics need Tenant:u; listing analytics needs QueryConfig:r and analytics
+    administration QueryConfig:x. Role names grant no tenant rights.
 servers:
-- url: /api/v1
-paths:
-  /geo:
-    get:
-      tags:
-      - Geo
-      summary: Device Geo position
-      description: GetForRange geo position for all devices
-      parameters:
-      - name: measurement
-        in: query
-        description: measurement
-        schema:
+- url: http://localhost:9002
+  description: Local development
+security:
+- bearerAuth: []
+tags:
+- name: Health
+  description: Liveness and readiness probes
+- name: Timeseries
+  description: Batch, fleet, and raw timeseries queries
+- name: Snapshot
+  description: Current-value (latest reading) queries
+- name: Geo
+  description: Current position, history, and path queries
+- name: Events
+  description: Events (rule, geofence, connectivity and manual) by keyset cursor, count, id and correlation
+- name: Analytics
+  description: Saved analytic execution
+- name: Analytics Admin
+  description: Analytic definition CRUD and validation
+- name: DataSources
+  description: Engine datasource discovery
+- name: Tags
+  description: Tag discovery (which tag keys and values devices have sent)
+- name: Observability
+  description: Prometheus metrics and engine-internal metrics
+- name: WebSocket
+  description: Real-time data streaming
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    TagsQuery:
+      type: object
+      description: >-
+        Without key: the tenant's tag keys (or one thing type's). With key: the key's values.
+      properties:
+        thing_type:
           type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/nbq_internal_models.Geo'
-  /geo/{id}:
-    get:
-      tags:
-      - Geo
-      summary: Device Geo position
-      description: GetForRange geo position for device
-      parameters:
-      - name: id
-        in: path
-        description: id
-        required: true
-        schema:
+          description: >-
+            Narrow to one thing type id (tt_…). TimescaleDB's tag sets are tenant-wide, so with a
+            thing type only the tag counters and the lake schema answer.
+        key:
           type: string
-      - name: measurement
-        in: query
-        description: measurement
-        schema:
+        value_prefix:
           type: string
-      - name: fields
-        in: query
-        description: Comma separated list of fields(will limit the response)
-        schema:
+          description: Only values starting with this; needs key.
+        from:
           type: string
-      - name: reverse
-        in: query
-        description: Geo reverse
-        schema:
-          type: boolean
-      - name: lang
-        in: query
-        description: Address language
-        schema:
+          format: date-time
+          description: Start of the counters' window; default to minus 30 days. At most 400 days.
+        to:
           type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/nbq_internal_models.GeoWithReverse'
-  /geo/{id}/path:
-    get:
-      tags:
-      - Geo
-      summary: Geo Path
-      description: Geo Path
-      parameters:
-      - name: id
-        in: path
-        description: id
-        required: true
-        schema:
-          type: string
-      - name: measurement
-        in: query
-        description: measurement
-        schema:
-          type: string
-      - name: start
-        in: query
-        description: Start time Epoch in miliseconds
-        required: true
-        schema:
+          format: date-time
+          description: End of the counters' window; default now.
+        limit:
           type: integer
-      - name: end
-        in: query
-        description: End time Epoch in miliseconds
-        required: true
-        schema:
+          minimum: 1
+          maximum: 1000
+          default: 100
+        cursor:
+          type: string
+          description: next_cursor of the previous page.
+    TagStat:
+      type: object
+      required:
+      - sources
+      properties:
+        approx_messages:
           type: integer
-      - name: limit
-        in: query
-        description: End time Epoch in miliseconds
-        schema:
-          type: integer
-      - name: meters
-        in: query
-        description: Used to filter most relevant data points representing movement.
-          Only values where a move greater or equal to the desired meters will be
-          shown
-        schema:
-          type: integer
-      - name: includeCurrentPosition
-        in: query
-        description: Used to filter most relevant data points representing movement.
-          Only values where a move greater or equal to the desired meters will be
-          shown
-        schema:
-          type: boolean
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/nbq_internal_models.GeoPath'
-  /geo/{id}/reverse:
-    get:
-      tags:
-      - Geo
-      summary: Geo Reverse
-      description: Geo Reverse (address)
-      parameters:
-      - name: id
-        in: path
-        description: id
-        required: true
-        schema:
+          format: int64
+          description: >-
+            Messages that carried it in the window, estimated from the tag counters (flushed
+            every output.metrics.flush_interval; a key with too many values counts under the
+            value __other__). Absent when no counter saw it.
+        first_seen:
           type: string
-      - name: measurement
-        in: query
-        description: measurement
-        schema:
+          format: date-time
+          description: Start of the first counter bucket that saw it (absent without counters).
+        last_seen:
           type: string
-      - name: lang
-        in: query
-        description: Address language
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/nbq_internal_models.GeoReverse'
-  /geo/count:
-    get:
-      tags:
-      - Geo
-      summary: Count devices with geo position
-      description: Count devices with geo position
-      parameters:
-      - name: measurement
-        in: query
-        description: measurement
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            text/plain:
-              schema:
-                type: number
-
-  /heartbeat:
-    get:
-      tags:
-      - Hearbeat
-      summary: View Heartbeat
-      description: View Hearbeat for all devices
-      parameters:
-      - name: measurement
-        in: query
-        description: measurement
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/nbq_internal_models.Heartbeat'
-
-  /heartbeat/{id}:
-    get:
-      tags:
-      - Hearbeat
-      summary: View Heartbeat
-      description: View Hearbeat for all device
-      parameters:
-      - name: id
-        in: path
-        description: id
-        required: true
-        schema:
-          type: string
-      - name: measurement
-        in: query
-        description: measurement
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/nbq_internal_models.Heartbeat'
-
-  /heartbeat/count:
-    get:
-      tags:
-      - Hearbeat
-      summary: Count Devices with a heartbeat
-      description: Count Devices with a heartbeat
-      parameters:
-      - name: measurement
-        in: query
-        description: measurement
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            text/plain:
-              schema:
-                type: number
-
-  /jobs:
-    get:
-      tags:
-      - Jobs
-      summary: List jobs by type
-      description: List all background jobs of a specific type
-      parameters:
-      - name: type
-        in: query
-        description: job type
-        required: true
-        schema:
+          format: date-time
+          description: End (TimescaleDB) or start (lake, Arc) of the last counter bucket that saw it.
+        sources:
+          type: array
+          description: Where it was found.
+          items:
+            type: string
+            enum:
+            - lake_schema
+            - tsdb_tags
+            - metrics
+    TagsResponse:
+      type: object
+      required:
+      - mode
+      - stats
+      properties:
+        mode:
           type: string
           enum:
-          - correlation_update
-          - quantile_update
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/nbq_internal_models.BackgroundJob'
-  /jobs/{id}:
-    get:
-      tags:
-      - Jobs
-      summary: Get job status
-      description: Get status of a background job
-      parameters:
-      - name: id
-        in: path
-        description: job ID
-        required: true
-        schema:
+          - keys
+          - values
+        keys:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/TagStat'
+            - type: object
+              required:
+              - key
+              properties:
+                key:
+                  type: string
+        values:
+          type: array
+          items:
+            allOf:
+            - $ref: '#/components/schemas/TagStat'
+            - type: object
+              required:
+              - value
+              properties:
+                value:
+                  type: string
+        next_cursor:
           type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/nbq_internal_models.BackgroundJob'
-    delete:
-      tags:
-      - Jobs
-      summary: Delete job
-      description: Delete a background job
-      parameters:
-      - name: id
-        in: path
-        description: job ID
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: No Content
-          content:
-            application/json:
-              schema:
-                type: string
-  /metering/size/measurement/{measurement}:
-    get:
-      tags:
-      - Metering
-      summary: Returns the approximate count of the data points for a specific measurement
-        and its aggregates
-      description: Returns the approximate count of the data points for a specific
-        measurement and its aggregates
-      parameters:
-      - name: measurement
-        in: path
-        description: measurement
-        required: true
-        schema:
-          type: string
-      - name: startDate
-        in: query
-        description: Start Date
-        schema:
-          type: string
-      - name: endDate
-        in: query
-        description: End Date
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/nbq_internal_models.MeasurementSize'
-  /metering/size/tenant:
-    get:
-      tags:
-      - Metering
-      summary: "Returns current tenant size ( number of data points, disk size )"
-      description: Returns the approximate count of the data points and disk size
-        the current tenant
-      parameters:
-      - name: startDate
-        in: query
-        description: Start Date
-        schema:
-          type: string
-      - name: endDate
-        in: query
-        description: End Date
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/nbq_internal_models.TenantSize'
-  /smartinsights/correlation/{measurement}:
-    get:
-      tags:
-      - SmartInsights
-      summary: Get latest correlation profile
-      description: Get latest correlation profile
-      parameters:
-      - name: measurement
-        in: path
-        description: measurement
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/nbq_internal_models.CorrelationResult'
-  /smartinsights/correlation/{measurement}/update:
-    get:
-      tags:
-      - SmartInsights
-      summary: Update correlation profile
-      description: Trigger correlation profile update
-      parameters:
-      - name: measurement
-        in: path
-        description: measurement
-        required: true
-        schema:
-          type: string
-      responses:
-        "204":
-          description: No Content
-          content:
-            application/json:
-              schema:
-                type: string
-  /smartinsights/quantile/{measurement}:
-    get:
-      tags:
-      - SmartInsights
-      summary: Get latest quantile profile
-      description: Get latest quantile profile
-      parameters:
-      - name: measurement
-        in: path
-        description: measurement
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/nbq_internal_models.QuantileResponse'
-  /tags:
-    get:
-      tags:
-      - Tags
-      summary: Find tags
-      description: Find Tag by Tag ID
-      parameters:
-      - name: measurement
-        in: query
-        description: measurement
-        schema:
-          type: string
-      - name: limit
-        in: query
-        description: Page limit default 200
-        schema:
-          type: integer
-      - name: page
-        in: query
-        description: Page number
-        schema:
-          type: integer
-      - name: tags
-        in: query
-        description: Tag values (key-value pairs)
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/nbq_internal_models.TagsWithPagination'
-  /tags/byId/{id}:
-    get:
-      tags:
-      - Tags
-      summary: Find by device id
-      description: Find Tag by device id
-      parameters:
-      - name: id
-        in: path
-        description: Device id
-        required: true
-        schema:
-          type: string
-      - name: tags
-        in: query
-        description: Tag values (key-value pairs)
-        schema:
-          type: string
-      - name: limit
-        in: query
-        description: Page limit default 200
-        schema:
-          type: integer
-      - name: page
-        in: query
-        description: Page number
-        schema:
-          type: integer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/nbq_internal_models.TagsWithPagination'
-  /tags/byTagId/{tag_id}:
-    get:
-      tags:
-      - Tags
-      summary: Find Tag by TagId
-      description: Find Tag by Tag ID
-      parameters:
-      - name: tag_id
-        in: path
-        description: Tag ID
-        required: true
-        schema:
-          type: integer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/nbq_internal_models.TagsOut'
-  /timeseries:
-    post:
-      tags:
-      - Timeseries
-      summary: Read a device Snapshot values (last values)
-      description: The snapshot endpoint will per default return the last value for
-        all properties available for a thing. Use the fields parameter to send a comma
-        separated list of fields of only specific fields are required.
-      requestBody:
-        description: Timeseries Query
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/nbq_internal_models.TimeseriesQuery'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/nbq_internal_models.SnapshotOut'
-      x-codegen-request-body-name: query
-  /timeseries/snapshot:
-    post:
-      tags:
-      - Snapshots
-      summary: Snapshot query for multiple ids
-      description: An array if queries can be provided containing the desired id measurement
-        and snapshot fields if the measure and id are found the values are returned
-      requestBody:
-        description: Snapshot Query
-        content:
-          application/json:
-            schema:
+          description: Absent on the last page.
+        stats:
+          type: object
+          required:
+          - sources
+          - indexed
+          - approximate
+          properties:
+            sources:
               type: array
+              description: The datasources asked; empty when the tenant has none that can tell.
               items:
-                $ref: '#/components/schemas/nbq_internal_models.WsSnapshotQuery'
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/nbq_internal_models.SnapshotQueryOut'
-      x-codegen-request-body-name: query
-  /timeseries/snapshot/{id}:
-    get:
-      tags:
-      - Snapshots
-      summary: Read a device Snapshot values (last values)
-      description: The snapshot endpoint will per default return the last value for
-        all properties available for a thing. Use the fields parameter to send a comma
-        separated list of fields of only specific fields are required.
-      parameters:
-      - name: id
-        in: path
-        description: Device id
-        required: true
-        schema:
-          type: string
-      - name: measurement
-        in: query
-        description: measurement name
-        schema:
-          type: string
-      - name: fields
-        in: query
-        description: comma separated list of fields
-        schema:
-          type: string
-      - name: tags
-        in: query
-        description: Tag values (key-value pairs)
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/nbq_internal_models.SnapshotOut'
-  /timeseries/snapshotlist/{ids}:
-    get:
-      tags:
-      - Snapshots
-      summary: Read a device Snapshot values (last values)
-      description: The snapshot endpoint will per default return the last value for
-        all properties available for a thing. Use the fields parameter to send a comma
-        separated list of fields of only specific fields are required.
-      parameters:
-      - name: ids
-        in: path
-        description: Device ids (comma separated)
-        required: true
-        schema:
-          type: string
-      - name: measurement
-        in: query
-        description: measurement name
-        schema:
-          type: string
-      - name: fields
-        in: query
-        description: comma separated list of fields
-        schema:
-          type: string
-      - name: tags
-        in: query
-        description: Tag values (key-value pairs)
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/nbq_internal_models.SnapshotOut'
-components:
-  schemas:
-    gormjsonb.JSONB:
-      type: object
-      additionalProperties: true
-    nbq_internal_models.Aggregation:
+                type: string
+            indexed:
+              type: boolean
+              description: >-
+                False when no datasource of the tenant can tell (no lake, TimescaleDB or Arc):
+                the page is empty because nothing is known, not because no device sent tags.
+            skipped:
+              type: array
+              description: Datasources routing left out (not routed readings or metrics, or their probe lacks the tenant).
+              items:
+                type: string
+            failed:
+              type: array
+              description: Datasources that did not answer; the page is the others' and is not cached.
+              items:
+                type: string
+            approximate:
+              type: boolean
+              description: Always true; message counts are estimates.
+            from:
+              type: string
+              format: date-time
+            to:
+              type: string
+              format: date-time
+            cached:
+              type: boolean
+            took_ms:
+              type: number
+    AggregationFunc:
       type: string
       enum:
-      - min
       - avg
-      - variance
-      - max
       - sum
+      - min
+      - max
       - count
+      - stddev
+      - first
+      - last
+      - p50
+      - p95
+      - p99
+      - variance
       - delta
       - delta_counter
-      - stddev
-      - last
-      - first
       - t_first
       - t_last
       - cumulative_sum
-      - cumulative_sum_delta_counter
       - cumulative_sum_delta
+      - cumulative_sum_delta_counter
       - avg_serial_diff
-      x-enum-varnames:
-      - AggregationMin
-      - AggregationAvg
-      - AggregationVariance
-      - AggregationMax
-      - AggregationSum
-      - AggregationCount
-      - AggregationDelta
-      - AggregationDeltaCount
-      - AggregationStddev
-      - AggregationLast
-      - AggregationFirst
-      - AggregationTFirst
-      - AggregationTLast
-      - AggregationCumulativeSum
-      - AggregationCumulativeDeltaCounterSum
-      - AggregationCumulativeDeltaSum
-      - AggregationAvgSerialDiff
-    nbq_internal_models.BackgroundJob:
-      type: object
-      properties:
-        completed_at:
-          type: string
-        created_at:
-          type: string
-        error_message:
-          type: string
-        id:
-          type: string
-        measurement:
-          type: string
-        processed_rows:
-          type: integer
-        progress:
-          type: number
-        schema:
-          type: string
-        started_at:
-          type: string
-        status:
-          $ref: '#/components/schemas/nbq_internal_models.JobStatus'
-        total_rows:
-          type: integer
-        type:
-          $ref: '#/components/schemas/nbq_internal_models.JobType'
-        updated_at:
-          type: string
-    nbq_internal_models.CorrelationResult:
-      type: object
-      properties:
-        correlations:
-          type: array
-          description: "[measure1][measure2]"
-          items:
-            type: array
-            items:
-              type: number
-        measures:
-          type: array
-          items:
-            type: string
-        sampleCounts:
-          type: array
-          description: "[measure]"
-          items:
-            type: integer
-    nbq_internal_models.Date:
-      type: object
-      properties:
-        time.Time:
-          type: string
-    nbq_internal_models.Geo:
-      type: object
-      properties:
-        altitude:
-          type: number
-        distanceTraveled:
-          type: number
-        heading:
-          type: number
-        id:
-          type: string
-        lastUpdate:
-          type: integer
-        lat:
-          type: number
-        lon:
-          type: number
-        measurement:
-          type: string
-        online:
-          type: boolean
-        speed:
-          type: number
-        tags:
-          $ref: '#/components/schemas/gormjsonb.JSONB'
-        time:
-          type: integer
-    nbq_internal_models.GeoHeartbeat:
-      type: object
-      properties:
-        lastUpdate:
-          type: integer
-        lat:
-          type: number
-        lon:
-          type: number
-    nbq_internal_models.GeoPath:
-      type: object
-      properties:
-        currentPosition:
-          $ref: '#/components/schemas/nbq_internal_models.Geo'
-        points:
-          type: array
-          items:
-            $ref: '#/components/schemas/nbq_internal_models.Geo'
-        totalPoints:
-          type: integer
-    nbq_internal_models.GeoReverse:
-      type: object
-      properties:
-        city:
-          type: string
-        country:
-          type: string
-        countryCode:
-          type: string
-        fullAddress:
-          type: string
-        houseNumber:
-          type: string
-        id:
-          type: string
-        lat:
-          type: number
-        lon:
-          type: number
-        measurement:
-          type: string
-        postalCode:
-          type: string
-        street:
-          type: string
-        time:
-          type: integer
-    nbq_internal_models.GeoWithReverse:
-      type: object
-      properties:
-        altitude:
-          type: number
-        distanceTraveled:
-          type: number
-        geoReverse:
-          $ref: '#/components/schemas/nbq_internal_models.GeoReverse'
-        heading:
-          type: number
-        id:
-          type: string
-        lastUpdate:
-          type: integer
-        lat:
-          type: number
-        lon:
-          type: number
-        measurement:
-          type: string
-        online:
-          type: boolean
-        speed:
-          type: number
-        tags:
-          $ref: '#/components/schemas/gormjsonb.JSONB'
-        time:
-          type: integer
-    nbq_internal_models.Heartbeat:
-      type: object
-      properties:
-        geo:
-          $ref: '#/components/schemas/nbq_internal_models.GeoHeartbeat'
-        id:
-          type: string
-        lastUpdate:
-          type: integer
-        measurement:
-          type: string
-        online:
-          type: boolean
-    nbq_internal_models.JobStatus:
-      type: string
-      enum:
-      - pending
-      - running
-      - completed
-      - failed
-      x-enum-varnames:
-      - JobStatusPending
-      - JobStatusRunning
-      - JobStatusCompleted
-      - JobStatusFailed
-    nbq_internal_models.JobType:
-      type: string
-      enum:
-      - correlation_update
-      - quantile_update
-      x-enum-varnames:
-      - JobTypeCorrelationUpdate
-      - JobTypeQuantileUpdate
-    nbq_internal_models.MeasureType:
-      type: string
-      enum:
-      - numeric
-      - nonNumeric
-      - bool
-      x-enum-varnames:
-      - MeasureTypeNumeric
-      - MeasureTypeNonNumeric
-      - MeasureTypeBool
-    nbq_internal_models.MeasurementAggregationSize:
-      type: object
-      properties:
-        byteSize:
-          type: integer
-        interval:
-          type: string
-        name:
-          type: string
-        rowCount:
-          type: integer
-    nbq_internal_models.MeasurementSize:
-      type: object
-      properties:
-        aggregations:
-          type: array
-          items:
-            $ref: '#/components/schemas/nbq_internal_models.MeasurementAggregationSize'
-        byteSize:
-          type: integer
-        date:
-          $ref: '#/components/schemas/nbq_internal_models.Date'
-        name:
-          type: string
-        rowCount:
-          type: integer
-        tenant:
-          type: string
-    nbq_internal_models.MeasurmentBase:
-      type: object
-      properties:
-        byteSize:
-          type: integer
-        name:
-          type: string
-        rowCount:
-          type: integer
-    nbq_internal_models.QuantileResponse:
-      type: object
-      properties:
-        bucketSize:
-          type: integer
-        endTime:
-          type: string
-        errors:
-          type: number
-        measure:
-          type: string
-        measurement:
-          type: string
-        p10:
-          type: number
-        p25:
-          type: number
-        p50:
-          type: number
-        p75:
-          type: number
-        p90:
-          type: number
-        startTime:
-          type: string
-        totalValues:
-          type: integer
-        updatedAt:
-          type: string
-    nbq_internal_models.Query:
-      required:
-      - aggregations
-      - id
-      - measure
-      - queryId
-      type: object
-      properties:
-        aggregations:
-          type: array
-          items:
-            $ref: '#/components/schemas/nbq_internal_models.Aggregation'
-        end:
-          type: object
-        id:
-          type: string
-        includeTags:
-          type: boolean
-        max:
-          type: number
-        measure:
-          type: string
-        measureType:
-          $ref: '#/components/schemas/nbq_internal_models.MeasureType'
-        measurement:
-          type: string
-        min:
-          type: number
-        precision:
-          type: integer
-        queryId:
-          type: string
-        start:
-          type: object
-        tags:
-          type: object
-          additionalProperties:
-            type: string
-    nbq_internal_models.SnapshotOut:
-      type: object
-      properties:
-        id:
-          type: string
-        lastUpdate:
-          type: integer
-        measurement:
-          type: string
-        online:
-          type: boolean
-        tagId:
-          type: string
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/nbq_internal_models.SnapshotValue'
-    nbq_internal_models.SnapshotQueryOut:
-      type: object
-      properties:
-        id:
-          type: string
-        lastUpdate:
-          type: integer
-        measurement:
-          type: string
-        online:
-          type: boolean
-        queryId:
-          type: string
-        values:
-          type: array
-          items:
-            $ref: '#/components/schemas/nbq_internal_models.SnapshotQueryValue'
-    nbq_internal_models.SnapshotQueryValue:
-      type: object
-      properties:
-        measure:
-          type: string
-        tags:
-          $ref: '#/components/schemas/gormjsonb.JSONB'
-        time:
-          type: integer
-        value:
-          type: object
-    nbq_internal_models.SnapshotValue:
-      type: object
-      properties:
-        dataType:
-          type: string
-        id:
-          type: string
-          description: TODO CHECK IF FIELD CAN BE REMOVED
-        measure:
-          type: string
-        tags:
-          $ref: '#/components/schemas/gormjsonb.JSONB'
-        time:
-          type: integer
-        value:
-          type: object
-    nbq_internal_models.TagsOut:
-      type: object
-      properties:
-        id:
-          type: string
-        measurement:
-          type: string
-        tagId:
-          type: string
-        tags:
-          type: object
-          additionalProperties:
-            type: string
-    nbq_internal_models.TagsWithPagination:
-      type: object
-      properties:
-        count:
-          maximum: 1000
-          type: integer
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/nbq_internal_models.TagsOut'
-        limit:
-          type: integer
-        page:
-          type: integer
-        pageCount:
-          type: integer
-    nbq_internal_models.TenantSize:
-      type: object
-      properties:
-        byteSize:
-          type: integer
-        date:
-          $ref: '#/components/schemas/nbq_internal_models.Date'
-        measurements:
-          type: array
-          items:
-            $ref: '#/components/schemas/nbq_internal_models.MeasurmentBase'
-        rowCount:
-          type: integer
-        tenant:
-          type: string
-    nbq_internal_models.TimeBucketGapFill:
+      - argmax
+      - argmin
+      - rate
+      - time_weighted_avg
+      - time_weighted_avg_locf
+      - count_distinct_things
+      - range
+      - kurtosis
+      - skewness
+      - num_resets
+      - extrapolated_rate
+      - heartbeat_uptime
+      - heartbeat_downtime
+      - heartbeat_gaps
+      description: |-
+        Aggregation functions supported by the query engine.
+
+        **Standard:** `avg`, `sum`, `min`, `max`, `count`, `stddev`, `first`, `last`
+
+        **Percentiles:** `p50`, `p95`, `p99`
+
+        **Change / derivative:** `delta` (total change), `delta_counter` (counter-aware delta),
+        `rate` (per-second rate), `avg_serial_diff` (average successive delta),
+        `cumulative_sum`, `cumulative_sum_delta`, `cumulative_sum_delta_counter`
+
+        **Time-based:** `t_first` (timestamp of first reading), `t_last` (timestamp of last reading),
+        `argmax` (timestamp at max value), `argmin` (timestamp at min value),
+        `time_weighted_avg`, `time_weighted_avg_locf`
+
+        **Statistical:** `variance`, `range` (max minus min), `kurtosis`, `skewness`, `num_resets`, `extrapolated_rate`
+
+        **Heartbeat (requires heartbeat_interval on the measure):** `heartbeat_uptime`, `heartbeat_downtime`, `heartbeat_gaps`
+
+        **Fleet:** `count_distinct_things`
+
+        **By measure data type:** a `numeric` measure takes every aggregation. A `boolean` or
+        `string` measure takes only `count`, `first`, `last`, `min`, `max`, `t_first`, `t_last`,
+        `argmax`, `argmin`, `count_distinct_things` and the heartbeat aggregations; `first`, `last`,
+        `min` and `max` keep the measure's type (`false` < `true`; strings compare lexically), the
+        others return numbers. Any other aggregation (`avg`, `sum`, `stddev`, `variance`,
+        percentiles, `delta`, `rate`, `range`, …) on a boolean or string measure is refused with
+        400 code 1, naming the measure, its type and the aggregation. The type checked is the
+        measure's `data_type` override when the request sets one, otherwise the registry's.
+    GapFillStrategy:
       type: string
       enum:
       - none
-      - time
+      - 'null'
       - locf
+      - zero
       - interpolate
-      x-enum-varnames:
-      - TimeBucketGapFillNone
-      - TimeBucketGapFillTime
-      - TimeBucketGapFillLocf
-      - TimeBucketGapFillInterpolate
-    nbq_internal_models.TimeseriesQuery:
+      description: |-
+        How to fill empty buckets when bucketing is enabled.
+        - `none` -- omit empty buckets entirely
+        - `null` -- emit null for missing buckets
+        - `locf` -- last observation carried forward
+        - `zero` -- fill with 0
+        - `interpolate` -- linear interpolation between neighbouring points
+    LogicalOp:
+      type: string
+      enum:
+      - and
+      - or
+    FilterOp:
+      type: string
+      enum:
+      - eq
+      - neq
+      - gt
+      - gte
+      - lt
+      - lte
+      - in
+      - nin
+      description: |-
+        Filter operators.
+        - `eq` / `neq` -- equality
+        - `gt` / `gte` / `lt` / `lte` -- ordering
+        - `in` / `nin` -- membership in an array value
+    OrderDirection:
+      type: string
+      enum:
+      - asc
+      - desc
+    GroupDimension:
+      type: string
+      enum:
+      - thing
+      - bucket
+      description: |-
+        Dimensions to group results by.
+        - `thing` -- one row per thing
+        - `bucket` -- one row per time bucket (requires time_window.bucket)
+    ThingRef:
+      type: object
       required:
-      - queries
-      - window
+      - thing_type
+      - thing_id
+      properties:
+        thing_type:
+          type: string
+        thing_id:
+          type: string
+    EventsFilter:
+      type: object
+      description: Every set field narrows (AND); list fields match any element.
+      properties:
+        ids:
+          type: array
+          maxItems: 1000
+          items: {type: string, description: Canonical lower-case UUID (v7) event id}
+        event_type_ids:
+          type: array
+          maxItems: 1000
+          items: {type: string}
+        severities:
+          type: array
+          items: {type: string, enum: [INFO, WARNING, ERROR, CRITICAL]}
+        resources:
+          type: array
+          items: {type: string, description: 'OCB resource, for example Thing'}
+        reference_ids:
+          type: array
+          maxItems: 10000
+          items: {type: string}
+        thing_type: {type: string}
+        correlation_id: {type: string}
+        series_key: {type: string}
+        external_id: {type: string}
+        status: {type: string}
+        source: {type: string}
+        producer: {type: string}
+        phase:
+          type: object
+          description: |
+            Set eq or open_only, not both. open_only keeps the open events of episodes that have no
+            close as of now: an open stays open until its close arrives, whatever the query window (a
+            close after the window's end still closes it). Across storage tiers the engine collects the
+            closes of the other tiers from the window's start to now and passes them to each tier;
+            see the 422 on the list.
+          properties:
+            eq: {type: string, enum: [open, close, point]}
+            open_only:
+              type: boolean
+              description: No close exists as of now. At most 10000 episodes closed since the window's start are passed between storage tiers; above that the answer is 422 and a shorter window is needed.
+        title_contains: {type: string, description: Case-insensitive substring of the title}
+        search:
+          type: string
+          description: Case-insensitive substring of title, source, status, external id or correlation id
+    EventsQuery:
+      type: object
+      required: [time_window]
+      properties:
+        time_window:
+          $ref: '#/components/schemas/TimeWindow'
+        filter:
+          $ref: '#/components/schemas/EventsFilter'
+        order: {type: string, enum: [desc, asc], default: desc}
+        limit: {type: integer, minimum: 1, maximum: 1000, default: 100}
+        cursor:
+          type: string
+          description: stats.next_cursor of the previous page; continues the same query and order.
+        profile: {type: string, enum: [summary, full], default: summary, description: summary omits the payload}
+        data_source_id: {type: string}
+        request_id: {type: string}
+    EventsCountQuery:
+      type: object
+      required: [time_window]
+      properties:
+        time_window:
+          $ref: '#/components/schemas/TimeWindow'
+        filter:
+          $ref: '#/components/schemas/EventsFilter'
+        group_by:
+          type: string
+          enum: [severity, event_type_id, resource, reference_id, status, bucket]
+        bucket:
+          type: object
+          description: Required with group_by bucket.
+          required: [interval]
+          properties:
+            interval: {type: string, example: 1h}
+            timezone: {type: string, example: Europe/Berlin}
+        data_source_id: {type: string}
+        request_id: {type: string}
+    EventsResultSet:
+      type: object
+      description: |
+        Columnar envelope. A list has the columns id, time (epoch ms), event_type_id, severity,
+        resource, reference_id, thing_type, phase, series_key, title, status, source, producer,
+        correlation_id, external_id, i18n_code, payload (JSON string; null for summary),
+        created_by. A count has (count), (key, count) or (bucket epoch ms, count).
+      properties:
+        request_id: {type: string}
+        columns:
+          type: array
+          items: {type: string}
+        rows:
+          type: array
+          items:
+            type: array
+            items: {}
+        stats:
+          type: object
+          properties:
+            rows: {type: integer}
+            duration_ms: {type: integer}
+            next_cursor:
+              type: string
+              description: Opaque keyset cursor of the next page; absent on the last page.
+            datasource: {type: object, additionalProperties: true}
+            coverage:
+              type: object
+              description: Present only when the storage tiers do not cover the whole requested window (a tenant asking past its retention, or a tier that serves no events); the answer holds what they do cover. from and to bound the covered part and are absent when none is covered.
+              required: [partial]
+              properties:
+                from: {type: string, format: date-time}
+                to: {type: string, format: date-time}
+                partial: {type: boolean, enum: [true]}
+    TimeWindow:
+      type: object
+      required:
+      - start
+      - end
+      properties:
+        start:
+          $ref: '#/components/schemas/FlexTime'
+        end:
+          $ref: '#/components/schemas/FlexTime'
+        bucket:
+          $ref: '#/components/schemas/BucketConfig'
+    BucketConfig:
+      type: object
+      required:
+      - interval
+      - gap_fill
+      properties:
+        interval:
+          type: string
+          example: 1h
+        gap_fill:
+          $ref: '#/components/schemas/GapFillStrategy'
+        timezone:
+          type: string
+          example: Europe/Berlin
+          description: IANA timezone for bucket boundaries. Empty defaults to UTC.
+        rolling_window:
+          $ref: '#/components/schemas/RollingWindowConfig'
+    Filter:
+      type: object
+      required:
+      - operator
+      - value
+      properties:
+        key:
+          type: string
+          description: Tag key to filter on (mutually exclusive with measure)
+        measure:
+          type: string
+          description: Measure name to filter on (mutually exclusive with key)
+        aggregation:
+          allOf:
+          - $ref: '#/components/schemas/AggregationFunc'
+          description: Which aggregated value a cross_measure_filters leaf compares (required there). Leave it out in
+            measure_filters (they compare each reading) and in value_filter (it compares the latest value).
+        operator:
+          $ref: '#/components/schemas/FilterOp'
+        value:
+          description: Scalar or array value to compare against. Use an array for in / nin; scalar for all other operators.
+            It must fit the measure's type -- a number measure takes numbers and every operator, a text measure text
+            with eq, neq, in or nin, a boolean measure true or false with eq or neq -- or the query is refused with 400.
+            A reading without the value never matches, whatever the operator.
+    FilterGroup:
+      type: object
+      required:
+      - operator
+      properties:
+        operator:
+          $ref: '#/components/schemas/LogicalOp'
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Filter'
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterGroup'
+    OrderSpec:
+      type: object
+      required:
+      - direction
+      properties:
+        system_column:
+          type: string
+          enum:
+          - thing_id
+          - bucket
+          description: Sort by a system column instead of a measure aggregation
+        measure:
+          type: string
+          description: Measure name to sort by (requires aggregation)
+        aggregation:
+          allOf:
+          - $ref: '#/components/schemas/AggregationFunc'
+          description: Required when measure is set
+        direction:
+          $ref: '#/components/schemas/OrderDirection'
+    BBoxFilter:
       type: object
       properties:
-        gapFill:
+        min_lng:
+          type: number
+          format: double
+          description: Minimum longitude (west)
+        min_lat:
+          type: number
+          format: double
+          description: Minimum latitude (south)
+        max_lng:
+          type: number
+          format: double
+          description: Maximum longitude (east)
+        max_lat:
+          type: number
+          format: double
+          description: Maximum latitude (north)
+      description: |-
+        Geographic bounding box filter. min_lng > max_lng is valid and means the box
+        crosses the antimeridian (e.g. a Pacific viewport spanning Fiji/Alaska).
+    DataType:
+      type: string
+      enum:
+      - numeric
+      - string
+      - boolean
+      description: Measure value data type.
+    MeasureQuery:
+      type: object
+      required:
+      - name
+      - aggregations
+      properties:
+        name:
+          type: string
+        aggregations:
+          type: array
+          items:
+            $ref: '#/components/schemas/AggregationFunc'
+          minItems: 1
+          description: Aggregations to compute. Each must apply to the measure's data type; see
+            AggregationFunc (boolean and string measures take count, first, last, min, max, t_first,
+            t_last, argmax, argmin, count_distinct_things and the heartbeat aggregations only).
+        aliases:
           type: object
+          additionalProperties:
+            type: string
+          description: Rename aggregation result columns. Key is the aggregation function, value is the desired column name.
+            Overrides the default `<measure>__<agg>` key.
+        heartbeat_interval:
+          type: string
+          example: 5m
+          description: Go duration string (e.g. 5m, 30s). Required when using heartbeat aggregations (heartbeat_uptime, heartbeat_downtime,
+            heartbeat_gaps).
+        data_type:
           allOf:
-          - $ref: '#/components/schemas/nbq_internal_models.TimeBucketGapFill'
+          - $ref: '#/components/schemas/DataType'
+          description: Optional data type override for this measure. Takes precedence over the registry's declared type when
+            set; omitted measures fall back to the registry (unknown measures default to numeric).
+    Query:
+      type: object
+      required:
+      - measures
+      - time_window
+      description: >
+        Exactly one of `things` or `all_of_type` must be set (mutually exclusive).
+        When `all_of_type` is set, `thing_type` is required.
+      properties:
+        things:
+          type: array
+          items:
+            $ref: '#/components/schemas/ThingRef'
+          minItems: 1
+          description: >
+            Explicit things to query. All entries must share the same thing_type.
+            Mutually exclusive with all_of_type.
+        thing_type:
+          type: string
+          description: >
+            Thing type for the all_of_type selector. Required when all_of_type is set.
+            Mutually exclusive with things.
+        all_of_type:
+          allOf:
+          - $ref: '#/components/schemas/AllOfTypeRef'
+          description: >
+            Run the query over all things of thing_type matching the optional tag filter.
+            Mutually exclusive with things.
+        measures:
+          type: array
+          items:
+            $ref: '#/components/schemas/MeasureQuery'
+          minItems: 1
+          description: Measures and their aggregations
+        time_window:
+          $ref: '#/components/schemas/TimeWindow'
+        measure_filters:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/FilterGroup'
+          description: Per-measure filters on the readings, applied BEFORE aggregation. Key is a requested measure's name;
+            value is a filter group whose leaves compare that measure's own readings (no key or aggregation in the
+            leaves; measure may be left out, or must be the key's measure). Only that measure's aggregates are
+            narrowed; the other measures keep all their readings. A bucket whose readings all fail has no value for
+            the measure.
+        cross_measure_filters:
+          allOf:
+          - $ref: '#/components/schemas/FilterGroup'
+          description: Bucket filter, applied AFTER aggregation. Keeps the result rows (buckets, or things) whose aggregated
+            values satisfy it; each leaf names a measure and one of its requested aggregations.
+        group_by:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupDimension'
+          nullable: true
+          description: Dimensions to group by. Omit for scalar mode (one row per query). Pass `[]` (empty array) for scalar
+            mode explicitly. `["thing","bucket"]` groups by both thing and time bucket.
+        order_by:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderSpec'
+        limit:
+          type: integer
+          nullable: true
+          description: Max result rows per query
+        data_source_id:
+          type: string
+          description: Target a specific datasource by ID
+        use_raw:
+          type: boolean
+          description: Bypass pre-aggregated storage and query raw data
+        request_id:
+          type: string
+          description: Caller-supplied correlation ID echoed in the response
+        tag_filter:
+          $ref: '#/components/schemas/FilterGroup'
+    BatchQuery:
+      type: object
+      required:
+      - queries
+      properties:
         queries:
           type: array
           items:
-            $ref: '#/components/schemas/nbq_internal_models.Query'
-        useRaw:
-          type: boolean
-          default: false
-        window:
-          $ref: '#/components/schemas/nbq_internal_models.Window'
-    nbq_internal_models.Window:
+            $ref: '#/components/schemas/Query'
+          minItems: 1
+          maxItems: 100
+          description: Up to 100 sub-queries executed in one request
+    FleetQuery:
+      type: object
       required:
-      - bucketSize
-      - start
-      type: object
+      - thing_type
+      - measures
+      - window
       properties:
-        bucketSize:
+        thing_type:
+          type: string
+          description: Fleet type to query -- all things of this type are included unless filtered
+        tag_filter:
+          allOf:
+          - $ref: '#/components/schemas/FilterGroup'
+          description: Filter fleet members by tags
+        things:
+          type: array
+          items:
+            type: string
+          description: Explicit thing IDs to include (subset of the fleet)
+        measures:
+          type: array
+          items:
+            $ref: '#/components/schemas/MeasureQuery'
+          minItems: 1
+        window:
           type: object
-        end:
-          type: object
-        shiftWindow:
+          required:
+          - start
+          - end
+          properties:
+            start:
+              $ref: '#/components/schemas/FlexTime'
+            end:
+              $ref: '#/components/schemas/FlexTime'
+        cross_measure_filters:
+          allOf:
+          - $ref: '#/components/schemas/FilterGroup'
+          description: Filter applied AFTER aggregation. Keeps the result rows whose aggregated values satisfy it; each leaf
+            names a measure and one of its requested aggregations.
+        collapse:
           type: boolean
-        start:
-          type: object
-        timeZone:
+          description: When true, aggregates all fleet members into a single result row. When false, returns one row per fleet
+            member.
+        order_by:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderSpec'
+        limit:
+          type: integer
+          nullable: true
+        data_source_id:
           type: string
-    nbq_internal_models.WsSnapshotQuery:
+        use_raw:
+          type: boolean
+        request_id:
+          type: string
+        measure_filters:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/FilterGroup'
+          description: Per-measure filters on the readings, applied BEFORE aggregation. Key is a requested measure's name;
+            the leaves compare that measure's own readings, and only its aggregates are narrowed.
+    AllOfTypeRef:
       type: object
       properties:
-        id:
+        tag_filter:
+          $ref: '#/components/schemas/FilterGroup'
+        things:
+          type: array
+          items:
+            type: string
+          description: Additional explicit thing IDs to include
+    SnapshotSelector:
+      type: object
+      properties:
+        things:
+          type: array
+          items:
+            $ref: '#/components/schemas/ThingRef'
+        all_of_type:
+          $ref: '#/components/schemas/AllOfTypeRef'
+      description: Exactly one of things or all_of_type must be set.
+    StalenessFilter:
+      type: object
+      properties:
+        max_age:
           type: string
-        measurement:
+          example: 24h
+          description: Exclude things whose latest reading is older than this
+        min_age:
           type: string
+          example: 30m
+          description: Exclude things whose latest reading is newer than this
+      description: At most one of max_age or min_age may be set. Values are Go duration strings (e.g. 30m, 24h).
+    AggregatedMeasure:
+      type: object
+      required:
+      - name
+      - aggregations
+      properties:
+        name:
+          type: string
+        aggregations:
+          type: array
+          items:
+            $ref: '#/components/schemas/AggregationFunc'
+          minItems: 1
+        aliases:
+          type: object
+          additionalProperties:
+            type: string
+        data_type:
+          allOf:
+          - $ref: '#/components/schemas/DataType'
+          description: Optional data type override for this measure. Takes precedence over the registry's declared type when
+            set.
+    SnapshotAggregation:
+      type: object
+      required:
+      - measures
+      properties:
+        measures:
+          type: array
+          items:
+            $ref: '#/components/schemas/AggregatedMeasure'
+          minItems: 1
+    EventsSubscribeQuery:
+      type: object
+      additionalProperties: false
+      description: |
+        Body of a WebSocket subscription with query_type `events` (docs/asyncapi.yaml): the filter of
+        `POST /events/query` without window, order, limit and cursor. The subscription opens with the
+        newest events of the filter within the last 24 hours (at most 100), then follows the live feed
+        of the tenant. A window, order, limit or cursor is refused. Requires Event:r on the socket's token.
+      properties:
+        filter:
+          $ref: '#/components/schemas/EventsFilter'
+        profile:
+          type: string
+          enum: [summary, full]
+          description: summary (default) omits the payload
+        request_id:
+          type: string
+    SnapshotQuery:
+      type: object
+      required:
+      - thing_type
+      - selector
+      properties:
+        thing_type:
+          type: string
+        selector:
+          $ref: '#/components/schemas/SnapshotSelector'
         measures:
           type: array
           items:
             type: string
-        queryId:
+          description: Measure names to retrieve latest values for. Omit or pass an empty array to retrieve all measures declared for the thing type.
+        measure_types:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/DataType'
+          description: Optional per-measure data type overrides (measure name → type). Takes precedence over the registry's
+            declared type when set.
+        value_filter:
+          allOf:
+          - $ref: '#/components/schemas/FilterGroup'
+          description: Keeps the things whose latest values satisfy it, before order_by and limit, on every store and on
+            live updates. Each leaf names a measure (it need not be one of measures) and no aggregation; a thing
+            without that measure's value fails the leaf.
+        staleness:
+          $ref: '#/components/schemas/StalenessFilter'
+        collapse:
+          type: boolean
+          description: Collapse all things into a single aggregated row
+        aggregation:
+          $ref: '#/components/schemas/SnapshotAggregation'
+        order_by:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderSpec'
+        limit:
+          type: integer
+          nullable: true
+        data_source_id:
           type: string
+        use_raw:
+          type: boolean
+        request_id:
+          type: string
+    GeoCurrentQuery:
+      type: object
+      description: |-
+        Exactly one of thing_type or thing_types must be set (not enforced by this schema --
+        the API validates it and rejects both-set or neither-set with a 400).
+      properties:
+        thing_type:
+          type: string
+          description: Alternative to thing_types -- set exactly one of the two.
+        thing_types:
+          type: array
+          items:
+            type: string
+          description: Alternative to thing_type, for querying several thing types in one request. Set exactly one of the two.
+        thing_ids:
+          type: array
+          items:
+            type: string
+          description: Omit to return all things of the given type(s)
+        tag_filter:
+          $ref: '#/components/schemas/FilterGroup'
+        labels:
+          type: array
+          maxItems: 100
+          items:
+            type: string
+            maxLength: 256
+          example: [north, pump]
+          description: |-
+            Keeps the things that have ANY of these OCB search labels (Thing.searchLabels). Each
+            value is split on `,` and `|`, trimmed, and compared case-insensitively, the same rule
+            the stored labels follow. Empty or absent: no filter. Cannot be combined with
+            tag_filter (400). Answered from nbq's last-value cache only: a thing the cache does not
+            hold (silent past its value TTL) is not in the answer, and when the cache is not enabled
+            or has not loaded the tenant yet the query is refused with 422, code 6, never answered
+            unfiltered. Works with thing_ids, bbox, max_age, online and cluster (clusters count the
+            filtered things); an answer that applied it reports `stats.datasource.labels_from_cache`.
+            The WebSocket geo_current subscription checks each forwarded position against it.
+        bbox:
+          $ref: '#/components/schemas/BBoxFilter'
+        max_age:
+          type: string
+          description: |-
+            Go duration (e.g. "720h"). Drops things whose last fix is older than now - max_age.
+            Omitted means no additional bound beyond each datasource's own retention/lookback.
+          example: 720h
+        min_age:
+          type: string
+          description: |-
+            Go duration (e.g. "24h"), > 0. The mirror of max_age: keeps only things whose LATEST fix
+            is at or before now - min_age, i.e. things silent for at least min_age. A thing with a
+            newer fix is dropped entirely, never answered with an older fix. When both are set,
+            max_age must be greater than min_age (else 400). Combines with bbox, thing_types,
+            thing_ids, tag_filter, online and cluster (clusters are built over the matching things).
+            On the lake and Arc sources "latest" is bounded by their geo_lookback (default 7d): a
+            thing silent for longer is not returned at all. On a geo_current subscription live
+            positions are not forwarded (a live fix is fresh by definition); a thing that reports
+            leaves the view with the next view refresh.
+          example: 24h
+        online:
+          type: boolean
+          nullable: true
+          description: Filter to currently online things when true (or currently-known-offline when false). Liveness comes from the shared heartbeat store; a thing nbq has never seen a heartbeat for matches neither.
+        moving:
+          type: boolean
+          nullable: true
+          description: |-
+            Filter by the speed of each thing's latest fix: true keeps things whose speed is above
+            0.5 (the unit of the speed column; below it GPS jitter makes standing things report
+            small speeds), false keeps things with a known speed at or below 0.5. A fix without a
+            speed matches neither. Absent: no filter. Applied by every source before clustering,
+            so clusters count only matching things. The WebSocket geo_current subscription checks
+            each forwarded position's own speed against it.
+        reverse:
+          type: boolean
+          description: Reverse geocode result. Requires exactly one thing_id.
+        tier:
+          type: string
+          enum:
+          - country
+          - city
+          - street
+          - full
+          default: street
+          description: Precision tier for reverse geocoding. country ~ 111 km, city ~ 1.1 km, street/full ~ 11 m.
+        lang:
+          type: string
+          example: en
+          description: Language for reverse geocoded addresses
+        order_by:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderSpec'
+        limit:
+          type: integer
+          nullable: true
+        request_id:
+          type: string
+        cluster:
+          $ref: '#/components/schemas/ClusterConfig'
+    GeoHistoryQuery:
+      type: object
+      description: |-
+        Exactly one of thing_type or thing_types must be set (not enforced by this schema --
+        the API validates it and rejects both-set or neither-set with a 400).
+      required:
+      - time_window
+      properties:
+        thing_type:
+          type: string
+          description: Alternative to thing_types -- set exactly one of the two.
+        thing_types:
+          type: array
+          items:
+            type: string
+          description: Alternative to thing_type, for querying several thing types in one request. Set exactly one of the two.
+        thing_ids:
+          type: array
+          items:
+            type: string
+        tag_filter:
+          $ref: '#/components/schemas/FilterGroup'
+        bbox:
+          $ref: '#/components/schemas/BBoxFilter'
+        time_window:
+          $ref: '#/components/schemas/TimeWindow'
+        online:
+          type: boolean
+          nullable: true
+        order_by:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderSpec'
+        limit:
+          type: integer
+          nullable: true
+        request_id:
+          type: string
+        cluster:
+          $ref: '#/components/schemas/ClusterConfig'
+    GeoPathQuery:
+      type: object
+      required:
+      - thing_type
+      - thing_id
+      - time_window
+      properties:
+        thing_type:
+          type: string
+        thing_id:
+          type: string
+        time_window:
+          $ref: '#/components/schemas/TimeWindow'
+        min_distance:
+          type: integer
+          nullable: true
+          description: |-
+            Minimum distance in metres between consecutive RETURNED points; greedy from the
+            first point (keep the first point, then each next point iff its distance to the
+            last KEPT point is >= min_distance); the last point is always kept, so the route
+            still ends at the thing's latest position.
+        max_points:
+          type: integer
+          nullable: true
+          minimum: 2
+          maximum: 10000
+          description: |-
+            Downsample the (post-min_distance) path to at most this many points by time bucket:
+            bucket width = (time_window.end - time_window.start) / max_points; each non-empty
+            bucket keeps its LAST point, and the first and last point in the window are always
+            kept on top of that (so the response can be up to max_points+2 rows). Omitted means
+            no change from today's behavior.
+        request_id:
+          type: string
+    StopConfig:
+      type: object
+      required:
+      - radius_m
+      - min_dwell
+      description: |-
+        Consecutive path points within radius_m of the current stationary group's start
+        point, spanning at least min_dwell, form a detected stop.
+      properties:
+        radius_m:
+          type: integer
+          description: Radius in metres. Must be > 0.
+        min_dwell:
+          type: string
+          description: Go duration (e.g. "5m"). Must be a positive duration.
+          example: 5m
+    GeoPathsQuery:
+      type: object
+      description: |-
+        Exactly one of thing_type or thing_types must be set (not enforced by this schema --
+        the API validates it and rejects both-set or neither-set with a 400). Used by both
+        POST /geo/paths (stops omitted or set) and POST /geo/stops (stops required).
+      required:
+      - thing_ids
+      - time_window
+      properties:
+        thing_type:
+          type: string
+          description: Alternative to thing_types -- set exactly one of the two.
+        thing_types:
+          type: array
+          items:
+            type: string
+          description: Alternative to thing_type, for requesting things of several types in one call. Set exactly one of the two.
+        thing_ids:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          maxItems: 50
+          description: Required -- 1 to 50 things. Each id is matched against whichever requested type owns it.
+        time_window:
+          $ref: '#/components/schemas/TimeWindow'
+        min_distance:
+          type: integer
+          nullable: true
+          description: |-
+            Minimum distance in metres between consecutive RETURNED points, per thing; greedy
+            from the first point (keep the first point, then each next point iff its distance
+            to the last KEPT point is >= min_distance); the last point of each thing's path is
+            always kept. Ignored by POST /geo/stops -- stops are always computed over the
+            undecimated path.
+        max_points:
+          type: integer
+          nullable: true
+          minimum: 2
+          maximum: 10000
+          description: |-
+            Per thing, same time-bucket downsampling as GeoPathQuery.max_points, applied AFTER
+            min_distance. Ignored by POST /geo/stops, same rule as min_distance.
+        stops:
+          allOf:
+          - $ref: '#/components/schemas/StopConfig'
+          description: Required for POST /geo/stops; omit (or set, it's ignored) for POST /geo/paths.
+        request_id:
+          type: string
+    GeoStopRow:
+      type: object
+      properties:
+        thing_id:
+          type: string
+        lat:
+          type: number
+          format: double
+          description: The detected stop's anchor point (its first observation).
+        lng:
+          type: number
+          format: double
+        start:
+          type: integer
+          format: int64
+          description: Unix timestamp ms of the stop's first point
+        end:
+          type: integer
+          format: int64
+          description: Unix timestamp ms of the stop's last point
+        dwell_ms:
+          type: integer
+          format: int64
+          description: end - start, in milliseconds
+        point_count:
+          type: integer
+          format: int64
+          description: Number of undecimated points that fell inside the stop
+    GeoStopsResultSet:
+      type: object
+      description: >-
+        POST /geo/stops; things that failed are listed in stats.datasource.thing_errors.
+        The body is columnar, like every nbq success body: `columns` names the columns once
+        and each entry of `rows` is one row's values in that order. GeoStopRow describes the
+        columns. Ordered by (thing_id, start).
+      properties:
+        request_id:
+          type: string
+        columns:
+          type: array
+          items:
+            type: string
+        rows:
+          type: array
+          items:
+            type: array
+            items: {}
+        stats:
+          $ref: '#/components/schemas/ExecutionStats'
+    AnalyticQuery:
+      type: object
+      required:
+      - analytic_id
+      properties:
+        analytic_id:
+          type: string
+        params:
+          type: object
+          additionalProperties: true
+        request_id:
+          type: string
+    ExecutionStats:
+      type: object
+      properties:
+        rows:
+          type: integer
+          format: int64
+          description: Rows in this answer
+        duration_ms:
+          type: integer
+          format: int64
+        backend_id:
+          type: string
+        source:
+          type: string
+          description: The datasource that answered
+        stages:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int64
+          description: Milliseconds spent per execution stage
+        datasource:
+          type: object
+          additionalProperties: true
+          description: 'Routing/observability stats reported by the serving datasource and the engine; keys are
+            datasource-defined (rows_scanned, plan_coalesced and plan_split among them). Geo answers
+            report clustered, and when clustered cluster_total_devices, cluster_zoom (zoom mode),
+            cluster_precision and cluster_auto_precision.
+            The lake (duckdb) reports cold.rollup_hit (bool), cold.cagg_bucket (e.g. "24h"), cold.cagg_files,
+            cold.raw_files and, on a rollup hit, cold.route ("raw+cagg+raw", "cagg+raw", "raw+cagg" or "cagg"),
+            cold.cagg_start, cold.split (where the raw suffix starts; "" when the cagg serves through the end),
+            cold.prefix_end (end of the raw partial first bucket; "" when none), cold.prefix_files and
+            cold.suffix_files (timeseries also cold.watermark); absent when the source reported none.
+            POST /geo/paths and POST /geo/path additionally report points_raw (pre-min_distance point count),
+            points_after_distance (post-min_distance, pre-max_points), and points_returned
+            (post-max_points, only present when max_points was set) -- summed across every
+            requested thing for /geo/paths. POST /geo/paths and POST /geo/stops report thing_errors
+            when some requested things failed while others succeeded (see ThingError). POST
+            /geo/current answered from the last-value cache reports source ("last_value_cache") and
+            cache_state, and labels_from_cache (true) when it applied a labels filter.'
+          properties:
+            thing_errors:
+              type: array
+              items:
+                $ref: '#/components/schemas/ThingError'
+              description: Requested things left out of a partial POST /geo/paths or POST /geo/stops
+                answer, one entry per failed thing. Absent when every requested thing succeeded.
+    ColumnDef:
+      type: object
+      properties:
+        measure:
+          type: string
+        aggregation:
+          $ref: '#/components/schemas/AggregationFunc'
+        key:
+          type: string
+          description: Canonical column key -- <measure>__<aggregation> unless aliased
+    Row:
+      type: object
+      properties:
+        thing_id:
+          type: string
+          nullable: true
+        bucket:
+          type: integer
+          format: int64
+          nullable: true
+          description: Epoch milliseconds UTC when bucketed
+        values:
+          type: array
+          items:
+            type: number
+            format: double
+            nullable: true
+        time:
+          type: integer
+          format: int64
+          nullable: true
+          description: Epoch milliseconds UTC; set on snapshot rows to indicate observation time
         tags:
           type: object
           additionalProperties:
             type: string
+          description: Echoes tag-filter keys; nil when no tag filter
+    ResultSet:
+      type: object
+      properties:
+        request_id:
+          type: string
+        group_cols:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupDimension'
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/ColumnDef'
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/Row'
+        stats:
+          $ref: '#/components/schemas/ExecutionStats'
+    GeoAddress:
+      type: object
+      properties:
+        full_address:
+          type: string
+        street:
+          type: string
+        house_number:
+          type: string
+        city:
+          type: string
+        postal_code:
+          type: string
+        country:
+          type: string
+        country_code:
+          type: string
+    GeoRow:
+      type: object
+      description: >-
+        The columns of a POST /geo/current or /geo/history row, in this order. Series tags
+        are not returned as columns, even when tag_filter is set.
+      properties:
+        thing_id:
+          type: string
+        thing_type:
+          type: string
+          description: The thing type's id (the catalogue id the live geo messages carry), not its display name.
+        lat:
+          type: number
+          format: double
+        lng:
+          type: number
+          format: double
+        alt:
+          type: number
+          format: double
+          nullable: true
+        heading:
+          type: number
+          format: double
+          nullable: true
+        speed:
+          type: number
+          format: double
+          nullable: true
+        time:
+          type: integer
+          format: int64
+          description: Unix timestamp ms
+        online:
+          type: boolean
+          nullable: true
+        address_full:
+          type: string
+          nullable: true
+          description: >-
+            Reverse-geocoded address columns (address_full, address_street,
+            address_house_number, address_city, address_postal_code, address_country,
+            address_country_code), filled on POST /geo/current when reverse is set, else null.
+    GeoResultSet:
+      type: object
+      description: >-
+        POST /geo/current and POST /geo/history. A clustered answer (cluster set and more than
+        cluster.points_below things matched) has the ClusterRow columns instead; tell the two apart by
+        the cluster_lat column. stats.datasource.clustered says the same.
+        The body is columnar, like every nbq success body: `columns` names the columns once
+        and each entry of `rows` is one row's values in that order. GeoRow describes the
+        columns.
+      properties:
+        request_id:
+          type: string
+        columns:
+          type: array
+          items:
+            type: string
+        rows:
+          type: array
+          items:
+            type: array
+            items: {}
+        stats:
+          $ref: '#/components/schemas/ExecutionStats'
+    GeoPathPoint:
+      type: object
+      properties:
+        lat:
+          type: number
+          format: double
+        lng:
+          type: number
+          format: double
+        alt:
+          type: number
+          format: double
+          nullable: true
+        heading:
+          type: number
+          format: double
+          nullable: true
+        speed:
+          type: number
+          format: double
+          nullable: true
+        time:
+          type: integer
+          format: int64
+          description: Unix timestamp ms
+    GeoPathResultSet:
+      type: object
+      description: >-
+        POST /geo/path, one thing's movement. No rows in the window is a 200 with empty rows.
+        The body is columnar, like every nbq success body: `columns` names the columns once
+        and each entry of `rows` is one row's values in that order. GeoPathsPoint describes the
+        columns. Ordered by time.
+      properties:
+        request_id:
+          type: string
+        columns:
+          type: array
+          items:
+            type: string
+        rows:
+          type: array
+          items:
+            type: array
+            items: {}
+        stats:
+          $ref: '#/components/schemas/ExecutionStats'
+    GeoPathsPoint:
+      type: object
+      description: Like GeoPathPoint, but carries its own thing_id/thing_type since POST /geo/paths covers several things in one flat, ordered table.
+      properties:
+        thing_id:
+          type: string
+        thing_type:
+          type: string
+        lat:
+          type: number
+          format: double
+        lng:
+          type: number
+          format: double
+        alt:
+          type: number
+          format: double
+          nullable: true
+        heading:
+          type: number
+          format: double
+          nullable: true
+        speed:
+          type: number
+          format: double
+          nullable: true
+        time:
+          type: integer
+          format: int64
+          description: Unix timestamp ms
+    GeoPathsResultSet:
+      type: object
+      description: >-
+        POST /geo/paths. A thing with no rows in the window has none in the answer (an empty window is
+        a 200 with empty rows); things that failed are listed in stats.datasource.thing_errors.
+        The body is columnar, like every nbq success body: `columns` names the columns once
+        and each entry of `rows` is one row's values in that order. GeoPathsPoint describes the
+        columns. Ordered by (thing_id, time).
+      properties:
+        request_id:
+          type: string
+        columns:
+          type: array
+          items:
+            type: string
+        rows:
+          type: array
+          items:
+            type: array
+            items: {}
+        stats:
+          $ref: '#/components/schemas/ExecutionStats'
+    ThingError:
+      type: object
+      required:
+      - thing_id
+      - code
+      - message
+      description: One requested thing that failed inside an otherwise successful multi-thing
+        answer. code uses the error envelope's numbers for the same failure -- 3 internal error, 5 no
+        data source can serve it, 6 a source lacks the capability, 7 not visible to the caller
+        (ownership); 1, 2, 8 and 9 are listed for completeness. message is safe to show; for code 3
+        it is a generic text and the cause stays in the server log.
+      properties:
+        thing_id:
+          type: string
+        code:
+          type: integer
+          enum: [1, 2, 3, 5, 6, 7, 8, 9]
+        message:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        data: {}
+    FlexTime:
+      type: string
+      format: date-time
+      description: |-
+        Accepts either an RFC3339 string with timezone offset (e.g. `2026-05-15T10:00:00Z`)
+        or a Unix epoch integer in milliseconds. Bare ISO-8601 strings without an offset are rejected.
+      example: '2026-05-15T10:00:00Z'
+    RollingWindowConfig:
+      type: object
+      required:
+      - size
+      - func
+      description: |-
+        Sliding-window aggregate over N consecutive buckets (including the current one).
+        Only available when time_window.bucket is set.
+      properties:
+        size:
+          type: integer
+          minimum: 2
+          description: Number of buckets to include in the window (>= 2)
+        func:
+          allOf:
+          - $ref: '#/components/schemas/AggregationFunc'
+          description: Rolling function -- must be avg, sum, min, max, or count
+    ClusterConfig:
+      type: object
+      description: |-
+        Server-side grid clustering for geo queries. Useful when zoomed out far enough
+        that individual devices would overwhelm the client. Exactly one of precision, max_results
+        and zoom must be set.
+      properties:
+        precision:
+          type: number
+          format: double
+          description: Grid cell size in degrees (e.g. 0.01 ~ 1 km at equator). Maximum 90.
+        max_results:
+          type: integer
+          description: Server picks a precision that keeps cluster row count under this cap. Maximum 100000.
+        zoom:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 24
+          description: |-
+            Map zoom (Mapbox/web-mercator). Clusters on a grid of ~64 px cells at that zoom,
+            fixed to the world, so panning keeps clusters in place and each cell splits into
+            four at the next zoom. cluster_lat/cluster_lng are the members' mean position.
+        points_below:
+          type: integer
+          minimum: 0
+          maximum: 100000
+          description: |-
+            When no more than this many things match, return them as GeoRow rows instead of
+            clusters. `stats.clustered` (bool) says which came back. 0 or absent: always cluster.
+    ClusterRow:
+      type: object
+      description: One non-empty grid cell. Returned instead of GeoRow rows when `cluster` is set on geoCurrent/geoHistory.
+      properties:
+        cluster_lat:
+          type: number
+          format: double
+        cluster_lng:
+          type: number
+          format: double
+        count:
+          type: integer
+          format: int64
+        bbox_min_lat:
+          type: number
+          format: double
+        bbox_max_lat:
+          type: number
+          format: double
+        bbox_min_lng:
+          type: number
+          format: double
+          description: West edge. A cluster across the antimeridian has bbox_min_lng > bbox_max_lng, as a request bbox does.
+        bbox_max_lng:
+          type: number
+          format: double
+          description: East edge.
+        sample_thing_id:
+          type: string
+          description: One device's id from the cell, for expand-on-click.
+        sample_thing_type:
+          type: string
+        online_count:
+          type: integer
+          format: int64
+          nullable: true
+          description: Count of devices in the cell known to be online. Null when no device in the cell has a known liveness value.
+        thing_type_counts:
+          type: string
+          description: JSON object mapping thing_type -> device count within the cell, e.g. "{\"vehicle\":3,\"sensor\":1}".
+        online_known_count:
+          type: integer
+          format: int64
+          description: Count of devices in the cell with a known liveness value. online_known_count - online_count are offline; count - online_known_count are unknown.
+        sample_time:
+          type: integer
+          format: int64
+          nullable: true
+          description: Unix timestamp ms of the sample thing's (sample_thing_id) own fix. For a cell of one thing this is that thing's fix, so the cell can be drawn as its pin. Null when the answering source has no fix time.
+        sample_speed:
+          type: number
+          format: double
+          nullable: true
+          description: The sample thing's speed at that fix (the unit of GeoRow.speed). Null when unknown.
+        sample_heading:
+          type: number
+          format: double
+          nullable: true
+          description: The sample thing's heading at that fix. Null when unknown.
+    RawQuery:
+      type: object
+      required:
+      - things
+      - measures
+      - time_window
+      properties:
+        things:
+          type: array
+          items:
+            $ref: '#/components/schemas/ThingRef'
+          minItems: 1
+          maxItems: 100
+        measures:
+          type: array
+          items:
+            type: string
+          minItems: 1
+        measure_types:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/DataType'
+          description: Optional per-measure data type overrides (measure name → type). Takes precedence over the registry's
+            declared type when set.
+        time_window:
+          $ref: '#/components/schemas/TimeWindow'
+        tag_filter:
+          $ref: '#/components/schemas/FilterGroup'
+        limit:
+          type: integer
+          nullable: true
+        data_source_id:
+          type: string
+        request_id:
+          type: string
+    RawRow:
+      type: object
+      properties:
+        thing_id:
+          type: string
+        measure:
+          type: string
+        ts:
+          type: integer
+          format: int64
+          description: Unix timestamp milliseconds
+        value:
+          type: number
+          format: double
+    RawResultSet:
+      type: object
+      properties:
+        request_id:
+          type: string
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/RawRow'
+        truncated:
+          type: boolean
+          description: True when results were capped at the server-side row limit
+        stats:
+          $ref: '#/components/schemas/ExecutionStats'
+    MetricsGroupBy:
+      type: string
+      enum:
+      - thing_type
+      - thing
+      description: 'thing_type -- one row per thing type. thing -- one row per individual thing (requires thing_types
+        or things). For the cache family these dimensions carry cache data rather than thing data: thing_type is the
+        cache kind (rest) and thing_id is the OCB replica id.'
+    MetricExpr:
+      type: object
+      required:
+      - name
+      - agg
+      properties:
+        name:
+          type: string
+          description: 'Metric family name. Must be a key in the metric catalog: message, error, device, rule_match, transformation_rule,
+            validation_rule, geofence_rule, geofence_match, event, cache. The event family counts the events the platform took
+            in, by ingest time (count, rate): field "" is every event, info / warning / error / critical split them by
+            severity, rule / geofence / connectivity / platform by source. A deletion of events does not lower these counts.
+            A row without a thing (thing_type and thing_id empty) holds the tenant''s events about no thing; device counts
+            only things that sent a message or were evaluated. The cache family reads OCB REST cache stats from a
+            separate __cache_metrics table (served by the timescaledb, arc and lake datasources — the lake tier holds
+            it even though device metrics are hot-only), cannot be mixed with other families in one query, and requires
+            Tenant:u permission, and over HTTP no other (403 without it; on the WebSocket, whose upgrade needs
+            Thing:r, the planner refuses it with code 8 "role denied"). For the cache family, thing_types / things.thing_type must be a known cache kind (currently only
+            "rest"); anything else is a 400. Cache rows are counter windows selected by their start: a window that
+            opened before window.start is excluded even though its counts may extend into the queried range
+            (left-edge truncation of up to roughly two flush intervals).'
+        field:
+          type: string
+          description: Sub-field within the metric family. Empty string for row-count metrics. E.g. size for message size
+            aggregations, critical or connectivity for events.
+        agg:
+          allOf:
+          - $ref: '#/components/schemas/AggregationFunc'
+          description: Aggregation to apply
+        alias:
+          type: string
+          description: Custom column name in the response. Defaults to name_field_agg.
+    MetricsQuery:
+      type: object
+      required:
+      - window
+      - metrics
+      properties:
+        window:
+          $ref: '#/components/schemas/TimeWindow'
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricExpr'
+          minItems: 1
+        bucket:
+          allOf:
+          - $ref: '#/components/schemas/BucketConfig'
+          description: Set for graph mode (one row per bucket x dimension). Omit for summary mode (one row per group-by dimension).
+        group_by:
+          $ref: '#/components/schemas/MetricsGroupBy'
+        thing_types:
+          type: array
+          items:
+            type: string
+          description: 'Filter to specific thing types. For the cache family this filters cache kinds instead (currently
+            only rest), and is not resolved against the thing registry.'
+        things:
+          type: array
+          items:
+            $ref: '#/components/schemas/ThingRef'
+          description: 'Filter to explicit things. For the cache family each entry is a (cache kind, OCB replica id)
+            pair rather than a thing reference.'
+        data_source_id:
+          type: string
+        request_id:
+          type: string
+    MetricsRow:
+      type: object
+      properties:
+        bucket:
+          type: integer
+          format: int64
+          nullable: true
+          description: Epoch milliseconds UTC when bucketed
+        thing_type:
+          type: string
+        thing_id:
+          type: string
+        metrics:
+          type: object
+          additionalProperties:
+            type: number
+            format: double
+          description: Keyed by MetricExpr.ColumnKey()
+    MetricsResultSet:
+      type: object
+      properties:
+        request_id:
+          type: string
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricsRow'
+        stats:
+          $ref: '#/components/schemas/ExecutionStats'
+    CapabilitiesInfo:
+      type: object
+      properties:
+        aggregations:
+          type: array
+          items:
+            $ref: '#/components/schemas/AggregationFunc'
+        gap_fills:
+          type: array
+          items:
+            $ref: '#/components/schemas/GapFillStrategy'
+        supported_bucket_intervals:
+          type: array
+          items:
+            type: string
+        supports_raw_window:
+          type: boolean
+        supports_cross_measure_filter:
+          type: boolean
+        has_pre_aggregated_storage:
+          type: boolean
+          description: >-
+            Whether the store holds rollups of the caller's tenant's readings; any tenant's for a
+            caller without a tenant. All stores' lookups share one 2 s wait from the start of the
+            description, alongside the retention reads; a lookup that fails or has not answered by
+            then reports false.
+        supports_fleet_queries:
+          type: boolean
+        supports_snapshot:
+          type: boolean
+        supports_snapshot_aggregation:
+          type: boolean
+        supports_all_of_type_selector:
+          type: boolean
+        supports_raw:
+          type: boolean
+        supports_rolling_window:
+          type: boolean
+        supports_metrics:
+          type: boolean
+          description: Serves the device metric families (message, device, rule_match, ... from __metrics).
+        supports_cache_metrics:
+          type: boolean
+          description: Serves the OCB REST cache family (cache, from __cache_metrics). A tier can hold one family without the other.
+        supports_events:
+          type: boolean
+          description: Serves the events surface (event records in its store, per tsflux's events consumer and the tenant's storage profile).
+        supports_geo_current:
+          type: boolean
+        supports_geo_history:
+          type: boolean
+        supports_geo_path:
+          type: boolean
+        coverage_interval:
+          type: string
+          nullable: true
+          description: Maximum lookback as a Go duration string (e.g. 2160h0m0s for 90 days). Null = unbounded.
+        data_from:
+          type: string
+          format: date-time
+          nullable: true
+          description: Oldest time the source holds readings for, any tenant, as it last reported; null when it cannot tell or holds none. Routing uses each tenant's own bound, preferring a source that holds the window's start for that tenant.
+        data_from_probed_at:
+          type: string
+          format: date-time
+          description: When the probe behind `data_from` last answered (every 5 minutes); absent when the source was never probed.
+        tenant_data_from:
+          type: string
+          format: date-time
+          description: |-
+            `data_from` for the caller's tenant, from the same probe the router reads. Absent when
+            the tenant has no readings there or the source was not probed; `tenant_data_from_known`
+            tells the two apart.
+        tenant_data_from_known:
+          type: boolean
+          description: The source was probed, so an absent `tenant_data_from` means the tenant has no readings there. Absent (false) otherwise.
+        tenant_retention:
+          type: string
+          description: |-
+            How long the store behind the source keeps the caller's tenant's readings (tsflux's
+            storage profile), as a Go duration string; `0s` is forever. Absent when unknown.
+        tenant_coverage_interval:
+          type: string
+          description: |-
+            The window the router uses for the caller's tenant: `coverage_interval`, shortened to
+            `tenant_retention` when that is shorter and to the time since `tenant_active_since`, as
+            a Go duration string. Absent when the tenant's retention is not known yet, or when the
+            window is unbounded.
+        retention_bounds_coverage:
+          type: boolean
+          description: The tenant's retention is shorter than `coverage_interval`, so routing uses the retention. Absent (false) otherwise.
+        tenant_inactive:
+          type: boolean
+          description: The caller's tenant switched the store behind the source off, or its switches are not known yet (`tenant_switch_unknown`), so the router reads none of its data there. Absent (false) otherwise.
+        tenant_switch_unknown:
+          type: boolean
+          description: The caller's tenant's store switches are not known yet (tsflux's storage profile could not be read), so the router refuses the source with `switch_unknown` (503, code 12, `Retry-After`). Absent (false) otherwise.
+        tenant_active_since:
+          type: string
+          format: date-time
+          description: When the router starts reading the caller's tenant's data there again (the switch back on, plus the time tsflux takes to apply it); it reads the tenant's data there only from then. Absent when it was never switched off.
+        tenant_usage:
+          $ref: '#/components/schemas/TenantUsage'
+    TenantUsage:
+      type: object
+      description: |-
+        What the caller's tenant stores in the source, as its usage probe last measured it (every
+        15 minutes, catalog statistics only). Absent when the source measures no usage (Arc, the
+        in-memory and snapshot stores) or was not measured yet; a tenant the source holds nothing
+        for reads as zero.
+      required: [measured_at, row_unit, raw]
+      properties:
+        measured_at:
+          type: string
+          format: date-time
+        row_unit:
+          type: string
+          enum: [value, reading]
+          description: What a raw row counts. `value` is one measure of one message (TimescaleDB), `reading` one message with all its measures (the lake).
+        raw:
+          $ref: '#/components/schemas/StoredSize'
+        geo:
+          $ref: '#/components/schemas/StoredSize'
+          description: The positions where the store keeps them in tables of their own (TimescaleDB). Absent where they are columns of the readings, and so part of `raw`.
+        rollups:
+          type: array
+          description: Each rollup width, shortest first.
+          items:
+            allOf:
+              - $ref: '#/components/schemas/StoredSize'
+              - type: object
+                required: [bucket]
+                properties:
+                  bucket:
+                    type: string
+                    description: The width as a Go duration string, e.g. `15m0s`.
+    StoredSize:
+      type: object
+      required: [bytes, rows]
+      properties:
+        bytes:
+          type: integer
+          format: int64
+          description: Bytes on disk, compressed where the store compresses.
+        rows:
+          type: integer
+          format: int64
+          description: Rows as the lake's manifests count them, or TimescaleDB's planner estimate.
+    LastValueCacheStatus:
+      type: object
+      required: [tenant, state, things, gap_repairs]
+      properties:
+        tenant:
+          type: string
+        state:
+          type: string
+          enum: [empty, loading, reseeding, ready, degraded]
+          description: |
+            empty: not held. loading: subscribing and reading the KV (also while a failed
+            load waits to retry; see last_error). reseeding: the KV had no seeded marker and
+            is being refilled from storage, by this or another nbq instance (reseed_holder).
+            ready: loaded and live. degraded: live messages may have been lost and the KV is
+            being read again; still answered.
+        since:
+          type: string
+          format: date-time
+          description: When the tenant entered `state`.
+        things:
+          type: integer
+        loaded_at:
+          type: string
+          format: date-time
+          description: End of the last complete read of the KV.
+        last_live_at:
+          type: string
+          format: date-time
+          description: When the last live message for the tenant was applied.
+        gap_repairs:
+          type: integer
+          description: KV rescans started because live messages may have been lost.
+        seeded_at:
+          type: string
+          format: date-time
+        seeded_by:
+          type: string
+          description: The nbq instance that last reseeded the tenant's KV from storage.
+        seed_skipped:
+          type: array
+          items:
+            type: string
+          description: Measures ("thing_type/measure") the last reseed could not store because no snapshot holds their value column type; absent when none.
+        seed_keeps_all:
+          type: boolean
+          description: The reseed ran while nothing in the KV expired, so the cache holds every thing's last values and answers "every thing of a type" queries.
+        reseed_holder:
+          type: string
+          description: The nbq instance reseeding the tenant, while `state` is reseeding.
+        last_error:
+          type: string
+    DataSourceInfo:
+      type: object
+      properties:
+        id:
+          type: string
         type:
           type: string
-        updatesOnly:
-          type: boolean
-        version:
+        priority:
+          type: integer
+          description: 0 = highest; router picks lowest-priority first
+        tsflux_sink:
           type: string
-  securitySchemes:
-    bearerAuth: # arbitrary name for the security scheme
-      type: http
-      scheme: bearer
-      bearerFormat: JWT 
-x-original-swagger-version: "2.0"
+          description: The tsflux writer sink feeding the source (its `tsflux_sink`); absent when the config does not name it.
+        capabilities:
+          $ref: '#/components/schemas/CapabilitiesInfo'
+    AnalyticResultSet:
+      type: object
+      properties:
+        analytic_id:
+          type: string
+        rows:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+          description: Transformed result rows (schema varies per analytic)
+        stats:
+          $ref: '#/components/schemas/ExecutionStats'
+    ParamDef:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - ''
+          - string
+          - int
+          - float
+          - bool
+          - duration
+          description: Parameter type. Empty string means no constraint (pass-through). string -- any string. int -- integer
+            (JSON number coerced to int64). float -- floating-point. bool -- boolean. duration -- Go duration string, e.g.
+            1h, 30m
+        required:
+          type: boolean
+        default:
+          description: Injected when the param is absent and Required is false
+        enum:
+          type: array
+          items: {}
+          description: Allowed values (checked after type coercion)
+        max_len:
+          type: integer
+          description: Maximum string length (string type only)
+        pattern:
+          type: string
+          description: Regex pattern the string value must match (string type only)
+    TransformStep:
+      type: object
+      required:
+      - step
+      properties:
+        step:
+          type: string
+          enum:
+          - join
+          - map
+          - filter
+          - rolling
+          - sort
+          - limit
+          - rename
+          - drop
+          description: Transform operation to apply
+        'on':
+          type: array
+          items:
+            type: string
+          description: Join keys (step=join)
+        sources:
+          type: array
+          items:
+            type: string
+          description: Source result set names (step=join)
+        expr:
+          type: string
+          description: Expression for map or filter steps. Uses expr-lang syntax. Map must return a map; filter must return
+            a boolean.
+        window:
+          type: integer
+          description: Window size in rows (step=rolling)
+        agg:
+          type: string
+          enum:
+          - avg
+          - sum
+          - min
+          - max
+          description: Aggregation for rolling window. Defaults to avg.
+        field:
+          type: string
+          description: Column to roll over (step=rolling)
+        by:
+          type: string
+          description: Sort column (step=sort)
+        dir:
+          type: string
+          enum:
+          - asc
+          - desc
+          description: Sort direction (step=sort)
+        n:
+          type: integer
+          description: Row limit (step=limit)
+        from:
+          type: string
+          description: Old column name (step=rename)
+        to:
+          type: string
+          description: New column name (step=rename)
+        fields:
+          type: array
+          items:
+            type: string
+          description: Columns to remove (step=drop)
+    AnalyticColumnDef:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        nullable:
+          type: boolean
+    AnalyticDefinition:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the analytic
+        description:
+          type: string
+        param_schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParamDef'
+        queries:
+          type: array
+          items: {}
+          description: JSON query templates with ${key} or {{.key}} parameter placeholders. After substitution, each item
+            becomes a valid query request (BatchQuery, FleetQuery, etc.).
+        transform:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransformStep'
+        output_schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnalyticColumnDef'
+        sample_output:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        last_validated:
+          type: string
+          format: date-time
+          nullable: true
+        validation_err:
+          type: string
+          description: Non-empty when the last validation failed
+        tenant_id:
+          type: string
+          description: Empty = global definition visible to all tenants
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+  responses:
+    BadRequest:
+      description: Invalid request body or parameters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Missing or invalid Bearer token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Authenticated but lacks the required permission
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unservable:
+      description: >-
+        No configured data source can serve the query. code 5: none declares the surface or
+        covers the window; code 6: a source lacks the aggregation or capability. data carries
+        the routed surface and each source's reason (capability, coverage, declined,
+        not_requested).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+paths:
+  /metrics:
+    get:
+      operationId: prometheusMetrics
+      summary: Prometheus metrics scrape endpoint
+      description: Standard Prometheus text exposition format. No authentication required.
+      security: []
+      tags:
+      - Observability
+      responses:
+        '200':
+          description: Prometheus metrics in text exposition format
+          content:
+            text/plain:
+              schema:
+                type: string
+  /health-check/liveness:
+    get:
+      operationId: healthLiveness
+      summary: Liveness probe
+      security: []
+      tags:
+      - Health
+      responses:
+        '200':
+          description: Service is alive
+  /health-check/readiness:
+    get:
+      operationId: healthReadiness
+      summary: Readiness probe
+      description: Returns 200 when the database (and NATS, if configured) are reachable. Returns 503 otherwise. Used by Kubernetes
+        readiness probes.
+      security: []
+      tags:
+      - health
+      responses:
+        '200':
+          description: Service is ready
+        '503':
+          description: Service not ready — database or NATS unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/timeseries/query:
+    post:
+      operationId: timeseriesBatch
+      summary: Batch timeseries query
+      description: |
+        Execute up to 100 timeseries queries in one request. Each query specifies one or more
+        `things`, the `measures` to aggregate, and a `time_window`. Results are returned in the
+        same order as the input queries.
+
+        **Column key format:** `<measure>__<aggregation>` (e.g. `temperature__avg`).
+      tags:
+      - Timeseries
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchQuery'
+            examples:
+              hourly_sensor:
+                summary: Hourly temperature stats for one sensor
+                value:
+                  queries:
+                  - things:
+                    - thing_type: sensor
+                      thing_id: sensor_0
+                    measures:
+                    - name: temperature
+                      aggregations:
+                      - avg
+                      - min
+                      - max
+                    time_window:
+                      start: '2026-05-07T00:00:00Z'
+                      end: '2026-05-14T00:00:00Z'
+                      bucket:
+                        interval: 1h
+                        gap_fill: none
+              multi_thing:
+                summary: Daily humidity for multiple sensors
+                value:
+                  queries:
+                  - things:
+                    - thing_type: sensor
+                      thing_id: sensor_0
+                    - thing_type: sensor
+                      thing_id: sensor_1
+                    measures:
+                    - name: humidity
+                      aggregations:
+                      - avg
+                    time_window:
+                      start: '2026-05-13T00:00:00Z'
+                      end: '2026-05-14T00:00:00Z'
+                      bucket:
+                        interval: 1d
+                        gap_fill: zero
+                    group_by:
+                    - thing
+                    - bucket
+              rolling_window:
+                summary: 7-day / 1-day buckets / 3-period moving average
+                value:
+                  queries:
+                  - things:
+                    - thing_type: vehicle
+                      thing_id: vehicle_0
+                    measures:
+                    - name: speed
+                      aggregations:
+                      - avg
+                    time_window:
+                      start: '2026-05-08T10:00:00Z'
+                      end: '2026-05-15T10:00:00Z'
+                      bucket:
+                        interval: 1d
+                        gap_fill: none
+                        rolling_window:
+                          size: 3
+                          func: avg
+      responses:
+        '200':
+          description: Query results — one ResultSet per input query
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResultSet'
+              example:
+              - request_id: ''
+                group_cols:
+                - thing
+                - bucket
+                columns:
+                - measure: temperature
+                  aggregation: avg
+                  key: temperature__avg
+                - measure: temperature
+                  aggregation: min
+                  key: temperature__min
+                - measure: temperature
+                  aggregation: max
+                  key: temperature__max
+                rows:
+                - thing_id: sensor_0
+                  bucket: 1778630400000
+                  values:
+                  - 21.4
+                  - 18.2
+                  - 24.7
+                - thing_id: sensor_0
+                  bucket: 1778634000000
+                  values:
+                  - 21.8
+                  - 19.1
+                  - 25.0
+                stats:
+                  rows_scanned: 12
+                  duration_ms: 3
+                  backend_id: inmemory_main
+                  plan_coalesced: false
+                  plan_split: false
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/timeseries/fleet/query:
+    post:
+      operationId: timeseriesFleet
+      summary: Fleet timeseries query
+      description: |
+        Query timeseries measures across a whole fleet of things of the same type.
+        Unlike the batch endpoint, you do not need to enumerate every `thing_id` — the backend
+        resolves all things of the given type automatically unless a `things` filter is provided.
+
+        Set `collapse: true` to aggregate all fleet members into a single result row.
+      tags:
+      - timeseries
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FleetQuery'
+            examples:
+              all_sensors:
+                summary: Latest hour averages for all sensors
+                value:
+                  thing_type: sensor
+                  measures:
+                  - name: temperature
+                    aggregations:
+                    - avg
+                  - name: humidity
+                    aggregations:
+                    - avg
+                  window:
+                    start: '2026-05-13T23:00:00Z'
+                    end: '2026-05-14T00:00:00Z'
+              filtered_vehicles:
+                summary: Speed + fuel for specific vehicles, collapsed to fleet mean
+                value:
+                  thing_type: vehicle
+                  things:
+                  - vehicle_0
+                  - vehicle_1
+                  measures:
+                  - name: speed
+                    aggregations:
+                    - avg
+                    - max
+                  - name: fuel
+                    aggregations:
+                    - avg
+                  window:
+                    start: '2026-05-13T00:00:00Z'
+                    end: '2026-05-14T00:00:00Z'
+                  collapse: true
+      responses:
+        '200':
+          description: Fleet query results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultSet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/snapshot/query:
+    post:
+      operationId: snapshotQuery
+      summary: Snapshot query
+      description: |
+        Return the latest known measure values for a set of things — essentially the "current
+        reading" for each thing/measure pair. Useful for dashboard overview widgets.
+
+        The `selector` field controls which things to include: enumerate them explicitly via
+        `things`, or use `all_of_type` with an optional `tag_filter` to select dynamically.
+
+        Use `staleness` to exclude things that haven't reported recently.
+      tags:
+      - Snapshot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SnapshotQuery'
+            examples:
+              explicit_things:
+                summary: Latest temperature and humidity for two sensors
+                value:
+                  thing_type: sensor
+                  selector:
+                    things:
+                    - thing_type: sensor
+                      thing_id: sensor_0
+                    - thing_type: sensor
+                      thing_id: sensor_1
+                  measures:
+                  - temperature
+                  - humidity
+              all_of_type_with_staleness:
+                summary: All trackers online in the last 24 h
+                value:
+                  thing_type: tracker
+                  selector:
+                    all_of_type: {}
+                  measures:
+                  - battery
+                  - rssi
+                  staleness:
+                    max_age: 24h
+      responses:
+        '200':
+          description: Snapshot results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultSet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/geo/current:
+    post:
+      operationId: geoCurrent
+      summary: Current geo positions
+      description: |
+        Return the latest known location for each requested thing.
+        Set `reverse: true` to add a human-readable address — **requires exactly one `thing_id`**.
+
+        Omit `thing_ids` to get all things of the given type.
+        Use `online: true` to filter to things that are currently online.
+      tags:
+      - Geo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GeoCurrentQuery'
+            examples:
+              all_vehicles:
+                summary: Current position of all vehicles
+                value:
+                  thing_type: vehicle
+              single_with_address:
+                summary: Current position with reverse-geocoded address
+                value:
+                  thing_type: vehicle
+                  thing_ids:
+                  - vehicle_0
+                  reverse: true
+                  lang: en
+              online_trackers:
+                summary: All online trackers
+                value:
+                  thing_type: tracker
+                  online: true
+              clustered:
+                summary: Clustered map overview
+                value:
+                  thing_type: vehicle
+                  cluster:
+                    precision: 0.01
+      responses:
+        '200':
+          description: Current positions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeoResultSet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unservable'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/geo/history:
+    post:
+      operationId: geoHistory
+      summary: Geo history
+      description: |
+        Return all recorded location rows within a time window.
+        Optionally restrict to a geographic bounding box with `bbox`.
+        Multiple things can be queried simultaneously; results are interleaved and sorted by time.
+      tags:
+      - geo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GeoHistoryQuery'
+            examples:
+              tracker_history:
+                summary: Location history for one tracker over last 24 h
+                value:
+                  thing_type: tracker
+                  thing_ids:
+                  - tracker_0
+                  time_window:
+                    start: '2026-05-13T00:00:00Z'
+                    end: '2026-05-14T00:00:00Z'
+              bbox_filtered:
+                summary: All vehicles in Munich area over 4 hours
+                value:
+                  thing_type: vehicle
+                  time_window:
+                    start: '2026-05-13T08:00:00Z'
+                    end: '2026-05-13T12:00:00Z'
+                  bbox:
+                    min_lng: 11.3
+                    min_lat: 47.9
+                    max_lng: 11.8
+                    max_lat: 48.3
+      responses:
+        '200':
+          description: History rows
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeoResultSet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unservable'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/geo/path:
+    post:
+      operationId: geoPath
+      summary: Movement path
+      description: |
+        Return the ordered movement path for a **single thing** within a time window.
+        Points are returned in chronological order.
+
+        Use `min_distance` (metres) to downsample dense GPS tracks — greedily, from the first
+        point: a point is included iff its distance to the last INCLUDED point is at least
+        `min_distance` metres; the last point in the window is always included, so the route
+        still ends at the thing's latest position. Use `max_points` to additionally cap the
+        response to at most that many points per thing (time-bucketed, applied after
+        `min_distance`) — useful for a long window from a dense reporter, where `min_distance`
+        alone doesn't bound the response size.
+      tags:
+      - geo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GeoPathQuery'
+            examples:
+              vehicle_path:
+                summary: Full movement path for vehicle_0 today
+                value:
+                  thing_type: vehicle
+                  thing_id: vehicle_0
+                  time_window:
+                    start: '2026-05-13T00:00:00Z'
+                    end: '2026-05-14T00:00:00Z'
+              downsampled_path:
+                summary: Downsampled path (every 100 m)
+                value:
+                  thing_type: vehicle
+                  thing_id: vehicle_0
+                  time_window:
+                    start: '2026-05-13T00:00:00Z'
+                    end: '2026-05-14T00:00:00Z'
+                  min_distance: 100
+              bucketed_path:
+                summary: At most 500 points for the whole day
+                value:
+                  thing_type: vehicle
+                  thing_id: vehicle_0
+                  time_window:
+                    start: '2026-05-13T00:00:00Z'
+                    end: '2026-05-14T00:00:00Z'
+                  min_distance: 25
+                  max_points: 500
+      responses:
+        '200':
+          description: Path points
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeoPathResultSet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unservable'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/geo/paths:
+    post:
+      operationId: geoPaths
+      summary: Movement paths for several things
+      description: |
+        Return the ordered movement path for 1-50 things within a time window, in one flat
+        table ordered by (thing_id, time). Each thing is fetched independently (its own
+        tiering/decimation, same as POST /geo/path for one thing) and concatenated.
+
+        Use `min_distance` (metres) to downsample dense GPS tracks per thing, same greedy
+        semantics as POST /geo/path (first point kept, greedy from there, last point always
+        kept). Use `max_points` to additionally cap the response to at most that many
+        points per thing, applied after `min_distance` -- same semantics as POST /geo/path. Set
+        `stops` to also compute stationary periods -- or use POST /geo/stops for a stops-only
+        response.
+
+        Partial answers: a requested thing that fails on its own -- not visible to the caller
+        (ownership), no data source or capability for it, a provider error -- does not fail the
+        request. The response is 200 with rows for the things that succeeded, and each failed
+        thing is listed in `stats.datasource.thing_errors` (see ThingError). A partial answer is
+        never served from or stored in the result cache. Request-level problems still fail the
+        whole request: an invalid body (400), an unknown thing type (404), a missing permission (403
+        code 8). When every requested thing fails, the request fails with the first failure's
+        error, as for a single thing (e.g. 403 code 7 when it is not visible, 422 code 5/6, 500
+        code 3).
+      tags:
+      - geo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GeoPathsQuery'
+            examples:
+              fleet_paths:
+                summary: Paths for three vehicles today
+                value:
+                  thing_type: vehicle
+                  thing_ids:
+                  - vehicle_0
+                  - vehicle_1
+                  - vehicle_2
+                  time_window:
+                    start: '2026-05-13T00:00:00Z'
+                    end: '2026-05-14T00:00:00Z'
+              multi_type_paths:
+                summary: Paths across two thing types
+                value:
+                  thing_types:
+                  - vehicle
+                  - tracker
+                  thing_ids:
+                  - vehicle_0
+                  - tracker_0
+                  time_window:
+                    start: '2026-05-13T00:00:00Z'
+                    end: '2026-05-14T00:00:00Z'
+      responses:
+        '200':
+          description: Path points for every requested thing that succeeded, ordered by (thing_id, time); failed things in stats.datasource.thing_errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeoPathsResultSet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/Unservable'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/geo/stops:
+    post:
+      operationId: geoStops
+      summary: Detected stops for several things
+      description: |
+        Same request as POST /geo/paths, but `stops` is required and the response is
+        detected stationary periods instead of path points, ordered by (thing_id, start).
+
+        Stops are computed over the undecimated path -- `min_distance`, if set, is ignored.
+
+        Partial answers work as for POST /geo/paths: stops for the things that succeeded, and
+        each failed thing in `stats.datasource.thing_errors`; the request fails only when every
+        requested thing fails (with the first failure's error) or on a request-level problem.
+      tags:
+      - geo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GeoPathsQuery'
+            examples:
+              fleet_stops:
+                summary: Stops of at least 10 minutes within a 50 m radius
+                value:
+                  thing_type: vehicle
+                  thing_ids:
+                  - vehicle_0
+                  - vehicle_1
+                  time_window:
+                    start: '2026-05-13T00:00:00Z'
+                    end: '2026-05-14T00:00:00Z'
+                  stops:
+                    radius_m: 50
+                    min_dwell: 10m
+      responses:
+        '200':
+          description: Detected stops for every requested thing that succeeded, ordered by (thing_id, start); failed things in stats.datasource.thing_errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeoStopsResultSet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/Unservable'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/analytics/{id}:
+    post:
+      operationId: analyticsExecute
+      summary: Execute a saved analytic
+      description: |
+        Run a pre-defined analytic by its registry ID.
+        The body may supply runtime `params` that override analytic defaults.
+      tags:
+      - Analytics
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Analytic registry identifier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyticQuery'
+      responses:
+        '200':
+          description: Analytic result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticResultSet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Analytic not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/ws:
+    get:
+      operationId: websocketConnect
+      summary: WebSocket live data stream
+      description: |
+        Upgrade to WebSocket for real-time device data.
+        Negotiate encoding via `Sec-WebSocket-Protocol`:
+        - `nbq.msgpack` — binary msgpack (preferred for high-throughput)
+        - `nbq.arrow` — binary Arrow IPC result chunks
+        - `nbq.json` — JSON text frames
+
+        After upgrade, send `{"type":"subscribe","sub_id":"s1","body":{...}}` or
+        `{"type":"query","sub_id":"q1","body":{...}}` frames. Nine finite query
+        handlers are registered: `batch`, `fleet`, `snapshot`, `geo_current`, `geo_history`,
+        `geo_path`, `raw`, `metrics`, and `analytic`. Live subscriptions are `snapshot` and
+        `geo_current`. The generated message contract is in `docs/asyncapi.yaml`.
+
+        The upgrade needs `Thing:r`. Each query and subscription type also needs the permission
+        its HTTP route needs: `raw` needs `Thing:u` (as `/timeseries/raw/query`), every other type
+        `Thing:r`, and the `cache` metric family `Tenant:u` as well. A refused query ends with a
+        `result_end` error, a refused subscription with an `error`, both starting
+        `insufficient permission`.
+
+        Requires NATS to be configured; returns 501 if NATS is not available.
+      tags:
+      - WebSocket
+      parameters:
+      - name: Sec-WebSocket-Protocol
+        in: header
+        schema:
+          type: string
+          example: nbq.msgpack, nbq.json
+      responses:
+        '101':
+          description: WebSocket upgrade successful
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '501':
+          description: WebSocket not available (NATS not configured)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/datasources:
+    get:
+      operationId: listDataSources
+      summary: List configured data sources and their capabilities
+      description: |
+        Returns the datasources the engine is currently routing against,
+        each with its declared capabilities (supported aggregations,
+        gap-fills, surface flags, coverage window). Used by the frontend
+        to drive UI feature flags + by ops to verify wiring.
+      tags:
+      - DataSources
+      responses:
+        '200':
+          description: Datasource descriptors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DataSourceInfo'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/last-value-cache/status:
+    get:
+      operationId: lastValueCacheStatus
+      summary: The caller's tenant in the last-value cache
+      description: |
+        Reports where the caller's own tenant stands in the last-value cache
+        (the in-memory copy of every thing's latest values and position,
+        loaded from tsflux's current-state KV and kept fresh by the live NATS
+        subjects). Only `ready` and `degraded` are answered from the cache;
+        `empty` means the tenant is not held yet, and the call does not start
+        loading it. Requires Tenant:u: the answer names nbq instances and carries
+        raw error text. Registered only when `last_value_cache.enabled` is set.
+      tags:
+      - DataSources
+      responses:
+        '200':
+          description: Cache state of the caller's tenant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LastValueCacheStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/v1/timeseries/raw/query:
+    post:
+      operationId: rawQuery
+      summary: Un-aggregated point retrieval
+      description: |
+        Returns every data point in the requested window — no bucketing,
+        no aggregation. `time_window.bucket` MUST be nil. The handler
+        enforces a server-side row cap; oversize results return
+        `truncated: true` and the first N matching rows.
+
+        Requires Thing:u: raw rows span the whole tenant without per-thing scoping.
+      tags:
+      - timeseries
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RawQuery'
+            examples:
+              raw_json:
+                summary: Raw JSON points for one vehicle
+                value:
+                  things:
+                  - thing_type: vehicle
+                    thing_id: vehicle_0
+                  measures:
+                  - speed
+                  time_window:
+                    start: '2026-05-15T09:00:00Z'
+                    end: '2026-05-15T10:00:00Z'
+              raw_csv:
+                summary: Raw CSV export (set Accept text/csv)
+                value:
+                  things:
+                  - thing_type: vehicle
+                    thing_id: vehicle_0
+                  measures:
+                  - speed
+                  time_window:
+                    start: '2026-05-15T09:00:00Z'
+                    end: '2026-05-15T10:00:00Z'
+      responses:
+        '200':
+          description: Raw points
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RawResultSet'
+            text/csv:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/Unservable'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/tags/query:
+    post:
+      operationId: tagsQuery
+      summary: Tag keys and values devices have sent
+      description: |
+        Lists the tenant's tag keys (or one thing type's), or one key's values, from what the stores
+        already hold, never scanning readings: the lake's table schemas (keys), TimescaleDB's tag
+        sets (keys and values, tenant-wide) and the tag counters tsflux flushes with the device
+        metrics to TimescaleDB, the lake and Arc (keys, values, approx_messages, first/last seen).
+        Each item says where it was found.
+
+        The datasources asked follow routing: those routed readings or platform metrics
+        (supports_raw / supports_metrics), skipping one whose probe lacks the tenant while another's
+        holds it. Lake only, TimescaleDB only, both and Arc only all work; with none the answer is an
+        empty page with stats.indexed=false. Pages from several datasources are merged by name:
+        sources united, approx_messages the largest (every sink gets the same counters), the widest
+        span. A datasource that fails leaves the page to the others (stats.failed). Answers are
+        cached per tenant for 30 s and dropped when a thing or thing type of the tenant is deleted.
+
+        Requires Thing:u, like raw queries: the summary spans the whole tenant without per-thing scoping.
+      tags:
+      - Tags
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagsQuery'
+            examples:
+              keys:
+                summary: The tenant's tag keys
+                value: {}
+              simulated:
+                summary: Values of source starting with the simulator's prefix
+                value:
+                  key: source
+                  value_prefix: _nimbit_platform_
+      responses:
+        '200':
+          description: One page
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '502':
+          description: >-
+            No datasource answered. data.failed names the datasources asked; their errors are
+            logged, not returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/metrics/query:
+    post:
+      operationId: engineMetricsQuery
+      summary: Engine-internal observability metrics query
+      description: |
+        Queries engine-side observability metrics (per-tenant query counts,
+        latency histograms, etc.). Distinct from `/metrics` (Prometheus
+        scrape). Tenant-wide, thing-type-wide, and explicit thing scopes are
+        constrained by ACL policy.
+      tags:
+      - observability
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetricsQuery'
+            example:
+              window:
+                start: '2026-05-13T00:00:00Z'
+                end: '2026-05-14T00:00:00Z'
+                bucket:
+                  interval: 1h
+                  gap_fill: none
+              metrics:
+              - name: message
+                field: size
+                agg: avg
+              - name: message
+                agg: count
+              group_by: thing_type
+              thing_types:
+              - vehicle
+      responses:
+        '200':
+          description: Metrics result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsResultSet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/events/query:
+    post:
+      operationId: eventsQuery
+      summary: List events by keyset cursor
+      description: |
+        Events (rule, geofence, connectivity and manual events) in a window, newest first by
+        default, routed across the stores that hold them. Pages are keyset: pass
+        `stats.next_cursor` as `cursor`; there is no offset. A window the storage tiers do not wholly
+        cover is answered with what they hold and `stats.coverage` `{from, to, partial: true}`.
+        A filter by `ids` reads only the time span the (v7) ids carry. Requires Event:r. Thing events are
+        limited to the things the caller may see and every event to the event types the
+        caller may see.
+      tags:
+      - Events
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventsQuery'
+            example:
+              time_window: {start: '2026-10-01T00:00:00Z', end: '2026-10-31T00:00:00Z'}
+              filter: {severities: [ERROR, CRITICAL], phase: {open_only: true}}
+              limit: 50
+      responses:
+        '200':
+          description: One page of events
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventsResultSet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          description: No source serves the window (code 5 or 6), or an open_only window closed more than 10000 episodes in its newer storage tiers (code 4); use a shorter window.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/events/count:
+    post:
+      operationId: eventsCount
+      summary: Count events, in total or per group
+      description: Requires Event:r. Counts per key are ordered by count descending; buckets ascending.
+      tags:
+      - Events
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventsCountQuery'
+            example:
+              time_window: {start: '2026-10-01T00:00:00Z', end: '2026-10-31T00:00:00Z'}
+              group_by: bucket
+              bucket: {interval: 1d, timezone: Europe/Berlin}
+      responses:
+        '200':
+          description: Counts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventsResultSet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/Unservable'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/events/correlation/{correlation_id}:
+    get:
+      operationId: eventsCorrelation
+      summary: The events of one episode
+      description: Newest first unless `order=asc`. Without `t_from` the window is the last 90 days (query_engine.events.correlation_default_window) ending at `t_to` or now. Requires Event:r.
+      tags:
+      - Events
+      parameters:
+      - {name: correlation_id, in: path, required: true, schema: {type: string}}
+      - {name: limit, in: query, schema: {type: integer, minimum: 1, maximum: 1000}}
+      - {name: order, in: query, schema: {type: string, enum: [desc, asc]}}
+      - {name: t_from, in: query, schema: {type: string}, description: 'Epoch ms or RFC 3339 with offset'}
+      - {name: t_to, in: query, schema: {type: string}, description: 'Epoch ms or RFC 3339 with offset'}
+      responses:
+        '200':
+          description: Events of the episode, with payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventsResultSet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/Unservable'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/events/{id}:
+    get:
+      operationId: eventsGet
+      summary: One event by id
+      description: The time comes from the v7 id, so one chunk is read; `t` overrides it. An event the caller may not see is 404. Requires Event:r.
+      tags:
+      - Events
+      parameters:
+      - {name: id, in: path, required: true, schema: {type: string}}
+      - {name: t, in: query, schema: {type: string}, description: 'Event time hint: epoch ms or RFC 3339 with offset'}
+      responses:
+        '200':
+          description: The event, with payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventsResultSet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/Unservable'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/events/{id}/related:
+    get:
+      operationId: eventsRelated
+      summary: The events related to one event, each with the reason
+      description: |
+        The event is loaded as `GET /events/{id}` does, with the same access, then four bounded lookups run (at most 50 rows each) and are merged: `same_thing` (same `reference_id` within `window` either side of the event), `same_thread` (same `series_key` within 7 days either side), `same_episode` (same `correlation_id` within `query_engine.events.correlation_default_window` either side), `same_type` (same `event_type_id` on other things of the same `thing_type` within `window`). A lookup whose key the event does not carry is not run. Rows are de-duplicated by id, tagged with the first reason that found them in that order, the event itself is left out, newest first, at most 200. The columns are those of an events list (without the payload) plus `reason`. Requires Event:r.
+      tags:
+      - Events
+      parameters:
+      - {name: id, in: path, required: true, schema: {type: string}}
+      - {name: window, in: query, schema: {type: string, example: 15m}, description: 'Go duration, 1s to 24h; default query_engine.events.related_window (15m)'}
+      - {name: t, in: query, schema: {type: string}, description: 'Event time hint: epoch ms or RFC 3339 with offset'}
+      responses:
+        '200':
+          description: The related events; the last column is `reason`
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventsResultSet'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/Unservable'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /api/v1/admin/analytics:
+    get:
+      operationId: analyticsList
+      summary: List registered analytic definitions
+      description: Requires QueryConfig:r; the other analytics administration endpoints require QueryConfig:x.
+      tags:
+      - Analytics Admin
+      responses:
+        '200':
+          description: List of analytic definitions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnalyticDefinition'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    post:
+      operationId: analyticsCreate
+      summary: Create an analytic definition
+      description: Authoring requires Modeller or Admin.
+      tags:
+      - analytics-admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyticDefinition'
+      responses:
+        '201':
+          description: Created
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/v1/admin/analytics/{id}:
+    put:
+      operationId: analyticsUpdate
+      summary: Update an analytic definition
+      tags:
+      - analytics-admin
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyticDefinition'
+      responses:
+        '200':
+          description: Updated
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: analyticsDelete
+      summary: Delete an analytic definition
+      tags:
+      - analytics-admin
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/v1/admin/analytics/{id}/validate:
+    post:
+      operationId: analyticsValidate
+      summary: Validate an analytic definition against sample data
+      description: |
+        Runs the analytic against the in-memory seed dataset and returns
+        a schema inference + sample output. Authoring tool path.
+      tags:
+      - analytics-admin
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  output_schema:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AnalyticColumnDef'
+                  sample_output:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: true
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/v1/admin/analytics/reload:
+    post:
+      operationId: analyticsReload
+      summary: Reload analytic definitions from store
+      description: Forces the in-process analytic registry to re-load from SQLite.
+      tags:
+      - analytics-admin
+      responses:
+        '200':
+          description: Reload completed
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
