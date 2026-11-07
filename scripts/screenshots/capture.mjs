@@ -14,6 +14,7 @@
  *   - "steps": per shot key, actions that bring the screen into the described `state`:
  *       { "click": "Button text" } | { "clickSelector": "css" } | { "fill": ["css", "text"] }
  *       | { "press": "Escape" } | { "wait": 500 } | { "waitFor": "text" } | { "hover": "css" }
+ *   - "clips": per shot key, a CSS selector; only that element is captured (widgets).
  *
  * Usage:
  *   IOTBREEZE_URL=https://iotbreeze.example IOTBREEZE_EMAIL=… IOTBREEZE_PASSWORD=… \
@@ -72,6 +73,8 @@ function findShots() {
 const config = fs.existsSync(CONFIG) ? JSON.parse(fs.readFileSync(CONFIG, "utf8")) : {};
 const params = config.params ?? {};
 const steps = config.steps ?? {};
+/** Per shot key, a CSS selector: capture only that element (a widget) instead of the viewport. */
+const clips = config.clips ?? {};
 
 /** Fills :params in a route from the shot's own params, then the global ones. */
 function resolveRoute(shot) {
@@ -135,6 +138,10 @@ for (const theme of /** @type {const} */ (["light", "dark"])) {
   await page.locator("#password").fill(password);
   await page.getByRole("button", { name: "Sign in", exact: true }).click();
   await page.waitForURL((url) => !/\/auth\/(login|code|password)/.test(url.pathname), { timeout: 60_000 });
+  // IoT Breeze keeps the color mode in its settings cookie (t=l|d); a tenant default would
+  // otherwise win over the browser's color scheme. Set it before any page renders.
+  const host = new URL(base).hostname;
+  await context.addCookies([{ name: "userSettings", value: `v=1&t=${theme[0]}`, domain: host, path: "/" }]);
 
   for (const shot of shots) {
     const { route, missing } = resolveRoute(shot);
@@ -145,12 +152,15 @@ for (const theme of /** @type {const} */ (["light", "dark"])) {
     try {
       await page.goto(`${base}/${lang}${route}`, { waitUntil: "networkidle", timeout: 60_000 });
       await page.addStyleTag({ content: HIDE_CSS });
-      await page.evaluate((t) => document.documentElement.classList.toggle("dark", t === "dark"), theme);
+      // Map tiles keep loading after network idle.
+      if (await page.locator(".mapboxgl-canvas").count()) await page.waitForTimeout(2500);
       for (const step of steps[shot.key] ?? []) await runStep(page, step);
       await page.waitForTimeout(600);
       const file = path.join(OUT, shot.page, `${shot.id}.${lang}.${theme}.png`);
       fs.mkdirSync(path.dirname(file), { recursive: true });
-      await page.screenshot({ path: file });
+      const clip = clips[shot.key];
+      if (clip) await page.locator(clip).first().screenshot({ path: file });
+      else await page.screenshot({ path: file });
       if (theme === "dark") available.add(shot.key);
       console.log(`✓ ${shot.key} (${theme})`);
     } catch (error) {
