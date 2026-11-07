@@ -10,14 +10,14 @@ Everything the docs wait on: features that haven't landed, screenshots, files an
 
 ## Screenshots
 
-Captured with `pnpm screenshots` (see `scripts/screenshots/capture.mjs`). Until a shot is captured, the page shows a placeholder naming the route and what the screen must show.
+All 88 are listed by page in [SCREENSHOTS.md](./SCREENSHOTS.md) (`pnpm screenshots:list` regenerates it). None are captured yet: they get a pass of their own against a server where everything has landed.
 
-| Shot | Why it is missing |
-|---|---|
-| `gateways/add-a-gateway/01-onboarding-code` | Needs PR 1623 |
-| `gateways/mqtt-gateway/01-mqtt-credential` | Needs PR 1623 |
-| `gateways/install/01-gateway-online` | Needs PR 1623 |
-| `gateways/fleet-health/01-traffic` | Needs PR 1623 |
+Notes for that pass, from a trial run on a local stack:
+
+- Sign in and open pages through the host that serves `/auth/login` (Traefik), not Breeze's own port.
+- The capture script sets IoT Breeze's color mode cookie (`userSettings`, `t=l|d`) so maps and charts render in the right theme.
+- 69 shots need a record id in `scripts/screenshots/shots.json` (`params`), and most need `steps` to open the dialog or tab their state describes. The widget gallery shots want one demo dashboard holding all 42 widgets, captured with `clips` per widget.
+- Create the records the pages name (quickstart: thing type Room sensor, rule Room too warm, and so on) in a demo tenant before capturing.
 
 ## Downloads
 
