@@ -33,7 +33,7 @@ flowchart LR
 
 The same credential works on both protocols. Over MQTT it is checked once, when the client connects, and the broker then confines the device to its own topics. Over HTTP it is checked on every request.
 
-tsflux then looks up the thing and its thing type. A message is stored when the thing exists, the thing type matches, and at least one value or a location is left after the checks. A measure that is not in the published thing type is dropped, unless the thing type has **Auto Schema Evolution** on. In that case the measure is added to the draft for you to review.
+tsflux then looks up the thing and its thing type. A message is stored when the thing exists, the thing type matches, and at least one value or a location is left after the checks. A measure that is not in the published thing type is dropped, unless the thing type has **Auto Schema Evolution** on. In that case the measure is added to the thing type and a new version is published at once. See [Drafts, publishing and versions](../model/drafts-and-versions.mdx).
 
 ## Choosing between protocols
 
