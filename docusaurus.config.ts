@@ -64,6 +64,7 @@ const config: Config = {
   onBrokenLinks: "throw",
 
   markdown: {
+    mermaid: true,
     hooks: {
       onBrokenMarkdownLinks: "warn",
     },
@@ -85,6 +86,13 @@ const config: Config = {
           sidebarPath: require.resolve("./sidebars.ts"),
           editUrl: "https://cparsinnovationlab.bitbucket.io/nimbit",
           docItemComponent: "@theme/ApiItem",
+          // Section folders have an index.mdx that is the category's own page
+          // (linked from the label); don't list it again as a child item.
+          async sidebarItemsGenerator({ defaultSidebarItemsGenerator, ...args }) {
+            const items = await defaultSidebarItemsGenerator(args);
+            if (args.item.dirName === "get-started" || args.item.dirName === "api") return items;
+            return items.filter((i) => !(i.type === "doc" && /(^|\/)index$/.test(i.id)));
+          },
         },
         blog: {
           showReadingTime: true,
@@ -169,7 +177,7 @@ const config: Config = {
     },
   ],
 
-  themes: ["docusaurus-theme-openapi-docs"],
+  themes: ["docusaurus-theme-openapi-docs", "@docusaurus/theme-mermaid"],
 
   themeConfig: {
     zoom: {
@@ -214,54 +222,15 @@ const config: Config = {
         srcDark: "img/nimbit-dark.svg",
       },
       items: [
-        {
-          label: "Get started",
-          to: "/docs/get-started",
-          position: "left",
-        },
-        {
-          label: "User Manual",
-          to: "/docs/user/overview",
-          position: "left",
-          className: "navbar-item-guides",
-        },
-        {
-          label: "API Docs",
-          type: "dropdown",
-          position: "left",
-          items: [
-            {
-              label: "API Documentation",
-              to: "/docs/developer/intro",
-            },
-            {
-              label: "OCB API Documentation",
-              to: "/docs/developer/api/ocb",
-            },
-            {
-              label: "DIP API Documentation",
-              to: "/docs/developer/api/dip",
-            },
-            {
-              label: "NBQ API Documentation",
-              to: "/docs/developer/api/nbq",
-            },
-          ],
-        },
-        {
-          label: "Changelog",
-          to: "/docs/changelog/index",
-          position: "left",
-        },
-        {
-          label: "Blog",
-          to: "/blog",
-          position: "left",
-        },
+        { label: "Get started", type: "docSidebar", sidebarId: "getStartedSidebar", position: "left" },
+        { label: "Docs", type: "docSidebar", sidebarId: "docsSidebar", position: "left" },
+        { label: "API", type: "docSidebar", sidebarId: "apiSidebar", position: "left" },
+        { label: "Changelog", type: "docSidebar", sidebarId: "changelogSidebar", position: "left" },
+        { label: "Blog", to: "/blog", position: "left" },
         { type: "search", position: "right" },
         {
-          href: "https://outlook.office365.com/book/NimBitGmbHErstgesprchIhreDigitaleTransformation@cpars.de/",
-          label: "Book a Demo",
+          href: "https://id.iotbreeze.de",
+          label: "Open IoT Breeze",
           position: "right",
           className: "navbar-book-demo",
         },
@@ -275,9 +244,9 @@ const config: Config = {
         {
           title: "Documentation",
           items: [
-            { label: "User Manual", to: "/docs/user/overview" },
-            { label: "Developer Docs", to: "/docs/developer/intro" },
-            { label: "API Reference", to: "/docs/developer/api/dip" },
+            { label: "Get started", to: "/docs/get-started" },
+            { label: "Docs", to: "/docs" },
+            { label: "API", to: "/docs/api" },
           ],
         },
         {
