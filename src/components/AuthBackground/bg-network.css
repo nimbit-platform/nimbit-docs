@@ -1,0 +1,553 @@
+/* Copied from apps/identity-directory/assets/css/bg-network.css by scripts/sync-auth-backgrounds.mjs. Don't edit here. */
+/* The network background (background_network.templ): its marks and their motion. Classes are prefixed
+ * .bg-network-; the shared background tokens (--bg-*) and theme colours are in auth.css and app.css.
+ *
+ * Links draw outwards from the card, then things and hubs pop in, each delayed by its distance from
+ * the card (bg-network-d<n>). Pulses run along routes (pathLength 100, a dash moved by its offset);
+ * hub rings swell and fade. With reduced motion every animation is off: the links and marks show at
+ * rest, and the pulses and rings, which are invisible at rest, never show. */
+
+.bg-network-line {
+  fill: none;
+  stroke: var(--bg-line);
+  stroke-width: 1;
+  opacity: 0.4;
+  animation: bg-network-draw 0.9s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(0.15s + var(--bg-network-delay, 0s));
+}
+.auth-bg[data-detail='lively'] .bg-network-line {
+  opacity: 0.55;
+}
+.bg-network-node,
+.bg-network-hub,
+.bg-network-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.bg-network-node {
+  fill: var(--bg-node);
+  animation: bg-network-pop 0.7s linear backwards;
+  animation-delay: calc(0.5s + var(--bg-network-delay, 0s));
+}
+.bg-network-hub {
+  fill: var(--primary);
+  rotate: 45deg;
+  animation: bg-network-pop 0.8s linear backwards;
+  animation-delay: calc(0.8s + var(--bg-network-delay, 0s));
+}
+.bg-network-spark {
+  fill: var(--bg-spark);
+}
+.bg-network-ring {
+  fill: none;
+  stroke-width: 1.5;
+  opacity: 0;
+}
+.bg-network-ring-hub {
+  stroke: var(--primary);
+}
+.bg-network-ring-spark {
+  stroke: var(--bg-spark);
+}
+.bg-network-pulse {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+}
+.bg-network-mote {
+  fill: var(--bg-node);
+  opacity: 0.35;
+}
+
+@keyframes bg-network-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+/* A spring's overshoot and settle (the prototype's stiffness 300–420, damping 14–18). */
+@keyframes bg-network-pop {
+  0% {
+    scale: 0;
+    opacity: 0;
+    animation-timing-function: cubic-bezier(0.3, 0.6, 0.5, 1);
+  }
+  38% {
+    scale: 1.24;
+    opacity: 1;
+    animation-timing-function: ease-in-out;
+  }
+  62% {
+    scale: 0.92;
+    animation-timing-function: ease-in-out;
+  }
+  82% {
+    scale: 1.03;
+    animation-timing-function: ease-in-out;
+  }
+  100% {
+    scale: 1;
+    opacity: 1;
+  }
+}
+
+/* Entrance delays: distance from the card / 1500, in 40ms steps. */
+.bg-network-d0 {
+  --bg-network-delay: 0s;
+}
+.bg-network-d1 {
+  --bg-network-delay: 0.04s;
+}
+.bg-network-d2 {
+  --bg-network-delay: 0.08s;
+}
+.bg-network-d3 {
+  --bg-network-delay: 0.12s;
+}
+.bg-network-d4 {
+  --bg-network-delay: 0.16s;
+}
+.bg-network-d5 {
+  --bg-network-delay: 0.2s;
+}
+.bg-network-d6 {
+  --bg-network-delay: 0.24s;
+}
+.bg-network-d7 {
+  --bg-network-delay: 0.28s;
+}
+.bg-network-d8 {
+  --bg-network-delay: 0.32s;
+}
+.bg-network-d9 {
+  --bg-network-delay: 0.36s;
+}
+.bg-network-d10 {
+  --bg-network-delay: 0.4s;
+}
+.bg-network-d11 {
+  --bg-network-delay: 0.44s;
+}
+.bg-network-d12 {
+  --bg-network-delay: 0.48s;
+}
+.bg-network-d13 {
+  --bg-network-delay: 0.52s;
+}
+.bg-network-d14 {
+  --bg-network-delay: 0.56s;
+}
+
+/* Pulses and rings, generated from the routes' lengths and the hubs' indices (background_network.go):
+ * a pulse runs for its route's length / speed, then rests; a ring swells for 3.2s, then rests. */
+/* Lively: 12 pulses at 170 units/s */
+.auth-bg[data-detail='lively'] .bg-network-pulse-0 {
+  animation: bg-network-pulse-lively-0 5.75s linear 1.6s infinite;
+}
+@keyframes bg-network-pulse-lively-0 {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  6.33%,
+  72.79% {
+    opacity: 1;
+  }
+  79.12%,
+  100% {
+    stroke-dashoffset: -100;
+    opacity: 0;
+  }
+}
+.auth-bg[data-detail='lively'] .bg-network-pulse-1 {
+  animation: bg-network-pulse-lively-1 5.46s linear 2.15s infinite;
+}
+@keyframes bg-network-pulse-lively-1 {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  4.92%,
+  56.6% {
+    opacity: 1;
+  }
+  61.53%,
+  100% {
+    stroke-dashoffset: -100;
+    opacity: 0;
+  }
+}
+.auth-bg[data-detail='lively'] .bg-network-pulse-2 {
+  animation: bg-network-pulse-lively-2 7.62s linear 2.7s infinite;
+}
+@keyframes bg-network-pulse-lively-2 {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  4.85%,
+  55.76% {
+    opacity: 1;
+  }
+  60.61%,
+  100% {
+    stroke-dashoffset: -100;
+    opacity: 0;
+  }
+}
+.auth-bg[data-detail='lively'] .bg-network-pulse-3 {
+  animation: bg-network-pulse-lively-3 7.1s linear 3.25s infinite;
+}
+@keyframes bg-network-pulse-lively-3 {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  3.6%,
+  41.45% {
+    opacity: 1;
+  }
+  45.05%,
+  100% {
+    stroke-dashoffset: -100;
+    opacity: 0;
+  }
+}
+.auth-bg[data-detail='lively'] .bg-network-pulse-4 {
+  animation: bg-network-pulse-lively-4 5.21s linear 3.8s infinite;
+}
+@keyframes bg-network-pulse-lively-4 {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  6.16%,
+  70.81% {
+    opacity: 1;
+  }
+  76.97%,
+  100% {
+    stroke-dashoffset: -100;
+    opacity: 0;
+  }
+}
+.auth-bg[data-detail='lively'] .bg-network-pulse-5 {
+  animation: bg-network-pulse-lively-5 7.66s linear 4.35s infinite;
+}
+@keyframes bg-network-pulse-lively-5 {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  5.81%,
+  66.78% {
+    opacity: 1;
+  }
+  72.59%,
+  100% {
+    stroke-dashoffset: -100;
+    opacity: 0;
+  }
+}
+.auth-bg[data-detail='lively'] .bg-network-pulse-6 {
+  animation: bg-network-pulse-lively-6 7.22s linear 4.9s infinite;
+}
+@keyframes bg-network-pulse-lively-6 {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  4.68%,
+  53.77% {
+    opacity: 1;
+  }
+  58.44%,
+  100% {
+    stroke-dashoffset: -100;
+    opacity: 0;
+  }
+}
+.auth-bg[data-detail='lively'] .bg-network-pulse-7 {
+  animation: bg-network-pulse-lively-7 6.71s linear 5.45s infinite;
+}
+@keyframes bg-network-pulse-lively-7 {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  3.35%,
+  38.49% {
+    opacity: 1;
+  }
+  41.84%,
+  100% {
+    stroke-dashoffset: -100;
+    opacity: 0;
+  }
+}
+.auth-bg[data-detail='lively'] .bg-network-pulse-8 {
+  animation: bg-network-pulse-lively-8 6.21s linear 6s infinite;
+}
+@keyframes bg-network-pulse-lively-8 {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  6.45%,
+  74.23% {
+    opacity: 1;
+  }
+  80.68%,
+  100% {
+    stroke-dashoffset: -100;
+    opacity: 0;
+  }
+}
+.auth-bg[data-detail='lively'] .bg-network-pulse-9 {
+  animation: bg-network-pulse-lively-9 4.74s linear 6.55s infinite;
+}
+@keyframes bg-network-pulse-lively-9 {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  4.46%,
+  51.24% {
+    opacity: 1;
+  }
+  55.7%,
+  100% {
+    stroke-dashoffset: -100;
+    opacity: 0;
+  }
+}
+.auth-bg[data-detail='lively'] .bg-network-pulse-10 {
+  animation: bg-network-pulse-lively-10 6.55s linear 7.1s infinite;
+}
+@keyframes bg-network-pulse-lively-10 {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  4.33%,
+  49.85% {
+    opacity: 1;
+  }
+  54.19%,
+  100% {
+    stroke-dashoffset: -100;
+    opacity: 0;
+  }
+}
+.auth-bg[data-detail='lively'] .bg-network-pulse-11 {
+  animation: bg-network-pulse-lively-11 9.03s linear 7.65s infinite;
+}
+@keyframes bg-network-pulse-lively-11 {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  4.54%,
+  52.27% {
+    opacity: 1;
+  }
+  56.81%,
+  100% {
+    stroke-dashoffset: -100;
+    opacity: 0;
+  }
+}
+/* Calm: 4 pulses at 100 units/s */
+.auth-bg[data-detail='calm'] .bg-network-pulse-0 {
+  animation: bg-network-pulse-calm-0 11.73s linear 1.6s infinite;
+}
+@keyframes bg-network-pulse-calm-0 {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  5.27%,
+  60.62% {
+    opacity: 1;
+  }
+  65.9%,
+  100% {
+    stroke-dashoffset: -100;
+    opacity: 0;
+  }
+}
+.auth-bg[data-detail='calm'] .bg-network-pulse-1 {
+  animation: bg-network-pulse-calm-1 10.61s linear 3s infinite;
+}
+@keyframes bg-network-pulse-calm-1 {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  4.3%,
+  49.51% {
+    opacity: 1;
+  }
+  53.81%,
+  100% {
+    stroke-dashoffset: -100;
+    opacity: 0;
+  }
+}
+.auth-bg[data-detail='calm'] .bg-network-pulse-2 {
+  animation: bg-network-pulse-calm-2 13.65s linear 4.4s infinite;
+}
+@keyframes bg-network-pulse-calm-2 {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  4.6%,
+  52.9% {
+    opacity: 1;
+  }
+  57.5%,
+  100% {
+    stroke-dashoffset: -100;
+    opacity: 0;
+  }
+}
+.auth-bg[data-detail='calm'] .bg-network-pulse-3 {
+  animation: bg-network-pulse-calm-3 12.14s linear 5.8s infinite;
+}
+@keyframes bg-network-pulse-calm-3 {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  3.58%,
+  41.21% {
+    opacity: 1;
+  }
+  44.79%,
+  100% {
+    stroke-dashoffset: -100;
+    opacity: 0;
+  }
+}
+
+.auth-bg[data-detail='lively'] .bg-network-ring-p0 {
+  animation: bg-network-ring-lively-0 4s infinite;
+}
+@keyframes bg-network-ring-lively-0 {
+  0% {
+    scale: 1;
+    opacity: 0.6;
+    animation-timing-function: ease-out;
+  }
+  80%,
+  100% {
+    scale: 2.8;
+    opacity: 0;
+  }
+}
+.auth-bg[data-detail='lively'] .bg-network-ring-p1 {
+  animation: bg-network-ring-lively-1 5s infinite;
+}
+@keyframes bg-network-ring-lively-1 {
+  0% {
+    scale: 1;
+    opacity: 0.6;
+    animation-timing-function: ease-out;
+  }
+  64%,
+  100% {
+    scale: 2.8;
+    opacity: 0;
+  }
+}
+.auth-bg[data-detail='lively'] .bg-network-ring-p2 {
+  animation: bg-network-ring-lively-2 6s infinite;
+}
+@keyframes bg-network-ring-lively-2 {
+  0% {
+    scale: 1;
+    opacity: 0.6;
+    animation-timing-function: ease-out;
+  }
+  53.33%,
+  100% {
+    scale: 2.8;
+    opacity: 0;
+  }
+}
+.auth-bg[data-detail='calm'] .bg-network-ring-p0 {
+  animation: bg-network-ring-calm-0 7.2s infinite;
+}
+@keyframes bg-network-ring-calm-0 {
+  0% {
+    scale: 1;
+    opacity: 0.6;
+    animation-timing-function: ease-out;
+  }
+  44.44%,
+  100% {
+    scale: 2.8;
+    opacity: 0;
+  }
+}
+.auth-bg[data-detail='calm'] .bg-network-ring-p1 {
+  animation: bg-network-ring-calm-1 8.2s infinite;
+}
+@keyframes bg-network-ring-calm-1 {
+  0% {
+    scale: 1;
+    opacity: 0.6;
+    animation-timing-function: ease-out;
+  }
+  39.02%,
+  100% {
+    scale: 2.8;
+    opacity: 0;
+  }
+}
+.auth-bg[data-detail='calm'] .bg-network-ring-p2 {
+  animation: bg-network-ring-calm-2 9.2s infinite;
+}
+@keyframes bg-network-ring-calm-2 {
+  0% {
+    scale: 1;
+    opacity: 0.6;
+    animation-timing-function: ease-out;
+  }
+  34.78%,
+  100% {
+    scale: 2.8;
+    opacity: 0;
+  }
+}
+/* Each hub's ring starts 1.4s + 0.35s x its node index after load. */
+.auth-bg[data-bg='network'] .bg-network-ring-n2 {
+  animation-delay: 2.1s;
+}
+.auth-bg[data-bg='network'] .bg-network-ring-n6 {
+  animation-delay: 3.5s;
+}
+.auth-bg[data-bg='network'] .bg-network-ring-n9 {
+  animation-delay: 4.55s;
+}
+.auth-bg[data-bg='network'] .bg-network-ring-n17 {
+  animation-delay: 7.35s;
+}
+.auth-bg[data-bg='network'] .bg-network-ring-n25 {
+  animation-delay: 10.15s;
+}
+.auth-bg[data-bg='network'] .bg-network-ring-n26 {
+  animation-delay: 10.5s;
+}
+.auth-bg[data-bg='network'] .bg-network-ring-n30 {
+  animation-delay: 11.9s;
+}
+.auth-bg[data-bg='network'] .bg-network-ring-n35 {
+  animation-delay: 13.65s;
+}

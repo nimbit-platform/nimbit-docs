@@ -74,7 +74,7 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(73.518% 0.09972 207.007);
+  --primary: rgb(25 122 135); /* IoT Breeze light primary (apps/identity-directory/assets/css/app.css) */
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -86,7 +86,7 @@
   --destructive-foreground: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.735 0.1 207);
+  --ring: rgb(25 122 135);
   --radius: 0.625rem;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
@@ -95,7 +95,7 @@
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.735 0.1 207);
+  --sidebar-primary: rgb(25 122 135);
   --sidebar-primary-foreground: oklch(1 0 0);
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
@@ -103,8 +103,8 @@
   --sidebar-ring: oklch(0.708 0 0);
 
   /* NimBit semantic tokens */
-  --docs-color-primary: #3dc1d3;
-  --docs-color-primary-tint: rgba(61, 193, 211, 0.16);
+  --docs-color-primary: #197a87;
+  --docs-color-primary-tint: rgba(25, 122, 135, 0.12);
   --docs-color-border: #dadde1;
   --docs-color-text: #000000;
   --docs-color-text-100: #646464;
@@ -117,20 +117,21 @@
   /* Infima */
   --ifm-font-family-base: "Inter Variable", "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   --ifm-font-family-monospace: "Fira Code Variable", "Fira Code", SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  --ifm-color-primary: #3dc1d3;
-  --ifm-color-primary-dark: #21b3c7;
-  --ifm-color-primary-darker: #1ca3b5;
-  --ifm-color-primary-darkest: #1d828f;
-  --ifm-color-primary-light: #60d1e1;
-  --ifm-color-primary-lighter: #96e3ee;
-  --ifm-color-primary-lightest: #c7f1f7;
+  /* Same primary as IoT Breeze: #197a87 in light mode, #3dc1d3 in dark mode. */
+  --ifm-color-primary: #197a87;
+  --ifm-color-primary-dark: #166e7a;
+  --ifm-color-primary-darker: #156873;
+  --ifm-color-primary-darkest: #12555e;
+  --ifm-color-primary-light: #308793;
+  --ifm-color-primary-lighter: #3c8e99;
+  --ifm-color-primary-lightest: #5ea2ab;
   --ifm-navbar-shadow: none;
   --ifm-toc-border-color: #dedede;
   --ifm-table-border-color: var(--docs-color-border);
   --ifm-code-font-size: 92%;
   --ifm-breadcrumb-item-background-active: transparent;
   --ifm-breadcrumb-padding-horizontal: 0;
-  --docusaurus-highlighted-code-line-bg: rgba(61, 193, 211, 0.2);
+  --docusaurus-highlighted-code-line-bg: rgba(25, 122, 135, 0.12);
 
   font-size: 14px;
 }
@@ -143,8 +144,8 @@ html[data-theme="dark"] {
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.145 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.735 0.1 207);
-  --primary-foreground: oklch(1 0 0);
+  --primary: rgb(61 193 211); /* IoT Breeze dark primary */
+  --primary-foreground: rgb(9 9 11);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
@@ -155,7 +156,7 @@ html[data-theme="dark"] {
   --destructive-foreground: oklch(0.637 0.237 25.331);
   --border: oklch(0.269 0 0);
   --input: oklch(0.269 0 0);
-  --ring: oklch(0.735 0.1 207);
+  --ring: rgb(61 193 211);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -163,8 +164,8 @@ html[data-theme="dark"] {
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.735 0.1 207);
-  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-primary: rgb(61 193 211);
+  --sidebar-primary-foreground: rgb(9 9 11);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.269 0 0);
@@ -180,10 +181,18 @@ html[data-theme="dark"] {
   --docs-color-background-300: #2e2e2e;
   --docs-color-code-background: #1e1e1e;
 
-  --ifm-color-primary: #60d1e1;
-  --ifm-link-color: #60d1e1;
-  --ifm-tabs-color-active-border: #60d1e1;
-  --ifm-tabs-color-active: #60d1e1;
+  --docs-color-primary: #3dc1d3;
+  --docs-color-primary-tint: rgba(61, 193, 211, 0.16);
+  --ifm-color-primary: #3dc1d3;
+  --ifm-color-primary-dark: #2bb6c9;
+  --ifm-color-primary-darker: #29acbe;
+  --ifm-color-primary-darkest: #228e9c;
+  --ifm-color-primary-light: #57c9d8;
+  --ifm-color-primary-lighter: #64cddb;
+  --ifm-color-primary-lightest: #8bdae5;
+  --ifm-link-color: #3dc1d3;
+  --ifm-tabs-color-active-border: #3dc1d3;
+  --ifm-tabs-color-active: #3dc1d3;
   --ifm-footer-background-color: #1c1c1c;
   --ifm-background-surface-color: #161616;
   --ifm-background-color: #161616;
@@ -255,7 +264,7 @@ html[data-theme="dark"] .dropdown > .navbar__link:after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23b4b4b4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
 }
 .dropdown:hover > .navbar__link:after {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%233dc1d3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23197a87' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
 }
 
 /* Dropdown menu styling */
@@ -285,7 +294,7 @@ html[data-theme="dark"] .dropdown__menu {
 /* "Book a Demo" CTA button */
 .navbar-book-demo {
   background-color: var(--docs-color-primary);
-  color: #fff !important;
+  color: var(--primary-foreground) !important;
   border-radius: 6px;
   padding: 0.25rem 0.75rem !important;
   font-weight: 500;
@@ -293,7 +302,7 @@ html[data-theme="dark"] .dropdown__menu {
 }
 .navbar-book-demo:hover {
   background-color: var(--ifm-color-primary-dark);
-  color: #fff !important;
+  color: var(--primary-foreground) !important;
 }
 html[data-theme="dark"] .navbar-book-demo {
   --ifm-navbar-link-hover-color: #fff;

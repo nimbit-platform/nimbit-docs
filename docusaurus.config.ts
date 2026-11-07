@@ -123,11 +123,13 @@ const config: Config = {
           },
         ],
         theme: {
-          primaryColor: "#4fbbc9",
+          primaryColor: "#197a87",
         },
       },
     ],
   ],
+
+  clientModules: [require.resolve("./src/clientModules/appUrl.ts")],
 
   plugins: [
     "docusaurus-plugin-image-zoom",
@@ -204,12 +206,8 @@ const config: Config = {
         { label: "Changelog", type: "docSidebar", sidebarId: "changelogSidebar", position: "left" },
         { label: "Blog", to: "/blog", position: "left" },
         { type: "search", position: "right" },
-        {
-          href: "https://iotbreeze.nimbit.ai",
-          label: "Open IoT Breeze",
-          position: "right",
-          className: "navbar-book-demo",
-        },
+        // "Open IoT Breeze", on the reader's own address (src/lib/appUrl.ts).
+        { type: "custom-openApp", position: "right" },
         { type: "localeDropdown", position: "right" },
       ],
     },

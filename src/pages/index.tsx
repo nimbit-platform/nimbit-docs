@@ -20,7 +20,7 @@ import {
   Wrench,
   type LucideIcon,
 } from "lucide-react";
-import ParticleEffectForHero from "@site/src/components/ui/particle-effect-for-hero";
+import AuthBackground from "@site/src/components/AuthBackground";
 
 type Door = { icon: LucideIcon; voice: string; title: string; text: string; to: string; cta: string };
 
@@ -96,10 +96,12 @@ export default function Home(): React.JSX.Element {
         className="relative w-full overflow-hidden"
         style={{ "--ifm-link-hover-decoration": "none" } as React.CSSProperties}
       >
-        <ParticleEffectForHero />
-
-        <main className="relative z-10 mx-auto max-w-300 px-6 pb-24">
-          <section className="mx-auto max-w-2xl pb-10 pt-16 text-center">
+        <div className="relative isolate">
+          {/* The IoT Breeze sign-in backgrounds, so the docs open like the app does. */}
+          <AuthBackground />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-[var(--ifm-background-color)]" />
+          <div className="relative z-10 mx-auto max-w-300 px-6 pb-12">
+          <section className="mx-auto max-w-2xl pb-10 pt-20 text-center">
             <h1 className="text-6xl! text-foreground">IoT Breeze docs</h1>
             <p className="text-xl! mt-4 leading-relaxed text-muted-foreground dark:text-foreground">
               Connect your devices, see their data, and act on it. Guides for the people who run
@@ -108,7 +110,7 @@ export default function Home(): React.JSX.Element {
             <div className="mt-6 flex items-center justify-center gap-3">
               <Link
                 to="/docs/get-started/quickstart"
-                className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-white! no-underline hover:bg-[var(--ifm-color-primary-dark)] hover:no-underline"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground! no-underline hover:bg-[var(--ifm-color-primary-dark)] hover:no-underline"
               >
                 Quickstart
                 <ArrowRight className="h-3.5 w-3.5" />
@@ -140,8 +142,11 @@ export default function Home(): React.JSX.Element {
               </Link>
             ))}
           </section>
+          </div>
+        </div>
 
-          <section className="mt-16">
+        <main className="relative z-10 mx-auto max-w-300 px-6 pb-24">
+          <section className="mt-8">
             <h2 className="text-2xl font-bold tracking-tight text-foreground">The docs follow your data</h2>
             <p className="mt-1 text-muted-foreground">
               From a device to a decision. Each section answers one question.
