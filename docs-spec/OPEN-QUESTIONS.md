@@ -43,8 +43,6 @@ Generated from `TODO(product)` markers in docs/. Answer here or in the page; rem
 ## gateways
 
 - [ ] `gateways/how-gateways-work.mdx`: confirm after PRs #1613–#1623 merge
-- [ ] `gateways/mqtt-gateway.mdx`: The .bas file is a comment-only parameter block marked provisional in the code, and nimbit.bas is not in the repository yet. Is the eWON Flexy BASIC program available to customers, and where?
-- [ ] `gateways/periscope/install.mdx`: Is the image ghcr.io/nimbit-platform/periscope public, and which tag should customers pin? Is the binary distributed anywhere customers can download it?
 - [ ] `gateways/periscope/verify.mdx`: nbq accepts tokens for other audiences than the platform backend, and a gateway's token is for the backend only. Does `periscope verify` work on a gateway box (`[ocb] gateway = true`)? Expected today: exit 2.
 
 ## knowledge

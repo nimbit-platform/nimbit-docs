@@ -16,6 +16,7 @@ In about 30 minutes you will have Periscope running on an edge box, connected to
 - A Linux box next to your equipment that can reach the platform's URL over HTTPS, and the source you want to read (a PLC, an OPC UA server or a broker). To try it without a plant, use the simulators in the [Command-line reference](./commands.mdx).
 - The **Gateway** permission in IoT Breeze (the built-in **Admin** role has it).
 - Docker, or the ability to install a systemd service.
+- The Periscope package (container image or binary). Request it from NimBit support at [info@nimbit.de](mailto:info@nimbit.de); you receive the image name and version to use.
 :::
 
 ## 1. Add the gateway in IoT Breeze
@@ -53,10 +54,10 @@ Then start the agent, as a container:
 docker run -d --name periscope --restart unless-stopped \
   -v /etc/periscope:/etc/periscope:ro \
   -v periscope-state:/var/lib/periscope \
-  -p 8400:8400 ghcr.io/nimbit-platform/periscope
+  -p 8400:8400 <periscope-image>:<version>
 ```
 
-{/* TODO(product): Is the image ghcr.io/nimbit-platform/periscope public, and which tag should customers pin? Is the binary distributed anywhere customers can download it? */}
+Replace `<periscope-image>:<version>` with the image and version NimBit support gave you.
 
 Or as a systemd service, after copying the binary to `/usr/local/bin/periscope`:
 
