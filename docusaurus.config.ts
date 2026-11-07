@@ -254,7 +254,7 @@ const config: Config = {
           title: "Resources",
           items: [
             { label: "Blog", to: "/blog" },
-            { label: "Changelog", to: "/docs/changelog/index" },
+            { label: "Changelog", to: "/docs/changelog" },
           ],
         },
         {

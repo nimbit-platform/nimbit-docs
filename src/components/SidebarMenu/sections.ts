@@ -39,7 +39,7 @@ export const SECTIONS: Section[] = [
         id: "changelog",
         label: "Changelog",
         icon: FileText,
-        to: "/docs/changelog/index",
+        to: "/docs/changelog",
         description: "Release notes",
         paths: ["changelog"],
     },

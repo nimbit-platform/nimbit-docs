@@ -204,7 +204,7 @@ export default function Home(): React.JSX.Element {
           </section>
 
           <section className="mt-16 grid grid-cols-1 gap-5 md:grid-cols-2">
-            <Link to="/docs/changelog/index" className={card}>
+            <Link to="/docs/changelog" className={card}>
               <span className="flex items-center gap-2 text-lg font-semibold text-foreground">
                 <BookOpen className="h-5 w-5 text-primary" />
                 What changed
