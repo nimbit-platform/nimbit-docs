@@ -772,3 +772,29 @@ main[class*="docMainContainer"] > .container {
   font-weight: 600;
   color: var(--ifm-font-color-base);
 }
+
+/* ---- Embed mode: the docs in IoT Breeze's help panel (src/lib/embed.ts) ---- */
+html[data-embed] .navbar,
+html[data-embed] .theme-doc-sidebar-container,
+html[data-embed] footer,
+html[data-embed] .nb-doc-rail,
+html[data-embed] .theme-doc-toc-mobile,
+html[data-embed] .pagination-nav,
+html[data-embed] [class*="skipToContent"],
+html[data-embed] [class*="announcementBar"] {
+  display: none !important;
+}
+html[data-embed] { --ifm-navbar-height: 0px; }
+html[data-embed] main[class*="docMainContainer"] { max-width: none !important; }
+html[data-embed] .nb-doc-hero { padding-top: 20px; padding-bottom: 20px; }
+html[data-embed] .nb-doc-title { font-size: 28px !important; }
+html[data-embed] .nb-doc-body { padding-top: 20px; }
+.nb-embed-bar {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 8px 16px;
+  background: var(--docs-color-background);
+  border-bottom: 1px solid var(--docs-color-border);
+  font-size: 13px;
+}
+.nb-embed-bar a { text-decoration: none; }

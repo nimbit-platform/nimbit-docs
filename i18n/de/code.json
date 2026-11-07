@@ -200,6 +200,9 @@
   "doc.untranslated.chip": {
     "message": "Englisch"
   },
+  "embed.openFull": {
+    "message": "In der vollständigen Doku öffnen"
+  },
   "footer.contact": {
     "message": "Seite fehlt? Schreiben Sie an {email}."
   },

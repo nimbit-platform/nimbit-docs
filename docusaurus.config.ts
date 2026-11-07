@@ -1,6 +1,7 @@
 import type * as Preset from "@docusaurus/preset-classic";
 import type { Config } from "@docusaurus/types";
 import { themes as prismThemes } from "prism-react-renderer";
+import { EMBED_HEAD_SCRIPT } from "./src/lib/embed";
 
 const config: Config = {
   title: "NimBit Documentation",
@@ -62,12 +63,15 @@ const config: Config = {
     ],
   ],
 
-  clientModules: [require.resolve("./src/clientModules/appUrl.ts")],
+  clientModules: [require.resolve("./src/clientModules/appUrl.ts"), require.resolve("./src/clientModules/embed.ts")],
+  // Embed mode (IoT Breeze's help panel) is decided before the page paints; see src/lib/embed.ts.
+  headTags: [{ tagName: "script", attributes: {}, innerHTML: EMBED_HEAD_SCRIPT }],
 
   plugins: [
     "docusaurus-plugin-image-zoom",
     require.resolve("./plugins/llms.js"),
     require.resolve("./plugins/home-feed.js"),
+    require.resolve("./plugins/app-routes.js"),
     function customWebpackPlugin() {
       return {
         name: "custom-webpack-plugin",
