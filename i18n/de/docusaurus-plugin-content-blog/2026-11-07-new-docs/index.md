@@ -4,6 +4,11 @@ title: Die neue IoT-Breeze-Doku
 description: Die Doku ist neu aufgebaut nach dem, was Sie erledigen wollen, startet geführte Touren in Ihrem eigenen IoT Breeze und ist jetzt auch auf Deutsch.
 authors: [nimbit]
 tags: [docs, announcement]
+category: "announcement"
+featured: true
+visual: "badges"
+doc_title: "Quickstart: vom simulierten Gerät zum Alarm"
+doc_link: "/docs/get-started/quickstart"
 ---
 
 Wir haben die IoT-Breeze-Doku von Grund auf neu geschrieben. Sie ist nach dem gegliedert, was Sie erledigen wollen, passt zur aktuellen App und ist jetzt auch auf Deutsch verfügbar.

@@ -463,3 +463,53 @@ img + em {
     max-width: 46rem;
   }
 }
+
+/* ============================================
+   Blog (docs-spec canvas: BlogIndex, BlogPost)
+   ============================================ */
+:root {
+  --nb-sunk: #eef0f2;
+  --nb-dash: #b3b9c0;
+  --nb-grid: rgba(13, 15, 18, 0.07);
+  --nb-tag: #7a5c00;
+  --nb-chart: #2babbc;
+  --nb-chart2: #b98a00;
+  --nb-yellow: #f5c638;
+  --nb-inv-bg: #0d0f12;
+  --nb-inv-fg: #f3f5f7;
+  --nb-sel: rgba(43, 171, 188, 0.12);
+}
+html[data-theme="dark"] {
+  --nb-sunk: #1b2026;
+  --nb-dash: #444b53;
+  --nb-grid: rgba(255, 255, 255, 0.07);
+  --nb-tag: #f5c638;
+  --nb-chart2: #f5c638;
+  --nb-inv-bg: #f3f5f7;
+  --nb-inv-fg: #0d0f12;
+  --nb-sel: rgba(43, 171, 188, 0.18);
+}
+.nb-grid {
+  background-image: linear-gradient(to right, var(--nb-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--nb-grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.nb-grid-hero {
+  background-size: 32px 32px;
+  -webkit-mask-image: radial-gradient(ellipse 60% 90% at 80% 0%, #000 15%, transparent 70%);
+  mask-image: radial-gradient(ellipse 60% 90% at 80% 0%, #000 15%, transparent 70%);
+}
+.nb-eyebrow {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--docs-color-text-100);
+}
+.nb-card:hover .nb-card-title { text-decoration: underline; }
+.nb-toc a.nb-toc-active {
+  border-left-color: var(--ifm-color-primary);
+  color: var(--ifm-font-color-base) !important;
+}
+.nb-toc ul { display: none; }
+.nb-post-body { font-size: 16px; line-height: 1.7; }

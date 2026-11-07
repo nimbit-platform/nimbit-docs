@@ -4,6 +4,11 @@ title: New IoT Breeze docs
 description: The docs are rebuilt around what you want to get done, start guided tours in your own IoT Breeze, and are now in German too.
 authors: [nimbit]
 tags: [docs, announcement]
+category: "announcement"
+featured: true
+visual: "badges"
+doc_title: "Quickstart: from a simulated device to an alert"
+doc_link: "/docs/get-started/quickstart"
 ---
 
 We rebuilt the IoT Breeze docs from scratch. They are organized by what you want to get done, written against the current app, and now available in German too.

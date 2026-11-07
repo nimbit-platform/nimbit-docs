@@ -4,6 +4,11 @@ title: "Periscope: from the plant floor to IoT Breeze"
 description: Periscope runs next to your machines, discovers OPC UA, Sparkplug B, MQTT, S7, Modbus and HTTP sources, proposes the things that describe them and streams their values.
 authors: [nimbit]
 tags: [periscope, gateways, edge]
+category: "release"
+visual: "graph"
+visual_caption: "periscope · opc-ua"
+doc_title: "Install Periscope and stream your first source"
+doc_link: "/docs/gateways/periscope/install"
 ---
 
 Periscope is our edge agent. It runs on a machine next to your equipment, reads your plant without writing to it, proposes the thing types and things that describe it, and streams their values to IoT Breeze.

@@ -4,6 +4,11 @@ title: "Periscope: von der Anlage nach IoT Breeze"
 description: Periscope läuft neben Ihren Maschinen, erkennt OPC-UA-, Sparkplug-B-, MQTT-, S7-, Modbus- und HTTP-Quellen, schlägt die passenden Things vor und streamt ihre Werte.
 authors: [nimbit]
 tags: [periscope, gateways, edge]
+category: "release"
+visual: "graph"
+visual_caption: "periscope · opc-ua"
+doc_title: "Periscope installieren und die erste Quelle streamen"
+doc_link: "/docs/gateways/periscope/install"
 ---
 
 Periscope ist unser Edge-Agent. Er läuft auf einem Rechner neben Ihren Anlagen, liest Ihre Anlage, ohne in sie zu schreiben, schlägt die Thing-Typen und Things vor, die sie beschreiben, und streamt ihre Werte nach IoT Breeze.

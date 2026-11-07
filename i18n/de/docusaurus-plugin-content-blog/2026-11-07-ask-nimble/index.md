@@ -4,6 +4,12 @@ title: "Ask Nimble: Fragen zu Ihrer Anlage, beantwortet mit Quellen"
 description: Bilden Sie Ihre Standorte ab, binden Sie externe Quellen und Dokumente an und fragen Sie IoT Breeze in einfachen Worten nach Ihrer Anlage. Jede Antwort zeigt, woher sie kommt.
 authors: [nimbit]
 tags: [knowledge, ai, ask-nimble]
+category: "how-to"
+visual: "chat"
+visual_question: "Welche Things sind offline?"
+visual_answer: "pump-07, seit 14:20 · 3 Quellen"
+doc_title: "Eine Frage zu Ihren Daten stellen"
+doc_link: "/docs/knowledge/ask"
 ---
 
 Ask Nimble beantwortet Fragen zu Ihrer Anlage in einfachen Worten: was in einer Halle steht, welche Pumpen offline sind, wie eine Maschine letzte Woche lief, was im Handbuch steht. Jede Antwort zeigt ihre Quellen.

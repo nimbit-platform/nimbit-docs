@@ -4,6 +4,11 @@ title: "Dashboards: Widgets nach der Frage wählen, die sie beantworten"
 description: Eine neue Widget-Auswahl, Dashboards für alle Things einer Art, Werte mit Farbzonen und Dashboards auf Home.
 authors: [nimbit]
 tags: [dashboards, widgets]
+category: "release"
+visual: "chart"
+visual_caption: "room-sensor · temperature"
+doc_title: "Widget-Galerie"
+doc_link: "/docs/visualize/widgets"
 ---
 
 Dashboards in IoT Breeze haben eine neue Widget-Auswahl, eine neue Widget-Einrichtung, mehr Widgets und Dashboards, die Sie einmal für alle Things einer Art bauen.

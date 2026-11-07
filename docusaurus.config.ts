@@ -96,6 +96,8 @@ const config: Config = {
         },
         blog: {
           showReadingTime: true,
+          // The index filters on the client (src/theme/BlogListPage), so it needs every post.
+          postsPerPage: "ALL",
           blogTitle: "NimBit Blog",
           blogDescription: "Updates, guides, and insights from the NimBit IoT platform team.",
           blogSidebarTitle: "Recent Posts",

@@ -820,5 +820,122 @@
   },
   "footer.demo": {
     "message": "Demo buchen"
+  },
+  "blog.category.release.plural": {
+    "message": "Releases"
+  },
+  "blog.category.how-to.plural": {
+    "message": "Anleitungen"
+  },
+  "blog.category.announcement.plural": {
+    "message": "Ankündigungen"
+  },
+  "blog.category.engineering.plural": {
+    "message": "Engineering"
+  },
+  "blog.category.release": {
+    "message": "Release"
+  },
+  "blog.category.how-to": {
+    "message": "Anleitung"
+  },
+  "blog.category.announcement": {
+    "message": "Ankündigung"
+  },
+  "blog.category.engineering": {
+    "message": "Engineering"
+  },
+  "blog.readingTime": {
+    "message": "{n} Min. Lesezeit"
+  },
+  "blog.featured": {
+    "message": "Empfohlen"
+  },
+  "blog.readMore": {
+    "message": "Weiterlesen"
+  },
+  "blog.filter.category": {
+    "message": "Kategorie"
+  },
+  "blog.filter.topic": {
+    "message": "Thema"
+  },
+  "blog.filter.year": {
+    "message": "Jahr"
+  },
+  "blog.filter.all": {
+    "message": "Alle"
+  },
+  "blog.filter.anyTopic": {
+    "message": "Alle Themen"
+  },
+  "blog.filter.anyYear": {
+    "message": "Alle Jahre"
+  },
+  "blog.sort": {
+    "message": "Sortierung"
+  },
+  "blog.sort.newest": {
+    "message": "Neueste"
+  },
+  "blog.sort.oldest": {
+    "message": "Älteste"
+  },
+  "blog.count": {
+    "message": "{shown} von {total} Beiträgen"
+  },
+  "blog.filter.active": {
+    "message": "Aktiv"
+  },
+  "blog.filter.remove": {
+    "message": "Entfernen"
+  },
+  "blog.filter.clear": {
+    "message": "Alle löschen"
+  },
+  "blog.search": {
+    "message": "Beiträge durchsuchen …"
+  },
+  "blog.empty": {
+    "message": "Keine Beiträge passen zu diesen Filtern."
+  },
+  "blog.loadMore": {
+    "message": "Weitere Beiträge laden"
+  },
+  "blog.hero.eyebrow": {
+    "message": "Releases, Anleitungen, Ankündigungen"
+  },
+  "blog.hero.title.start": {
+    "message": "Notizen aus dem"
+  },
+  "blog.hero.title.accent": {
+    "message": "Plattform-Team."
+  },
+  "blog.subscribe": {
+    "message": "Abonnieren"
+  },
+  "blog.readIn": {
+    "message": "Lesen auf"
+  },
+  "blog.topics": {
+    "message": "Themen"
+  },
+  "blog.toc": {
+    "message": "Inhalt"
+  },
+  "blog.inTheDocs": {
+    "message": "In der Doku"
+  },
+  "blog.toTheGuide": {
+    "message": "Zur Seite"
+  },
+  "blog.pagination": {
+    "message": "Weitere Beiträge"
+  },
+  "blog.newer": {
+    "message": "Neuerer Beitrag"
+  },
+  "blog.older": {
+    "message": "Älterer Beitrag"
   }
 }

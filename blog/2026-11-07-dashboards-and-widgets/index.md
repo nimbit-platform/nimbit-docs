@@ -4,6 +4,11 @@ title: "Dashboards: pick a widget by the question it answers"
 description: A new widget picker, dashboards that work for every thing of a kind, values colored by thresholds, and dashboards on Home.
 authors: [nimbit]
 tags: [dashboards, widgets]
+category: "release"
+visual: "chart"
+visual_caption: "room-sensor · temperature"
+doc_title: "Widget gallery"
+doc_link: "/docs/visualize/widgets"
 ---
 
 Dashboards in IoT Breeze have a new widget picker, a new widget setup, more widgets, and dashboards you build once for every thing of a kind.
