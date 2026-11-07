@@ -1,0 +1,64 @@
+---
+title: Check gateway health and traffic
+sidebar_label: Gateway health and traffic
+description: See which gateways are online, whether data is flowing and why messages are discarded, from the gateway list and a gateway's Health tab.
+type: how-to
+sidebar_position: 5
+app:
+  routes: ["/onboarding/gateways", "/onboarding/gateways/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Find out which gateways are alive, whether they are sending data, and what the platform refuses. For what each signal means, read [How gateways work](./how-gateways-work.mdx).
+
+## Before you start
+
+- You can see gateways in **Settings › Onboarding › Gateways**.
+- At least one gateway exists and has sent data. A gateway that hasn't has no traffic to show yet.
+
+## Steps
+
+1. Open **Settings › Onboarding › Gateways**. The tabs **All**, **Online**, **Offline** and **Waiting for onboarding** narrow the list and show how many gateways are in each. The list refreshes every 30 seconds.
+2. Select **Offline** to see the gateways to look at first. The status shows since when the gateway has been in that state.
+3. Open a gateway. The **Health** tab shows **Connectivity** and a link to the gateway thing (**Open the gateway thing**), which holds the history of the gateway's own measures.
+4. Read the **Traffic** card:
+
+   | Row | Meaning |
+   | --- | --- |
+   | **Values per minute** | Measure values stored, with the last 24 hours as bars. |
+   | **Messages per minute** | Messages stored. |
+   | **Things active** | Things with at least one stored message in the last window. |
+   | **Discards per minute** | Messages the platform refused for good, with a count per reason. Shown in red when above zero. |
+   | **Last data** | When data from this gateway was last stored. |
+
+<Screenshot
+  page="gateways/fleet-health"
+  id="01-traffic"
+  route="/onboarding/gateways/:id"
+  state="Health tab of an online gateway with traffic values and one discard reason"
+  alt="The Health tab with Connectivity and the Traffic card"
+/>
+
+5. If **Discards per minute** is above zero, read the reason next to it and open the **Events** tab. Each refused thing create is listed there.
+6. Open **Scope** to see **Refused creates**: the count by reason and when the last one happened.
+
+Traffic is counted by the platform and written to the gateway thing about every minute. It never turns a gateway online. Only the gateway's own health message does, so a gateway that is **Offline** while **Last data** is recent is a gateway whose health reporter has stopped, not one that is silent.
+
+## Check that it worked
+
+A healthy gateway is **Online**, shows **Messages per minute** above zero while its things send, and shows **Discards per minute** of 0. After a gateway stops sending, its rates fall to zero and **Last data** keeps its time. The gateway turns **Offline** after 15 minutes without a health message.
+
+## If it doesn't work
+
+- **No traffic counted yet**: the platform hasn't stored a message from this gateway. Check that the gateway is **Online** first. For an MQTT device, check its topics in [Send data through one MQTT gateway](./mqtt-gateway.mdx).
+- **Online, but a thing shows no data**: look at the discard reasons. `not_member` means the thing isn't assigned to this gateway, `unknown_thing` that it or its thing type doesn't exist, `invalid` that the message failed validation, `identity_mismatch` that the message names another organization or thing than its connection.
+- **Offline, but the box is running**: a Periscope gateway needs its health reporter running and a valid key; open **Access & keys** for **Last sign-in**. An MQTT device must publish to its **Status topic** every 5 minutes.
+- **Waiting for onboarding**: the box hasn't enrolled with its code yet, or the code expired. See [Add a gateway](./add-a-gateway.mdx).
+- **Things are active but a value is missing**: the thing type may lack the measure, so the platform dropped it. Check the thing type in [Thing types, things and interfaces](../model/things-and-types.mdx).
+
+## Related
+
+- [Gateway reference](./gateway-reference.mdx) for every discard reason and traffic measure
+- [Check a thing's health](../watch/thing-health.mdx) for the gateway thing's own history
+- [Explore telemetry](../watch/explore-telemetry.mdx)
