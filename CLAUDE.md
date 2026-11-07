@@ -38,7 +38,7 @@ The docs hold no OpenAPI specs. Each service serves its own Scalar reference on 
 ### IoT Breeze help panel
 
 IoT Breeze shows these docs in its help panel. Two things serve it, and both are a contract with the app:
-- `plugins/app-routes.js` writes `app-routes.json` at each locale's root from every page's `app.routes` (and `app.tour`) front matter. Keep `app.routes` accurate when a page covers an app screen.
+- `plugins/app-routes.js` writes `app-routes.json` at each locale's root from every page's `app.routes` (and `app.tour`) front matter. Keep `app.routes` accurate when a page covers an app screen. When several pages cover one route, the app opens the first; set `app.primary: true` (or a list of routes) on the page it should open.
 - `?embed=1` (`src/lib/embed.ts`, `src/theme/Root.tsx`, `html[data-embed]` in `custom.css`) hides the site chrome and posts `{ type: "nimbit-docs:page", permalink, title, locale }` to the app on every page.
 
 ### Source Code (`src/`)

@@ -9,6 +9,10 @@
  *       "title": "Add a gateway", "description": "…", "type": "how-to", "tour": "…" } ] }
  *
  * One entry per page and route. `route` has no locale prefix; `permalink` is absolute on the docs host.
+ * Entries are sorted by route, then the route's preferred page first, then permalink. A page is preferred
+ * on a route when its front matter says `app.primary: true` (all its routes) or lists the route
+ * (`app.primary: ["/onboarding/gateways/:id"]`). The app takes the first entry among equals, so set
+ * `primary` on the page it should open when several pages cover the same screen.
  */
 const fs = require("fs");
 const path = require("path");
@@ -24,10 +28,12 @@ module.exports = function appRoutesPlugin(context) {
       pages = [];
       for (const version of docs?.loadedVersions ?? []) {
         for (const doc of version.docs) {
-          const app = /** @type {{routes?: unknown, tour?: unknown} | undefined} */ (doc.frontMatter.app);
+          const app = /** @type {{routes?: unknown, tour?: unknown, primary?: unknown} | undefined} */ (doc.frontMatter.app);
           const routes = Array.isArray(app?.routes) ? app.routes.filter((r) => typeof r === "string") : [];
           for (const route of routes) {
+            const primary = app?.primary === true || (Array.isArray(app?.primary) && app.primary.includes(route));
             pages.push({
+              primary,
               route,
               permalink: doc.permalink,
               title: doc.title,
@@ -38,7 +44,12 @@ module.exports = function appRoutesPlugin(context) {
           }
         }
       }
-      pages.sort((a, b) => a.route.localeCompare(b.route) || a.permalink.localeCompare(b.permalink));
+      pages.sort(
+        (a, b) =>
+          a.route.localeCompare(b.route) || Number(b.primary) - Number(a.primary) || a.permalink.localeCompare(b.permalink),
+      );
+      // `primary` only orders the list; the contract's entries stay as documented.
+      pages = pages.map(({ primary, ...page }) => page);
     },
     async postBuild({ outDir }) {
       const file = { version: 1, locale: context.i18n.currentLocale, pages };
