@@ -22,4 +22,4 @@ Here's what we'll be covering in upcoming posts:
 
 Follow along as we share insights from building the NimBit IoT platform. Whether you're an operator configuring dashboards or a developer building custom integrations, there's something here for you.
 
-Check out our [User Manual](/docs/user/overview) or [Developer Docs](/docs/developer/intro) to get started with the platform.
+Check out our [User Manual](/docs) or [Developer Docs](/docs/api) to get started with the platform.

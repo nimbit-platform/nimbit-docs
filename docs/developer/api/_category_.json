@@ -1,9 +1,0 @@
-{
-  "label": "API Docs",
-  "position": 2,
-  "collapsed": false,
-  "link": {
-    "type": "generated-index",
-    "description": "Informationen zur API-Nutzung."
-  }
-}

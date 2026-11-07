@@ -39,4 +39,4 @@ The API uses Bearer token authentication. Tokens can be generated from the NimBi
 
 ## Getting Started
 
-Head over to the [API Documentation](/docs/developer/api/dip) for the full reference, including request/response models and code examples.
+Head over to the [API Documentation](/docs/api/reference/tsflux) for the full reference, including request/response models and code examples.

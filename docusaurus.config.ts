@@ -85,7 +85,6 @@ const config: Config = {
         docs: {
           sidebarPath: require.resolve("./sidebars.ts"),
           showLastUpdateTime: true,
-          docItemComponent: "@theme/ApiItem",
           // Section folders have an index.mdx that is the category's own page
           // (linked from the label); don't list it again as a child item.
           async sidebarItemsGenerator({ defaultSidebarItemsGenerator, ...args }) {
@@ -131,29 +130,6 @@ const config: Config = {
   ],
 
   plugins: [
-    [
-      "docusaurus-plugin-openapi-docs",
-      {
-        id: "api",
-        docsPluginId: "classic",
-        config: {
-          dip: {
-            specPath: "https://nightly.nimbit.de/dip/api-yaml",
-            outputDir: "docs/developer/api/references/dip-api",
-            sidebarOptions: {
-              groupPathsBy: "tag",
-            },
-          },
-          // ocb: {
-          //   specPath: "https://nightly.nimbit.de/ocb/api-yaml",
-          //   outputDir: "docs/ocb-api",
-          //   sidebarOptions: {
-          //     groupPathsBy: "tag",
-          //   },
-          // },
-        },
-      },
-    ],
     "docusaurus-plugin-image-zoom",
     require.resolve("./plugins/llms.js"),
     function customWebpackPlugin() {
@@ -177,7 +153,7 @@ const config: Config = {
     },
   ],
 
-  themes: ["docusaurus-theme-openapi-docs", "@docusaurus/theme-mermaid"],
+  themes: ["@docusaurus/theme-mermaid"],
 
   themeConfig: {
     zoom: {

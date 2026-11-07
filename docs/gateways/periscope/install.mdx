@@ -1,0 +1,156 @@
+---
+title: Install Periscope and stream your first source
+sidebar_label: Install and stream your first source
+description: Install Periscope on an edge box, connect it as a gateway with an onboarding code, discover a source, apply it and see values in IoT Breeze.
+type: tutorial
+sidebar_position: 3
+app:
+  routes: ["/onboarding/gateways"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+In about 30 minutes you will have Periscope running on an edge box, connected to IoT Breeze as a gateway, with one source discovered, confirmed and streaming values.
+
+:::info What you need
+- A Linux box next to your equipment that can reach the platform's URL over HTTPS, and the source you want to read (a PLC, an OPC UA server or a broker). To try it without a plant, use the simulators in the [Command-line reference](./commands.mdx).
+- The **Gateway** permission in IoT Breeze (the built-in **Admin** role has it).
+- Docker, or the ability to install a systemd service.
+:::
+
+## 1. Add the gateway in IoT Breeze
+
+Do this first: you need the onboarding code in step 3. Follow [Add a gateway](../add-a-gateway.mdx) up to the point where IoT Breeze shows the code, and copy it. It is shown once and starts with `ONB-`. Its default lifetime is 24 hours.
+
+## 2. Install Periscope
+
+Periscope is one static binary for Linux that also runs as a container. Write a minimal configuration first, so the agent has something to read. Save it as `/etc/periscope/periscope.toml`:
+
+```toml
+[agent]
+name = "werk-altena-01"            # prefixes thing IDs until the gateway's namespace is known
+
+[ocb]
+url     = "https://nimbit.example.com"
+gateway = true
+mode    = "confirm"
+mount   = "lenneform/werk-altena"
+levels  = ["site", "area", "line"]
+
+[[inputs.opcua]]
+alias    = "press-shop"
+endpoint = "opc.tcp://192.168.10.20:4840"
+include  = ["Machines/**"]
+
+[[outputs.tsflux_stream]]
+```
+
+Replace `url` with your platform's address. For another kind of source, use the matching page, such as [Read a Siemens S7 PLC](./s7.mdx). `agent.name` and `mount` become part of every thing's identity, so choose them once.
+
+Then start the agent, as a container:
+
+```sh
+docker run -d --name periscope --restart unless-stopped \
+  -v /etc/periscope:/etc/periscope:ro \
+  -v periscope-state:/var/lib/periscope \
+  -p 8400:8400 ghcr.io/nimbit-platform/periscope
+```
+
+{/* TODO(product): Is the image ghcr.io/nimbit-platform/periscope public, and which tag should customers pin? Is the binary distributed anywhere customers can download it? */}
+
+Or as a systemd service, after copying the binary to `/usr/local/bin/periscope`:
+
+```ini
+# /etc/systemd/system/periscope.service
+[Unit]
+Description=Periscope edge connector
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/local/bin/periscope serve -config /etc/periscope/periscope.toml
+StateDirectory=periscope
+Restart=on-failure
+DynamicUser=yes
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Check the installation and the file:
+
+```sh
+periscope version
+periscope validate -config /etc/periscope/periscope.toml -offline
+```
+
+`validate` ends with `configuration is valid`. The agent keeps its state in `/var/lib/periscope`. Keep that directory on a volume and back it up.
+
+## 3. Connect the box with the onboarding code
+
+Run the enroll command on the box:
+
+```sh
+docker exec periscope periscope enroll -code ONB-XXXX-XXXX-XXXX-XXXX
+```
+
+Without a container, run `periscope enroll -config /etc/periscope/periscope.toml -code ONB-XXXX-XXXX-XXXX-XXXX`. The box creates its own key pair, redeems the code and keeps the gateway's IDs. It prints the gateway's namespace and gateway thing. The code is now spent and no secret is stored on the box.
+
+Instead of the command, you can open `http://<box>:8400/ui/setup`, enter the one-time setup code the agent printed to its log, choose **an onboarding code**, and paste the onboarding code. The agent prints the setup code at every start until it is connected:
+
+```sh
+docker logs periscope
+```
+
+Restart or reload the agent. In IoT Breeze, the gateway shows **Online** within about 5 minutes, when its first health message arrives.
+
+<Screenshot
+  page="gateways/install"
+  id="01-gateway-online"
+  route="/onboarding/gateways"
+  state="Gateway list with the new gateway Online"
+  alt="The gateways list with the new gateway Online"
+/>
+
+## 4. Discover the source
+
+Run a discovery:
+
+```sh
+docker exec periscope periscope discover
+```
+
+Periscope reads the source without writing to it and lists what it proposes:
+
+```text
+INPUT       NODES  THINGS  ERROR
+press-shop  412    18      -
+
+KIND       NAME          TYPE          STATUS    NOTE
+thingType  PressType     9 measures    proposed  -
+thing      Press1        PressType     proposed  -
+```
+
+`ERROR` is empty when the input could read its source. If it isn't, use the troubleshooting list on the page for your source.
+
+## 5. Confirm and apply
+
+Open `http://<box>:8400/ui/proposals`, rename any generated names, and select **Confirm all proposed**, then **Apply now**. The statuses change to `applied`. Details are in [Approve what Periscope discovers](./approve-discoveries.mdx).
+
+In IoT Breeze, open the gateway's **Things** tab. The things Periscope created are listed there.
+
+## 6. See the values
+
+Open one of the things from the gateway's **Things** tab. Its latest values appear within a minute or two. Then open the gateway's **Health** tab: the **Traffic** card shows **Messages per minute** and **Things active** above zero, and **Discards per minute** at 0.
+
+To check from the box as well, see [Verify that data arrived](./verify.mdx).
+
+## What you built
+
+Periscope runs on your box as a gateway of your organization. It discovered a source, you approved the model it proposed, and it now streams the values. IoT Breeze shows the gateway's health and traffic.
+
+## Next
+
+- [Approve what Periscope discovers](./approve-discoveries.mdx), and connect more sources: [OPC UA](./opc-ua.mdx), [Modbus](./modbus.mdx), [S7](./s7.mdx), [Sparkplug B and MQTT](./sparkplug-and-mqtt.mdx), [HTTP](./http.mdx)
+- [Transform values before they leave the edge](./processors.mdx)
+- [Check gateway health and traffic](../fleet-health.mdx)
