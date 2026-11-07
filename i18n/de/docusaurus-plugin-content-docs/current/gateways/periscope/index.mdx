@@ -1,11 +1,11 @@
 ---
 title: Periscope
 description: Periscope ist der Edge-Agent, der OPC-UA-, Sparkplug-B-, MQTT-, S7-, Modbus- und HTTP-Quellen erkennt und ihre Werte an IoT Breeze streamt.
-sidebar_position: 1
+sidebar_position: 0
 type: landing
 app:
   routes: ["/onboarding/gateways"]
-translated_from: 4c9fc6e
+translated_from: 06bddd1
 ---
 
 Periscope ist ein Programm, das auf einer Maschine neben Ihren Anlagen läuft. Es liest Ihre Anlage, ohne in sie zu schreiben, schlägt die Thing-Typen und Things vor, die sie beschreiben, legt sie nach Ihrer Bestätigung in IoT Breeze an und streamt dann ihre Werte. In diesem Bereich installieren Sie es, verbinden jede Art von Quelle und schlagen ihre Einstellungen nach.
@@ -25,9 +25,12 @@ Der Agent liefert seine vollständige Dokumentation unter `http://<listen>/ui/do
 
 ## Verstehen {#understand}
 - [Wie Periscope funktioniert](./how-periscope-works.mdx): die Stufen und ob eine Instanz ein Gateway ist.
+- [Was Periscope auf der Box aufbewahrt](./deploy/state-and-backup.mdx): der Schlüssel des Gateways, seine Warteschlangen und was zu sichern ist.
 
 ## Umsetzen {#do}
 - [Periscope installieren und die erste Quelle streamen](./install.mdx): ein Tutorial vom Container bis zu Werten in IoT Breeze.
+- [Periscope bereitstellen](./deploy/index.mdx): Voraussetzungen, Container oder Dienst, Onboarding, Upgrades und Austausch einer Box.
+- [Eine Box mit einem Onboarding-Code einrichten](./deploy/onboard.mdx)
 - [Einen OPC-UA-Server verbinden](./opc-ua.mdx)
 - [Modbus-Register lesen](./modbus.mdx)
 - [Eine Siemens-S7-SPS lesen](./s7.mdx)
@@ -42,3 +45,4 @@ Der Agent liefert seine vollständige Dokumentation unter `http://<listen>/ui/do
 - [Konfigurationsreferenz](./configuration.mdx): jede Tabelle und jeder Schlüssel von `periscope.toml`.
 - [Ausgänge-Referenz](./outputs.mdx): wohin Werte gehen und wie sie gepuffert werden.
 - [Kommandozeilen-Referenz](./commands.mdx): jeder `periscope`-Befehl und jeder Exit-Code.
+- [Voraussetzungen für eine Edge-Box](./deploy/requirements.mdx): Systeme, Speicherplatz, Netzwerk und Uhr.

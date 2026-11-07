@@ -5,7 +5,7 @@ type: reference
 sidebar_position: 13
 app:
   routes: ["/onboarding/gateways"]
-translated_from: 4c9fc6e
+translated_from: 06bddd1
 ---
 
 Ausgänge liefern Werte an ihr Ziel. Verwenden Sie einen Plattform-Ausgang: Zwei würden jeden Wert doppelt speichern. Mit einer funktionierenden Tabelle `[ocb]` brauchen die Plattform-Ausgänge keine Zugangsdaten-Schlüssel.
@@ -101,7 +101,7 @@ qos = 1
 
 ### Die Gateway-Zugangsdaten {#the-gateway-credential}
 
-Bei einem Gateway (`[ocb] gateway = true`) fordern die drei Plattform-Ausgänge die eigenen Daten-Zugangsdaten des Gateways an und legen sie in `state_dir` ab. Sie identifizieren das Gateway: Der Broker lässt sie nur auf den Topics des Gateways veröffentlichen, und die Plattform akzeptiert mit ihnen nur die Things des Gateways. Widerrufen Sie den Schlüssel des Gateways, sind auch sie widerrufen.
+Bei einem Gateway (`[ocb] gateway = true`) fordern die drei Plattform-Ausgänge die eigenen Daten-Zugangsdaten des Gateways an und legen sie in `state_dir/nimbit-gateway-credential.json` ab. Sie teilen sich eine Zugangsart. Sie identifizieren das Gateway: Der Broker lässt sie nur auf den Topics des Gateways veröffentlichen, und die Plattform akzeptiert mit ihnen nur die Things des Gateways. Widerrufen Sie den Schlüssel des Gateways, sind auch sie widerrufen, und einem widerrufenen Gateway werden keine ausgestellt.
 
 | | Tenant-Zugangsdaten | Gateway-Zugangsdaten |
 | --- | --- | --- |
@@ -109,9 +109,18 @@ Bei einem Gateway (`[ocb] gateway = true`) fordern die drei Plattform-Ausgänge 
 | Standard-Topic | `tenant/{tenant}/device/{thing}/telemetry` | `tenant/{tenant}/gateway/{gateway}/device/{thing}/telemetry` |
 | Topic der Zustandsmeldung | `tenant/<t>/device/gateway-<g>/telemetry` | `tenant/<t>/gateway/<g>/device/gateway-<g>/telemetry` |
 
-Token für HTTP- und Stream-Ingest gelten höchstens 10 Minuten. Der Stream endet mit dem Ablauf des Tokens, und der nächste Stream trägt ein neues.
+Ein eigenes `topic` darf `{gateway}` nur bei einem Gateway verwenden. Überall sonst startet der Ausgang nicht. Bei einem Gateway akzeptiert der Broker nur Topics, die die ID des Gateways enthalten. Beginnen Sie ein eigenes Topic daher mit `tenant/{tenant}/gateway/{gateway}/`.
 
-Die Zustandsmeldung des Gateways geht live hinaus und wird nie in eine Warteschlange gestellt, sodass ein nachgesendeter Rückstau ein totes Gateway nicht online halten kann. `nimbit_mqtt` veröffentlicht sie mit QoS 0 auf seiner Verbindung, `tsflux` sendet sie einmal per POST, und `tsflux_stream` sendet sie als eigenen Batch auf einem kurzen separaten Stream. Ein Gateway ohne einen der drei Ausgänge sendet keinen Zustand und protokolliert eine Warnung. Über `tsflux_stream` werden die Zustands-Tags (`sw_version`, `link_type`, `config_hash`, `last_apply`) nicht übertragen.
+**Tokens.** `tsflux` und `tsflux_stream` senden nicht die Zugangsdaten selbst. Die Plattform lehnt die Basic-Zugangsdaten eines Gateways bei HTTP- und Stream-Ingest ab, weil sie nie ablaufen. Sie senden ein Token von höchstens 10 Minuten, das sie mit der Anmeldung des Gateways anfordern, im Speicher halten und eine Minute vor Ablauf und nach einer Ablehnung erneuern. Ein widerrufenes Gateway erhält kein neues Token, seine Schreibzugriffe enden also innerhalb einer Token-Lebensdauer. Der Stream endet mit dem Ablauf des Tokens, und der nächste Stream trägt ein neues. `nimbit_mqtt` verwendet die Zugangsdaten als Passwort für den Broker.
+
+**Fallback-Regeln.**
+
+- Die Anmeldung eines Gateways erhält nur dessen eigene Zugangsdaten. Fordert ein Ausgang die Tenant-Zugangsdaten an, antwortet die Plattform mit `403 GATEWAY_SCOPE_REQUIRED`. Periscope fällt nach einem 403 nie zurück: Bei einem widerrufenen Gateway wird zum Beispiel erneut versucht.
+- Eine Plattform, die älter ist als die Gateway-Zugangsdaten, antwortet mit `400` auf das unbekannte Feld oder stellt Tenant-Zugangsdaten aus. Dann verwendet der Ausgang die Tenant-Zugangsdaten, die Tenant-Client-ID und die Tenant-Topics, warnt einmal und fordert beim nächsten Start erneut die Gateway-Zugangsdaten an. Ein eigenes Topic mit `{gateway}` kann dann nicht bedient werden, und seine Batches bleiben in der Warteschlange.
+- Die in `nimbit-mqtt-credential.json` zwischengespeicherten Tenant-Zugangsdaten bleiben für einen Ausgang, der auf derselben Box als Servicekonto läuft.
+- Die Ausgänge lesen die ID des Gateways beim Start. Eine Änderung von `[ocb] gateway` startet sie neu. Die Box als anderes Gateway einzurichten, erfordert einen Neustart des Agents.
+
+**Zustandsmeldung.** Die Zustandsmeldung des Gateways geht live hinaus und wird nie in eine Warteschlange gestellt, sodass ein nachgesendeter Rückstau ein totes Gateway nicht online halten kann. `nimbit_mqtt` veröffentlicht sie mit QoS 0 auf seiner Verbindung, `tsflux` sendet sie einmal per POST, und `tsflux_stream` sendet sie als eigenen Batch auf einem kurzen separaten Stream. Der erste dieser Ausgänge in der Datei trägt sie. Ein Gateway ohne einen der drei Ausgänge sendet keinen Zustand und protokolliert eine Warnung. Der Dry-Run sendet keine. Über `tsflux_stream` werden die Zustands-Tags (`sw_version`, `link_type`, `config_hash`, `last_apply`) nicht übertragen.
 
 ## file und stdout {#file-and-stdout}
 

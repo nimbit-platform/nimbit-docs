@@ -3,10 +3,10 @@ title: "Periscope installieren und die erste Quelle streamen"
 sidebar_label: Installieren und erste Quelle streamen
 description: Periscope auf einer Edge-Box installieren, per Onboarding-Code als Gateway verbinden, eine Quelle erkennen, anwenden und Werte in IoT Breeze sehen.
 type: tutorial
-sidebar_position: 3
+sidebar_position: 2
 app:
   routes: ["/onboarding/gateways"]
-translated_from: 810b8a2
+translated_from: 06bddd1
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
@@ -30,7 +30,7 @@ Periscope ist ein statisches Linux-Binary, das auch als Container läuft. Schrei
 
 ```toml
 [agent]
-name = "werk-altena-01"            # prefixes thing IDs until the gateway's namespace is known
+name = "werk-altena-01"            # names this agent; the gateway's namespace prefixes thing IDs
 
 [ocb]
 url     = "https://nimbit.example.com"
@@ -47,7 +47,7 @@ include  = ["Machines/**"]
 [[outputs.tsflux_stream]]
 ```
 
-Ersetzen Sie `url` durch die Adresse Ihrer Plattform. Für eine andere Art von Quelle nehmen Sie die passende Seite, zum Beispiel [Eine Siemens-S7-SPS lesen](./s7.mdx). `agent.name` und `mount` werden Teil der Identität jedes Things, wählen Sie sie also einmal und endgültig.
+Ersetzen Sie `url` durch die Adresse Ihrer Plattform. Für eine andere Art von Quelle nehmen Sie die passende Seite, zum Beispiel [Eine Siemens-S7-SPS lesen](./s7.mdx). Der eigene `mount` eines Eingangs und, bei einem Gateway, sein Namespace sind Teil der Identität jedes Things. Der `mount` unter `[ocb]` legt fest, wo die Things in Ihrer Hierarchie liegen. Wählen Sie sie vor dem ersten Anwenden.
 
 Starten Sie den Agent als Container:
 
@@ -67,7 +67,7 @@ docker exec periscope periscope version
 docker exec periscope periscope validate -config /etc/periscope/periscope.toml -offline
 ```
 
-`validate` endet mit `configuration is valid`. Der Agent legt seinen Zustand in `/var/lib/periscope` ab. Halten Sie dieses Verzeichnis auf einem Volume und sichern Sie es.
+`validate` endet mit `configuration is valid`. Der Agent legt seinen Zustand in `/var/lib/periscope` ab. Halten Sie dieses Verzeichnis auf einem Volume und sichern Sie es. Diese Seite ist für einen ersten Versuch. Für eine Box im Produktivbetrieb nutzen Sie [Periscope bereitstellen](./deploy/index.mdx): Voraussetzungen, Betrieb als Dienst, Upgrades und Austausch einer Box.
 
 ## 3. Die Box mit dem Onboarding-Code verbinden {#3-connect-the-box-with-the-onboarding-code}
 
@@ -77,9 +77,9 @@ Führen Sie den Befehl `enroll` auf der Box aus:
 docker exec periscope periscope enroll -code ONB-XXXX-XXXX-XXXX-XXXX
 ```
 
-Die Box erzeugt ihr eigenes Schlüsselpaar, löst den Code ein und behält die IDs des Gateways. Sie gibt den Namespace des Gateways und das Gateway-Thing aus. Der Code ist nun verbraucht, und auf der Box wird kein Geheimnis gespeichert. Die Einrichtungsseite der Box nimmt den Code ebenfalls an, wie [Gateway hinzufügen](../add-a-gateway.mdx) beschreibt.
+Die Box erzeugt ihr eigenes Schlüsselpaar, löst den Code ein und behält die IDs des Gateways. Sie gibt den Namespace des Gateways und das Gateway-Thing aus. Der Code ist nun verbraucht, und die Box hält kein Passwort. Die Einrichtungsseite der Box nimmt den Code ebenfalls an, wie [Gateway hinzufügen](../add-a-gateway.mdx) beschreibt.
 
-Starten Sie den Agent neu oder laden Sie ihn neu. In IoT Breeze zeigt das Gateway innerhalb von etwa 5 Minuten **Online**, wenn seine erste Zustandsmeldung eintrifft.
+Der Agent lädt seine Datei selbstständig neu; um sicherzugehen, führen Sie `docker restart periscope` aus. Der Agent fragt zuerst die Plattform nach dem Datensatz des Gateways und erkennt, bis sie antwortet, nichts. In IoT Breeze zeigt das Gateway innerhalb von etwa 5 Minuten **Online**, wenn seine erste Zustandsmeldung eintrifft.
 
 <Screenshot
   page="gateways/install"
@@ -130,4 +130,5 @@ Periscope läuft auf Ihrer Box als Gateway Ihrer Organisation. Es hat eine Quell
 
 - [Periscope-Erkennungen freigeben](./approve-discoveries.mdx) und weitere Quellen verbinden: [OPC UA](./opc-ua.mdx), [Modbus](./modbus.mdx), [S7](./s7.mdx), [Sparkplug B und MQTT](./sparkplug-and-mqtt.mdx), [HTTP](./http.mdx)
 - [Werte transformieren, bevor sie die Edge verlassen](./processors.mdx)
+- [Periscope bereitstellen](./deploy/index.mdx): Voraussetzungen, Betrieb als Dienst, Upgrades und Austausch einer Box
 - [Zustand und Datenverkehr von Gateways prüfen](../fleet-health.mdx)

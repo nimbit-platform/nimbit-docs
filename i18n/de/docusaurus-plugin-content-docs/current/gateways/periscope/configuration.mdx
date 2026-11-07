@@ -5,7 +5,7 @@ type: reference
 sidebar_position: 12
 app:
   routes: ["/onboarding/gateways"]
-translated_from: 4c9fc6e
+translated_from: 06bddd1
 ---
 
 Periscope liest eine TOML-Datei: `-config`, sonst `$PERISCOPE_CONFIG`, sonst `periscope.toml` im Arbeitsverzeichnis. Der Agent liefert seine vollständige Dokumentation, einschließlich jedes Plugin-Schlüssels, unter `http://<listen>/ui/docs` mit Suche aus. Sie ist im Binary enthalten, Sie können sie also an der Edge-Box ohne Internetzugang lesen.
@@ -31,9 +31,9 @@ Periscope liest eine TOML-Datei: `-config`, sonst `$PERISCOPE_CONFIG`, sonst `pe
 | `log_encoding` | `json` | `json` oder `console`. |
 | `dry_run` | `false` | Im Probelauf starten: Nichts wird an die Plattform geschrieben, und kein Ausgang sendet. Der Plan bleibt in `plan.json`. |
 | `watch_config` | `true` | `serve`: neu laden, wenn sich `periscope.toml` oder das Overlay ändert. |
-| `health_interval` | `5m` | Nur Gateway: wie oft die Zustandsmeldung gesendet wird. Mindestens `1m`. |
+| `health_interval` | `5m` | Nur Gateway: wie oft die Zustandsmeldung gesendet wird. von `1m` bis `5m`. Ein längeres Intervall wird abgelehnt: Das Gateway-Thing geht nach 15 Minuten ohne Meldung auf Offline und würde sonst flackern. Eine Änderung gilt ab der nächsten Meldung. |
 
-`agent.name` und der Mount sind Teil der Identität jedes Things. Wählen Sie sie einmal und endgültig.
+Die Alternate-ID jedes Things beginnt mit `agent.name` – auf einem Gateway mit dem Namespace des Gateways – und kann den eigenen `mount` eines Eingangs enthalten. Eine Änderung legt neue Things an und benennt alte nie um. Wählen Sie sie vor dem ersten Anwenden.
 
 ## `[ocb]` {#ocb}
 
@@ -57,10 +57,11 @@ Die Verbindung zur Plattform. Mit einer `url` ist genau eine Zugangsdaten-Art er
 
 `gateway = true` bedeutet:
 
-- Der Agent meldet sich mit einem eigenen Schlüsselpaar an, ohne Geheimnis auf der Box. Sein Token gilt 5 Minuten und nur für das Plattform-Backend.
-- Der Namespace des Gateways steht statt `agent.name` vor jeder Alternate-ID: `<namespace>/<address>` oder `<namespace>/<input mount>/<address>`. `enroll` liest den Namespace und behält ihn in `gateway.json`.
+- Der Agent meldet sich mit einem eigenen Schlüsselpaar und ohne Passwort an. Sein Token gilt 5 Minuten und nur für das Plattform-Backend. Der Schlüssel ist ein Jahr gültig, und der Agent registriert den nächsten 30 Tage vor Ablauf selbstständig.
+- Der Namespace des Gateways steht statt `agent.name` vor jeder Alternate-ID: `<namespace>/<address>` oder `<namespace>/<input mount>/<address>`. `enroll` liest den Namespace und behält ihn in `gateway.json`. Bis die Plattform geantwortet hat, erkennt und wendet der Agent nichts an und fragt jede Minute erneut. Eine Plattform ohne die Route `gateways.me` behält `agent.name` als Präfix.
 - Der Agent sendet alle `agent.health_interval` eine Zustandsmeldung.
-- Die Plattform-Ausgänge veröffentlichen mit den eigenen Zugangsdaten des Gateways auf den Topics des Gateways. Siehe [Ausgänge-Referenz](./outputs.mdx).
+- Die Plattform-Ausgänge veröffentlichen mit den eigenen Zugangsdaten des Gateways auf den Topics des Gateways. Siehe [Ausgänge-Referenz](./outputs.mdx#the-gateway-credential).
+- Eine Datei, die zusätzlich `email`, `password` oder `token` setzt, wird abgelehnt: Es ist genau eine Zugangsart erlaubt.
 - `require_input = false` beim Prozessor `heartbeat` wird abgelehnt.
 - Die Platzierung in Contexus ist aus, weil das Token nur für das Backend gilt.
 
@@ -145,7 +146,7 @@ Jede Plugin-Instanz ist eine Tabelle in einem Array: `[[inputs.<name>]]`, `[[pro
 
 `serve` übernimmt eine geänderte Konfiguration ohne Neustart. Drei Auslöser teilen sich einen Weg: SIGHUP, die Dateiüberwachung (`agent.watch_config`) und `POST /api/v1/agent/reload` oder die Schaltfläche **Reload** auf der Seite **Config** der Oberfläche.
 
-Ein Neuladen wird zuerst validiert. Eine Konfiguration, die nicht lädt, hält den Agent nie an: Er läuft mit der letzten guten weiter, protokolliert den Fehler und zeigt ihn auf der **Overview**. Nur die Plugin-Instanzen, deren Einstellungen sich geändert haben, starten neu. Ein Ausgang, der neu startet, verliert nichts, weil seine Warteschlange geschlossen wird und die neue Instanz sendet, was sie hält.
+Ein Neuladen wird zuerst validiert. Eine Konfiguration, die nicht lädt, hält den Agent nie an: Er läuft mit der letzten guten weiter, protokolliert den Fehler und zeigt ihn auf der **Overview**. Nur die Plugin-Instanzen, deren Einstellungen sich geändert haben, starten neu. Ein Ausgang, der neu startet, verliert nichts, weil seine Warteschlange geschlossen wird und die neue Instanz sendet, was sie hält. Eine Änderung unter `[ocb]`, auch an `gateway`, startet jeden Ausgang neu, der dann die passenden Zugangsdaten anfordert.
 
 Diese Schlüssel gelten erst beim nächsten Start, und die **Overview** zeigt `restart required`, bis die Datei dem laufenden Wert entspricht:
 
@@ -162,7 +163,12 @@ Alles, was der Agent aufbewahrt, liegt in `agent.state_dir`. Sichern Sie es: Es 
 | `edits.yaml` | Umbenennungen, Zusammenführungen, Einheiten und Skalierungen aus der Oberfläche. | Um zu den erkannten Namen zurückzukehren. |
 | `mapping.json` | Adresse zu Thing, Thing-Typ und Messwert. | Das nächste Anwenden baut sie neu auf. |
 | `apply-log.jsonl` | Eine Zeile pro angewendetem, übersprungenem oder fehlgeschlagenem Element. | Es ist ein Audit-Trail. |
-| `gateway_key.pem`, `gateway.json` | Der Schlüssel eines Gateways und seine IDs, Namespace und Endpunkte. | Nur mit einem neuen Onboarding-Code. |
+| `gateway_key.pem`, `gateway.json` | Der Schlüssel eines Gateways und seine IDs, Namespace, Gateway-Thing und Endpunkte. | Nur mit einem neuen Onboarding-Code. |
+| `gateway_key.next.pem` | Der nächste Schlüssel, solange eine Rotation ihn registriert. | Nicht, solange eine Rotation läuft. |
+| `tenant.json` | Die Organisation, an die dieser State gebunden ist. | Nur, um sich mit einer anderen Organisation zu verbinden. |
+| `nimbit-gateway-credential.json` | Die zwischengespeicherten Datenzugangsdaten eines Gateways. | Ja. Neue werden angefordert. |
+| `nimbit-mqtt-credential.json` | Die zwischengespeicherten Tenant-Zugangsdaten einer Servicekonto-Box. | Ja. Neue werden angefordert. |
+| `setup-code.json` | Der Hash des einmaligen Codes des Einrichtungsbildschirms. | Ja. |
 | `enrollment.json` | Die Sitzung des Servicekontos. | `periscope enroll -revoke` beendet sie. |
 | `config.ui.toml` | Das vom Einrichtungsbildschirm geschriebene Overlay. | Der Agent verliert dann beim nächsten Neuladen die Verbindung. |
 | `tsflux-stream/<output>/` | Die Platten-Warteschlange des Stream-Ausgangs. | Verliert noch nicht gesendete Werte. |
@@ -173,4 +179,5 @@ Alles, was der Agent aufbewahrt, liegt in `agent.state_dir`. Sichern Sie es: Es 
 ## Verwandte Seiten {#related}
 
 - [Kommandozeilen-Referenz](./commands.mdx) · [Ausgänge-Referenz](./outputs.mdx)
+- [Was Periscope auf der Box aufbewahrt](./deploy/state-and-backup.mdx) · [Periscope bereitstellen](./deploy/index.mdx)
 - [Wie Periscope funktioniert](./how-periscope-works.mdx)
