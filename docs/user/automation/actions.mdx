@@ -22,7 +22,7 @@ The **Actions** tab on a thing type or thing is about commands for devices. The 
 | Thing type | Thing type page, **Actions** tab | Available to every thing of that type. On a thing they show as **Inherited**. |
 | Thing | Thing page, **Actions** tab | Only for that thing. |
 
-Open **Settings › Onboarding › Thing Types** {/* TODO: link */} or **Settings › Onboarding › Things** {/* TODO: link */}, open one, then go to **Actions**.
+Open [**Settings › Onboarding › Thing Types**](../onboarding/thing-types.mdx) or [**Settings › Onboarding › Things**](../onboarding/things.mdx), open one, then go to **Actions**.
 
 <Screenshot
   page="user/automation/actions"
@@ -68,11 +68,19 @@ Under **Authorization** you choose how the call signs in: no authentication, Bas
 
 ### Azure cloud-to-device
 
-The message is sent on the `/devicebound` topic, which the connected device reads. {/* TODO: verify the field list of the Azure form beyond the payload fields. */}
+The message is sent on the `/devicebound` topic, which the connected device reads.
+
+| Field | Meaning |
+| --- | --- |
+| **Name** | Shown in lists. |
+| **Description** | Optional. |
+| **Is toggle action** | Makes an on/off action. See below. |
+| **Payload** | The message. With a toggle action it is called **Payload on**. Placeholders are replaced when the command is sent. |
+| **Payload off** | The message for off. Only for toggle actions. |
 
 ### On/off actions
 
-Turn on **Is toggle action** to make an on/off action. You give it an on payload and an off payload (**Payload off**). On a thing page, the action shows whether the thing reports it as on or off, based on the latest reading of its measure. The thing needs to have reported that measure at least once. {/* TODO: verify that the toggle option also exists for MQTT message actions; the code shows it in the Azure form. */}
+Turn on **Is toggle action** to make an on/off action. You give it an on payload and an off payload (**Payload off**). On a thing page, the action shows whether the thing reports it as on or off, based on the latest reading of its measure. The thing needs to have reported that measure at least once. Only Azure cloud-to-device actions offer this option. The MQTT message form has no **Is toggle action** switch.
 
 ## Fire an action
 

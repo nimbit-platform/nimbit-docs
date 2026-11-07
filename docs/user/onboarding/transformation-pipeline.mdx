@@ -66,7 +66,7 @@ From now on every message of this thing type goes through the pipeline.
 | **Left sidebar** | Import, export and the simulator. |
 | **Tabs** | **Graph** is always open. **Edit Table**, **Edit Expression** and **Edit Function** open the node's editor in another tab. |
 
-{/* TODO: verify the sidebar, canvas controls and the Components panel against the current editor; they come from the GoRules editor component. */}
+{/* TODO(product): the editor is the GoRules JDM editor 1.52. Its package has the Components panel, the Edit Table, Edit Expression and Edit Function tabs and the Upload JSON and Download JSON actions, and the app adds the Simulator panel. Which of these sit in the left sidebar, and what the zoom, fit and arrange canvas controls look like, can only be confirmed by opening the editor. Check the table above against it. */}
 
 To delete a node, select it and press **Backspace**, or use its **more** menu. To delete a connection, select it and use the delete button.
 
@@ -206,13 +206,11 @@ A pipeline has versions. Each is its own copy of the graph. **Only one version i
 
 When you change a version that is already active, your changes stay a draft until you apply them. A floating toolbar offers:
 
-- **Apply draft**: puts the draft live.
-- **Reset draft**: throws the draft away. This cannot be undone.
-- **Draft** and a diff view: switch between your draft and a comparison with the live version.
+- **Apply draft** (the check icon): puts the draft live. It is off while the graph is invalid or while you view **Active**.
+- **Reset draft** (the arrow icon): throws the draft away after you confirm **Discard**. This cannot be undone.
+- **Active** and **Draft**: switch between a comparison with the live version and your draft. Apply works from **Draft**.
 
-Before the first version has been activated, the toolbar offers **Publish** instead.
-
-{/* TODO: verify the toolbar wording (Apply draft, Reset draft, diff) and the Publish label before the first activation. */}
+The buttons show their names as tooltips. Before the first version has been activated, the toolbar offers only **Publish**, without **Reset draft** and the **Active** and **Draft** switch.
 
 ## Export and import
 
@@ -225,4 +223,4 @@ A message that fails in the pipeline, for example by a schema check, a function 
 ## Related
 
 - [Thing types](./thing-types.mdx)
-- Rules that react to data: **Automation › Rule Designer** {/* TODO: link */}
+- Rules that react to data: [Automation › Rule Designer](../automation/rule-designer.mdx)

@@ -12,7 +12,7 @@ import Screenshot from "@site/src/components/Screenshot";
 
 An event is a record that something happened: a rule fired, a thing went offline, a thing entered a geofence, someone changed a record, or another system reported a fact. **Monitoring › Events** is the log of all of them.
 
-Events are facts. You cannot edit them. To follow up on a problem, work an [incident](./incidents.mdx). To react to events automatically, use [event types](./event-types.mdx) and rules. {/* TODO: link to the Automation track, Rule designer */}
+Events are facts. You cannot edit them. To follow up on a problem, work an [incident](./incidents.mdx). To react to events automatically, use [event types](./event-types.mdx) and [rules](../automation/rule-designer.mdx).
 
 <Screenshot
   page="user/monitoring/events"
@@ -31,7 +31,7 @@ Events are facts. You cannot edit them. To follow up on a problem, work an [inci
 | **Geofence** | A thing entered or left a geofence |
 | **API** | Another system sent an event to IoT Breeze |
 | **Manual** | A person recorded one |
-| **Repair** | The platform corrected a state itself, for example a connection outage {/* TODO: verify what repair events cover */} |
+| **Repair** | The platform corrected a state itself: it fixed a thing's online or offline state after its connectivity check found it to be wrong |
 
 The log also holds change events: a thing, thing type, group or user was created, updated or deleted. Their event types carry the name of the record type.
 

@@ -124,29 +124,32 @@ If you changed the time range while editing, **Save** asks **Save this time rang
 
 The gear (**Dashboard settings**) next to the toggle opens the form from step 1, so you can change name, description, interfaces and visibility. The **More** menu holds actions such as:
 
+- **Dashboard settings**: on narrow screens, where the gear is hidden.
+- **Import Widget**: in edit mode.
+- **Set as default** and **Unset as default**
+- **Refresh**: when the dashboard updates at an interval.
+- **Embedd**: opens **Embeddable url** with the dashboard name, a short note about the iframe and the URL with a copy button. Paste it where the dashboard should appear.
+- **Fullscreen**
 - **Duplicate dashboard**
 - **Delete dashboard**
-- **Set as default** and **Unset as default**
-- **Fullscreen**
-- **Embedd**: get a link to embed the dashboard elsewhere. {/* TODO: verify the exact content of the Embedd option */}
 
-{/* TODO: verify which entries the More menu shows for each dashboard type and permission */}
+The menu shows only what you may do. **Import Widget** and **Set as default** need edit permission on the dashboard, **Duplicate dashboard** and **Delete dashboard** need their own permissions, and **Refresh** is not offered on every dashboard type.
 
 ## 5. Show a dashboard on Home
 
 Home is the page people land on. A Smart dashboard that needs no thing, for example one with only pinned widgets or tenant statistics, can go there.
 
 1. Open the dashboard.
-2. Select **Show on Home** in the header.
+2. Select **Show on Home** in the edit bar.
 3. Tick **For everyone** to put it on everyone's Home, or **Just for me** for your own.
 
 Each click saves at once. The button then reads **On Home for everyone** or **On my Home**. Clear the tick to remove the dashboard from Home.
 
 **For everyone** is offered only for a tenant dashboard. Other members cannot open a private dashboard.
 
-{/* TODO: verify where in the header the Show on Home button appears and for which dashboards it is hidden */}
+The button sits in the edit bar of a Smart dashboard and is offered only when the dashboard needs no thing: it has no interfaces, or every widget is pinned to a thing.
 
-On Home you can also select **Add to Home** on a ready-made dashboard in **Dashboards by Nimbit**. {/* TODO: verify the entry point of the Dashboards by Nimbit dialog on Home */}
+On Home you can also select **Add to Home** on a ready-made dashboard in **Dashboards by Nimbit**. Open it with the **Dashboards by Nimbit** button on Home: in the empty state, or at the bottom of the dashboard switcher.
 
 <Screenshot
   page="user/dashboards/create-and-edit"

@@ -32,7 +32,7 @@ There are three ways to send something to a channel. A channel can use more than
 | **Notification channel action** | An [event type](./event-types.mdx#add-an-action) | One event type should post to this channel each time |
 | **Incident automation** | A [policy's automations](./incident-configuration.mdx#automations) | Post once per incident, when it opens or escalates |
 
-Email does not use channels. For email, add an **Email** action. See [Mail templates](./mail-templates.mdx).
+Email does not use channels. For email, add an **Email** action. See [Mail templates](./mail-templates.mdx). The channel form offers only Slack, Microsoft Teams, Webhook and ntfy. The platform knows two more channel types, Email and Expo Push, but this version has no form for them, so you cannot create them here.
 
 ## Create a channel
 
@@ -73,7 +73,7 @@ Narrow what is routed:
 - **Minimum severity**: only notifications at this severity or above. The choices are **Information**, **Warning**, **Error** and **Critical**.
 - **Event types**: only these event types. Leave it empty to match all. An incident is matched on the event type of the event that opened it.
 
-Automatic routing covers new events, incidents and in-app notifications. {/* TODO: verify that every new event is routed, not only those of types with actions, and what the example names FromRule and FromEvent in the field hint stand for */}
+Automatic routing covers every new event, whether or not its event type has actions, and in-app notifications that are not tied to an event. Incident notifications count as in-app notifications. Events that close a state (phase close) are not routed. In the **Event types** field, you can pick event types from your tenant. The field hint also shows names such as `FromRule` and `FromEvent`. These are the kinds of in-app notification: `FromRule` for a notification made by a rule, `FromEvent` for incident notifications.
 
 The **Automatic routing** column in the list sums up the filters, for example `≥ Warning · Door opened`.
 

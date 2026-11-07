@@ -46,11 +46,9 @@ Four system roles exist in every tenant. You cannot change them (**System roles 
 | Role | For | What it may do |
 | --- | --- | --- |
 | **Admin** | Tenant administrators | Everything in the tenant: create, change and delete all resource types, manage users, roles, groups, files and tenant settings, themes, API keys and service accounts, gateways, and read the audit log. |
-| **Manager** | People who run daily operations | Create, change and delete things, thing types, groups, files, rules, events, dashboards, canvases and mail templates. Change and delete users (but not invite) and read roles. Read reports. No themes, API keys or gateways. |
+| **Manager** | People who run daily operations | Create, change and delete things, thing types, groups, files, rules, events, dashboards, canvases and mail templates. Change and delete users (but not invite) and read roles. Read reports. Work incidents and read incident policies. No themes, API keys, gateways or audit log. |
 | **Modeler** | People who build data models | Create, change and delete things, thing types, interfaces, dashboards, events, reports and geofences. Create, change and delete files. Read users, groups and roles. May create API keys. |
-| **Viewer** | People who only watch | Read things, dashboards, events, reports, files and most other resources. May run actions and VNC connections, and create incidents. |
-
-{/* TODO: verify role summaries against the seed data in docker/images/db-migrate/migrations/app-db/identity (later migrations add Incident, AuditLog, ApiKey, Gateway and Knowledge permissions) */}
+| **Viewer** | People who only watch | Read things, dashboards, events, reports, files and most other resources. Dashboards are read-only: a Viewer cannot create or change them. May run actions and VNC connections, ask Nimble, and create incidents. |
 
 Older installations may also show roles taken over from earlier user management, such as **System Admin**, **Invitation** or **Theme Designer**. They appear as custom roles. **Theme Designer** only manages themes.
 

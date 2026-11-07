@@ -156,8 +156,9 @@ The gear button (**Edit rule**) changes the name, description and tags.
 4. Send data that meets the condition. If you have no device, open the thing and use **Simulate device**.
 5. Check the result: an email arrives, a notification shows in the header, or an event appears under **Monitoring › Events**.
 
-{/* TODO: verify whether more than one version of a rule can be active at the same time, and whether Activate also applies a pending draft. */}
-{/* TODO: verify where a failed or skipped rule evaluation can be seen by a user (Monitoring › Events shows rule evaluation events in code). */}
+Only one version of a rule is active at a time. Activating a version switches off the version that was active. **Activate** uses the published version. It does not apply a pending draft, so select **Publish** first. If the version is already active, **Publish** puts your changes live at once.
+
+Events that show which conditions of a rule matched are listed under **Monitoring › Events**. They use the display type **Rule evaluation**. {/* TODO(product): Where can a user see that a rule evaluation failed or was skipped (condition not met, invalid expression)? The code logs such errors on the server and only writes rule evaluation events, whose detail depends on the setting enableDetailedRuleEvaluation. Should the docs promise that users can see failed evaluations? */}
 
 To stop a rule, select **Deactivate**. Nothing is deleted.
 
@@ -185,12 +186,13 @@ The **Notification channel** action sends to the channels you create under **Con
   alt="The finished example rule with four nodes, active"
 />
 
-{/* TODO: verify that the Email action needs a mail server configured for the tenant and what the user sees when none is set. */}
-{/* TODO: verify whether placeholders for measure values can be used in the subject and body of the Email action. */}
+The Email action sends through the tenant's own mail server if one is set up under [**Tenant settings**](../administration/tenant-settings.mdx), and otherwise through the platform mail server. If neither works, the mail is not sent and the failure is recorded as an event. See [Events](../monitoring/events.mdx).
+
+**Subject** and **Body** accept placeholders in double curly braces. They are replaced when the mail is sent. Placeholders do not work when you pick a mail template. {/* TODO(product): Which placeholder names are available for a rule's Email action (for example the measure value that met the condition)? The code fills them from the action payload, but the payload fields of a rule-fired action are not documented in the app. */}
 
 ### Variant: send it to Slack, Teams, ntfy or a webhook
 
-1. Open **Configuration › Notification Channels** {/* TODO: link */} and select **Create channel**.
+1. Open [**Configuration › Notification Channels**](../monitoring/notification-channels.mdx) and select **Create channel**.
 2. Choose a **Channel type**, enter a **Name** and the target (for example the **Slack webhook URL**). Leave **Automatic routing** off so the channel only receives what a rule sends.
 3. Select **Send test** to check it.
 4. In step 5 of the example, add a **Notification channel** action instead of **Email**. Select your channel, then set a title, **Message** and **Severity**.

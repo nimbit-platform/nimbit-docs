@@ -19,7 +19,7 @@ Node-RED is a separate flow editor that your platform team can connect to IoT Br
 
 1. Open **Automation** in the left menu.
 2. Select **Node Red**. It opens in a new browser tab.
-3. Sign in if asked. {/* TODO: verify the sign-in: the editor uses the identity directory's token API, check whether users sign in again or arrive already signed in. */}
+3. Sign in with your IoT Breeze email and password. Node-RED has its own sign-in page, so you sign in again.
 
 <Screenshot
   page="user/automation/node-red"
@@ -42,7 +42,7 @@ Start with [Rule Designer](./rule-designer.mdx). It is built into IoT Breeze, ha
 | Connect a system that needs a custom protocol or a sequence of calls | Node-RED |
 | Build something a non-technical colleague must be able to maintain | Rule Designer |
 
-{/* TODO: verify the intended use cases of Node-RED in this product. The code only shows the menu link and a separate service; the table is a best guess and must be confirmed with the platform team. */}
+{/* TODO(product): Confirm the intended use cases of Node-RED in this product. The code only shows the menu entry (shown when a Node-RED address is configured and the role has Rule:u), the sign-in against the identity directory and a separate legacy service; the table above is a best guess. Is Node-RED still supported for new customers? */}
 
 :::warning Flows are not managed in IoT Breeze
 Flows you build in Node-RED are not versioned in Rule Designer and don't show in its list. Keep a note of what each flow does.

@@ -32,8 +32,6 @@ Select an element to see its tabs. An empty selection says *Select an element to
 
 An element with no matching value on the viewed thing shows **Not provided by this thing**.
 
-{/* TODO: verify the exact label of the From context / Fixed thing choice in the Data tab */}
-
 <Screenshot
   page="user/dashboards/canvas/live-data"
   id="01-bind-value"
@@ -72,7 +70,7 @@ On **On click**, choose a **Type**:
 | **Run an action** | Runs one of the thing's actions. Pick **Select an action** and the target. |
 | **Navigation** | Opens another canvas or a link. |
 | **Switch context thing** | Changes the thing the canvas shows. |
-| **Set a variable** | Sets a variable of the canvas. {/* TODO: verify, the app says setting variables is not supported yet in some places */} |
+| **Set a variable** | Sets a variable of the canvas. The variable must exist on the canvas. Where the canvas is shown without variable support, the element reports *Setting variables is not supported yet*. |
 | **None** | Nothing. |
 
 For **Run an action**, safeguards you can set:

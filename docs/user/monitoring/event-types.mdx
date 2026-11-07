@@ -47,10 +47,10 @@ The page header counts the event types in your tenant. Use the **Type** filter t
 | **Geofence** | Events about entering or leaving a geofence. Shows the journey. |
 
 :::info Who sees events
-Groups work as on things. A member sees an event when the event type's groups, or the thing's groups, allow it. {/* TODO: verify the exact visibility rule for events */}
+A member sees an event only when they belong to a group of the event type. If the event is about a thing or another record, they must also be able to see that record. The tenant's service user sees all events.
 :::
 
-Rules that create events pick an event type. Create the type first, then choose it in the rule designer. {/* TODO: link to the Automation track, Rule designer */}
+Rules that create events pick an event type. Create the type first, then choose it in the [rule designer](../automation/rule-designer.mdx).
 
 ## Open an event type
 
@@ -78,11 +78,8 @@ Actions run each time an event of this type is emitted. On the event type page:
 | **Notification channel** | Sends a message to a [notification channel](./notification-channels.mdx), such as Slack or Teams |
 | **Email** | Sends an email to recipients or groups, as plain text or with a [mail template](./mail-templates.mdx) |
 | **Webhook** | Sends an HTTP request to an external endpoint |
-| **Azure C2D** | Issues a cloud-to-device command through Azure IoT Hub |
-| **Event** | Emits another typed event for downstream rules to react to |
-| **MQTT** | Publishes a message on an MQTT topic |
 
-{/* TODO: verify which action types the create form offers on a standard tenant; MQTT and Azure C2D may depend on the setup */}
+Azure C2D and MQTT message actions are not offered here. They belong to thing types. See [Actions](../automation/actions.mdx).
 
 The actions table shows **Type**, **Name**, **Users**, **Groups**, **Modified** and an **Active** switch. Switch an action off to pause it without deleting it. Filter by type with the chips above the table.
 

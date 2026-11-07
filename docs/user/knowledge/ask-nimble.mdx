@@ -105,17 +105,15 @@ When Nimble could not back something up, it says so. Examples: **I didn't find a
 
 ## Choose what Nimble uses
 
-On the full page you can switch off sources for the next question under **Capabilities**:
+Above the question field, the **Reads** strip switches sources off for the next question. It sits in the same place in the side panel and on the full page. Hover a source to see its capability name:
 
-| Capability | Covers |
-| --- | --- |
-| **Graph traversal** | Relations, flow tracing. |
-| **Live values** | Timeseries, causes. |
-| **Documents** | Manuals, datasheets, P&IDs. |
+| Button | Capability | Covers |
+| --- | --- | --- |
+| **Records** | **Graph traversal** | Relations, flow tracing. |
+| **Readings** | **Live values** | Timeseries, causes. |
+| **Docs** | **Documents** | Manuals, datasheets, P&IDs. |
 
-Looking up records is always on. A **Document scope** setting (**Self**, **Subtree**, **Inherited**) applies once you have added context and decides which documents Nimble reads around that record. You can also pick the model under **Model**; the default is **Auto**.
-
-{/* TODO: verify where the Capabilities, Document scope and Model controls sit in the panel versus the full page. */}
+Looking up records is always on. A document scope picker (**Self**, **Inherited**, **Subtree**) sits beside **Docs**. It applies once you have added context and decides which documents Nimble reads around that record. The model menu in the question field's footer lists the **Agent** and **Model** choices; the default is **Auto**.
 
 ## Limits
 

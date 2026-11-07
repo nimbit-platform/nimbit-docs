@@ -46,10 +46,8 @@ A connector streams records into a staging source. Open the **Connectors** tab a
 />
 
 :::caution Database connectors
-Database connectors save and validate, but no SQL driver ships yet. The connector reports "driver not available" until one is enabled.
+Database connectors support PostgreSQL only. Choose it under **Driver**. If the driver list is empty or a driver is missing, the connector reports "driver not available".
 :::
-
-{/* TODO: verify the database driver notice is still current in this release. */}
 
 ### HTTP/REST and OData helpers
 
@@ -79,8 +77,6 @@ A credential holds a secret that several connectors share. Open the **Credential
 Secrets are stored encrypted and never shown again, not even to admins. **Rotate** replaces the secret for every connector that uses it; those connectors restart. A credential that connectors still use cannot be deleted. A connector's own secret can be moved into a shared credential with **Move to a shared credential**.
 
 Only tenant admins create, rotate or delete credentials. Other people with Knowledge setup access see them read-only.
-
-{/* TODO: verify who can open the Credentials tab: the screen says "shown to admins and modelers only", while changing needs Tenant:u. */}
 
 ## Mappings
 

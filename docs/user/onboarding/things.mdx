@@ -69,7 +69,7 @@ Use letters, digits, `-` and `_`. The ID becomes part of the MQTT client ID, whe
 />
 
 :::info Who sees the thing
-Groups decide who can see a thing. See {/* TODO: link */} **Administration › Groups** for how groups and roles work.
+Groups decide who can see a thing. See [Administration › Groups](../administration/groups.mdx) for how groups and roles work.
 :::
 
 ## The thing page
@@ -109,14 +109,14 @@ Some tabs only show for roles that have the matching permission. A tab with no c
 ## Delete a thing
 
 1. Open the thing and select **Delete thing**.
-2. To delete the recorded data too, switch on the option that offers it and confirm as asked. Select **Delete thing and data**. Without it, only the thing is deleted and its data stays in storage.
+2. To delete the recorded data too, tick **Also delete all recorded data of this thing**. The dialog then shows an estimate of what will go. Enter a **Reason** of at least 3 characters (it is kept in the audit log), choose when to **Start**, either **In 10 minutes (cancellable)** or **Immediately**, and type the thing's ID to confirm. Select **Delete thing and data**. Without it, only the thing is deleted and its data stays in storage.
 3. Confirm.
 
 :::caution
 Deleting cannot be undone.
 :::
 
-{/* TODO: verify the exact wording and the confirmation step of the data deletion opt-in (DataDeletionOptIn). */}
+A data deletion runs as a job that you can follow in **Tenant Settings › Schedules**. With the delayed start you can cancel it there during the 10 minutes. An immediate deletion cannot bring back rows that are already gone. The option appears only if you may delete data.
 
 ## Next steps
 

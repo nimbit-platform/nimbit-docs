@@ -23,16 +23,22 @@ Use this tab to delete recorded data. It shows the data stores to everyone who m
 
 **Delete recorded data** clears readings of the whole tenant, of a thing type or of selected things:
 
-- all readings,
-- only simulated readings,
-- or only readings with a tag, within a time range.
+- all readings (**All data**),
+- only simulated readings (**Simulated data**),
+- or only readings with a tag (**Data with a tag**), within a time range.
+
+The form is a short series of steps:
+
+1. **Which data**: pick one of the three kinds above. For a tag, enter a **Tag** and its **Value**.
+2. **Of which things**: pick **The whole tenant**, **A thing type** or **Selected things**. The whole tenant is only offered for simulated data or a tag, so clearing all readings needs a thing type or things. You can also tick **Also delete the things themselves**.
+3. **Time range**: **All time**, **Last 7 days**, **Last 30 days** or a custom range of days.
+4. **What will be deleted** summarizes your choices. Check it, then confirm with **Schedule deletion**.
 
 To delete one thing or thing type together with its data, use its delete action in **Settings › Onboarding** instead.
 
 :::warning Deleting data cannot be undone
 Check the scope and the time range before you confirm.
 :::
-{/* TODO: verify the form fields (scope, simulated, tag, range) in the data deletion form */}
 
 <Screenshot
   page="user/administration/tenant-data-and-connections"

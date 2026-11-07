@@ -99,7 +99,7 @@ Copy the values from here instead of composing them. They follow this pattern:
 | Commands topic | `iot/tenant/<tenantId>/device/<deviceId>/cmd/#` |
 | Errors topic | `iot/tenant/<tenantId>/device/<deviceId>/error` |
 
-{/* TODO: verify that `<deviceId>` in Connection info is the same string as the Device ID shown on the thing page (the Thing Alternate ID). The backend builds these values from the thing's internal id. */}
+In **Connection info**, `<deviceId>` is the thing's internal ID, not the **Thing Alternate ID** that the thing page shows as its device ID. The two differ, so copy the values from the drawer instead of building them from the device ID on the thing page.
 
 <Screenshot
   page="user/onboarding/connections"
@@ -156,7 +156,7 @@ mosquitto_pub -h <mqtt-host> -p 1883 \
   -m '{"thingType":"room_sensor","data":{"temperature":22.5}}'
 ```
 
-{/* TODO: verify that a message without `time` is stamped with its arrival time, and what `tags` do to stored rows. */}
+A message without `time` is stamped with the time it arrives. Each entry in `tags` is stored as a label on the rows of that message. A tag name cannot be a reserved field such as `time`.
 
 A device can only publish to its own telemetry topic and only subscribe to its own commands and errors topics. Commands arrive at QoS 0: a command is not queued for a device that is offline.
 

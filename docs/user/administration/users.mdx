@@ -105,6 +105,5 @@ There is no deactivate switch. To end someone's access, remove them.
 The same works for open invitations: deleting one revokes it.
 
 :::warning
-You cannot remove the tenant owner. The directory also refuses to remove the last admin.
+You cannot remove the tenant owner. The directory also refuses to remove, or change the roles of, the last user who holds the built-in **Admin** role. You see **The tenant needs at least one administrator. Make someone else an administrator first.** A custom role with admin-like permissions does not count.
 :::
-{/* TODO: verify that the last-admin refusal message applies to every role that holds the admin permissions */}

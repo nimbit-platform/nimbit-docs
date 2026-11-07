@@ -95,9 +95,9 @@ If sending fails, the banner says **Simulation stopped: the data could not be se
 Messages from a simulation carry a tag that marks them as simulated. They are stored and appear in charts like real data, so use a test thing if you do not want them in the history of a real device.
 :::
 
-{/* TODO: verify how simulated data is shown in charts and whether it can be filtered out or deleted. The code tags it with source _nimbit_platform_simulated_. */}
+Charts do not tell simulated readings apart from real ones. You can remove them afterwards: in [Tenant Settings › Data](../administration/tenant-data-and-connections.mdx), choose **Simulated data** to delete only what the platform simulated. Readings your devices sent are never touched. Stop running simulations first.
 
 ## Next steps
 
-- See the values arrive on the thing's **Overview** and build a dashboard: **Monitoring › Dashboards** {/* TODO: link */}.
+- See the values arrive on the thing's **Overview** and build a dashboard: [Monitoring › Dashboards](../dashboards/index.mdx).
 - [Connect a real device](./connections.mdx).
