@@ -84,7 +84,7 @@ const config: Config = {
       {
         docs: {
           sidebarPath: require.resolve("./sidebars.ts"),
-          editUrl: "https://cparsinnovationlab.bitbucket.io/nimbit",
+          showLastUpdateTime: true,
           docItemComponent: "@theme/ApiItem",
           // Section folders have an index.mdx that is the category's own page
           // (linked from the label); don't list it again as a child item.
@@ -156,6 +156,7 @@ const config: Config = {
       },
     ],
     "docusaurus-plugin-image-zoom",
+    require.resolve("./plugins/llms.js"),
     function customWebpackPlugin() {
       return {
         name: "custom-webpack-plugin",

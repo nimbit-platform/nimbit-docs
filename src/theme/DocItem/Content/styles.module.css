@@ -1,0 +1,21 @@
+.badge {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  padding: 0.125rem 0.5rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 999px;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.badge[data-type="tutorial"] {
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary-darker);
+}
+
+[data-theme="dark"] .badge[data-type="tutorial"] {
+  color: var(--ifm-color-primary-lighter);
+}

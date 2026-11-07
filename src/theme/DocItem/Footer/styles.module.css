@@ -1,0 +1,17 @@
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+  font-size: 0.85rem;
+}
+
+.actions a {
+  color: var(--ifm-color-emphasis-700);
+}
+
+.actions a:hover {
+  color: var(--ifm-color-primary);
+}
