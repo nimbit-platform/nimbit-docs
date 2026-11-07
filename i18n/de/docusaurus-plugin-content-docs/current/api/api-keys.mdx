@@ -1,16 +1,16 @@
 ---
-untranslated: true
-title: API keys
-description: What an API key is in NimBit, the credentials for machines that exist, what a key may do, and how a request with a key is checked.
+title: API-Schlüssel
+description: Was ein API-Schlüssel in NimBit ist, welche Zugangsdaten für Maschinen es gibt, was ein Schlüssel darf und wie ein Request mit Schlüssel geprüft wird.
 type: concept
 sidebar_position: 2
 app:
   routes: ["/administration/api-keys"]
+translated_from: dd3e5a5
 ---
 
-An API key is a secret that lets a script, an integration or an AI assistant call IoT Breeze without a person signing in. It acts as one member of your organization, can do only what its scopes allow, and expires.
+Ein API-Schlüssel ist ein Geheimnis, mit dem ein Skript, eine Integration oder ein KI-Assistent IoT Breeze aufrufen kann, ohne dass sich eine Person anmeldet. Er handelt als ein Mitglied Ihrer Organisation, darf nur tun, was seine Scopes erlauben, und läuft ab.
 
-A key looks like `nbk_<key id>_<secret><checksum>`. The key id is the public handle you see in lists and logs. IoT Breeze stores only a hash of the secret, so the full key is shown once, when you create it.
+Ein Schlüssel sieht so aus: `nbk_<key id>_<secret><checksum>`. Die Key-ID ist das öffentliche Kennzeichen, das Sie in Listen und Logs sehen. IoT Breeze speichert nur einen Hash des Geheimnisses, deshalb wird der vollständige Schlüssel nur einmal angezeigt, beim Anlegen.
 
 ```mermaid
 flowchart TB
@@ -23,21 +23,21 @@ flowchart TB
   V --> R[Response or 403]
 ```
 
-## The parts
+## Die Bestandteile {#the-parts}
 
-### Kinds of machine credential
+### Arten von Maschinen-Zugangsdaten {#kinds-of-machine-credential}
 
-| Kind | Acts as | Notes |
+| Art | Handelt als | Hinweise |
 | --- | --- | --- |
-| Personal key | You | Never has more rights than you hold. Always expires within a year. Stops working when you are no longer a usable member. Tenant policy can switch personal keys off. |
-| Service account key | A service account | The account is a member that never signs in and holds the roles you give it. Its keys survive staff changes. Can be allowed scopes marked **Sensitive** and, if the policy sets no maximum, no expiry. |
-| Gateway credential | A gateway | Not an `nbk_` key. A box such as Periscope redeems a one-time onboarding code, then signs its requests with its own key pair. Managed on the gateways page, see [Connect devices through a gateway](../gateways/index.mdx). |
+| Persönlicher Schlüssel | Sie | Hat nie mehr Rechte als Sie. Läuft immer innerhalb eines Jahres ab. Funktioniert nicht mehr, wenn Sie kein nutzbares Mitglied mehr sind. Die Tenant-Richtlinie kann persönliche Schlüssel abschalten. |
+| Service-Account-Schlüssel | Ein Service-Account | Der Account ist ein Mitglied, das sich nie anmeldet und die Rollen hält, die Sie ihm geben. Seine Schlüssel überstehen Personalwechsel. Ihm können Scopes erlaubt werden, die als **Sensibel** markiert sind, und, wenn die Richtlinie kein Maximum setzt, kein Ablauf. |
+| Gateway-Zugangsdaten | Ein Gateway | Kein `nbk_`-Schlüssel. Eine Box wie Periscope löst einen einmaligen Onboarding-Code ein und signiert ihre Requests dann mit einem eigenen Schlüsselpaar. Verwaltet auf der Gateway-Seite, siehe [Geräte über ein Gateway verbinden](../gateways/index.mdx). |
 
-Two things look similar and are different. **Connected apps** on the API keys page are AI assistants that you allowed to act as you through a consent screen. Device credentials (basic and JWT) belong to one thing and only send data; see [Authentication](./authentication.mdx#device-and-tenant-credentials-tsflux).
+Zwei Dinge sehen ähnlich aus und sind verschieden. **Verbundene Apps** auf der Seite der API-Schlüssel sind KI-Assistenten, denen Sie über einen Zustimmungsdialog erlaubt haben, in Ihrem Namen zu handeln. Gerätezugangsdaten (Basic und JWT) gehören zu einem Thing und senden nur Daten; siehe [Authentifizierung](./authentication.mdx#device-and-tenant-credentials-tsflux).
 
-### Scopes
+### Scopes {#scopes}
 
-A scope is a named permission set that belongs to one app. You tick scopes when you create a key. Examples from the catalogue:
+Ein Scope ist ein benannter Berechtigungssatz, der zu einer App gehört. Sie haken Scopes an, wenn Sie einen Schlüssel anlegen. Beispiele aus dem Katalog:
 
 | Scope | App | Label |
 | --- | --- | --- |
@@ -47,51 +47,51 @@ A scope is a named permission set that belongs to one app. You tick scopes when 
 | `telemetry:read` | nbq | Read time series |
 | `events:read` | nbq | Read events |
 
-The create dialog lists the scopes available to you. It also offers presets: **Read only**, **AI assistant** and **ERP or MES integration**.
+Der Dialog zum Anlegen listet die Scopes, die Ihnen zur Verfügung stehen. Er bietet auch Vorlagen an: **Nur lesen**, **KI-Assistent** und **ERP- oder MES-Integration**.
 
-### Key policy
+### Schlüsselrichtlinie {#key-policy}
 
-Admins set four rules for the organization under **Edit policy**: whether members may create personal keys, the maximum lifetime, how long an unused key may sit idle before it stops, and whether service accounts may hold sensitive scopes. Without a saved policy the defaults are: a year at most, personal keys allowed, no sensitive scopes, no idle limit. The policy applies at every request, not only at creation.
+Admins legen unter **Richtlinie bearbeiten** vier Regeln für die Organisation fest: ob Mitglieder persönliche Schlüssel anlegen dürfen, die maximale Laufzeit, wie lange ein ungenutzter Schlüssel ruhen darf, bevor er nicht mehr funktioniert, und ob Service-Accounts sensible Scopes halten dürfen. Ohne gespeicherte Richtlinie gelten diese Standardwerte: höchstens ein Jahr, persönliche Schlüssel erlaubt, keine sensiblen Scopes, kein Limit für Inaktivität. Die Richtlinie gilt bei jedem Request, nicht nur beim Anlegen.
 
-## How they work together
+## Wie sie zusammenarbeiten {#how-they-work-together}
 
-A key is not sent to the APIs as a long-lived token. When a request arrives with `Authorization: Bearer nbk_...`, ocb or nbq asks the identity directory to exchange the key for an access token that is valid for five minutes and then checks that token like a person's.
+Ein Schlüssel wird nicht als langlebiges Token an die APIs gesendet. Trifft ein Request mit `Authorization: Bearer nbk_...` ein, bittet ocb oder nbq das Identity Directory, den Schlüssel gegen ein Access-Token zu tauschen, das fünf Minuten gültig ist, und prüft dieses Token dann wie das einer Person.
 
-The directory refuses the key with one answer, `401`, if it is malformed, unknown, revoked, expired, idle past the policy limit, used from an address outside its **Allowed addresses**, or if its principal is no longer a usable member. Otherwise the token carries the owner's permissions narrowed to the key's scopes, and an audience naming one app. The app rejects a token meant for another app.
+Das Directory lehnt den Schlüssel mit einer einzigen Antwort ab, `401`, wenn er fehlerhaft, unbekannt, widerrufen, abgelaufen, länger als das Richtlinienlimit inaktiv, von einer Adresse genutzt wird, die nicht unter **Erlaubte Adressen** steht, oder sein Principal kein nutzbares Mitglied mehr ist. Andernfalls trägt das Token die Berechtigungen des Besitzers, eingeschränkt auf die Scopes des Schlüssels, und eine Audience, die eine App nennt. Die App lehnt ein Token ab, das für eine andere App gedacht ist.
 
-Because a token is for one app, a key that holds scopes for several apps gets one token per app. ocb and nbq do this for you when you send the key as the bearer. The exchange itself is documented in [Authentication](./authentication.mdx#api-key-exchange).
+Weil ein Token für eine App gilt, bekommt ein Schlüssel mit Scopes für mehrere Apps ein Token pro App. ocb und nbq erledigen das für Sie, wenn Sie den Schlüssel als Bearer senden. Der Austausch selbst steht in [Authentifizierung](./authentication.mdx#api-key-exchange).
 
-OCB routes that declare permissions are decided by those permissions. Routes that are meant for a signed-in person answer `403` with `API_KEY_NOT_ALLOWED`. Only `GET /users/me` is open to keys among them.
+OCB-Routen, die Berechtigungen deklarieren, werden anhand dieser Berechtigungen entschieden. Routen, die für angemeldete Personen gedacht sind, antworten mit `403` und `API_KEY_NOT_ALLOWED`. Von ihnen steht nur `GET /users/me` Schlüsseln offen.
 
-## Choosing between keys
+## Den passenden Schlüssel wählen {#choosing-between-keys}
 
-| You want to | Use |
+| Sie möchten | Verwenden |
 | --- | --- |
-| Run a script as yourself for a while | A personal key with the **Read only** preset or the scopes you need. |
-| Run an integration that must outlive staff changes | A service account key. |
-| Connect a Periscope box on a plant network | A gateway credential. |
-| Send device data | The thing's device credentials, not a key. |
-| Work in IoT Breeze yourself | Sign in. No key needed. |
+| Ein Skript eine Zeit lang als Sie selbst ausführen | Einen persönlichen Schlüssel mit der Vorlage **Nur lesen** oder den Scopes, die Sie brauchen. |
+| Eine Integration betreiben, die Personalwechsel überdauern muss | Einen Service-Account-Schlüssel. |
+| Eine Periscope-Box in einem Anlagennetz verbinden | Gateway-Zugangsdaten. |
+| Gerätedaten senden | Die Gerätezugangsdaten des Things, keinen Schlüssel. |
+| Selbst in IoT Breeze arbeiten | Melden Sie sich an. Kein Schlüssel nötig. |
 
-## Lifetime and rotation
+## Laufzeit und Rotation {#lifetime-and-rotation}
 
-A key expires after 30, 90 or 365 days. **Never** is offered only for service account keys when the policy sets no maximum. No access token outlives its key. To replace a key without downtime, roll it: the new key has the same scopes and the old one keeps working for a period you choose. Revoking ends a key for good, and clients that use it stop within five minutes. The steps are in [Create an API key](../administer/api-key.mdx#rotate-or-revoke-a-key).
+Ein Schlüssel läuft nach 30, 90 oder 365 Tagen ab. **Nie** wird nur für Service-Account-Schlüssel angeboten, wenn die Richtlinie kein Maximum setzt. Kein Access-Token überlebt seinen Schlüssel. Um einen Schlüssel ohne Unterbrechung zu ersetzen, rollen Sie ihn: Der neue Schlüssel hat dieselben Scopes, und der alte funktioniert für einen Zeitraum weiter, den Sie wählen. Widerrufen beendet einen Schlüssel endgültig, und Clients, die ihn verwenden, funktionieren nach spätestens fünf Minuten nicht mehr. Die Schritte stehen unter [Einen API-Schlüssel anlegen](../administer/api-key.mdx#rotate-or-revoke-a-key).
 
-## Keep keys safe
+## Schlüssel sicher aufbewahren {#keep-keys-safe}
 
-- Store keys in a secret manager. The `nbk_` prefix and checksum let secret scanners recognize a leaked key.
-- Create one key per integration so you can revoke one without breaking others.
-- Pick the smallest scope set. Prefer **Read only** and add scopes as you need them.
-- Set **Allowed addresses** to the networks the integration runs from.
-- Use short expiry and roll before it ends.
-- Call the APIs from a server. The key exchange sends no CORS headers, so a browser page cannot use a key.
+- Speichern Sie Schlüssel in einem Secret Manager. Präfix `nbk_` und Prüfsumme lassen Secret-Scanner einen geleakten Schlüssel erkennen.
+- Legen Sie pro Integration einen Schlüssel an, damit Sie einen widerrufen können, ohne andere zu stören.
+- Wählen Sie die kleinste Scope-Menge. Bevorzugen Sie **Nur lesen** und fügen Sie Scopes hinzu, wenn Sie sie brauchen.
+- Setzen Sie **Erlaubte Adressen** auf die Netze, aus denen die Integration läuft.
+- Verwenden Sie kurze Laufzeiten und rollen Sie vor dem Ablauf.
+- Rufen Sie die APIs von einem Server aus auf. Der Schlüsselaustausch sendet keine CORS-Header, deshalb kann eine Browserseite keinen Schlüssel verwenden.
 
-## Limits
+## Limits {#limits}
 
-- A key works with OCB, nbq and the AI endpoints. It does not work for sending data to tsflux or MQTT.
-- The exchange is rate limited. See [Errors and limits](./errors-and-limits.mdx#limits).
-- API keys must be enabled for your deployment. When they are off, the exchange answers `404`.
+- Ein Schlüssel funktioniert mit OCB, nbq und den KI-Endpoints. Zum Senden von Daten an tsflux oder MQTT funktioniert er nicht.
+- Der Austausch ist ratenbegrenzt. Siehe [Fehler und Limits](./errors-and-limits.mdx#limits).
+- API-Schlüssel müssen für Ihr Deployment aktiviert sein. Sind sie aus, antwortet der Austausch mit `404`.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Create an API key](../administer/api-key.mdx) · [Authentication](./authentication.mdx) · [Errors and limits](./errors-and-limits.mdx)
+- [Einen API-Schlüssel anlegen](../administer/api-key.mdx) · [Authentifizierung](./authentication.mdx) · [Fehler und Limits](./errors-and-limits.mdx)

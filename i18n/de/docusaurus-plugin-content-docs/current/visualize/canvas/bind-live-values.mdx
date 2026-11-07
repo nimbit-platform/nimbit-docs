@@ -1,55 +1,55 @@
 ---
-untranslated: true
-title: Bind elements to live values
-description: Connect a canvas element to a thing's measure or property, choose context or fixed, and set thresholds.
+title: Elemente an Live-Werte binden
+description: Ein Canvas-Element mit der Telemetrie oder Eigenschaft eines Things verbinden, Kontext oder fest wählen und Schwellenwerte setzen.
 type: how-to
 sidebar_position: 3
 app:
   routes: ["/canvas/:id"]
   tour: canvas-data
+translated_from: 70da89f
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
 
-Give an element its value: choose the thing, pick a measure or property and, if you like, color it by thresholds. For how context and fixed things differ, see [How a canvas works](./how-canvas-works.mdx).
+Geben Sie einem Element seinen Wert: Wählen Sie das Thing, eine Telemetrie oder Eigenschaft und färben Sie es bei Bedarf nach Schwellenwerten ein. Wie sich Kontext-Thing und festes Thing unterscheiden, lesen Sie unter [Wie ein Canvas funktioniert](./how-canvas-works.mdx).
 
-## Before you start
-- A role that may update canvases.
-- A canvas with at least one element, for example from [Draw a floor plan](./draw-a-floor-plan.mdx). On an empty canvas, add a **Value** from the library first.
-- Things that send data, or mock data to design with.
+## Bevor Sie beginnen {#before-you-start}
+- Eine Rolle, die Canvases aktualisieren darf.
+- Ein Canvas mit mindestens einem Element, zum Beispiel aus [Einen Grundriss zeichnen](./draw-a-floor-plan.mdx). Fügen Sie auf einem leeren Canvas zuerst aus der Bibliothek einen **Wert** hinzu.
+- Things, die Daten senden, oder Testdaten zum Entwerfen.
 
-## Steps
+## Schritte {#steps}
 
-1. Open the canvas and select **Edit canvas**.
-2. Select an element, in the canvas or in **Layers**. The **Inspector** on the right shows its tabs: **Data**, **Appearance**, **States** and **Action**. An element that shows no live data says **This element does not show live data.**
-3. On the **Data** tab, choose the source:
-   - **From context** reads the thing the viewer picked. One canvas then serves every matching thing.
-   - **Fixed thing** always reads the same device.
-4. In **Bind value**, search things, measures and properties, select one and continue.
-5. Optional: under **Thresholds**, select **Add**, then pick an operator (**Equals**, **Greater than**, **Greater or equal**, **Less than**, **Less or equal** or **Range**), a value, a **Background** and a **Text color**. With no thresholds the value uses the default style.
-6. Optional: set **Consider data stale after** to override the canvas default for this element.
-7. Select **Preview** to check, then **Save**.
+1. Öffnen Sie das Canvas und wählen Sie **Canvas Bearbeiten**.
+2. Wählen Sie ein Element, auf dem Canvas oder unter **Ebenen**. Der **Inspektor** rechts zeigt seine Tabs: **Daten**, **Darstellung**, **Zustände** und **Aktion**. Ein Element ohne Live-Daten meldet **Dieses Element zeigt keine Live-Daten.**
+3. Wählen Sie im Tab **Daten** die Quelle:
+   - **Aus dem Kontext** liest das Thing, das der Betrachter gewählt hat. Ein Canvas bedient dann jedes passende Thing.
+   - **Festes Thing** liest immer dasselbe Gerät.
+4. Suchen Sie unter **Wert binden** Things, Telemetrien und Eigenschaften, wählen Sie eine aus und fahren Sie fort.
+5. Optional: Wählen Sie unter **Schwellenwerte** **Hinzufügen**, dann einen Operator (**Gleich**, **Größer als**, **Größer oder gleich**, **Kleiner als**, **Kleiner oder gleich** oder **Bereich**), einen Wert, einen **Hintergrund** und eine **Textfarbe**. Ohne Schwellenwerte nutzt der Wert den Standardstil.
+6. Optional: Setzen Sie **Daten als veraltet betrachten nach**, um den Standard des Canvas für dieses Element zu überschreiben.
+7. Wählen Sie **Vorschau** zum Prüfen und dann **Speichern**.
 
 <Screenshot
   page="visualize/canvas/bind-live-values"
   id="01-bind-value"
   route="/canvas/:id"
   state="Editor with a Value element selected, Data tab open, Source set to From context, the Bind value dialog showing a measure and its current value"
-  alt="The Data tab and the Bind value dialog for a Value element"
+  alt="Der Tab Daten und der Dialog Wert binden für ein Wert-Element"
 />
 
-Text elements can show several values inline. In the text, choose **Insert value**, pick the value, and edit its thresholds by clicking its token. The same element can bind more than one value this way.
+Textelemente können mehrere Werte im Text zeigen. Wählen Sie im Text **Wert einfügen**, wählen Sie den Wert und bearbeiten Sie seine Schwellenwerte, indem Sie sein Token anklicken. Dasselbe Element kann so mehr als einen Wert binden.
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-Select **Preview** and pick a thing in the header: the element shows its current value with the thresholds applied. Pick another thing and the value follows, for elements on **From context**.
+Wählen Sie **Vorschau** und dann in der Kopfzeile ein Thing: Das Element zeigt seinen aktuellen Wert mit den angewendeten Schwellenwerten. Wählen Sie ein anderes Thing, und der Wert folgt, bei Elementen auf **Aus dem Kontext**.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **Not provided by this thing**: the viewed thing does not have that measure. Pick another thing, or check the interfaces in **Canvas settings**.
-- **No context thing selected**: the element reads **From context** but the canvas has no thing chosen. Pick one in the header.
-- **Thing not found** or **Broken**: the bound thing was deleted or you may not see it. Rebind the element.
-- **Stale**: no update arrived within the stale limit. Check the device, or raise **Consider data stale after**.
+- **Von diesem Thing nicht bereitgestellt**: Das angezeigte Thing hat diese Telemetrie nicht. Wählen Sie ein anderes Thing oder prüfen Sie die Interfaces in den **Canvas-Einstellungen**.
+- **Kein Kontext-Thing ausgewählt**: Das Element liest **Aus dem Kontext**, aber im Canvas ist kein Thing gewählt. Wählen Sie eines in der Kopfzeile.
+- **Thing nicht gefunden** oder **Fehlerhaft**: Das gebundene Thing wurde gelöscht, oder Sie dürfen es nicht sehen. Binden Sie das Element neu.
+- **Veraltet**: Innerhalb der Veraltet-Grenze kam kein Update. Prüfen Sie das Gerät oder erhöhen Sie **Daten als veraltet betrachten nach**.
 
-## Related
-- [Show state by color, icon and motion](./states-and-colors.mdx) · [Canvas editor reference](./editor-reference.mdx)
+## Verwandte Seiten {#related}
+- [Zustand durch Farbe, Icon und Bewegung zeigen](./states-and-colors.mdx) · [Referenz des Canvas-Editors](./editor-reference.mdx)

@@ -1,94 +1,94 @@
 ---
-untranslated: true
-title: An alert email never arrives
-description: Find out why an alert email does not arrive, from switched-off actions and recipients to mail templates, the mail server and channel filters.
+title: Eine Alarm-E-Mail kommt nie an
+description: Herausfinden, warum eine Alarm-E-Mail nicht ankommt, von abgeschalteten Aktionen und Empfängern über Mail-Vorlagen und Mailserver bis zu Kanalfiltern.
 sidebar_position: 5
 type: how-to
 app:
   routes: ["/monitor/events", "/manage/event-types/:id", "/manage/mail-templates", "/manage/notification-channels"]
+translated_from: 679f3a4
 ---
 
-Find out why an event happened but the email did not follow. Email and notification channels are separate paths, explained in [Events, incidents and notifications](../watch/events-incidents-notifications.mdx).
+Finden Sie heraus, warum ein Event eingetreten ist, die E-Mail aber nicht folgte. E-Mail und Benachrichtigungskanäle sind getrennte Wege, erklärt unter [Events, Vorfälle und Benachrichtigungen](../watch/events-incidents-notifications.mdx).
 
-## Symptoms
+## Symptome {#symptoms}
 
-- An event or incident exists under **Monitoring**, and nobody got a mail.
-- The mail arrives with empty or wrong content.
-- You expected a Teams, Slack or webhook message and got none.
+- Ein Event oder Vorfall existiert unter **Überwachung**, und niemand hat eine E-Mail bekommen.
+- Die E-Mail kommt mit leerem oder falschem Inhalt an.
+- Sie haben eine Nachricht in Teams, Slack oder per Webhook erwartet und keine bekommen.
 
-## Check in this order
+## In dieser Reihenfolge prüfen {#check-in-this-order}
 
-### 1. Which path should send it
+### 1. Welcher Weg sie senden soll {#1-which-path-should-send-it}
 
-| You expect | Sent by |
+| Sie erwarten | Gesendet von |
 | --- | --- |
-| A mail about an event | An **Email** action on the event type, or on a rule |
-| A mail about an incident | IoT Breeze, to the incident's assignee and watchers |
-| A chat or webhook message | A notification channel. See check 6. |
+| Eine E-Mail zu einem Event | Einer Aktion **E-Mail** am Event-Typ oder an einer Regel |
+| Eine E-Mail zu einem Vorfall | IoT Breeze, an den Bearbeiter und die Beobachter des Vorfalls |
+| Eine Chat- oder Webhook-Nachricht | Einem Benachrichtigungskanal. Siehe Prüfung 6. |
 
-A notification channel cannot be an email address. Incidents reach a channel only through an automation on their incident policy.
+Ein Benachrichtigungskanal kann keine E-Mail-Adresse sein. Vorfälle erreichen einen Kanal nur über eine Automatisierung ihrer Vorfallsrichtlinie.
 
-### 2. The event happened and the action ran
+### 2. Das Event ist eingetreten und die Aktion lief {#2-the-event-happened-and-the-action-ran}
 
-Open **Monitoring › Events** and find the event.
+Öffnen Sie **Überwachung › Events** und suchen Sie das Event.
 
-- **No event**: the rule did not fire. See [A rule doesn't fire](./rule-not-firing.mdx).
-- **An event of another type**: the **Email** action is on a different event type. Open **Configuration › Event Types**, the type of the event, and its **Actions** tab.
-- **The action is there with its Active switch off**: actions added on an event type are created switched off. Switch it on.
-- **The event closes an alarm**: events that end a state, such as a thing coming back online, run no actions.
-- **The action failed**: a failed run is recorded as its own event. Open it for the reason.
+- **Kein Event**: Die Regel hat nicht ausgelöst. Siehe [Eine Regel löst nicht aus](./rule-not-firing.mdx).
+- **Ein Event eines anderen Typs**: Die Aktion **E-Mail** hängt an einem anderen Event-Typ. Öffnen Sie **Einstellungen › Konfiguration › Event Typen**, den Typ des Events und seinen Tab **Aktionen**.
+- **Die Aktion ist da, ihr Schalter Aktiv ist aus**: Aktionen, die an einem Event-Typ hinzugefügt werden, werden ausgeschaltet angelegt. Schalten Sie sie ein.
+- **Das Event beendet einen Alarm**: Events, die einen Zustand beenden, etwa ein Thing, das wieder online ist, führen keine Aktionen aus.
+- **Die Aktion ist fehlgeschlagen**: Ein fehlgeschlagener Lauf wird als eigenes Event aufgezeichnet. Öffnen Sie es für den Grund.
 
-### 3. Recipients
+### 3. Empfänger {#3-recipients}
 
-Open the **Email** action. At least one user, group or external address is needed.
+Öffnen Sie die Aktion **E-Mail**. Es braucht mindestens einen Benutzer, eine Gruppe oder eine externe Adresse.
 
-- A group sends to its members. Check that the person is in it.
-- Check **From**, **CC** and **BCC** for typos.
+- Eine Gruppe sendet an ihre Mitglieder. Prüfen Sie, ob die Person darin ist.
+- Prüfen Sie **Von**, **Cc** und **Bcc** auf Tippfehler.
 
 {/* TODO(product): What happens when a group recipient has no members, or a user has no email address? Is the run recorded as failed or silently skipped? */}
 
-### 4. Subject, body and mail template
+### 4. Betreff, Inhalt und Mail-Vorlage {#4-subject-body-and-mail-template}
 
-- Format **Plain**: **Subject** and **Body** are required, and `{{placeholders}}` in them are filled in.
-- Format **Mail template**: placeholders in **Subject** and **Body** do not apply. The template you pick in the action is used, whatever is assigned on the **Assignment** tab.
-- The template needs the context **Event**. On an event type's **Email** action, `{{event}}` is the event, so `{{event.title}}` is its title.
-- Open **Settings › Configuration › Mail templates**, then **Send test mail** to see the template render. A value that stays empty means the placeholder is not in the list under **Dynamic Variables**.
+- Format **Plain**: **Betreff** und **Inhalt** sind Pflicht, und `{{placeholders}}` darin werden gefüllt.
+- Format **Mail-Vorlage**: Platzhalter in **Betreff** und **Inhalt** gelten nicht. Verwendet wird die Vorlage, die Sie in der Aktion wählen, unabhängig davon, was im Tab **Zuweisung** zugewiesen ist.
+- Die Vorlage braucht den Kontext **Event**. In einer Aktion **E-Mail** eines Event-Typs ist `{{event}}` das Event, also ist `{{event.title}}` sein Titel.
+- Öffnen Sie **Einstellungen › Konfiguration › Mail-Vorlagen** und wählen Sie **Test-Mail senden**, um die Vorlage gerendert zu sehen. Bleibt ein Wert leer, steht der Platzhalter nicht in der Liste unter **Dynamische Variablen**.
 
-Template parts and placeholders: [Mail templates and placeholders](../watch/mail-templates.mdx).
+Bestandteile und Platzhalter von Vorlagen: [E-Mail-Vorlagen und Platzhalter](../watch/mail-templates.mdx).
 
-### 5. The mail server and the spam folder
+### 5. Der Mailserver und der Spam-Ordner {#5-the-mail-server-and-the-spam-folder}
 
-Mail goes through your tenant's mail server if one is set up, and otherwise through the platform mail server. An administrator opens **Administration › Tenant Settings › Email**:
+E-Mails laufen über den Mailserver Ihres Tenants, wenn einer eingerichtet ist, sonst über den Mailserver der Plattform. Ein Administrator öffnet **Administration › Mandanteneinstellungen › Email**:
 
-- **System default**, **Microsoft 365** or **Custom SMTP**: check which one is in use. For Microsoft 365, the sign-in must be active. For SMTP, check **Host**, **Port**, security (**STARTTLS** or **SSL/TLS**), **Username** and **Password**.
-- Select **Send a test mail**. If it fails or does not arrive, the problem is the mail server, not the alert.
-- If the test arrives, look in the spam folder for the alert. Allow the sender address, which is the **From** of the action or of the server.
-- Some installations send no email. Ask your administrator.
+- **Systemstandard**, **Microsoft 365** oder **Eigener SMTP-Server**: Prüfen Sie, welcher verwendet wird. Bei Microsoft 365 muss die Anmeldung aktiv sein. Bei SMTP prüfen Sie **Host**, **Port**, die Verschlüsselung (**STARTTLS** oder **SSL/TLS**), **Benutzername** und **Passwort**.
+- Wählen Sie **Test-Mail senden**. Schlägt das fehl oder kommt nichts an, liegt das Problem am Mailserver, nicht am Alarm.
+- Kommt der Test an, suchen Sie den Alarm im Spam-Ordner. Erlauben Sie die Absenderadresse, das ist das **Von** der Aktion oder des Servers.
+- Manche Installationen senden keine E-Mails. Fragen Sie Ihren Administrator.
 
-### 6. Chat or webhook message missing
+### 6. Chat- oder Webhook-Nachricht fehlt {#6-chat-or-webhook-message-missing}
 
-Open **Settings › Configuration › Notification Channels**.
+Öffnen Sie **Einstellungen › Konfiguration › Benachrichtigungskanäle**.
 
-- **Enabled** must be on. A disabled channel receives nothing, and its deliveries show **Suppressed**.
-- The row says **Action only** when **Automatic routing** is off. The channel then gets messages only from actions that name it.
-- **Minimum severity** and **Event types** apply to every message, including those from actions. An event below the severity or of another type is not sent.
-- Select **Delivery log** on the channel. **Pending** means retrying, **Failed** shows the receiver's answer in **Error** after 5 attempts, **Sent** means the receiver accepted it. Select **Send test** to prove the path.
-- Incident messages are never routed automatically. Add an automation to the incident policy: [Set up an incident policy](../watch/incident-policy.mdx).
+- **Aktiv** muss an sein. Ein deaktivierter Kanal erhält nichts, und seine Zustellungen zeigen **Unterdrückt**.
+- Die Zeile zeigt **Nur Aktion**, wenn **Automatisches Routing** aus ist. Der Kanal bekommt dann nur Nachrichten von Aktionen, die ihn nennen.
+- **Mindestschweregrad** und **Event Typen** gelten für jede Nachricht, auch für die von Aktionen. Ein Event unterhalb des Schweregrads oder eines anderen Typs wird nicht gesendet.
+- Wählen Sie **Zustellprotokoll** am Kanal. **Ausstehend** bedeutet, dass erneut versucht wird, **Fehlgeschlagen** zeigt die Antwort des Empfängers unter **Fehler** nach 5 Versuchen, **Gesendet** bedeutet, dass der Empfänger sie angenommen hat. Wählen Sie **Test senden**, um den Weg zu prüfen.
+- Vorfallsnachrichten werden nie automatisch geroutet. Fügen Sie der Vorfallsrichtlinie eine Automatisierung hinzu: [Eine Vorfallsrichtlinie einrichten](../watch/incident-policy.mdx).
 
-### 7. Incident mails
+### 7. Vorfalls-E-Mails {#7-incident-mails}
 
-The assignee and watchers get an email on every change to the incident, except for what they did themselves. A person who selected **Mute this incident** gets none. Check **Watchers** on the incident.
+Der Bearbeiter und die Beobachter bekommen bei jeder Änderung am Vorfall eine E-Mail, außer für das, was sie selbst getan haben. Wer **Diesen Vorfall stummschalten** gewählt hat, bekommt keine. Prüfen Sie **Beobachter** am Vorfall.
 
-## Still stuck?
+## Immer noch nicht gelöst? {#still-stuck}
 
-Write to info@nimbit.de with:
+Schreiben Sie an info@nimbit.de mit:
 
-- Your tenant name, the event or incident and its ID, and the time it occurred, with its time zone.
-- The event type, and the name of the **Email** action or channel.
-- The recipient address and your mail provider setting (**System default**, **Microsoft 365** or **Custom SMTP**).
-- The result of **Send a test mail** and the **Error** from the **Delivery log**, if there is one.
+- Ihrem Tenant-Namen, dem Event oder Vorfall mit seiner ID und der Zeit des Eintretens, mit Zeitzone.
+- Dem Event-Typ und dem Namen der Aktion **E-Mail** oder des Kanals.
+- Der Empfängeradresse und Ihrer Mailanbieter-Einstellung (**Systemstandard**, **Microsoft 365** oder **Eigener SMTP-Server**).
+- Dem Ergebnis von **Test-Mail senden** und dem **Fehler** aus dem **Zustellprotokoll**, falls vorhanden.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Channel types](../watch/channel-types.mdx) · [Event types](../watch/event-types.mdx)
-- [Send alerts to Teams, Slack or a webhook](../watch/alert-channels.mdx) · [Action types](../automate/action-types.mdx)
+- [Kanaltypen](../watch/channel-types.mdx) · [Event-Typen](../watch/event-types.mdx)
+- [Alarme an Teams, Slack oder einen Webhook senden](../watch/alert-channels.mdx) · [Aktionstypen](../automate/action-types.mdx)

@@ -1,31 +1,31 @@
 ---
-untranslated: true
 title: "0.9.1"
-description: "Released 12 February 2026: sign-in fixes, a maintenance page and a change to the send test mail request."
+description: "Veröffentlicht am 12. Februar 2026: Korrekturen bei der Anmeldung, eine Wartungsseite und eine Änderung am Request für Test-Mail senden."
 type: reference
 date: 2026-02-12
 sidebar_position: 8
+translated_from: 70da89f
 ---
 
-Released 12 February 2026. This release fixes the sign-in flow and several dashboard display problems, and adds a maintenance page.
+Veröffentlicht am 12. Februar 2026. Dieses Release behebt den Anmeldeablauf und mehrere Darstellungsprobleme bei Dashboards und fügt eine Wartungsseite hinzu.
 
-## New
+## Neu {#new}
 
-- A maintenance page.
+- Eine Wartungsseite.
 
-## Improved
+## Verbessert {#improved}
 
-- Navigation: the sidebar has a new color scheme.
+- Navigation: Die Seitenleiste hat ein neues Farbschema.
 
-## Fixed
+## Behoben {#fixed}
 
-- Sign-in: fixed the login flow.
-- Events: creating an event now checks that its event type is assigned to the root group.
-- Widgets: fixed the carousel widget height and the padding of the gauge widget (line and circle).
-- Dashboards: removed the double scroll bar.
-- Groups and things: the missing edit buttons are back.
+- Anmeldung: Der Login-Ablauf ist korrigiert.
+- Events: Beim Anlegen eines Events wird jetzt geprüft, dass sein Event-Typ der Root-Gruppe zugewiesen ist.
+- Widgets: Die Höhe des Carousel-Widgets und das Padding des Gauge-Widgets (Linie und Kreis) sind korrigiert.
+- Dashboards: Die doppelte Bildlaufleiste ist entfernt.
+- Gruppen und Things: Die fehlenden Schaltflächen zum Bearbeiten sind wieder da.
 
-## Breaking changes
+## Inkompatible Änderungen {#breaking-changes}
 
-- The send test mail request in the OCB API now uses `POST` instead of `GET`, and the separate send mail endpoint is removed. If you call these endpoints, update your client to use `POST` for send test mail.
+- Der Request „Test-Mail senden“ in der OCB-API verwendet jetzt `POST` statt `GET`, und der separate Endpoint zum Senden von Mails entfällt. Wenn Sie diese Endpoints aufrufen, stellen Sie Ihren Client für „Test-Mail senden“ auf `POST` um.
 {/* TODO(product): confirm the exact endpoint paths affected so customers can find them */}

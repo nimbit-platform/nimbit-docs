@@ -1,27 +1,27 @@
 ---
-untranslated: true
-title: Connect an OPC UA server
-description: Add an OPC UA input to Periscope, set security and a browse scope, and check what discovery proposes.
+title: Einen OPC-UA-Server verbinden
+description: Einen OPC-UA-Eingang zu Periscope hinzufügen, Sicherheit und Browse-Bereich festlegen und prüfen, was die Erkennung vorschlägt.
 type: how-to
 sidebar_position: 4
 app:
   routes: ["/onboarding/gateways"]
+translated_from: 4c9fc6e
 ---
 
-Add one `[[inputs.opcua]]` table per server. Periscope browses its address space read-only, proposes a thing type per object type, and streams the variables over one subscription. For the stages, read [How Periscope works](./how-periscope-works.mdx).
+Fügen Sie pro Server eine Tabelle `[[inputs.opcua]]` hinzu. Periscope durchsucht seinen Adressraum schreibgeschützt, schlägt pro Objekttyp einen Thing-Typ vor und streamt die Variablen über ein Abonnement. Die Stufen erklärt [Wie Periscope funktioniert](./how-periscope-works.mdx).
 
-## Before you start
+## Voraussetzungen {#before-you-start}
 
-- Periscope is installed and connected. See [Install Periscope and stream your first source](./install.mdx).
-- Get these from the plant:
-  - **The endpoint**: `opc.tcp://<host>:<port>`. 4840 is the standard port. Periscope uses the address you configure even when the server advertises another host name.
-  - **The security the server accepts**: `None` on a trusted plant network, or `Basic256Sha256` with `Sign` or `SignAndEncrypt`.
-  - **A user**, if the server refuses anonymous sessions: a user name and password, or a client certificate.
-  - **Where the machines are**, for example `Objects/Machines`, so you browse that subtree and not the whole server.
+- Periscope ist installiert und verbunden. Siehe [Periscope installieren und die erste Quelle streamen](./install.mdx).
+- Holen Sie sich diese Angaben aus der Anlage:
+  - **Der Endpoint**: `opc.tcp://<host>:<port>`. 4840 ist der Standardport. Periscope verwendet die Adresse, die Sie konfigurieren, auch wenn der Server einen anderen Hostnamen meldet.
+  - **Die Sicherheit, die der Server akzeptiert**: `None` in einem vertrauenswürdigen Anlagennetz oder `Basic256Sha256` mit `Sign` oder `SignAndEncrypt`.
+  - **Ein Benutzer**, wenn der Server anonyme Sitzungen ablehnt: Benutzername und Passwort oder ein Client-Zertifikat.
+  - **Wo die Maschinen liegen**, zum Beispiel `Objects/Machines`, damit Sie diesen Teilbaum durchsuchen und nicht den ganzen Server.
 
-## Steps
+## Schritte {#steps}
 
-1. Add the input to `periscope.toml`. Pick the example that matches the server:
+1. Fügen Sie den Eingang zu `periscope.toml` hinzu. Wählen Sie das Beispiel, das zum Server passt:
 
    ```toml
    # Anonymous, unsecured, one subtree
@@ -46,62 +46,62 @@ Add one `[[inputs.opcua]]` table per server. Periscope browses its address space
    exclude         = ["Assembly/*/Diagnostics/**"]
    ```
 
-   `alias` names the input in the mapping, the metrics and the state files. `include` and `exclude` are browse-path globs below `Objects`.
+   `alias` benennt den Eingang in der Zuordnung, in den Metriken und in den State-Dateien. `include` und `exclude` sind Globs für Browse-Pfade unterhalb von `Objects`.
 
-2. With a secure policy, trust the agent's certificate. On first use Periscope generates one and logs its fingerprint. Ask the plant's administrator to move it from the server's rejected list to its trusted list, then wait for the input to reconnect.
-3. Check the file, then run a discovery:
+2. Vertrauen Sie bei einer sicheren Policy dem Zertifikat des Agents. Bei der ersten Verwendung erzeugt Periscope eines und protokolliert seinen Fingerabdruck. Bitten Sie den Administrator der Anlage, es von der Liste der abgelehnten Zertifikate des Servers in die der vertrauenswürdigen zu verschieben, und warten Sie, bis sich der Eingang neu verbindet.
+3. Prüfen Sie die Datei und starten Sie dann eine Erkennung:
 
    ```sh
    periscope validate -config /etc/periscope/periscope.toml
    periscope discover -config /etc/periscope/periscope.toml
    ```
 
-4. Review the proposals as described in [Approve what Periscope discovers](./approve-discoveries.mdx).
+4. Prüfen Sie die Vorschläge, wie unter [Periscope-Erkennungen freigeben](./approve-discoveries.mdx) beschrieben.
 
-### Keys you change most
+### Die am häufigsten geänderten Schlüssel {#keys-you-change-most}
 
-| Key | Default | Use |
+| Schlüssel | Vorgabe | Verwendung |
 | --- | --- | --- |
-| `include`, `exclude` | all | Browse-path globs. `Machines/**` keeps that subtree. |
-| `subscribe` | all | Which variables to stream. |
-| `sampling_interval`, `publishing_interval` | `1s` | How fast the server samples and reports. |
-| `deadband_absolute` | `0` | Let the server suppress small changes of numeric values. |
-| `max_nodes`, `max_depth` | 20000, 10 | Stop a browse that would run away on a large server. |
-| `events` | `false` | Turn events and alarms into measures of their things. |
+| `include`, `exclude` | alle | Globs für Browse-Pfade. `Machines/**` behält diesen Teilbaum. |
+| `subscribe` | alle | Welche Variablen gestreamt werden. |
+| `sampling_interval`, `publishing_interval` | `1s` | Wie schnell der Server abtastet und meldet. |
+| `deadband_absolute` | `0` | Den Server kleine Änderungen numerischer Werte unterdrücken lassen. |
+| `max_nodes`, `max_depth` | 20000, 10 | Einen Browse stoppen, der auf einem großen Server ausufern würde. |
+| `events` | `false` | Events und Alarme in Messwerte ihrer Things verwandeln. |
 
-Every key is in the [Configuration reference](./configuration.mdx).
+Jeder Schlüssel steht in der [Konfigurationsreferenz](./configuration.mdx).
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-`periscope discover` prints one row per input with the nodes and things it found and an empty `ERROR` column, then the proposals:
+`periscope discover` gibt pro Eingang eine Zeile mit den gefundenen Knoten und Things und einer leeren Spalte `ERROR` aus, dann die Vorschläge:
 
 ```text
 INPUT       NODES  THINGS  ERROR
 press-shop  412    18      -
 ```
 
-Periscope maps the server like this:
+Periscope bildet den Server so ab:
 
-| In the server | Becomes |
+| Im Server | Wird zu |
 | --- | --- |
-| A folder | A path element |
-| An object with a type | A thing, with a thing type named after the object type |
-| An untyped object, or a folder with variables | A thing, with a thing type per set of variable names |
-| A variable | A measure, with the data type, unit (`EngineeringUnits`) and range (`EURange`) where the server has them |
+| Ein Ordner | Ein Pfadelement |
+| Ein Objekt mit Typ | Ein Thing, mit einem nach dem Objekttyp benannten Thing-Typ |
+| Ein Objekt ohne Typ oder ein Ordner mit Variablen | Ein Thing, mit einem Thing-Typ pro Satz von Variablennamen |
+| Eine Variable | Ein Messwert, mit Datentyp, Einheit (`EngineeringUnits`) und Bereich (`EURange`), wo der Server sie hat |
 
-Identical machines share one thing type. An untyped machine's thing type is named after its first machine and a hash, such as `Oven1_49b35a`. Rename it before you confirm.
+Identische Maschinen teilen sich einen Thing-Typ. Der Thing-Typ einer Maschine ohne Typ wird nach ihrer ersten Maschine und einem Hash benannt, etwa `Oven1_49b35a`. Benennen Sie ihn um, bevor Sie bestätigen.
 
-## If it doesn't work
+## Wenn es nicht klappt {#if-it-doesnt-work}
 
-- **`BadSecurityChecksFailed` or `BadCertificateUntrusted`**: the server doesn't trust the agent's certificate yet. Move it to the server's trusted list.
-- **`BadIdentityTokenRejected` or `BadUserAccessDenied`**: wrong user or password, or anonymous sessions are off. Set `auth = "username"` with the right credentials.
-- **`connection refused` or `i/o timeout`**: wrong host or port, a firewall, or the server is down. Check from the box with `nc -vz <host> 4840`. The input retries with back-off.
-- **Discovery is slow, or warns about `max_nodes`**: the whole server is browsed. Set `include`, and `root_nodes`, to the machines' subtree.
-- **A variable is missing**: arrays and structures are skipped, because the platform has no measure type for them. Check the **Snapshot** screen.
+- **`BadSecurityChecksFailed` oder `BadCertificateUntrusted`**: Der Server vertraut dem Zertifikat des Agents noch nicht. Verschieben Sie es in die Liste der vertrauenswürdigen Zertifikate des Servers.
+- **`BadIdentityTokenRejected` oder `BadUserAccessDenied`**: Falscher Benutzer oder falsches Passwort, oder anonyme Sitzungen sind ausgeschaltet. Setzen Sie `auth = "username"` mit den richtigen Zugangsdaten.
+- **`connection refused` oder `i/o timeout`**: Falscher Host oder Port, eine Firewall, oder der Server ist ausgefallen. Prüfen Sie von der Box mit `nc -vz <host> 4840`. Der Eingang versucht es mit Back-off erneut.
+- **Die Erkennung ist langsam oder warnt vor `max_nodes`**: Der ganze Server wird durchsucht. Setzen Sie `include` und `root_nodes` auf den Teilbaum der Maschinen.
+- **Eine Variable fehlt**: Arrays und Strukturen werden übersprungen, weil die Plattform dafür keinen Messwerttyp hat. Prüfen Sie den Bildschirm **Snapshot**.
 
-More in [Troubleshoot Periscope](./troubleshooting.mdx).
+Mehr unter [Periscope-Probleme beheben](./troubleshooting.mdx).
 
-## Related
+## Verwandte Seiten {#related}
 
-- [How Periscope works](./how-periscope-works.mdx) · [Configuration reference](./configuration.mdx)
-- [Verify that data arrived](./verify.mdx)
+- [Wie Periscope funktioniert](./how-periscope-works.mdx) · [Konfigurationsreferenz](./configuration.mdx)
+- [Prüfen, ob Daten angekommen sind](./verify.mdx)

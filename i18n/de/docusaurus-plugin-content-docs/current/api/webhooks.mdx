@@ -1,58 +1,58 @@
 ---
-untranslated: true
-title: Webhook payloads
-description: The request IoT Breeze sends for webhook channels and webhook actions, its headers and body, and how to verify the HMAC signature.
+title: Webhook-Payloads
+description: Der Request, den IoT Breeze für Webhook-Kanäle und Webhook-Aktionen sendet, mit Headern und Body, und wie Sie die HMAC-Signatur prüfen.
 type: reference
 sidebar_position: 4
 app:
   routes: ["/manage/notification-channels", "/onboarding/things/:id"]
+translated_from: 1579ffe
 ---
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-IoT Breeze sends HTTP requests to your system from two places: a **Webhook** notification channel, which signs its requests, and a **Webhook** action, which does not.
+IoT Breeze sendet HTTP-Requests an Ihr System von zwei Stellen aus: von einem Benachrichtigungskanal **Webhook**, der seine Requests signiert, und von einer Aktion **Webhook**, die das nicht tut.
 
-## Webhook channel
+## Webhook-Kanal {#webhook-channel}
 
-Delivered for events, in-app notifications and incidents that the channel receives. To set one up, see [Send alerts to Teams, Slack or a webhook](../watch/alert-channels.mdx).
+Zugestellt werden Events, In-App-Benachrichtigungen und Vorfälle, die der Kanal erhält. Wie Sie einen einrichten, steht unter [Alarme an Teams, Slack oder einen Webhook senden](../watch/alert-channels.mdx).
 
-### Request
+### Request {#request}
 
-| Part | Value |
+| Teil | Wert |
 | --- | --- |
-| Method | `POST` (the IoT Breeze form always uses `POST`) |
+| Methode | `POST` (das Formular in IoT Breeze verwendet immer `POST`) |
 | `Content-Type` | `application/json` |
 | `User-Agent` | `IotBreeze-NotificationChannel/1.0` |
-| `X-IotBreeze-Signature` | `sha256=<hex>`. Only when the channel has an **HMAC secret**. See [Verify the signature](#verify-the-signature). |
-| Timeout | 10 seconds |
-| Redirects | Not followed. A redirect counts as a failure. |
-| Success | Any `2xx` status. |
+| `X-IotBreeze-Signature` | `sha256=<hex>`. Nur, wenn der Kanal ein **HMAC-Geheimnis** hat. Siehe [Die Signatur prüfen](#verify-the-signature). |
+| Timeout | 10 Sekunden |
+| Redirects | Werden nicht verfolgt. Ein Redirect zählt als Fehler. |
+| Erfolg | Jeder `2xx`-Status. |
 
-A failed delivery is tried up to 5 times, then shown as **Failed** in the delivery log. The body of every retry is identical, so `id` is stable.
+Eine fehlgeschlagene Zustellung wird bis zu 5-mal versucht und dann im Zustellprotokoll als **Fehlgeschlagen** angezeigt. Der Body jedes Retrys ist identisch, deshalb bleibt `id` stabil.
 
 {/* TODO(product): What is the delay between delivery attempts? */}
 
-### Body for events and notifications
+### Body für Events und Benachrichtigungen {#body-for-events-and-notifications}
 
-| Field | Type | Meaning |
+| Feld | Typ | Bedeutung |
 | --- | --- | --- |
-| `id` | string | Delivery key. `event:<eventId>` for events; the notification id for in-app notifications. |
-| `tenantId` | string | The tenant. |
-| `type` | string | Event type name, or `notification.created`, `action.notify_channel`, `channel.test` (the **Send test** message). |
-| `severity` | string | `INFO`, `WARNING`, `ERROR` or `CRITICAL`. |
-| `title` | string | Short title. |
-| `body` | string | Text. For events, the JSON text of the event payload, or the title if there is none. |
-| `context` | object | Depends on the source, see below. |
+| `id` | string | Zustellschlüssel. `event:<eventId>` bei Events; die Benachrichtigungs-ID bei In-App-Benachrichtigungen. |
+| `tenantId` | string | Der Tenant. |
+| `type` | string | Name des Event-Typs oder `notification.created`, `action.notify_channel`, `channel.test` (die Nachricht von **Test senden**). |
+| `severity` | string | `INFO`, `WARNING`, `ERROR` oder `CRITICAL`. |
+| `title` | string | Kurzer Titel. |
+| `body` | string | Text. Bei Events der JSON-Text der Event-Payload oder, falls keine vorhanden ist, der Titel. |
+| `context` | object | Hängt von der Quelle ab, siehe unten. |
 | `occurredAt` | string | ISO 8601, UTC. |
-| `deepLink` | string | Link to the item in IoT Breeze. Omitted when none can be built. |
+| `deepLink` | string | Link auf den Eintrag in IoT Breeze. Entfällt, wenn sich keiner bilden lässt. |
 
-| Source | `context` |
+| Quelle | `context` |
 | --- | --- |
 | Event | `eventId`, `eventTypeId`, `resource` |
-| In-app notification | `resourceType`, `resourceId`, `recipientCount`, `source` (`notification.created`) |
-| Action that notifies a channel | `actionId`, `eventId`, `resource`, `referenceId` |
-| Test message | `test: true` |
+| In-App-Benachrichtigung | `resourceType`, `resourceId`, `recipientCount`, `source` (`notification.created`) |
+| Aktion, die einen Kanal benachrichtigt | `actionId`, `eventId`, `resource`, `referenceId` |
+| Testnachricht | `test: true` |
 
 ```json
 {
@@ -68,60 +68,60 @@ A failed delivery is tried up to 5 times, then shown as **Failed** in the delive
 }
 ```
 
-### Body for incidents
+### Body für Vorfälle {#body-for-incidents}
 
-Sent when an incident automation notifies the channel.
+Wird gesendet, wenn eine Vorfalls-Automatisierung den Kanal benachrichtigt.
 
-| Field | Type | Meaning |
+| Feld | Typ | Bedeutung |
 | --- | --- | --- |
-| `id`, `tenantId`, `title`, `body`, `occurredAt`, `deepLink` | | As above. |
-| `type` | string | `incident.<transition>` unless the action sets its own type. |
-| `kind` | string | Always `incident`. |
-| `severity` | string | `INFO`, `WARNING`, `ERROR` or `CRITICAL`. |
-| `transition` | string | What happened: `opened`, `escalated`, `acknowledged`, `assigned`, `reopened`, `resolved`, `closed`, `unacknowledged_for` or `timeout`. |
-| `link` | string or null | The incident page in IoT Breeze. |
-| `incident` | object | See below. |
+| `id`, `tenantId`, `title`, `body`, `occurredAt`, `deepLink` | | Wie oben. |
+| `type` | string | `incident.<transition>`, außer die Aktion setzt einen eigenen Typ. |
+| `kind` | string | Immer `incident`. |
+| `severity` | string | `INFO`, `WARNING`, `ERROR` oder `CRITICAL`. |
+| `transition` | string | Was passiert ist: `opened`, `escalated`, `acknowledged`, `assigned`, `reopened`, `resolved`, `closed`, `unacknowledged_for` oder `timeout`. |
+| `link` | string oder null | Die Vorfallseite in IoT Breeze. |
+| `incident` | object | Siehe unten. |
 
-`incident` holds: `id`, `number`, `ref` (`INC-<number>`), `title`, `severity`, `status` (`id`, `name`, `category`: `open`, `acknowledged`, `in_progress`, `resolved` or `closed`), `subject` (`resource`, `id`, `thingType`, each nullable), `policy` (`id`, `name`), `openedAt`, `resolvedAt` (null while open), `assigneeId`, `triggerEventTypeId` and `link`.
+`incident` enthält: `id`, `number`, `ref` (`INC-<number>`), `title`, `severity`, `status` (`id`, `name`, `category`: `open`, `acknowledged`, `in_progress`, `resolved` oder `closed`), `subject` (`resource`, `id`, `thingType`, jeweils nullable), `policy` (`id`, `name`), `openedAt`, `resolvedAt` (null, solange offen), `assigneeId`, `triggerEventTypeId` und `link`.
 
-## Webhook action
+## Webhook-Aktion {#webhook-action}
 
-Called when a rule, an incident automation or a user fires the action. See [Call another system from a rule](../automate/webhook-from-rule.mdx).
+Wird aufgerufen, wenn eine Regel, eine Vorfalls-Automatisierung oder ein Benutzer die Aktion auslöst. Siehe [Ein anderes System aus einer Regel aufrufen](../automate/webhook-from-rule.mdx).
 
-| Part | Value |
+| Teil | Wert |
 | --- | --- |
-| Method | `GET`, `POST`, `PUT`, `PATCH` or `DELETE`, as configured |
-| URL, headers, body | Your configuration, with `{{placeholder}}` values filled from the payload |
-| Body | If you set **Body**, it is sent as written, as text, with no `Content-Type` unless you add one under **Headers**. Without it, the payload is sent as JSON with `Content-Type: application/json`. No body for `GET`. |
-| Signature | None. Use an authorization method instead. |
-| Timeout | 30 seconds |
-| Retries | Up to 3 more attempts after 1, 2 and 4 seconds. Not for `4xx` answers. |
+| Methode | `GET`, `POST`, `PUT`, `PATCH` oder `DELETE`, wie konfiguriert |
+| URL, Header, Body | Ihre Konfiguration, mit `{{placeholder}}`-Werten, die aus der Payload gefüllt werden |
+| Body | Wenn Sie **Inhalt** setzen, wird er wie geschrieben als Text gesendet, ohne `Content-Type`, außer Sie fügen einen unter **Headers** hinzu. Ohne ihn wird die Payload als JSON mit `Content-Type: application/json` gesendet. Kein Body bei `GET`. |
+| Signatur | Keine. Verwenden Sie stattdessen eine Autorisierungsmethode. |
+| Timeout | 30 Sekunden |
+| Retries | Bis zu 3 weitere Versuche nach 1, 2 und 4 Sekunden. Nicht bei `4xx`-Antworten. |
 
-| Authorization | Sent as |
+| Autorisierung | Gesendet als |
 | --- | --- |
-| None | No credentials |
+| Keine | Keine Zugangsdaten |
 | Basic | `Authorization: Basic <base64 of username:password>` |
 | Bearer | `Authorization: Bearer <token>` |
-| Query | `<name>=<value>` appended to the URL, URL-encoded |
-| OAuth 2.0 | `Authorization: Bearer <access token>`, or your token template. Grants: `client_credentials`, `password`, `refresh_token`, JWT bearer. The token is reused until 5 seconds before it expires. |
+| Query | `<name>=<value>`, URL-kodiert an die URL angehängt |
+| OAuth 2.0 | `Authorization: Bearer <access token>` oder Ihre Token-Vorlage. Grants: `client_credentials`, `password`, `refresh_token`, JWT Bearer. Das Token wird wiederverwendet, bis 5 Sekunden vor seinem Ablauf. |
 
-### Payload by source
+### Payload nach Quelle {#payload-by-source}
 
-| Fired by | Payload fields |
+| Ausgelöst durch | Payload-Felder |
 | --- | --- |
-| A rule | `data` (the message that fired the rule, with rule evaluation fields) and `referenceId` (the thing id) |
-| A user or the API | The payload of the request, plus `value` when a control sets one |
-| An incident automation | `id`, `incident_id`, `automation_id`, `transition_id`, `transition`, `title`, `severity`, `message`, `referenceId`, `link` and `incident` (as above) |
+| Eine Regel | `data` (die Nachricht, die die Regel ausgelöst hat, mit Feldern der Regelauswertung) und `referenceId` (die Thing-ID) |
+| Ein Benutzer oder die API | Die Payload des Requests, plus `value`, wenn ein Steuerelement einen Wert setzt |
+| Eine Vorfalls-Automatisierung | `id`, `incident_id`, `automation_id`, `transition_id`, `transition`, `title`, `severity`, `message`, `referenceId`, `link` und `incident` (wie oben) |
 
-Use fields in placeholders, for example `{{data.temperature}}` or `{{incident.title}}`. For incidents, values are escaped as JSON string content.
+Verwenden Sie Felder in Platzhaltern, zum Beispiel `{{data.temperature}}` oder `{{incident.title}}`. Bei Vorfällen werden Werte als Inhalt eines JSON-Strings escaped.
 
 {/* TODO(product): List the fields of `data.ruleEvaluation` that a rule adds to the payload. */}
 
-## Verify the signature
+## Die Signatur prüfen {#verify-the-signature}
 
-The signature is the hex HMAC-SHA256 of the raw request body, keyed with the channel's **HMAC secret**, in the header `X-IotBreeze-Signature` as `sha256=<hex>`. Compute it over the bytes you received, before you parse the JSON. Compare in constant time.
+Die Signatur ist der Hex-HMAC-SHA256 des rohen Request-Bodys, mit dem **HMAC-Geheimnis** des Kanals als Schlüssel, im Header `X-IotBreeze-Signature` als `sha256=<hex>`. Berechnen Sie sie über die empfangenen Bytes, bevor Sie das JSON parsen. Vergleichen Sie in konstanter Zeit.
 
-The signature covers the body only. It has no timestamp, so a captured request can be replayed. Use `id` to drop duplicates.
+Die Signatur deckt nur den Body ab. Sie hat keinen Zeitstempel, deshalb kann ein abgefangener Request erneut abgespielt werden. Verwenden Sie `id`, um Duplikate zu verwerfen.
 
 <Tabs groupId="verify-lang">
 <TabItem value="node" label="Node.js" default>
@@ -181,17 +181,17 @@ def hook():
 </TabItem>
 <TabItem value="shell" label="Shell">
 
-Check a body you saved to `body.json`:
+Prüfen Sie einen Body, den Sie in `body.json` gespeichert haben:
 
 ```bash
 openssl dgst -sha256 -hmac "$HMAC_SECRET" < body.json
 ```
 
-The hex value must equal the part of the header after `sha256=`. Use the exact bytes: reformatted JSON gives a different signature.
+Der Hex-Wert muss dem Teil des Headers nach `sha256=` entsprechen. Verwenden Sie genau dieselben Bytes: Umformatiertes JSON ergibt eine andere Signatur.
 
 </TabItem>
 </Tabs>
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Send alerts to Teams, Slack or a webhook](../watch/alert-channels.mdx) · [Channel types](../watch/channel-types.mdx) · [Action types](../automate/action-types.mdx)
+- [Alarme an Teams, Slack oder einen Webhook senden](../watch/alert-channels.mdx) · [Kanaltypen](../watch/channel-types.mdx) · [Aktionstypen](../automate/action-types.mdx)

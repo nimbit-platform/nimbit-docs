@@ -1,91 +1,91 @@
 ---
-untranslated: true
-title: Build a dashboard for one thing
-sidebar_label: Dashboard for one thing
-description: Create a dashboard for a single thing, add and arrange widgets, and save it.
+title: Ein Dashboard für ein Thing bauen
+sidebar_label: Dashboard für ein Thing
+description: Ein Dashboard für ein einzelnes Thing anlegen, Widgets hinzufügen und anordnen und es speichern.
 type: how-to
 sidebar_position: 3
 app:
   routes: ["/dashboards", "/dashboards/:id"]
   tour: build-dashboards
+translated_from: a4ace78
 ---
 
 import TourLink from "@site/src/components/TourLink";
 import Screenshot from "@site/src/components/Screenshot";
 
-Create a dashboard that shows one thing, fill it with widgets and save it. It takes about ten minutes. For how dashboards pick their thing and time, see [Dashboards, smart dashboards and time](./dashboards.mdx).
+Legen Sie ein Dashboard an, das ein Thing zeigt, füllen Sie es mit Widgets und speichern Sie es. Das dauert etwa zehn Minuten. Wie Dashboards ihr Thing und ihre Zeit wählen, lesen Sie unter [Dashboards, Smart-Dashboards und Zeit](./dashboards.mdx).
 
 <TourLink id="build-dashboards-thing-based" />
 
-## Before you start
-- A role that may create and edit dashboards. If **New dashboard** is missing on the Dashboards page, your role may only read them.
-- A thing that has sent data, so the widgets have something to show. No data yet? Use mock data, described in [Build one dashboard for every thing of a kind](./smart-dashboard.mdx#try-it-with-mock-data).
+## Bevor Sie beginnen {#before-you-start}
+- Eine Rolle, die Dashboards anlegen und bearbeiten darf. Fehlt auf der Seite Dashboards **Neues Dashboard**, darf Ihre Rolle sie vielleicht nur lesen.
+- Ein Thing, das Daten gesendet hat, damit die Widgets etwas zeigen. Noch keine Daten? Nehmen Sie Testdaten, beschrieben unter [Ein Dashboard für alle Things einer Art bauen](./smart-dashboard.mdx#try-it-with-mock-data).
 
-## Create the dashboard
+## Das Dashboard anlegen {#create-the-dashboard}
 
-1. Open **Monitoring › Dashboards** and select **New dashboard**.
-2. Under **What should this dashboard show?** choose **For one thing**. Search for the thing, pick it and select **Continue**. Its thing type becomes the interface and the thing the assignment.
-3. In the form, enter a **Dashboard name** such as `Hall 2 machines`. Add a **Description** if you like.
-4. Choose who can see it: **Tenant dashboard** or **User dashboard**. See [Share or embed a dashboard](./share.mdx).
-5. Select **Save**. The dashboard opens.
+1. Öffnen Sie **Überwachung › Dashboards** und wählen Sie **Neues Dashboard**.
+2. Wählen Sie unter **Was soll dieses Dashboard zeigen?** die Option **Für ein Thing**. Suchen Sie das Thing, wählen Sie es aus und wählen Sie **Weiter**. Sein Thing-Typ wird zum Interface und das Thing zur Zuweisung.
+3. Geben Sie im Formular einen **Dashboard Name** ein, zum Beispiel `Hall 2 machines`. Fügen Sie bei Bedarf eine **Beschreibung** hinzu.
+4. Legen Sie fest, wer es sehen darf: **Tenant-Dashboard** oder **Benutzer-Dashboard**. Siehe [Ein Dashboard teilen oder einbetten](./share.mdx).
+5. Wählen Sie **Speichern**. Das Dashboard öffnet sich.
 
 <Screenshot
   page="visualize/thing-dashboard"
   id="01-new-dashboard-dialog"
   route="/dashboards"
   state="New dashboard dialog open on the question What should this dashboard show, both options visible"
-  alt="The New dashboard dialog with the options From interfaces and For one thing"
+  alt="Der Dialog Neues Dashboard mit den Optionen Aus Interfaces und Für ein Thing"
 />
 
-## Add widgets
+## Widgets hinzufügen {#add-widgets}
 
-1. Select **Add widget**. A new dashboard shows **No widgets created yet**.
-2. Pick a widget type. Groups are named by the question they answer, such as **Values** (*What does it read right now?*) or **Charts** (*How did it change?*). Search finds a widget by name or description.
-3. Choose where its data comes from. On a dashboard for one thing, keep **Follow the dashboard**.
-4. Set it up. The preview updates as you change settings. **Help** at the top explains the settings.
-5. Select **Add to dashboard**.
+1. Wählen Sie **Widget hinzufügen**. Ein neues Dashboard zeigt **Noch keine Widgets erstellt**.
+2. Wählen Sie einen Widget-Typ. Die Gruppen sind nach der Frage benannt, die sie beantworten, etwa **Werte** (*Was liest es gerade?*) oder **Diagramme** (*Wie hat es sich verändert?*). Die Suche findet ein Widget nach Name oder Beschreibung.
+3. Wählen Sie, woher seine Daten kommen. Lassen Sie auf einem Dashboard für ein Thing **Dem Dashboard folgen** aktiv.
+4. Richten Sie es ein. Die Vorschau aktualisiert sich, während Sie Einstellungen ändern. **Hilfe** oben erklärt die Einstellungen.
+5. Wählen Sie **Zum Dashboard hinzufügen**.
 
-Every widget type is in the [widget gallery](./widgets.mdx).
+Jeder Widget-Typ steht in der [Widget-Galerie](./widgets.mdx).
 
 <Screenshot
   page="visualize/thing-dashboard"
   id="02-widget-setup"
   route="/dashboards/:id"
   state="Widget setup screen for a Line chart with one measure selected, live preview on the left and settings on the right"
-  alt="The widget setup screen with a live preview and settings"
+  alt="Die Widget-Einrichtung mit Live-Vorschau und Einstellungen"
 />
 
-## Arrange and save
+## Anordnen und speichern {#arrange-and-save}
 
-1. Select **Edit**. Drag a widget to move it and drag its edge to resize it.
-2. Open a widget's menu to change or remove it.
-3. Use **Undo** and **Redo** on the draft. **Arrange** tidies the grid: **Fill rows** closes gaps, **Keep sizes** repacks without resizing, **Tidy up (resizes widgets)** lines everything up.
-4. To reuse a widget from another dashboard of the same type, select **Import Widget**.
-5. Select **Save**.
+1. Wählen Sie **Bearbeiten**. Ziehen Sie ein Widget, um es zu verschieben, und ziehen Sie an seinem Rand, um die Größe zu ändern.
+2. Öffnen Sie das Menü eines Widgets, um es zu ändern oder zu entfernen.
+3. Nutzen Sie **Rückgängig** und **Wiederholen** für den Entwurf. **Anordnen** räumt das Raster auf: **Zeilen füllen** schließt Lücken, **Größen beibehalten** packt neu, ohne die Größe zu ändern, **Aufräumen (ändert Widget-Größen)** richtet alles aus.
+4. Um ein Widget eines anderen Dashboards desselben Typs wiederzuverwenden, wählen Sie **Widget importieren**.
+5. Wählen Sie **Speichern**.
 
-If you changed the time range while editing, **Save** asks **Save this time range too?** Choose **Save with range** to keep it as the default.
+Haben Sie beim Bearbeiten den Zeitraum geändert, fragt **Speichern**: **Diesen Zeitraum ebenfalls speichern?** Wählen Sie **Mit Zeitraum speichern**, um ihn als Standard zu behalten.
 
 <Screenshot
   page="visualize/thing-dashboard"
   id="03-edit-mode"
   route="/dashboards/:id"
   state="Dashboard in edit mode with three widgets, Undo available, Discard and Save buttons in the header"
-  alt="A dashboard in edit mode with Discard and Save in the header"
+  alt="Ein Dashboard im Bearbeitungsmodus mit Verwerfen und Speichern im Kopfbereich"
 />
 
-:::warning Unsaved changes
-Changes are a draft until you save. **Discard** throws away everything since the last save and cannot be undone. If you leave with unsaved changes, the app warns you that all changes will be lost.
+:::warning Nicht gespeicherte Änderungen
+Änderungen sind ein Entwurf, bis Sie speichern. **Verwerfen** wirft alles seit dem letzten Speichern weg und lässt sich nicht rückgängig machen. Verlassen Sie die Seite mit ungespeicherten Änderungen, warnt die App, dass alle Änderungen verloren gehen.
 :::
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-The toggle button reads **Edit** again and the widgets show live values. Open the thing and its **Dashboard** tab: the new dashboard is listed there, and the star marks the default.
+Die Schaltfläche zeigt wieder **Bearbeiten**, und die Widgets zeigen Live-Werte. Öffnen Sie das Thing und seinen Tab **Dashboard**: Das neue Dashboard steht dort, und der Stern markiert das Standard-Dashboard.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **A widget is empty**: the thing has not sent that measure yet, or the time range is too short. Widen the range at the top. See [A dashboard is empty](../troubleshooting/empty-dashboard.mdx).
-- **No Add widget button**: you are not in edit mode, or your role may not edit this dashboard.
-- **The toggle button says Save but you changed nothing**: you changed the time range or a draft setting. Select **Discard** to start over.
+- **Ein Widget ist leer**: Das Thing hat diese Telemetrie noch nicht gesendet, oder der Zeitraum ist zu kurz. Erweitern Sie den Zeitraum oben. Siehe [Ein Dashboard ist leer](../troubleshooting/empty-dashboard.mdx).
+- **Keine Schaltfläche Widget hinzufügen**: Sie sind nicht im Bearbeitungsmodus, oder Ihre Rolle darf dieses Dashboard nicht bearbeiten.
+- **Die Schaltfläche zeigt Speichern, obwohl Sie nichts geändert haben**: Sie haben den Zeitraum oder eine Entwurfseinstellung geändert. Wählen Sie **Verwerfen**, um neu anzufangen.
 
-## Related
-- [Dashboards, smart dashboards and time](./dashboards.mdx) · [Widget gallery](./widgets.mdx) · [Put a dashboard on Home](./home.mdx)
+## Verwandte Seiten {#related}
+- [Dashboards, Smart-Dashboards und Zeit](./dashboards.mdx) · [Widget-Galerie](./widgets.mdx) · [Ein Dashboard auf Home zeigen](./home.mdx)

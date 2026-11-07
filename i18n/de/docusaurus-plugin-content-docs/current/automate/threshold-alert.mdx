@@ -1,58 +1,58 @@
 ---
-untranslated: true
-title: Alert when a value crosses a limit
+title: Alarmieren, wenn ein Wert eine Grenze überschreitet
 sidebar_position: 3
-description: Build a rule that notifies you once when a thing's temperature goes above 25 °C.
+description: Bauen Sie eine Regel, die Sie einmal benachrichtigt, wenn die Temperatur eines Things über 25 °C steigt.
 type: how-to
 app:
   routes: ["/automation/rule-designer", "/automation/rule-designer/:id"]
+translated_from: 679f3a4
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
 
-Build a rule that sends you an in-app notification once each time a thing's `temperature` goes above 25 °C. For how rules fit with actions and events, read [Rules, actions and reports](./rules-actions-reports.mdx).
+Bauen Sie eine Regel, die Ihnen jedes Mal eine In-App-Benachrichtigung sendet, wenn die `temperature` eines Things über 25 °C steigt. Wie Regeln, Aktionen und Events zusammenhängen, lesen Sie unter [Regeln, Aktionen und Berichte](./rules-actions-reports.mdx).
 
-## Before you start
+## Bevor Sie beginnen {#before-you-start}
 
-- A role that may create rules, and a desktop browser. The rule canvas does not open on a phone.
-- A thing type with a numeric `temperature` measure and at least one thing that sends it. This page uses a thing type called `Room sensor`. See [Create a thing type](../model/create-thing-type.mdx).
+- Eine Rolle, die Regeln erstellen darf, und ein Desktop-Browser. Der Regel-Canvas öffnet sich nicht auf dem Smartphone.
+- Ein Thing-Typ mit einem numerischen Messwert `temperature` und mindestens ein Thing, das ihn sendet. Diese Seite verwendet einen Thing-Typ namens `Room sensor`. Siehe [Einen Thing-Typ anlegen](../model/create-thing-type.mdx).
 
-## Steps
+## Schritte {#steps}
 
-1. Open **Automation › Rule Designer** and select **Create rule**.
-2. Enter the **Name** `Room too warm` and save. The name must be unique in your tenant. The rule appears in the list as **Inactive**.
-3. Select the rule name to open it. The canvas opens in edit mode with a **Start** node.
-4. On **Start**, choose **Thing type** and select `Room sensor`.
-5. Select **+** and add a **Condition**. On the **Simple** tab, set **Measure** to `temperature`, **Operator** to **Greater than**, and the value field (labelled **Condition**) to `25`.
-6. Select **+** and add a **Toggle** trigger. Set **Direction** to **In**. The actions run when the room becomes too warm, not for every reading above 25.
-7. Select **+** and add a **Notification** action. Enter a **Subject** such as `Room too warm`, set **Severity** to **Warning** and write a **Message**. On **Users and groups**, add yourself.
-8. Hover the validity icon next to the rule name until it reads **The flow is Valid**.
-9. Select the check mark in the floating bar above the canvas. Before the first publish its tooltip reads **Publish**.
-10. Select **Activate**. A message confirms it, and the rule is **Active** in the list.
+1. Öffnen Sie **Einstellungen › Automatisierung › Regel-Designer** und wählen Sie **Regel erstellen**.
+2. Geben Sie als **Name** `Room too warm` ein und speichern Sie. Der Name muss in Ihrem Tenant eindeutig sein. Die Regel erscheint in der Liste als **Inaktiv**.
+3. Wählen Sie den Namen der Regel, um sie zu öffnen. Der Canvas öffnet sich im Bearbeitungsmodus mit einem Knoten **Start**.
+4. Wählen Sie bei **Start** die Option **Thing-Typ** und dann `Room sensor`.
+5. Wählen Sie **+** und fügen Sie eine **Bedingung** hinzu. Setzen Sie im Tab **Einfach** **Telemetrie** auf `temperature`, **Operator** auf **Größer als** und das Wertfeld (beschriftet mit **Bedingung**) auf `25`.
+6. Wählen Sie **+** und fügen Sie einen Auslöser **Umschalten** hinzu. Setzen Sie **Richtung** auf **In**. Die Aktionen laufen, wenn der Raum zu warm wird, nicht bei jedem Messwert über 25.
+7. Wählen Sie **+** und fügen Sie eine Aktion **Benachrichtigung** hinzu. Geben Sie einen **Betreff** wie `Room too warm` ein, setzen Sie **Schweregrad** auf **Warnung** und schreiben Sie eine **Nachricht**. Fügen Sie unter **Benutzer und Gruppen** sich selbst hinzu.
+8. Fahren Sie mit der Maus über das Gültigkeitssymbol neben dem Regelnamen, bis dort **Der Flow ist gültig** steht.
+9. Wählen Sie das Häkchen in der schwebenden Leiste über dem Canvas. Vor der ersten Veröffentlichung lautet sein Tooltip **Veröffentlichen**.
+10. Wählen Sie **Aktivieren**. Eine Meldung bestätigt es, und die Regel ist in der Liste **Aktiv**.
 
 <Screenshot
   page="automate/threshold-alert"
   id="01-rule-canvas"
   route="/automation/rule-designer/:id"
   state="Rule Room too warm in edit mode: Start (Room sensor), Condition temperature Greater than 25, Toggle In, Notification action"
-  alt="The finished rule with four connected nodes"
+  alt="Die fertige Regel mit vier verbundenen Knoten"
 />
 
-## Check that it worked
+## Prüfen, ob es funktioniert hat {#check-that-it-worked}
 
-Open a `Room sensor` thing and use **Simulate device…** to send a `temperature` of `26`. See [Simulate a device](../connect/simulate.mdx). A notification arrives for the users and groups you chose. Send `24`, then `26` again: you get a second notification, because the state changed from not met to met.
+Öffnen Sie ein Thing vom Typ `Room sensor` und senden Sie mit **Gerät simulieren…** eine `temperature` von `26`. Siehe [Ein Gerät simulieren](../connect/simulate.mdx). Eine Benachrichtigung geht an die Benutzer und Gruppen, die Sie gewählt haben. Senden Sie `24`, dann wieder `26`: Sie erhalten eine zweite Benachrichtigung, weil der Zustand von nicht erfüllt zu erfüllt gewechselt hat.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **Nothing arrives**: check that the rule is **Active**, that the thing is of the type chosen on **Start**, and that the measure name matches the thing type exactly. See [A rule doesn't fire](../troubleshooting/rule-not-firing.mdx).
-- **The check mark is disabled**: the flow is invalid. Hover the validity icon to read what is missing, for example a node with required fields empty.
-- **Activate is disabled**: the rule has no published version yet. Select the check mark first.
-- **You want email instead**: swap step 7 for an **Email** action. It needs a recipient and a subject and body. Email goes through your tenant's mail server if one is set up, and otherwise through the platform mail server.
+- **Nichts kommt an**: Prüfen Sie, ob die Regel **Aktiv** ist, ob das Thing den bei **Start** gewählten Typ hat und ob der Name des Messwerts genau zum Thing-Typ passt. Siehe [Eine Regel feuert nicht](../troubleshooting/rule-not-firing.mdx).
+- **Das Häkchen ist deaktiviert**: Der Flow ist ungültig. Fahren Sie mit der Maus über das Gültigkeitssymbol, um zu lesen, was fehlt, zum Beispiel ein Knoten mit leeren Pflichtfeldern.
+- **Aktivieren ist deaktiviert**: Die Regel hat noch keine veröffentlichte Version. Wählen Sie zuerst das Häkchen.
+- **Sie möchten stattdessen eine E-Mail**: Ersetzen Sie Schritt 7 durch eine Aktion **E-Mail**. Sie braucht einen Empfänger sowie Betreff und Text. E-Mails gehen über den Mailserver Ihres Tenants, falls einer eingerichtet ist, sonst über den Mailserver der Plattform.
 
 {/* TODO(product): Where can a user see that a rule evaluation failed or was skipped (condition not met, invalid expression)? The code writes rule evaluation events whose detail depends on enableDetailedRuleEvaluation and logs other errors on the server. Should the docs promise that users can see failed evaluations? */}
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Rule conditions and functions](./conditions.mdx) · [Action types](./action-types.mdx)
-- [Call another system from a rule](./webhook-from-rule.mdx)
-- [Events, incidents and notifications](../watch/events-incidents-notifications.mdx)
+- [Regelbedingungen und Funktionen](./conditions.mdx) · [Aktionstypen](./action-types.mdx)
+- [Aus einer Regel ein anderes System aufrufen](./webhook-from-rule.mdx)
+- [Events, Vorfälle und Benachrichtigungen](../watch/events-incidents-notifications.mdx)

@@ -1,91 +1,91 @@
 ---
-untranslated: true
-title: Reuse an interface across thing types
+title: Ein Interface für mehrere Thing-Typen wiederverwenden
 sidebar_position: 6
-description: Share one set of fields between thing types, map fields that have other names, and keep thing types on the version they chose.
+description: Teilen Sie eine Menge von Feldern zwischen Thing-Typen, ordnen Sie Felder mit anderen Namen zu und lassen Sie Thing-Typen auf der gewählten Version.
 type: how-to
 app:
   routes: ["/onboarding/interfaces", "/onboarding/interfaces/:id", "/onboarding/thing-types/:id"]
+translated_from: 679f3a4
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
 
-Define fields once as an interface, attach it to several thing types, and map the fields whose names differ. One [Smart dashboard](../visualize/smart-dashboard.mdx) then covers every thing of those types. For what interfaces are, read [Thing types, things and interfaces](./things-and-types.mdx).
+Legen Sie Felder einmal als Interface fest, hängen Sie es an mehrere Thing-Typen an und ordnen Sie die Felder zu, deren Namen abweichen. Ein [Smart-Dashboard](../visualize/smart-dashboard.mdx) deckt dann jedes Thing dieser Typen ab. Was Interfaces sind, lesen Sie unter [Thing-Typen, Things und Interfaces](./things-and-types.mdx).
 
-## Before you start
+## Bevor Sie beginnen {#before-you-start}
 
-- Your role can edit thing types and interfaces.
-- You have a thing type whose fields you want to share, or a published interface to attach. The platform ships one, [Temperature Sensing](./shipped-interfaces.mdx).
+- Ihre Rolle darf Thing-Typen und Interfaces bearbeiten.
+- Sie haben einen Thing-Typ, dessen Felder Sie teilen möchten, oder ein veröffentlichtes Interface zum Anhängen. Die Plattform liefert eines mit, [Temperature Sensing](./shipped-interfaces.mdx).
 
-## Publish your fields as an interface
+## Ihre Felder als Interface veröffentlichen {#publish-your-fields-as-an-interface}
 
-Skip this if the interface already exists.
+Überspringen Sie das, wenn das Interface schon existiert.
 
-**From fields you already have on a thing type**
+**Aus Feldern, die Sie schon an einem Thing-Typ haben**
 
-1. Open **Settings › Onboarding › Thing Types**, select the thing type and open **Schema › Interfaces**.
-2. Select **Move to interface** and tick the published own fields to move.
-3. Choose **New interface** to create it from the selection, as **Experimental** with v1 published. Or choose **Existing interface** to publish the selection as the next version of one of your interfaces.
-4. Confirm. The thing type pins the new version, so its schema doesn't change.
+1. Öffnen Sie **Einstellungen › Onboarding › Thing Typen**, wählen Sie den Thing-Typ und öffnen Sie **Schema › Interfaces**.
+2. Wählen Sie **In Schnittstelle verschieben** und haken Sie die veröffentlichten eigenen Felder an, die verschoben werden sollen.
+3. Wählen Sie **Neue Schnittstelle**, um es aus der Auswahl zu erstellen, als **Experimentell** mit veröffentlichter v1. Oder wählen Sie **Vorhandene Schnittstelle**, um die Auswahl als nächste Version eines Ihrer Interfaces zu veröffentlichen.
+4. Bestätigen Sie. Der Thing-Typ fixiert die neue Version, sein Schema ändert sich also nicht.
 
-**From scratch**
+**Von Grund auf**
 
-1. Open **Settings › Onboarding › Interfaces**, select **New interface**, enter **Display name**, **Name** and **Description** and save.
-2. On the interface page, select **Edit schema**, then **Add measure** or **Add property** in the **Measures** and **Properties** panes.
-3. Select **Publish v1** in the header, describe the change in **Changelog** and confirm.
+1. Öffnen Sie **Einstellungen › Onboarding › Interfaces**, wählen Sie **Neues Interface**, geben Sie **Anzeigename**, **Name** und **Beschreibung** ein und speichern Sie.
+2. Wählen Sie auf der Interface-Seite **Schema bearbeiten** und dann in den Bereichen **Telemetrien** und **Eigenschaften** **Telemetrie hinzufügen** oder **Eigenschaft erstellen**.
+3. Wählen Sie im Kopfbereich **v1 veröffentlichen**, beschreiben Sie die Änderung im **Änderungsprotokoll** und bestätigen Sie.
 
-## Attach it to another thing type
+## An einen weiteren Thing-Typ anhängen {#attach-it-to-another-thing-type}
 
-1. Open the second thing type and its **Schema › Interfaces** pane.
-2. Select **Attach interface**, pick the interface under **Attachable interfaces** and select **Attach**. If the type has a **Suggested** card for it, select **Apply**.
-3. If the thing type already has own fields with the same names, the button reads **Attach & absorb**. The interface's definition then replaces those own fields. The interface itself doesn't change.
+1. Öffnen Sie den zweiten Thing-Typ und seinen Bereich **Schema › Interfaces**.
+2. Wählen Sie **Interface anhängen**, wählen Sie das Interface unter **Anhängbare Interfaces** und wählen Sie **Anhängen**. Hat der Typ dafür eine Karte **Vorgeschlagen**, wählen Sie **Anwenden**.
+3. Hat der Thing-Typ schon eigene Felder mit denselben Namen, heißt die Schaltfläche **Anhängen & übernehmen**. Die Definition des Interfaces ersetzt dann diese eigenen Felder. Das Interface selbst ändert sich nicht.
 
-The interface appears under **Attached interfaces**, labelled **Pinned v1**. Its fields are read-only on the thing type.
+Das Interface erscheint unter **Angehängte Interfaces** mit der Beschriftung **Fixiert v1**. Seine Felder sind am Thing-Typ schreibgeschützt.
 
 <Screenshot
   page="model/reuse-interface"
   id="01-attach-interface"
   route="/onboarding/thing-types/:id"
   state="Thing type Schema tab, Interfaces pane, the Attach interface dialog open with Temperature Sensing selected"
-  alt="Attaching an interface to a thing type"
+  alt="Ein Interface an einen Thing-Typ anhängen"
 />
 
-## Map fields that have other names
+## Felder mit anderen Namen zuordnen {#map-fields-that-have-other-names}
 
-If a device sends `temp_c` where the interface says `temperature`, don't rename anything on the device.
+Sendet ein Gerät `temp_c`, wo das Interface `temperature` sagt, benennen Sie nichts am Gerät um.
 
-1. In the attached interface, open **Field mapping**.
-2. In the row of the interface field, open **This type's field** (**Serve temperature from**) and choose the thing type's own field.
-3. Check the line **1 served from another field**.
+1. Öffnen Sie im angehängten Interface **Feld-Mapping**.
+2. Öffnen Sie in der Zeile des Interface-Felds **Feld dieses Typs** (**temperature bedienen von**) und wählen Sie das eigene Feld des Thing-Typs.
+3. Prüfen Sie die Zeile **1 aus einem anderen Feld bedient**.
 
-Select **Remove mapping** to undo it, or **Mapped only** to list only the mapped rows.
+Wählen Sie **Mapping entfernen**, um es rückgängig zu machen, oder **Nur zugeordnete**, um nur die zugeordneten Zeilen zu listen.
 
-:::warning Same name, different value
-If the thing type also has its own field with the interface field's name, the mapping wins and the own field's value is never read. The row warns you.
+:::warning Gleicher Name, anderer Wert
+Hat der Thing-Typ auch ein eigenes Feld mit dem Namen des Interface-Felds, gewinnt das Mapping, und der Wert des eigenen Felds wird nie gelesen. Die Zeile warnt Sie.
 :::
 
-## Move a thing type to a newer version
+## Einen Thing-Typ auf eine neuere Version heben {#move-a-thing-type-to-a-newer-version}
 
-Thing types keep the version they pinned, so a new interface version changes nothing until you update.
+Thing-Typen behalten die Version, die sie fixiert haben, eine neue Interface-Version ändert also nichts, bis Sie aktualisieren.
 
-1. On the thing type's **Interfaces** pane, look for **v2 available** next to the interface.
-2. Select **Compare** to see what differs.
-3. Select **Update to v2**. The update is checked for name collisions and applies at once, like a schema change.
+1. Suchen Sie im Bereich **Interfaces** des Thing-Typs neben dem Interface nach **v2 verfügbar**.
+2. Wählen Sie **Vergleichen**, um die Unterschiede zu sehen.
+3. Wählen Sie **Auf v2 aktualisieren**. Die Aktualisierung wird auf Namenskollisionen geprüft und gilt sofort, wie eine Schema-Änderung.
 
-To remove an interface from a thing type, select **Detach**. The dialog says how many thing types and things it affects.
+Um ein Interface von einem Thing-Typ zu entfernen, wählen Sie **Entfernen**. Der Dialog nennt, wie viele Thing-Typen und Things betroffen sind.
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-On each thing type the interface shows **Up to date**. Select **Generate dashboard** to build a Smart dashboard with one widget per field. It lists every current and future thing whose type implements the interface. On the interface page, **Implemented by** lists the thing types.
+An jedem Thing-Typ zeigt das Interface **Aktuell**. Wählen Sie **Dashboard generieren**, um ein Smart-Dashboard mit einem Widget pro Feld zu erstellen. Es listet jedes aktuelle und künftige Thing, dessen Typ das Interface implementiert. Auf der Interface-Seite listet **Implementiert von** die Thing-Typen.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **Attach is refused with a name collision**: a field name of the interface is already used on the thing type, for example by another attached interface. Rename the field that collides.
-- **The interface isn't under Attachable interfaces**: it has no published version, or it is already attached.
-- **A dashboard widget is empty for one thing type**: its field isn't mapped. Add the mapping.
-- **Delete is disabled on the interface**: thing types still implement it. Detach it from each, as listed under **Implemented by**.
+- **Das Anhängen wird wegen einer Namenskollision abgelehnt**: Ein Feldname des Interfaces wird am Thing-Typ schon verwendet, zum Beispiel von einem anderen angehängten Interface. Benennen Sie das kollidierende Feld um.
+- **Das Interface steht nicht unter Anhängbare Interfaces**: Es hat keine veröffentlichte Version oder ist schon angehängt.
+- **Ein Dashboard-Widget ist für einen Thing-Typ leer**: Sein Feld ist nicht zugeordnet. Fügen Sie das Mapping hinzu.
+- **Löschen ist am Interface deaktiviert**: Thing-Typen implementieren es noch. Lösen Sie es von jedem, wie unter **Implementiert von** gelistet.
 
-## Related
+## Siehe auch {#related}
 
-- [Drafts, publishing and versions](./drafts-and-versions.mdx) · [Shipped interfaces](./shipped-interfaces.mdx)
-- [Build one dashboard for every thing of a kind](../visualize/smart-dashboard.mdx)
+- [Entwürfe, Veröffentlichen und Versionen](./drafts-and-versions.mdx) · [Mitgelieferte Interfaces](./shipped-interfaces.mdx)
+- [Ein Dashboard für alle Things einer Art bauen](../visualize/smart-dashboard.mdx)

@@ -1,109 +1,109 @@
 ---
-untranslated: true
-title: Report settings
+title: Berichtseinstellungen
 sidebar_position: 9
-description: Every field of a report, its schedule, file name values, subscriptions and generate options.
+description: Jedes Feld eines Berichts, sein Zeitplan, Dateinamenwerte, Abonnements und Optionen zum Generieren.
 type: reference
 app:
   routes: ["/reports", "/reports/:id"]
+translated_from: 679f3a4
 ---
 
-Fields of a report in **Automation › Reports**, and how its schedule and delivery work.
+Felder eines Berichts unter **Einstellungen › Automatisierung › Berichte** und wie sein Zeitplan und seine Zustellung funktionieren.
 
-## Report
+## Bericht {#report}
 
-| Field | Meaning |
+| Feld | Bedeutung |
 | --- | --- |
-| **Name** | Required. Unique in the tenant. |
-| **Description** | Optional. |
-| **File name** | Required. The name of the generated PDF. Press `@` to insert a value from the next table. |
-| **Folder** | Required. Where the PDF is saved. You find it in the file explorer. |
-| **Things** | Required. At least one thing. |
-| **Users**, **Groups** | Who can open the report. If you select none, everyone in the tenant can. |
-| **Tags** | Optional labels to find the report in the list. They change nothing else. |
+| **Name** | Pflicht. Im Tenant eindeutig. |
+| **Beschreibung** | Optional. |
+| **Dateiname** | Pflicht. Der Name des erzeugten PDFs. Drücken Sie `@`, um einen Wert aus der nächsten Tabelle einzufügen. |
+| **Ordner** | Pflicht. Wo das PDF gespeichert wird. Sie finden es im Datei-Explorer. |
+| **Things** | Pflicht. Mindestens ein Thing. |
+| **Benutzer**, **Gruppen** | Wer den Bericht öffnen kann. Wählen Sie keine aus, kann es jeder im Tenant. |
+| **Tags** | Optionale Labels, um den Bericht in der Liste zu finden. Sie ändern sonst nichts. |
 
-### File name values
+### Werte für den Dateinamen {#file-name-values}
 
-Values are replaced when the PDF is created, in the tenant's time zone and language.
+Werte werden ersetzt, wenn das PDF erstellt wird, in Zeitzone und Sprache des Tenants.
 
-| Value | Result |
+| Wert | Ergebnis |
 | --- | --- |
 | `{{date}}` | `YYYY-MM-DD` |
 | `{{year}}`, `{{month}}`, `{{day}}` | `YYYY`, `MM`, `DD` |
-| `{{month_long}}`, `{{month_short}}` | The month's full or short name |
-| `{{date_time}}` | Date and time without colons, for example `2026-06-15_22-34-56` |
-| `{{timestamp}}` | Unix time in seconds |
-| `{{tenant}}` | The tenant |
-| `{{uuid}}` | A unique ID |
+| `{{month_long}}`, `{{month_short}}` | Der ausgeschriebene oder kurze Monatsname |
+| `{{date_time}}` | Datum und Uhrzeit ohne Doppelpunkte, zum Beispiel `2026-06-15_22-34-56` |
+| `{{timestamp}}` | Unix-Zeit in Sekunden |
+| `{{tenant}}` | Der Tenant |
+| `{{uuid}}` | Eine eindeutige ID |
 
-## Schedule
+## Zeitplan {#schedule}
 
-| Field | Meaning |
+| Feld | Bedeutung |
 | --- | --- |
-| **Start date**, **Start time** | When the first report is generated. Defaults to the moment you open the form. |
-| **Timeframe** | The period each report covers, as a range relative to the run time. Defaults to **Last 7 days**. You can also set the time zone the range is resolved in. |
-| **Repeat every** | A number and a unit: **Hour**, **Day**, **Week**, **Month** or **Year**. Defaults to 1 **Day**. |
+| **Startdatum**, **Startzeit** | Wann der erste Bericht erzeugt wird. Standardmäßig der Moment, in dem Sie das Formular öffnen. |
+| **Zeitfenster** | Der Zeitraum, den jeder Bericht abdeckt, als Bereich relativ zur Laufzeit. Standardmäßig **Letzte 7 Tage**. Sie können auch die Zeitzone festlegen, in der der Bereich aufgelöst wird. |
+| **Wiederhole jeden** | Eine Zahl und eine Einheit: **Stunde**, **Tag**, **Woche**, **Monat** oder **Jahr**. Standardmäßig 1 **Tag**. |
 
-A scheduled run resolves the **Timeframe** at the moment it fires. The schedule runs only while the report is published. The list's schedule icon shows the last run and the next run.
+Ein geplanter Lauf löst das **Zeitfenster** in dem Moment auf, in dem er feuert. Der Zeitplan läuft nur, solange der Bericht veröffentlicht ist. Das Zeitplansymbol der Liste zeigt den letzten und den nächsten Lauf.
 
-## Publish
+## Veröffentlichen {#publish}
 
-| State | Meaning |
+| Zustand | Bedeutung |
 | --- | --- |
-| Not published | No schedule runs. New and copied reports start here. |
-| Published | The schedule runs from the start date and time. The header button reads **Unpublish**. |
+| Nicht veröffentlicht | Kein Zeitplan läuft. Neue und kopierte Berichte beginnen hier. |
+| Veröffentlicht | Der Zeitplan läuft ab Startdatum und Startzeit. Die Schaltfläche im Kopfbereich lautet **Veröffentlichung aufheben**. |
 
-Publishing is refused when **Start date**, **Start time** or **Repeat every** is missing: "This report cannot be published as the timeframe is not fully defined."
+Das Veröffentlichen wird abgelehnt, wenn **Startdatum**, **Startzeit** oder **Wiederhole jeden** fehlt: „Der Bericht kann nicht veröffentlicht werden, da der Zeitraum nicht vollständig definiert ist.“
 
-## Subscriptions
+## Abonnements {#subscriptions}
 
-Open **Subscriptions** in the editor header. Each subscriber receives every generated report.
+Öffnen Sie **Abonnements** im Kopfbereich des Editors. Jeder Abonnent erhält jeden erzeugten Bericht.
 
-| Option | Meaning |
+| Option | Bedeutung |
 | --- | --- |
-| **Add user** | Subscribe a user of the tenant. |
-| **External** | Subscribe an email address without an account. External subscribers get mail only. |
-| **Send mail** | Email the PDF. Needs a mail server for the tenant. The mail has an unsubscribe link. |
-| **Send notification** | Send an in-app notification, titled "Report `<name>` generated". |
+| **Nutzer hinzufügen** | Einen Benutzer des Tenants abonnieren. |
+| **Extern** | Eine E-Mail-Adresse ohne Konto abonnieren. Externe Abonnenten erhalten nur E-Mails. |
+| **E-Mail** | Das PDF per E-Mail senden. Braucht einen Mailserver für den Tenant. Die E-Mail hat einen Link zum Abbestellen. |
+| **Benachrichtigung** | Eine In-App-Benachrichtigung senden, mit dem Titel „Bericht `<name>` generiert“. |
 
-Without a mail server the app warns: "No Mailserver configured. Subscriptions will not be send as Email."
+Ohne Mailserver warnt die App: „Kein Mailserver konfiguriert. Abonnements werden nicht als E-Mail versendet.“
 
-## Generate
+## Generieren {#generate}
 
-**Generate** in the editor header opens a popover with a time range.
+**Generieren** im Kopfbereich des Editors öffnet ein Popover mit einem Zeitraum.
 
-| Option | Meaning |
+| Option | Bedeutung |
 | --- | --- |
-| Time range | A relative or absolute range. Defaults to the report's **Timeframe**. |
-| **Timeshift** | Moves the range into the past, for example `-6h` or `-3d`. Applies to relative ranges only. |
-| **Download** | Opens the browser's print dialog for the report. Choose **Save as PDF**. Nothing is stored or sent. |
-| **Generate and send** | Creates the PDF, saves it in the **Folder** and sends it to the subscribers. The button is disabled for 30 seconds afterwards. The PDF appears in about 30 seconds. |
+| Zeitraum | Ein relativer oder absoluter Bereich. Standardmäßig das **Zeitfenster** des Berichts. |
+| **Zeitverschiebung** | Verschiebt den Bereich in die Vergangenheit, zum Beispiel `-6h` oder `-3d`. Gilt nur für relative Bereiche. |
+| **Herunterladen** | Öffnet den Druckdialog des Browsers für den Bericht. Wählen Sie **Als PDF speichern**. Nichts wird gespeichert oder gesendet. |
+| **Erstellen und senden** | Erzeugt das PDF, speichert es im **Ordner** und sendet es an die Abonnenten. Die Schaltfläche ist danach 30 Sekunden deaktiviert. Das PDF erscheint nach etwa 30 Sekunden. |
 
-## Editor
+## Editor {#editor}
 
-| Control | Meaning |
+| Bedienelement | Bedeutung |
 | --- | --- |
-| Pencil | Enters or leaves edit mode. Leaving saves. The header shows **Saved** or **Unsaved changes**. |
-| **Add page** | Adds a page. Deleting a page that has widgets deletes the widgets. |
-| **Canvas size** | **A4 Portrait**, **A4 Landscape** or **Custom**. |
-| **Move to front**, **Move to back** | Order of overlapping widgets, in a widget's menu. |
-| **Preview** | Opens the report in a new tab. |
-| Gear | Opens the report settings: the fields above. |
+| Stift | Wechselt in den Bearbeitungsmodus oder verlässt ihn. Beim Verlassen wird gespeichert. Der Kopfbereich zeigt **Gespeichert** oder **Ungespeicherte Änderungen**. |
+| **Seite hinzufügen** | Fügt eine Seite hinzu. Löschen Sie eine Seite mit Widgets, werden die Widgets gelöscht. |
+| **Canvas-Größe** | **A4 Hochformat**, **A4 Querformat** oder **Benutzerdefiniert**. |
+| **In den Vordergrund**, **In den Hintergrund** | Reihenfolge überlappender Widgets, im Menü eines Widgets. |
+| **Vorschau** | Öffnet den Bericht in einem neuen Tab. |
+| Zahnrad | Öffnet die Berichtseinstellungen: die Felder oben. |
 
-## Report list
+## Berichtsliste {#report-list}
 
-| Column | Meaning |
+| Spalte | Bedeutung |
 | --- | --- |
-| **Name** | Opens the editor. |
-| **Status** | Published or not. |
-| **Published at** | When it was last published. |
-| **Schedule** | Last and next run. |
-| **Groups**, **Users**, **Things** | Who sees it and what it covers. |
-| **Tags** | Your labels. |
+| **Name** | Öffnet den Editor. |
+| **Status** | Veröffentlicht oder nicht. |
+| **Veröffentlicht am** | Wann er zuletzt veröffentlicht wurde. |
+| **Zeitplan** | Letzter und nächster Lauf. |
+| **Gruppen**, **Benutzer**, **Things** | Wer ihn sieht und was er abdeckt. |
+| **Tags** | Ihre Labels. |
 
-Each row has **Copy Report** and **Preview**. A copy is never published. To delete reports, tick them and use the delete action in the toolbar. A **Delete report** dialog asks you to confirm.
+Jede Zeile hat **Bericht kopieren** und **Vorschau**. Eine Kopie ist nie veröffentlicht. Um Berichte zu löschen, setzen Sie Häkchen und nutzen Sie die Löschaktion in der Symbolleiste. Ein Dialog **Bericht löschen** bittet um Bestätigung.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Email a weekly PDF report](./weekly-report.mdx)
-- [Rules, actions and reports](./rules-actions-reports.mdx)
+- [Einen wöchentlichen PDF-Bericht per E-Mail senden](./weekly-report.mdx)
+- [Regeln, Aktionen und Berichte](./rules-actions-reports.mdx)

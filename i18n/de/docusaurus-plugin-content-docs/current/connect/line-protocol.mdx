@@ -1,41 +1,41 @@
 ---
-untranslated: true
-title: Write InfluxDB line protocol
-description: Send InfluxDB line protocol to tsflux with curl, Python requests or Node.js fetch, or point an existing InfluxDB client at it.
+title: InfluxDB Line Protocol schreiben
+description: InfluxDB Line Protocol mit curl, Python requests oder Node.js fetch an tsflux senden oder einen vorhandenen InfluxDB-Client darauf richten.
 sidebar_position: 5
 type: how-to
 app:
   routes: ["/onboarding/things/:id"]
+translated_from: b6ed908
 ---
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-Write measurements for a thing in InfluxDB line protocol, from your own code or from a tool that already writes to InfluxDB. For background, read [How devices connect](./how-devices-connect.mdx).
+Schreiben Sie Messwerte für ein Thing im InfluxDB Line Protocol, aus eigenem Code oder aus einem Tool, das bereits in InfluxDB schreibt. Hintergrund: [Wie Geräte sich verbinden](./how-devices-connect.mdx).
 
-## Before you start
+## Bevor Sie beginnen {#before-you-start}
 
-- A thing of a published thing type. See [Register a thing](../model/register-thing.mdx).
-- Credentials for the thing. See [Create and rotate device credentials](./credentials.mdx).
-- An HTTP client: `curl`, Python with `requests`, or Node.js 18 or later.
+- Ein Thing mit einem veröffentlichten Thing-Typ. Siehe [Ein Thing registrieren](../model/register-thing.mdx).
+- Zugangsdaten für das Thing. Siehe [Gerätezugangsdaten anlegen und rotieren](./credentials.mdx).
+- Ein HTTP-Client: `curl`, Python mit `requests` oder Node.js 18 oder neuer.
 
-## Steps
+## Schritte {#steps}
 
-### 1. Copy the connection details
+### 1. Die Verbindungsdaten kopieren {#1-copy-the-connection-details}
 
-Open the thing (**Settings › Onboarding › Things**), go to **Connections** and select **Connection info**. Copy these values:
+Öffnen Sie das Thing (**Einstellungen › Onboarding › Things**), gehen Sie zu **Verbindungen** und wählen Sie **Verbindungsinformationen**. Kopieren Sie diese Werte:
 
-| Placeholder | Source in **Connection info** |
+| Platzhalter | Quelle unter **Verbindungsinformationen** |
 | --- | --- |
-| `<line-protocol-url>` | The URL under **REST** › **Line protocol**, ending in `/api/v1/write/line-protocol`. Host and TLS are those of your deployment. |
-| `<token>` | The JWT **Token**. With basic credentials, use **Username** and **Password** instead. |
-| `<deviceId>` | The thing's ID, the last part of **Client id**. The **Thing Alternate ID** also works. |
+| `<line-protocol-url>` | Die URL unter **REST** › **Line-Protokoll**, die auf `/api/v1/write/line-protocol` endet. Host und TLS sind die Ihres Deployments. |
+| `<token>` | Das JWT-**Token**. Bei Basic-Zugangsdaten verwenden Sie stattdessen **Benutzername** und **Passwort**. |
+| `<deviceId>` | Die ID des Things, der letzte Teil der **Client-ID**. Die **Alternative Thing -ID** funktioniert ebenfalls. |
 
-For a tool that expects InfluxDB, use **InfluxDB v2 compatible write** or **InfluxDB v1 compatible write** instead. They accept the same lines and answer `204`.
+Für ein Tool, das InfluxDB erwartet, verwenden Sie stattdessen **InfluxDB v2-kompatibles Schreiben** oder **InfluxDB v1-kompatibles Schreiben**. Sie nehmen dieselben Zeilen an und antworten mit `204`.
 
-### 2. Send one line
+### 2. Eine Zeile senden {#2-send-one-line}
 
-The measurement is the thing type. The tag `id` is the thing. The fields are the measures.
+Das Measurement ist der Thing-Typ. Der Tag `id` ist das Thing. Die Fields sind die Messwerte.
 
 ```text
 room_sensor,id=<deviceId> temperature=22.5,humidity=61.3
@@ -50,7 +50,7 @@ curl -X POST "<line-protocol-url>" \
   --data-binary 'room_sensor,id=<deviceId> temperature=22.5,humidity=61.3'
 ```
 
-With basic credentials, replace the `Authorization` header with `-u "<username>:<password>"`.
+Bei Basic-Zugangsdaten ersetzen Sie den Header `Authorization` durch `-u "<username>:<password>"`.
 
 </TabItem>
 <TabItem value="python" label="Python (requests)">
@@ -70,7 +70,7 @@ print(response.status_code, response.json())
 </TabItem>
 <TabItem value="node" label="Node.js (fetch)">
 
-Save as `send.mjs` and run `node send.mjs`.
+Speichern Sie die Datei als `send.mjs` und führen Sie `node send.mjs` aus.
 
 ```js
 const response = await fetch("<line-protocol-url>", {
@@ -84,11 +84,11 @@ console.log(response.status, await response.json());
 </TabItem>
 </Tabs>
 
-Field types follow line protocol: `22.5` is a number, `42i` an integer, `true` a boolean, `"on"` a string. Field names are stored in lower case.
+Die Feldtypen folgen dem Line Protocol: `22.5` ist eine Zahl, `42i` eine Ganzzahl, `true` ein Boolean, `"on"` ein String. Feldnamen werden in Kleinbuchstaben gespeichert.
 
-### 3. Add a timestamp and several lines
+### 3. Zeitstempel und mehrere Zeilen ergänzen {#3-add-a-timestamp-and-several-lines}
 
-Put one line per device reading, separated by newlines. A timestamp goes last. Without one, the time of arrival is used. The default unit is nanoseconds; set `precision` to `ns`, `us`, `ms` or `s` to change it.
+Schreiben Sie eine Zeile pro Messung des Geräts, getrennt durch Zeilenumbrüche. Ein Zeitstempel steht am Ende. Ohne Zeitstempel gilt der Zeitpunkt des Eintreffens. Die Standardeinheit ist Nanosekunden; setzen Sie `precision` auf `ns`, `us`, `ms` oder `s`, um sie zu ändern.
 
 ```bash
 curl -X POST "<line-protocol-url>?precision=s" \
@@ -96,22 +96,22 @@ curl -X POST "<line-protocol-url>?precision=s" \
   --data-binary $'room_sensor,id=<deviceId>,location=warehouse-A temperature=22.5 1794043800\nroom_sensor,id=<deviceId>,location=warehouse-A temperature=22.7 1794043860'
 ```
 
-Tags other than `id`, `tenant` and `thingtype` become [tags](./message-format.mdx#tags) of the message. Lines that start with `#` are skipped. Tags and fields are in [Message format](./message-format.mdx).
+Andere Tags als `id`, `tenant` und `thingtype` werden zu [Tags](./message-format.mdx#tags) der Nachricht. Zeilen, die mit `#` beginnen, werden übersprungen. Tags und Fields stehen im [Nachrichtenformat](./message-format.mdx).
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-`/api/v1/write/line-protocol` answers `200` with a body like `{"message": "success", "processed": 2, "elapsed_ms": 3}`. The InfluxDB-compatible endpoints answer `204` with no body.
+`/api/v1/write/line-protocol` antwortet mit `200` und einem Body wie `{"message": "success", "processed": 2, "elapsed_ms": 3}`. Die InfluxDB-kompatiblen Endpoints antworten mit `204` ohne Body.
 
-Open the thing in IoT Breeze. **Overview** shows **Last signal** and **Live values** within a few seconds.
+Öffnen Sie das Thing in IoT Breeze. Die **Übersicht** zeigt nach wenigen Sekunden **Letztes Signal** und **Live-Werte**.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **401**: the credential is missing, wrong or expired. Check the `Authorization` header and the **Expires at** of the token.
-- **400 `tag 'id' is required`**: add `id=<deviceId>` as a tag. `device_id` and `deviceid` also work.
-- **400 `line 2: ...`**: the number counts lines from 1. Check that line's syntax, and that it has at least one field.
-- **A line is refused as another device**: the `id` tag must be the device the credential belongs to.
+- **401**: Die Zugangsdaten fehlen, sind falsch oder abgelaufen. Prüfen Sie den Header `Authorization` und **Läuft ab am** des Tokens.
+- **400 `tag 'id' is required`**: Fügen Sie `id=<deviceId>` als Tag hinzu. `device_id` und `deviceid` funktionieren ebenfalls.
+- **400 `line 2: ...`**: Die Zahl zählt die Zeilen ab 1. Prüfen Sie die Syntax dieser Zeile und ob sie mindestens ein Field hat.
+- **Eine Zeile wird als anderes Gerät abgelehnt**: Der Tag `id` muss das Gerät sein, zu dem die Zugangsdaten gehören.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Ingest endpoints and status codes](./ingest-endpoints.mdx) · [Message format](./message-format.mdx)
-- [Send data over HTTP](./http.mdx) · [Send data over MQTT](./mqtt.mdx)
+- [Ingest-Endpoints und Statuscodes](./ingest-endpoints.mdx) · [Nachrichtenformat](./message-format.mdx)
+- [Daten über HTTP senden](./http.mdx) · [Daten über MQTT senden](./mqtt.mdx)

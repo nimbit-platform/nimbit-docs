@@ -1,37 +1,37 @@
 ---
-untranslated: true
-title: Send data over HTTP
-description: Post JSON telemetry for a thing to the tsflux ingest API with curl, Python requests or Node.js fetch.
+title: Daten über HTTP senden
+description: JSON-Telemetrie für ein Thing mit curl, Python requests oder Node.js fetch an die tsflux-Ingest-API senden.
 sidebar_position: 4
 type: how-to
 app:
   routes: ["/onboarding/things/:id"]
+translated_from: b6ed908
 ---
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
-Post one JSON message for a thing to the tsflux ingest API and see its values in IoT Breeze. For background, read [How devices connect](./how-devices-connect.mdx).
+Senden Sie eine JSON-Nachricht für ein Thing an die tsflux-Ingest-API und sehen Sie die Werte in IoT Breeze. Hintergrund: [Wie Geräte sich verbinden](./how-devices-connect.mdx).
 
-## Before you start
+## Bevor Sie beginnen {#before-you-start}
 
-- A thing of a published thing type. See [Register a thing](../model/register-thing.mdx).
-- Credentials for the thing. See [Create and rotate device credentials](./credentials.mdx).
-- An HTTP client: `curl`, Python with `requests`, or Node.js 18 or later.
+- Ein Thing mit einem veröffentlichten Thing-Typ. Siehe [Ein Thing registrieren](../model/register-thing.mdx).
+- Zugangsdaten für das Thing. Siehe [Gerätezugangsdaten anlegen und rotieren](./credentials.mdx).
+- Ein HTTP-Client: `curl`, Python mit `requests` oder Node.js 18 oder neuer.
 
-## Steps
+## Schritte {#steps}
 
-### 1. Copy the connection details
+### 1. Die Verbindungsdaten kopieren {#1-copy-the-connection-details}
 
-Open the thing (**Settings › Onboarding › Things**), go to **Connections** and select **Connection info**. Copy these values:
+Öffnen Sie das Thing (**Einstellungen › Onboarding › Things**), gehen Sie zu **Verbindungen** und wählen Sie **Verbindungsinformationen**. Kopieren Sie diese Werte:
 
-| Placeholder | Source in **Connection info** |
+| Platzhalter | Quelle unter **Verbindungsinformationen** |
 | --- | --- |
-| `<structured-url>` | The URL under **REST** › **Structured JSON**, ending in `/api/v1/message/structured`. Host and TLS are those of your deployment. |
-| `<token>` | The JWT **Token**. With basic credentials, use **Username** and **Password** instead. |
-| `<tenantId>`, `<deviceId>` | Both appear in **Client id** (`<tenantId>:<deviceId>`) and in the **Telemetry** topic. |
+| `<structured-url>` | Die URL unter **REST** › **Strukturiertes JSON**, die auf `/api/v1/message/structured` endet. Host und TLS sind die Ihres Deployments. |
+| `<token>` | Das JWT-**Token**. Bei Basic-Zugangsdaten verwenden Sie stattdessen **Benutzername** und **Passwort**. |
+| `<tenantId>`, `<deviceId>` | Beide stehen in der **Client-ID** (`<tenantId>:<deviceId>`) und im Topic **Telemetrie**. |
 
-### 2. Send one message
+### 2. Eine Nachricht senden {#2-send-one-message}
 
 <Tabs groupId="http-client">
 <TabItem value="curl" label="curl" default>
@@ -48,7 +48,7 @@ curl -X POST "<structured-url>" \
   }'
 ```
 
-With basic credentials, replace the `Authorization` header with `-u "<username>:<password>"`.
+Bei Basic-Zugangsdaten ersetzen Sie den Header `Authorization` durch `-u "<username>:<password>"`.
 
 </TabItem>
 <TabItem value="python" label="Python (requests)">
@@ -73,7 +73,7 @@ print(response.status_code, response.json())
 </TabItem>
 <TabItem value="node" label="Node.js (fetch)">
 
-Save as `send.mjs` and run `node send.mjs`.
+Speichern Sie die Datei als `send.mjs` und führen Sie `node send.mjs` aus.
 
 ```js
 const response = await fetch("<structured-url>", {
@@ -95,11 +95,11 @@ console.log(response.status, await response.json());
 </TabItem>
 </Tabs>
 
-`tenant`, `id` and `thingType` are required over HTTP. The credential decides which tenant and device you may write for.
+`tenant`, `id` und `thingType` sind über HTTP Pflicht. Die Zugangsdaten bestimmen, für welchen Tenant und welches Gerät Sie schreiben dürfen.
 
-### 3. Add a timestamp, location and tags
+### 3. Zeitstempel, Standort und Tags ergänzen {#3-add-a-timestamp-location-and-tags}
 
-Extend the message, or send several at once as a JSON array. All fields are in [Message format](./message-format.mdx).
+Erweitern Sie die Nachricht oder senden Sie mehrere auf einmal als JSON-Array. Alle Felder stehen im [Nachrichtenformat](./message-format.mdx).
 
 ```json
 [
@@ -115,26 +115,26 @@ Extend the message, or send several at once as a JSON array. All fields are in [
 ]
 ```
 
-Without `time`, the time of arrival is used.
+Ohne `time` gilt der Zeitpunkt des Eintreffens.
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-The answer is `200` with a body like this:
+Die Antwort ist `200` mit einem Body wie diesem:
 
 ```json
 { "message": "success", "processed": 1, "elapsed_ms": 4 }
 ```
 
-Open the thing in IoT Breeze. **Overview** shows **Last signal** and **Live values** within a few seconds.
+Öffnen Sie das Thing in IoT Breeze. Die **Übersicht** zeigt nach wenigen Sekunden **Letztes Signal** und **Live-Werte**.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **401**: the credential is missing, wrong or expired. Check the `Authorization` header and the **Expires at** of the token.
-- **400**: the body says why. Common causes are a missing `tenant`, `id` or `thingType`, no `data`, an unknown thing or thing type, or an `id` that belongs to another device.
-- **207**: some messages of a batch were stored. Each entry in `failed` has an `index`, a `status` and an `error`. Resend only the entries with status `503`.
-- **429 or 503**: wait for the number of seconds in `Retry-After`, then send again.
+- **401**: Die Zugangsdaten fehlen, sind falsch oder abgelaufen. Prüfen Sie den Header `Authorization` und **Läuft ab am** des Tokens.
+- **400**: Der Body nennt den Grund. Häufige Ursachen sind ein fehlendes `tenant`, `id` oder `thingType`, fehlende `data`, ein unbekanntes Thing oder ein unbekannter Thing-Typ oder eine `id`, die zu einem anderen Gerät gehört.
+- **207**: Einige Nachrichten eines Batches wurden gespeichert. Jeder Eintrag in `failed` hat einen `index`, einen `status` und einen `error`. Senden Sie nur die Einträge mit Status `503` erneut.
+- **429 oder 503**: Warten Sie die Anzahl Sekunden aus `Retry-After` ab und senden Sie dann erneut.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Ingest endpoints and status codes](./ingest-endpoints.mdx) · [Message format](./message-format.mdx)
-- [Write InfluxDB line protocol](./line-protocol.mdx) · [Send data over MQTT](./mqtt.mdx)
+- [Ingest-Endpoints und Statuscodes](./ingest-endpoints.mdx) · [Nachrichtenformat](./message-format.mdx)
+- [InfluxDB Line Protocol schreiben](./line-protocol.mdx) · [Daten über MQTT senden](./mqtt.mdx)

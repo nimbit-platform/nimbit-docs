@@ -1,47 +1,47 @@
 ---
-untranslated: true
-title: Shipped interfaces
+title: Mitgelieferte Interfaces
 sidebar_position: 9
-description: The interfaces that come with the platform, with their fields, and what you get when you attach them.
+description: Die Interfaces, die mit der Plattform kommen, mit ihren Feldern, und was Sie beim Anhängen erhalten.
 type: reference
 app:
   routes: ["/onboarding/interfaces"]
+translated_from: 810b8a2
 ---
 
-IoT Breeze ships one interface. It appears under **Settings › Onboarding › Interfaces** on the **Preshipped** tab, and is read-only: you can attach it, compare its versions and update to a newer one, but you can't edit it.
+IoT Breeze liefert ein Interface mit. Es erscheint unter **Einstellungen › Onboarding › Interfaces** auf dem Tab **Vorinstalliert** und ist schreibgeschützt: Sie können es anhängen, seine Versionen vergleichen und auf eine neuere aktualisieren, aber nicht bearbeiten.
 
-## Temperature Sensing
+## Temperature Sensing {#temperature-sensing}
 
-Ambient temperature and humidity. Its maturity is **Stable**.
+Umgebungstemperatur und Luftfeuchtigkeit. Sein Reifegrad ist **Stabil**.
 
-| Property | Value |
+| Eigenschaft | Wert |
 | --- | --- |
-| Display name | **Temperature Sensing** |
+| Anzeigename | **Temperature Sensing** |
 | Name | `temperature-sensing` |
-| Current version | v1 |
-| Maturity | **Stable** |
+| Aktuelle Version | v1 |
+| Reifegrad | **Stabil** |
 
-| Field | Kind | Type | Unit | Display name | Aliases |
+| Feld | Art | Typ | Einheit | Anzeigename | Aliase |
 | --- | --- | --- | --- | --- | --- |
-| `temperature` | Measure | `numeric` | `°C` | Temperature | `temp` |
-| `humidity` | Measure | `numeric` | `%` | Humidity | `rh`, `relativeHumidity` |
+| `temperature` | Messwert | `numeric` | `°C` | Temperature | `temp` |
+| `humidity` | Messwert | `numeric` | `%` | Humidity | `rh`, `relativeHumidity` |
 
-Both fields are flagged **Timeseries relevant**.
+Beide Felder sind als **Zeitreihenrelevant** markiert.
 
-### Starter content
+### Startinhalte {#starter-content}
 
-The **Temperature sensing** pack adds content built on this interface. A tenant admin installs it under **Administration › Tenant Settings › Packs**; see [Tenant settings](../administer/tenant-settings.mdx).
+Das Paket **Temperature sensing** ergänzt Inhalte, die auf diesem Interface aufbauen. Ein Tenant-Admin installiert es unter **Administration › Mandanteneinstellungen › Pakete**; siehe [Tenant-Einstellungen](../administer/tenant-settings.mdx).
 
-| Item | What it is |
+| Element | Was es ist |
 | --- | --- |
-| **Temperature Sensing** dashboard | A Smart dashboard with two gauges: temperature from -20 to 60, humidity from 0 to 100. |
-| **Room overview** canvas | Tiles with comfort bands, gauges and a 24-hour chart for one room. Works for any thing whose type implements the interface. |
+| Dashboard **Temperature Sensing** | Ein Smart-Dashboard mit zwei Gauges: Temperatur von -20 bis 60, Luftfeuchtigkeit von 0 bis 100. |
+| Canvas **Room overview** | Kacheln mit Komfortbereichen, Gauges und einem 24-Stunden-Diagramm für einen Raum. Funktioniert für jedes Thing, dessen Typ das Interface implementiert. |
 
 {/* TODO(product): The pack manifest (packs.gen.ts) is version 2, with the interface also named temperature-sensing, while the preshipped interface is v1 from the seed. Does installing the pack create a second, tenant-owned copy of the interface, or reuse the preshipped one? */}
 
-To use it, [attach it to a thing type](./reuse-interface.mdx#attach-it-to-another-thing-type) and map any fields that have other names.
+Um es zu nutzen, [hängen Sie es an einen Thing-Typ an](./reuse-interface.mdx#attach-it-to-another-thing-type) und ordnen Sie Felder mit anderen Namen zu.
 
-## Related
+## Siehe auch {#related}
 
-- [Reuse an interface across thing types](./reuse-interface.mdx)
-- [Build one dashboard for every thing of a kind](../visualize/smart-dashboard.mdx)
+- [Ein Interface für mehrere Thing-Typen wiederverwenden](./reuse-interface.mdx)
+- [Ein Dashboard für alle Things einer Art bauen](../visualize/smart-dashboard.mdx)

@@ -1,14 +1,14 @@
 ---
-untranslated: true
-title: How Ask Nimble answers
-description: What Ask Nimble reads, how it checks and cites an answer, which model writes it, and what it cannot do.
+title: Wie Ask Nimble antwortet
+description: Was Ask Nimble liest, wie es eine Antwort prüft und belegt, welches Modell sie schreibt und was es nicht kann.
 type: concept
 app:
   routes: ["/knowledge/chat"]
   tour: explore-and-ask
+translated_from: 810b8a2
 ---
 
-Ask Nimble does not answer from general knowledge. It looks things up in your tenant, as you, and writes an answer only from what it found. Some answers need no AI model at all. The rest use a model, but a set of checks stops numbers, units and citations that the evidence does not back.
+Ask Nimble antwortet nicht aus Allgemeinwissen. Es schlägt in Ihrem Tenant nach, als Sie, und schreibt eine Antwort nur aus dem, was es gefunden hat. Manche Antworten brauchen gar kein KI-Modell. Die übrigen nutzen eines, aber eine Reihe von Prüfungen hält Zahlen, Einheiten und Quellenangaben zurück, die die Belege nicht stützen.
 
 ```mermaid
 flowchart TB
@@ -22,79 +22,79 @@ flowchart TB
   C --> A[Answer with sources]
 ```
 
-## What it reads
+## Was es liest {#what-it-reads}
 
-Every lookup runs with your own permissions. IoT Breeze forwards your sign-in to the knowledge service, so records you cannot open never reach the answer.
+Jede Abfrage läuft mit Ihren eigenen Berechtigungen. IoT Breeze reicht Ihre Anmeldung an den Knowledge-Dienst weiter, daher erreichen Datensätze, die Sie nicht öffnen dürfen, nie die Antwort.
 
-| Source | What Nimble looks up | Switch in the **Reads** strip |
+| Quelle | Was Nimble nachschlägt | Schalter in der Leiste **Liest** |
 | --- | --- | --- |
-| **Records** | Records and places by name, identifier, alias or description; lists by type or location; the hierarchy; relations and paths; incidents. | **Records** |
-| **Readings** | The latest value of a measurement, or its values over a time range, from your stored time series. | **Readings** |
-| **Docs** | Passages of indexed documents. For a named record, Nimble reads documents about it, its type and its plant or line; **Subtree** widens this to everything below. Without a record it searches all documents you can open. | **Docs** |
+| **Einträge** | Datensätze und Orte nach Name, Kennung, Alias oder Beschreibung; Listen nach Typ oder Ort; die Hierarchie; Beziehungen und Pfade; Vorfälle. | **Einträge** |
+| **Messwerte** | Der letzte Wert einer Messung oder ihre Werte über einen Zeitraum, aus Ihren gespeicherten Zeitreihen. | **Messwerte** |
+| **Dokumente** | Abschnitte indizierter Dokumente. Bei einem genannten Datensatz liest Nimble Dokumente zu ihm, zu seinem Typ und zu seinem Werk oder seiner Linie; **Teilbaum** erweitert das auf alles darunter. Ohne Datensatz durchsucht es alle Dokumente, die Sie öffnen dürfen. | **Dokumente** |
 
-Looking up a record by name is always on. Switching a source off in the **Reads** strip removes that kind of lookup for the next question. Nimble does not change anything in your tenant: every lookup only reads.
+Das Nachschlagen eines Datensatzes nach Namen ist immer aktiv. Schalten Sie in der Leiste **Liest** eine Quelle aus, entfällt diese Art Abfrage bei der nächsten Frage. Nimble ändert nichts in Ihrem Tenant: Jede Abfrage liest nur.
 
-## How an answer is produced
+## Wie eine Antwort entsteht {#how-an-answer-is-produced}
 
-1. **Recognise.** Nimble first tries to match your question to a known pattern, such as a count by status or a list by location. A match runs the lookup directly and the answer is written from its result, with no model call.
-2. **Look up.** Other questions go to the model, which chooses lookups, reads the results and chooses more. A question gets at most six rounds by default.
-3. **Write.** The model returns a structured answer. Each sentence points at the evidence behind it.
-4. **Check.** The answer is checked before you see it. See below.
-5. **Show.** You get the text, the rows, charts or passages it came from, and the steps taken.
+1. **Erkennen.** Nimble versucht zuerst, Ihre Frage einem bekannten Muster zuzuordnen, etwa einer Zählung nach Status oder einer Liste nach Ort. Bei einem Treffer läuft die Abfrage direkt, und die Antwort entsteht aus ihrem Ergebnis, ohne Modellaufruf.
+2. **Nachschlagen.** Andere Fragen gehen an das Modell, das Abfragen wählt, die Ergebnisse liest und weitere wählt. Eine Frage bekommt standardmäßig höchstens sechs Runden.
+3. **Schreiben.** Das Modell liefert eine strukturierte Antwort. Jeder Satz verweist auf seinen Beleg.
+4. **Prüfen.** Die Antwort wird geprüft, bevor Sie sie sehen. Siehe unten.
+5. **Zeigen.** Sie erhalten den Text, die Zeilen, Diagramme oder Abschnitte, aus denen er stammt, und die ausgeführten Schritte.
 
-A question runs for up to two minutes by default. It also ends when your sign-in is about to expire. Nimble then says so and asks you to ask again.
+Eine Frage läuft standardmäßig bis zu zwei Minuten. Sie endet auch, wenn Ihre Anmeldung bald abläuft. Nimble sagt das dann und bittet Sie, noch einmal zu fragen.
 
-## Citations
+## Quellenangaben {#citations}
 
-Each `[n]` in the answer points at a source under it.
+Jedes `[n]` in der Antwort verweist auf eine Quelle darunter.
 
-| Source | Is |
+| Quelle | Ist |
 | --- | --- |
-| **Graph** | A record or a relation. |
-| **Live value** | A reading, with the time it was read. |
-| **Document** | A passage of a file, with the page when known. |
+| **Graph** | Ein Datensatz oder eine Beziehung. |
+| **Live-Wert** | Ein Messwert mit dem Zeitpunkt, zu dem er gelesen wurde. |
+| **Dokument** | Ein Abschnitt einer Datei, mit der Seite, wenn bekannt. |
 
-An answer with no citation at all is not served. After one repair attempt it is held back.
+Eine Antwort ganz ohne Quellenangabe wird nicht ausgeliefert. Nach einem Reparaturversuch wird sie zurückgehalten.
 
-A list is cited as a set of rows with its exact total. When the list is longer than the sample (25 rows by default), the answer says "N of M" and links to Explore for the rest. An answer that cites a capped list without stating the true total is held back.
+Eine Liste wird als Menge von Zeilen mit ihrer exakten Gesamtzahl belegt. Ist die Liste länger als die Stichprobe (standardmäßig 25 Zeilen), sagt die Antwort „N von M“ und verlinkt auf Explore für den Rest. Eine Antwort, die eine gekappte Liste ohne die wahre Gesamtzahl belegt, wird zurückgehalten.
 
-## What the checks do
+## Was die Prüfungen leisten {#what-the-checks-do}
 
-Numbers are the main risk, so the model does not type them. A tool that produces a number hands the model a named value, and the answer refers to that value. Arithmetic, such as a difference or an average, runs in the service, not in the model. The checks then catch:
+Zahlen sind das größte Risiko, deshalb tippt das Modell sie nicht selbst. Ein Werkzeug, das eine Zahl liefert, gibt dem Modell einen benannten Wert, und die Antwort verweist auf diesen Wert. Rechnungen wie eine Differenz oder ein Mittelwert laufen im Dienst, nicht im Modell. Die Prüfungen fangen dann ab:
 
-- a number written into a sentence instead of taken from a value, unless the cited text states it word for word
-- a quantity paired with a value of another kind, such as a pressure in hours
-- a minimum, average and maximum that contradict each other
-- a comparison ("higher than") stated without a computation behind it
-- an answer, or a sentence, with no citation
+- eine Zahl, die in einen Satz geschrieben statt aus einem Wert übernommen wurde, es sei denn, der zitierte Text nennt sie wörtlich
+- eine Größe mit dem Wert einer anderen Art, etwa ein Druck in Stunden
+- ein Minimum, Mittelwert und Maximum, die sich widersprechen
+- einen Vergleich („höher als“) ohne zugrunde liegende Berechnung
+- eine Antwort oder einen Satz ohne Quellenangabe
 
-A failed check gets one repair attempt. If it fails again, the offending sentence is dropped and the rest is served, marked as partial, or the whole answer is held back. The answer says why under **Held back**.
+Eine fehlgeschlagene Prüfung bekommt einen Reparaturversuch. Schlägt sie erneut fehl, wird der beanstandete Satz weggelassen und der Rest ausgeliefert, als teilweise markiert, oder die ganze Antwort wird zurückgehalten. Die Antwort nennt den Grund unter **Zurückgehalten**.
 
-## Which model answers
+## Welches Modell antwortet {#which-model-answers}
 
-| Setting | Behaviour |
+| Einstellung | Verhalten |
 | --- | --- |
-| **Auto (default)** | The platform's default model answers: the registered default, or the model the server is configured with. A model your tenant registers does not become the default. |
-| A model you pick | In the model menu of the question field, you pin a registered model for the chat. Nothing else is tried. |
-| **Fallback order** | In **Auto** only: when the usual model finds nothing (no data, or out of scope), the next model in the chain retries the whole question. At most four models. A stronger model's answer replaces the first only if it improved. |
+| **Automatisch (Standard)** | Das Standardmodell der Plattform antwortet: das registrierte Standardmodell oder das Modell, mit dem der Server konfiguriert ist. Ein Modell, das Ihr Tenant registriert, wird nicht zum Standard. |
+| Ein Modell, das Sie wählen | Im Modellmenü des Fragefelds legen Sie ein registriertes Modell für den Chat fest. Nichts anderes wird versucht. |
+| **Ausweichreihenfolge** | Nur bei **Automatisch**: Findet das übliche Modell nichts (keine Daten oder außerhalb des Umfangs), versucht das nächste Modell der Kette die ganze Frage erneut. Höchstens vier Modelle. Die Antwort eines stärkeren Modells ersetzt die erste nur, wenn sie besser ist. |
 
-A model must support tool calling. Without one, counts, lists and lookups still work, and other questions show **This question needs an AI model**. To register or order models, see [Choose the AI model](./ai-model.mdx). **Details** under an answer shows which model answered and how many model calls it took. A count answered by a known pattern shows zero.
+Ein Modell muss Tool Calling unterstützen. Ohne eines funktionieren Zählungen, Listen und Nachschlagen weiterhin, und andere Fragen zeigen **Für diese Frage ist ein KI-Modell nötig**. Modelle registrieren und ordnen: siehe [Das KI-Modell wählen](./ai-model.mdx). **Details** unter einer Antwort zeigt, welches Modell geantwortet hat und wie viele Modellaufrufe es brauchte. Eine Zählung, die ein bekanntes Muster beantwortet, zeigt null.
 
-The question and the evidence Nimble gathered are sent to the provider of the model that answers. Register only models whose provider your organization approves.
+Die Frage und die von Nimble gesammelten Belege gehen an den Anbieter des Modells, das antwortet. Registrieren Sie nur Modelle, deren Anbieter Ihre Organisation freigegeben hat.
 
-## Limits
+## Grenzen {#limits}
 
-- The checks verify numbers, units and citations. They do not verify that the model read the evidence correctly. Open a source when a decision depends on the answer.
-- Questions about causes find what changed around the event. Nimble says when a finding is a correlation, not proof.
-- It knows only your tenant's records, readings and indexed documents. It has no web access and no knowledge of other tenants.
-- A question the evidence cannot answer ends as **I didn't find any matching data.** or **That's outside what I can answer from your graph.**
-- A name that matches several records gets a clarifying question, not a guess.
-- An empty field cannot be filtered. Nimble says **Not recorded**.
-- A document that is not indexed cannot be read. {/* TODO(product): which file types and maximum size does document indexing accept? The source page says PDF, Office, text, Markdown, CSV, HTML up to 50 MB; this is not confirmed in the service code. */}
-- Answer quality follows the quality of your graph. See [Data health](./data-health.mdx).
+- Die Prüfungen verifizieren Zahlen, Einheiten und Quellenangaben. Sie verifizieren nicht, ob das Modell die Belege richtig gelesen hat. Öffnen Sie eine Quelle, wenn eine Entscheidung von der Antwort abhängt.
+- Fragen nach Ursachen finden, was sich rund um das Event geändert hat. Nimble sagt, wenn ein Befund eine Korrelation und kein Beweis ist.
+- Es kennt nur die Datensätze, Messwerte und indizierten Dokumente Ihres Tenants. Es hat keinen Webzugriff und kennt keine anderen Tenants.
+- Eine Frage, die die Belege nicht beantworten können, endet als **Ich habe keine passenden Daten gefunden.** oder **Das liegt außerhalb dessen, was ich aus Ihrem Graphen beantworten kann.**
+- Passt ein Name auf mehrere Datensätze, stellt Nimble eine Rückfrage statt zu raten.
+- Ein leeres Feld lässt sich nicht filtern. Nimble sagt **Nicht erfasst**.
+- Ein Dokument, das nicht indiziert ist, kann nicht gelesen werden. {/* TODO(product): which file types and maximum size does document indexing accept? The source page says PDF, Office, text, Markdown, CSV, HTML up to 50 MB; this is not confirmed in the service code. */}
+- Die Qualität der Antworten folgt der Qualität Ihres Graphen. Siehe [Datenqualität](./data-health.mdx).
 
-## Related
+## Siehe auch {#related}
 
-- [Ask a question about your data](./ask.mdx)
-- [Choose the AI model](./ai-model.mdx)
-- [The knowledge graph](./knowledge-graph.mdx)
+- [Eine Frage zu Ihren Daten stellen](./ask.mdx)
+- [Das KI-Modell wählen](./ai-model.mdx)
+- [Der Knowledge Graph](./knowledge-graph.mdx)

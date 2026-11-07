@@ -1,64 +1,64 @@
 ---
-untranslated: true
-title: Create a thing type
+title: Einen Thing-Typ anlegen
 sidebar_position: 4
-description: Define a kind of device with its measures and properties, then publish the schema so devices can use it.
+description: Legen Sie eine Art von Gerät mit ihren Messwerten und Eigenschaften fest und veröffentlichen Sie das Schema, damit Geräte es nutzen können.
 type: how-to
 app:
   routes: ["/onboarding/thing-types", "/onboarding/thing-types/:id"]
+translated_from: 679f3a4
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
 
-Define the values a kind of device sends and the fixed facts it has, and publish that schema. For how thing types relate to things and interfaces, read [Thing types, things and interfaces](./things-and-types.mdx).
+Legen Sie die Werte fest, die eine Art von Gerät sendet, und die festen Angaben, die sie hat, und veröffentlichen Sie dieses Schema. Wie Thing-Typen zu Things und Interfaces stehen, lesen Sie unter [Thing-Typen, Things und Interfaces](./things-and-types.mdx).
 
-## Before you start
+## Bevor Sie beginnen {#before-you-start}
 
-- Your role can create and edit thing types. If **Thing Types** is missing from **Settings › Onboarding**, ask your tenant admin.
-- Know the names your device sends its values under, for example `temperature`.
+- Ihre Rolle darf Thing-Typen anlegen und bearbeiten. Fehlt **Thing Typen** unter **Einstellungen › Onboarding**, fragen Sie Ihren Tenant-Admin.
+- Kennen Sie die Namen, unter denen Ihr Gerät seine Werte sendet, zum Beispiel `temperature`.
 
-## Steps
+## Schritte {#steps}
 
-1. Open **Settings › Onboarding › Thing Types** and select **Create Thing Type**.
-2. Fill in the form:
+1. Öffnen Sie **Einstellungen › Onboarding › Thing Typen** und wählen Sie **Thing Typ erstellen**.
+2. Füllen Sie das Formular aus:
 
-   | Field | What to enter |
+   | Feld | Was Sie eingeben |
    | --- | --- |
-   | **Display name** | The name people see, for example `Room sensor`. Required. |
-   | **Name** | The technical name. It is filled in from the display name. It must be unique in your tenant, can't be changed later, and may use letters, digits and underscores. It can't start with a digit or an underscore, and can't end with an underscore. |
-   | **Connector** | The service the devices send data through, usually **Nimbit**. You see the connectors your tenant has switched on. |
-   | **Description**, **Tags** | Optional. |
-   | **Auto Schema Evolution** | Leave it off unless devices should add their own fields. See [Drafts, publishing and versions](./drafts-and-versions.mdx#auto-schema-evolution-does-not-use-the-draft). |
-   | **Quantile Profile Generation** | Calculates percentile profiles regularly, used for anomaly detection. Leave it off unless you need that. |
+   | **Anzeigename** | Der Name, den Menschen sehen, zum Beispiel `Room sensor`. Pflicht. |
+   | **Name** | Der technische Name. Er wird aus dem Anzeigenamen ausgefüllt. Er muss in Ihrem Tenant eindeutig sein, lässt sich später nicht ändern und darf Buchstaben, Ziffern und Unterstriche enthalten. Er darf nicht mit einer Ziffer oder einem Unterstrich beginnen und nicht mit einem Unterstrich enden. |
+   | **Konnektor** | Der Dienst, über den die Geräte Daten senden, meist **Nimbit**. Sie sehen die Konnektoren, die Ihr Tenant eingeschaltet hat. |
+   | **Beschreibung**, **Tags** | Optional. |
+   | **Auto-Schemas Entwicklung** | Lassen Sie sie aus, es sei denn, Geräte sollen eigene Felder hinzufügen. Siehe [Entwürfe, Veröffentlichen und Versionen](./drafts-and-versions.mdx#auto-schema-evolution-does-not-use-the-draft). |
+   | **Quantilprofil-Generierung** | Berechnet regelmäßig Perzentilprofile, die für die Anomalieerkennung dienen. Lassen Sie sie aus, es sei denn, Sie brauchen das. |
 
-3. Select **Save**. The thing type page opens on **Published · v1**.
-4. Open **Schema**, and in the **Measures** pane select **Add measure**. Enter the **Display name**, check the **Name** matches what the device sends, choose the **Type** and, for numbers, the **Unit of measure**. Save. Repeat for each value.
-5. In the **Properties** pane, select **Add property** for each fixed fact, such as a serial number. Set **Timeseries relevant** if you want to filter or group telemetry by it.
-6. Review the draft. The header shows **Draft v2 · 4 changes**. Select **Compare with v1** in the draft line to check it.
-7. Select **Publish v2** in the header, describe the change in **Changelog** and confirm.
+3. Wählen Sie **Speichern**. Die Seite des Thing-Typs öffnet sich mit **Veröffentlicht · v1**.
+4. Öffnen Sie **Schema** und wählen Sie im Bereich **Telemetrien** **Telemetrie hinzufügen**. Geben Sie den **Anzeigenamen** ein, prüfen Sie, dass der **Name** dem entspricht, was das Gerät sendet, wählen Sie den **Typ** und bei Zahlen die **Maßeinheit**. Speichern Sie. Wiederholen Sie das für jeden Wert.
+5. Wählen Sie im Bereich **Eigenschaften** für jede feste Angabe, etwa eine Seriennummer, **Eigenschaft erstellen**. Setzen Sie **Zeitreihenrelevant**, wenn Sie Telemetrie danach filtern oder gruppieren möchten.
+6. Prüfen Sie den Entwurf. Der Kopfbereich zeigt den Entwurf und die Zahl seiner Änderungen, zum Beispiel **Entwurf v2 · 2 Änderungen**. Wählen Sie in der Entwurfszeile **Mit v1 vergleichen**, um ihn zu prüfen.
+7. Wählen Sie im Kopfbereich **v2 veröffentlichen**, beschreiben Sie die Änderung in **Änderungsnotiz** und bestätigen Sie.
 
 <Screenshot
   page="model/create-thing-type"
   id="01-schema-measures"
   route="/onboarding/thing-types/:id"
   state="Schema tab, Measures pane, two measures in the table, a draft line reading Draft v2 · 2 changes, Publish v2 button in the header"
-  alt="A thing type schema with two measures in draft"
+  alt="Das Schema eines Thing-Typs mit zwei Messwerten im Entwurf"
 />
 
-Every option of the measure and property forms is in [Measure and property types](./measure-types.mdx).
+Jede Option der Formulare für Messwerte und Eigenschaften steht unter [Messwert- und Eigenschaftstypen](./measure-types.mdx).
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-The header shows **Published · v2**. The **Versions** tab lists v2 as **Published** and v1 as **Archived**, with a summary of what changed. The measures appear on the **Schema** tab without the draft markers.
+Der Kopfbereich zeigt **Veröffentlicht · v2**. Der Tab **Versionen** listet v2 als **Veröffentlicht** und v1 als **Archiviert**, mit einer Zusammenfassung der Änderungen. Die Messwerte erscheinen auf dem Tab **Schema** ohne die Entwurfsmarkierungen.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **The Name is rejected**: a thing type name allows letters, digits and underscores, and can't start with a digit or underscore or end with an underscore. A measure or property name allows only lowercase letters, digits, hyphens and underscores, and can't start with a digit or hyphen, or end with an underscore.
-- **Save is disabled in a measure form**: with **Ignore outliers** on, both **Min value** and **Max value** are required, and the maximum must be greater than the minimum.
-- **A value arrives but isn't stored**: the schema doesn't know it yet. Check that you published, and that the measure's **Name** matches what the device sends. Without **Auto Schema Evolution**, unknown values are dropped.
-- **There is no Publish button**: it appears only while a draft exists, so make an edit first. If you can't edit the schema at all, your role lacks permission to edit thing types.
+- **Der Name wird abgelehnt**: Ein Thing-Typ-Name erlaubt Buchstaben, Ziffern und Unterstriche und darf nicht mit einer Ziffer oder einem Unterstrich beginnen oder mit einem Unterstrich enden. Ein Name von Messwert oder Eigenschaft erlaubt nur Kleinbuchstaben, Ziffern, Bindestriche und Unterstriche und darf nicht mit einer Ziffer oder einem Bindestrich beginnen oder mit einem Unterstrich enden.
+- **Speichern ist in einem Messwert-Formular deaktiviert**: Bei aktivem **Ausreißer ignorieren** sind **Mindestwert** und **Maximaler Wert** Pflicht, und das Maximum muss größer als das Minimum sein.
+- **Ein Wert kommt an, wird aber nicht gespeichert**: Das Schema kennt ihn noch nicht. Prüfen Sie, dass Sie veröffentlicht haben und dass der **Name** des Messwerts dem entspricht, was das Gerät sendet. Ohne **Auto-Schemas Entwicklung** werden unbekannte Werte verworfen.
+- **Es gibt keine Schaltfläche Veröffentlichen**: Sie erscheint nur, solange ein Entwurf existiert, nehmen Sie also zuerst eine Änderung vor. Können Sie das Schema gar nicht bearbeiten, fehlt Ihrer Rolle die Berechtigung, Thing-Typen zu bearbeiten.
 
-## Related
+## Siehe auch {#related}
 
-- [Thing types, things and interfaces](./things-and-types.mdx) · [Drafts, publishing and versions](./drafts-and-versions.mdx)
-- [Measure and property types](./measure-types.mdx) · [Register a thing](./register-thing.mdx)
+- [Thing-Typen, Things und Interfaces](./things-and-types.mdx) · [Entwürfe, Veröffentlichen und Versionen](./drafts-and-versions.mdx)
+- [Messwert- und Eigenschaftstypen](./measure-types.mdx) · [Ein Thing registrieren](./register-thing.mdx)

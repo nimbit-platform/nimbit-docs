@@ -1,68 +1,68 @@
 ---
-untranslated: true
-title: Check a thing's health
+title: Den Zustand eines Things prüfen
 sidebar_position: 3
-description: See whether a thing is connected, when it last reported, what its latest values are and what happened to it.
+description: Sehen, ob ein Thing verbunden ist, wann es zuletzt gemeldet hat, wie seine neuesten Werte lauten und was mit ihm passiert ist.
 type: how-to
 app:
   routes: ["/monitor/thing-details", "/monitor/thing-details/:id"]
   tour: find-your-way-watch
+translated_from: 679f3a4
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
 
-Find a thing, see whether it is connected and reporting, and read its recent events and incidents.
+Finden Sie ein Thing, sehen Sie, ob es verbunden ist und meldet, und lesen Sie seine jüngsten Events und Vorfälle.
 
-## Before you start
+## Bevor Sie anfangen {#before-you-start}
 
-- You need to see the thing: it belongs to one of your groups, or your role sees all things.
-- To create or change things, use **Settings › Onboarding › Things** instead. **Monitoring › Things** is read only.
+- Sie müssen das Thing sehen können: Es gehört zu einer Ihrer Gruppen, oder Ihre Rolle sieht alle Things.
+- Um Things anzulegen oder zu ändern, nutzen Sie stattdessen **Einstellungen › Onboarding › Things**. **Überwachung › Things** ist nur lesbar.
 
-## Find the thing
+## Das Thing finden {#find-the-thing}
 
-1. Open **Monitoring › Things**.
-2. Type in the search box to search by name, or select **Filters** to narrow by **Name**, **Group**, **Thing type** or **Tags**.
-3. Read **Device status**: **Connected**, **Disconnected** or **Unknown**, with the time since the last change. A **Simulated** chip means the values come from a simulation, not the device.
-4. Select the thing's name.
+1. Öffnen Sie **Überwachung › Things**.
+2. Suchen Sie im Suchfeld nach dem Namen, oder wählen Sie **Filter**, um nach **Name**, **Gruppe**, **Thing-Typ** oder **Tags** einzugrenzen.
+3. Lesen Sie den **Gerätestatus**: **Verbunden**, **Getrennt** oder **Unbekannt**, mit der Zeit seit der letzten Änderung. Ein Chip **Simuliert** heißt, die Werte stammen aus einer Simulation, nicht vom Gerät.
+4. Wählen Sie den Namen des Things.
 
-The URL carries your search and filters, so you can bookmark a filtered list or send it to a colleague.
+Die URL enthält Ihre Suche und Filter, sodass Sie eine gefilterte Liste als Lesezeichen speichern oder einem Kollegen schicken können.
 
-## Read the thing page
+## Die Thing-Seite lesen {#read-the-thing-page}
 
 <Screenshot
   page="watch/thing-health"
   id="01-thing-overview"
   route="/monitor/thing-details/:id"
   state="Overview tab of a connected thing with three measures reporting, Live values and Trend visible, header with Connected chip and last signal"
-  alt="A thing page with header, figures strip and Overview tab"
+  alt="Eine Thing-Seite mit Kopfbereich, Kennzahlenleiste und Tab Übersicht"
 />
 
-1. In the header, read the **Connection** chip and the **last signal**, for example `last signal 4 min ago`. Hover for the exact time. A thing that never reported says **No signal yet**.
-2. Read the figures under the header: **Connection**, **Measures** (for example `3 of 4 reporting`), **Events** (the last 30 days, with a count of errors and warnings), **Incidents** (open ones about this thing) and **Last action**. Select a figure to jump to its tab.
-3. On the **Overview** tab, read **Live values**: the latest reading of each measure with the range of the last 24 hours. Use **Pinned** to show only the measures pinned on the thing type.
-4. Read **Trend** for the last readings. It shows at most 4 measures and at most 2 different units.
-5. Open the **Events** tab. **Events** lists what happened to the thing. **Incidents** lists the incidents about it. **Open in Incidents** goes to the full list.
+1. Lesen Sie im Kopfbereich den Chip **Verbindung** und das **letzte Signal**, zum Beispiel `letztes Signal vor 4 Min.`. Fahren Sie mit der Maus darüber für die genaue Zeit. Ein Thing, das nie gemeldet hat, zeigt **Noch kein Signal**.
+2. Lesen Sie die Kennzahlen unter dem Kopfbereich: **Verbindung**, **Telemetrien** (zum Beispiel `3 von 4 melden Werte`), **Ereignisse · 30 Tage** (mit der Zahl der Fehler und Warnungen), **Offene Vorfälle** (zu diesem Thing) und **Letzte Aktion**. Wählen Sie eine Kennzahl, um zu ihrem Tab zu springen.
+3. Lesen Sie im Tab **Übersicht** die **Live-Werte**: den neuesten Messwert jeder Telemetrie mit dem Bereich der letzten 24 Stunden. Mit **Angeheftet** zeigen Sie nur die am Thing-Typ angehefteten Telemetrien.
+4. Lesen Sie den **Verlauf** der letzten Messwerte. Er zeigt höchstens 4 Telemetrien und höchstens 2 verschiedene Einheiten.
+5. Öffnen Sie den Tab **Events**. **Events** listet, was mit dem Thing passiert ist. **Vorfälle** listet die Vorfälle dazu. **In Vorfällen öffnen** führt zur vollständigen Liste.
 
-:::info Last signal is not the same as Connected
-**Connected** comes from the thing's connection state. **Last signal** is the time of the newest reading. A thing can be connected and still have an old last signal if it only sends when something changes.
+:::info Letztes Signal ist nicht dasselbe wie Verbunden
+**Verbunden** kommt aus dem Verbindungszustand des Things. **Letztes Signal** ist die Zeit des neuesten Messwerts. Ein Thing kann verbunden sein und dennoch ein altes letztes Signal haben, wenn es nur bei einer Änderung sendet.
 :::
 
-To chart one measure over a longer time, open the **Schema** tab, select the measure, and select **Open in Explore**. See [Explore telemetry over time](./explore-telemetry.mdx).
+Um eine Telemetrie über längere Zeit darzustellen, öffnen Sie den Tab **Schema**, wählen die Telemetrie und wählen **In Explore öffnen**. Siehe [Telemetrie über die Zeit untersuchen](./explore-telemetry.mdx).
 
-To raise a problem by hand, open **⋯ › Report a problem**. See [Work an incident](./work-an-incident.mdx).
+Um ein Problem von Hand zu melden, öffnen Sie **⋯ › Problem melden**. Siehe [Einen Vorfall bearbeiten](./work-an-incident.mdx).
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-You can say whether the thing is connected, when it last reported, and whether it has open incidents.
+Sie können sagen, ob das Thing verbunden ist, wann es zuletzt gemeldet hat und ob es offene Vorfälle hat.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **The list is empty**: **Before you can create Thing, you need to create Thing Type** means your tenant has no thing types yet. **Create Thing first** means thing types exist but no things.
-- **Live values says No data yet**: the thing never reported. Open **⋯** and choose **Send data** for one message or **Simulate device…** for a run. See [Simulate a device](../connect/simulate.mdx). For real hardware, open the **Connections** tab.
-- **A tab is missing or greyed**: some tabs only show for roles that may use them, and a tab with nothing in it stays greyed.
+- **Die Liste ist leer**: **Bevor Sie ein Thing erstellen können, müssen Sie einen Thing Typ erstellen** heißt, Ihr Tenant hat noch keine Thing-Typen. **Erstellen Sie zuerst ein Thing** heißt, es gibt Thing-Typen, aber keine Things.
+- **Live-Werte zeigt Noch keine Daten**: Das Thing hat nie gemeldet. Öffnen Sie **⋯** und wählen Sie **Daten senden** für eine Nachricht oder **Gerät simulieren…** für einen Lauf. Siehe [Ein Gerät simulieren](../connect/simulate.mdx). Für echte Hardware öffnen Sie den Tab **Verbindungen**.
+- **Ein Tab fehlt oder ist ausgegraut**: Manche Tabs erscheinen nur für Rollen, die sie nutzen dürfen, und ein Tab ohne Inhalt bleibt ausgegraut.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Events, incidents and notifications](./events-incidents-notifications.mdx)
-- [Event types](./event-types.mdx)
-- [Draw a geofence](./geofence.mdx)
+- [Events, Vorfälle und Benachrichtigungen](./events-incidents-notifications.mdx)
+- [Event-Typen](./event-types.mdx)
+- [Einen Geofence zeichnen](./geofence.mdx)

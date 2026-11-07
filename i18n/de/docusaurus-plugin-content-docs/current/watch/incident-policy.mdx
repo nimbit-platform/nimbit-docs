@@ -1,82 +1,82 @@
 ---
-untranslated: true
-title: Set up an incident policy
+title: Eine Vorfallsrichtlinie einrichten
 sidebar_position: 6
-description: Turn on the shipped incident policies, write your own, and run an action once when an incident opens or goes unacknowledged.
+description: Die mitgelieferten Vorfallsrichtlinien einschalten, eigene schreiben und eine Aktion einmal ausführen, wenn ein Vorfall sich öffnet oder unquittiert bleibt.
 type: how-to
 app:
   routes: ["/manage/incident-policies", "/manage/incident-policies/new", "/manage/incident-policies/:id", "/manage/incident-policies/:id/automations", "/manage/incident-settings"]
+translated_from: 810b8a2
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
 
-Decide which events open incidents, how they group into one incident, and who is told when it changes. Without a policy, events never open incidents. For the idea, read [Events, incidents and notifications](./events-incidents-notifications.mdx).
+Legen Sie fest, welche Events Vorfälle öffnen, wie sie zu einem Vorfall gruppiert werden und wer informiert wird, wenn er sich ändert. Ohne Richtlinie öffnen Events nie Vorfälle. Die Idee dahinter lesen Sie unter [Events, Vorfälle und Benachrichtigungen](./events-incidents-notifications.mdx).
 
-## Before you start
+## Bevor Sie anfangen {#before-you-start}
 
-- You need permission to write incident policies. With read permission only, the page says **You can view this configuration but not change it.**
-- To add automations you also need permission to run actions.
-- For the settings of each field, see [Incident states and fields](./incident-fields.mdx).
+- Sie brauchen die Berechtigung, Vorfallsrichtlinien zu schreiben. Mit nur Leseberechtigung zeigt die Seite **Sie können diese Konfiguration ansehen, aber nicht ändern.**
+- Für Automatisierungen brauchen Sie zusätzlich die Berechtigung, Aktionen auszuführen.
+- Die Einstellungen der einzelnen Felder stehen unter [Vorfallszustände und -felder](./incident-fields.mdx).
 
-## Turn on the shipped policies
+## Die mitgelieferten Richtlinien einschalten {#turn-on-the-shipped-policies}
 
-1. Open **Settings › Configuration › Incidents**. The **Incident policies** tab lists your policies.
-2. Select **Import default policies**, then **Import**. IoT Breeze creates **Rule alarms per thing**, **Connectivity outages** and **Geofence dwell**, except those you already have. Importing twice creates nothing new.
-3. The new policies are switched off. Switch on the ones you want with the **Active** switch in the list.
+1. Öffnen Sie **Einstellungen › Konfiguration › Vorfälle**. Der Tab **Vorfallsrichtlinien** listet Ihre Richtlinien.
+2. Wählen Sie **Standardrichtlinien importieren** und dann **Importieren**. IoT Breeze legt **Rule alarms per thing**, **Connectivity outages** und **Geofence dwell** an, außer denen, die Sie schon haben. Zweimal importieren legt nichts Neues an.
+3. Die neuen Richtlinien sind ausgeschaltet. Schalten Sie die gewünschten mit dem Schalter **Aktiv** in der Liste ein.
 
-## Write your own policy
+## Eine eigene Richtlinie schreiben {#write-your-own-policy}
 
-This example opens one incident per thing for door alarms and resolves it ten minutes after the last alarm clears.
+Dieses Beispiel öffnet für Türalarme einen Vorfall pro Thing und löst ihn zehn Minuten nach dem Ende des letzten Alarms.
 
-1. Select **New policy**.
-2. Under **Name and priority**, enter the **Name** `Door alarms` and a **Priority**. Policies with lower numbers are checked first, and an event joins the first active policy that matches.
-3. Under **Which events**, enter `Door *` in **Event type names** and set **Minimum severity** to **Warning**. An event matches when every clause you fill in holds. Empty clauses are ignored.
-4. Under **Group into one incident by**, choose **Thing**.
-5. Under **Timing and resolution**, set **Open after** to `0` and **Quiet window** to 10 minutes. Set **Resolves when** to **Every episode closed (alarm off)** and **Close after resolving** to 1 day.
-6. Check the line **In short** under the editor. It sums up the policy in one sentence.
-7. Save, then switch the policy on.
+1. Wählen Sie **Neue Richtlinie**.
+2. Geben Sie unter **Name und Priorität** den **Name** `Door alarms` und eine **Priorität** ein. Richtlinien mit niedrigeren Zahlen werden zuerst geprüft, und ein Event schließt sich der ersten aktiven Richtlinie an, die passt.
+3. Geben Sie unter **Welche Events** in **Namen der Event Typen** `Door *` ein und setzen Sie **Mindestschweregrad** auf **Warnung**. Ein Event passt, wenn jede Klausel zutrifft, die Sie ausfüllen. Leere Klauseln werden ignoriert.
+4. Wählen Sie unter **In einen Vorfall gruppieren nach** die Option **Thing**.
+5. Setzen Sie unter **Zeitverhalten und Lösung** **Öffnen nach** auf `0` und **Ruhefenster** auf 10 Minuten. Setzen Sie **Gelöst, wenn** auf **Jede Episode beendet (Alarm aus)** und **Schließen nach der Lösung** auf 1 Tag.
+6. Prüfen Sie die Zeile **Kurz gefasst** unter dem Editor. Sie fasst die Richtlinie in einem Satz zusammen.
+7. Speichern Sie und schalten Sie die Richtlinie dann ein.
 
 <Screenshot
   page="watch/incident-policy"
   id="01-policy-editor"
   route="/manage/incident-policies/:id"
   state="Policy editor for Rule alarms per thing: Which events with Raised by Rule engine, Group by Thing selected, Timing section with Quiet window 10 minutes and Close after 1 day, In short summary visible"
-  alt="The policy editor with the In short summary"
+  alt="Der Richtlinien-Editor mit der Zusammenfassung Kurz gefasst"
 />
 
-## Add an automation
+## Eine Automatisierung hinzufügen {#add-an-automation}
 
-An automation runs an existing action once when an incident of the policy changes state. This is how you tell people once, even if the alarm flaps.
+Eine Automatisierung führt eine vorhandene Aktion einmal aus, wenn ein Vorfall der Richtlinie den Zustand wechselt. So informieren Sie Personen einmal, auch wenn der Alarm flattert.
 
-1. Open the policy and select **Edit automations**. Save a new policy first.
-2. Select **Add automation**.
-3. Under **When the incident**, choose **Opened**.
-4. Under **Run action**, pick the action, for example one that posts to a [notification channel](./alert-channels.mdx).
-5. Select **Save automation**.
+1. Öffnen Sie die Richtlinie und wählen Sie **Automatisierungen bearbeiten**. Speichern Sie eine neue Richtlinie zuerst.
+2. Wählen Sie **Automatisierung hinzufügen**.
+3. Wählen Sie unter **Wenn der Vorfall** die Option **Geöffnet**.
+4. Wählen Sie unter **Aktion ausführen** die Aktion, zum Beispiel eine, die an einen [Benachrichtigungskanal](./alert-channels.mdx) postet.
+5. Wählen Sie **Automatisierung speichern**.
 
-To escalate, add a second automation with **Unacknowledged for**, set **Wait** to 15 minutes, and pick a louder action, such as a message to another channel.
+Zum Eskalieren fügen Sie eine zweite Automatisierung mit **Nicht quittiert seit** hinzu, setzen die **Wartezeit** auf 15 Minuten und wählen eine lautere Aktion, etwa eine Nachricht an einen anderen Kanal.
 
-An automation skips an action that is switched off, and every action you create on an event type starts switched off. Turn on **Active** in the event type's **Actions** tab first. {/* TODO(product): How does someone create an action for an incident automation that does not also run on every event of an event type? The pickers only offer existing actions, and the event type page is the only place found where a Notification channel or Email action can be added. An action on an event type runs on every event of that type. */}
+Eine Automatisierung überspringt eine ausgeschaltete Aktion, und jede Aktion, die Sie an einem Event-Typ anlegen, startet ausgeschaltet. Schalten Sie zuerst im Tab **Aktionen** des Event-Typs **Aktiv** ein. {/* TODO(product): How does someone create an action for an incident automation that does not also run on every event of an event type? The pickers only offer existing actions, and the event type page is the only place found where a Notification channel or Email action can be added. An action on an event type runs on every event of that type. */}
 
-## Add the statuses and reasons your team needs
+## Die Status und Gründe ergänzen, die Ihr Team braucht {#add-the-statuses-and-reasons-your-team-needs}
 
-1. Open the **Incident settings** tab.
-2. Under **Resolution reasons**, select **Add resolution reason**. People can't resolve an incident until one exists.
-3. Optionally rename statuses with **Add status** or edit one, and add **Custom fields**.
+1. Öffnen Sie den Tab **Vorfallseinstellungen**.
+2. Wählen Sie unter **Lösungsgründe** die Option **Lösungsgrund hinzufügen**. Personen können keinen Vorfall lösen, solange keiner existiert.
+3. Benennen Sie optional Status mit **Status hinzufügen** um oder bearbeiten Sie einen, und ergänzen Sie **Benutzerdefinierte Felder**.
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-The policy shows in the list with **Active** on. When a matching event arrives, **Last match** shows the time and a new incident appears under **Monitoring › Incidents** with the policy's name in **Policy**.
+Die Richtlinie steht mit eingeschaltetem **Aktiv** in der Liste. Trifft ein passendes Event ein, zeigt **Letzter Treffer** die Zeit, und unter **Überwachung › Vorfälle** erscheint ein neuer Vorfall mit dem Namen der Richtlinie unter **Richtlinie**.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **Nothing opens**: the policy is inactive, or another active policy with a lower priority number matched first. Check **Priority** and **Active**.
-- **The incident opens late**: **Open after** holds it back until the alarm has stayed on that long. The shipped **Connectivity outages** policy waits 5 minutes.
-- **Too many incidents**: group by something wider, such as **Thing**, and set a **Quiet window**.
-- **The action never runs**: the action is switched off, or you lack permission to run actions.
+- **Nichts öffnet sich**: Die Richtlinie ist inaktiv, oder eine andere aktive Richtlinie mit niedrigerer Prioritätszahl hat zuerst gepasst. Prüfen Sie **Priorität** und **Aktiv**.
+- **Der Vorfall öffnet sich spät**: **Öffnen nach** hält ihn zurück, bis der Alarm so lange an war. Die mitgelieferte Richtlinie **Connectivity outages** wartet 5 Minuten.
+- **Zu viele Vorfälle**: Gruppieren Sie nach etwas Breiterem, etwa **Thing**, und setzen Sie ein **Ruhefenster**.
+- **Die Aktion läuft nie**: Die Aktion ist ausgeschaltet, oder Ihnen fehlt die Berechtigung, Aktionen auszuführen.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Work an incident](./work-an-incident.mdx)
-- [Incident states and fields](./incident-fields.mdx)
-- [Event types](./event-types.mdx)
+- [Einen Vorfall bearbeiten](./work-an-incident.mdx)
+- [Vorfallszustände und -felder](./incident-fields.mdx)
+- [Event-Typen](./event-types.mdx)

@@ -1,68 +1,68 @@
 ---
-untranslated: true
-title: Map your sites and buildings
-description: Build the hierarchy of sites, halls and lines in Explore, place your things in it, and attach dashboards and documents to each level.
+title: Standorte und Gebäude abbilden
+description: Bauen Sie in Erkunden die Hierarchie aus Standorten, Hallen und Linien auf, platzieren Sie Ihre Things darin und hängen Sie Dashboards und Dokumente an jede Ebene.
 type: how-to
 app:
   routes: ["/knowledge/explore"]
   tour: build-graph
+translated_from: a4ace78
 ---
 
 import TourLink from "@site/src/components/TourLink";
 import Screenshot from "@site/src/components/Screenshot";
 
-Build the tree of sites, plants, halls and lines, then put things in it. Explore and Ask Nimble use the tree to answer questions about a place. For what a level is, read [The knowledge graph](./knowledge-graph.mdx).
+Bauen Sie den Baum aus Standorten, Werken, Hallen und Linien auf und platzieren Sie Things darin. **Erkunden** und Ask Nimble nutzen den Baum, um Fragen zu einem Ort zu beantworten. Was eine Ebene ist, steht unter [Der Knowledge Graph](./knowledge-graph.mdx).
 
 <TourLink id="graph-first-site" />
 
-## Before you start
+## Bevor Sie beginnen {#before-you-start}
 
-- You need permission to edit Knowledge, and **Ask Nimble and Knowledge** turned on for the tenant (see [Knowledge and AI](./index.mdx)).
-- A type with the **Hierarchical** trait must exist to use as a level. If **Add site** says **Create a level type first**, create one in **Settings › Knowledge setup › Data model › Types** and tick the **Hierarchical** and **Describable** traits. See [Types and traits](./types-and-traits.mdx).
+- Sie brauchen die Berechtigung, Knowledge zu bearbeiten, und **Nimble fragen und Knowledge** muss für den Tenant eingeschaltet sein (siehe [Knowledge und KI](./index.mdx)).
+- Für eine Ebene muss ein Typ mit dem Trait **Hierarchical** existieren. Sagt **Standort hinzufügen** **Zuerst einen Ebenen-Typ anlegen**, legen Sie unter **Einstellungen › Knowledge-Einrichtung › Datenmodell › Typen** einen an und haken Sie die Traits **Hierarchical** und **Describable** an. Siehe [Typen und Traits](./types-and-traits.mdx).
 
-## Add the levels
+## Die Ebenen anlegen {#add-the-levels}
 
-1. Open **Knowledge › Explore** and stay on the **Hierarchy** view.
-2. Select **Add site** above the tree and name it.
-3. Open the site's menu and choose **Add level below** to add a hall. Repeat for lines or rooms.
+1. Öffnen Sie **Knowledge › Erkunden** und bleiben Sie in der Ansicht **Hierarchie**.
+2. Wählen Sie über dem Baum **Standort hinzufügen** und benennen Sie ihn.
+3. Öffnen Sie das Menü des Standorts und wählen Sie **Ebene darunter hinzufügen**, um eine Halle anzulegen. Wiederholen Sie das für Linien oder Räume.
 
-To rename or move a level, use its menu, or drag it onto another level. Everything below it moves too. A level moves only within its own type.
+Um eine Ebene umzubenennen oder zu verschieben, nutzen Sie ihr Menü oder ziehen Sie sie auf eine andere Ebene. Alles darunter wird mitverschoben. Eine Ebene lässt sich nur innerhalb ihres eigenen Typs verschieben.
 
 <Screenshot
   page="knowledge/map-sites"
   id="01-tree"
   route="/knowledge/explore"
   state="Hierarchy view with a site, two halls and a line below one hall, the site menu open on Add level below"
-  alt="The Explore tree with the level menu open"
+  alt="Der Baum in Erkunden mit geöffnetem Ebenenmenü"
 />
 
-## Place things
+## Things platzieren {#place-things}
 
-1. Select a level, open the **Things** tab and choose **Add things…**.
-2. Tick the things that sit here and add them. A thing placed elsewhere moves here.
+1. Wählen Sie eine Ebene, öffnen Sie den Tab **Dinge** und wählen Sie **Things hinzufügen…**.
+2. Haken Sie die Things an, die hier stehen, und fügen Sie sie hinzu. Ein Thing, das woanders platziert war, wird hierher verschoben.
 
-To place many things at once, open the **Table** view, select the things and choose **Place in level…**.
+Um viele Things auf einmal zu platzieren, öffnen Sie die Ansicht **Tabelle**, wählen die Things aus und wählen **Auf Ebene platzieren…**.
 
-## Attach dashboards and documents
+## Dashboards und Dokumente anhängen {#attach-dashboards-and-documents}
 
-- On the **Visualizations** tab, select **Assign** to attach an existing dashboard or canvas, or create a new smart dashboard for the level. See [Build one dashboard for every thing of a kind](../visualize/smart-dashboard.mdx).
-- On the **Documents** tab, select **Add documents**, or attach a file that is already in Files. Documents you add are stored in a folder in Files that everyone in the tenant can open. See [Store and share files](../administer/files.mdx).
+- Wählen Sie auf dem Tab **Visualisierungen** **Zuweisen**, um ein vorhandenes Dashboard oder Canvas anzuhängen oder ein neues Smart-Dashboard für die Ebene anzulegen. Siehe [Ein Dashboard für alle Things einer Art bauen](../visualize/smart-dashboard.mdx).
+- Wählen Sie auf dem Tab **Dokumente** **Dokumente hinzufügen** oder hängen Sie eine Datei an, die schon in **Dateien** liegt. Dokumente, die Sie hinzufügen, werden in einem Ordner unter **Dateien** gespeichert, den alle im Tenant öffnen können. Siehe [Dateien speichern und teilen](../administer/files.mdx).
 
-## Relate records and set access
+## Datensätze verknüpfen und Zugriff festlegen {#relate-records-and-set-access}
 
-- To link two records, open one and add a relation on its **Relations** tab. Pick a relation the type declares.
-- To control who sees a governed record such as an asset, open it and use its **Access** panel to add groups or users.
+- Um zwei Datensätze zu verknüpfen, öffnen Sie einen und fügen auf seinem Tab **Beziehungen** eine Beziehung hinzu. Wählen Sie eine Beziehung, die der Typ deklariert.
+- Um zu steuern, wer einen geschützten Datensatz wie eine Anlage sieht, öffnen Sie ihn und fügen im Bereich **Zugriff** Gruppen oder Benutzer hinzu.
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-Select the level. The **Insights** tab shows its things, their connectivity and recent events, and **Things that need a look** lists offline or silent ones. Ask Nimble "What is in Hall 2?" and the answer names the things you placed.
+Wählen Sie die Ebene. Der Tab **Einblicke** zeigt ihre Things, deren Konnektivität und letzte Events, und **Things, die Aufmerksamkeit brauchen** listet offline oder stumm gewordene auf. Fragen Sie Ask Nimble „Was ist in Hall 2?“, und die Antwort nennt die Things, die Sie platziert haben.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **Add site says Create a level type first**: no type has the **Hierarchical** trait. Create one first.
-- **A thing is not listed under its level**: it was placed at another level. A record sits at one level. Add it again here to move it.
-- **Questions about a hall find nothing**: the things are not placed in it, or have no location. Run **Check now** under [Data health](./data-health.mdx) and look at **Records without a location**.
+- **Standort hinzufügen sagt Zuerst einen Ebenen-Typ anlegen**: Kein Typ hat den Trait **Hierarchical**. Legen Sie zuerst einen an.
+- **Ein Thing wird nicht unter seiner Ebene gelistet**: Es wurde auf einer anderen Ebene platziert. Ein Datensatz liegt auf einer Ebene. Fügen Sie es hier erneut hinzu, um es zu verschieben.
+- **Fragen zu einer Halle finden nichts**: Die Things sind nicht darin platziert oder haben keinen Standort. Führen Sie **Jetzt prüfen** unter [Datenqualität](./data-health.mdx) aus und sehen Sie sich **Datensätze ohne Standort** an.
 
-## Related
+## Siehe auch {#related}
 
-- [The knowledge graph](./knowledge-graph.mdx) · [Types and traits](./types-and-traits.mdx)
+- [Der Knowledge Graph](./knowledge-graph.mdx) · [Typen und Traits](./types-and-traits.mdx)

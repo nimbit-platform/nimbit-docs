@@ -1,61 +1,61 @@
 ---
-untranslated: true
-title: Store and share files
-description: Upload, organize, tag and share files in your tenant, and control whether Ask Nimble may cite them.
+title: Dateien speichern und teilen
+description: Laden Sie Dateien in Ihrem Tenant hoch, ordnen, taggen und teilen Sie sie und steuern Sie, ob Ask Nimble sie zitieren darf.
 type: how-to
 sidebar_position: 7
 app:
   routes: ["/files"]
+translated_from: b6ed908
 ---
 
-Keep documents and images in one place, then show them on dashboards, reports and things, or share a file with a time-limited link.
+Halten Sie Dokumente und Bilder an einem Ort, zeigen Sie sie dann auf Dashboards, in Berichten und bei Things, oder teilen Sie eine Datei über einen zeitlich begrenzten Link.
 
-## Before you start
+## Bevor Sie beginnen {#before-you-start}
 
-- You need to create, update or delete files. **Admin**, **Manager** and **Modeler** can. **Viewer** sees files only where a dashboard, report or thing shows them.
+- Sie müssen Dateien erstellen, aktualisieren oder löschen dürfen. **Administrator**, **Manager** und **Modellierer** dürfen das. **Viewer** sieht Dateien nur dort, wo ein Dashboard, ein Bericht oder ein Thing sie zeigt.
 
-## Upload and organize
+## Hochladen und ordnen {#upload-and-organize}
 
-1. Open **Administration › Files**. Switch between **List view** and **Grid view**, and use **Search files** to find a file by name.
-2. Select **Upload**, or drag files into the explorer. The dialog shows the **Max file size**.
-3. To make a folder, select **New Folder**. Inside a folder, select **New Subfolder**.
-4. To move or copy, choose **Cut** or **Copy** on a file or folder, open the target folder and select **Paste into folder**. **Rename** works the same way.
+1. Öffnen Sie **Administration › Dateien**. Wechseln Sie zwischen **Listenansicht** und **Rasteransicht** und finden Sie mit **Dateien durchsuchen** eine Datei nach ihrem Namen.
+2. Wählen Sie **Hochladen** oder ziehen Sie Dateien in den Explorer. Der Dialog zeigt die **Maximale Dateigröße**.
+3. Um einen Ordner anzulegen, wählen Sie **Neuer Ordner**. In einem Ordner wählen Sie **Neuer Unterordner**.
+4. Um zu verschieben oder zu kopieren, wählen Sie bei einer Datei oder einem Ordner **Ausschneiden** oder **Kopieren**, öffnen Sie den Zielordner und wählen Sie **In Ordner einfügen**. **Umbenennen** funktioniert genauso.
 
-The folders **Things** and **Thing types** hold one folder per thing or thing type. You cannot create, rename, move or delete them here; put files inside them. The `_internal_` folder holds files that other pages of the app use.
+Die Ordner **Things** und **Thing Typen** enthalten je einen Ordner pro Thing oder Thing-Typ. Sie können sie hier nicht anlegen, umbenennen, verschieben oder löschen; legen Sie Dateien hinein. Der Ordner `_internal_` enthält Dateien, die andere Seiten der App verwenden.
 
-## Tag a file
+## Eine Datei taggen {#tag-a-file}
 
-Select **Tag** on a file and add tags. Tags help you find and filter files.
+Wählen Sie bei einer Datei **Tag** und fügen Sie Tags hinzu. Tags helfen Ihnen, Dateien zu finden und zu filtern.
 
-## Share a link
+## Einen Link teilen {#share-a-link}
 
-1. Select **Share link** on a file.
-2. Under **Expires in**, choose how many hours or days the link is valid.
-3. Select **Generate link**, then **Copy link**.
+1. Wählen Sie bei einer Datei **Link teilen**.
+2. Wählen Sie unter **Läuft ab in**, wie viele Stunden oder Tage der Link gültig ist.
+3. Wählen Sie **Link generieren** und dann **Link kopieren**.
 
-Anyone with the link can open the file until it expires.
+Jeder mit dem Link kann die Datei öffnen, bis er abläuft.
 
-## Let Ask Nimble cite a file
+## Ask Nimble eine Datei zitieren lassen {#let-ask-nimble-cite-a-file}
 
-Open the file's details and set **Search index** to **Answers can cite this file** or **Not used when answering questions**. Files in a record's own folder are on by default. Without permission to change files, the setting is read-only.
+Öffnen Sie die Details der Datei und setzen Sie **Suchindex** auf **Antworten dürfen diese Datei zitieren** oder **Wird beim Beantworten von Fragen nicht verwendet**. Dateien im eigenen Ordner eines Datensatzes sind standardmäßig aktiviert. Ohne Berechtigung, Dateien zu ändern, ist die Einstellung schreibgeschützt.
 
-## Delete files
+## Dateien löschen {#delete-files}
 
-1. Select **Delete** on a file or folder and confirm. Deleting cannot be undone.
-2. If a dashboard's file list widget shows the folder, **Folder used by widgets** lists the dashboards first. After the deletion those widgets show fewer files or none.
-3. Deleting from `_internal_` asks a second time (**Delete anyway**), because other pages may break.
+1. Wählen Sie bei einer Datei oder einem Ordner **Löschen** und bestätigen Sie. Das Löschen lässt sich nicht rückgängig machen.
+2. Zeigt das Dateilisten-Widget eines Dashboards den Ordner, listet **Ordner wird von Widgets verwendet** zuerst die Dashboards auf. Nach dem Löschen zeigen diese Widgets weniger Dateien oder keine.
+3. Das Löschen aus `_internal_` fragt ein zweites Mal (**Trotzdem löschen**), weil andere Seiten dadurch kaputtgehen können.
 
-## Check that it worked
+## Prüfen, ob es funktioniert hat {#check-that-it-worked}
 
-The file appears in the folder with its **Size**, **Type**, **Modified** and **Tags**. A shared link opens the file in a private browser window.
+Die Datei erscheint im Ordner mit ihrer **Größe**, ihrem **Typ**, **Geändert** und **Tags**. Ein geteilter Link öffnet die Datei in einem privaten Browserfenster.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **You cannot create a folder in Things or Thing types**: those folders belong to their thing. Open the thing's folder and create the folder there.
-- **The upload is refused**: the file exceeds the **Max file size** shown in the upload dialog.
-- **A dashboard shows no files**: its file list widget points to a folder you changed or deleted.
-- **A preview is missing**: **Preview** is not available for every file type. Use **Download**.
+- **Sie können in Things oder Thing Typen keinen Ordner anlegen**: Diese Ordner gehören zu ihrem Thing. Öffnen Sie den Ordner des Things und legen Sie den Ordner dort an.
+- **Der Upload wird abgelehnt**: Die Datei überschreitet die **Maximale Dateigröße**, die der Upload-Dialog zeigt.
+- **Ein Dashboard zeigt keine Dateien**: Sein Dateilisten-Widget verweist auf einen Ordner, den Sie geändert oder gelöscht haben.
+- **Eine Vorschau fehlt**: **Vorschau** gibt es nicht für jeden Dateityp. Verwenden Sie **Herunterladen**.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Roles and permissions](./roles.mdx)
+- [Rollen und Berechtigungen](./roles.mdx)

@@ -1,69 +1,69 @@
 ---
-untranslated: true
-title: Explore telemetry over time
+title: Telemetrie über die Zeit untersuchen
 sidebar_position: 4
-description: Chart measures from any things over a time range, compare them, and save the chart set as a query to reopen or share.
+description: Messwerte beliebiger Things über einen Zeitraum darstellen, vergleichen und das Diagrammset als Abfrage speichern, um es wieder zu öffnen oder zu teilen.
 type: how-to
 app:
   routes: ["/monitor/telemetry", "/monitor/telemetry/query", "/monitor/telemetry/query/:id"]
   tour: find-your-way-history
+translated_from: b6ed908
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
 
-Look back at how a measure behaved, compare two things, and save the result as a query. For a live view of one thing, use its thing page. For charts that stay on screen for everyone, build a dashboard.
+Blicken Sie zurück, wie sich ein Messwert verhalten hat, vergleichen Sie zwei Things und speichern Sie das Ergebnis als Abfrage. Für eine Live-Ansicht eines Things nutzen Sie seine Thing-Seite. Für Diagramme, die für alle sichtbar bleiben, bauen Sie ein Dashboard.
 
-## Before you start
+## Bevor Sie anfangen {#before-you-start}
 
-- You need access to **Monitoring › Telemetry**.
-- The things you chart must have reported data.
+- Sie brauchen Zugriff auf **Überwachung › Telemetrie**.
+- Die Things, die Sie darstellen, müssen Daten gemeldet haben.
 
-## Chart a measure
+## Einen Messwert darstellen {#chart-a-measure}
 
-1. Open **Monitoring › Telemetry** and select **Create query**. The explorer opens with one empty chart.
-2. In the first row, choose a **Thing type**, a **Thing** and a **Measure**. Each field depends on the one before.
-3. Choose an **Aggregation**: `raw`, `avg`, `min`, `max`, `sum`, `count`, `first` or `last`. Raw shows every reading. The others combine readings into buckets.
-4. Select **Run**. The chart draws.
-5. Set the time range at the top. The default is the last hour. Use the arrows to move the window.
+1. Öffnen Sie **Überwachung › Telemetrie** und wählen Sie **Abfrage erstellen**. Der Explorer öffnet sich mit einem leeren Diagramm.
+2. Wählen Sie in der ersten Zeile einen **Thing-Typ**, ein **Thing** und eine **Telemetrie**. Jedes Feld hängt vom vorherigen ab.
+3. Wählen Sie eine **Aggregation**: `raw`, `avg`, `min`, `max`, `sum`, `count`, `first` oder `last`. Raw zeigt jeden Messwert. Die anderen fassen Messwerte zu Buckets zusammen.
+4. Wählen Sie **Ausführen**. Das Diagramm wird gezeichnet.
+5. Stellen Sie oben den Zeitraum ein. Standard ist die letzte Stunde. Mit den Pfeilen verschieben Sie das Fenster.
 
 <Screenshot
   page="watch/explore-telemetry"
   id="01-explorer-chart"
   route="/monitor/telemetry/query"
   state="Explorer with one chart panel: thing type Room sensor, thing Meeting room 1, measure temperature, aggregation avg, last 24 hours, line chart drawn"
-  alt="The explorer with one temperature chart"
+  alt="Der Explorer mit einem Temperaturdiagramm"
 />
 
-## Compare and adjust
+## Vergleichen und anpassen {#compare-and-adjust}
 
-1. Select **Add Query** in a chart to add another row to the same chart. Use it to compare two things or two measures.
-2. Select **Add Chart** to add another chart below.
-3. Set **Bucket size** at the top. **auto** picks a size from the time range. A chart can override it, and zooming into a chart increases the resolution.
-4. In a row, use the style button to set the **Chart type** (**Line**, **Area**, **Bar** or **Scatter**), the **Line style** and the **Series color**.
-5. Use **Custom time range** in a chart to give it its own range. Otherwise it says **Using global time range**.
+1. Wählen Sie **Abfrage hinzufügen** in einem Diagramm, um dem Diagramm eine weitere Zeile hinzuzufügen. So vergleichen Sie zwei Things oder zwei Messwerte.
+2. Wählen Sie **Diagramm hinzufügen**, um darunter ein weiteres Diagramm anzulegen.
+3. Stellen Sie oben die **Bucket-Größe** ein. **Automatisch** wählt eine Größe passend zum Zeitraum. Ein Diagramm kann sie überschreiben, und Hineinzoomen erhöht die Auflösung.
+4. Legen Sie in einer Zeile über die Stil-Schaltfläche den **Diagramm-Typ** (**Linie**, **Fläche**, **Balken** oder **Punkte**), den **Linienstil** und die **Serienfarbe** fest.
+5. Mit **Benutzerdefinierter Zeitfenster** in einem Diagramm geben Sie ihm einen eigenen Zeitraum. Sonst steht dort **Globalen Zeitfenster verwenden**.
 
-To take data away, open **More** in a chart and choose **Fullscreen**, **Download CSV** or **Save as SVG**.
+Um Daten mitzunehmen, öffnen Sie **Mehr** in einem Diagramm und wählen **Vollbild**, **CSV herunterladen** oder **SVG herunterladen**.
 
-## Save and share a query
+## Eine Abfrage speichern und teilen {#save-and-share-a-query}
 
-1. Select **Save** and enter a **Query name**.
-2. Choose the **Access Type**: **Tenant** for everyone who may open telemetry, or **Personal** for only you.
-3. For tenant access you can add **Group**s. {/* TODO(product): Does adding groups to a Tenant query limit who can open it to members of those groups? The code stores the groups on the query, but no access rule for saved queries was found, unlike dashboards. */}
-4. Save. The query appears in the list.
+1. Wählen Sie **Speichern** und geben Sie einen **Abfragename** ein.
+2. Wählen Sie den **Zugriffstyp**: **Tenant** für alle, die Telemetrie öffnen dürfen, oder **Persönlich** nur für Sie.
+3. Beim Tenant-Zugriff können Sie **Gruppen** hinzufügen. {/* TODO(product): Does adding groups to a Tenant query limit who can open it to members of those groups? The code stores the groups on the query, but no access rule for saved queries was found, unlike dashboards. */}
+4. Speichern Sie. Die Abfrage erscheint in der Liste.
 
-When you reopen a saved query, **Save** overwrites it. **Config** reopens the name and access settings, and **Delete** removes the query. To share without saving, select **Share** and copy the link. The whole chart setup is in the link, and the recipient needs access to the same things.
+Öffnen Sie eine gespeicherte Abfrage erneut, überschreibt **Speichern** sie. **Konfiguration** öffnet Name und Zugriffseinstellungen erneut, und **Löschen** entfernt die Abfrage. Um ohne Speichern zu teilen, wählen Sie **Teilen** und kopieren den Link. Der ganze Diagrammaufbau steckt im Link, und der Empfänger braucht Zugriff auf dieselben Things.
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-The query is in the **Monitoring › Telemetry** list with the access you chose. Opening it draws the same charts.
+Die Abfrage steht in der Liste unter **Überwachung › Telemetrie** mit dem gewählten Zugriff. Öffnen Sie sie, werden dieselben Diagramme gezeichnet.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **A row is marked when you run**: a field is empty. Fill in the marked field.
-- **The button reads Run — chart is outdated**: you changed the query after the last run. Select it to redraw.
-- **The chart is empty**: the thing reported nothing in the time range. Widen the range.
+- **Eine Zeile ist beim Ausführen markiert**: Ein Feld ist leer. Füllen Sie das markierte Feld aus.
+- **Die Schaltfläche lautet Ausführen — Diagramm ist veraltet**: Sie haben die Abfrage nach dem letzten Lauf geändert. Wählen Sie sie, um neu zu zeichnen.
+- **Das Diagramm ist leer**: Das Thing hat im Zeitraum nichts gemeldet. Erweitern Sie den Zeitraum.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Check a thing's health](./thing-health.mdx)
-- [Dashboards, smart dashboards and time](../visualize/dashboards.mdx)
+- [Den Zustand eines Things prüfen](./thing-health.mdx)
+- [Dashboards, Smart Dashboards und Zeit](../visualize/dashboards.mdx)

@@ -1,94 +1,94 @@
 ---
-untranslated: true
-title: Mail templates and placeholders
+title: E-Mail-Vorlagen und Platzhalter
 sidebar_position: 12
-description: The parts of a mail template, its contexts and placeholders, the header and footer blocks, and how a template is assigned.
+description: Die Teile einer E-Mail-Vorlage, ihre Kontexte und Platzhalter, die Kopf- und Fußblöcke und wie eine Vorlage zugewiesen wird.
 type: reference
 app:
   routes: ["/manage/mail-templates", "/manage/mail-templates/new", "/manage/mail-templates/:id", "/manage/mail-templates/assignment"]
+translated_from: 810b8a2
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
 
-The parts and settings of **Settings › Configuration › Mail templates**. The entry shows only if your role may read mail templates.
+Die Teile und Einstellungen unter **Einstellungen › Konfiguration › Mail-Vorlagen**. Der Eintrag erscheint nur, wenn Ihre Rolle E-Mail-Vorlagen lesen darf.
 
 <Screenshot
   page="watch/mail-templates"
   id="01-templates-list"
   route="/manage/mail-templates"
   state="Templates tab with a System template (lock chip) for each context and one custom Event template marked Active; columns Template, Context, Blocks, Languages, Updated, Status"
-  alt="The Mail templates list"
+  alt="Die Liste der E-Mail-Vorlagen"
 />
 
-## Tabs
+## Tabs {#tabs}
 
-| Tab | Holds |
+| Tab | Enthält |
 | --- | --- |
-| **Templates** | The emails: subject and body, with a header and a footer block around them |
-| **Header blocks** | Reusable blocks above the body |
-| **Footer blocks** | Reusable blocks below the body |
-| **Assignment** | Which template is used for each context |
+| **Vorlagen** | Die E-Mails: Betreff und Text, mit einem Kopf- und einem Fußblock darum |
+| **Kopfzeilen-Blöcke** | Wiederverwendbare Blöcke über dem Text |
+| **Fußzeilen-Blöcke** | Wiederverwendbare Blöcke unter dem Text |
+| **Zuweisung** | Welche Vorlage für welchen Kontext verwendet wird |
 
-## Contexts
+## Kontexte {#contexts}
 
-A context says what an email is for, and decides which data the email can show.
+Ein Kontext sagt, wofür eine E-Mail gedacht ist, und bestimmt, welche Daten die E-Mail zeigen kann.
 
-| Context | Used for |
+| Kontext | Verwendet für |
 | --- | --- |
-| **Event** | Event notification emails |
-| **Invitation** | User invitation emails |
-| **Report** | Report emails |
+| **Ereignis** | E-Mails zu Event-Benachrichtigungen |
+| **Einladung** | E-Mails zur Einladung von Benutzern |
+| **Bericht** | E-Mails zu Berichten |
 
-Sign-in code and password-reset emails are not sent from here. {/* TODO(product): The template form also knows a Tenant context. What is it used for, and can a template choose it? */}
+E-Mails mit Anmeldecode und zum Zurücksetzen des Passworts werden nicht von hier gesendet. {/* TODO(product): The template form also knows a Tenant context. What is it used for, and can a template choose it? */}
 
-## Template settings
+## Vorlageneinstellungen {#template-settings}
 
-| Setting | Meaning |
+| Einstellung | Bedeutung |
 | --- | --- |
-| **Name** | The template's name |
-| **Subject** | The subject line. It accepts placeholders. |
-| **Context** | See above. For alerts choose **Event**. |
-| Body | HTML, edited in the editor. **Format code** tidies it. |
-| **Email structure** | The header block and the footer block. **Go to header template** and **Go to footer template** open them. |
-| **Default Translations** | Text per language, as a key and a text. Marked as translatable, each language gets its own version. |
-| **Dynamic Variables** | The list of placeholders the context offers. Select one to insert it. |
-| **Send test mail** | Sends the template to an address you enter |
-| **Open preview in new window** | Shows the preview larger |
+| **Name** | Der Name der Vorlage |
+| **Betreff** | Die Betreffzeile. Sie akzeptiert Platzhalter. |
+| **Kontext** | Siehe oben. Für Alarme wählen Sie **Ereignis**. |
+| Textkörper | HTML, im Editor bearbeitet. **Code formatieren** räumt es auf. |
+| **E-Mail-Struktur** | Der Kopfblock und der Fußblock. **Zur Kopfbereichvorlage** und **Zur Fußbereichvorlage** öffnen sie. |
+| **Standard-Übersetzungen** | Text pro Sprache, als Schlüssel und Text. Als übersetzbar markiert, bekommt jede Sprache eine eigene Version. |
+| **Dynamische Variablen** | Die Liste der Platzhalter, die der Kontext bietet. Wählen Sie einen, um ihn einzufügen. |
+| **Test-Mail senden** | Sendet die Vorlage an eine Adresse, die Sie eingeben |
+| **Vorschau in neuem Fenster öffnen** | Zeigt die Vorschau größer |
 
-Templates marked **System** are managed by NimBit and can't be edited or deleted. Copy one to make your own.
+Vorlagen mit der Markierung **System** werden von NimBit verwaltet und lassen sich nicht bearbeiten oder löschen. Kopieren Sie eine, um Ihre eigene zu machen.
 
-## Placeholders
+## Platzhalter {#placeholders}
 
-Write a placeholder as the variable name in double curly brackets, for example `{{tenant.name}}`. IoT Breeze fills in the values when it sends the mail. Values are inserted as they are, not escaped for HTML.
+Schreiben Sie einen Platzhalter als Variablennamen in doppelten geschweiften Klammern, zum Beispiel `{{tenant.name}}`. IoT Breeze füllt die Werte beim Senden der E-Mail ein. Werte werden unverändert eingefügt, nicht für HTML maskiert.
 
-| Placeholder | Value |
+| Platzhalter | Wert |
 | --- | --- |
-| `{{tenant.name}}` | The tenant's name, or `NimBit` if the tenant has none |
-| `{{tenant.logo}}` | The tenant's logo, or a default logo |
-| Keys under **Default Translations** | The text for the mail's language. Text set for one mail overrides the default. |
-| Context variables | Listed under **Dynamic Variables** for the template's context |
+| `{{tenant.name}}` | Der Name des Tenants, oder `NimBit`, wenn der Tenant keinen hat |
+| `{{tenant.logo}}` | Das Logo des Tenants oder ein Standardlogo |
+| Schlüssel unter **Standard-Übersetzungen** | Der Text für die Sprache der E-Mail. Für eine E-Mail gesetzter Text überschreibt den Standard. |
+| Kontextvariablen | Aufgeführt unter **Dynamische Variablen** für den Kontext der Vorlage |
 
-In an **Email** action on an event type, `{{event}}` is the event, so `{{event.title}}` is its title. {/* TODO(product): Which variables does each context offer (Event, Invitation, Report)? The list comes from the tenant's context data in the database, not from code. */}
+In einer **E-Mail**-Aktion an einem Event-Typ ist `{{event}}` das Event, `{{event.title}}` also sein Titel. {/* TODO(product): Which variables does each context offer (Event, Invitation, Report)? The list comes from the tenant's context data in the database, not from code. */}
 
-## Blocks
+## Blöcke {#blocks}
 
-| Rule | Detail |
+| Regel | Detail |
 | --- | --- |
-| Shared | Editing a block updates every template that links to it. |
-| Usage | A block shows how many templates it is linked in, for example **Linked in 3 templates**. |
-| Delete | Not while a template uses the block. Remove it from those templates first. |
-| Defaults | The default header and footer can't be changed or deleted. |
+| Gemeinsam genutzt | Das Bearbeiten eines Blocks aktualisiert jede Vorlage, die ihn verwendet. |
+| Verwendung | Ein Block zeigt, in wie vielen Vorlagen er verknüpft ist, zum Beispiel **In 3 Vorlagen verwendet**. |
+| Löschen | Nicht, solange eine Vorlage den Block verwendet. Entfernen Sie ihn zuerst aus diesen Vorlagen. |
+| Standards | Der Standard-Kopf- und -Fußblock lassen sich nicht ändern oder löschen. |
 
-Create a block with **New block** and **Save block**.
+Legen Sie einen Block mit **Neuer Block** und **Block speichern** an.
 
-## Assignment
+## Zuweisung {#assignment}
 
-On the **Assignment** tab, choose a template for each context, then save the row or select **Save All**. **Remove** returns a context to the default.
+Wählen Sie im Tab **Zuweisung** für jeden Kontext eine Vorlage und speichern Sie dann die Zeile oder wählen Sie **Alles speichern**. **Entfernen** setzt einen Kontext auf den Standard zurück.
 
-A template shows **Active** in the list when it is assigned and **Unassigned** when it is not. The assignment applies to emails the platform sends for a context. An **Email** action that uses a template sends the template you pick in the action, whatever is assigned.
+Eine Vorlage zeigt in der Liste **Aktiv**, wenn sie zugewiesen ist, und **Nicht zugewiesen**, wenn nicht. Die Zuweisung gilt für E-Mails, die die Plattform für einen Kontext sendet. Eine **E-Mail**-Aktion, die eine Vorlage nutzt, sendet die Vorlage, die Sie in der Aktion wählen, egal was zugewiesen ist.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Event types](./event-types.mdx)
-- [Channel types](./channel-types.mdx)
-- [Events, incidents and notifications](./events-incidents-notifications.mdx)
+- [Event-Typen](./event-types.mdx)
+- [Kanaltypen](./channel-types.mdx)
+- [Events, Vorfälle und Benachrichtigungen](./events-incidents-notifications.mdx)

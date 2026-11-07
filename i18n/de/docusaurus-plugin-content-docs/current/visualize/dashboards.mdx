@@ -1,16 +1,16 @@
 ---
-untranslated: true
-title: Dashboards, smart dashboards and time
-sidebar_label: Dashboards and time
-description: How a dashboard chooses its thing, its widgets and its time range, and which kind of dashboard to build.
+title: Dashboards, Smart-Dashboards und Zeit
+sidebar_label: Dashboards und Zeit
+description: Wie ein Dashboard sein Thing, seine Widgets und seinen Zeitraum wählt und welche Art Dashboard Sie bauen sollten.
 type: concept
 sidebar_position: 2
 app:
   routes: ["/dashboards", "/dashboards/:id"]
   tour: build-dashboards
+translated_from: 810b8a2
 ---
 
-A dashboard is a page of widgets. Each widget answers one question: how warm is it now, how did a value move today, which things are offline. Three things decide what a widget shows: the thing it reads, the time range it covers, and how it refreshes. A bar at the top of the dashboard controls all three for every widget at once.
+Ein Dashboard ist eine Seite voller Widgets. Jedes Widget beantwortet eine Frage: Wie warm ist es jetzt, wie hat sich ein Wert heute entwickelt, welche Things sind offline. Drei Dinge bestimmen, was ein Widget zeigt: das Thing, das es liest, der Zeitraum, den es abdeckt, und wie es aktualisiert wird. Eine Leiste oben im Dashboard steuert alle drei für alle Widgets gleichzeitig.
 
 ```mermaid
 flowchart LR
@@ -21,72 +21,72 @@ flowchart LR
   R[Time range and refresh] --> W
 ```
 
-## The parts
+## Die Bausteine {#the-parts}
 
-| Part | What it is |
+| Baustein | Was es ist |
 | --- | --- |
-| **Smart dashboard** | The dashboard you create today. It matches things through the **interfaces** their thing types implement, so one dashboard serves every fitting thing, now and later. |
-| **Interface** | A named set of measures, such as supply and return temperature, that a thing type promises to send. |
-| **Widget** | One tile. It reads one thing, or the whole tenant. See the [widget gallery](./widgets.mdx). |
-| **Thing picker** | At the top of a Smart dashboard. It chooses the thing that following widgets show. |
-| **Time bar** | The time range, the update mode and **Time travel**. |
-| **Data source** | **Device** (live values), **Mock data** or **File**, for designing before a device sends data. |
-| **Edit mode** | Changes stay a draft until you save. Nobody else sees them before. |
+| **Smart-Dashboard** | Das Dashboard, das Sie heute anlegen. Es ordnet Things über die **Interfaces** zu, die ihre Thing-Typen umsetzen. Ein Dashboard bedient so jedes passende Thing, jetzt und später. |
+| **Interface** | Ein benannter Satz von Telemetrien, etwa Vor- und Rücklauftemperatur, den ein Thing-Typ zu senden verspricht. |
+| **Widget** | Eine Kachel. Sie liest ein Thing oder den ganzen Tenant. Siehe [Widget-Galerie](./widgets.mdx). |
+| **Thing-Auswahl** | Oben in einem Smart-Dashboard. Sie wählt das Thing, das folgende Widgets zeigen. |
+| **Zeitleiste** | Der Zeitraum, der Aktualisierungsmodus und **Zeitreise**. |
+| **Datenquelle** | **Gerät** (Live-Werte), **Testdaten** oder **Datei**, zum Entwerfen, bevor ein Gerät Daten sendet. |
+| **Bearbeitungsmodus** | Änderungen bleiben ein Entwurf, bis Sie speichern. Niemand sonst sieht sie vorher. |
 
-A dashboard for one thing is a Smart dashboard assigned to that thing. Older dashboard kinds (thing type dashboards, collections) still exist. You open them from the places they belong to.
+Ein Dashboard für ein Thing ist ein Smart-Dashboard, das diesem Thing zugewiesen ist. Ältere Dashboard-Arten (Thing-Typ-Dashboards, Collections) gibt es weiterhin. Sie öffnen sie dort, wo sie hingehören.
 
-## How they work together
+## Wie sie zusammenwirken {#how-they-work-together}
 
-### Follow or pin
+### Folgen oder anheften {#follow-or-pin}
 
-Each widget reads its data in one of two ways, chosen when you add it.
+Jedes Widget liest seine Daten auf eine von zwei Arten, die Sie beim Hinzufügen wählen.
 
-| Mode | The widget shows | Use it for |
+| Modus | Das Widget zeigt | Einsatz |
 | --- | --- | --- |
-| **Follow the dashboard** | Whichever thing is picked at the top. | The same view of every air handler, pump or room. |
-| **Its own things** (pinned) | The thing you name, whatever is picked. | One specific thing, such as the outdoor temperature or the main meter. |
+| **Dem Dashboard folgen** | Das Thing, das oben gewählt ist. | Dieselbe Ansicht für jede Lüftungsanlage, Pumpe oder jeden Raum. |
+| **Eigene Things** (angeheftet) | Das Thing, das Sie benennen, egal was gewählt ist. | Ein bestimmtes Thing, etwa die Außentemperatur oder den Hauptzähler. |
 
-A pinned widget shows a pin in its header with the thing's name. One dashboard can hold both.
+Ein angeheftetes Widget zeigt in seiner Kopfzeile eine Stecknadel mit dem Namen des Things. Ein Dashboard kann beides enthalten.
 
-A thing that implements only some of the dashboard's interfaces can still be picked. It shows its coverage, such as **2 of 3 interfaces**, and widgets on the missing interfaces stay empty.
+Ein Thing, das nur einen Teil der Interfaces des Dashboards umsetzt, lässt sich trotzdem wählen. Es zeigt seine Abdeckung, etwa **2 von 3 Schnittstellen**, und Widgets zu den fehlenden Interfaces bleiben leer.
 
-### Where a dashboard shows up
+### Wo ein Dashboard erscheint {#where-a-dashboard-shows-up}
 
-A dashboard is offered on a thing because it is **assigned**: to the thing, to its thing type, or through a required interface. If a dashboard requires an interface, every thing type with that interface gets the dashboard automatically. A dashboard that needs no thing can go on [Home](./home.mdx).
+Ein Dashboard wird an einem Thing angeboten, weil es **zugewiesen** ist: dem Thing, seinem Thing-Typ oder über ein verlangtes Interface. Verlangt ein Dashboard ein Interface, erhält jeder Thing-Typ mit diesem Interface das Dashboard automatisch. Ein Dashboard, das kein Thing braucht, kann auf [Home](./home.mdx).
 
-### Time
+### Zeit {#time}
 
-Charts and other time-based widgets show the dashboard's time range. Dashboard time is always on.
+Diagramme und andere zeitbezogene Widgets zeigen den Zeitraum des Dashboards. Die Dashboard-Zeit ist immer aktiv.
 
-- **Time range.** Pick a preset from **Last 5 minutes** up to **Last 5 years**, or **Today**, **Yesterday** and other calendar ranges, or set your own start and end. The range is part of the link, so a shared link shows what you see.
-- **Default range.** If you change the range while editing, saving asks **Save this time range too?** **Save with range** makes it the dashboard's default. **Dashboard only** keeps the old default.
-- **Updates.** **Live mode** shows values as they are reported. **Interval mode** reloads at the **Refresh Rate** you choose. **Manual** reloads when you select the refresh button.
-- **Widgets with their own range.** A widget can keep its own range. When some do, the bar reads *N widgets keep their own*. To make one follow the dashboard again, remove the range in the widget's settings.
-- **Time travel.** Shows the whole dashboard as it was at an earlier moment. Select **Live** to return to now.
+- **Zeitraum.** Wählen Sie eine Vorgabe von **Letzte 5 Minuten** bis **Letzte 5 Jahre**, **Heute**, **Gestern** und andere Kalenderzeiträume oder legen Sie Anfang und Ende selbst fest. Der Zeitraum ist Teil des Links, ein geteilter Link zeigt also, was Sie sehen.
+- **Standardzeitraum.** Ändern Sie den Zeitraum beim Bearbeiten, fragt das Speichern **Diesen Zeitraum ebenfalls speichern?** **Mit Zeitraum speichern** macht ihn zum Standard des Dashboards. **Nur Dashboard** behält den alten Standard.
+- **Aktualisierung.** **Live-Charts** zeigt Werte, sobald sie gemeldet werden. **Intervall-Updates** lädt im gewählten **Aktualisierungsintervall** neu. **Manuell** lädt neu, wenn Sie die Schaltfläche zum Aktualisieren wählen.
+- **Widgets mit eigenem Zeitraum.** Ein Widget kann einen eigenen Zeitraum behalten. Tun das einige, steht in der Leiste *N Widgets behalten ihren eigenen*. Damit eines wieder dem Dashboard folgt, entfernen Sie den Zeitraum in den Einstellungen des Widgets.
+- **Zeitreise.** Zeigt das ganze Dashboard, wie es zu einem früheren Zeitpunkt war. Wählen Sie **Live**, um zur Gegenwart zurückzukehren.
 
-### Mock data and files
+### Testdaten und Dateien {#mock-data-and-files}
 
-Before a device sends data you can design with **Mock data** (patterns **Random**, **Smooth**, **Wave**, **Ramp**, **Steps** and **Spikes**) or with a CSV, Parquet or JSON **File**. Both are read in your browser and nothing is written to a device or its history. Widgets pinned to a thing still show real data.
+Bevor ein Gerät Daten sendet, können Sie mit **Testdaten** (Muster **Zufällig**, **Gleichmäßig**, **Welle**, **Rampe**, **Stufen** und **Ausreißer**) oder mit einer CSV-, Parquet- oder JSON-**Datei** entwerfen. Beides wird in Ihrem Browser gelesen, und nichts wird in ein Gerät oder seinen Verlauf geschrieben. An ein Thing angeheftete Widgets zeigen weiterhin echte Daten.
 
-## Choosing between dashboard kinds
+## Zwischen Dashboard-Arten wählen {#choosing-between-dashboard-kinds}
 
-| You want… | Use… |
+| Sie möchten … | Nehmen Sie … |
 | --- | --- |
-| A view for one specific thing | [A dashboard for one thing](./thing-dashboard.mdx) |
-| The same view for every thing of a kind, now and later | [A Smart dashboard on interfaces](./smart-dashboard.mdx) |
-| A page for the whole tenant: figures, offline things, shortcuts | A Smart dashboard with no interfaces, [on Home](./home.mdx) |
-| A drawing with values on it | A [canvas](./canvas/index.mdx), optionally embedded as a widget |
+| Eine Ansicht für ein bestimmtes Thing | [Ein Dashboard für ein Thing](./thing-dashboard.mdx) |
+| Dieselbe Ansicht für jedes Thing einer Art, jetzt und später | [Ein Smart-Dashboard auf Interfaces](./smart-dashboard.mdx) |
+| Eine Seite für den ganzen Tenant: Kennzahlen, Offline-Things, Verknüpfungen | Ein Smart-Dashboard ohne Interfaces, [auf Home](./home.mdx) |
+| Eine Zeichnung mit Werten darauf | Ein [Canvas](./canvas/index.mdx), wahlweise als Widget eingebettet |
 
-## Dashboard hierarchy
+## Dashboard-Hierarchie {#dashboard-hierarchy}
 
-Optionally, a tenant admin can turn on **Dashboard hierarchy** under **Administration › Tenant Settings › Features**. It is a tree of nodes, such as sites, buildings or areas, to file and browse dashboards. The tree only helps people find dashboards. A dashboard appears on a thing through its assignment, not through its node.
+Optional kann ein Tenant-Admin unter **Administration › Mandanteneinstellungen › Funktionen** die **Dashboard-Hierarchie** einschalten. Sie ist ein Baum aus Knoten, etwa Standorten, Gebäuden oder Bereichen, um Dashboards abzulegen und zu durchsuchen. Der Baum hilft nur beim Finden. Ein Dashboard erscheint an einem Thing über seine Zuweisung, nicht über seinen Knoten.
 
-## Limits
+## Grenzen {#limits}
 
-- Reading, creating and editing dashboards are separate permissions. A missing button usually means your role lacks one.
-- Mock data and files are not stored. After a reload, pick a local file again, or tick **Save a copy to Files**.
-- If you refresh again within a few seconds, the app asks you to wait.
+- Dashboards lesen, anlegen und bearbeiten sind getrennte Berechtigungen. Fehlt eine Schaltfläche, fehlt Ihrer Rolle meist eine davon.
+- Testdaten und Dateien werden nicht gespeichert. Wählen Sie nach einem Neuladen die lokale Datei erneut oder setzen Sie den Haken bei **Eine Kopie in Dateien speichern**.
+- Aktualisieren Sie innerhalb weniger Sekunden erneut, bittet Sie die App zu warten.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Widget gallery](./widgets.mdx) · [Share or embed a dashboard](./share.mdx)
+- [Widget-Galerie](./widgets.mdx) · [Ein Dashboard teilen oder einbetten](./share.mdx)

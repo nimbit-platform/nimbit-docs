@@ -7,7 +7,7 @@ type: tutorial
 app:
   routes: ["/onboarding/thing-types", "/onboarding/things", "/dashboards", "/automation/rule-designer"]
   tour: getting-started
-translated_from: 7858c72
+translated_from: 679f3a4
 ---
 
 import TourLink from "@site/src/components/TourLink";
@@ -30,7 +30,7 @@ Ein Thing-Typ beschreibt eine Art von Gerät: die Werte, die es sendet. Geräte 
 1. Öffnen Sie **Einstellungen › Onboarding › Thing Typen** und wählen Sie **Thing Typ erstellen**.
 2. Geben Sie als **Anzeigename** `Room sensor` ein. **Name** wird zu `room_sensor` ausgefüllt. Lassen Sie **Konnektor** auf **Nimbit**.
 3. Speichern Sie. Die Seite des Thing-Typs öffnet sich.
-4. Wählen Sie im Tab **Schema** die Option **Telemetrie hinzufügen**. Geben Sie als **Anzeigename** `Temperature` ein, als **Name** `temperature`, als **Typ** **Numerisch**, als **Maßeinheit** `°C`, als **Minimalwert** `15` und als **Maximalwert** `35`. Speichern Sie den Messwert.
+4. Wählen Sie im Tab **Schema** die Option **Telemetrie hinzufügen**. Geben Sie als **Anzeigename** `Temperature` ein, als **Name** `temperature`, als **Typ** **Numerisch**, als **Maßeinheit** `°C`, als **Mindestwert** `15` und als **Maximaler Wert** `35`. Speichern Sie den Messwert.
 5. Wählen Sie im Kopfbereich **Veröffentlichen** und bestätigen Sie.
 
 Der Kopfbereich wechselt vom Entwurf zu **Veröffentlicht · v1**, und der Tab **Schema** listet `temperature`.
@@ -50,7 +50,7 @@ Ein Thing ist ein einzelnes Gerät dieses Typs.
 1. Öffnen Sie **Einstellungen › Onboarding › Things** und wählen Sie **Thing erstellen**.
 2. Geben Sie als **Name** `Meeting room 1` ein.
 3. Wählen Sie neben **Alternative Thing -ID** die Option **Generieren**.
-4. Wählen Sie als **Thing-Typ** `Room sensor`. **Organisation** und **Gruppe** sind mit der Standardorganisation Ihres Tenants vorbelegt. Sind sie leer, wählen Sie je einen Eintrag.
+4. Wählen Sie als **Thing Typ** `Room sensor`. **Organisation** und **Gruppe** sind mit der Standardorganisation Ihres Tenants vorbelegt. Sind sie leer, wählen Sie je einen Eintrag.
 5. Speichern Sie.
 
 Die Seite des Things öffnet sich. Es hat noch keine Messwerte.
@@ -97,10 +97,10 @@ Eine Regel kann nur ein Event eines Event-Typs auslösen, den Sie auswählen. Le
 
 1. Öffnen Sie **Einstellungen › Konfiguration › Event Typen** und wählen Sie **Event Typ erstellen**.
 2. Geben Sie als **Name** `Room too warm` ein, wählen Sie eine **Gruppe**, der Sie angehören, und lassen Sie **Anzeigetyp** auf **Standard**. Speichern Sie.
-3. Öffnen Sie **Automatisierung › Regel-Designer** und wählen Sie **Regel erstellen**. Geben Sie als **Name** `Room too warm` ein und speichern Sie.
+3. Öffnen Sie **Einstellungen › Automatisierung › Regel-Designer** und wählen Sie **Regel erstellen**. Geben Sie als **Name** `Room too warm` ein und speichern Sie.
 4. Wählen Sie den Namen der Regel, um sie zu öffnen. Wählen Sie im Knoten **Start** die Option **Thing-Typ** und dann `Room sensor`.
 5. Wählen Sie **+** und fügen Sie eine **Bedingung** hinzu. Setzen Sie im Tab **Einfach** **Telemetrie** auf `temperature`, **Operator** auf **Größer als** und den Wert auf `28`.
-6. Wählen Sie **+** und fügen Sie einen Trigger **Umschalten** mit der **Richtung** **In** hinzu. Die Regel feuert, wenn der Raum zu warm wird, nicht bei jedem Messwert über 28.
+6. Wählen Sie **+** und fügen Sie einen Trigger **Umschalten** mit der **Richtung** **Innerhalb** hinzu. Die Regel feuert, wenn der Raum zu warm wird, nicht bei jedem Messwert über 28.
 7. Wählen Sie **+** und fügen Sie eine Aktion **Ereignis** hinzu. Geben Sie einen **Name** ein, als **Titel** `Room too warm`, als **Event Typ** `Room too warm` und als **Schweregrad** **Warnung**.
 8. Prüfen Sie, dass das Gültigkeitssymbol neben dem Regelnamen grün ist. Wählen Sie **Veröffentlichen** und dann **Aktivieren**.
 

@@ -1,64 +1,64 @@
 ---
-untranslated: true
-title: Approve what Periscope discovers
-description: Review Periscope's proposed thing types and things on the Proposals screen, rename, merge, set units, then confirm and apply them.
+title: Periscope-Erkennungen freigeben
+description: Die vorgeschlagenen Thing-Typen und Things von Periscope auf dem Bildschirm „Proposals“ prüfen, umbenennen, zusammenführen, Einheiten setzen, bestätigen und anwenden.
 type: how-to
 sidebar_position: 9
 app:
   routes: ["/onboarding/gateways"]
+translated_from: 4c9fc6e
 ---
 
-In `confirm` mode, Periscope waits for a person before it creates anything in IoT Breeze. Review its proposals in the agent's web UI, fix the names, and confirm. For the stages, read [How Periscope works](./how-periscope-works.mdx).
+Im Modus `confirm` wartet Periscope auf eine Person, bevor es etwas in IoT Breeze anlegt. Prüfen Sie seine Vorschläge in der Web-Oberfläche des Agents, korrigieren Sie die Namen und bestätigen Sie. Die Stufen erklärt [Wie Periscope funktioniert](./how-periscope-works.mdx).
 
-## Before you start
+## Voraussetzungen {#before-you-start}
 
-- Periscope has run at least one discovery. See [Install Periscope and stream your first source](./install.mdx).
-- You can sign in to the agent's web UI as a Periscope admin, which is a tenant admin or the holder of `server.token`. A viewer sees the page without the controls.
-- The agent runs with `mode = "confirm"`, the default. In `zero-touch` mode everything proposed is applied at once, and you edit afterwards.
+- Periscope hat mindestens eine Erkennung ausgeführt. Siehe [Periscope installieren und die erste Quelle streamen](./install.mdx).
+- Sie können sich in der Web-Oberfläche des Agents als Periscope-Admin anmelden, also als Tenant-Admin oder als Inhaber von `server.token`. Ein Betrachter sieht die Seite ohne die Bedienelemente.
+- Der Agent läuft mit `mode = "confirm"`, der Vorgabe. Im Modus `zero-touch` wird alles Vorgeschlagene sofort angewendet, und Sie ändern danach.
 
-## Steps
+## Schritte {#steps}
 
-1. Open `http://<listen>/ui/proposals` and sign in. The page shows counts per status, what the last discovery changed or no longer found, a hierarchy preview, thing types and things.
-2. Check the **hierarchy preview**. It shows the tree that apply will create, each node marked `new` or `existing`. A mount typo shows as a second `new` branch next to the existing one. Fix a wrong level where the path comes from: `mount` and `levels` under `[ocb]`, or the source's structure, then run discovery again. Renaming a thing doesn't move it.
-3. Rename generated thing type names, such as `Oven1_49b35a`, to real ones. Type the new name and select **Rename**. Thing type names use letters, digits and `_` and start with a letter. Thing names must be unique in your organization.
-4. If discovery made two types for one kind of machine, select **Merge into** on the proposed type. Its things move to the target, which gains the measures it lacks.
-5. In the mapping editor under a proposed thing type, set one row per measure. A cell saves when you leave it:
+1. Öffnen Sie `http://<listen>/ui/proposals` und melden Sie sich an. Die Seite zeigt Zahlen je Status, was die letzte Erkennung geändert hat oder nicht mehr fand, eine Hierarchievorschau, Thing-Typen und Things.
+2. Prüfen Sie die **hierarchy preview**. Sie zeigt den Baum, den „Anwenden“ anlegt, jeder Knoten markiert mit `new` oder `existing`. Ein Tippfehler im Mount erscheint als zweiter `new`-Zweig neben dem bestehenden. Korrigieren Sie eine falsche Ebene dort, wo der Pfad herkommt: `mount` und `levels` unter `[ocb]` oder die Struktur der Quelle, und starten Sie die Erkennung erneut. Ein Thing umzubenennen verschiebt es nicht.
+3. Benennen Sie generierte Thing-Typ-Namen wie `Oven1_49b35a` in echte um. Geben Sie den neuen Namen ein und wählen Sie **Rename**. Thing-Typ-Namen bestehen aus Buchstaben, Ziffern und `_` und beginnen mit einem Buchstaben. Thing-Namen müssen in Ihrer Organisation eindeutig sein.
+4. Hat die Erkennung zwei Typen für eine Maschinenart erzeugt, wählen Sie beim vorgeschlagenen Typ **Merge into**. Seine Things wechseln zum Ziel, das die ihm fehlenden Messwerte erhält.
+5. Legen Sie im Zuordnungseditor unter einem vorgeschlagenen Thing-Typ eine Zeile pro Messwert fest. Eine Zelle wird gespeichert, wenn Sie sie verlassen:
 
-   | Column | What you can change |
+   | Spalte | Was Sie ändern können |
    | --- | --- |
-   | **Measure** | The measure's name, lowercase `a-z`, `0-9` and `_`. |
-   | **Display name** | What dashboards show. |
-   | **Unit** | The engineering unit. Sent only where the platform has no unit yet. |
-   | **Scale** | A factor applied to numeric values. Applies to the stream only. |
-   | **Enabled** | Untick to stop streaming the measure. It stays in the thing type. |
+   | **Measure** | Der Name des Messwerts, Kleinbuchstaben `a-z`, `0-9` und `_`. |
+   | **Display name** | Was Dashboards zeigen. |
+   | **Unit** | Die technische Einheit. Wird nur gesendet, wo die Plattform noch keine Einheit hat. |
+   | **Scale** | Ein Faktor für numerische Werte. Gilt nur für den Stream. |
+   | **Enabled** | Abwählen, um den Messwert nicht mehr zu streamen. Er bleibt im Thing-Typ. |
 
-6. Select **Reject** on what shouldn't reach the platform, such as test variables or diagnostics. A rejected item stays rejected after the next discovery.
-7. Select **Confirm all proposed**, then **Apply now**. A thing is applied only after its type, so confirm both.
+6. Wählen Sie **Reject** bei allem, was nicht auf die Plattform gelangen soll, etwa Testvariablen oder Diagnosewerte. Ein abgelehntes Element bleibt auch nach der nächsten Erkennung abgelehnt.
+7. Wählen Sie **Confirm all proposed** und dann **Apply now**. Ein Thing wird erst nach seinem Typ angewendet, bestätigen Sie also beide.
 
-To see what apply would send first, switch the dry run on, or run `periscope apply -dry-run`.
+Um vorher zu sehen, was „Anwenden“ senden würde, schalten Sie den Probelauf ein oder führen Sie `periscope apply -dry-run` aus.
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-The statuses move from `proposed` to `confirmed` to `applied`. A failed item stays `confirmed` with its reason, and the next apply retries it.
+Die Status wechseln von `proposed` über `confirmed` zu `applied`. Ein fehlgeschlagenes Element bleibt mit seinem Grund `confirmed`, und das nächste „Anwenden“ versucht es erneut.
 
-| Status | Meaning |
+| Status | Bedeutung |
 | --- | --- |
-| `proposed` | Found by discovery, waiting for a person. |
-| `confirmed` | A person confirmed it. The next apply creates it. |
-| `applied` | It exists in IoT Breeze, and the stream maps its values. |
-| `rejected` | It never goes to the platform. |
+| `proposed` | Von der Erkennung gefunden, wartet auf eine Person. |
+| `confirmed` | Eine Person hat es bestätigt. Das nächste „Anwenden“ legt es an. |
+| `applied` | Es existiert in IoT Breeze, und der Stream ordnet seine Werte zu. |
+| `rejected` | Es geht nie an die Plattform. |
 
-The new thing types and things are in **Settings › Onboarding**. If the agent is a gateway, they are on the gateway's **Things** tab. A change you made is kept in `edits.yaml`, so the next discovery doesn't undo it.
+Die neuen Thing-Typen und Things finden Sie unter **Einstellungen › Onboarding**. Ist der Agent ein Gateway, stehen sie im Tab **Things** des Gateways. Eine Änderung von Ihnen wird in `edits.yaml` gespeichert, die nächste Erkennung macht sie also nicht rückgängig.
 
-## If it doesn't work
+## Wenn es nicht klappt {#if-it-doesnt-work}
 
-- **Changes are refused with "the agent is busy applying or planning"**: an apply is running. Try again in a few seconds.
-- **A rename is refused**: an applied thing type and an applied thing keep their names. Rename them in IoT Breeze. You can still rename an applied measure: the new measure is added next to the old one and nothing is deleted.
-- **A merge is refused**: only a thing type that isn't applied can be merged.
-- **Apply fails per item with `403`**: in service-account mode, the account lacks the `modeler` role. In gateway mode, check the gateway's **Scope**: a **Locked** policy, an exhausted **Thing limit**, a thing type outside **Allowed thing types** or an alternate ID outside the namespace refuses the create. See [Check gateway health and traffic](../fleet-health.mdx).
-- **Every thing fails with `400 Root group not found`**: the service account has no read access to the organization's root group.
+- **Änderungen werden mit „the agent is busy applying or planning“ abgelehnt**: Ein Anwenden läuft. Versuchen Sie es in ein paar Sekunden erneut.
+- **Ein Umbenennen wird abgelehnt**: Ein angewendeter Thing-Typ und ein angewendetes Thing behalten ihre Namen. Benennen Sie sie in IoT Breeze um. Einen angewendeten Messwert können Sie weiterhin umbenennen: Der neue Messwert wird neben den alten gelegt, und nichts wird gelöscht.
+- **Ein Zusammenführen wird abgelehnt**: Nur ein Thing-Typ, der nicht angewendet ist, lässt sich zusammenführen.
+- **Anwenden schlägt je Element mit `403` fehl**: Im Servicekonto-Modus fehlt dem Konto die Rolle `modeler`. Im Gateway-Modus prüfen Sie den **Bereich** des Gateways: Die Einstellung **Gesperrt**, ein erschöpftes **Thing-Limit**, ein Thing-Typ außerhalb der **Erlaubten Thing-Typen** oder eine Alternate-ID außerhalb des Namespace lehnen das Anlegen ab. Siehe [Zustand und Datenverkehr von Gateways prüfen](../fleet-health.mdx).
+- **Jedes Thing schlägt mit `400 Root group not found` fehl**: Das Servicekonto hat keinen Lesezugriff auf die Stammgruppe der Organisation.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [How Periscope works](./how-periscope-works.mdx) · [Gateway reference](../gateway-reference.mdx)
-- [Verify that data arrived](./verify.mdx)
+- [Wie Periscope funktioniert](./how-periscope-works.mdx) · [Gateway-Referenz](../gateway-reference.mdx)
+- [Prüfen, ob Daten angekommen sind](./verify.mdx)

@@ -1,56 +1,56 @@
 ---
-untranslated: true
-title: Draw a floor plan
-sidebar_label: Draw a floor plan
-description: Create a canvas from a plan image, place live elements on it, arrange them and save.
+title: Einen Grundriss zeichnen
+sidebar_label: Grundriss zeichnen
+description: Ein Canvas aus einem Planbild anlegen, Live-Elemente darauf platzieren, anordnen und speichern.
 type: how-to
 sidebar_position: 2
 app:
   routes: ["/canvas", "/canvas/:id"]
   tour: canvas-build
+translated_from: 1579ffe
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
 
-Start a canvas from a floor plan or machine photo and place elements on it. The values come in [Bind elements to live values](./bind-live-values.mdx). For the ideas behind it, see [How a canvas works](./how-canvas-works.mdx).
+Starten Sie ein Canvas mit einem Grundriss oder einem Maschinenfoto und platzieren Sie Elemente darauf. Die Werte kommen in [Elemente an Live-Werte binden](./bind-live-values.mdx). Die Ideen dahinter erklärt [Wie ein Canvas funktioniert](./how-canvas-works.mdx).
 
-## Before you start
-- A role that may create and update canvases. **Canvas** appears in the menu only for such roles.
-- A plan image: PNG, JPG, SVG or WebP, up to 20 MB. Export a PDF as an image first.
-- The interfaces your things implement, if you want one canvas for many things.
+## Bevor Sie beginnen {#before-you-start}
+- Eine Rolle, die Canvases anlegen und aktualisieren darf. **Canvas** erscheint nur für solche Rollen im Menü.
+- Ein Planbild: PNG, JPG, SVG oder WebP, bis zu 20 MB. Exportieren Sie ein PDF zuerst als Bild.
+- Die Interfaces, die Ihre Things umsetzen, wenn Sie ein Canvas für viele Things möchten.
 
-## Steps
+## Schritte {#steps}
 
-1. Open **Monitoring › Canvas** and select **Create new canvas**.
-2. Enter a name.
-3. Select the interfaces the canvas reads. With interfaces, viewers pick a context thing and one canvas serves every matching thing. Without them, every element binds to a fixed thing.
-4. Under **Start from**, choose **From image**, then create the canvas. The editor opens.
-5. In **Add image**, drop your plan or browse for it. Leave **Use as background** on if you want the plan locked behind everything.
-6. Open the **Elements** library on the left. Click an element to add it, or drag it to a spot on the plan. **Search elements and symbols** or press <kbd>A</kbd> finds one by name. For values start with **Value**, **Gauge** or **Fill level** in the **Data** section.
-7. Draw around the plan with the toolbar: shapes, zones and text. Press <kbd>C</kbd> to connect equipment with pipes. **Snap** and **Grid** line elements up. Hover a tool for its key.
-8. Arrange. Drag to move and Shift-click to select several. The bar above a selection aligns, distributes, groups, duplicates and locks. Right-click for **Bring to front**, **Send to back** and more. <kbd>Ctrl</kbd>+<kbd>Z</kbd> undoes.
-9. Open **Layers** to rename, hide and lock elements and to find those hidden behind others. Elements placed on the image nest under it and move and scale with it.
-10. Select **Preview** to see the canvas as viewers will, in both themes.
-11. Select **Save**. **Save and exit** also leaves the editor.
+1. Öffnen Sie **Überwachung › Canvas** und wählen Sie **Neuen Canvas erstellen**.
+2. Geben Sie einen Namen ein.
+3. Wählen Sie die Interfaces, die das Canvas liest. Mit Interfaces wählen Betrachter ein Kontext-Thing, und ein Canvas bedient jedes passende Thing. Ohne sie ist jedes Element an ein festes Thing gebunden.
+4. Wählen Sie unter **Ausgangspunkt** die Option **Aus Bild** und legen Sie das Canvas an. Der Editor öffnet sich.
+5. Legen Sie unter **Bild hinzufügen** Ihren Plan ab oder suchen Sie ihn. Lassen Sie **Als Hintergrund verwenden** aktiv, wenn der Plan hinter allem gesperrt sein soll.
+6. Öffnen Sie links die Bibliothek **Elemente**. Klicken Sie ein Element an, um es hinzuzufügen, oder ziehen Sie es an eine Stelle im Plan. **Elemente und Symbole suchen** oder die Taste <kbd>A</kbd> findet eines nach Namen. Für Werte beginnen Sie im Abschnitt **Daten** mit **Wert**, **Gauge** oder **Füllstand**.
+7. Zeichnen Sie mit der Werkzeugleiste um den Plan herum: Formen, Zonen und Text. Drücken Sie <kbd>C</kbd>, um Anlagen mit Rohrleitungen zu verbinden. **Einrasten** und **Raster** richten Elemente aus. Fahren Sie über ein Werkzeug, um seine Taste zu sehen.
+8. Ordnen Sie an. Ziehen Sie zum Verschieben und klicken Sie mit Umschalt, um mehrere auszuwählen. Die Leiste über einer Auswahl richtet aus, verteilt, gruppiert, dupliziert und sperrt. Ein Rechtsklick bietet **In den Vordergrund**, **In den Hintergrund** und mehr. <kbd>Strg</kbd>+<kbd>Z</kbd> macht rückgängig.
+9. Öffnen Sie **Ebenen**, um Elemente umzubenennen, auszublenden und zu sperren und um solche zu finden, die hinter anderen liegen. Elemente, die auf dem Bild liegen, hängen darunter und bewegen und skalieren sich mit ihm.
+10. Wählen Sie **Vorschau**, um das Canvas so zu sehen, wie Betrachter es sehen, in beiden Themes.
+11. Wählen Sie **Speichern**. **Speichern und beenden** verlässt außerdem den Editor.
 
 <Screenshot
   page="visualize/canvas/draw-a-floor-plan"
   id="01-editor-overview"
   route="/canvas/:id"
   state="Canvas editor with a floor plan image as background, the Elements library open on the left, three Value elements placed on the plan, Layers and the Inspector on the right"
-  alt="The canvas editor with a floor plan, the element library, layers and inspector"
+  alt="Der Canvas-Editor mit Grundriss, Elementbibliothek, Ebenen und Inspektor"
 />
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-The status next to the buttons reads **Saved**. Open the canvas from the list: the plan shows with your elements in place. Elements not yet bound show a placeholder until you bind them.
+Der Status neben den Schaltflächen lautet **Gespeichert**. Öffnen Sie das Canvas aus der Liste: Der Plan erscheint mit Ihren Elementen an ihrem Platz. Noch nicht gebundene Elemente zeigen einen Platzhalter, bis Sie sie binden.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **The image is rejected**: it is not PNG, JPG, SVG or WebP, or it is over 20 MB. Export it again smaller.
-- **Someone else saved meanwhile**: the app says **Someone else saved this canvas**. Reloading discards your unsaved changes; **Save as copy** keeps your work.
-- **The canvas is too large to save**: remove elements or split it into several canvases.
-- **You replaced the image and elements look off**: the new image is scaled to the old size and elements stay in place. If the aspect ratio differs, the app warns you. Check elements near the edges.
+- **Das Bild wird abgelehnt**: Es ist kein PNG, JPG, SVG oder WebP, oder es ist größer als 20 MB. Exportieren Sie es kleiner neu.
+- **Jemand anderes hat in der Zwischenzeit gespeichert**: Die App meldet **Jemand anderes hat dieses Canvas gespeichert**. Neu laden verwirft Ihre ungespeicherten Änderungen. **Als Kopie speichern** behält Ihre Arbeit.
+- **Das Canvas ist zu groß zum Speichern**: Entfernen Sie Elemente oder teilen Sie es auf mehrere Canvases auf.
+- **Sie haben das Bild ersetzt und Elemente sitzen falsch**: Das neue Bild wird auf die alte Größe skaliert, und die Elemente bleiben an ihrem Platz. Weicht das Seitenverhältnis ab, warnt Sie die App. Prüfen Sie Elemente nahe den Rändern.
 
-## Related
-- [Bind elements to live values](./bind-live-values.mdx) · [Canvas editor reference](./editor-reference.mdx)
+## Verwandte Seiten {#related}
+- [Elemente an Live-Werte binden](./bind-live-values.mdx) · [Referenz des Canvas-Editors](./editor-reference.mdx)

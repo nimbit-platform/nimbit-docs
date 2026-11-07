@@ -1,38 +1,38 @@
 ---
-untranslated: true
-title: Transform values before they leave the edge
-description: Filter, convert, scale, thin out and aggregate values on the Periscope box with processors, and put them in the right order.
+title: Werte transformieren, bevor sie die Edge verlassen
+description: Werte auf der Periscope-Box mit Prozessoren filtern, konvertieren, skalieren, ausdünnen und aggregieren und in die richtige Reihenfolge bringen.
 type: how-to
 sidebar_position: 10
 app:
   routes: ["/onboarding/gateways"]
+translated_from: 4c9fc6e
 ---
 
-Processors change values between the plant and the platform: they drop what you don't want, convert units and types, send only changes, re-send quiet machines and compute window statistics. They run in the order of the configuration file, after the mapping has found each value's thing and measure, so unmapped values never reach them.
+Prozessoren verändern Werte zwischen Anlage und Plattform: Sie verwerfen, was Sie nicht wollen, wandeln Einheiten und Typen um, senden nur Änderungen, senden ruhige Maschinen erneut und berechnen Fensterstatistiken. Sie laufen in der Reihenfolge der Konfigurationsdatei, nachdem die Zuordnung Thing und Messwert jedes Werts gefunden hat, sodass nicht zugeordnete Werte sie nie erreichen.
 
-## Before you start
+## Voraussetzungen {#before-you-start}
 
-- Periscope has applied things, so values are mapped. See [Approve what Periscope discovers](./approve-discoveries.mdx).
-- Know the **address** of the values you target, as the **Snapshot** screen shows it. Processors match addresses with globs: `*` matches any run of characters including `/`, and `?` matches one character.
+- Periscope hat Things angewendet, die Werte sind also zugeordnet. Siehe [Periscope-Erkennungen freigeben](./approve-discoveries.mdx).
+- Kennen Sie die **Adresse** der Werte, die Sie ansprechen, wie sie der Bildschirm **Snapshot** zeigt. Prozessoren vergleichen Adressen mit Globs: `*` passt auf jede Zeichenfolge einschließlich `/`, `?` auf ein Zeichen.
 
-## Steps
+## Schritte {#steps}
 
-1. Pick the processors you need from the table. Add each as a `[[processors.<name>]]` table to `periscope.toml`.
+1. Wählen Sie aus der Tabelle die Prozessoren, die Sie brauchen. Fügen Sie jeden als Tabelle `[[processors.<name>]]` zu `periscope.toml` hinzu.
 
-   | Processor | Use it to |
+   | Prozessor | Verwenden, um |
    | --- | --- |
-   | `filter` | Keep only values whose address, quality and range pass. |
-   | `convert` | Turn strings into numbers or booleans and back, with maps for state words. |
-   | `scale` | Apply `value × factor + offset`. |
-   | `rename` | Rewrite the measure a value is written to, with a regular expression. |
-   | `tag` | Add fixed tags to matching values. The `tsflux_stream` output doesn't send tags. |
-   | `bloblang` | Run a Bloblang mapping per value for anything else. |
-   | `aggregate` | Send window statistics such as `frequency_5m_avg`. |
-   | `deadband` | Drop values that didn't change enough since the last one sent. |
-   | `throttle` | Send at most one value per address per interval. |
-   | `heartbeat` | Re-send a quiet thing's last values so it doesn't look dead. |
+   | `filter` | Nur Werte zu behalten, deren Adresse, Qualität und Bereich passen. |
+   | `convert` | Strings in Zahlen oder Booleans und zurück zu wandeln, mit Maps für Zustandswörter. |
+   | `scale` | `value × factor + offset` anzuwenden. |
+   | `rename` | Den Messwert, in den ein Wert geschrieben wird, per regulärem Ausdruck umzuschreiben. |
+   | `tag` | Passenden Werten feste Tags hinzuzufügen. Der Ausgang `tsflux_stream` sendet keine Tags. |
+   | `bloblang` | Für alles andere ein Bloblang-Mapping pro Wert auszuführen. |
+   | `aggregate` | Fensterstatistiken wie `frequency_5m_avg` zu senden. |
+   | `deadband` | Werte zu verwerfen, die sich seit dem zuletzt gesendeten nicht genug geändert haben. |
+   | `throttle` | Höchstens einen Wert pro Adresse und Intervall zu senden. |
+   | `heartbeat` | Die letzten Werte eines ruhigen Things erneut zu senden, damit es nicht tot wirkt. |
 
-2. Configure each one. Typical cases:
+2. Konfigurieren Sie jeden. Typische Fälle:
 
    ```toml
    [[processors.filter]]
@@ -66,7 +66,7 @@ Processors change values between the plant and the platform: they drop what you 
    measure  = "online"
    ```
 
-   For a value that needs a formula, use `bloblang`:
+   Für einen Wert, der eine Formel braucht, verwenden Sie `bloblang`:
 
    ```toml
    [[processors.bloblang]]
@@ -76,29 +76,29 @@ Processors change values between the plant and the platform: they drop what you 
    '''
    ```
 
-3. Put them in this order: `filter`, then conversions (`convert`, `scale`, `rename`, `bloblang`, `tag`), then `aggregate`, then `deadband` and `throttle`, and `heartbeat` last. `periscope validate` refuses a `deadband` after a `heartbeat`.
-4. Validate. It checks every processor's keys, including Bloblang, without connecting:
+3. Bringen Sie sie in diese Reihenfolge: `filter`, dann Umwandlungen (`convert`, `scale`, `rename`, `bloblang`, `tag`), dann `aggregate`, dann `deadband` und `throttle`, und `heartbeat` zuletzt. `periscope validate` lehnt ein `deadband` nach einem `heartbeat` ab.
+4. Prüfen Sie. Es kontrolliert die Schlüssel jedes Prozessors, auch Bloblang, ohne sich zu verbinden:
 
    ```sh
    periscope validate -config /etc/periscope/periscope.toml
    ```
 
-5. Reload or restart the agent. After adding `aggregate` or `heartbeat` with a `measure`, run discovery and apply: the new measures are proposed at the next discovery and created by apply. `periscope serve` does both.
+5. Laden Sie den Agent neu oder starten Sie ihn neu. Nach dem Hinzufügen von `aggregate` oder `heartbeat` mit einem `measure` führen Sie Erkennung und Anwenden aus: Die neuen Messwerte werden bei der nächsten Erkennung vorgeschlagen und beim Anwenden angelegt. `periscope serve` erledigt beides.
 
-Polled inputs such as S7 and Modbus send every value on every poll, so a `deadband` is the largest saving for them. For a single measure's factor, the **Scale** column of the mapping editor does the same without changing the file.
+Abgefragte Eingänge wie S7 und Modbus senden bei jeder Abfrage jeden Wert, ein `deadband` spart bei ihnen daher am meisten. Für den Faktor eines einzelnen Messwerts leistet die Spalte **Scale** des Zuordnungseditors dasselbe, ohne die Datei zu ändern.
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-Open the **Metrics** screen. Per processor, it shows what went in, what it dropped and how long it took. A `deadband` that works shows a drop count that grows while the plant is steady, and `filter` counts out-of-range values it removed.
+Öffnen Sie den Bildschirm **Metrics**. Er zeigt pro Prozessor, was hineinkam, was er verworfen hat und wie lange er brauchte. Ein funktionierendes `deadband` zeigt eine wachsende Verwerfungszahl, solange die Anlage ruhig ist, und `filter` zählt die Werte außerhalb des Bereichs, die er entfernt hat.
 
-## If it doesn't work
+## Wenn es nicht klappt {#if-it-doesnt-work}
 
-- **`validate` rejects a processor**: it names the table and the unknown or invalid key.
-- **A processor never sees a value**: the value isn't mapped. Processors run after the mapping, so confirm and apply the proposals first.
-- **A new aggregated measure doesn't appear**: discovery and apply haven't run since you added `aggregate`.
-- **On a gateway, `require_input = false` on `heartbeat` is refused**: it would re-send last values of a dead source, which would mask an outage. A heartbeat doesn't count bad values, such as a failed poll, as a delivery.
+- **`validate` lehnt einen Prozessor ab**: Es nennt die Tabelle und den unbekannten oder ungültigen Schlüssel.
+- **Ein Prozessor sieht nie einen Wert**: Der Wert ist nicht zugeordnet. Prozessoren laufen nach der Zuordnung, bestätigen und wenden Sie die Vorschläge also zuerst an.
+- **Ein neuer aggregierter Messwert erscheint nicht**: Erkennung und Anwenden sind seit dem Hinzufügen von `aggregate` nicht gelaufen.
+- **Bei einem Gateway wird `require_input = false` bei `heartbeat` abgelehnt**: Es würde letzte Werte einer toten Quelle erneut senden und einen Ausfall verdecken. Ein Heartbeat zählt schlechte Werte, etwa eine fehlgeschlagene Abfrage, nicht als Zustellung.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Configuration reference](./configuration.mdx) · [Outputs reference](./outputs.mdx)
-- [Read a Siemens S7 PLC](./s7.mdx)
+- [Konfigurationsreferenz](./configuration.mdx) · [Ausgänge-Referenz](./outputs.mdx)
+- [Eine Siemens-S7-SPS lesen](./s7.mdx)

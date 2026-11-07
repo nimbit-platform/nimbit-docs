@@ -1,69 +1,69 @@
 ---
-untranslated: true
-title: Choose the AI model
-description: Register the language models Ask Nimble may use, pin one to a chat, and set the fallback order.
+title: Das KI-Modell wählen
+description: Registrieren Sie die Sprachmodelle, die Ask Nimble nutzen darf, legen Sie eines für einen Chat fest und bestimmen Sie die Ausweichreihenfolge.
 type: how-to
 app:
   routes: ["/knowledge/models"]
   tour: setup-knowledge
+translated_from: b6ed908
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
 
-Register the language models your tenant may use, pin one to a chat, and set which models retry a question the usual model could not answer. How a model is used is in [How Ask Nimble answers](./ask-nimble-answers.mdx).
+Registrieren Sie die Sprachmodelle, die Ihr Tenant nutzen darf, legen Sie eines für einen Chat fest und bestimmen Sie, welche Modelle eine Frage wiederholen, die das übliche Modell nicht beantworten konnte. Wie ein Modell verwendet wird, steht unter [Wie Ask Nimble antwortet](./ask-nimble-answers.mdx).
 
-## Before you start
+## Bevor Sie beginnen {#before-you-start}
 
-- Reading the page needs access to Knowledge setup. Changing models needs the admin or modeler role. **Test** is limited to platform administrators.
-- You need the provider's model id and an API key. The model must support tool calling.
-- Counts, lists and lookups work without any registered model. Without one, other questions use the model the platform or server provides.
+- Die Seite lesen braucht Zugriff auf die Knowledge-Einrichtung. Modelle ändern braucht die Rolle Admin oder Modeler. **Testen** ist Plattform-Administratoren vorbehalten.
+- Sie brauchen die Modell-ID des Anbieters und einen API-Schlüssel. Das Modell muss Tool Calling unterstützen.
+- Zählungen, Listen und Nachschlagen funktionieren ohne registriertes Modell. Ohne eines nutzen andere Fragen das Modell, das die Plattform oder der Server bereitstellt.
 
-## Register a model
+## Ein Modell registrieren {#register-a-model}
 
-1. Open **Settings › Knowledge setup › AI models**. The page is titled **Models & keys**. Select **Register a model**.
-2. Enter a **Name**. You use it in chat and in the fallback order. It cannot be changed.
-3. Choose the **Provider**: **Anthropic**, **OpenAI**, **Gemini** or **OpenAI-compatible**.
-4. Enter the **Provider's model id** and the **API key**. For OpenAI-compatible endpoints, also the **Base URL**. It must be https. Private, loopback and metadata addresses are refused.
-5. Under **Capabilities**, check what the model supports: **Strict JSON schema**, **Forced tool choice**. Leave strict schema off for Gemini-compatible endpoints.
-6. Save, then select **Test**.
+1. Öffnen Sie **Einstellungen › Knowledge-Einrichtung › KI-Modelle**. Die Seite heißt **Modelle & Schlüssel**. Wählen Sie **Modell registrieren**.
+2. Geben Sie einen **Name** ein. Sie verwenden ihn im Chat und in der Ausweichreihenfolge. Er lässt sich nicht ändern.
+3. Wählen Sie den **Anbieter**: **Anthropic**, **OpenAI**, **Gemini** oder **OpenAI-kompatibel**.
+4. Geben Sie die **Modell-ID des Anbieters** und den **API-Schlüssel** ein. Bei OpenAI-kompatiblen Endpunkten auch die **Basis-URL**. Sie muss https sein. Private, Loopback- und Metadaten-Adressen werden abgelehnt.
+5. Prüfen Sie unter **Fähigkeiten**, was das Modell unterstützt: **Strenges JSON-Schema**, **Erzwungene Werkzeugwahl**. Lassen Sie das strenge Schema bei Gemini-kompatiblen Endpunkten aus.
+6. Speichern Sie und wählen Sie dann **Testen**.
 
 <Screenshot
   page="knowledge/ai-model"
   id="01-models"
   route="/knowledge/models"
   state="Models and keys page with two registered models, one marked Managed by the platform"
-  alt="The list of registered models"
+  alt="Die Liste der registrierten Modelle"
 />
 
-The API key is write-only: it is encrypted and never shown again. Leave the field empty when you edit to keep it. A model marked **Managed by the platform** is registered for you. Deleting a model destroys its key; chats pinned to it fall back to the default.
+Der API-Schlüssel ist nur schreibbar: Er wird verschlüsselt und nie wieder angezeigt. Lassen Sie das Feld beim Bearbeiten leer, um ihn zu behalten. Ein Modell mit der Markierung **Von der Plattform verwaltet** ist für Sie registriert. Beim Löschen eines Modells wird sein Schlüssel vernichtet; daran angeheftete Chats fallen auf den Standard zurück.
 
-## Pin a model to a chat
+## Ein Modell an einen Chat anheften {#pin-a-model-to-a-chat}
 
-In Ask Nimble, open the model menu in the question field's footer. Under **Model**, pick a registered model. The default is **Auto**. A pinned model answers alone: no fallback is tried.
+Öffnen Sie in Ask Nimble das Modellmenü in der Fußzeile des Fragefelds. Wählen Sie unter **Modell** ein registriertes Modell. Standard ist **Automatisch (Standard)**. Ein angeheftetes Modell antwortet allein: Es wird kein Ausweichen versucht.
 
-## Set the fallback order
+## Die Ausweichreihenfolge festlegen {#set-the-fallback-order}
 
-When the usual model finds nothing, the models in **Fallback order** retry the question in turn. The first one that answers wins.
+Findet das übliche Modell nichts, versuchen die Modelle in der **Ausweichreihenfolge** die Frage nacheinander erneut. Das erste, das antwortet, gewinnt.
 
-1. Under **Fallback order**, add a registered model.
-2. Use **Move earlier** and **Move later** to order them.
-3. Save.
+1. Fügen Sie unter **Ausweichreihenfolge** ein registriertes Modell hinzu.
+2. Ordnen Sie sie mit **Nach vorne** und **Nach hinten**.
+3. Speichern Sie.
 
-:::warning Each fallback costs a full extra attempt
-At most four fallbacks are allowed. A longer chain multiplies the cost of one question. With no fallback, a question the usual model cannot answer gets "I don't know".
+:::warning Jedes Ausweichen kostet einen vollen Extraversuch
+Erlaubt sind höchstens vier Ausweichschritte. Eine längere Kette vervielfacht die Kosten einer Frage. Ohne Ausweichen bekommt eine Frage, die das übliche Modell nicht beantworten kann, die Antwort „Ich weiß es nicht“.
 :::
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-The model shows **Reachable** after **Test**. In Ask Nimble, **Details** under an answer names the model that answered.
+Das Modell zeigt nach **Testen** **Erreichbar**. In Ask Nimble nennt **Details** unter einer Antwort das Modell, das geantwortet hat.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **Model did not answer** on Test: check the model id, the key and the base URL.
-- **Testing a model is restricted to platform administrators**: ask one to test it.
-- **A fallback step does nothing**: its model was deleted. Remove it from the order.
-- **This question needs an AI model** in chat: no model is available. Register one.
+- **Modell hat nicht geantwortet** beim Test: Prüfen Sie Modell-ID, Schlüssel und Basis-URL.
+- **Das Testen eines Modells ist Plattform-Administratoren vorbehalten**: Bitten Sie einen, es zu testen.
+- **Ein Ausweichschritt tut nichts**: Sein Modell wurde gelöscht. Entfernen Sie es aus der Reihenfolge.
+- **Für diese Frage ist ein KI-Modell nötig** im Chat: Es ist kein Modell verfügbar. Registrieren Sie eines.
 
-## Related
+## Siehe auch {#related}
 
-- [How Ask Nimble answers](./ask-nimble-answers.mdx) · [Ask a question about your data](./ask.mdx)
+- [Wie Ask Nimble antwortet](./ask-nimble-answers.mdx) · [Eine Frage zu Ihren Daten stellen](./ask.mdx)

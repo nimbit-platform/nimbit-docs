@@ -1,52 +1,52 @@
 ---
-untranslated: true
-title: "Coming next"
-description: Changes merged after 0.12.5 that are not yet released. Contents and version may change.
+title: "Als Nächstes"
+description: Änderungen, die nach 0.12.5 zusammengeführt wurden und noch nicht veröffentlicht sind. Inhalt und Version können sich ändern.
 type: reference
 sidebar_position: 1
+translated_from: 70da89f
 ---
 
 {/* TODO(product): confirm what ships in the next release and its version */}
 
-:::warning Not yet released
-This page lists changes merged since 0.12.5 (17 August 2026). They are not released yet, and what ships or when can change.
+:::warning Noch nicht veröffentlicht
+Diese Seite listet Änderungen, die seit 0.12.5 (17. August 2026) zusammengeführt wurden. Sie sind noch nicht veröffentlicht, und was wann erscheint, kann sich ändern.
 :::
 
-## New
+## Neu {#new}
 
 **Dashboards**
-- Widgets: a new widget picker and widget setup, new widgets, and default dashboards.
-- Widgets: color a value by thresholds, with help text in the widget setup.
-- Incidents widget: shows active or all incidents on a dashboard.
-- Smart dashboards: a widget set to show its own things can add a **Thing** column.
-- Home: tenant dashboards (Getting started, Tenant health, Tenant metrics) can be added from the Packs page.
+- Widgets: eine neue Widget-Auswahl und Widget-Einrichtung, neue Widgets und Standard-Dashboards.
+- Widgets: einen Wert nach Schwellenwerten einfärben, mit Hilfetext in der Widget-Einrichtung.
+- Vorfälle-Widget: zeigt aktive oder alle Vorfälle auf einem Dashboard.
+- Smart Dashboards: Ein Widget, das seine eigenen Things zeigt, kann eine Spalte **Thing** hinzufügen.
+- Startseite: Tenant-Dashboards (Erste Schritte, Tenant-Zustand, Tenant-Metriken) lassen sich von der Seite „Packs“ hinzufügen.
 
-**Things and interfaces**
-- The thing type page is rebuilt with a header, a figures strip and an overview in sections.
-- Thing type tabs are redesigned: Things, Schema, Statistics, Rollups, Actions, Dashboards, Versions and Documents.
-- On the **Actions** tab you can fire an action and see its on/off state.
-- The thing page and the interface list and detail pages follow the new thing type style.
+**Things und Interfaces**
+- Die Seite des Thing-Typs wurde neu aufgebaut, mit Kopfbereich, Kennzahlenleiste und einer Übersicht in Abschnitten.
+- Die Tabs des Thing-Typs sind neu gestaltet: Things, Schema, Statistik, Rollups, Aktionen, Dashboards, Versionen und Dokumente.
+- Im Tab **Aktionen** können Sie eine Aktion auslösen und ihren Zustand an/aus sehen.
+- Die Seite des Things sowie die Listen- und Detailseiten der Interfaces folgen dem neuen Stil des Thing-Typs.
 
-**Sign-in**
-- IoT Breeze sends you to the NimBit sign-in page, and invitations are accepted there.
+**Anmeldung**
+- IoT Breeze leitet Sie auf die NimBit-Anmeldeseite, und Einladungen werden dort angenommen.
 
-## Improved
+## Verbessert {#improved}
 
-- Every list page now uses the same list grid.
-- The app shell is redesigned: the sidebar sits on a frame and content appears as cards.
-- Thing types: interface filtering moved from tabs into a searchable filter in the toolbar.
-- Phones: the thing type header is tidier and **Publish** moves into the menu.
-- Connectivity events are now on by default.
-- Passkey changes require a fresh sign-in.
+- Jede Listenseite verwendet jetzt dasselbe Listenraster.
+- Die App-Oberfläche ist neu gestaltet: Die Seitenleiste sitzt auf einem Rahmen, und Inhalte erscheinen als Karten.
+- Thing-Typen: Das Filtern nach Interface ist von Tabs in einen durchsuchbaren Filter in der Werkzeugleiste gewandert.
+- Smartphones: Der Kopfbereich des Thing-Typs ist aufgeräumter, und **Veröffentlichen** wandert ins Menü.
+- Konnektivitäts-Events sind jetzt standardmäßig eingeschaltet.
+- Änderungen an Passkeys erfordern eine frische Anmeldung.
 
-## Fixed
+## Behoben {#fixed}
 
-- Thing types: dragged measure rows stay inside the table.
-- The **Copy ID** label is translated.
-- Sign-in: a "sign-in failed" message now shows in the sign-in card.
+- Thing-Typen: Gezogene Messwertzeilen bleiben innerhalb der Tabelle.
+- Die Beschriftung **ID kopieren** ist übersetzt.
+- Anmeldung: Die Meldung „Anmeldung fehlgeschlagen“ erscheint jetzt in der Anmeldekarte.
 
-## Breaking changes
+## Inkompatible Änderungen {#breaking-changes}
 
-- The Query API (NBQ) now refuses an aggregation that does not fit the measure's data type and returns status 400. If a client relied on such a request, change the aggregation or the measure.
-- Remote VNC server hosts must be private addresses. Check your VNC connections.
-- Self-hosted installations: the environment variable prefix `DIP_` of the telemetry ingest service is now `TSFLUX_`. Rename your settings before you upgrade.
+- Die Query-API (NBQ) lehnt jetzt eine Aggregation ab, die nicht zum Datentyp des Messwerts passt, und liefert Status 400. Wenn sich ein Client auf einen solchen Request verlassen hat, ändern Sie die Aggregation oder den Messwert.
+- Hosts für Remote-VNC-Server müssen private Adressen sein. Prüfen Sie Ihre VNC-Verbindungen.
+- Selbst gehostete Installationen: Das Präfix `DIP_` der Umgebungsvariablen des Telemetrie-Ingest-Dienstes ist jetzt `TSFLUX_`. Benennen Sie Ihre Einstellungen vor dem Upgrade um.

@@ -1,15 +1,15 @@
 ---
-untranslated: true
-title: How a canvas works
-description: What a canvas is, which kinds exist, how it differs from a dashboard, and how its elements get values and actions.
+title: Wie ein Canvas funktioniert
+description: Was ein Canvas ist, welche Arten es gibt, wie es sich von einem Dashboard unterscheidet und wie seine Elemente Werte und Aktionen erhalten.
 type: concept
 sidebar_position: 1
 app:
   routes: ["/canvas", "/canvas/:id"]
   tour: canvas
+translated_from: 70da89f
 ---
 
-A canvas is a drawing with live data on it. Where a dashboard arranges widgets on a grid, a canvas puts values exactly where the equipment is: on a floor plan, a machine photo or a process drawing. Anyone who opens it sees the plant as it is now, or as it was at an earlier time.
+Ein Canvas ist eine Zeichnung mit Live-Daten. Ein Dashboard ordnet Widgets in einem Raster an, ein Canvas setzt Werte genau dorthin, wo die Anlage steht: auf einen Grundriss, ein Maschinenfoto oder eine Prozesszeichnung. Wer es öffnet, sieht die Anlage, wie sie jetzt ist oder zu einem früheren Zeitpunkt war.
 
 ```mermaid
 flowchart LR
@@ -22,47 +22,47 @@ flowchart LR
   A --> T[Thing]
 ```
 
-## The parts
+## Die Bausteine {#the-parts}
 
-| Part | What it is |
+| Baustein | Was es ist |
 | --- | --- |
-| **Element** | One item on the canvas: a value, a gauge, a chart, a shape, a symbol, a button. The library holds them in sections: **Data**, **Controls**, **Draw & basic**, **Embeds** and **P&ID symbols**. |
-| **Context thing** | The thing a viewer picks in the header. Elements that read **From context** show that thing, so one canvas serves every thing that offers the canvas's interfaces. |
-| **Fixed thing** | An element that always reads the same device, whatever the viewer picks. |
-| **Binding** | The link from an element to one value: a thing, a measure or a property. Optional **Thresholds** color it. |
-| **State** | A named condition, such as `high alarm`, that **Rules** assign when a value crosses a limit. A state carries a severity and changes color, icon and motion. |
-| **Action** | What happens on click: run a thing's action, open a link or another canvas, switch the context thing, or set a variable. |
-| **Kind** | **Monitoring** (values and charts) or **P&ID** (a process drawing). It only sorts the canvas list's filters. |
-| **Managed by Nimbit** | A canvas added from a template that receives template updates. You can also add a template as a copy to change freely. |
+| **Element** | Ein Eintrag auf dem Canvas: ein Wert, ein Gauge, ein Diagramm, eine Form, ein Symbol, eine Schaltfläche. Die Bibliothek ordnet sie in Abschnitte: **Daten**, **Bedienelemente**, **Zeichnen & Grundformen**, **Einbettungen** und **R&I-Symbole**. |
+| **Kontext-Thing** | Das Thing, das ein Betrachter in der Kopfzeile wählt. Elemente, die **Aus dem Kontext** lesen, zeigen dieses Thing. Ein Canvas bedient so jedes Thing, das die Interfaces des Canvas bietet. |
+| **Festes Thing** | Ein Element, das immer dasselbe Gerät liest, egal was der Betrachter wählt. |
+| **Bindung** | Die Verbindung eines Elements zu einem Wert: einem Thing, einer Telemetrie oder einer Eigenschaft. Optionale **Schwellenwerte** färben es ein. |
+| **Zustand** | Eine benannte Bedingung wie `high alarm`, die **Regeln** zuweisen, wenn ein Wert eine Grenze überschreitet. Ein Zustand hat einen Schweregrad und ändert Farbe, Icon und Bewegung. |
+| **Aktion** | Was beim Klick geschieht: eine Aktion eines Things ausführen, einen Link oder ein anderes Canvas öffnen, das Kontext-Thing wechseln oder eine Variable setzen. |
+| **Art** | **Überwachung** (Werte und Diagramme) oder **R&I** (eine Prozesszeichnung). Sie sortiert das Canvas nur in die Filter der Canvas-Liste. |
+| **Von Nimbit verwaltet** | Ein Canvas aus einer Vorlage, das Vorlagen-Updates erhält. Sie können eine Vorlage auch als Kopie hinzufügen, um sie frei zu ändern. |
 
-## How they work together
+## Wie sie zusammenwirken {#how-they-work-together}
 
-**Context or fixed.** In **Canvas settings** you pick the canvas's interfaces. With interfaces, viewers choose a context thing and elements read **From context**. Without them, every element binds to a fixed thing. You can mix both on one canvas.
+**Kontext oder fest.** In den **Canvas-Einstellungen** wählen Sie die Interfaces des Canvas. Mit Interfaces wählen Betrachter ein Kontext-Thing, und Elemente lesen **Aus dem Kontext**. Ohne sie ist jedes Element an ein festes Thing gebunden. Sie können beides auf einem Canvas mischen.
 
-**Live or history.** A canvas shows live values. A time range in the header shows how values looked then. Choosing a live range brings back current values.
+**Live oder Verlauf.** Ein Canvas zeigt Live-Werte. Ein Zeitraum in der Kopfzeile zeigt, wie die Werte damals aussahen. Ein Live-Zeitraum bringt die aktuellen Werte zurück.
 
-**Alarms.** When a value is in alarm or has gone stale, a chip in the header lists it. Select it to jump to the next one. A value without an update for the stale limit (set per canvas, overridable per element) shows as stale.
+**Alarme.** Ist ein Wert im Alarm oder veraltet, listet ihn ein Chip in der Kopfzeile. Wählen Sie ihn, um zum nächsten zu springen. Ein Wert ohne Update innerhalb der Veraltet-Grenze (je Canvas festgelegt, je Element überschreibbar) wird als veraltet angezeigt.
 
-**Operating.** Buttons, switches, setpoints and valve actions send commands to real equipment. A canvas does this only when **Allow operation** is on in **Canvas settings**, and each action's own permissions still decide who may run it. Commands usually ask for confirmation first.
+**Bedienen.** Schaltflächen, Schalter, Sollwerte und Ventilaktionen senden Befehle an echte Anlagen. Ein Canvas tut das nur, wenn **Bedienung erlauben** in den **Canvas-Einstellungen** aktiv ist, und die eigenen Berechtigungen jeder Aktion entscheiden weiterhin, wer sie ausführen darf. Befehle fragen meist zuerst nach einer Bestätigung.
 
-**Saved or draft.** You edit in place. Everyone else keeps seeing the saved version until you select **Save**.
+**Gespeichert oder Entwurf.** Sie bearbeiten direkt. Alle anderen sehen weiter die gespeicherte Version, bis Sie **Speichern** wählen.
 
-## Canvas or dashboard
+## Canvas oder Dashboard {#canvas-or-dashboard}
 
-| You want… | Use… |
+| Sie möchten … | Nehmen Sie … |
 | --- | --- |
-| Values placed on a picture of the plant | A canvas |
-| A grid of charts, tables and figures that people rearrange | A [dashboard](../dashboards.mdx) |
-| A process drawing with pumps, valves and tanks | A canvas of kind **P&ID** |
-| Both: a drawing beside charts | A canvas, shown on a dashboard with the [Canvas widget](./embed-a-canvas.mdx) |
+| Werte auf einem Bild der Anlage | Ein Canvas |
+| Ein Raster aus Diagrammen, Tabellen und Kennzahlen, das Benutzer umordnen | Ein [Dashboard](../dashboards.mdx) |
+| Eine Prozesszeichnung mit Pumpen, Ventilen und Tanks | Ein Canvas der Art **R&I** |
+| Beides: eine Zeichnung neben Diagrammen | Ein Canvas, auf einem Dashboard mit dem [Canvas-Widget](./embed-a-canvas.mdx) gezeigt |
 
-## Limits
+## Grenzen {#limits}
 
-- The editor opens on a larger screen.
-- Operation pauses while a past time range is shown, and in a side panel or embed you open the full page to operate.
-- A canvas that is too large to save needs elements removed or a split into several canvases.
-- A canvas can embed another canvas, up to three levels deep, and never itself.
-- Images can be up to 20 MB: PNG, JPG, SVG or WebP.
+- Der Editor öffnet sich auf einem größeren Bildschirm.
+- Die Bedienung pausiert, solange ein vergangener Zeitraum angezeigt wird. In einem Seitenpanel oder einer Einbettung öffnen Sie die ganze Seite, um zu bedienen.
+- Ein Canvas, das zu groß zum Speichern ist, braucht weniger Elemente oder muss auf mehrere Canvases aufgeteilt werden.
+- Ein Canvas kann ein anderes Canvas einbetten, bis zu drei Ebenen tief, und nie sich selbst.
+- Bilder dürfen bis zu 20 MB groß sein: PNG, JPG, SVG oder WebP.
 
-## Related
-- [Draw a floor plan](./draw-a-floor-plan.mdx) · [Canvas editor reference](./editor-reference.mdx)
+## Verwandte Seiten {#related}
+- [Einen Grundriss zeichnen](./draw-a-floor-plan.mdx) · [Referenz des Canvas-Editors](./editor-reference.mdx)

@@ -1,95 +1,95 @@
 ---
-untranslated: true
-title: A rule doesn't fire
-description: Find out why a rule stays quiet, from inactive rules and missing triggers to toggle state, conditions and switched-off actions.
+title: Eine Regel löst nicht aus
+description: Herausfinden, warum eine Regel still bleibt, von inaktiven Regeln und fehlenden Auslösern über Umschalt-Zustand und Bedingungen bis zu abgeschalteten Aktionen.
 sidebar_position: 4
 type: how-to
 app:
   routes: ["/automation/rule-designer", "/automation/rule-designer/:id", "/monitor/events"]
+translated_from: 679f3a4
 ---
 
-Find out why a rule does not do what you expect when data arrives. How rules, triggers and actions fit together is in [Rules, actions and reports](../automate/rules-actions-reports.mdx).
+Finden Sie heraus, warum eine Regel nicht tut, was Sie erwarten, wenn Daten eintreffen. Wie Regeln, Auslöser und Aktionen zusammenspielen, steht unter [Regeln, Aktionen und Berichte](../automate/rules-actions-reports.mdx).
 
-## Symptoms
+## Symptome {#symptoms}
 
-- A value passes your limit and no notification, event, email or webhook follows.
-- The rule fired once and never again.
-- The rule fires, but one of its actions does nothing.
+- Ein Wert überschreitet Ihr Limit, und es folgt keine Benachrichtigung, kein Event, keine E-Mail und kein Webhook.
+- Die Regel hat einmal ausgelöst und nie wieder.
+- Die Regel löst aus, aber eine ihrer Aktionen tut nichts.
 
-## Check in this order
+## In dieser Reihenfolge prüfen {#check-in-this-order}
 
-### 1. The rule is active and the change is published
+### 1. Die Regel ist aktiv und die Änderung veröffentlicht {#1-the-rule-is-active-and-the-change-is-published}
 
-Open **Automation › Rule Designer**. The list shows **Active** or **Inactive**.
+Öffnen Sie **Einstellungen › Automatisierung › Regel-Designer**. Die Liste zeigt **Aktiv** oder **Inaktiv**.
 
-- **Inactive**: open the rule and select **Activate**. If **Activate** is disabled, the rule has no published version yet. Select the check mark in the floating bar first.
-- You edited an active rule but the old behaviour continues: edits are a draft until you select the check mark, which reads **Apply draft** once a version exists. One version of a rule is active at a time.
+- **Inaktiv**: Öffnen Sie die Regel und wählen Sie **Aktivieren**. Ist **Aktivieren** deaktiviert, hat die Regel noch keine veröffentlichte Version. Wählen Sie zuerst das Häkchen in der schwebenden Leiste.
+- Sie haben eine aktive Regel bearbeitet, aber das alte Verhalten bleibt: Änderungen sind ein Entwurf, bis Sie das Häkchen wählen, das **Entwurf anwenden** heißt, sobald eine Version existiert. Von einer Regel ist jeweils eine Version aktiv.
 
-### 2. The flow is valid and complete
+### 2. Der Flow ist gültig und vollständig {#2-the-flow-is-valid-and-complete}
 
-Hover the validity icon next to the rule name. It must read **The flow is Valid**, otherwise it says what is missing.
+Zeigen Sie mit der Maus auf das Gültigkeitssymbol neben dem Regelnamen. Es muss **Der Flow ist gültig** zeigen, sonst nennt es, was fehlt.
 
-A rule is a chain of **Start**, **Condition**, **Trigger** and **Actions**. Actions run only after a trigger. A flow without a **Trigger**, or with a **Condition** that is not linked to one, is invalid and the check mark stays disabled.
+Eine Regel ist eine Kette aus **Start**, **Bedingung**, **Auslöser** und **Aktionen**. Aktionen laufen erst nach einem Auslöser. Ein Flow ohne **Auslöser** oder mit einer **Bedingung**, die mit keinem verbunden ist, ist ungültig, und das Häkchen bleibt deaktiviert.
 
-### 3. The data is in scope
+### 3. Die Daten liegen im Geltungsbereich {#3-the-data-is-in-scope}
 
-On **Start**, check the thing type or the tags you chose. The thing that sent data must be of that thing type. Then check that its message carries the measure the condition reads. A message without the measure never matches a row. See [A device shows no signal](./no-signal.mdx) if no data arrives.
+Prüfen Sie bei **Start** den Thing-Typ oder die Tags, die Sie gewählt haben. Das Thing, das Daten gesendet hat, muss von diesem Thing-Typ sein. Prüfen Sie dann, ob seine Nachricht den Messwert trägt, den die Bedingung liest. Eine Nachricht ohne den Messwert trifft nie eine Zeile. Siehe [Ein Gerät zeigt kein Signal](./no-signal.mdx), wenn keine Daten ankommen.
 
-### 4. The trigger lets it fire
+### 4. Der Auslöser lässt sie auslösen {#4-the-trigger-lets-it-fire}
 
-The trigger turns "condition met" into "fire". Check which one you chose.
+Der Auslöser macht aus „Bedingung erfüllt“ ein „Auslösen“. Prüfen Sie, welchen Sie gewählt haben.
 
-| Trigger | Fires | Typical surprise |
+| Auslöser | Löst aus | Typische Überraschung |
 | --- | --- | --- |
-| **Default** | Every match | Too many runs, not too few. |
-| **Toggle**, **In** | Once, when the condition changes from not met to met | The condition has been met since before you activated or changed the rule, or is still met from the last reading. It fires again only after a reading that does not meet it. |
-| **Toggle**, **Out** | Once, when the condition changes from met to not met | Nothing happens while the condition stays met. |
-| **Toggle**, **Every** | On each change in either direction | |
-| **Sleep** | At most once per period | Matches inside the period are skipped. |
+| **Standard** | Bei jedem Treffer | Eher zu viele Läufe als zu wenige. |
+| **Umschalten**, **Innerhalb** | Einmal, wenn die Bedingung von nicht erfüllt zu erfüllt wechselt | Die Bedingung ist schon erfüllt, seit bevor Sie die Regel aktiviert oder geändert haben, oder sie ist seit dem letzten Messwert noch erfüllt. Sie löst erst wieder nach einem Messwert aus, der sie nicht erfüllt. |
+| **Umschalten**, **Außerhalb** | Einmal, wenn die Bedingung von erfüllt zu nicht erfüllt wechselt | Es passiert nichts, solange die Bedingung erfüllt bleibt. |
+| **Umschalten**, **Immer** | Bei jedem Wechsel in beide Richtungen | |
+| **Schlafen** | Höchstens einmal pro Zeitraum | Treffer innerhalb des Zeitraums werden übersprungen. |
 
-For the other trigger types, such as holding for a duration, read the settings on the **Trigger** node.
+Bei den anderen Auslöser-Typen, etwa dem Halten über eine Dauer, lesen Sie die Einstellungen am Knoten **Auslöser**.
 
-To test a **Toggle**, send a value that does not meet the condition, then one that does. See [Simulate a device](../connect/simulate.mdx).
+Um ein **Umschalten** zu testen, senden Sie einen Wert, der die Bedingung nicht erfüllt, dann einen, der sie erfüllt. Siehe [Ein Gerät simulieren](../connect/simulate.mdx).
 
-### 5. The condition matches
+### 5. Die Bedingung trifft zu {#5-the-condition-matches}
 
-Open the **Condition** node.
+Öffnen Sie den Knoten **Bedingung**.
 
-- **Advanced** is selected. Only the selected tab is evaluated, so the **Simple** rows are ignored.
-- **Rising** and **Falling** answer false until the stored history covers the whole **Window**. A new thing, or a window longer than its history, does not fire.
-- Rows joined with **and** all have to hold. A measure of another type, for example a string compared with **Greater than**, never matches.
-- In an expression, a read of a missing field returns `0`, `""` or `false`. Guard it with the matching `Has` call.
-- Window functions read numeric samples only.
+- **Erweitert** ist gewählt. Nur der gewählte Tab wird ausgewertet, die Zeilen unter **Einfach** werden also ignoriert.
+- **Steigend** und **Fallend** antworten mit false, bis der gespeicherte Verlauf das ganze **Fenster** abdeckt. Ein neues Thing oder ein Fenster, das länger als sein Verlauf ist, löst nicht aus.
+- Mit **Und** verbundene Zeilen müssen alle zutreffen. Ein Messwert eines anderen Typs, zum Beispiel ein String, der mit **Größer als** verglichen wird, trifft nie.
+- In einem Ausdruck liefert das Lesen eines fehlenden Felds `0`, `""` oder `false`. Sichern Sie es mit dem passenden `Has`-Aufruf ab.
+- Fensterfunktionen lesen nur numerische Samples.
 
-**Test** on the **Advanced** tab checks the expression against a sample payload, without history. Operators and functions: [Rule conditions and functions](../automate/conditions.mdx).
+**Testen** im Tab **Erweitert** prüft den Ausdruck gegen eine Beispiel-Payload, ohne Verlauf. Operatoren und Funktionen: [Regelbedingungen und Funktionen](../automate/conditions.mdx).
 
-### 6. The actions are on and complete
+### 6. Die Aktionen sind an und vollständig {#6-the-actions-are-on-and-complete}
 
-The rule fires, but nothing reaches you:
+Die Regel löst aus, aber nichts erreicht Sie:
 
-- **Event** action: the rule created an event. Open **Monitoring › Events** and look for it. You may not see it if the event type's **Groups** do not include a group of yours. Then check the **Actions** tab of that event type under **Configuration › Event Types**. An action added there is created with its **Active** switch off. An action that is off does not run.
-- **Notification**: **Users and groups** must contain you or a group you belong to.
-- **Webhook**: a failed call is recorded as an event. A `405` means the **Method** is wrong, `401` or `403` the **Authorization**, and a timeout that the receiver did not answer in time. See [Call another system from a rule](../automate/webhook-from-rule.mdx).
-- **Notification channel**: check the channel is enabled and its filters let the message through. See [An alert email never arrives](./email-not-arriving.mdx).
+- Aktion **Ereignis**: Die Regel hat ein Event erzeugt. Öffnen Sie **Überwachung › Events** und suchen Sie es. Möglicherweise sehen Sie es nicht, wenn die **Gruppen** des Event-Typs keine Ihrer Gruppen enthalten. Prüfen Sie dann den Tab **Aktionen** dieses Event-Typs unter **Einstellungen › Konfiguration › Event Typen**. Eine dort hinzugefügte Aktion wird mit ausgeschaltetem Schalter **Aktiv** angelegt. Eine ausgeschaltete Aktion läuft nicht.
+- **Benachrichtigung**: **Benutzer und Gruppen** muss Sie oder eine Gruppe enthalten, der Sie angehören.
+- **Webhook**: Ein fehlgeschlagener Aufruf wird als Event aufgezeichnet. Ein `405` bedeutet, dass die **Method** falsch ist, `401` oder `403` die **Autorisierung**, und ein Timeout, dass der Empfänger nicht rechtzeitig geantwortet hat. Siehe [Ein anderes System aus einer Regel aufrufen](../automate/webhook-from-rule.mdx).
+- **Benachrichtigungskanal**: Prüfen Sie, ob der Kanal aktiviert ist und seine Filter die Nachricht durchlassen. Siehe [Eine Alarm-E-Mail kommt nie an](./email-not-arriving.mdx).
 
-An event that closes an episode, such as a thing coming back online, runs no event type actions.
+Ein Event, das eine Episode beendet, etwa ein Thing, das wieder online ist, führt keine Aktionen des Event-Typs aus.
 
-### 7. Where an evaluation shows
+### 7. Wo eine Auswertung erscheint {#7-where-an-evaluation-shows}
 
 {/* TODO(product): Where can a user see that a rule evaluation failed or was skipped (condition not met, invalid expression)? The code writes rule evaluation events whose detail depends on enableDetailedRuleEvaluation and logs other errors on the server. Should the docs promise that users can see failed evaluations? */}
 
-A rule that fires with an **Event** action leaves an event with the display type **Rule evaluation**. It shows the rule, its conditions and the values that triggered it. Failed action runs are events as well.
+Eine Regel, die mit einer Aktion **Ereignis** auslöst, hinterlässt ein Event mit dem Anzeigetyp **Regelauswertung**. Es zeigt die Regel, ihre Bedingungen und die Werte, die sie ausgelöst haben. Fehlgeschlagene Aktionsläufe sind ebenfalls Events.
 
-## Still stuck?
+## Immer noch nicht gelöst? {#still-stuck}
 
-Write to info@nimbit.de with:
+Schreiben Sie an info@nimbit.de mit:
 
-- Your tenant name, the rule's name and whether it is **Active**.
-- The thing that should have fired it, and the time of the reading, with its time zone.
-- The reading you sent, for example `temperature` of `26`.
-- A screenshot of the **Condition** and **Trigger** nodes.
+- Ihrem Tenant-Namen, dem Namen der Regel und ob sie **Aktiv** ist.
+- Dem Thing, das sie hätte auslösen sollen, und der Zeit des Messwerts, mit Zeitzone.
+- Dem gesendeten Messwert, zum Beispiel `temperature` mit `26`.
+- Einem Screenshot der Knoten **Bedingung** und **Auslöser**.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Alert when a value crosses a limit](../automate/threshold-alert.mdx) · [Action types](../automate/action-types.mdx)
-- [Event types](../watch/event-types.mdx)
+- [Alarmieren, wenn ein Wert ein Limit überschreitet](../automate/threshold-alert.mdx) · [Aktionstypen](../automate/action-types.mdx)
+- [Event-Typen](../watch/event-types.mdx)

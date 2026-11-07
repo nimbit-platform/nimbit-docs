@@ -1,78 +1,78 @@
 ---
-untranslated: true
-title: Send alerts to Teams, Slack or a webhook
-sidebar_label: Alerts to Teams, Slack or a webhook
+title: Alarme an Teams, Slack oder einen Webhook senden
+sidebar_label: Alarme an Teams, Slack oder einen Webhook
 sidebar_position: 7
-description: Post warnings and errors from your things into a chat channel or another system.
+description: Warnungen und Fehler Ihrer Things in einen Chat-Kanal oder ein anderes System posten.
 type: how-to
 app:
   routes: ["/manage/notification-channels"]
+translated_from: b6ed908
 ---
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import Screenshot from "@site/src/components/Screenshot";
 
-Post warnings and errors from your things into a Microsoft Teams or Slack channel, a webhook, or ntfy. To see how this fits with events and incidents, read [Events, incidents and notifications](./events-incidents-notifications.mdx).
+Posten Sie Warnungen und Fehler Ihrer Things in einen Microsoft-Teams- oder Slack-Kanal, an einen Webhook oder an ntfy. Wie das mit Events und Vorfällen zusammenhängt, lesen Sie unter [Events, Vorfälle und Benachrichtigungen](./events-incidents-notifications.mdx).
 
-## Before you start
+## Bevor Sie anfangen {#before-you-start}
 
-- You need a role that may create notification channels, and to send a test, one that may run them. The entry **Notification Channels** appears under **Settings › Configuration** when you have access.
-- Get the address IoT Breeze posts to:
+- Sie brauchen eine Rolle, die Benachrichtigungskanäle anlegen darf, und für einen Test eine, die sie ausführen darf. Der Eintrag **Benachrichtigungskanäle** erscheint unter **Einstellungen › Konfiguration**, wenn Sie Zugriff haben.
+- Besorgen Sie die Adresse, an die IoT Breeze postet:
 
 <Tabs groupId="channel">
 <TabItem value="teams" label="Microsoft Teams" default>
 
-In Teams, create a workflow that posts a received webhook request to a channel, for example from the template *Post to a channel when a webhook request is received*, and copy its URL. IoT Breeze sends an Adaptive Card message.
+Legen Sie in Teams einen Workflow an, der eine empfangene Webhook-Anfrage in einen Kanal postet, zum Beispiel aus der Vorlage *Post to a channel when a webhook request is received*, und kopieren Sie seine URL. IoT Breeze sendet eine Adaptive-Card-Nachricht.
 
 </TabItem>
 <TabItem value="slack" label="Slack">
 
-In Slack, add an incoming webhook to the channel and copy its URL.
+Fügen Sie in Slack dem Kanal einen eingehenden Webhook hinzu und kopieren Sie seine URL.
 
 </TabItem>
 <TabItem value="webhook" label="Webhook">
 
-Have the URL of the receiving system ready. Optionally choose a secret, so the receiver can check that a request came from IoT Breeze.
+Halten Sie die URL des empfangenden Systems bereit. Wählen Sie optional ein Geheimnis, damit der Empfänger prüfen kann, dass eine Anfrage von IoT Breeze kam.
 
 </TabItem>
 <TabItem value="ntfy" label="ntfy">
 
-Choose an ntfy topic. If you don't use the public ntfy server, have your server URL and token ready.
+Wählen Sie ein ntfy-Topic. Nutzen Sie nicht den öffentlichen ntfy-Server, halten Sie die URL Ihres Servers und das Token bereit.
 
 </TabItem>
 </Tabs>
 
-## Steps
+## Schritte {#steps}
 
-1. Open **Settings › Configuration › Notification Channels** and select **Create channel**.
-2. Enter a **Name**, for example `Plant 1 alerts`, and choose the **Channel type**. You can't change the type later.
-3. Fill in the field of the type: **Teams workflow webhook URL**, **Slack webhook URL**, **Webhook URL** (and **HMAC secret (optional)**), or **ntfy topic**.
-4. Turn on **Automatic routing** and set **Minimum severity** to **Warning**. Leave **Event types** empty to send all of them, or pick the ones this channel should get.
-5. Leave **Enabled** on and save.
-6. In the list, select **Send test** on the new channel and check that the message arrives. You can only test a saved channel.
+1. Öffnen Sie **Einstellungen › Konfiguration › Benachrichtigungskanäle** und wählen Sie **Kanal erstellen**.
+2. Geben Sie einen **Name** ein, zum Beispiel `Plant 1 alerts`, und wählen Sie den **Kanaltyp**. Den Typ können Sie später nicht ändern.
+3. Füllen Sie das Feld des Typs aus: **Teams-Workflow-Webhook-URL**, **Slack-Webhook-URL**, **Webhook-URL** (und **HMAC-Geheimnis (optional)**) oder **ntfy-Topic**.
+4. Schalten Sie **Automatisches Routing** ein und setzen Sie **Mindestschweregrad** auf **Warnung**. Lassen Sie **Ereignistypen** leer, um alle zu senden, oder wählen Sie die, die dieser Kanal bekommen soll.
+5. Lassen Sie **Aktiv** an und speichern Sie.
+6. Wählen Sie in der Liste beim neuen Kanal **Test senden** und prüfen Sie, dass die Nachricht ankommt. Testen können Sie nur einen gespeicherten Kanal.
 
 <Screenshot
   page="watch/alert-channels"
   id="01-create-channel"
   route="/manage/notification-channels"
   state="Create channel drawer, type Microsoft Teams, Automatic routing on, Minimum severity Warning"
-  alt="The Create channel drawer set up for Microsoft Teams"
+  alt="Der Drawer Kanal erstellen, eingerichtet für Microsoft Teams"
 />
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-The channel's row shows its routing, for example `≥ Warning`. Open the channel's **Delivery log**. The test message is there with the status **Sent**. After the next warning, a new delivery appears.
+Die Zeile des Kanals zeigt sein Routing, zum Beispiel `≥ Warning`. Öffnen Sie das **Zustellprotokoll** des Kanals. Die Testnachricht steht dort mit dem Status **Gesendet**. Nach der nächsten Warnung erscheint eine neue Zustellung.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **The test never arrives**: the **Delivery log** shows why. **Pending** means IoT Breeze is still retrying. A delivery fails after 5 attempts. The Teams workflow may be switched off, or the URL was cut when you copied it.
-- **The delivery log shows Failed**: **Error** shows the receiver's answer, for example `Teams responded 410`. Open **Edit channel**, enter the new URL, and save. Then select **Retry** on the delivery.
-- **Some events never arrive**: check their severity against **Minimum severity**, and their type against **Event types**. Events that end a state, such as a thing coming back online, are not routed. Neither are incident notifications. See [Set up an incident policy](./incident-policy.mdx) to post once per incident.
-- **The row says Action only**: **Automatic routing** is off. The channel only gets messages from actions and automations that name it.
+- **Der Test kommt nie an**: Das **Zustellprotokoll** zeigt den Grund. **Ausstehend** heißt, IoT Breeze versucht es noch. Eine Zustellung schlägt nach 5 Versuchen fehl. Möglicherweise ist der Teams-Workflow ausgeschaltet, oder die URL wurde beim Kopieren abgeschnitten.
+- **Das Zustellprotokoll zeigt Fehlgeschlagen**: **Fehler** zeigt die Antwort des Empfängers, zum Beispiel `Teams responded 410`. Öffnen Sie **Kanal bearbeiten**, geben Sie die neue URL ein und speichern Sie. Wählen Sie dann bei der Zustellung **Erneut versuchen**.
+- **Manche Events kommen nie an**: Prüfen Sie ihren Schweregrad gegen den **Mindestschweregrad** und ihren Typ gegen die **Ereignistypen**. Events, die einen Zustand beenden, etwa ein Thing, das wieder online ist, werden nicht geroutet. Vorfallsbenachrichtigungen ebenso wenig. Wie Sie einmal pro Vorfall posten, lesen Sie unter [Eine Vorfallsrichtlinie einrichten](./incident-policy.mdx).
+- **Die Zeile zeigt Nur Aktion**: **Automatisches Routing** ist aus. Der Kanal bekommt nur Nachrichten von Aktionen und Automatisierungen, die ihn nennen.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Events, incidents and notifications](./events-incidents-notifications.mdx)
-- [Channel types](./channel-types.mdx)
-- [Alert when a value crosses a limit](../automate/threshold-alert.mdx)
+- [Events, Vorfälle und Benachrichtigungen](./events-incidents-notifications.mdx)
+- [Kanaltypen](./channel-types.mdx)
+- [Alarmieren, wenn ein Wert eine Grenze überschreitet](../automate/threshold-alert.mdx)

@@ -1,84 +1,84 @@
 ---
-untranslated: true
-title: Types and traits
-description: The traits a Knowledge type can compose, the rules for type names and versions, and what a Library pack changes.
+title: Typen und Traits
+description: Die Traits, die ein Knowledge-Typ zusammensetzen kann, die Regeln für Typnamen und Versionen und was ein Bibliothekspaket ändert.
 type: reference
 app:
   routes: ["/knowledge/types", "/knowledge/traits", "/knowledge/library"]
   tour: setup-knowledge
+translated_from: b6ed908
 ---
 
-The building blocks of the knowledge graph's data model, under **Settings › Knowledge setup › Data model** (tabs **Types**, **Traits**, **Library**).
+Die Bausteine des Datenmodells des Knowledge Graph unter **Einstellungen › Knowledge-Einrichtung › Datenmodell** (Tabs **Typen**, **Traits**, **Bibliothek**).
 
-## Types
+## Typen {#types}
 
-| Property | Rule |
+| Eigenschaft | Regel |
 | --- | --- |
-| Name | PascalCase, unique in the tenant, cannot be renamed. |
-| Owner **System** | Ships with the platform. Read-only, but you can extend it with **Extend this type**. **Remove extension** takes your additions off. |
-| Owner **Tenant** | Yours. Composed from traits plus your own properties and relations. |
-| Pack badge | The type came from a Library pack and is locked to it. |
-| Versions | A new type saves as v1. Each later save is a new version. **Versions** shows a diff of added, retyped and no-longer-declared fields. |
-| Delete | Refused while the type has records, another type links to it, or a mapping uses it. |
+| Name | PascalCase, im Tenant eindeutig, nicht umbenennbar. |
+| Besitzer **System** | Wird mit der Plattform ausgeliefert. Schreibgeschützt, aber Sie können ihn mit **Diesen Typ erweitern** ergänzen. **Erweiterung entfernen** nimmt Ihre Ergänzungen wieder weg. |
+| Besitzer **Tenant** | Ihrer. Zusammengesetzt aus Traits sowie eigenen Eigenschaften und Beziehungen. |
+| Paket-Badge | Der Typ stammt aus einem Bibliothekspaket und ist daran gebunden. |
+| Versionen | Ein neuer Typ wird als v1 gespeichert. Jedes weitere Speichern ist eine neue Version. **Versionen** zeigt einen Vergleich der hinzugefügten, im Typ geänderten und nicht mehr deklarierten Felder. |
+| Löschen | Abgelehnt, solange der Typ Datensätze hat, ein anderer Typ auf ihn verweist oder ein Mapping ihn verwendet. |
 
-| Field option | Effect |
+| Feldoption | Wirkung |
 | --- | --- |
-| **Required** | Records must carry the field. |
-| **Indexed** | Fast filtering. |
-| **Full-text** | Searchable by its words. |
-| **Synonyms** | Comma-separated alternative words, per language, used for search and by Ask Nimble. Available on types and relations. |
+| **Erforderlich** | Datensätze müssen das Feld tragen. |
+| **Indiziert** | Schnelles Filtern. |
+| **Volltext** | Über seine Wörter durchsuchbar. |
+| **Synonyme** | Kommagetrennte alternative Wörter, pro Sprache, für die Suche und für Ask Nimble. Verfügbar bei Typen und Beziehungen. |
 
-A relation has a free-form name such as `feedsInto`, a target type, a description and synonyms. Each field shows its origin: a trait, the system type, a pack, or **Added by this tenant**.
+Eine Beziehung hat einen frei wählbaren Namen wie `feedsInto`, einen Zieltyp, eine Beschreibung und Synonyme. Jedes Feld zeigt seine Herkunft: ein Trait, der Systemtyp, ein Paket oder **Von diesem Mandanten ergänzt**.
 
-Narrowing a type does not remove values from existing records. The field is only dropped from the type.
+Einen Typ einzuengen entfernt keine Werte von vorhandenen Datensätzen. Das Feld fällt nur aus dem Typ heraus.
 
-## System types
+## Systemtypen {#system-types}
 
-| Type | Is |
+| Typ | Ist |
 | --- | --- |
-| `Thing` | A device, replicated from the platform. |
-| `ThingType` | A thing type. |
-| `Asset` | A location or organizational node in your asset hierarchy (site, hall, line) that equipment is placed under. |
-| `MaintenanceOrder` | A maintenance order. |
-| `MaintenanceRule` | A maintenance rule extracted from a manual. Created through extraction and review. |
-| `Incident` | An incident, replicated from the platform. |
-| `Document`, `DocumentChunk` | A file and its indexed passages. |
-| `DocumentAnnotation` | A region of a drawing linked to the thing it depicts. |
-| `Object3D` | A part of a 3D model linked to the thing it represents. |
-| `Dashboard`, `Canvas` | Visualizations. |
-| `AclGroup`, `UserAcl` | Groups and the groups each user belongs to, used for access. |
-| `MeasureSpecProposal` | A measure specification (unit, scaling, bounds) proposed from a manual. |
+| `Thing` | Ein Gerät, von der Plattform repliziert. |
+| `ThingType` | Ein Thing-Typ. |
+| `Asset` | Ein Standort oder organisatorischer Knoten in Ihrer Anlagenhierarchie (Standort, Halle, Linie), unter dem Equipment platziert wird. |
+| `MaintenanceOrder` | Ein Wartungsauftrag. |
+| `MaintenanceRule` | Eine aus einem Handbuch extrahierte Wartungsregel. Entsteht durch Extraktion und Prüfung. |
+| `Incident` | Ein Vorfall, von der Plattform repliziert. |
+| `Document`, `DocumentChunk` | Eine Datei und ihre indizierten Abschnitte. |
+| `DocumentAnnotation` | Ein Bereich einer Zeichnung, verknüpft mit dem Thing, das er abbildet. |
+| `Object3D` | Ein Teil eines 3D-Modells, verknüpft mit dem Thing, das er darstellt. |
+| `Dashboard`, `Canvas` | Visualisierungen. |
+| `AclGroup`, `UserAcl` | Gruppen und die Gruppen jedes Benutzers, für den Zugriff verwendet. |
+| `MeasureSpecProposal` | Eine aus einem Handbuch vorgeschlagene Spezifikation eines Messwerts (Einheit, Skalierung, Grenzen). |
 
-## Traits
+## Traits {#traits}
 
-| Trait | Gives a record | Notes |
+| Trait | Gibt einem Datensatz | Hinweise |
 | --- | --- | --- |
-| **Hierarchical** | `parent`, `root`, `path`: a place in the containment tree. | Needed for sites and levels. |
-| **Describable** | Name, description, translations, tags, alternative names. | Name is searchable. |
-| **Aliased** | Identifiers it has in other systems (system, type, value). | Mappings match incoming rows by alias. |
-| **Governed** | Whether access control applies, plus the groups and users that may read it. | A governed record with no grant can be hidden. |
-| **Measured** | The measurements it exposes, with units and ranges. | Reserved to system types. |
-| **Connectivity** | Connection state, last connected, last disconnected. | |
-| **Lifecycle** | Current status and status history. | Status stores your own label. |
-| **Spatial** | Geographic coordinates, a free-text location. | |
-| **Scheduled** | Planned and actual start and end. | |
-| **Sourced** | Source system, source ID, last updated in source. | |
-| **Versioned** | Valid from, valid to, and the record it supersedes. | |
-| **Attributed** | Custom typed key-value attributes. | |
-| **Extensible** | Tenant-defined custom fields. | Flat values only. |
-| **Embedded** | A vector, so the record is found by meaning. | Off by default. |
-| **Searchable** | Harvested tags and identifiers for keyword search. | Filled by the platform, not by hand. |
-| **Imaged** | Pictures, internal or external. | |
-| **Pending** | Links to records that did not exist yet when the data arrived. | Resolved by reconciliation. |
+| **Hierarchical** | `parent`, `root`, `path`: einen Platz im Enthaltenseinsbaum. | Nötig für Standorte und Ebenen. |
+| **Describable** | Name, Beschreibung, Übersetzungen, Tags, alternative Namen. | Der Name ist durchsuchbar. |
+| **Aliased** | Kennungen, die er in anderen Systemen hat (System, Typ, Wert). | Mappings ordnen eingehende Zeilen per Alias zu. |
+| **Governed** | Ob Zugriffskontrolle gilt, plus die Gruppen und Benutzer, die ihn lesen dürfen. | Ein geschützter Datensatz ohne Freigabe kann verborgen sein. |
+| **Measured** | Die Messungen, die er bereitstellt, mit Einheiten und Bereichen. | Systemtypen vorbehalten. |
+| **Connectivity** | Verbindungsstatus, zuletzt verbunden, zuletzt getrennt. | |
+| **Lifecycle** | Aktueller Status und Statusverlauf. | Der Status speichert Ihre eigene Bezeichnung. |
+| **Spatial** | Geografische Koordinaten, ein freier Text zum Standort. | |
+| **Scheduled** | Geplanter und tatsächlicher Start und Ende. | |
+| **Sourced** | Quellsystem, Quell-ID, zuletzt in der Quelle aktualisiert. | |
+| **Versioned** | Gültig ab, gültig bis und der Datensatz, den er ablöst. | |
+| **Attributed** | Eigene typisierte Schlüssel-Wert-Attribute. | |
+| **Extensible** | Vom Tenant definierte eigene Felder. | Nur flache Werte. |
+| **Embedded** | Ein Vektor, damit der Datensatz nach Bedeutung gefunden wird. | Standardmäßig aus. |
+| **Searchable** | Gesammelte Tags und Kennungen für die Stichwortsuche. | Von der Plattform gefüllt, nicht von Hand. |
+| **Imaged** | Bilder, intern oder extern. | |
+| **Pending** | Verknüpfungen zu Datensätzen, die bei Ankunft der Daten noch nicht existierten. | Wird durch den Abgleich aufgelöst. |
 
-## Library packs
+## Bibliothekspakete {#library-packs}
 
-| Item | Meaning |
+| Element | Bedeutung |
 | --- | --- |
-| **Data models** | Packs that install types. Installing a type also installs the pack types it links to. Installed types are yours but locked to the pack. |
-| **Integrations** | Mapping templates and connector presets. Copying a template under a source name gives you a mapping you can change. Creating it installs only the types you lack. |
-| **Upgrade to version** | Shown when a pack has a new version. **Review upgrade** checks it against your types first. If it does not fit, nothing changes. |
-| **Uninstall** | Removes the pack's types. Refused while a type has records, another type links to one, or a mapping uses one. Mappings made from templates stay. |
+| **Datenmodelle** | Pakete, die Typen installieren. Beim Installieren eines Typs werden auch die Paket-Typen installiert, auf die er verweist. Installierte Typen gehören Ihnen, sind aber an das Paket gebunden. |
+| **Integrationen** | Mapping-Vorlagen und Konnektor-Voreinstellungen. Eine Vorlage unter einem Quellnamen zu kopieren ergibt ein Mapping, das Sie ändern können. Beim Anlegen werden nur die Typen installiert, die Ihnen fehlen. |
+| **Auf Version … aktualisieren** | Erscheint, wenn ein Paket eine neue Version hat. **Upgrade prüfen** prüft sie zuerst gegen Ihre Typen. Passt sie nicht, ändert sich nichts. |
+| **Deinstallieren** | Entfernt die Typen des Pakets. Abgelehnt, solange ein Typ Datensätze hat, ein anderer Typ auf einen verweist oder ein Mapping einen verwendet. Aus Vorlagen erstellte Mappings bleiben. |
 
-If the Library is empty, no packs ship with the installation. Platform admins add them.
+Ist die Bibliothek leer, werden mit der Installation keine Pakete ausgeliefert. Plattform-Admins fügen sie hinzu.
 {/* TODO(product): which packs ship by default, if any? */}

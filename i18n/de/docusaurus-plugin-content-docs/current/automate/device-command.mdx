@@ -1,69 +1,69 @@
 ---
-untranslated: true
-title: Send a command to a device
+title: Einen Befehl an ein Gerät senden
 sidebar_position: 4
-description: Define an MQTT command on a thing type and fire it from a thing page or a dashboard.
+description: Definieren Sie einen MQTT-Befehl an einem Thing-Typ und lösen Sie ihn von einer Thing-Seite oder einem Dashboard aus.
 type: how-to
 app:
   routes: ["/onboarding/thing-types/:id", "/onboarding/things/:id"]
+translated_from: 1579ffe
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
 
-Define a command such as **Restart pump** once on a thing type, then fire it at a single thing from the app. Commands are thing actions, which are separate from the actions a rule runs. See [Rules, actions and reports](./rules-actions-reports.mdx).
+Definieren Sie einen Befehl wie **Restart pump** einmal an einem Thing-Typ und lösen Sie ihn dann aus der App für ein einzelnes Thing aus. Befehle sind Thing-Aktionen, die von den Aktionen einer Regel getrennt sind. Siehe [Regeln, Aktionen und Berichte](./rules-actions-reports.mdx).
 
-## Before you start
+## Bevor Sie beginnen {#before-you-start}
 
-- A role that may create actions, and permission to run actions on the thing you want to command.
-- A thing connected over MQTT with the provider **Nimbit**. It must be online and subscribed to its command topic: a command is delivered only to a connected device and is not queued.
-- Know what your device expects: the topic below `cmd/` and the payload format.
+- Eine Rolle, die Aktionen erstellen darf, und die Berechtigung, Aktionen auf dem Thing auszuführen, das Sie steuern wollen.
+- Ein Thing, das über MQTT mit dem Konnektor **Nimbit** verbunden ist. Es muss online sein und sein Befehls-Topic abonniert haben: Ein Befehl wird nur an ein verbundenes Gerät zugestellt und nicht zwischengespeichert.
+- Wissen, was Ihr Gerät erwartet: das Topic unterhalb von `cmd/` und das Payload-Format.
 
-## Create the command
+## Den Befehl anlegen {#create-the-command}
 
-1. Open **Settings › Onboarding › Thing Types**, open the thing type, and go to its **Actions** tab.
-2. Select **Create action** and choose **MQTT**.
-3. Enter a **Name**, for example `Restart pump`.
-4. In **Sub-topic**, enter the level the device listens on, for example `restart`. Leave it empty to publish on the bare `cmd` level. Use letters, digits, `_` or `-`, separated by `/`.
-5. Set **Payload format** to **JSON** or **Text**, and enter the **Payload**:
+1. Öffnen Sie **Einstellungen › Onboarding › Thing Typen**, öffnen Sie den Thing-Typ und gehen Sie zu seinem Tab **Aktionen**.
+2. Wählen Sie **Aktion erstellen** und dann **MQTT**.
+3. Geben Sie einen **Name** ein, zum Beispiel `Restart pump`.
+4. Geben Sie unter **Unterthema** die Ebene ein, auf der das Gerät lauscht, zum Beispiel `restart`. Lassen Sie es leer, um auf der bloßen Ebene `cmd` zu veröffentlichen. Verwenden Sie Buchstaben, Ziffern, `_` oder `-`, getrennt durch `/`.
+5. Setzen Sie **Payload-Format** auf **JSON** oder **Text** und geben Sie die **Payload** ein:
 
    ```json
    {"command": "restart", "requestedFor": "{{thing.name}}"}
    ```
 
-   Use **Insert Placeholder** to add values of the thing. Only plain placeholders work, not sections or partials. With **JSON**, the result after substitution must be valid JSON.
-6. Optionally select **Allow usage as dashboard widget** so a dashboard can fire it. Anyone who can open that dashboard can then fire the command.
-7. Save. The action is active and shows in the list, and every thing of this type shows it as **Inherited**.
+   Mit **Platzhalter einfügen** fügen Sie Werte des Things ein. Nur einfache Platzhalter funktionieren, keine Sections oder Partials. Bei **JSON** muss das Ergebnis nach dem Einsetzen gültiges JSON sein.
+6. Optional: Wählen Sie **Verwendung als Dashboard-Widget zulassen**, damit ein Dashboard ihn auslösen kann. Jeder, der dieses Dashboard öffnen kann, kann den Befehl dann auslösen.
+7. Speichern Sie. Die Aktion ist aktiv und steht in der Liste, und jedes Thing dieses Typs zeigt sie als **Geerbt**.
 
 <Screenshot
   page="automate/device-command"
   id="01-create-mqtt-action"
   route="/onboarding/thing-types/:id"
   state="Create action drawer, type MQTT, name Restart pump, sub-topic restart, format JSON, payload filled in"
-  alt="The Create action drawer for an MQTT command"
+  alt="Die Schublade „Aktion erstellen“ für einen MQTT-Befehl"
 />
 
-## Fire it at a thing
+## Ihn an einem Thing auslösen {#fire-it-at-a-thing}
 
-1. Open **Settings › Onboarding › Things** and open the thing.
-2. Go to **Actions** and select **Fire** next to `Restart pump`.
+1. Öffnen Sie **Einstellungen › Onboarding › Things** und öffnen Sie das Thing.
+2. Gehen Sie zu **Aktionen** und wählen Sie neben `Restart pump` **Auslösen**.
 
-On a thing type page, **Fire** asks which **Thing** to send the command to.
+Auf der Seite eines Thing-Typs fragt **Auslösen**, an welches **Thing** der Befehl gehen soll.
 
-To fire it from a dashboard, add an **Action** widget and choose the command. See [Widget gallery](../visualize/widgets.mdx).
+Um ihn von einem Dashboard auszulösen, fügen Sie ein Widget **Aktion** hinzu und wählen Sie den Befehl. Siehe [Widget-Galerie](../visualize/widgets.mdx).
 
-## Check that it worked
+## Prüfen, ob es funktioniert hat {#check-that-it-worked}
 
-A message reads `Command delivered on iot/tenant/<tenant>/device/<device>/cmd/restart`. Switch from **Actions** to **Log** (the control above the list): the run is listed with **When**, its status and where it came from.
+Eine Meldung lautet `Befehl zugestellt auf iot/tenant/<tenant>/device/<device>/cmd/restart`. Wechseln Sie von **Aktionen** zu **Protokoll** (der Schalter über der Liste): Der Lauf steht dort mit **Wann**, seinem Status und seiner Herkunft.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **The device is not connected, so the command was not delivered**: no device session is subscribed. Bring the device online and fire again. The command is not queued.
-- **The Fire button is disabled**: your role may not run actions on this thing, or the action is inactive. Turn **Active** on from the thing type's action list.
-- **The topic of this action is not valid**: a sub-topic is at most 128 characters, at most 8 levels, and each level is at most 64 characters.
-- **The payload template did not produce a valid message**: with **JSON**, the payload must be valid JSON after placeholders are replaced. The message is limited to 64 KiB.
+- **Das Gerät ist nicht verbunden, daher wurde der Befehl nicht zugestellt**: Keine Gerätesitzung hat das Topic abonniert. Bringen Sie das Gerät online und lösen Sie erneut aus. Der Befehl wird nicht zwischengespeichert.
+- **Die Schaltfläche Auslösen ist deaktiviert**: Ihre Rolle darf auf diesem Thing keine Aktionen ausführen, oder die Aktion ist inaktiv. Schalten Sie **Aktiv** in der Aktionsliste des Thing-Typs ein.
+- **Das Topic dieser Aktion ist ungültig**: Ein Unterthema darf höchstens 128 Zeichen und höchstens 8 Ebenen haben, und jede Ebene höchstens 64 Zeichen.
+- **Die Payload-Vorlage dieser Aktion ergibt keine gültige Nachricht**: Bei **JSON** muss die Payload nach dem Ersetzen der Platzhalter gültiges JSON sein. Die Nachricht ist auf 64 KiB begrenzt.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Action types](./action-types.mdx)
-- [Rules, actions and reports](./rules-actions-reports.mdx)
-- [Register a thing](../model/register-thing.mdx)
+- [Aktionstypen](./action-types.mdx)
+- [Regeln, Aktionen und Berichte](./rules-actions-reports.mdx)
+- [Ein Thing registrieren](../model/register-thing.mdx)

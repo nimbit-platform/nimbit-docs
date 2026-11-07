@@ -814,5 +814,11 @@
   },
   "doc.untranslated": {
     "message": "Diese Seite ist noch nicht übersetzt. Sie lesen die englische Fassung."
+  },
+  "footer.tagline": {
+    "message": "IoT-Lösungen bauen und betreiben, mit der NimBit-Plattform."
+  },
+  "footer.demo": {
+    "message": "Demo buchen"
   }
 }

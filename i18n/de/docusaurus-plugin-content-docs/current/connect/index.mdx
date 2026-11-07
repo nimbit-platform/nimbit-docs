@@ -1,14 +1,14 @@
 ---
-untranslated: true
-title: Connect devices
-description: Get data from your devices into IoT Breeze over MQTT, HTTP or InfluxDB line protocol, and look up the exact formats.
+title: Geräte verbinden
+description: Daten Ihrer Geräte über MQTT, HTTP oder InfluxDB Line Protocol in IoT Breeze bekommen und die genauen Formate nachschlagen.
 sidebar_position: 1
 type: landing
 app:
   routes: ["/onboarding/things"]
+translated_from: b6ed908
 ---
 
-This section answers one question: how do I get data in? It covers credentials, the three ways a device sends data, testing without hardware, and the exact topics, endpoints and fields.
+Dieser Bereich beantwortet eine Frage: Wie bekomme ich Daten hinein? Er behandelt Zugangsdaten, die drei Wege, auf denen ein Gerät Daten sendet, das Testen ohne Hardware und die genauen Topics, Endpoints und Felder.
 
 ```mermaid
 flowchart LR
@@ -20,18 +20,18 @@ flowchart LR
   L --> T
 ```
 
-## Understand
-- [How devices connect](./how-devices-connect.mdx): credentials, protocols and what happens to a message.
+## Verstehen {#understand}
+- [Wie Geräte sich verbinden](./how-devices-connect.mdx): Zugangsdaten, Protokolle und was mit einer Nachricht passiert.
 
-## Do
-- [Send data over MQTT](./mqtt.mdx): publish telemetry with mosquitto_pub, Python or Node.js.
-- [Send data over HTTP](./http.mdx): post JSON with curl, Python or Node.js.
-- [Write InfluxDB line protocol](./line-protocol.mdx): write lines, or point an InfluxDB client at tsflux.
-- [Simulate a device](./simulate.mdx): test dashboards and rules without hardware.
-- [Create and rotate device credentials](./credentials.mdx): basic credentials, tokens and the device key.
-- Connect through a box on site: [Gateways](../gateways/index.mdx).
+## Anwenden {#do}
+- [Daten über MQTT senden](./mqtt.mdx): Telemetrie mit mosquitto_pub, Python oder Node.js veröffentlichen.
+- [Daten über HTTP senden](./http.mdx): JSON mit curl, Python oder Node.js senden.
+- [InfluxDB Line Protocol schreiben](./line-protocol.mdx): Zeilen schreiben oder einen InfluxDB-Client auf tsflux richten.
+- [Ein Gerät simulieren](./simulate.mdx): Dashboards und Regeln ohne Hardware testen.
+- [Gerätezugangsdaten anlegen und rotieren](./credentials.mdx): Basic-Zugangsdaten, Tokens und der Geräteschlüssel.
+- Über eine Box vor Ort verbinden: [Gateways](../gateways/index.mdx).
 
-## Look up
-- [Message format](./message-format.mdx): every field of a message.
-- [MQTT topics and client ID](./mqtt-topics.mdx): broker, client ID, topics and QoS.
-- [Ingest endpoints and status codes](./ingest-endpoints.mdx): URLs, authentication and answers.
+## Nachschlagen {#look-up}
+- [Nachrichtenformat](./message-format.mdx): jedes Feld einer Nachricht.
+- [MQTT-Topics und Client-ID](./mqtt-topics.mdx): Broker, Client-ID, Topics und QoS.
+- [Ingest-Endpoints und Statuscodes](./ingest-endpoints.mdx): URLs, Authentifizierung und Antworten.

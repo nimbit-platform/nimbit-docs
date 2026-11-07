@@ -1,34 +1,34 @@
 ---
-untranslated: true
-title: Verify that data arrived
-description: Check that every applied thing receives values, with periscope verify and in IoT Breeze, and read the result and exit codes.
+title: Prüfen, ob Daten angekommen sind
+description: Mit periscope verify und in IoT Breeze prüfen, dass jedes angewendete Thing Werte erhält, und Ergebnis und Exit-Codes lesen.
 type: how-to
 sidebar_position: 11
 app:
   routes: ["/onboarding/gateways"]
+translated_from: 679f3a4
 ---
 
-Confirm that every thing Periscope applied receives values. `periscope verify` asks the platform's query service, nbq, and prints one row per thing. In IoT Breeze, the gateway's **Traffic** card and each thing's latest values show the same.
+Bestätigen Sie, dass jedes Thing, das Periscope angewendet hat, Werte erhält. `periscope verify` fragt den Abfragedienst der Plattform, nbq, und gibt eine Zeile pro Thing aus. In IoT Breeze zeigen die Karte **Datenverkehr** des Gateways und die neuesten Werte jedes Things dasselbe.
 
-## Before you start
+## Voraussetzungen {#before-you-start}
 
-- Periscope has applied things and has been streaming for a few minutes.
-- For `periscope verify`: `[ocb] url` is set with a service-account credential, or you pass `-nbq-url`. The command reads the state directory and asks nbq with the agent's token.
-- On a gateway, check in IoT Breeze instead, as in the next section.
+- Periscope hat Things angewendet und streamt seit einigen Minuten.
+- Für `periscope verify`: `[ocb] url` ist mit Servicekonto-Zugangsdaten gesetzt, oder Sie übergeben `-nbq-url`. Der Befehl liest das State-Verzeichnis und fragt nbq mit dem Token des Agents.
+- Bei einem Gateway prüfen Sie stattdessen in IoT Breeze, wie im nächsten Abschnitt.
 
 {/* TODO(product): nbq accepts tokens for other audiences than the platform backend, and a gateway's token is for the backend only. Does `periscope verify` work on a gateway box (`[ocb] gateway = true`)? Expected today: exit 2. */}
 
-## Steps
+## Schritte {#steps}
 
-1. Run the command with a window that covers the time since you started streaming:
+1. Führen Sie den Befehl mit einem Fenster aus, das die Zeit seit dem Start des Streamings abdeckt:
 
    ```sh
    periscope verify -config /etc/periscope/periscope.toml -since 5m
    ```
 
-   `-since` defaults to `5m`. `-nbq-url http://nbq:8100` asks nbq directly, from inside the platform's network.
+   `-since` ist standardmäßig `5m`. `-nbq-url http://nbq:8100` fragt nbq direkt, aus dem Netz der Plattform heraus.
 
-2. Read the table:
+2. Lesen Sie die Tabelle:
 
    ```text
    window 2026-10-22T09:55:00Z .. 2026-10-22T10:00:00Z (UTC)
@@ -41,39 +41,39 @@ Confirm that every thing Periscope applied receives values. `periscope verify` a
    2/3 things received data, 5 measures never seen in the window, 0 unmapped metrics since 2026-10-22T09:00:12Z
    ```
 
-   | Column | Meaning |
+   | Spalte | Bedeutung |
    | --- | --- |
-   | `RECEIVED` | Whether the thing had any value in the window. |
-   | `MEASURES` | Measures seen, out of the measures mapped for the thing. |
-   | `VALUES` | Values stored in the window. |
-   | `LATEST (UTC)` | Time of the thing's latest row. |
-   | `PROBLEM` | What is missing, or why nothing arrived. |
+   | `RECEIVED` | Ob das Thing im Fenster irgendeinen Wert hatte. |
+   | `MEASURES` | Gesehene Messwerte, von den für das Thing zugeordneten. |
+   | `VALUES` | Im Fenster gespeicherte Werte. |
+   | `LATEST (UTC)` | Zeit der neuesten Zeile des Things. |
+   | `PROBLEM` | Was fehlt oder warum nichts ankam. |
 
-3. Check the exit code:
+3. Prüfen Sie den Exit-Code:
 
-   | Exit | Meaning |
+   | Exit | Bedeutung |
    | --- | --- |
-   | 0 | Every applied thing received values, and none lies in the future. |
-   | 1 | An applied thing received nothing, a latest value lies in the future (more than one minute ahead of the box's clock), or nothing is applied yet. |
-   | 2 | nbq couldn't be asked. Nothing was verified. |
+   | 0 | Jedes angewendete Thing hat Werte erhalten, und kein Wert liegt in der Zukunft. |
+   | 1 | Ein angewendetes Thing hat nichts erhalten, ein neuester Wert liegt in der Zukunft (mehr als eine Minute vor der Uhr der Box) oder es ist noch nichts angewendet. |
+   | 2 | nbq konnte nicht gefragt werden. Nichts wurde geprüft. |
 
-4. In IoT Breeze, open **Settings › Onboarding › Gateways**, open the gateway, and read **Last data** and **Things active** on the **Traffic** card. Open one of its things to see the latest values. See [Check gateway health and traffic](../fleet-health.mdx).
+4. Öffnen Sie in IoT Breeze **Einstellungen › Onboarding › Gateways**, öffnen Sie das Gateway und lesen Sie **Letzte Daten** und **Aktive Things** auf der Karte **Datenverkehr**. Öffnen Sie eines seiner Things, um die neuesten Werte zu sehen. Siehe [Zustand und Datenverkehr von Gateways prüfen](../fleet-health.mdx).
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-`periscope verify` exits 0 with `N/N things received data`. In IoT Breeze, the gateway is **Online**, **Things active** matches the number of things you applied, and **Discards per minute** is 0.
+`periscope verify` endet mit Exit 0 und `N/N things received data`. In IoT Breeze ist das Gateway **Online**, **Aktive Things** entspricht der Zahl der angewendeten Things, und **Verworfen pro Minute** ist 0.
 
-## If it doesn't work
+## Wenn es nicht klappt {#if-it-doesnt-work}
 
-- **Exit 2**: nbq couldn't be asked, for example a connection error, a timeout or a `401`. Check the platform connection, or pass `-nbq-url`.
-- **Everything reads `nothing received` with `provisioner = "tsflux"`**: nbq looks things up by platform ID, and this provisioner has none yet. This is expected until the `ocb` provisioner has run.
-- **A value is in the future, or nothing arrives from a source in local time**: the source sends local time labelled as UTC. East of Greenwich the values land in the future, west of it in the past, where the thing reads as nothing received. Fix the source's clock or zone. For MQTT, set `timezone`.
-- **A thing is missing from the table**: only applied things are checked. Confirm and apply it first. See [Approve what Periscope discovers](./approve-discoveries.mdx).
-- **`unmapped metrics` is above 0**: the summary names the most frequent unmapped address. Confirm its proposal.
+- **Exit 2**: nbq konnte nicht gefragt werden, zum Beispiel wegen eines Verbindungsfehlers, eines Timeouts oder eines `401`. Prüfen Sie die Verbindung zur Plattform oder übergeben Sie `-nbq-url`.
+- **Alles zeigt `nothing received` mit `provisioner = "tsflux"`**: nbq sucht Things über die Plattform-ID, und dieser Provisioner hat noch keine. Das ist zu erwarten, bis der Provisioner `ocb` gelaufen ist.
+- **Ein Wert liegt in der Zukunft, oder aus einer Quelle in Ortszeit kommt nichts an**: Die Quelle sendet Ortszeit, als UTC gekennzeichnet. Östlich von Greenwich landen die Werte in der Zukunft, westlich davon in der Vergangenheit, wo das Thing als „nichts empfangen“ erscheint. Korrigieren Sie Uhr oder Zeitzone der Quelle. Für MQTT setzen Sie `timezone`.
+- **Ein Thing fehlt in der Tabelle**: Es werden nur angewendete Things geprüft. Bestätigen und wenden Sie es zuerst an. Siehe [Periscope-Erkennungen freigeben](./approve-discoveries.mdx).
+- **`unmapped metrics` ist größer als 0**: Die Zusammenfassung nennt die häufigste nicht zugeordnete Adresse. Bestätigen Sie ihren Vorschlag.
 
-More in [Troubleshoot Periscope](./troubleshooting.mdx).
+Mehr unter [Periscope-Probleme beheben](./troubleshooting.mdx).
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Command-line reference](./commands.mdx) · [How Periscope works](./how-periscope-works.mdx)
-- [Explore telemetry](../../watch/explore-telemetry.mdx)
+- [Kommandozeilen-Referenz](./commands.mdx) · [Wie Periscope funktioniert](./how-periscope-works.mdx)
+- [Telemetrie erkunden](../../watch/explore-telemetry.mdx)

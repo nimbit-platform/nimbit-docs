@@ -1,12 +1,12 @@
 ---
-untranslated: true
-title: Troubleshooting
+title: Fehlerbehebung
 sidebar_position: 1
-description: Find the cause when a device sends nothing, a dashboard is empty, a rule stays quiet or an alert email never comes.
+description: Die Ursache finden, wenn ein Gerät nichts sendet, ein Dashboard leer ist, eine Regel nicht auslöst oder eine Alarm-E-Mail nie ankommt.
 type: landing
+translated_from: c8e4e12
 ---
 
-Start from what you see, not from what you built. Each guide lists the checks in the order they most often find the cause, and says what to send to support if none of them does.
+Gehen Sie von dem aus, was Sie sehen, nicht von dem, was Sie gebaut haben. Jede Anleitung listet die Prüfungen in der Reihenfolge, in der sie am häufigsten die Ursache finden, und nennt, was Sie an den Support schicken, wenn keine hilft.
 
 ```mermaid
 flowchart LR
@@ -16,16 +16,16 @@ flowchart LR
   R --> N[Alert email or channel]
 ```
 
-## Understand
-- [How devices connect](../connect/how-devices-connect.mdx): what happens to a message before it reaches a chart.
-- [Events, incidents and notifications](../watch/events-incidents-notifications.mdx): why an event does not always mean a message.
+## Verstehen {#understand}
+- [Wie Geräte sich verbinden](../connect/how-devices-connect.mdx): was mit einer Nachricht passiert, bevor sie ein Diagramm erreicht.
+- [Events, Vorfälle und Benachrichtigungen](../watch/events-incidents-notifications.mdx): warum ein Event nicht immer eine Nachricht bedeutet.
 
-## Do
-- [A device shows no signal](./no-signal.mdx): the thing says **No signal yet**, or its last signal is old.
-- [A dashboard is empty](./empty-dashboard.mdx): widgets show no values, or the thing you expect is missing.
-- [A rule doesn't fire](./rule-not-firing.mdx): the condition should be met but nothing happens.
-- [An alert email never arrives](./email-not-arriving.mdx): the event is there, the mail is not.
+## Anwenden {#do}
+- [Ein Gerät zeigt kein Signal](./no-signal.mdx): das Thing meldet **Noch kein Signal**, oder sein letztes Signal ist alt.
+- [Ein Dashboard ist leer](./empty-dashboard.mdx): Widgets zeigen keine Werte, oder das erwartete Thing fehlt.
+- [Eine Regel löst nicht aus](./rule-not-firing.mdx): die Bedingung müsste erfüllt sein, aber nichts passiert.
+- [Eine Alarm-E-Mail kommt nie an](./email-not-arriving.mdx): das Event ist da, die E-Mail nicht.
 
-## Look up
-- [Glossary](./glossary.mdx): every term used in IoT Breeze, with a link to the page that explains it.
-- [Ingest endpoints and status codes](../connect/ingest-endpoints.mdx) · [Errors and limits](../api/errors-and-limits.mdx)
+## Nachschlagen {#look-up}
+- [Glossar](./glossary.mdx): alle Begriffe in IoT Breeze, mit Link auf die Seite, die sie erklärt.
+- [Ingest-Endpoints und Statuscodes](../connect/ingest-endpoints.mdx) · [Fehler und Limits](../api/errors-and-limits.mdx)

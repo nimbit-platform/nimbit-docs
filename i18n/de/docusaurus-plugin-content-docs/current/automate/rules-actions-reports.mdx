@@ -1,76 +1,76 @@
 ---
-untranslated: true
-title: Rules, actions and reports
+title: Regeln, Aktionen und Berichte
 sidebar_position: 2
-description: How rules, actions and reports differ, which actions each place offers, and how to choose.
+description: Wie sich Regeln, Aktionen und Berichte unterscheiden, welche Aktionen jeder Ort bietet und wie Sie wählen.
 type: concept
 app:
   routes: ["/automation/rule-designer", "/reports", "/onboarding/thing-types/:id"]
+translated_from: 679f3a4
 ---
 
-IoT Breeze automates in three ways. A rule watches incoming data and runs actions when a condition holds. A device command is an action a person fires on purpose. A report builds a PDF on a schedule. The word "action" appears in all three places, and the lists of action types are different in each.
+IoT Breeze automatisiert auf drei Arten. Eine Regel beobachtet eingehende Daten und führt Aktionen aus, wenn eine Bedingung zutrifft. Ein Gerätebefehl ist eine Aktion, die eine Person bewusst auslöst. Ein Bericht erzeugt nach Zeitplan ein PDF. Das Wort „Aktion“ kommt an allen drei Stellen vor, und die Listen der Aktionstypen sind jeweils andere.
 
 ```mermaid
 flowchart LR
-  S[Start: which things] --> C[Condition]
-  C --> T[Trigger: when to fire]
-  T --> A[Rule actions]
+  S[Start: welche Things] --> C[Bedingung]
+  C --> T[Auslöser: wann feuern]
+  T --> A[Regelaktionen]
   A --> E[Event]
-  E --> EA[Event type actions]
-  P[Person or dashboard] --> TA[Thing actions]
-  TA --> D[Device or web address]
+  E --> EA[Aktionen des Event-Typs]
+  P[Person oder Dashboard] --> TA[Thing-Aktionen]
+  TA --> D[Gerät oder Webadresse]
 ```
 
-## The parts
+## Die Bausteine {#the-parts}
 
-| Part | What it is | Where you build it |
+| Baustein | Was es ist | Wo Sie es bauen |
 | --- | --- | --- |
-| **Rule** | A chain of four nodes: **Start**, **Condition**, **Trigger**, **Actions**. It is evaluated each time a thing in scope sends data. | **Automation › Rule Designer** |
-| **Rule action** | A step a rule runs when its trigger fires. | The **Actions** node of a rule |
-| **Event type action** | A step that runs whenever an event of that type is created, whatever created it, except events that close an episode. It starts switched off: turn on **Active** after you create it. | **Actions** tab of an event type under **Configuration › Event Types** |
-| **Thing action** | A command defined once on a thing type or a thing and fired by a person or a dashboard. | **Actions** tab of a thing type or thing |
-| **Report** | A document of widgets that IoT Breeze renders to PDF, stores in a folder and sends to subscribers. | **Automation › Reports** |
+| **Regel** | Eine Kette aus vier Knoten: **Start**, **Bedingung**, **Auslöser**, **Aktionen**. Sie wird jedes Mal ausgewertet, wenn ein Thing im Geltungsbereich Daten sendet. | **Einstellungen › Automatisierung › Regel-Designer** |
+| **Regelaktion** | Ein Schritt, den eine Regel ausführt, wenn ihr Auslöser feuert. | Der Knoten **Aktionen** einer Regel |
+| **Aktion eines Event-Typs** | Ein Schritt, der jedes Mal läuft, wenn ein Event dieses Typs entsteht, egal was es erzeugt hat, außer bei Events, die eine Episode beenden. Sie startet ausgeschaltet: Schalten Sie nach dem Anlegen **Aktiv** ein. | Tab **Aktionen** eines Event-Typs unter **Einstellungen › Konfiguration › Event Typen** |
+| **Thing-Aktion** | Ein Befehl, der einmal an einem Thing-Typ oder Thing definiert und von einer Person oder einem Dashboard ausgelöst wird. | Tab **Aktionen** eines Thing-Typs oder Things |
+| **Bericht** | Ein Dokument aus Widgets, das IoT Breeze zu PDF rendert, in einem Ordner ablegt und an Abonnenten sendet. | **Einstellungen › Automatisierung › Berichte** |
 
-## Three lists of actions
+## Drei Listen von Aktionen {#three-lists-of-actions}
 
-Each place offers a different set. [Action types](./action-types.mdx) has the fields of each.
+Jeder Ort bietet eine andere Auswahl. [Aktionstypen](./action-types.mdx) enthält die Felder jedes Typs.
 
-| Where | Action types |
+| Wo | Aktionstypen |
 | --- | --- |
-| Rule | **Notification**, **Notification channel**, **Email**, **Webhook**, **Event**, **Update Measures** |
-| Event type | **Notification**, **Notification channel**, **Email**, **Webhook** |
-| Thing type or thing | **Webhook**, **Azure C2D**, **MQTT** |
+| Regel | **Benachrichtigung**, **Benachrichtigungskanal**, **E-Mail**, **Webhook**, **Ereignis**, **Telemetrien aktualisieren** |
+| Event-Typ | **Benachrichtigung**, **Benachrichtigungskanal**, **E-Mail**, **Webhook** |
+| Thing-Typ oder Thing | **Webhook**, **Azure C2D**, **MQTT** |
 
-A rule cannot fire a thing action such as an MQTT command. A rule can create an event with its **Event** action, and the event then runs the actions of its event type. That is the way from a rule to everything an event type does, including incidents and channel routing.
+Eine Regel kann keine Thing-Aktion wie einen MQTT-Befehl auslösen. Eine Regel kann mit ihrer Aktion **Ereignis** ein Event erzeugen, und das Event führt dann die Aktionen seines Event-Typs aus. So kommen Sie von einer Regel zu allem, was ein Event-Typ tut, einschließlich Vorfällen und Kanal-Routing.
 
-## How they work together
+## Wie sie zusammenwirken {#how-they-work-together}
 
-A rule evaluates a condition on every message from the things in its **Start** node. The **Trigger** decides how the result becomes firing: every match, only after the condition held for a while, once per period, or only when the state changes. Only then do the actions run.
+Eine Regel wertet eine Bedingung bei jeder Nachricht der Things in ihrem Knoten **Start** aus. Der **Auslöser** bestimmt, wie aus dem Ergebnis ein Feuern wird: jeder Treffer, erst nachdem die Bedingung eine Weile galt, einmal pro Zeitraum oder nur bei einem Zustandswechsel. Erst dann laufen die Aktionen.
 
-Most alerting setups use a rule with an **Event** action. The event is recorded, an [incident policy](../watch/incident-policy.mdx) can group it into an incident, and notification channels with automatic routing pick it up. See [Events, incidents and notifications](../watch/events-incidents-notifications.mdx).
+Die meisten Alarmierungen nutzen eine Regel mit einer Aktion **Ereignis**. Das Event wird aufgezeichnet, eine [Vorfallsrichtlinie](../watch/incident-policy.mdx) kann es zu einem Vorfall bündeln, und Benachrichtigungskanäle mit automatischem Routing greifen es auf. Siehe [Events, Vorfälle und Benachrichtigungen](../watch/events-incidents-notifications.mdx).
 
-A report is independent of rules. It reads data like a dashboard, over a window you set, on its own schedule.
+Ein Bericht ist von Regeln unabhängig. Er liest Daten wie ein Dashboard, über ein Fenster, das Sie festlegen, nach seinem eigenen Zeitplan.
 
-## Choosing between them
+## Wann Sie was nehmen {#choosing-between-them}
 
-| You want… | Use |
+| Sie möchten … | Nehmen Sie |
 | --- | --- |
-| A message to yourself or a group when a value crosses a limit | A rule with a **Notification** action: [Alert when a value crosses a limit](./threshold-alert.mdx) |
-| Another system called when a condition holds | A rule with a **Webhook** action: [Call another system from a rule](./webhook-from-rule.mdx) |
-| A record and incident handling, more than a message | A rule with an **Event** action, then an incident policy |
-| A device to do something when a person decides | A thing action: [Send a command to a device](./device-command.mdx) |
-| The same summary at the same time every week | A report: [Email a weekly PDF report](./weekly-report.mdx) |
-| Logic that conditions and triggers cannot express | [Node-RED](./node-red.mdx), if your administrator enabled it |
+| eine Nachricht an sich oder eine Gruppe, wenn ein Wert eine Grenze überschreitet | Eine Regel mit einer Aktion **Benachrichtigung**: [Alarmieren, wenn ein Wert eine Grenze überschreitet](./threshold-alert.mdx) |
+| dass ein anderes System aufgerufen wird, wenn eine Bedingung zutrifft | Eine Regel mit einer Aktion **Webhook**: [Aus einer Regel ein anderes System aufrufen](./webhook-from-rule.mdx) |
+| eine Aufzeichnung und Vorfallsbearbeitung, mehr als eine Nachricht | Eine Regel mit einer Aktion **Ereignis**, dann eine Vorfallsrichtlinie |
+| dass ein Gerät etwas tut, wenn eine Person es entscheidet | Eine Thing-Aktion: [Einen Befehl an ein Gerät senden](./device-command.mdx) |
+| jede Woche zur selben Zeit dieselbe Zusammenfassung | Einen Bericht: [Einen wöchentlichen PDF-Bericht per E-Mail senden](./weekly-report.mdx) |
+| Logik, die Bedingungen und Auslöser nicht ausdrücken können | [Node-RED](./node-red.mdx), falls Ihr Administrator es aktiviert hat |
 
-## Limits
+## Grenzen {#limits}
 
-- The rule canvas and the report editor need a desktop browser.
-- One version of a rule is active at a time.
-- **Update Measures** works only when the rule's **Start** node uses a thing type, not tags.
-- Email is sent through the **Email** action. A notification channel cannot be an email address.
+- Der Regel-Canvas und der Berichts-Editor brauchen einen Desktop-Browser.
+- Es ist immer nur eine Version einer Regel aktiv.
+- **Telemetrien aktualisieren** funktioniert nur, wenn der Knoten **Start** der Regel einen Thing-Typ verwendet, nicht Tags.
+- E-Mails gehen über die Aktion **E-Mail** raus. Ein Benachrichtigungskanal kann keine E-Mail-Adresse sein.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Rule conditions and functions](./conditions.mdx)
-- [Action types](./action-types.mdx)
-- [Report settings](./report-settings.mdx)
+- [Regelbedingungen und Funktionen](./conditions.mdx)
+- [Aktionstypen](./action-types.mdx)
+- [Berichtseinstellungen](./report-settings.mdx)

@@ -1,118 +1,118 @@
 ---
-untranslated: true
-title: Connector types
-description: The connector types for loading outside data into the knowledge graph, their fields, defaults, credential types and write behaviours.
+title: Konnektor-Typen
+description: Die Konnektor-Typen, mit denen externe Daten in den Knowledge Graph geladen werden, mit Feldern, Standardwerten, Zugangsdaten-Typen und Schreibverhalten.
 type: reference
 app:
   routes: ["/knowledge/connectors", "/knowledge/credentials", "/knowledge/mappings"]
   tour: setup-knowledge
+translated_from: 679f3a4
 ---
 
-Every field of the connector types under **Settings › Knowledge setup › Sources**. To set one up, see [Bring in an outside data source](./outside-source.mdx).
+Jedes Feld der Konnektor-Typen unter **Einstellungen › Knowledge-Einrichtung › Quellen**. Zum Einrichten siehe [Eine externe Datenquelle anbinden](./outside-source.mdx).
 
-## All connectors
+## Alle Konnektoren {#all-connectors}
 
-| Field | Rule |
+| Feld | Regel |
 | --- | --- |
-| **Name** | Letters, numbers, dashes, underscores. Fixed after creation. |
-| **Type** | Fixed after creation. It defines the schema. |
-| **Staging source** | Lowercase letters, numbers, dashes, for example `sap-pm`. |
-| **Flush max records** | Emit a batch once this many records accumulate. Under **Advanced › Delivery**; blank uses the default. |
-| **Flush max wait (ms)** | Emit a partial batch after this long. Under **Advanced › Delivery**; blank uses the default. |
-| State | **Running**, **Retrying**, **Failed**, **Completed**, **Stopped**. **Failing since** shows when reads keep failing. |
+| **Name** | Buchstaben, Zahlen, Bindestriche, Unterstriche. Nach dem Anlegen fest. |
+| **Typ** | Nach dem Anlegen fest. Er bestimmt das Schema. |
+| **Staging-Quelle** | Kleinbuchstaben, Zahlen, Bindestriche, zum Beispiel `sap-pm`. |
+| **Flush max. Datensätze** | Einen Batch ausgeben, sobald sich so viele Datensätze angesammelt haben. Unter **Erweitert › Zustellung**; leer nutzt den Standard. |
+| **Flush max. Wartezeit (ms)** | Einen Teil-Batch nach dieser Zeit ausgeben. Unter **Erweitert › Zustellung**; leer nutzt den Standard. |
+| Status | **Läuft**, **Wird wiederholt**, **Fehlgeschlagen**, **Abgeschlossen**, **Gestoppt**. **Schlägt seit … fehl** zeigt, seit wann das Lesen immer wieder scheitert. |
 
-## File
+## Datei {#file}
 
-| Field | Meaning |
+| Feld | Bedeutung |
 | --- | --- |
-| **JSONL path** | A newline-delimited JSON file inside the server's connector-files folder (default `/data/staging/connector-files`). A path outside it is rejected. File connectors can be turned off on a server. |
+| **JSONL-Pfad** | Eine JSON-Datei mit einem Objekt pro Zeile im Konnektor-Dateiordner des Servers (Standard `/data/staging/connector-files`). Ein Pfad außerhalb wird abgelehnt. Datei-Konnektoren lassen sich auf einem Server abschalten. |
 
-## HTTP/REST
+## HTTP/REST {#httprest}
 
-| Field | Meaning |
+| Feld | Bedeutung |
 | --- | --- |
-| **URL** | The endpoint, https. Its own query string is kept. |
-| **Method** | GET or POST. A **Request body** (a JSON object) is sent with POST. |
-| **Headers** | One `Name: value` per line. Put secrets in a credential. |
-| **Query parameters** | One `name=value` per line. |
-| **Shared credential** | Signs every request, sent only to its allowed hosts. Empty for a public API. |
-| **Records path** | Dotted path to the record array, for example `data.items`. Blank when the response is the array. |
-| **Paging**, **Page parameter**, **Page size parameter**, **Page size**, **First page**, **Paging parameters in** | How pages are requested. For POST, parameters go in the query string or the JSON body. |
-| **Next link path**, **Cursor path** | Where the body holds the next page's URL or cursor. |
-| **Page limit** | A read stops after this many pages and keeps its watermark. Default 1000. |
-| **Change field**, **Watermark parameter** | The records' last-changed timestamp, and the parameter that sends the highest value already read, for example `updated_since`. Blank reads everything each time. |
-| **Poll interval (ms)** | Time between reads. |
+| **URL** | Der Endpunkt, https. Seine eigene Query-Zeichenfolge bleibt erhalten. |
+| **Methode** | GET oder POST. Ein **Request-Body** (ein JSON-Objekt) wird mit POST gesendet. |
+| **Header** | Ein `Name: value` pro Zeile. Legen Sie Geheimnisse in Zugangsdaten ab. |
+| **Query-Parameter** | Ein `name=value` pro Zeile. |
+| **Geteilte Zugangsdaten** | Signieren jede Anfrage und werden nur an die erlaubten Hosts gesendet. Leer bei einer öffentlichen API. |
+| **Pfad zu den Datensätzen** | Gepunkteter Pfad zum Datensatz-Array, zum Beispiel `data.items`. Leer, wenn die Antwort das Array ist. |
+| **Paging**, **Seiten-Parameter**, **Parameter für die Seitengröße**, **Seitengröße**, **Erste Seite**, **Paging-Parameter in** | Wie Seiten angefordert werden. Bei POST stehen die Parameter in der Query-Zeichenfolge oder im JSON-Body. |
+| **Pfad zum Next-Link**, **Pfad zum Cursor** | Wo der Body die URL oder den Cursor der nächsten Seite enthält. |
+| **Seitenlimit** | Ein Lauf stoppt nach so vielen Seiten und behält seine Watermark. Standard 1000. |
+| **Änderungsfeld**, **Watermark-Parameter** | Der Zeitstempel der letzten Änderung der Datensätze und der Parameter, der den höchsten bereits gelesenen Wert sendet, zum Beispiel `updated_since`. Leer liest jedes Mal alles. |
+| **Abfrageintervall (ms)** | Zeit zwischen Läufen. |
 
-**Try it** fetches the first page and shows the records, fields and paging detected. **Use what was detected** copies them into the form.
+**Ausprobieren** holt die erste Seite und zeigt die erkannten Datensätze, Felder und das Paging. **Erkanntes übernehmen** kopiert sie in das Formular.
 
-## OData
+## OData {#odata}
 
-| Field | Meaning |
+| Feld | Bedeutung |
 | --- | --- |
-| **Service URL** | The service root, before the entity set. Add `?sap-client=<client>` if your system needs it. |
-| **Entity set** | The set to read. **Read service** lists them from `$metadata`. |
-| **Fields (`$select`)** | Comma-separated. Blank reads every field. |
-| **Filter (`$filter`)** | An OData filter. |
-| **Read changes by** | A last-changed field such as `LastChangeDateTime`. Blank reads the whole set each time. |
-| **Paging order** | Comma-separated fields. Blank orders pages by the entity key. |
-| **Page size (`$top`)** | Blank: 500 records per page, at most 5000. |
-| **Time between reads (ms)** | Blank: every 5 minutes with a change field, hourly without. Minimum 30 s with a change field, 5 minutes without. |
-| **User** and **Password**, or **OAuth client ID**, **OAuth client secret**, **OAuth token URL**, **Scope** | Sign-in. Dynamics 365 needs the scope `<org URL>/.default`; SAP needs none. |
-| **Shared credential** | Replaces the connector's own secret. |
+| **Dienst-URL** | Die Dienstwurzel, vor dem Entity Set. Fügen Sie `?sap-client=<client>` hinzu, wenn Ihr System es braucht. |
+| **Entity Set** | Das Set, das gelesen wird. **Dienst lesen** listet sie aus `$metadata` auf. |
+| **Felder ($select)** | Kommagetrennt. Leer liest jedes Feld. |
+| **Filter ($filter)** | Ein OData-Filter. |
+| **Änderungen lesen über** | Ein Feld der letzten Änderung wie `LastChangeDateTime`. Leer liest jedes Mal das ganze Set. |
+| **Sortierung beim Blättern** | Kommagetrennte Felder. Leer sortiert Seiten nach dem Entity-Schlüssel. |
+| **Seitengröße ($top)** | Leer: 500 Datensätze pro Seite, höchstens 5000. |
+| **Zeit zwischen Läufen (ms)** | Leer: alle 5 Minuten mit Änderungsfeld, stündlich ohne. Minimum 30 s mit Änderungsfeld, 5 Minuten ohne. |
+| **Benutzer** und **Passwort**, oder **OAuth-Client-ID**, **OAuth-Client-Secret**, **OAuth-Token-URL**, **Scope** | Anmeldung. Dynamics 365 braucht den Scope `<org URL>/.default`; SAP braucht keinen. |
+| **Geteilte Zugangsdaten** | Ersetzen das eigene Geheimnis des Konnektors. |
 
-## MQTT
+## MQTT {#mqtt}
 
-| Field | Meaning |
+| Feld | Bedeutung |
 | --- | --- |
-| **Broker URL** | Endpoint with scheme and port. |
-| **Topic** | A topic filter. `+` and `#` wildcards are supported. |
-| **Client id** | Stable session identifier. Generated if blank. |
-| **Username**, **Password**, **Shared credential** | Sign-in. |
+| **Broker-URL** | Endpunkt mit Schema und Port. |
+| **Topic** | Ein Topic-Filter. Die Platzhalter `+` und `#` werden unterstützt. |
+| **Client-ID** | Stabile Sitzungskennung. Wird erzeugt, wenn leer. |
+| **Benutzername**, **Passwort**, **Geteilte Zugangsdaten** | Anmeldung. |
 
-## NATS
+## NATS {#nats}
 
-| Field | Meaning |
+| Feld | Bedeutung |
 | --- | --- |
-| **Server URL** | JetStream server URL. |
-| **Stream**, **Subject filter**, **Durable consumer** | What to consume. |
-| **Username**, **Password**, **Shared credential** | Sign-in. |
+| **Server-URL** | URL des JetStream-Servers. |
+| **Stream**, **Subject-Filter**, **Durable Consumer** | Was konsumiert wird. |
+| **Benutzername**, **Passwort**, **Geteilte Zugangsdaten** | Anmeldung. |
 
-## Database
+## Datenbank {#database}
 
-| Field | Meaning |
+| Feld | Bedeutung |
 | --- | --- |
-| **Driver** | PostgreSQL only. An empty list, or a missing driver, reports "driver not available". |
-| **Connection string (DSN)** | Stored encrypted, never returned. |
-| **Shared credential** | Fills user and password into the DSN, which then names only host, port and database. |
-| **Query** | A base `SELECT`. The driver appends the cursor predicate. |
-| **Cursor column** | A monotonic column tracked between polls to fetch only new rows. |
-| **Poll interval (ms)** | Delay between polls when idle. |
+| **Treiber** | Nur PostgreSQL. Eine leere Liste oder ein fehlender Treiber meldet „driver not available“. |
+| **Verbindungszeichenfolge (DSN)** | Verschlüsselt gespeichert, nie zurückgegeben. |
+| **Geteilte Zugangsdaten** | Tragen Benutzer und Passwort in den DSN ein, der dann nur noch Host, Port und Datenbank nennt. |
+| **Abfrage** | Ein einfaches `SELECT`. Der Treiber hängt die Cursor-Bedingung an. |
+| **Cursor-Spalte** | Eine monotone Spalte, die zwischen den Abfragen verfolgt wird, um nur neue Zeilen zu holen. |
+| **Abfrageintervall (ms)** | Pause zwischen Abfragen im Leerlauf. |
 
-## Credentials
+## Zugangsdaten {#credentials}
 
-| Type | Holds |
+| Typ | Enthält |
 | --- | --- |
-| **User and password** | Basic sign-in. |
-| **Bearer token** | A token. |
-| **API key** | A key sent in a header or a query parameter. |
-| **OAuth 2 client credentials** | Client ID, secret and **Token URL**. |
+| **Benutzer und Passwort** | Einfache Anmeldung. |
+| **Bearer-Token** | Ein Token. |
+| **API-Schlüssel** | Ein Schlüssel, der in einem Header oder Query-Parameter gesendet wird. |
+| **OAuth-2-Client-Credentials** | Client-ID, Secret und **Token-URL**. |
 
-A credential has a **Name** (fixed after creation) and **Allowed hosts**, one per line, where `*.example.com` covers subdomains. **Rotate** restarts every connector that uses it. A credential in use cannot be deleted. **Move to a shared credential** moves a connector's own secret into one. Only tenant admins create, rotate or delete credentials.
+Zugangsdaten haben einen **Name** (nach dem Anlegen fest) und **Erlaubte Hosts**, einen pro Zeile, wobei `*.example.com` Subdomains abdeckt. **Rotieren** startet jeden Konnektor neu, der sie verwendet. Verwendete Zugangsdaten lassen sich nicht löschen. **In geteilte Zugangsdaten verschieben** verschiebt das eigene Geheimnis eines Konnektors dorthin. Nur Tenant-Admins legen Zugangsdaten an, rotieren oder löschen sie.
 
-## Uploads
+## Uploads {#uploads}
 
-| Rule | Value |
+| Regel | Wert |
 | --- | --- |
-| Extensions | `.csv`, `.json`, `.jsonl`, `.ndjson`, `.parquet` |
-| Size | Up to 64 MB |
-| JSON | One object per row |
+| Endungen | `.csv`, `.json`, `.jsonl`, `.ndjson`, `.parquet` |
+| Größe | Bis 64 MB |
+| JSON | Ein Objekt pro Zeile |
 
-## Mapping options
+## Mapping-Optionen {#mapping-options}
 
-| Option | Values |
+| Option | Werte |
 | --- | --- |
-| **Write behaviour** | **Create** (fails if the record exists), **Upsert** and **Replace** (overwrite the whole record), **Merge** (updates only mapped fields). |
-| **Transform trigger** | **Manual**, **On new batch**, **Scheduled**. |
-| Field binding | **Source field**, **Constant**, **ƒx transform**. |
-| Relation match | By **alias**, by an **indexed field**, or by an identifier of the target type. An **Optional** relation that matches nothing lands the row without the link, which then appears in Link review. |
-| **Built-in** mapping | Ships with the platform. Saving an edit makes your own copy. Deleting the copy restores the built-in. |
+| **Schreibverhalten** | **Erstellen** (schlägt fehl, wenn der Datensatz existiert), **Upsert** und **Ersetzen** (überschreiben den ganzen Datensatz), **Zusammenführen** (aktualisiert nur zugeordnete Felder). |
+| **Transform-Trigger** | **Manuell**, **Bei neuem Batch**, **Geplant**. |
+| Feldbindung | **Quellfeld**, **Konstante**, **ƒx-Transform**. |
+| Beziehungszuordnung | Per **Alias**, per **Abgleichsfeld** oder per **Kennung** des Zieltyps. Eine Beziehung mit **Optional**, die nichts findet, legt die Zeile ohne Verknüpfung an, die dann unter **Verknüpfungen prüfen** erscheint. |
+| Mapping **Integriert** | Wird mit der Plattform ausgeliefert. Das Speichern einer Änderung erzeugt Ihre eigene Kopie. Löschen der Kopie stellt das integrierte wieder her. |

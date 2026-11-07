@@ -1,36 +1,36 @@
 ---
-untranslated: true
 title: "0.12.5"
-description: "Released 17 August 2026: knowledge ingestion, better Ask Nimble answers and a built-in device simulator."
+description: "Veröffentlicht am 17. August 2026: Wissens-Ingestion, bessere Antworten von Ask Nimble und ein integrierter Gerätesimulator."
 type: reference
 date: 2026-08-17
 sidebar_position: 2
+translated_from: 504f34b
 ---
 
-Released 17 August 2026. This release adds data ingestion and a type builder to Knowledge, improves Ask Nimble answers, and adds a device simulator.
+Veröffentlicht am 17. August 2026. Dieses Release bringt Datenaufnahme und einen Type Builder in Knowledge, verbessert die Antworten von Ask Nimble und fügt einen Gerätesimulator hinzu.
 
-## New
-
-**Knowledge**
-- Type Builder: define your own types for the knowledge graph.
-- Ingestion: bring in data from outside sources through connectors, map it to your types and monitor each run.
-- MCP clients can now run graph queries (`query_graph`) and read the schema (`describe_schema`).
-
-**Devices**
-- A device simulator is now part of the platform.
-- MQTT clients can use a device or tenant token (JWT) as the password.
-
-## Improved
+## Neu {#new}
 
 **Knowledge**
-- Ingestion monitoring shows clearer statuses and reports what actually happened.
-- Ask Nimble: answers now use real telemetry values. When a value is not available, Ask Nimble still answers with what it has.
-- Ask Nimble: general improvements to answer quality.
-- Chat and Explore are more reliable.
+- Type Builder: eigene Typen für den Knowledge Graph definieren.
+- Ingestion: Daten aus externen Quellen über Konnektoren übernehmen, Ihren Typen zuordnen und jeden Lauf überwachen.
+- MCP-Clients können jetzt Graph-Abfragen ausführen (`query_graph`) und das Schema lesen (`describe_schema`).
+
+**Geräte**
+- Ein Gerätesimulator ist jetzt Teil der Plattform.
+- MQTT-Clients können ein Geräte- oder Tenant-Token (JWT) als Passwort verwenden.
+
+## Verbessert {#improved}
+
+**Knowledge**
+- Die Ingestion-Überwachung zeigt klarere Status und berichtet, was tatsächlich passiert ist.
+- Ask Nimble: Antworten verwenden jetzt echte Telemetriewerte. Ist ein Wert nicht verfügbar, antwortet Ask Nimble trotzdem mit dem, was es hat.
+- Ask Nimble: allgemeine Verbesserungen der Antwortqualität.
+- Chat und Explore sind zuverlässiger.
 
 **IoT Breeze**
-- The support tooltip now shows the build version.
+- Der Support-Tooltip zeigt jetzt die Build-Version.
 
-## Fixed
+## Behoben {#fixed}
 
-- Knowledge: workspaces are now set up for tenants whose ID contains hyphens.
+- Knowledge: Workspaces werden jetzt auch für Tenants eingerichtet, deren ID Bindestriche enthält.

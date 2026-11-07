@@ -1,44 +1,44 @@
 ---
-untranslated: true
 title: Periscope
-description: Periscope is the edge agent that discovers OPC UA, Sparkplug B, MQTT, S7, Modbus and HTTP sources and streams their values to IoT Breeze.
+description: Periscope ist der Edge-Agent, der OPC-UA-, Sparkplug-B-, MQTT-, S7-, Modbus- und HTTP-Quellen erkennt und ihre Werte an IoT Breeze streamt.
 sidebar_position: 1
 type: landing
 app:
   routes: ["/onboarding/gateways"]
+translated_from: 4c9fc6e
 ---
 
-Periscope is one program that runs on a machine next to your equipment. It reads your plant without writing to it, proposes the thing types and things that describe it, creates them in IoT Breeze once you confirm them, and then streams their values. Use this section to install it, connect each kind of source and look up its settings.
+Periscope ist ein Programm, das auf einer Maschine neben Ihren Anlagen läuft. Es liest Ihre Anlage, ohne in sie zu schreiben, schlägt die Thing-Typen und Things vor, die sie beschreiben, legt sie nach Ihrer Bestätigung in IoT Breeze an und streamt dann ihre Werte. In diesem Bereich installieren Sie es, verbinden jede Art von Quelle und schlagen ihre Einstellungen nach.
 
 ```mermaid
 flowchart LR
-  S[Plant sources] --> D[Discover]
-  D --> P[Proposals]
-  P -->|you confirm| A[Apply]
-  A --> M[Mapping]
-  S --> V[Stream]
+  S[Anlagenquellen] --> D[Erkennen]
+  D --> P[Vorschläge]
+  P -->|Sie bestätigen| A[Anwenden]
+  A --> M[Zuordnung]
+  S --> V[Streamen]
   M --> V
-  V --> O[Outputs]
+  V --> O[Ausgänge]
 ```
 
-The agent serves its full documentation at `http://<listen>/ui/docs`, so an engineer at the box can read it without internet access. This section covers the same ground from the platform side.
+Der Agent liefert seine vollständige Dokumentation unter `http://<listen>/ui/docs` aus, sodass ein Techniker an der Box sie ohne Internetzugang lesen kann. Dieser Bereich behandelt dasselbe aus Sicht der Plattform.
 
-## Understand
-- [How Periscope works](./how-periscope-works.mdx): the stages, and whether an instance is a gateway.
+## Verstehen {#understand}
+- [Wie Periscope funktioniert](./how-periscope-works.mdx): die Stufen und ob eine Instanz ein Gateway ist.
 
-## Do
-- [Install Periscope and stream your first source](./install.mdx): a tutorial from container to values in IoT Breeze.
-- [Connect an OPC UA server](./opc-ua.mdx)
-- [Read Modbus registers](./modbus.mdx)
-- [Read a Siemens S7 PLC](./s7.mdx)
-- [Subscribe to Sparkplug B or an MQTT broker](./sparkplug-and-mqtt.mdx)
-- [Poll an HTTP source](./http.mdx)
-- [Approve what Periscope discovers](./approve-discoveries.mdx): rename, merge and confirm proposals.
-- [Transform values before they leave the edge](./processors.mdx)
-- [Verify that data arrived](./verify.mdx)
-- [Troubleshoot Periscope](./troubleshooting.mdx)
+## Umsetzen {#do}
+- [Periscope installieren und die erste Quelle streamen](./install.mdx): ein Tutorial vom Container bis zu Werten in IoT Breeze.
+- [Einen OPC-UA-Server verbinden](./opc-ua.mdx)
+- [Modbus-Register lesen](./modbus.mdx)
+- [Eine Siemens-S7-SPS lesen](./s7.mdx)
+- [Sparkplug B oder einen MQTT-Broker abonnieren](./sparkplug-and-mqtt.mdx)
+- [Eine HTTP-Quelle abfragen](./http.mdx)
+- [Periscope-Erkennungen freigeben](./approve-discoveries.mdx): Vorschläge umbenennen, zusammenführen und bestätigen.
+- [Werte transformieren, bevor sie die Edge verlassen](./processors.mdx)
+- [Prüfen, ob Daten angekommen sind](./verify.mdx)
+- [Periscope-Probleme beheben](./troubleshooting.mdx)
 
-## Look up
-- [Configuration reference](./configuration.mdx): every table and key of `periscope.toml`.
-- [Outputs reference](./outputs.mdx): where values go and how they are queued.
-- [Command-line reference](./commands.mdx): every `periscope` command and exit code.
+## Nachschlagen {#look-up}
+- [Konfigurationsreferenz](./configuration.mdx): jede Tabelle und jeder Schlüssel von `periscope.toml`.
+- [Ausgänge-Referenz](./outputs.mdx): wohin Werte gehen und wie sie gepuffert werden.
+- [Kommandozeilen-Referenz](./commands.mdx): jeder `periscope`-Befehl und jeder Exit-Code.

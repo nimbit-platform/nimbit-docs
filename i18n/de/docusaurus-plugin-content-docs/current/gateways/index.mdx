@@ -1,34 +1,34 @@
 ---
-untranslated: true
-title: "Gateways and edge"
-description: "Bring in machines and field networks with gateways: one credential for a box that speaks for many devices, and Periscope, the edge agent."
+title: Gateways und Edge
+description: Maschinen und Feldnetze mit Gateways anbinden – eine Zugangsberechtigung für eine Box, die für viele Geräte spricht – und Periscope, der Edge-Agent.
 sidebar_position: 1
 type: landing
 app:
   routes: ["/onboarding/gateways"]
+translated_from: 4c9fc6e
 ---
 
-This section answers one question: how do I bring in machines and field networks? A gateway is one thing that speaks for many devices. Periscope is the edge agent that runs next to your equipment, discovers its sources and streams their values to IoT Breeze.
+Dieser Bereich beantwortet eine Frage: Wie binde ich Maschinen und Feldnetze an? Ein Gateway ist ein Thing, das für viele Geräte spricht. Periscope ist der Edge-Agent, der neben Ihren Anlagen läuft, deren Quellen erkennt und ihre Werte an IoT Breeze streamt.
 
 ```mermaid
 flowchart LR
-  P[PLCs and servers] --> A[Periscope]
-  D[MQTT devices] --> G[MQTT gateway]
+  P[SPSen und Server] --> A[Periscope]
+  D[MQTT-Geräte] --> G[MQTT-Gateway]
   A --> I[tsflux ingest]
   G --> I
   I --> T[Things]
 ```
 
-## Understand
-- [How gateways work](./how-gateways-work.mdx): what a gateway may send for, and how IoT Breeze knows it is alive.
-- [How Periscope works](./periscope/how-periscope-works.mdx): discovery, mapping and streaming on the edge box.
+## Verstehen {#understand}
+- [Wie Gateways funktionieren](./how-gateways-work.mdx): wofür ein Gateway senden darf und woran IoT Breeze erkennt, dass es lebt.
+- [Wie Periscope funktioniert](./periscope/how-periscope-works.mdx): Erkennung, Zuordnung und Streaming auf der Edge-Box.
 
-## Do
-- [Add a gateway](./add-a-gateway.mdx): create a Periscope gateway and enroll the box with a code.
-- [Send data for many devices through one MQTT gateway](./mqtt-gateway.mdx): one credential for a device such as an eWON Flexy.
-- [Check gateway health and traffic](./fleet-health.mdx): find offline gateways and discarded messages.
-- [Install Periscope and stream your first source](./periscope/install.mdx): from download to values in IoT Breeze.
+## Umsetzen {#do}
+- [Gateway hinzufügen](./add-a-gateway.mdx): ein Periscope-Gateway anlegen und die Box mit einem Code registrieren.
+- [Daten vieler Geräte über ein MQTT-Gateway senden](./mqtt-gateway.mdx): eine Zugangsberechtigung für ein Gerät wie einen eWON Flexy.
+- [Zustand und Datenverkehr von Gateways prüfen](./fleet-health.mdx): Offline-Gateways und verworfene Nachrichten finden.
+- [Periscope installieren und die erste Quelle streamen](./periscope/install.mdx): vom Download bis zu Werten in IoT Breeze.
 
-## Look up
-- [Gateway reference](./gateway-reference.mdx): fields, statuses, limits, measures and discard reasons.
-- [Periscope](./periscope/index.mdx): inputs, outputs, configuration and commands for the edge agent.
+## Nachschlagen {#look-up}
+- [Gateway-Referenz](./gateway-reference.mdx): Felder, Status, Limits, Messwerte und Verwerfungsgründe.
+- [Periscope](./periscope/index.mdx): Eingänge, Ausgänge, Konfiguration und Befehle des Edge-Agents.

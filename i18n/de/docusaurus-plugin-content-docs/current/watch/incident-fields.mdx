@@ -1,147 +1,147 @@
 ---
-untranslated: true
-title: Incident states and fields
+title: Vorfallszustände und -felder
 sidebar_position: 10
-description: The incident workflow, its buttons, the permissions they need, and every setting of an incident policy and of the incident settings.
+description: Der Vorfalls-Workflow, seine Schaltflächen, die nötigen Berechtigungen und jede Einstellung einer Vorfallsrichtlinie und der Vorfallseinstellungen.
 type: reference
 app:
   routes: ["/monitor/incidents", "/monitor/incidents/:id", "/manage/incident-policies/:id", "/manage/incident-settings"]
+translated_from: 70da89f
 ---
 
-Incident states, workflow buttons, policy settings and tenant-wide incident settings.
+Vorfallszustände, Workflow-Schaltflächen, Richtlinieneinstellungen und mandantenweite Vorfallseinstellungen.
 
-## Workflow
+## Workflow {#workflow}
 
-An incident moves through five fixed categories: **Open** → **Acknowledged** → **In progress** → **Resolved** → **Closed**.
+Ein Vorfall durchläuft fünf feste Kategorien: **Offen** → **Quittiert** → **In Bearbeitung** → **Gelöst** → **Geschlossen**.
 
-| Button | Available when | Does |
+| Schaltfläche | Verfügbar, wenn | Bewirkt |
 | --- | --- | --- |
-| **Acknowledge** | Open | Marks that you have seen it |
-| **Assign** | Open, acknowledged, in progress | Gives it to a person. Assigning an acknowledged incident moves it to in progress. |
-| **Resolve** | Open, acknowledged, in progress | Records the fix with a resolution reason |
-| **Close** | Resolved | Ends it |
-| **Reopen** | Resolved or closed | Opens it again, until the reopen window passes |
+| **Quittieren** | Offen | Markiert, dass Sie ihn gesehen haben |
+| **Zuweisen** | Offen, quittiert, in Bearbeitung | Gibt ihn einer Person. Wird ein quittierter Vorfall zugewiesen, geht er in Bearbeitung. |
+| **Lösen** | Offen, quittiert, in Bearbeitung | Hält die Behebung mit einem Lösungsgrund fest |
+| **Schließen** | Gelöst | Beendet ihn |
+| **Wieder öffnen** | Gelöst oder geschlossen | Öffnet ihn erneut, bis das Zeitfenster zum Wiederöffnen abläuft |
 
-### Permissions
+### Berechtigungen {#permissions}
 
-| You can | Needs |
+| Sie können | Brauchen |
 | --- | --- |
-| See incidents | Read on incidents |
-| Report, comment, watch | Create on incidents |
-| Acknowledge, assign, edit, link, remove events | Update on incidents |
-| Resolve, close, reopen | Update and execute on incidents |
-| See policies, automations and incident settings | Read on incident policies |
-| Change them | Create, update or delete on incident policies |
+| Vorfälle sehen | Lesen bei Vorfällen |
+| Melden, kommentieren, beobachten | Anlegen bei Vorfällen |
+| Quittieren, zuweisen, bearbeiten, verknüpfen, Events entfernen | Ändern bei Vorfällen |
+| Lösen, schließen, wieder öffnen | Ändern und Ausführen bei Vorfällen |
+| Richtlinien, Automatisierungen und Vorfallseinstellungen sehen | Lesen bei Vorfallsrichtlinien |
+| Diese ändern | Anlegen, Ändern oder Löschen bei Vorfallsrichtlinien |
 
-### How an incident was resolved
+### Wie ein Vorfall gelöst wurde {#how-an-incident-was-resolved}
 
-| Shown in Details | Meaning |
+| In den Details angezeigt | Bedeutung |
 | --- | --- |
-| **All episodes closed** | Every alarm cleared |
-| **Resolved manually** | A person resolved it |
-| **Resolved by an automation** | An automation resolved it |
-| **Resolved by timeout** | The policy's timeout passed |
+| **Alle Episoden beendet** | Jeder Alarm ist beendet |
+| **Manuell gelöst** | Eine Person hat ihn gelöst |
+| **Durch eine Automatisierung gelöst** | Eine Automatisierung hat ihn gelöst |
+| **Durch Zeitüberschreitung gelöst** | Die Zeitüberschreitung der Richtlinie ist abgelaufen |
 
-## Policy: which events
+## Richtlinie: welche Events {#policy-which-events}
 
-An event matches when every filled-in clause holds.
+Ein Event passt, wenn jede ausgefüllte Klausel zutrifft.
 
-| Clause | Meaning |
+| Klausel | Bedeutung |
 | --- | --- |
-| **Event type names** | Patterns on the event type name. Whole name, any case, `*` matches any characters, for example `Door *`. |
-| **Specific event types** | Event types of your tenant |
-| **Minimum severity** | **Any severity**, or a severity and above |
-| **Thing types** | Only events about things of these types |
-| **Raised by** | **Rule engine**, **Geofence**, **Connectivity**, **API**, an action or **Repair**. None checked means any. |
-| **Alarm going on / going off / single events** | An alarm going on is **Open**, going off is **Close**, anything else is a **Point** |
-| **Payload conditions** | Up to 20 conditions on the event data. A dotted path such as `sensor.name`, an operator and a value. Every condition must hold. |
+| **Namen der Event Typen** | Muster auf dem Namen des Event-Typs. Ganzer Name, beliebige Schreibweise, `*` steht für beliebige Zeichen, zum Beispiel `Door *`. |
+| **Bestimmte Event Typen** | Event-Typen Ihres Tenants |
+| **Mindestschweregrad** | **Beliebiger Schweregrad** oder ein Schweregrad und höher |
+| **Thing Typen** | Nur Events zu Things dieser Typen |
+| **Ausgelöst von** | **Regel-Engine**, **Geofence**, **Konnektivität**, **API**, eine Aktion oder **Reparatur**. Ist nichts angehakt, gilt jede Quelle. |
+| **Alarm kommt / Alarm geht / einzelne Events** | Ein kommender Alarm ist **Offen**, ein gehender ist **Beendet**, alles andere ist ein **Punkt** |
+| **Payload-Bedingungen** | Bis zu 20 Bedingungen auf den Event-Daten. Ein Pfad mit Punkten wie `sensor.name`, ein Operator und ein Wert. Jede Bedingung muss zutreffen. |
 
-Payload operators: equals, does not equal, is greater than, is at least, is less than, is at most, contains, is one of, exists.
+Payload-Operatoren: ist gleich, ist ungleich, ist größer als, ist mindestens, ist kleiner als, ist höchstens, enthält, ist einer von, existiert.
 
-## Policy: group into one incident by
+## Richtlinie: in einen Vorfall gruppieren nach {#policy-group-into-one-incident-by}
 
-| Option | One incident per |
+| Option | Ein Vorfall pro |
 | --- | --- |
-| **Thing** | Thing, for all its events |
-| **Thing and rule** | Rule or fence on one thing |
-| **Hierarchy level** | Site, hall or line. Pick the level. |
-| **Thing type** | Thing type, across the fleet |
-| **Event type** | Event type, tenant-wide |
-| **Payload field** | Value of a field in the event data, for example `batch_id`. Enter the dotted path. |
+| **Thing** | Thing, für alle seine Events |
+| **Thing und Regel** | Regel oder Zaun an einem Thing |
+| **Hierarchieebene** | Standort, Halle oder Linie. Wählen Sie die Ebene. |
+| **Thing Typ** | Thing-Typ, über die ganze Flotte |
+| **Event Typ** | Event-Typ, tenantweit |
+| **Payload-Feld** | Wert eines Felds in den Event-Daten, zum Beispiel `batch_id`. Geben Sie den Pfad mit Punkten ein. |
 
-## Policy: timing and resolution
+## Richtlinie: Zeitverhalten und Lösung {#policy-timing-and-resolution}
 
-| Setting | Meaning |
+| Einstellung | Bedeutung |
 | --- | --- |
-| **Name** | Up to 255 characters, unique |
-| **Priority** | A whole number from 0 to 10000. Lower numbers are checked first. |
-| **Open after** | Open only if the alarm is still on after this long. `0` opens at once. |
-| **Quiet window** | No new event for this long before the incident can resolve |
-| **Resolves when** | **Every episode closed (alarm off)**, **A matching event**, **Only by a person or an automation**, or **A timeout** |
-| **Resolving event** | For **A matching event**: clauses that identify the event that resolves it |
-| **Resolve after** | For **A timeout**: how long after opening it resolves |
-| **Close after resolving** | A matching event in this time reopens the incident. `0` closes at once. |
-| **Severity** | **Highest of its events, rises only**, or **Severity of the event that opened it** |
-| **Title template** | Up to 500 characters. Insert **Event title**, **Thing name** or **Event type**. |
+| **Name** | Bis zu 255 Zeichen, eindeutig |
+| **Priorität** | Eine ganze Zahl von 0 bis 10000. Niedrigere Zahlen werden zuerst geprüft. |
+| **Öffnen nach** | Nur öffnen, wenn der Alarm nach dieser Zeit noch an ist. `0` öffnet sofort. |
+| **Ruhefenster** | So lange kein neues Event, bevor der Vorfall sich lösen kann |
+| **Gelöst, wenn** | **Jede Episode beendet (Alarm aus)**, **Ein passendes Event**, **Nur durch eine Person oder eine Automatisierung** oder **Eine Zeitüberschreitung** |
+| **Lösendes Event** | Für **Ein passendes Event**: Klauseln, die das Event bestimmen, das ihn löst |
+| **Lösen nach** | Für **Eine Zeitüberschreitung**: wie lange nach dem Öffnen er sich löst |
+| **Schließen nach der Lösung** | Ein passendes Event in dieser Zeit öffnet den Vorfall erneut. `0` schließt sofort. |
+| **Schweregrad** | **Höchster seiner Events, steigt nur** oder **Schweregrad des Events, das ihn geöffnet hat** |
+| **Titelvorlage** | Bis zu 500 Zeichen. Fügen Sie **Event-Titel**, **Thing Name** oder **Event Typ** ein. |
 
-You can enter durations in seconds, minutes, hours or days. **Open after**, **Quiet window** and **Resolve after** take at most 30 days. **Close after resolving** takes at most one year.
+Sie können Zeiten in Sekunden, Minuten, Stunden oder Tagen eingeben. **Öffnen nach**, **Ruhefenster** und **Lösen nach** nehmen höchstens 30 Tage. **Schließen nach der Lösung** nimmt höchstens ein Jahr.
 
-## Shipped policies
+## Mitgelieferte Richtlinien {#shipped-policies}
 
-They arrive switched off.
+Sie kommen ausgeschaltet an.
 
-| Policy | Priority | Events | Groups by | Opens | Quiet | Closes |
+| Richtlinie | Priorität | Events | Gruppiert nach | Öffnet | Ruhe | Schließt |
 | --- | --- | --- | --- | --- | --- | --- |
-| **Rule alarms per thing** | 100 | Rule engine | Thing | At once | 10 min | 1 day after resolving |
-| **Connectivity outages** | 110 | Connectivity, open and close | Thing | After 5 min offline | 5 min | 1 day after resolving |
-| **Geofence dwell** | 120 | Geofence | Thing and rule | After 30 min | None | 1 day after resolving |
+| **Rule alarms per thing** | 100 | Regel-Engine | Thing | Sofort | 10 Min. | 1 Tag nach dem Lösen |
+| **Connectivity outages** | 110 | Konnektivität, offen und beendet | Thing | Nach 5 Min. offline | 5 Min. | 1 Tag nach dem Lösen |
+| **Geofence dwell** | 120 | Geofence | Thing und Regel | Nach 30 Min. | Keine | 1 Tag nach dem Lösen |
 
-All three resolve when every episode is closed.
+Alle drei lösen sich, wenn jede Episode beendet ist.
 
-## Policy automations
+## Richtlinien-Automatisierungen {#policy-automations}
 
-| Transition | Runs when the incident | Needs **Wait** |
+| Übergang | Läuft, wenn der Vorfall | Braucht **Wartezeit** |
 | --- | --- | --- |
-| **Opened** | is opened | No |
-| **Escalated** | is escalated (severity rises) | No |
-| **Acknowledged** | is acknowledged | No |
-| **Unacknowledged for** | stays unacknowledged for the wait time | Yes |
-| **Resolved** | is resolved | No |
-| **Reopened** | is reopened | No |
-| **Timeout after** | is still open after the wait time | Yes |
+| **Geöffnet** | geöffnet wird | Nein |
+| **Eskaliert** | eskaliert wird (Schweregrad steigt) | Nein |
+| **Quittiert** | quittiert wird | Nein |
+| **Nicht quittiert seit** | für die Wartezeit nicht quittiert bleibt | Ja |
+| **Gelöst** | gelöst wird | Nein |
+| **Wieder geöffnet** | wieder geöffnet wird | Nein |
+| **Zeitüberschreitung nach** | nach der Wartezeit noch offen ist | Ja |
 
-**Order** (0 to 10000) sets the sequence of several automations on one transition. An automation runs an existing action that is switched on.
+**Reihenfolge** (0 bis 10000) legt die Abfolge mehrerer Automatisierungen an einem Übergang fest. Eine Automatisierung führt eine vorhandene Aktion aus, die eingeschaltet ist.
 
-## Incident settings
+## Vorfallseinstellungen {#incident-settings}
 
-### Statuses
+### Status {#statuses}
 
-Your own names over the five categories. Automations and auto-resolution follow the category.
+Ihre eigenen Namen über den fünf Kategorien. Automatisierungen und automatisches Lösen folgen der Kategorie.
 
-| Rule | Detail |
+| Regel | Detail |
 | --- | --- |
-| Default | Each category keeps exactly one active default. |
-| Name | Up to 100 characters. Choose a color. |
-| Delete | Not while incidents use the status. |
-| Category | Can't change while incidents use the status. |
+| Standard | Jede Kategorie behält genau einen aktiven Standard. |
+| Name | Bis zu 100 Zeichen. Wählen Sie eine Farbe. |
+| Löschen | Nicht, solange Vorfälle den Status verwenden. |
+| Kategorie | Lässt sich nicht ändern, solange Vorfälle den Status verwenden. |
 
-### Resolution reasons
+### Lösungsgründe {#resolution-reasons}
 
-The reasons a person picks to resolve. At least one must exist before anyone can resolve. A reason in use can't be deleted. A policy that resolves an incident records **Condition cleared** or **Resolution event**.
+Die Gründe, aus denen eine Person beim Lösen wählt. Mindestens einer muss existieren, bevor jemand lösen kann. Ein Grund, der verwendet wird, lässt sich nicht löschen. Löst eine Richtlinie einen Vorfall, erfasst sie **Bedingung beendet** oder **Lösungs-Event**.
 
-### Custom fields
+### Benutzerdefinierte Felder {#custom-fields}
 
-| Property | Detail |
+| Eigenschaft | Detail |
 | --- | --- |
-| **Label** | Shown name |
-| **Key** | Lower-case letters, digits and underscores, starting with a letter. Fixed after creation. |
-| **Type** | **Text**, **Number**, **Choice**, **Date** or **User**. Fixed after creation. For **Choice**, one option per line: a value, or a value and a label separated by a vertical bar. |
-| **Required when resolving** | People must fill it in to resolve. A change only affects later resolutions. |
+| **Bezeichnung** | Angezeigter Name |
+| **Schlüssel** | Kleinbuchstaben, Ziffern und Unterstriche, beginnend mit einem Buchstaben. Nach dem Anlegen fest. |
+| **Typ** | **Text**, **Zahl**, **Auswahl**, **Datum** oder **Benutzer**. Nach dem Anlegen fest. Bei **Auswahl** eine Option pro Zeile: ein Wert oder ein Wert und eine Bezeichnung, getrennt durch einen senkrechten Strich. |
+| **Beim Lösen erforderlich** | Personen müssen es zum Lösen ausfüllen. Eine Änderung wirkt nur auf spätere Lösungen. |
 
-A field that holds values can't be deleted.
+Ein Feld, das Werte enthält, lässt sich nicht löschen.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Work an incident](./work-an-incident.mdx)
-- [Set up an incident policy](./incident-policy.mdx)
-- [Event types](./event-types.mdx)
+- [Einen Vorfall bearbeiten](./work-an-incident.mdx)
+- [Eine Vorfallsrichtlinie einrichten](./incident-policy.mdx)
+- [Event-Typen](./event-types.mdx)

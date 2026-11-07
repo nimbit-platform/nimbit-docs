@@ -3,6 +3,7 @@ import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import { useThemeConfig } from "@docusaurus/theme-common";
 import { ArrowRight } from "lucide-react";
+import Translate from "@docusaurus/Translate";
 
 const DEMO_URL =
     "https://outlook.office365.com/book/NimBitGmbHErstgesprchIhreDigitaleTransformation@cpars.de/";
@@ -26,16 +27,17 @@ export default function Footer(): React.JSX.Element | null {
                             className="h-8 dark:brightness-0 dark:invert"
                         />
                         <p className="mt-4 text-sm leading-relaxed text-[var(--docs-color-text-100)]">
-                            Build and manage your IoT solutions with the NimBit
-                            platform.
+                            <Translate id="footer.tagline">
+                                Build and manage your IoT solutions with the NimBit platform.
+                            </Translate>
                         </p>
                         <a
                             href={DEMO_URL}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="mt-5 inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white! no-underline transition-colors hover:bg-[var(--ifm-color-primary-dark)] hover:text-white hover:no-underline"
+                            className="mt-5 inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground! no-underline transition-colors hover:bg-[var(--ifm-color-primary-dark)] hover:no-underline"
                         >
-                            Book a Demo
+                            <Translate id="footer.demo">Book a demo</Translate>
                             <ArrowRight className="h-3.5 w-3.5" />
                         </a>
                     </div>

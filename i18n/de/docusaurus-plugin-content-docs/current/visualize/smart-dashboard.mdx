@@ -1,97 +1,97 @@
 ---
-untranslated: true
-title: Build one dashboard for every thing of a kind
-sidebar_label: Dashboard for every thing
-description: Build a Smart dashboard on interfaces, follow or pin widgets, assign it to things and try it with mock data.
+title: Ein Dashboard für alle Things einer Art bauen
+sidebar_label: Dashboard für alle Things
+description: Ein Smart-Dashboard auf Interfaces bauen, Widgets folgen lassen oder anheften, es Things zuweisen und mit Testdaten ausprobieren.
 type: how-to
 sidebar_position: 4
 app:
   routes: ["/dashboards/:id", "/onboarding/things/:id", "/onboarding/thing-types/:id"]
   tour: build-dashboards
+translated_from: a4ace78
 ---
 
 import TourLink from "@site/src/components/TourLink";
 import Screenshot from "@site/src/components/Screenshot";
 
-Build a Smart dashboard once and it works for every thing whose type implements the interfaces you choose, today's and tomorrow's. For how it picks its thing, see [Dashboards, smart dashboards and time](./dashboards.mdx).
+Bauen Sie ein Smart-Dashboard einmal, und es funktioniert für jedes Thing, dessen Typ die gewählten Interfaces umsetzt, heutige wie künftige. Wie es sein Thing wählt, lesen Sie unter [Dashboards, Smart-Dashboards und Zeit](./dashboards.mdx).
 
 <TourLink id="build-dashboards-interface-based" />
 
-## Before you start
-- A role that may create and edit dashboards.
-- At least one interface that your thing types implement. The form's preview counts the things that fit.
+## Bevor Sie beginnen {#before-you-start}
+- Eine Rolle, die Dashboards anlegen und bearbeiten darf.
+- Mindestens ein Interface, das Ihre Thing-Typen umsetzen. Die Vorschau des Formulars zählt die passenden Things.
 
-## Build the dashboard
+## Das Dashboard bauen {#build-the-dashboard}
 
-1. Open **Monitoring › Dashboards** and select **New dashboard**.
-2. Choose **From interfaces**.
-3. Enter a **Dashboard name**, pick one or more interfaces (a thing type works too) and select **Save**.
-4. Select **Add widget**, pick for example **Chart**, then **Line**.
-5. Keep **Follow the dashboard**. Pick a measure and select **Add to dashboard**.
-6. Select **Save**.
+1. Öffnen Sie **Überwachung › Dashboards** und wählen Sie **Neues Dashboard**.
+2. Wählen Sie **Aus Interfaces**.
+3. Geben Sie einen **Dashboard Name** ein, wählen Sie ein oder mehrere Interfaces (ein Thing-Typ geht auch) und wählen Sie **Speichern**.
+4. Wählen Sie **Widget hinzufügen**, nehmen Sie zum Beispiel **Diagramm** und dann **Linie**.
+5. Lassen Sie **Dem Dashboard folgen** aktiv. Wählen Sie eine Telemetrie und wählen Sie **Zum Dashboard hinzufügen**.
+6. Wählen Sie **Speichern**.
 
-Pick another thing at the top of the dashboard. The widget follows.
+Wählen Sie oben im Dashboard ein anderes Thing. Das Widget folgt.
 
 <Screenshot
   page="visualize/smart-dashboard"
   id="01-dashboard-form"
   route="/dashboards"
   state="Smart dashboard form with name Air handler overview, one interface selected, the compatibility preview showing matching things, Tenant dashboard selected"
-  alt="The Smart dashboard form with name, interface and visibility"
+  alt="Das Formular für das Smart-Dashboard mit Name, Interface und Sichtbarkeit"
 />
 
-## Pin a widget to one thing
+## Ein Widget an ein Thing anheften {#pin-a-widget-to-one-thing}
 
-A pinned widget shows its own thing whatever is picked at the top. Use it for a fixed reference such as the outdoor temperature.
+Ein angeheftetes Widget zeigt sein eigenes Thing, egal was oben gewählt ist. Nutzen Sie es für einen festen Bezug wie die Außentemperatur.
 
-1. Select **Edit**, then **Add widget**.
-2. Choose **Its own things** instead of **Follow the dashboard**.
-3. In each row, pick the thing and its measure, then **Add to dashboard**.
+1. Wählen Sie **Bearbeiten** und dann **Widget hinzufügen**.
+2. Wählen Sie **Eigene Things** statt **Dem Dashboard folgen**.
+3. Wählen Sie in jeder Zeile das Thing und seine Telemetrie und dann **Zum Dashboard hinzufügen**.
 
-To build a dashboard of only pinned widgets, leave the interfaces empty in step 3 of the first part. A dashboard with no interfaces needs no thing, so it can go on [Home](./home.mdx).
+Für ein Dashboard nur aus angehefteten Widgets lassen Sie in Schritt 3 des ersten Teils die Interfaces leer. Ein Dashboard ohne Interfaces braucht kein Thing und kann deshalb auf [Home](./home.mdx).
 
-## Assign the dashboard
+## Das Dashboard zuweisen {#assign-the-dashboard}
 
-Assigning decides where the dashboard is offered.
+Die Zuweisung bestimmt, wo das Dashboard angeboten wird.
 
-| Where | How | Effect |
+| Wo | Wie | Wirkung |
 | --- | --- | --- |
-| A thing | Open the thing, its **Dashboard** tab, **Assign dashboards**. | Pinned on that thing only. |
-| A thing type | Open the thing type, its **Dashboards** tab, **Manage dashboards**. | Offered on every thing of the type, now and later. |
-| The dashboard | In edit mode, **Assigned to**, then **Thing types** or **Things**, then **Assign**. | The same, from this side. Only fitting things and types are listed. |
-| A Knowledge level | The level's **Visualizations** tab. | Sites, buildings and other levels show it there. See [Explore](../knowledge/map-sites.mdx). |
+| Ein Thing | Öffnen Sie das Thing, seinen Tab **Dashboard**, **Dashboards zuweisen**. | Nur an diesem Thing angeheftet. |
+| Ein Thing-Typ | Öffnen Sie den Thing-Typ, seinen Tab **Dashboards**, **Dashboards verwalten**. | Wird an jedem Thing des Typs angeboten, jetzt und später. |
+| Das Dashboard | Im Bearbeitungsmodus **Zugewiesen an**, dann **Thing-Typen** oder **Things**, dann **Zuweisen**. | Dasselbe, von dieser Seite aus. Es werden nur passende Things und Typen aufgelistet. |
+| Eine Knowledge-Ebene | Der Tab **Visualisierungen** der Ebene. | Standorte, Gebäude und andere Ebenen zeigen es dort. Siehe [Erkunden](../knowledge/map-sites.mdx). |
 
-On a thing's **Dashboard** tab, the star marks the default dashboard, which opens first. Drag rows to order the others. A thing also offers the dashboards of its thing type, marked as coming from the type; edit them on the type.
+Im Tab **Dashboard** eines Things markiert der Stern das Standard-Dashboard, das zuerst öffnet. Ziehen Sie Zeilen, um die übrigen zu ordnen. Ein Thing bietet auch die Dashboards seines Thing-Typs an, gekennzeichnet als vom Typ stammend. Bearbeiten Sie diese am Typ.
 
-If a dashboard requires an interface, every thing type with that interface gets the dashboard automatically. To remove it, detach the interface from the type or change the dashboard's interfaces.
+Verlangt ein Dashboard ein Interface, erhält jeder Thing-Typ mit diesem Interface das Dashboard automatisch. Um es zu entfernen, lösen Sie das Interface vom Typ oder ändern Sie die Interfaces des Dashboards.
 
-## Generate a starting dashboard
+## Ein Start-Dashboard erzeugen {#generate-a-starting-dashboard}
 
-An interface can generate a Smart dashboard with widgets for its measures: line charts, gauges, state tiles and property rows. Open **Generate dashboard** in the menu of the interface page, or on the **Interfaces** tab of a thing type. The dialog **Generate Smart dashboard** previews what it creates.
+Ein Interface kann ein Smart-Dashboard mit Widgets für seine Telemetrien erzeugen: Liniendiagramme, Gauges, Zustandskacheln und Eigenschaftszeilen. Öffnen Sie **Dashboard generieren** im Menü der Interface-Seite oder im Tab **Interfaces** eines Thing-Typs. Der Dialog **Smart-Dashboard generieren** zeigt vorab, was er anlegt.
 
-## Try it with mock data
+## Mit Testdaten ausprobieren {#try-it-with-mock-data}
 
-Design before any device sends data. Open the data source menu at the top of the dashboard.
+Entwerfen Sie, bevor ein Gerät Daten sendet. Öffnen Sie oben im Dashboard das Menü der Datenquelle.
 
-| Source | What it does |
+| Quelle | Was sie tut |
 | --- | --- |
-| **Device** | Live values from a thing the dashboard fits. The default. |
-| **Mock data** | Made-up values. Pick a pattern (**Random**, **Smooth**, **Wave**, **Ramp**, **Steps**, **Spikes**) and an interval. Pinned widgets still show real data. |
-| **File** | A CSV, Parquet or JSON file mapped onto the dashboard's measures. |
+| **Gerät** | Live-Werte eines Things, zu dem das Dashboard passt. Der Standard. |
+| **Testdaten** | Erfundene Werte. Wählen Sie ein Muster (**Zufällig**, **Gleichmäßig**, **Welle**, **Rampe**, **Stufen**, **Ausreißer**) und ein Intervall. Angeheftete Widgets zeigen weiterhin echte Daten. |
+| **Datei** | Eine CSV-, Parquet- oder JSON-Datei, abgebildet auf die Telemetrien des Dashboards. |
 
-To play a file: select **File**, drop one or pick it from **Files** (or **Try the sample air handler file**), map the **Time column** and a column per measure (**Device column** routes several devices), name the mapping and select **Save and use**. Rows that do not fit are skipped and counted; select the count to see why.
+So spielen Sie eine Datei ab: Wählen Sie **Datei**, legen Sie eine ab oder wählen Sie sie unter **Dateien** (oder **Beispieldatei einer Lüftungsanlage ausprobieren**), ordnen Sie die **Zeitspalte** und je eine Spalte pro Telemetrie zu (**Gerätespalte** leitet mehrere Geräte), benennen Sie die Zuordnung und wählen Sie **Speichern und verwenden**. Zeilen, die nicht passen, werden übersprungen und gezählt. Wählen Sie die Zahl, um den Grund zu sehen.
 
-A banner and a **MOCK** mark remind you nothing was measured. Select **Turn off mock data** to go back. Mock data and files are read in your browser; nothing is sent to a device or written to its history.
+Ein Banner und eine Markierung **TESTDATEN** erinnern daran, dass nichts gemessen wurde. Wählen Sie **Testdaten ausschalten**, um zurückzukehren. Testdaten und Dateien werden in Ihrem Browser gelesen. Nichts wird an ein Gerät gesendet oder in seinen Verlauf geschrieben.
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-Pick two different things in the thing picker: following widgets switch, pinned widgets stay. Open a thing of the assigned type: its **Dashboard** tab lists the dashboard.
+Wählen Sie in der Thing-Auswahl zwei verschiedene Things: Folgende Widgets wechseln, angeheftete bleiben. Öffnen Sie ein Thing des zugewiesenen Typs: Sein Tab **Dashboard** listet das Dashboard.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **A widget is empty**: the picked thing implements only some interfaces. It shows its coverage, such as **2 of 3 interfaces**. Pick another thing or try mock data.
-- **The dashboard is not on a thing**: it is not assigned, or the thing's type lacks the interface. Assign it as above.
-- **A file shows no data after reload**: files are not kept. Pick it again, or tick **Save a copy to Files**.
+- **Ein Widget ist leer**: Das gewählte Thing setzt nur einen Teil der Interfaces um. Es zeigt seine Abdeckung, etwa **2 von 3 Schnittstellen**. Wählen Sie ein anderes Thing oder probieren Sie Testdaten.
+- **Das Dashboard erscheint an keinem Thing**: Es ist nicht zugewiesen, oder dem Typ des Things fehlt das Interface. Weisen Sie es wie oben zu.
+- **Eine Datei zeigt nach dem Neuladen keine Daten**: Dateien werden nicht behalten. Wählen Sie sie erneut oder setzen Sie den Haken bei **Eine Kopie in Dateien speichern**.
 
-## Related
-- [Dashboards, smart dashboards and time](./dashboards.mdx) · [Widget gallery](./widgets.mdx)
+## Verwandte Seiten {#related}
+- [Dashboards, Smart-Dashboards und Zeit](./dashboards.mdx) · [Widget-Galerie](./widgets.mdx)

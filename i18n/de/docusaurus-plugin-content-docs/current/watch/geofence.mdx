@@ -1,60 +1,60 @@
 ---
-untranslated: true
-title: Draw a geofence
+title: Einen Geofence zeichnen
 sidebar_position: 8
-description: Draw an area on the map so IoT Breeze records an event when a thing enters or leaves it.
+description: Einen Bereich auf der Karte zeichnen, damit IoT Breeze ein Event aufzeichnet, wenn ein Thing ihn betritt oder verlässt.
 type: how-to
 app:
   routes: ["/geo/map"]
   tour: find-your-way-watch
+translated_from: 679f3a4
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
 
-Draw a circle, rectangle or polygon on the map. While the geofence is active, IoT Breeze records an event each time one of its things enters or leaves it.
+Zeichnen Sie einen Kreis, ein Rechteck oder ein Polygon auf die Karte. Solange der Geofence aktiv ist, zeichnet IoT Breeze jedes Mal ein Event auf, wenn eines seiner Things ihn betritt oder verlässt.
 
-## Before you start
+## Bevor Sie anfangen {#before-you-start}
 
-- You need permission to write geofences to see the **Geofences** entry under **Settings › Configuration**.
-- The things must report a position. A thing that sends latitude and longitude sets this by itself. For other things, use **Set location** on the thing page.
+- Sie brauchen die Berechtigung, Geofences zu schreiben, um den Eintrag **Geofences** unter **Einstellungen › Konfiguration** zu sehen.
+- Die Things müssen eine Position melden. Ein Thing, das Breiten- und Längengrad sendet, setzt sie selbst. Für andere Things nutzen Sie **Standort festlegen** auf der Thing-Seite.
 
-## Steps
+## Schritte {#steps}
 
-1. Open **Settings › Configuration › Geofences**, or open **Monitoring › Map** and switch to **Geofences**. Both open the same screen.
-2. Select **Create geofence**.
-3. Enter a **Name**, for example `Hamburg depot`, and optionally a **Description**.
-4. Pick a **Shape**: **Circle**, **Rectangle** or **Polygon**, then draw it on the map.
-   - Circle: click the centre, then click to set the radius, or set the **Radius** with the slider or the number field. The radius runs from 1 m to 50,000 m.
-   - Rectangle: click one corner, then the opposite corner.
-   - Polygon: click to add points, then click the first point to close it.
-5. Set **Status** to **Active**. Entry and exit events are only generated while the geofence is active.
-6. Under **Applies to**, choose **Tags** or **Thing type**.
-   - **Tags**: pick the tags. The geofence applies to things with those tags, across thing types.
-   - **Thing type**: pick one thing type. To limit it to some things, choose them under **Things**.
-7. Check the counts of things and thing types the geofence covers, then select **Save**.
+1. Öffnen Sie **Einstellungen › Konfiguration › Geofences** oder öffnen Sie **Überwachung › Karte** und wechseln Sie zu **Geofences**. Beide öffnen denselben Bildschirm.
+2. Wählen Sie **Geofence erstellen**.
+3. Geben Sie einen **Name** ein, zum Beispiel `Hamburg depot`, und optional eine **Beschreibung**.
+4. Wählen Sie eine **Form**: **Kreis**, **Rechteck** oder **Polygon**, und zeichnen Sie sie auf der Karte.
+   - Kreis: Klicken Sie auf den Mittelpunkt, dann klicken Sie, um den Radius zu setzen, oder stellen Sie den **Radius** mit dem Schieberegler oder dem Zahlenfeld ein. Der Radius reicht von 10 m bis 50.000 m.
+   - Rechteck: Klicken Sie auf eine Ecke, dann auf die gegenüberliegende Ecke.
+   - Polygon: Klicken Sie, um Punkte zu setzen, dann klicken Sie auf den ersten Punkt, um es zu schließen.
+5. Setzen Sie den **Status** auf **Aktiv**. Ein- und Austrittsevents entstehen nur, solange der Geofence aktiv ist.
+6. Wählen Sie unter **Gilt für** entweder **Tags** oder **Thing-Typ**.
+   - **Tags**: Wählen Sie die Tags. Der Geofence gilt für Things mit diesen Tags, über Thing-Typen hinweg.
+   - **Thing-Typ**: Wählen Sie einen Thing-Typ. Um ihn auf einzelne Things zu beschränken, wählen Sie sie unter **Things**.
+7. Prüfen Sie die Anzahl der Things und Thing-Typen, die der Geofence abdeckt, und wählen Sie dann **Speichern**.
 
 <Screenshot
   page="watch/geofence"
   id="01-geofence-editor"
   route="/geo/map?mode=fences"
   state="Geofences mode with the editor panel open: a circle drawn on the map, Applies to Tags with one tag, Status Active, Save visible"
-  alt="The geofence editor with a circle drawn on the map"
+  alt="Der Geofence-Editor mit einem auf die Karte gezeichneten Kreis"
 />
 
-To change a shape, delete it on the map and draw a new one. Drag a shape to move it. Use **⋯ › Edit** or **⋯ › Delete** on a list entry. Deleting can't be undone.
+Um eine Form zu ändern, löschen Sie sie auf der Karte und zeichnen Sie eine neue. Ziehen Sie eine Form, um sie zu verschieben. Nutzen Sie **⋯ › Bearbeiten** oder **⋯ › Löschen** an einem Listeneintrag. Löschen lässt sich nicht rückgängig machen.
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-The list header shows your count, for example `3 active · 5 total`, and the geofence lists the number of things inside it right now. When a matching thing crosses the border, a **Geofence** event appears under **Monitoring › Events**.
+Die Listenkopfzeile zeigt Ihre Zählung, zum Beispiel `3 active · 5 total`, und der Geofence nennt die Zahl der Things, die gerade in ihm sind. Überquert ein passendes Thing die Grenze, erscheint unter **Überwachung › Events** ein Event **Geofence**.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **The geofence won't save**: the form marks what is missing. A name, a drawn shape, and at least one tag or a thing type are required.
-- **No events appear**: the geofence is **Inactive**, or the things don't match **Applies to**, or they have no position yet.
-- **You want a person to follow up**: events alone don't open incidents. Turn on the shipped **Geofence dwell** policy. See [Set up an incident policy](./incident-policy.mdx).
+- **Der Geofence lässt sich nicht speichern**: Das Formular markiert, was fehlt. Nötig sind ein Name, eine gezeichnete Form und mindestens ein Tag oder ein Thing-Typ.
+- **Es erscheinen keine Events**: Der Geofence ist **Inaktiv**, oder die Things passen nicht zu **Gilt für**, oder sie haben noch keine Position.
+- **Eine Person soll nachfassen**: Events allein öffnen keine Vorfälle. Schalten Sie die mitgelieferte Richtlinie **Geofence dwell** ein. Siehe [Eine Vorfallsrichtlinie einrichten](./incident-policy.mdx).
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Events, incidents and notifications](./events-incidents-notifications.mdx)
-- [Event types](./event-types.mdx)
-- [Show things on a map](../visualize/map.mdx)
+- [Events, Vorfälle und Benachrichtigungen](./events-incidents-notifications.mdx)
+- [Event-Typen](./event-types.mdx)
+- [Things auf einer Karte zeigen](../visualize/map.mdx)

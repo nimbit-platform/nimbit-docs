@@ -1,135 +1,135 @@
 ---
-untranslated: true
-title: Action types
+title: Aktionstypen
 sidebar_position: 8
-description: Every action type you can add to a rule, an event type, or a thing or thing type, with its fields.
+description: Jeder Aktionstyp, den Sie einer Regel, einem Event-Typ oder einem Thing oder Thing-Typ hinzufügen können, mit seinen Feldern.
 type: reference
 app:
   routes: ["/automation/rule-designer/:id", "/manage/event-types/:id", "/onboarding/thing-types/:id", "/onboarding/things/:id"]
+translated_from: 679f3a4
 ---
 
-Each place that runs actions offers a different list. The list per place comes first, then the fields of each type.
+Jeder Ort, der Aktionen ausführt, bietet eine andere Liste. Zuerst kommt die Liste je Ort, dann die Felder jedes Typs.
 
-## Which place offers which type
+## Welcher Ort welchen Typ bietet {#which-place-offers-which-type}
 
-| Place | Action types | Runs |
+| Ort | Aktionstypen | Läuft |
 | --- | --- | --- |
-| **Rule**, **Actions** node | **Notification**, **Notification channel**, **Email**, **Webhook**, **Event**, **Update Measures** | When the rule's trigger fires |
-| **Event type**, **Actions** tab | **Notification**, **Notification channel**, **Email**, **Webhook** | When an event of that type is created, except events that close an episode. A new action starts switched off: turn on **Active**. |
-| **Thing type** or **thing**, **Actions** tab | **Webhook**, **Azure C2D**, **MQTT** | When a person, a dashboard or the API fires it |
+| **Regel**, Knoten **Aktionen** | **Benachrichtigung**, **Benachrichtigungskanal**, **E-Mail**, **Webhook**, **Ereignis**, **Telemetrien aktualisieren** | Wenn der Auslöser der Regel feuert |
+| **Event-Typ**, Tab **Aktionen** | **Benachrichtigung**, **Benachrichtigungskanal**, **E-Mail**, **Webhook** | Wenn ein Event dieses Typs entsteht, außer bei Events, die eine Episode beenden. Eine neue Aktion startet ausgeschaltet: Schalten Sie **Aktiv** ein. |
+| **Thing-Typ** oder **Thing**, Tab **Aktionen** | **Webhook**, **Azure C2D**, **MQTT** | Wenn eine Person, ein Dashboard oder die API sie auslöst |
 
-**Update Measures** is available only when the rule's **Start** node uses **Thing type**. Severity is one of **Information**, **Warning**, **Error** or **Critical**.
+**Telemetrien aktualisieren** gibt es nur, wenn der Knoten **Start** der Regel **Thing-Typ** verwendet. Der Schweregrad ist **Information**, **Warnung**, **Fehler** oder **Kritisch**.
 
-## Notification
+## Benachrichtigung {#notification}
 
-An in-app notification to users and groups. Used in rules and on event types.
+Eine In-App-Benachrichtigung an Benutzer und Gruppen. Wird in Regeln und bei Event-Typen verwendet.
 
-| Field | Meaning |
+| Feld | Bedeutung |
 | --- | --- |
-| **Subject** | Required. |
-| **Severity** | Required. |
-| **Message** | Required. |
-| **Users and groups** | At least one user or group. |
+| **Betreff** | Pflicht. |
+| **Schweregrad** | Pflicht. |
+| **Nachricht** | Pflicht. |
+| **Benutzer und Gruppen** | Mindestens ein Benutzer oder eine Gruppe. |
 
-## Notification channel
+## Benachrichtigungskanal {#notification-channel}
 
-A message to one or more [notification channels](../watch/alert-channels.mdx) such as Slack, Teams, a webhook receiver or ntfy. Used in rules and on event types.
+Eine Nachricht an einen oder mehrere [Benachrichtigungskanäle](../watch/alert-channels.mdx) wie Slack, Teams, einen Webhook-Empfänger oder ntfy. Wird in Regeln und bei Event-Typen verwendet.
 
-| Field | Meaning |
+| Feld | Bedeutung |
 | --- | --- |
-| **Notification channel** | Required. Pick one or more. A channel that is turned off is marked in the list. |
-| **Subject**, **Message**, **Severity** | Optional. |
+| **Benachrichtigungskanal** | Pflicht. Wählen Sie einen oder mehrere. Ein ausgeschalteter Kanal ist in der Liste markiert. |
+| **Betreff**, **Nachricht**, **Schweregrad** | Optional. |
 
-## Email
+## E-Mail {#email}
 
-An email to users, groups or external addresses. Used in rules and on event types. Email goes through the tenant's mail server if one is set up, and otherwise through the platform mail server.
+Eine E-Mail an Benutzer, Gruppen oder externe Adressen. Wird in Regeln und bei Event-Typen verwendet. E-Mails gehen über den Mailserver des Tenants, falls einer eingerichtet ist, sonst über den Mailserver der Plattform.
 
-| Field | Meaning |
+| Feld | Bedeutung |
 | --- | --- |
-| Format | **Plain** or **Mail template**. |
-| **Subject**, **Body** | Required for **Plain**. |
-| **Mail template** | Required for **Mail template**. See [Mail templates and placeholders](../watch/mail-templates.mdx). |
-| **From**, **CC**, **BCC** | Optional. |
-| Recipients | At least one user, group or external address. |
+| Format | **Plain** oder **Mail-Vorlage**. |
+| **Betreff**, **Inhalt** | Pflicht bei **Plain**. |
+| **Mail-Vorlage** | Pflicht bei **Mail-Vorlage**. Siehe [E-Mail-Vorlagen und Platzhalter](../watch/mail-templates.mdx). |
+| **Absender**, **Cc**, **Bcc** | Optional. |
+| Empfänger | Mindestens ein Benutzer, eine Gruppe oder eine externe Adresse. |
 
-**Subject** and **Body** accept placeholders in double curly braces. Placeholders do not apply when you choose a mail template.
+**Betreff** und **Inhalt** akzeptieren Platzhalter in doppelten geschweiften Klammern. Platzhalter gelten nicht, wenn Sie eine Mail-Vorlage wählen.
 
 {/* TODO(product): Which placeholder names are available in a rule's Email, Notification and Webhook actions (for example the measure value that met the condition)? The executors render them from the trigger payload, which for a rule fire is `{ data, referenceId }`, but the fields are not documented in the app. */}
 
-## Webhook
+## Webhook {#webhook}
 
-An HTTP request to another system. Used in rules and on event types, and as a thing action.
+Eine HTTP-Anfrage an ein anderes System. Wird in Regeln und bei Event-Typen verwendet, und als Thing-Aktion.
 
-| Field | Meaning |
+| Feld | Bedeutung |
 | --- | --- |
-| **Method** | `GET`, `POST`, `PUT`, `PATCH` or `DELETE`. |
-| **URL** | The address to call. |
-| **Body** | Required for `POST`, `PUT` and `PATCH`. |
-| **Headers** | Key and value pairs. Keys must be unique, and a key needs a value. |
-| **Authorization type** | See the next table. |
+| **Method** | `GET`, `POST`, `PUT`, `PATCH` oder `DELETE`. |
+| **URL** | Die Adresse, die aufgerufen wird. |
+| **Inhalt** | Pflicht bei `POST`, `PUT` und `PATCH`. |
+| **Headers** | Paare aus Schlüssel und Wert. Schlüssel müssen eindeutig sein, und ein Schlüssel braucht einen Wert. |
+| **Autorisierungstyp** | Siehe die nächste Tabelle. |
 
-| Authorization type | Fields |
+| Autorisierungstyp | Felder |
 | --- | --- |
-| **None** | none |
+| **Keine** | keine |
 | **Bearer** | **Token** |
-| **Basic** | **Username**, **Password** |
-| **Query** | **Query parameter key**, **Query parameter value**, added to the URL |
-| **OAuth2** | **Token endpoint**, **Grant type**, optional **Scope**, and fields that depend on the grant type |
+| **Basic** | **Benutzername**, **Passwort** |
+| **Abfrage** | **Abfrageparameter-Schlüssel**, **Abfrageparameter-Wert**, an die URL angehängt |
+| **OAuth2** | **Token Endpunkt**, **Berechtigungstyp**, optional **Umfang**, und Felder, die vom Berechtigungstyp abhängen |
 
-OAuth2 grant types: **Client credentials** (**Client id**, **Client Secret**), **Password** (**Username**, **Password**), **Refresh token** (**Refresh token**) and **JWT (JSON Web Token)** (**JWT assertion**).
+OAuth2-Berechtigungstypen: **Client-Anmeldeinformationen** (**Client-ID**, **Client-Geheimnis**), **Passwort** (**Benutzername**, **Passwort**), **Aktualisierungs-Token** (**Aktualisierungs-Token**) und **JWT (JSON Web Token)** (**JWT assertion**).
 
-## Event
+## Ereignis {#event}
 
-Creates an event. Rules only.
+Erzeugt ein Event. Nur in Regeln.
 
-| Field | Meaning |
+| Feld | Bedeutung |
 | --- | --- |
-| **Title** | Required. The title of the event. |
-| **Event type** | Required. The event appears under **Monitoring › Events** and runs that event type's actions. |
-| **Severity** | Required. |
+| **Titel** | Pflicht. Der Titel des Events. |
+| **Event Typ** | Pflicht. Das Event erscheint unter **Überwachung › Events** und führt die Aktionen dieses Event-Typs aus. |
+| **Schweregrad** | Pflicht. |
 
-## Update Measures
+## Telemetrien aktualisieren {#update-measures}
 
-Writes values to measures of the thing type. Rules only, and only with a **Start** node set to **Thing type**. You enter a JSON object that maps measure names to values. The measures must exist on the thing type.
+Schreibt Werte in Messwerte des Thing-Typs. Nur in Regeln, und nur mit einem Knoten **Start**, der auf **Thing-Typ** steht. Sie geben ein JSON-Objekt ein, das Messwertnamen auf Werte abbildet. Die Messwerte müssen am Thing-Typ existieren.
 
-## MQTT
+## MQTT {#mqtt}
 
-A command published to one device. Thing actions only. Works for devices connected with the provider **Nimbit**.
+Ein Befehl, der an ein Gerät veröffentlicht wird. Nur Thing-Aktionen. Funktioniert für Geräte, die mit dem Konnektor **Nimbit** verbunden sind.
 
-| Field | Meaning |
+| Feld | Bedeutung |
 | --- | --- |
-| **Name** | Shown in lists and on dashboards. |
-| **Sub-topic** | Optional. Appended to `iot/tenant/<tenant>/device/<device>/cmd/`. At most 128 characters, 8 levels and 64 characters per level. Letters, digits, `_` and `-`, separated by `/`. Placeholders allowed. |
-| **Payload format** | **JSON** or **Text**. With **JSON**, the result after substitution must be valid JSON, and a payload is required. |
-| **Payload** | The message, up to 64 KiB. |
+| **Name** | Wird in Listen und auf Dashboards angezeigt. |
+| **Unterthema** | Optional. Wird an `iot/tenant/<tenant>/device/<device>/cmd/` angehängt. Höchstens 128 Zeichen, 8 Ebenen und 64 Zeichen pro Ebene. Buchstaben, Ziffern, `_` und `-`, getrennt durch `/`. Platzhalter erlaubt. |
+| **Payload-Format** | **JSON** oder **Text**. Bei **JSON** muss das Ergebnis nach dem Einsetzen gültiges JSON sein, und eine Payload ist Pflicht. |
+| **Payload** | Die Nachricht, bis zu 64 KiB. |
 
-Placeholders are plain values in double curly braces: `{{thing.id}}`, `{{thing.name}}`, `{{thing.alternateId}}`, `{{messageId}}`, and measures of the thing type from **Insert Placeholder**. Sections, partials and delimiter changes are rejected. The command is delivered at most once, only to a connected device. See [Send a command to a device](./device-command.mdx).
+Platzhalter sind einfache Werte in doppelten geschweiften Klammern: `{{thing.id}}`, `{{thing.name}}`, `{{thing.alternateId}}`, `{{messageId}}` und Messwerte des Thing-Typs über **Platzhalter einfügen**. Sections, Partials und Wechsel der Trennzeichen werden abgelehnt. Der Befehl wird höchstens einmal zugestellt, nur an ein verbundenes Gerät. Siehe [Einen Befehl an ein Gerät senden](./device-command.mdx).
 
-## Azure C2D
+## Azure C2D {#azure-c2d}
 
-A cloud-to-device message, sent on the `/devicebound` topic. Thing actions only. For things registered with the Azure provider type.
+Eine Cloud-to-Device-Nachricht, gesendet auf dem Topic `/devicebound`. Nur Thing-Aktionen. Für Things, die mit dem Anbietertyp Azure registriert sind.
 
-| Field | Meaning |
+| Feld | Bedeutung |
 | --- | --- |
-| **Name**, **Description** | Name is shown in lists. |
-| **This is a toggle action (ON/OFF)** | Makes an on/off action. |
-| **Payload** | The message. With a toggle action it is labelled **On Payload**. Placeholders are replaced when the command is sent. |
-| **Off Payload** | The message for off. Toggle actions only. |
+| **Name**, **Beschreibung** | Der Name wird in Listen angezeigt. |
+| **Dies ist eine Umschaltaktion (EIN/AUS).** | Macht daraus eine Ein/Aus-Aktion. |
+| **Payload** | Die Nachricht. Bei einer Umschaltaktion heißt sie **Daten für "An"**. Platzhalter werden ersetzt, wenn der Befehl gesendet wird. |
+| **Daten für "Aus"** | Die Nachricht für Aus. Nur Umschaltaktionen. |
 
-On a thing page a toggle action shows **Turn on** or **Turn off** and the state from the thing's latest reading of the measure. Only Azure C2D offers this option. MQTT has no toggle.
+Auf einer Thing-Seite zeigt eine Umschaltaktion **Einschalten** oder **Ausschalten** und den Zustand aus dem letzten Messwert des Things. Nur Azure C2D bietet diese Option. MQTT kennt keinen Umschalter.
 
-## Fields on every thing action
+## Felder jeder Thing-Aktion {#fields-on-every-thing-action}
 
-| Field | Meaning |
+| Feld | Bedeutung |
 | --- | --- |
-| **Allow usage as dashboard widget** | Lets an **Action** widget fire it. Anyone who can open the dashboard can fire the action. |
-| **Active** | A switch on the thing type's action list. An inactive action cannot be fired. Webhook actions are created inactive. MQTT and Azure C2D actions are created active. |
-| **Inherited** | On a thing, marks an action defined on its thing type. Change it there. |
+| **Verwendung als Dashboard-Widget zulassen** | Lässt ein Widget **Aktion** sie auslösen. Jeder, der das Dashboard öffnen kann, kann die Aktion auslösen. |
+| **Aktiv** | Ein Schalter in der Aktionsliste des Thing-Typs. Eine inaktive Aktion lässt sich nicht auslösen. Webhook-Aktionen werden inaktiv angelegt. MQTT- und Azure-C2D-Aktionen werden aktiv angelegt. |
+| **Geerbt** | Kennzeichnet bei einem Thing eine Aktion, die an seinem Thing-Typ definiert ist. Ändern Sie sie dort. |
 
-Open **Log** on the **Actions** tab to see every run, with **When**, status and where it came from.
+Öffnen Sie **Protokoll** im Tab **Aktionen**, um jeden Lauf zu sehen, mit **Wann**, Status und Herkunft.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Rules, actions and reports](./rules-actions-reports.mdx)
-- [Call another system from a rule](./webhook-from-rule.mdx)
-- [Send a command to a device](./device-command.mdx)
+- [Regeln, Aktionen und Berichte](./rules-actions-reports.mdx)
+- [Aus einer Regel ein anderes System aufrufen](./webhook-from-rule.mdx)
+- [Einen Befehl an ein Gerät senden](./device-command.mdx)

@@ -1,75 +1,75 @@
 ---
-untranslated: true
-title: Send data for many devices through one MQTT gateway
-sidebar_label: One MQTT gateway for many devices
-description: Add an MQTT device gateway, download its config file, assign its things and publish per thing or as one batch.
+title: Daten vieler Geräte über ein MQTT-Gateway senden
+sidebar_label: Ein MQTT-Gateway für viele Geräte
+description: Ein MQTT-Geräte-Gateway hinzufügen, seine Konfigurationsdatei herunterladen, seine Things zuordnen und pro Thing oder als Batch veröffentlichen.
 type: how-to
 sidebar_position: 4
 app:
   routes: ["/onboarding/gateways", "/onboarding/gateways/:id"]
+translated_from: 05eeac2
 ---
 
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 import Screenshot from "@site/src/components/Screenshot";
 
-Connect a device that speaks MQTT, such as an eWON Flexy, with one credential for the gateway and send data for several things through it. For how membership and scope work, read [How gateways work](./how-gateways-work.mdx).
+Verbinden Sie ein Gerät, das MQTT spricht, etwa einen eWON Flexy, mit einer Zugangsberechtigung für das Gateway und senden Sie darüber Daten für mehrere Things. Wie Zugehörigkeit und Scope funktionieren, steht unter [Wie Gateways funktionieren](./how-gateways-work.mdx).
 
-## Before you start
+## Voraussetzungen {#before-you-start}
 
-- You need the **Gateway** permission (the built-in **Admin** role has it).
-- The device can connect with MQTT 3.1.1, a username and password, and a client ID you choose. The broker accepts QoS 0 and 1, not 2.
-- Each device behind the gateway is a thing of your organization, or you can [register](../model/register-thing.mdx) it now. Its thing type has the measures you will send.
+- Sie brauchen die Berechtigung **Gateway** (die eingebaute Rolle **Administrator** hat sie).
+- Das Gerät kann sich mit MQTT 3.1.1, Benutzername und Passwort und einer Client-ID Ihrer Wahl verbinden. Der Broker akzeptiert QoS 0 und 1, nicht 2.
+- Jedes Gerät hinter dem Gateway ist ein Thing Ihrer Organisation, oder Sie können es jetzt [registrieren](../model/register-thing.mdx). Sein Thing-Typ hat die Messwerte, die Sie senden werden.
 
-## Add the gateway
+## Das Gateway hinzufügen {#add-the-gateway}
 
-1. Open **Settings › Onboarding › Gateways** and select **Add gateway**.
-2. Under **Type**, choose **MQTT device**.
-3. Enter a **Name**. Leave **Namespace** empty, or type one.
-4. Under **Config file format**, choose **Environment file (.env)**, **JSON (.json)** or **eWON Flexy BASIC parameters (.bas)**. The credential is the same in every format.
-5. Select **Add gateway**.
+1. Öffnen Sie **Einstellungen › Onboarding › Gateways** und wählen Sie **Gateway hinzufügen**.
+2. Wählen Sie unter **Typ** die Option **MQTT-Gerät**.
+3. Geben Sie einen **Namen** ein. Lassen Sie **Namespace** leer oder geben Sie einen ein.
+4. Wählen Sie unter **Format der Konfigurationsdatei** die Option **Umgebungsdatei (.env)**, **JSON (.json)** oder **eWON-Flexy-BASIC-Parameter (.bas)**. Die Zugangsdaten sind in jedem Format gleich.
+5. Wählen Sie **Gateway hinzufügen**.
 
-IoT Breeze shows **MQTT credential for** the gateway name. Copy the **Password** or select **Download config** now. The password is shown once; a file you download later holds a placeholder instead.
+IoT Breeze zeigt **MQTT-Zugangsdaten für** den Namen des Gateways. Kopieren Sie jetzt das **Passwort** oder wählen Sie **Konfiguration herunterladen**. Das Passwort wird nur einmal angezeigt; eine Datei, die Sie später herunterladen, enthält stattdessen einen Platzhalter.
 
 <Screenshot
   page="gateways/mqtt-gateway"
   id="01-mqtt-credential"
   route="/onboarding/gateways"
   state="Add gateway drawer after creating an MQTT device gateway, with the connection rows and the Download config button"
-  alt="The MQTT credential result with host, port, username, password and topics"
+  alt="Das Ergebnis der MQTT-Zugangsdaten mit Host, Port, Benutzername, Passwort und Topics"
 />
 
-The result lists these rows. Copy them from the screen rather than building them by hand.
+Das Ergebnis listet diese Zeilen. Kopieren Sie sie vom Bildschirm, statt sie von Hand zu bauen.
 
-| Row | Use |
+| Zeile | Verwendung |
 | --- | --- |
-| **Host**, **Port**, **TLS** | The broker. **On (mqtts)** means the listener wants TLS. |
-| **Username**, **Password** | The credential. |
-| **Client ID prefix** | `<tenant>:gateway:<gateway id>`. Use it as the client ID, or add `:<suffix>`. The broker refuses any other client ID. |
-| **Topic prefix** | Every topic you publish on starts with it. |
-| **Telemetry topic** | Publish one thing's data here. |
-| **Batch topic** | Publish an array of things' data here. |
-| **Status topic** | Publish the gateway's own health here. |
+| **Host**, **Port**, **TLS** | Der Broker. **An (mqtts)** heißt, der Listener verlangt TLS. |
+| **Benutzername**, **Passwort** | Die Zugangsdaten. |
+| **Client-ID-Präfix** | `<tenant>:gateway:<gateway id>`. Verwenden Sie es als Client-ID oder hängen Sie `:<suffix>` an. Der Broker lehnt jede andere Client-ID ab. |
+| **Topic-Präfix** | Jedes Topic, auf dem Sie veröffentlichen, beginnt damit. |
+| **Telemetrie-Topic** | Veröffentlichen Sie hier die Daten eines Things. |
+| **Batch-Topic** | Veröffentlichen Sie hier ein Array mit Daten mehrerer Things. |
+| **Status-Topic** | Veröffentlichen Sie hier den eigenen Zustand des Gateways. |
 
-For an eWON Flexy, the **.bas** file holds these values as BASIC parameters. The BASIC program that reads them and publishes your tags is available on request from NimBit support at [info@nimbit.de](mailto:info@nimbit.de).
+Bei einem eWON Flexy enthält die **.bas**-Datei diese Werte als BASIC-Parameter. Das BASIC-Programm, das sie liest und Ihre Tags veröffentlicht, erhalten Sie auf Anfrage beim NimBit-Support unter [info@nimbit.de](mailto:info@nimbit.de).
 
-## Put things on the gateway
+## Things dem Gateway zuordnen {#put-things-on-the-gateway}
 
-A gateway can send only for things that belong to it, and its messages never create things.
+Ein Gateway kann nur für Things senden, die ihm gehören, und seine Nachrichten legen nie Things an.
 
-1. Create the things in IoT Breeze, if they don't exist.
-2. Open the gateway, select the **Things** tab and select **Assign things**. Search for the things and select **Assign**. Or open a thing, edit it and choose the gateway in **Gateway**.
+1. Legen Sie die Things in IoT Breeze an, falls sie nicht existieren.
+2. Öffnen Sie das Gateway, wählen Sie den Tab **Things** und dann **Things zuordnen**. Suchen Sie die Things und wählen Sie **Zuordnen**. Oder öffnen Sie ein Thing, bearbeiten Sie es und wählen Sie unter **Gateway** das Gateway.
 
-A thing is on at most one gateway. Assigning a thing that is on another gateway moves it.
+Ein Thing gehört zu höchstens einem Gateway. Wenn Sie ein Thing zuordnen, das an einem anderen Gateway hängt, wechselt es.
 
-## Publish data
+## Daten veröffentlichen {#publish-data}
 
-Connect with the credential, then publish JSON.
+Verbinden Sie sich mit den Zugangsdaten und veröffentlichen Sie JSON.
 
 <Tabs groupId="gateway-publish">
-<TabItem value="thing" label="One thing per message" default>
+<TabItem value="thing" label="Ein Thing pro Nachricht" default>
 
-Publish to the **Telemetry topic**, replacing `<thing>` with the thing's ID or alternate ID:
+Veröffentlichen Sie auf dem **Telemetrie-Topic** und ersetzen Sie `<thing>` durch die ID oder Alternate-ID des Things:
 
 ```text
 tenant/<tenant>/gateway/<gateway id>/device/<thing>/telemetry
@@ -84,9 +84,9 @@ tenant/<tenant>/gateway/<gateway id>/device/<thing>/telemetry
 ```
 
 </TabItem>
-<TabItem value="batch" label="One batch for several things">
+<TabItem value="batch" label="Ein Batch für mehrere Things">
 
-Publish to the **Batch topic** an array with one element per thing. Each element names its thing with `id`:
+Veröffentlichen Sie auf dem **Batch-Topic** ein Array mit einem Element pro Thing. Jedes Element nennt sein Thing mit `id`:
 
 ```text
 tenant/<tenant>/gateway/<gateway id>/telemetry
@@ -99,14 +99,14 @@ tenant/<tenant>/gateway/<gateway id>/telemetry
 ]
 ```
 
-A batch can hold 500 elements and 1 MiB. A larger publish is dropped whole. A bad element is dropped alone. Leave out a device you can't reach instead of re-sending its last values: each stored element keeps its own thing online.
+Ein Batch kann 500 Elemente und 1 MiB enthalten. Eine größere Veröffentlichung wird ganz verworfen. Ein fehlerhaftes Element wird einzeln verworfen. Lassen Sie ein Gerät weg, das Sie nicht erreichen, statt seine letzten Werte erneut zu senden: Jedes gespeicherte Element hält sein eigenes Thing online.
 
 </TabItem>
 </Tabs>
 
-`thingType` is the thing type's name or ID. Leave out `time` to use the arrival time. Measure names and the full message rules are in [Message format](../connect/message-format.mdx).
+`thingType` ist der Name oder die ID des Thing-Typs. Lassen Sie `time` weg, um die Ankunftszeit zu verwenden. Messwertnamen und die vollständigen Nachrichtenregeln stehen unter [Nachrichtenformat](../connect/message-format.mdx).
 
-Every 5 minutes, publish the gateway's own health to the **Status topic**:
+Veröffentlichen Sie alle 5 Minuten den eigenen Zustand des Gateways auf dem **Status-Topic**:
 
 ```json
 {
@@ -116,21 +116,21 @@ Every 5 minutes, publish the gateway's own health to the **Status topic**:
 }
 ```
 
-The gateway turns **Online** with the first message and **Offline** after three missed ones.
+Das Gateway wird mit der ersten Nachricht **Online** und nach drei ausgebliebenen **Offline**.
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-Open the gateway. The **Health** tab shows **Online**, and the **Traffic** card shows **Messages per minute** and **Things active**, within a minute or two of the first data. Open one of the things: its latest values are there.
+Öffnen Sie das Gateway. Der Tab **Zustand** zeigt **Online**, und die Karte **Datenverkehr** zeigt **Nachrichten pro Minute** und **Aktive Things**, ein bis zwei Minuten nach den ersten Daten. Öffnen Sie eines der Things: Seine neuesten Werte sind da.
 
-## If it doesn't work
+## Wenn es nicht klappt {#if-it-doesnt-work}
 
-- **The broker refuses the connection**: check the client ID against **Client ID prefix**, and that you copied the password completely. Lost it? Select **New credential** from the row menu; the old credential stops working for new connections at once.
-- **A publish is acknowledged but nothing is stored**: the topic is outside the gateway's **Topic prefix**. The broker acknowledges a QoS 1 publish it then drops.
-- **Traffic shows discards**: **Discards per minute** names the reasons. `not_member` means the thing isn't assigned to this gateway. `unknown_thing` means the thing or its thing type doesn't exist. `id_missing` means a batch element has no `id`.
-- **The gateway stays Offline while data arrives**: only its own health message makes it online. Publish to the **Status topic**.
+- **Der Broker lehnt die Verbindung ab**: Prüfen Sie die Client-ID gegen das **Client-ID-Präfix** und ob Sie das Passwort vollständig kopiert haben. Verloren? Wählen Sie im Zeilenmenü **Neue Zugangsdaten**; die alten Zugangsdaten funktionieren für neue Verbindungen sofort nicht mehr.
+- **Eine Veröffentlichung wird bestätigt, aber nichts wird gespeichert**: Das Topic liegt außerhalb des **Topic-Präfix** des Gateways. Der Broker bestätigt eine QoS-1-Veröffentlichung, die er danach verwirft.
+- **Der Datenverkehr zeigt Verworfenes**: **Verworfen pro Minute** nennt die Gründe. `not_member` heißt, das Thing ist diesem Gateway nicht zugeordnet. `unknown_thing` heißt, das Thing oder sein Thing-Typ existiert nicht. `id_missing` heißt, ein Batch-Element hat keine `id`.
+- **Das Gateway bleibt Offline, obwohl Daten ankommen**: Nur seine eigene Zustandsmeldung setzt es auf online. Veröffentlichen Sie auf dem **Status-Topic**.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [How gateways work](./how-gateways-work.mdx) · [Gateway reference](./gateway-reference.mdx)
-- [Check gateway health and traffic](./fleet-health.mdx)
-- [MQTT topics and client ID](../connect/mqtt-topics.mdx)
+- [Wie Gateways funktionieren](./how-gateways-work.mdx) · [Gateway-Referenz](./gateway-reference.mdx)
+- [Zustand und Datenverkehr von Gateways prüfen](./fleet-health.mdx)
+- [MQTT-Topics und Client-ID](../connect/mqtt-topics.mdx)

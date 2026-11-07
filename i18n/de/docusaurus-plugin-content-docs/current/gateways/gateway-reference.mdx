@@ -1,130 +1,130 @@
 ---
-untranslated: true
-title: Gateway reference
-description: Gateway types, fields, statuses, limits, health and traffic measures, discard reasons and refusal reasons for gateways in IoT Breeze.
+title: Gateway-Referenz
+description: Gateway-Typen, Felder, Status, Limits, Zustands- und Datenverkehr-Messwerte, Verwerfungs- und Ablehnungsgründe für Gateways in IoT Breeze.
 type: reference
 sidebar_position: 6
 app:
   routes: ["/onboarding/gateways", "/onboarding/gateways/:id"]
+translated_from: 2b309f4
 ---
 
-Lookup tables for gateways. For the model, read [How gateways work](./how-gateways-work.mdx).
+Nachschlagetabellen für Gateways. Das Modell erklärt [Wie Gateways funktionieren](./how-gateways-work.mdx).
 
-## Gateway types
+## Gateway-Typen {#gateway-types}
 
-| Type | Identity | Needs | Own thing type |
+| Typ | Identität | Braucht | Eigener Thing-Typ |
 | --- | --- | --- | --- |
-| **Periscope** | Key pair registered at enrollment | A one-time onboarding code | `periscope_gateway` |
-| **MQTT device** | Broker username and password | A config file or the shown credential | `mqtt_gateway` |
+| **Periscope** | Schlüsselpaar, bei der Registrierung hinterlegt | Einen einmaligen Onboarding-Code | `periscope_gateway` |
+| **MQTT-Gerät** | Broker-Benutzername und -Passwort | Eine Konfigurationsdatei oder die angezeigten Zugangsdaten | `mqtt_gateway` |
 
-Every gateway has one thing of its own, with the alternate ID `gateway-<id>`. It is created with the gateway and stays with it.
+Jedes Gateway hat ein eigenes Thing mit der Alternate-ID `gateway-<id>`. Es wird mit dem Gateway angelegt und bleibt bei ihm.
 
-## Fields
+## Felder {#fields}
 
-| Field | Applies to | Rules |
+| Feld | Gilt für | Regeln |
 | --- | --- | --- |
-| **Name** | Both | 1 to 100 characters, unique in the organization. |
-| **Namespace** | Both | 1 to 64 characters from `a-z`, `0-9`, `_` and `-`. Without one, it follows the name. Can't be `gateway`. It can't equal another gateway's namespace, start with it, or extend it with `-`. Fixed once the gateway has things or its box has enrolled. Renaming doesn't move existing things. |
-| **Roles** | Periscope | The roles the gateway acts with, narrowed to what a gateway may do. Default: **Modeler**. You can't give a role with permissions you lack. |
-| **Code valid for** | Periscope | 1 hour to 7 days. Default 1 day. |
-| **Config file format** | MQTT device | **Environment file (.env)**, **JSON (.json)** or **eWON Flexy BASIC parameters (.bas)**. |
-| **Allowed thing types** | Scope | Up to 200. Empty means any thing type. |
-| **Thing limit** | Scope | 0 to 100,000, besides the gateway's own thing. Empty means only the organization's limits apply. |
-| **Creation policy** | Scope | **Open** creates things inside the scope. **Locked** creates none by any path: data for an unknown thing is discarded and counted, and existing things keep working. |
+| **Name** | Beide | 1 bis 100 Zeichen, eindeutig in der Organisation. |
+| **Namespace** | Beide | 1 bis 64 Zeichen aus `a-z`, `0-9`, `_` und `-`. Ohne Angabe folgt er dem Namen. Darf nicht `gateway` sein. Er darf nicht dem Namespace eines anderen Gateways entsprechen, damit beginnen oder ihn mit `-` erweitern. Fest, sobald das Gateway Things hat oder seine Box registriert ist. Umbenennen verschiebt keine bestehenden Things. |
+| **Rollen** | Periscope | Die Rollen, mit denen das Gateway handelt, beschränkt auf das, was ein Gateway darf. Vorgabe: **Modellierer**. Sie können keine Rolle mit Berechtigungen vergeben, die Sie selbst nicht haben. |
+| **Code gültig für** | Periscope | 1 Stunde bis 7 Tage. Vorgabe 1 Tag. |
+| **Format der Konfigurationsdatei** | MQTT-Gerät | **Umgebungsdatei (.env)**, **JSON (.json)** oder **eWON-Flexy-BASIC-Parameter (.bas)**. |
+| **Erlaubte Thing-Typen** | Bereich | Bis zu 200. Leer heißt jeder Thing-Typ. |
+| **Thing-Limit** | Bereich | 0 bis 100.000, neben dem eigenen Thing des Gateways. Leer heißt, nur die Limits der Organisation gelten. |
+| **Anlegen von Things** | Bereich | **Offen** legt Things innerhalb des Scopes an. **Gesperrt** legt auf keinem Weg welche an: Daten für ein unbekanntes Thing werden verworfen und gezählt, bestehende Things arbeiten weiter. |
 
-## Statuses
+## Status {#statuses}
 
-| Status | Meaning |
+| Status | Bedeutung |
 | --- | --- |
-| **Online** | The gateway thing is connected: its own health message arrived in the last 15 minutes. |
-| **Offline** | Enrolled, and the gateway thing is not connected or has no health message yet. |
-| **Waiting for onboarding** | An onboarding code is pending. |
-| **Not enrolled** | No live key and no pending code. |
-| **Incomplete, delete it** | Only the identity directory knows the gateway. Delete it and add it again. |
+| **Online** | Das Gateway-Thing ist verbunden: Seine eigene Zustandsmeldung kam in den letzten 15 Minuten an. |
+| **Offline** | Registriert, und das Gateway-Thing ist nicht verbunden oder hat noch keine Zustandsmeldung. |
+| **Wartet auf Onboarding** | Ein Onboarding-Code steht aus. |
+| **Nicht registriert** | Kein gültiger Schlüssel und kein ausstehender Code. |
+| **Unvollständig, bitte löschen** | Nur das Identitätsverzeichnis kennt das Gateway. Löschen Sie es und fügen Sie es erneut hinzu. |
 
-## Limits
+## Limits {#limits}
 
-| Limit | Value |
+| Limit | Wert |
 | --- | --- |
-| Periscope gateways per organization | 1000 |
-| Gateways a thing belongs to | 1 |
-| Things assigned in one action | 200 |
-| Alternate ID length | 128 characters |
-| Access token lifetime | 5 minutes |
-| MQTT batch | 500 elements, 1 MiB |
-| Events per page | up to 200 |
+| Periscope-Gateways pro Organisation | 1000 |
+| Gateways, zu denen ein Thing gehört | 1 |
+| Things, die in einer Aktion zugeordnet werden | 200 |
+| Länge der Alternate-ID | 128 Zeichen |
+| Lebensdauer des Zugriffstokens | 5 Minuten |
+| MQTT-Batch | 500 Elemente, 1 MiB |
+| Ereignisse pro Seite | bis zu 200 |
 
-## MQTT connection
+## MQTT-Verbindung {#mqtt-connection}
 
-| Item | Value |
+| Eintrag | Wert |
 | --- | --- |
-| Client ID | `<tenant>:gateway:<gateway id>`, optionally followed by `:<suffix>` |
-| Protocol | MQTT 3.1.1 |
-| QoS | 0 or 1 |
-| Topics | **Telemetry topic** for one thing, **Batch topic** for an array, **Status topic** for health. All under the **Topic prefix** |
+| Client-ID | `<tenant>:gateway:<gateway id>`, optional gefolgt von `:<suffix>` |
+| Protokoll | MQTT 3.1.1 |
+| QoS | 0 oder 1 |
+| Topics | **Telemetrie-Topic** für ein Thing, **Batch-Topic** für ein Array, **Status-Topic** für den Zustand. Alle unter dem **Topic-Präfix** |
 
-Batch element fields: `id` (required), `thingType`, `time`, `data`. Element and message rules are in [Message format](../connect/message-format.mdx), topics in [MQTT topics and client ID](../connect/mqtt-topics.mdx).
+Felder eines Batch-Elements: `id` (erforderlich), `thingType`, `time`, `data`. Element- und Nachrichtenregeln stehen unter [Nachrichtenformat](../connect/message-format.mdx), Topics unter [MQTT-Topics und Client-ID](../connect/mqtt-topics.mdx).
 
-## Health measures
+## Zustands-Messwerte {#health-measures}
 
-The gateway reports these about itself every 5 minutes (interface `GatewayHealth`). `data` must not be empty. Send them live; replaying a buffered message would keep a dead gateway online.
+Das Gateway meldet diese Werte alle 5 Minuten über sich selbst (Interface `GatewayHealth`). `data` darf nicht leer sein. Senden Sie sie live; würde eine gepufferte Nachricht erneut gesendet, bliebe ein totes Gateway online.
 
-| Name | Meaning | Unit |
+| Name | Bedeutung | Einheit |
 | --- | --- | --- |
-| `uptime_s` | Uptime | s |
-| `buffer_used_pct` | Buffer used | % |
-| `buffer_oldest_s` | Oldest buffered message | s |
-| `errors_per_min` | Errors per minute | 1/min |
-| `clock_offset_ms` | Clock offset | ms |
-| `sw_version` | Software version (tag) | |
-| `link_type` | Link type (tag) | |
+| `uptime_s` | Laufzeit | s |
+| `buffer_used_pct` | Belegter Puffer | % |
+| `buffer_oldest_s` | Älteste gepufferte Nachricht | s |
+| `errors_per_min` | Fehler pro Minute | 1/min |
+| `clock_offset_ms` | Uhrenabweichung | ms |
+| `sw_version` | Softwareversion (Tag) | |
+| `link_type` | Verbindungsart (Tag) | |
 
-A Periscope gateway adds the interface `PeriscopeAgent`: `outputs_failing`, `inputs_failing`, `output_p95_ms`, `restart_required`, `config_hash` and `last_apply`.
+Ein Periscope-Gateway ergänzt das Interface `PeriscopeAgent`: `outputs_failing`, `inputs_failing`, `output_p95_ms`, `restart_required`, `config_hash` und `last_apply`.
 
-## Traffic measures
+## Datenverkehr-Messwerte {#traffic-measures}
 
-The platform writes these to the gateway thing about every minute (interface `GatewayTraffic`). They never make a gateway online.
+Die Plattform schreibt diese Werte etwa jede Minute in das Gateway-Thing (Interface `GatewayTraffic`). Sie setzen ein Gateway nie auf online.
 
-| Measure | Meaning |
+| Messwert | Bedeutung |
 | --- | --- |
-| `traffic_messages_per_min` | Messages stored per minute |
-| `traffic_values_per_min` | Measure values stored per minute |
-| `traffic_things_active` | Things with a stored message in the window |
-| `traffic_last_data_age_s` | Seconds from the last stored message to the window's end |
-| `discards_per_min` | Messages refused for good per minute, all reasons |
-| `discards_<reason>_per_min` | The same per reason, 0 when none |
+| `traffic_messages_per_min` | Gespeicherte Nachrichten pro Minute |
+| `traffic_values_per_min` | Gespeicherte Messwerte pro Minute |
+| `traffic_things_active` | Things mit einer gespeicherten Nachricht im Fenster |
+| `traffic_last_data_age_s` | Sekunden von der letzten gespeicherten Nachricht bis zum Fensterende |
+| `discards_per_min` | Endgültig abgelehnte Nachrichten pro Minute, alle Gründe |
+| `discards_<reason>_per_min` | Dasselbe je Grund, 0 wenn keine |
 
-## Discard reasons
+## Verwerfungsgründe {#discard-reasons}
 
-| Reason | Counted when |
+| Grund | Gezählt, wenn |
 | --- | --- |
-| `identity_mismatch` | The message names another organization or thing than its connection |
-| `not_member` | The thing's record names another gateway, or none |
-| `unknown_thing` | The thing or its thing type doesn't exist |
-| `invalid` | Anything else refused for good: undecodable, malformed, failing validation, wrong thing type for the thing |
-| `id_missing` | A batch element has no `id` |
-| `too_large` | A batch is over 1 MiB, dropped whole |
-| `too_many` | A batch has more than 500 elements, dropped whole |
+| `identity_mismatch` | Die Nachricht nennt eine andere Organisation oder ein anderes Thing als ihre Verbindung |
+| `not_member` | Der Eintrag des Things nennt ein anderes Gateway oder keines |
+| `unknown_thing` | Das Thing oder sein Thing-Typ existiert nicht |
+| `invalid` | Alles andere, was endgültig abgelehnt wird: nicht dekodierbar, fehlerhaft, Validierung nicht bestanden, falscher Thing-Typ für das Thing |
+| `id_missing` | Ein Batch-Element hat keine `id` |
+| `too_large` | Ein Batch ist größer als 1 MiB und wird ganz verworfen |
+| `too_many` | Ein Batch hat mehr als 500 Elemente und wird ganz verworfen |
 
-A lookup the platform couldn't answer is retried, not discarded.
+Eine Abfrage, die die Plattform nicht beantworten konnte, wird wiederholt und nicht verworfen.
 
-## Refused creates
+## Abgelehnte Anlagen {#refused-creates}
 
-A Periscope gateway's attempt to create a thing can be refused. **Refused creates** on the **Scope** tab counts them by reason, and the **Events** tab lists each one.
+Der Versuch eines Periscope-Gateways, ein Thing anzulegen, kann abgelehnt werden. **Abgelehnte Anlagen** im Tab **Bereich** zählt sie nach Grund, und der Tab **Ereignisse** listet jede einzelne.
 
-| Reason | Meaning |
+| Grund | Bedeutung |
 | --- | --- |
-| **Thing limit reached** | The gateway has as many things as its limit allows. |
-| **Creation locked** | The creation policy is **Locked**. |
-| **Outside the namespace** | The thing's alternate ID doesn't start with the gateway's namespace. |
-| **Thing type not allowed** | The thing type isn't in the allowed list. |
+| **Thing-Limit erreicht** | Das Gateway hat so viele Things, wie sein Limit erlaubt. |
+| **Anlegen gesperrt** | Die Einstellung **Anlegen von Things** ist **Gesperrt**. |
+| **Außerhalb des Namespace** | Die Alternate-ID des Things beginnt nicht mit dem Namespace des Gateways. |
+| **Thing-Typ nicht erlaubt** | Der Thing-Typ steht nicht in der Liste der erlaubten. |
 
-## Events
+## Ereignisse {#events}
 
-The **Events** tab shows changes to the gateway and its gateway thing, the directory's record of its keys and a pending onboarding code (**Key registered**, **Key used**, **Onboarding code pending**), and refused creates. The identity directory keeps no history of its own.
+Der Tab **Ereignisse** zeigt Änderungen am Gateway und an seinem Gateway-Thing, den Eintrag des Verzeichnisses zu seinen Schlüsseln und einem offenen Onboarding-Code (**Schlüssel registriert**, **Schlüssel verwendet**, **Onboarding-Code offen**) und abgelehnte Anlagen. Das Identitätsverzeichnis führt keine eigene Historie.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Add a gateway](./add-a-gateway.mdx)
-- [Send data for many devices through one MQTT gateway](./mqtt-gateway.mdx)
-- [Check gateway health and traffic](./fleet-health.mdx)
+- [Gateway hinzufügen](./add-a-gateway.mdx)
+- [Daten vieler Geräte über ein MQTT-Gateway senden](./mqtt-gateway.mdx)
+- [Zustand und Datenverkehr von Gateways prüfen](./fleet-health.mdx)

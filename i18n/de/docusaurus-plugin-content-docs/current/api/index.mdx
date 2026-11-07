@@ -1,12 +1,12 @@
 ---
-untranslated: true
-title: API overview
-description: Which NimBit API does what, where to send requests, and how to make your first authenticated call.
+title: API-Überblick
+description: Welche NimBit-API was tut, wohin Sie Requests senden und wie Sie Ihren ersten authentifizierten Aufruf machen.
 type: landing
 sidebar_position: 1
+translated_from: dd3e5a5
 ---
 
-IoT Breeze has three HTTP APIs: one takes device data in, one reads time series and events out, and one manages the platform itself.
+IoT Breeze hat drei HTTP-APIs: Eine nimmt Gerätedaten entgegen, eine liest Zeitreihen und Events aus, und eine verwaltet die Plattform selbst.
 
 ```mermaid
 flowchart LR
@@ -18,30 +18,30 @@ flowchart LR
   O --> P[(Platform data)]
 ```
 
-## Which API for what
+## Welche API wofür {#which-api-for-what}
 
-| API | Path prefix | Use it to | Accepts |
+| API | Pfadpräfix | Verwenden Sie sie, um | Akzeptiert |
 | --- | --- | --- | --- |
-| Ingest API (tsflux) | `/tsflux` | Send device messages as JSON, InfluxDB line protocol or InfluxDB-compatible writes. | Device or tenant credentials (basic, JWT). Not API keys. |
-| Query API (nbq) | `/nbq` | Read time series, snapshots, positions, events and metrics. | API keys, user access tokens. |
-| Platform API (OCB) | `/ocb` | Manage things, thing types, rules, dashboards, users and the rest of the tenant. | API keys, user access tokens. |
+| Ingest-API (tsflux) | `/tsflux` | Gerätenachrichten als JSON, InfluxDB Line Protocol oder InfluxDB-kompatible Writes zu senden. | Geräte- oder Tenant-Zugangsdaten (Basic, JWT). Keine API-Schlüssel. |
+| Query-API (nbq) | `/nbq` | Zeitreihen, Snapshots, Positionen, Events und Metriken zu lesen. | API-Schlüssel, Benutzer-Access-Tokens. |
+| Plattform-API (OCB) | `/ocb` | Things, Thing-Typen, Regeln, Dashboards, Benutzer und den Rest des Tenants zu verwalten. | API-Schlüssel, Benutzer-Access-Tokens. |
 
-The OCB REST API lives under `/ocb/rest/v2`. The tsflux and nbq APIs live under `/api/v1` after the prefix, for example `/tsflux/api/v1/message/structured`.
+Die OCB-REST-API liegt unter `/ocb/rest/v2`. Die APIs tsflux und nbq liegen nach dem Präfix unter `/api/v1`, zum Beispiel `/tsflux/api/v1/message/structured`.
 
 {/* TODO(product): The repository's legacy compose stack still routes `/dip` to the older GoDIP service. Is `/dip` served in production, and should it be documented? */}
 
-## Understand
+## Verstehen {#understand}
 
-- [API keys](./api-keys.mdx): what a key is, which kinds exist, and how a request with a key is checked.
+- [API-Schlüssel](./api-keys.mdx): was ein Schlüssel ist, welche Arten es gibt und wie ein Request mit Schlüssel geprüft wird.
 
-## Do
+## Anwenden {#do}
 
-- [Create an API key](../administer/api-key.mdx): the click path in IoT Breeze, and a first call to test it.
-- [Send alerts to Teams, Slack or a webhook](../watch/alert-channels.mdx): receive IoT Breeze notifications in your own system.
+- [Einen API-Schlüssel anlegen](../administer/api-key.mdx): der Klickweg in IoT Breeze und ein erster Aufruf zum Testen.
+- [Alarme an Teams, Slack oder einen Webhook senden](../watch/alert-channels.mdx): IoT-Breeze-Benachrichtigungen in Ihrem eigenen System empfangen.
 
-## Look up
+## Nachschlagen {#look-up}
 
-- [Authentication](./authentication.mdx): base URL, every credential each API accepts, with exact headers.
-- [Webhook payloads](./webhooks.mdx): what IoT Breeze sends and how to verify the signature.
-- [Errors and limits](./errors-and-limits.mdx): error formats, status codes, rate and size limits.
-- [Ingest API reference](./reference/tsflux.mdx), [Query API reference](./reference/nbq.mdx), [Platform API reference](./reference/ocb.mdx): every endpoint, generated from the OpenAPI specs.
+- [Authentifizierung](./authentication.mdx): Base-URL und alle Zugangsdaten, die jede API akzeptiert, mit exakten Headern.
+- [Webhook-Payloads](./webhooks.mdx): was IoT Breeze sendet und wie Sie die Signatur prüfen.
+- [Fehler und Limits](./errors-and-limits.mdx): Fehlerformate, Statuscodes, Raten- und Größenlimits.
+- [Ingest-API-Referenz](./reference/tsflux.mdx), [Query-API-Referenz](./reference/nbq.mdx), [Plattform-API-Referenz](./reference/ocb.mdx): jeder Endpoint, aus den OpenAPI-Spezifikationen erzeugt.

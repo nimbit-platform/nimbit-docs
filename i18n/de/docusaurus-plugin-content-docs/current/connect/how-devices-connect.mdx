@@ -1,14 +1,14 @@
 ---
-untranslated: true
-title: How devices connect
-description: How a device proves who it is, which protocol to choose, and what happens to a message between the device and your dashboards.
+title: Wie Geräte sich verbinden
+description: Wie ein Gerät sich ausweist, welches Protokoll Sie wählen und was mit einer Nachricht zwischen Gerät und Dashboards passiert.
 sidebar_position: 2
 type: concept
 app:
   routes: ["/onboarding/things/:id"]
+translated_from: 679f3a4
 ---
 
-A device connects to IoT Breeze with credentials that belong to one thing. It can send data over MQTT or HTTP, and the platform accepts data only for that thing. Every message is checked against the thing's thing type before it is stored.
+Ein Gerät verbindet sich mit IoT Breeze über Zugangsdaten, die zu genau einem Thing gehören. Es kann Daten über MQTT oder HTTP senden, und die Plattform nimmt nur Daten für dieses Thing an. Jede Nachricht wird vor dem Speichern gegen den Thing-Typ des Things geprüft.
 
 ```mermaid
 flowchart LR
@@ -20,43 +20,43 @@ flowchart LR
   T --> S[Stored readings]
 ```
 
-## The parts
+## Die Bestandteile {#the-parts}
 
-| Part | What it does |
+| Bestandteil | Aufgabe |
 | --- | --- |
-| Thing | One device or asset, with an ID, a thing type and credentials. |
-| Thing type | Decides which measures are accepted. A message names it in `thingType`. |
-| Credential | Proves the device's identity: a basic username and password, or a JWT token. Both are signed by the thing's **Device key**. |
-| Broker | The MQTT endpoint. It asks the platform to check the credential and then limits the device to its own topics. |
-| tsflux | The ingestion service. It reads MQTT messages and serves the HTTP endpoints. It checks, resolves and stores each message. |
+| Thing | Ein Gerät oder Asset mit ID, Thing-Typ und Zugangsdaten. |
+| Thing-Typ | Legt fest, welche Messwerte akzeptiert werden. Eine Nachricht nennt ihn in `thingType`. |
+| Zugangsdaten | Weisen die Identität des Geräts nach: Benutzername und Passwort (Basic) oder ein JWT-Token. Beide werden mit dem **Geräteschlüssel** des Things signiert. |
+| Broker | Der MQTT-Endpoint. Er lässt die Plattform die Zugangsdaten prüfen und beschränkt das Gerät dann auf seine eigenen Topics. |
+| tsflux | Der Ingestion-Dienst. Er liest MQTT-Nachrichten und stellt die HTTP-Endpoints bereit. Er prüft, löst auf und speichert jede Nachricht. |
 
-## How they work together
+## Wie sie zusammenarbeiten {#how-they-work-together}
 
-The same credential works on both protocols. Over MQTT it is checked once, when the client connects, and the broker then confines the device to its own topics. Over HTTP it is checked on every request.
+Dieselben Zugangsdaten funktionieren mit beiden Protokollen. Über MQTT werden sie einmal geprüft, beim Verbinden des Clients, und der Broker beschränkt das Gerät danach auf seine eigenen Topics. Über HTTP werden sie bei jedem Request geprüft.
 
-tsflux then looks up the thing and its thing type. A message is stored when the thing exists, the thing type matches, and at least one value or a location is left after the checks. A measure that is not in the published thing type is dropped, unless the thing type has **Auto Schema Evolution** on. In that case the measure is added to the thing type and a new version is published at once. See [Drafts, publishing and versions](../model/drafts-and-versions.mdx).
+tsflux schlägt dann das Thing und seinen Thing-Typ nach. Eine Nachricht wird gespeichert, wenn das Thing existiert, der Thing-Typ passt und nach den Prüfungen mindestens ein Wert oder ein Standort übrig bleibt. Ein Messwert, der nicht im veröffentlichten Thing-Typ steht, wird verworfen, es sei denn, beim Thing-Typ ist **Auto-Schemas Entwicklung** eingeschaltet. Dann wird der Messwert dem Thing-Typ hinzugefügt und sofort eine neue Version veröffentlicht. Siehe [Entwürfe, Veröffentlichen und Versionen](../model/drafts-and-versions.mdx).
 
-## Choosing between protocols
+## Das passende Protokoll wählen {#choosing-between-protocols}
 
-| You want | Use |
+| Sie möchten | Verwenden |
 | --- | --- |
-| A permanent connection, low overhead, commands sent back to the device | [MQTT](./mqtt.mdx) |
-| To send from a script, a server or a device that only speaks HTTP, with an answer for each request | [HTTP](./http.mdx) |
-| To keep an InfluxDB client, Telegraf or an existing line protocol writer | [Line protocol](./line-protocol.mdx) |
-| To test without hardware | [Simulate a device](./simulate.mdx) |
-| Many devices behind one box on site | A gateway or Periscope. See [Gateways](../gateways/index.mdx). |
+| Eine dauerhafte Verbindung, wenig Overhead, Befehle zurück an das Gerät | [MQTT](./mqtt.mdx) |
+| Aus einem Skript, von einem Server oder einem Gerät senden, das nur HTTP spricht, mit einer Antwort pro Request | [HTTP](./http.mdx) |
+| Einen InfluxDB-Client, Telegraf oder einen vorhandenen Line-Protocol-Writer weiterverwenden | [Line Protocol](./line-protocol.mdx) |
+| Ohne Hardware testen | [Ein Gerät simulieren](./simulate.mdx) |
+| Viele Geräte hinter einer Box vor Ort | Ein Gateway oder Periscope. Siehe [Gateways](../gateways/index.mdx). |
 
-Commands travel only over MQTT, and only to a device that is connected at that moment.
+Befehle laufen nur über MQTT und nur zu einem Gerät, das in diesem Moment verbunden ist.
 
-## Limits
+## Grenzen {#limits}
 
-| Limit | Value |
+| Grenze | Wert |
 | --- | --- |
-| MQTT versions and QoS | 3.1.1, QoS 0 and 1. |
-| HTTP body | 10 MB. |
-| Where the port and TLS setting come from | Your deployment. **Gateway url** in **Connection info** shows them. |
+| MQTT-Versionen und QoS | 3.1.1, QoS 0 und 1. |
+| HTTP-Body | 10 MiB. |
+| Woher Port und TLS-Einstellung kommen | Von Ihrem Deployment. Die **Gateway-URL** unter **Verbindungsinformationen** zeigt sie. |
 
-## Related
+## Verwandte Seiten {#related}
 
-- [MQTT topics and client ID](./mqtt-topics.mdx) · [Ingest endpoints and status codes](./ingest-endpoints.mdx)
-- [Thing types, things and interfaces](../model/things-and-types.mdx)
+- [MQTT-Topics und Client-ID](./mqtt-topics.mdx) · [Ingest-Endpoints und Statuscodes](./ingest-endpoints.mdx)
+- [Thing-Typen, Things und Interfaces](../model/things-and-types.mdx)

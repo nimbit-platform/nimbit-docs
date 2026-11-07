@@ -1,55 +1,55 @@
 ---
-untranslated: true
-title: Show state by color, icon and motion
-sidebar_label: States and colors
-description: Add rules so an element changes color, icon and motion when its value crosses a limit.
+title: Zustand durch Farbe, Icon und Bewegung zeigen
+sidebar_label: Zustände und Farben
+description: Regeln hinzufügen, damit ein Element Farbe, Icon und Bewegung ändert, wenn sein Wert eine Grenze überschreitet.
 type: how-to
 sidebar_position: 4
 app:
   routes: ["/canvas/:id"]
   tour: canvas-data
+translated_from: 70da89f
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
 
-Set rules on a bound element so that trouble stands out: a tank turns red, a pump icon spins, an alarm blinks. Rules decide a named state; the state decides how the element looks.
+Setzen Sie Regeln auf ein gebundenes Element, damit Störungen auffallen: Ein Tank wird rot, ein Pumpen-Icon dreht sich, ein Alarm blinkt. Regeln bestimmen einen benannten Zustand, und der Zustand bestimmt, wie das Element aussieht.
 
-## Before you start
-- A role that may update canvases.
-- An element already bound to a value. Without a binding the **States** tab says to add a live value first. See [Bind elements to live values](./bind-live-values.mdx).
+## Bevor Sie beginnen {#before-you-start}
+- Eine Rolle, die Canvases aktualisieren darf.
+- Ein Element, das schon an einen Wert gebunden ist. Ohne Bindung bittet der Tab **Zustände**, zuerst einen Live-Wert hinzuzufügen. Siehe [Elemente an Live-Werte binden](./bind-live-values.mdx).
 
-## Steps
+## Schritte {#steps}
 
-1. Open the canvas, select **Edit canvas** and select the element.
-2. Open the **States** tab. **State from** shows the value now.
-3. Add a rule. Under **When**, pick the operator and the value, for example greater than a limit.
-4. In **State**, name the state, for example `high alarm`.
-5. Pick a **Severity**: **Automatic**, **Normal**, **Info**, **Warning**, **Alarm** or **Fault**. **Automatic** derives it from the state name (fault, alarm, warning); any other name is Normal.
-6. Optional: pick a **Color**. Without one, a warning, alarm or fault takes its severity's color, and quiet states keep the element's look. For icon elements you can also pick an **Icon** and a **Motion**: **Blink**, **Clock**, **Spin** or **No motion**.
-7. Add more rules with **Else if**, and a fallback with **Otherwise**. Rules run top to bottom and the first match sets the state. Use **Move up** and **Move down** to order them.
-8. For a text element, choose **Applies to**: **Whole text** or **Only this value**.
-9. Select **Preview**, then **Save**.
+1. Öffnen Sie das Canvas, wählen Sie **Canvas Bearbeiten** und wählen Sie das Element.
+2. Öffnen Sie den Tab **Zustände**. **Zustand aus** zeigt den aktuellen Wert.
+3. Fügen Sie eine Regel hinzu. Wählen Sie unter **Wenn** den Operator und den Wert, zum Beispiel größer als eine Grenze.
+4. Benennen Sie unter **Zustand** den Zustand, zum Beispiel `high alarm`.
+5. Wählen Sie einen **Schweregrad**: **Automatisch**, **Normal**, **Info**, **Warnung**, **Alarm** oder **Störung**. **Automatisch** leitet ihn vom Zustandsnamen ab (fault, alarm, warning), jeder andere Name ist Normal.
+6. Optional: Wählen Sie eine **Farbe**. Ohne sie übernimmt eine Warnung, ein Alarm oder eine Störung die Farbe ihres Schweregrads, und ruhige Zustände behalten das Aussehen des Elements. Für Icon-Elemente können Sie auch ein **Icon** und eine **Bewegung** wählen: **Blinken**, **Uhr**, **Drehen** oder **Keine Bewegung**.
+7. Fügen Sie mit **Sonst wenn** weitere Regeln hinzu und mit **Sonst** eine Rückfallregel. Regeln laufen von oben nach unten, und der erste Treffer setzt den Zustand. Mit **Nach oben** und **Nach unten** ordnen Sie sie.
+8. Wählen Sie bei einem Textelement **Gilt für**: **Ganzen Text** oder **Nur diesen Wert**.
+9. Wählen Sie **Vorschau** und dann **Speichern**.
 
 <Screenshot
   page="visualize/canvas/states-and-colors"
   id="01-states-tab"
   route="/canvas/:id"
   state="Inspector States tab for a Value element with two rules: greater than 80 named high alarm with severity Alarm, and Otherwise named normal"
-  alt="The States tab with two rules for a Value element"
+  alt="Der Tab Zustände mit zwei Regeln für ein Wert-Element"
 />
 
-For a **State timeline** element the rules are **States** instead: each has an operator (**Equals**, **Below**, **Between** or **From**) and a color. Values that match no state are left blank. With no states defined, every distinct value gets its own color.
+Bei einem Element **Zustandsverlauf** heißen die Regeln stattdessen **Zustände**: Jede hat einen Operator (**Gleich**, **Unter**, **Zwischen** oder **Ab**) und eine Farbe. Werte, die zu keinem Zustand passen, bleiben leer. Sind keine Zustände definiert, erhält jeder verschiedene Wert eine eigene Farbe.
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-In **Preview**, the element shows the color, icon and motion of the matching state. When a value is in alarm, a chip in the canvas header lists it; selecting the chip jumps to the next alarm.
+In der **Vorschau** zeigt das Element Farbe, Icon und Bewegung des passenden Zustands. Ist ein Wert im Alarm, listet ihn ein Chip in der Kopfzeile des Canvas, und der Chip springt zum nächsten Alarm.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **The element keeps its normal look**: the matching rule has severity Normal and no color. Pick a color or raise the severity.
-- **A rule never matches**: an earlier rule matches first. Reorder the rules.
-- **The element turns Stale**: the value stopped updating. Set **Consider data stale after** on the **Data** tab.
-- **Too many different values to color**: a timeline over a text measure has no states. Define states in the inspector.
+- **Das Element behält sein normales Aussehen**: Die passende Regel hat den Schweregrad Normal und keine Farbe. Wählen Sie eine Farbe oder erhöhen Sie den Schweregrad.
+- **Eine Regel trifft nie zu**: Eine frühere Regel trifft zuerst zu. Ordnen Sie die Regeln neu.
+- **Das Element wird Veraltet**: Der Wert wird nicht mehr aktualisiert. Setzen Sie **Daten als veraltet betrachten nach** im Tab **Daten**.
+- **Zu viele verschiedene Werte zum Einfärben**: Ein Verlauf über eine Text-Telemetrie hat keine Zustände. Definieren Sie Zustände im Inspektor.
 
-## Related
-- [Bind elements to live values](./bind-live-values.mdx) · [Canvas editor reference](./editor-reference.mdx)
+## Verwandte Seiten {#related}
+- [Elemente an Live-Werte binden](./bind-live-values.mdx) · [Referenz des Canvas-Editors](./editor-reference.mdx)

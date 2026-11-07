@@ -1,64 +1,64 @@
 ---
-untranslated: true
-title: Delete data
-description: Delete recorded readings of a tenant, thing type or things, or delete a thing together with all its data.
+title: Daten löschen
+description: Löschen Sie aufgezeichnete Messwerte eines Tenants, Thing-Typs oder von Things, oder löschen Sie ein Thing samt allen seinen Daten.
 type: how-to
 sidebar_position: 8
 app:
   routes: ["/tenant-settings", "/onboarding/things/:id"]
+translated_from: b6ed908
 ---
 
-Remove recorded readings, for example simulator test data before go-live, or take a retired device out together with its history. A deletion runs as a job and cannot be undone once it has removed rows.
+Entfernen Sie aufgezeichnete Messwerte, zum Beispiel Testdaten des Simulators vor dem Go-live, oder nehmen Sie ein ausgemustertes Gerät samt seinem Verlauf heraus. Eine Löschung läuft als Auftrag und lässt sich nicht rückgängig machen, sobald sie Zeilen entfernt hat.
 
-## Before you start
+## Bevor Sie beginnen {#before-you-start}
 
-- You need the **Data deletion** permission. Only **Admin** has it. Without it, the **Data** tab says **Deleting data needs permission**.
-- To delete a thing, you also need to delete things. **Admin**, **Manager** and **Modeler** can.
-- If simulations are running on the scope, stop them first. Readings they send after the deletion starts would stay.
-- Backups are not touched, and data already forwarded to other systems is not deleted.
+- Sie brauchen die Berechtigung „Datenlöschung“. Nur **Administrator** hat sie. Ohne sie steht im Tab **Daten**: **Zum Löschen von Daten fehlt die Berechtigung**.
+- Um ein Thing zu löschen, müssen Sie außerdem Things löschen dürfen. **Administrator**, **Manager** und **Modellierer** dürfen das.
+- Laufen im Bereich Simulationen, stoppen Sie sie zuerst. Messwerte, die sie nach dem Start der Löschung senden, würden bleiben.
+- Backups bleiben unberührt, und bereits an andere Systeme weitergeleitete Daten werden nicht gelöscht.
 
-## Delete readings
+## Messwerte löschen {#delete-readings}
 
-1. Open **Administration › Tenant Settings › Data**.
-2. Under **Which data**, choose **All data**, **Simulated data** or **Data with a tag**. For a tag, enter the **Tag** and its **Value**.
-3. Under **Of which things**, choose **A thing type** or **Selected things**. **The whole tenant** is offered only for simulated data or a tag.
-4. Set the **Time range**: **All time**, **Last 7 days**, **Last 30 days** or a custom range.
-5. Check **What will be deleted**, including the estimate.
-6. Enter a **Reason** of at least 3 characters. It is kept in the audit log.
-7. Under **Start**, choose **In 10 minutes (cancellable)** or **Immediately**.
-8. Type the phrase shown under **Type … to confirm**, then select **Schedule deletion**.
+1. Öffnen Sie **Administration › Mandanteneinstellungen › Daten**.
+2. Wählen Sie unter **Welche Daten** die Option **Alle Daten**, **Simulierte Daten** oder **Daten mit einem Tag**. Geben Sie bei einem Tag den **Tag** und seinen **Wert** ein.
+3. Wählen Sie unter **Von welchen Things** die Option **Ein Thing-Typ** oder **Ausgewählte Things**. **Der ganze Tenant** gibt es nur für simulierte Daten oder einen Tag.
+4. Legen Sie den **Zeitraum** fest: **Gesamter Zeitraum**, **Letzte 7 Tage**, **Letzte 30 Tage** oder einen eigenen Bereich.
+5. Prüfen Sie **Was gelöscht wird**, einschließlich der Schätzung.
+6. Geben Sie einen **Grund** mit mindestens 3 Zeichen ein. Er wird im Prüfprotokoll gespeichert.
+7. Wählen Sie unter **Start** die Option **In 10 Minuten (abbrechbar)** oder **Sofort**.
+8. Geben Sie den Ausdruck ein, der unter **Zur Bestätigung … eingeben** steht, und wählen Sie **Löschung planen**.
 
-Optional in step 3: tick **Also delete the things themselves**. The things go with every reading they recorded.
+Optional in Schritt 3: Setzen Sie ein Häkchen bei **Auch die Things selbst löschen**. Die Things werden mit jedem Messwert gelöscht, den sie aufgezeichnet haben.
 
-## Delete a thing with its data
+## Ein Thing mit seinen Daten löschen {#delete-a-thing-with-its-data}
 
-1. Open the thing and select **Delete thing**.
-2. Tick **Also delete all recorded data of this thing**. Without it, only the thing goes and its data stays in storage until its retention ends.
-3. Enter a **Reason**, choose when to **Start**, and type the thing's ID to confirm.
-4. Select **Delete thing and data**.
+1. Öffnen Sie das Thing und wählen Sie **Thing löschen**.
+2. Setzen Sie ein Häkchen bei **Auch alle aufgezeichneten Daten dieses Things löschen**. Ohne es wird nur das Thing gelöscht, und seine Daten bleiben gespeichert, bis ihre Aufbewahrungsfrist endet.
+3. Geben Sie einen **Grund** ein, wählen Sie unter **Start**, wann die Löschung beginnt, und geben Sie zur Bestätigung die ID des Things ein.
+4. Wählen Sie **Thing und Daten löschen**.
 
-The option appears only if you have the **Data deletion** permission.
+Die Option erscheint nur, wenn Sie die Berechtigung „Datenlöschung“ haben.
 
-## Cancel or follow a deletion
+## Eine Löschung abbrechen oder verfolgen {#cancel-or-follow-a-deletion}
 
-Open **Administration › Tenant Settings › Schedules**. The job is listed there. With the delayed start you can cancel it for 10 minutes. An immediate deletion can be stopped, but rows already deleted stay deleted.
+Öffnen Sie **Administration › Mandanteneinstellungen › Zeitpläne**. Der Auftrag steht dort in der Liste. Bei verzögertem Start können Sie ihn 10 Minuten lang abbrechen. Eine sofortige Löschung lässt sich stoppen, aber bereits gelöschte Zeilen bleiben gelöscht.
 
-:::warning Deleting data cannot be undone
-Check the scope and time range in **What will be deleted** before you confirm. Charts, exports, reports and rule history lose the data. Charts that read rollups switch to raw data for the affected time until the rollups have resynced.
+:::warning Das Löschen von Daten lässt sich nicht rückgängig machen
+Prüfen Sie Umfang und Zeitraum unter **Was gelöscht wird**, bevor Sie bestätigen. Diagramme, Exporte, Berichte und die Regelhistorie verlieren die Daten. Diagramme, die Rollups lesen, wechseln für den betroffenen Zeitraum auf Rohdaten, bis die Rollups neu synchronisiert sind.
 :::
 
-## Check that it worked
+## Prüfen, ob es funktioniert hat {#check-that-it-worked}
 
-The job shows **Completed** with the number of rows deleted. Open a dashboard of the thing or thing type for the same range: the chart is empty.
+Der Auftrag zeigt **Abgeschlossen** mit der Anzahl gelöschter Zeilen. Öffnen Sie ein Dashboard des Things oder Thing-Typs für denselben Zeitraum: Das Diagramm ist leer.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **You cannot confirm**: simulations are still running on the scope, or the reason is shorter than 3 characters, or the typed phrase differs.
-- **The job is Failed**: a data store could not be reached. Use **Retry from the last checkpoint** once it is back.
-- **Disk usage did not drop**: space is reclaimed later by the retention sweep.
-- **Nothing in this selection to delete**: no data matches the tag and range.
+- **Sie können nicht bestätigen**: Im Bereich laufen noch Simulationen, der Grund hat weniger als 3 Zeichen, oder der eingegebene Ausdruck weicht ab.
+- **Der Auftrag ist Fehlgeschlagen**: Ein Datenspeicher war nicht erreichbar. Wählen Sie **Ab dem letzten Checkpoint wiederholen**, sobald er wieder da ist.
+- **Der Speicherverbrauch ist nicht gesunken**: Speicherplatz wird später durch die Aufbewahrungsbereinigung freigegeben.
+- **In dieser Auswahl gibt es nichts zu löschen**: Keine Daten passen zu Tag und Zeitraum.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Tenant settings](./tenant-settings.mdx)
-- [Audit log](./audit-log.mdx)
+- [Tenant-Einstellungen](./tenant-settings.mdx)
+- [Prüfprotokoll](./audit-log.mdx)

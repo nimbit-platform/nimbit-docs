@@ -1,79 +1,79 @@
 ---
-untranslated: true
-title: Show things on a map
-description: Find things on the map, filter them, and replay the routes of mobile things.
+title: Things auf einer Karte zeigen
+description: Things auf der Karte finden, filtern und die Routen mobiler Things abspielen.
 type: how-to
 sidebar_position: 8
 app:
   routes: ["/geo/map"]
   tour: find-your-way-watch
+translated_from: 70da89f
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
 
-Open the map to see every thing that has reported a position, filter them, and replay where mobile things went. To draw areas that raise events, see [Draw a geofence](../watch/geofence.mdx).
+Auf der Karte sehen Sie jedes Thing, das eine Position gemeldet hat, können sie filtern und nachvollziehen, wohin sich mobile Things bewegt haben. Wie Sie Bereiche zeichnen, die Events auslösen, lesen Sie unter [Einen Geofence zeichnen](../watch/geofence.mdx).
 
-## Before you start
-- Things with a position. A thing that reports latitude and longitude in its data sets this by itself. For others, enter a location on the thing page with **Set location**. With none, the map says **No thing has a reported position yet.**
-- To show a map on a dashboard instead, use the **Map** or **Thing List & Map** widget from the [widget gallery](./widgets.mdx).
+## Bevor Sie beginnen {#before-you-start}
+- Things mit einer Position. Ein Thing, das Breiten- und Längengrad in seinen Daten meldet, setzt sie selbst. Bei anderen tragen Sie auf der Seite des Things mit **Standort festlegen** einen Standort ein. Ohne Position zeigt die Karte **Noch keine Position für ein Thing gemeldet.**
+- Um stattdessen eine Karte auf einem Dashboard zu zeigen, nehmen Sie das Widget **Karte** oder **Thing-Liste & Karte** aus der [Widget-Galerie](./widgets.mdx).
 
-## Find things
+## Things finden {#find-things}
 
-1. Open **Monitoring › Map**. The mode is **Explore**. The panel header reads **Things on map** with a count such as `12 of 15 with a position`.
-2. Type a name or ID in the search box. It shows the first matches; refine the search to see more.
-3. Narrow the map with filters. **Reset** clears them.
-4. Select a pin for the thing's name, connection and last position. **Open thing** goes to its page.
-5. Select **Fit to things** to zoom to what is shown.
+1. Öffnen Sie **Überwachung › Karte**. Der Modus ist **Erkunden**. Die Kopfzeile des Panels lautet **Things auf der Karte** mit einer Anzahl wie `12 von 15 mit einer Position`.
+2. Geben Sie im Suchfeld einen Namen oder eine ID ein. Es zeigt die ersten Treffer. Verfeinern Sie die Suche, um mehr zu sehen.
+3. Schränken Sie die Karte mit Filtern ein. **Zurücksetzen** löscht sie.
+4. Wählen Sie einen Marker, um Name, Verbindung und letzte Position des Things zu sehen. **Thing öffnen** führt zu seiner Seite.
+5. Wählen Sie **An Things anpassen**, um auf die angezeigten Things zu zoomen.
 
-| Filter | Options |
+| Filter | Optionen |
 | --- | --- |
-| **Thing type** | One or more thing types |
-| **Things** | Single things |
-| **Tags** | Things with these tags |
-| **Connection** | **Online**, **Offline**, **Stale · no fix 30 min+** |
-| **Last position** | **Any time**, **Within 15 min**, **Within 1 h**, **Within 24 h**, **Older than 24 h** |
-| **Motion** | **Any**, **Moving**, **Parked** |
-| **Geofence** | **Anywhere**, or **Inside** a chosen geofence |
+| **Thing-Typ** | Ein oder mehrere Thing-Typen |
+| **Things** | Einzelne Things |
+| **Tags** | Things mit diesen Tags |
+| **Verbindung** | **Online**, **Offline**, **Veraltet · seit über 30 Min. keine Position** |
+| **Letzte Position** | **Beliebiger Zeitpunkt**, **Innerhalb von 15 Min.**, **Innerhalb von 1 Std.**, **Innerhalb von 24 Std.**, **Älter als 24 Std.** |
+| **Bewegung** | **Beliebig**, **In Bewegung**, **Geparkt** |
+| **Geofence** | **Überall** oder **Innerhalb** eines gewählten Geofences |
 
-Use **Color by** to color pins by **Status** or **Thing type**. Square or arrow pins are mobile things. Close pins group into clusters; zoom in to split them.
+Mit **Farbe nach** färben Sie Marker nach **Status** oder **Thing-Typ**. Eckige oder pfeilförmige Marker sind mobile Things. Nahe Marker werden zu Gruppen zusammengefasst. Zoomen Sie hinein, um sie aufzulösen.
 
 <Screenshot
   page="visualize/map"
   id="01-map-explore"
   route="/geo/map"
   state="Explore mode with 15 things around one city, some clustered; side panel open showing Things on map count and filters; legend visible"
-  alt="The map in Explore mode with the filter panel"
+  alt="Die Karte im Modus Erkunden mit dem Filterpanel"
 />
 
-## Replay a route
+## Eine Route abspielen {#replay-a-route}
 
-1. Switch to **Routes**.
-2. Select mobile things in the panel, up to 10.
-3. Pick a **Time window**: **24 h**, **7 days** or **30 days**.
-4. Select **Show routes**. The map draws each route and the panel shows the distance, for example `42 km total`.
-5. Select **Play**. Change the **Playback speed**, and use **Point spacing** to thin a dense track.
+1. Wechseln Sie zu **Routen**.
+2. Wählen Sie im Panel mobile Things aus, höchstens 10.
+3. Wählen Sie ein **Zeitfenster**: **24 Std.**, **7 Tage** oder **30 Tage**.
+4. Wählen Sie **Routen anzeigen**. Die Karte zeichnet jede Route, und das Panel zeigt die Strecke, zum Beispiel `42 km gesamt`.
+5. Wählen Sie **Abspielen**. Ändern Sie die **Wiedergabegeschwindigkeit** und verdünnen Sie mit **Punktabstand** eine dichte Spur.
 
-**Stops & dwell** lists places where the thing stayed. **Minimum dwell** hides short stops, **Highlight travelled part** marks how far the replay has got, and **Fit to routes** zooms to the tracks.
+**Stopps & Standzeit** listet Orte, an denen das Thing geblieben ist. **Mindest-Standzeit** blendet kurze Stopps aus, **Zurückgelegte Strecke hervorheben** markiert, wie weit die Wiedergabe ist, und **An Routen anpassen** zoomt auf die Spuren.
 
 <Screenshot
   page="visualize/map"
   id="02-map-routes"
   route="/geo/map?mode=routes"
   state="Routes mode with two mobile things selected, 7 days window, routes drawn, Stops and dwell list with three stops"
-  alt="Routes mode showing two routes and the stops list"
+  alt="Der Modus Routen mit zwei Routen und der Liste der Stopps"
 />
 
-The mode is in the address (`?mode=routes`), so you can bookmark it. **Geofences** and **Events** modes are covered in [Draw a geofence](../watch/geofence.mdx).
+Der Modus steht in der Adresse (`?mode=routes`), Sie können ihn also als Lesezeichen speichern. Die Modi **Geofences** und **Ereignisse** behandelt [Einen Geofence zeichnen](../watch/geofence.mdx).
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-Pins appear for the filtered things and the count matches the panel. In **Routes**, the route and distance show for each selected thing.
+Für die gefilterten Things erscheinen Marker, und die Anzahl stimmt mit dem Panel überein. Unter **Routen** werden für jedes gewählte Thing Route und Strecke angezeigt.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **A thing is missing**: it has no position. Set one on its thing page, or send latitude and longitude.
-- **Fewer things than expected**: a filter is active. Select **Reset**.
-- **No route drawn**: the thing sent no positions in the time window. Pick a longer window.
+- **Ein Thing fehlt**: Es hat keine Position. Legen Sie auf seiner Seite eine fest oder senden Sie Breiten- und Längengrad.
+- **Weniger Things als erwartet**: Ein Filter ist aktiv. Wählen Sie **Zurücksetzen**.
+- **Keine Route gezeichnet**: Das Thing hat im Zeitfenster keine Positionen gesendet. Wählen Sie ein längeres Fenster.
 
-## Related
-- [Draw a geofence](../watch/geofence.mdx) · [Check a thing's health](../watch/thing-health.mdx)
+## Verwandte Seiten {#related}
+- [Einen Geofence zeichnen](../watch/geofence.mdx) · [Den Zustand eines Things prüfen](../watch/thing-health.mdx)

@@ -1,65 +1,65 @@
 ---
-untranslated: true
-title: Command-line reference
-description: Every periscope command with its flags, defaults and exit codes.
+title: Kommandozeilen-Referenz
+description: Jeder periscope-Befehl mit Flags, Vorgaben und Exit-Codes.
 type: reference
 sidebar_position: 14
 app:
   routes: ["/onboarding/gateways"]
+translated_from: 810b8a2
 ---
 
-`periscope` is one binary with subcommands. In a running installation, `periscope serve` does discovery, apply and streaming by itself. The other commands set up, check and troubleshoot.
+`periscope` ist ein Binary mit Unterbefehlen. In einer laufenden Installation erledigt `periscope serve` Erkennung, Anwenden und Streaming selbst. Die anderen Befehle richten ein, prüfen und beheben Probleme.
 
-Every command that reads the configuration takes `-config`. Without it, the file is `$PERISCOPE_CONFIG`, else `periscope.toml` in the working directory. Logs go to standard error and results to standard output. In the container, run a command with `docker exec periscope periscope <command>`.
+Jeder Befehl, der die Konfiguration liest, akzeptiert `-config`. Ohne das Flag ist die Datei `$PERISCOPE_CONFIG`, sonst `periscope.toml` im Arbeitsverzeichnis. Logs gehen auf die Standardfehlerausgabe, Ergebnisse auf die Standardausgabe. Im Container führen Sie einen Befehl mit `docker exec periscope periscope <command>` aus.
 
-## Commands
+## Befehle {#commands}
 
-| Command | Purpose |
+| Befehl | Zweck |
 | --- | --- |
-| `periscope validate` | Check the configuration and print the resolved plan without secrets. |
-| `periscope discover` | Read the plant, write snapshots and proposals. |
-| `periscope apply` | Create what is confirmed in the platform, write the mapping. |
-| `periscope run` | Stream the mapped values. No discovery, no web UI. |
-| `periscope serve` | The agent: `run`, plus discovery, apply, the HTTP API and the web UI. |
-| `periscope verify` | Ask the platform whether every applied thing received values. |
-| `periscope enroll` | Onboard as a gateway, or store a service account's session. |
-| `periscope import telegraf-s7` | Import a Telegraf S7 address list as proposals. |
-| `periscope export telegraf` | Write the applied S7 model back as Telegraf configuration. |
-| `periscope opcua reset-pin` | Forget a pinned OPC UA server certificate. |
-| `periscope healthcheck` | Probe the agent's liveness, for a container health check. |
-| `periscope sim` | Run a test plant: `sparkplug`, `uns` or `modbus`. |
-| `periscope version` | Print the version. |
+| `periscope validate` | Die Konfiguration prüfen und den aufgelösten Plan ohne Geheimnisse ausgeben. |
+| `periscope discover` | Die Anlage lesen, Snapshots und Vorschläge schreiben. |
+| `periscope apply` | Das Bestätigte in der Plattform anlegen, die Zuordnung schreiben. |
+| `periscope run` | Die zugeordneten Werte streamen. Keine Erkennung, keine Web-Oberfläche. |
+| `periscope serve` | Der Agent: `run` plus Erkennung, Anwenden, HTTP-API und Web-Oberfläche. |
+| `periscope verify` | Die Plattform fragen, ob jedes angewendete Thing Werte erhalten hat. |
+| `periscope enroll` | Als Gateway einrichten oder die Sitzung eines Servicekontos speichern. |
+| `periscope import telegraf-s7` | Eine Telegraf-S7-Adressliste als Vorschläge importieren. |
+| `periscope export telegraf` | Das angewendete S7-Modell als Telegraf-Konfiguration zurückschreiben. |
+| `periscope opcua reset-pin` | Ein angeheftetes OPC-UA-Serverzertifikat vergessen. |
+| `periscope healthcheck` | Die Liveness des Agents prüfen, für einen Container-Healthcheck. |
+| `periscope sim` | Eine Testanlage starten: `sparkplug`, `uns` oder `modbus`. |
+| `periscope version` | Die Version ausgeben. |
 
-## validate
+## validate {#validate}
 
-Checks every plugin table, where an unknown key is an error, and reads the files a plugin names. It never connects to the plant. Exit 0 when the configuration is valid.
+Prüft jede Plugin-Tabelle, wobei ein unbekannter Schlüssel ein Fehler ist, und liest die Dateien, die ein Plugin nennt. Verbindet sich nie mit der Anlage. Exit 0, wenn die Konfiguration gültig ist.
 
-| Flag | Default | Meaning |
+| Flag | Vorgabe | Bedeutung |
 | --- | --- | --- |
-| `-config` | `$PERISCOPE_CONFIG`, else `periscope.toml` | The configuration file. |
-| `-offline` | off | Don't sign in and don't read the tenant's features. |
+| `-config` | `$PERISCOPE_CONFIG`, sonst `periscope.toml` | Die Konfigurationsdatei. |
+| `-offline` | aus | Nicht anmelden und die Features des Tenants nicht lesen. |
 
-## discover
+## discover {#discover}
 
-Runs every input's discovery once, writes `snapshot-<input>.json`, derives proposals, replays the web UI's edits, and writes `proposals.yaml`. An input whose discovery fails keeps its previous proposals. Flag: `-config`.
+Führt die Erkennung jedes Eingangs einmal aus, schreibt `snapshot-<input>.json`, leitet Vorschläge ab, spielt die Änderungen der Web-Oberfläche erneut ein und schreibt `proposals.yaml`. Ein Eingang, dessen Erkennung fehlschlägt, behält seine bisherigen Vorschläge. Flag: `-config`.
 
-## apply
+## apply {#apply}
 
-Creates the confirmed proposals, thing types first and then their things, and rebuilds `mapping.json`. In `zero-touch` mode it also creates the proposed ones. A failed item stays `confirmed` and is retried.
+Legt die bestätigten Vorschläge an, erst Thing-Typen, dann ihre Things, und baut `mapping.json` neu auf. Im Modus `zero-touch` legt es auch die vorgeschlagenen an. Ein fehlgeschlagenes Element bleibt `confirmed` und wird erneut versucht.
 
-| Flag | Default | Meaning |
+| Flag | Vorgabe | Bedeutung |
 | --- | --- | --- |
-| `-config` | `$PERISCOPE_CONFIG`, else `periscope.toml` | The configuration file. |
-| `-dry-run` | off | Print what would be created or updated. Writes nothing. |
-| `-json` | off | With `-dry-run`: print the plan as JSON. |
+| `-config` | `$PERISCOPE_CONFIG`, sonst `periscope.toml` | Die Konfigurationsdatei. |
+| `-dry-run` | aus | Ausgeben, was angelegt oder aktualisiert würde. Schreibt nichts. |
+| `-json` | aus | Mit `-dry-run`: den Plan als JSON ausgeben. |
 
-## run and serve
+## run und serve {#run-and-serve}
 
-`run` streams with the stored mapping until stopped with Ctrl-C or SIGTERM. It writes `stats.json` every 30 seconds. `serve` is what the container image starts. It also discovers at start and every `agent.discovery_interval`, applies after every discovery and confirmation, and serves the HTTP API and web UI on `[server] listen`. It reloads when the file changes, on SIGHUP, and at `POST /api/v1/agent/reload`. Flag: `-config`.
+`run` streamt mit der gespeicherten Zuordnung, bis es mit Strg-C oder SIGTERM beendet wird. Es schreibt alle 30 Sekunden `stats.json`. `serve` startet das Container-Image. Es erkennt außerdem beim Start und alle `agent.discovery_interval`, wendet nach jeder Erkennung und Bestätigung an und stellt die HTTP-API und die Web-Oberfläche auf `[server] listen` bereit. Es lädt neu, wenn sich die Datei ändert, bei SIGHUP und bei `POST /api/v1/agent/reload`. Flag: `-config`.
 
-### Run as a systemd service
+### Als systemd-Dienst betreiben {#run-as-a-systemd-service}
 
-Without a container, copy the binary to `/usr/local/bin/periscope` and install this unit as `/etc/systemd/system/periscope.service`:
+Ohne Container kopieren Sie das Binary nach `/usr/local/bin/periscope` und installieren diese Unit als `/etc/systemd/system/periscope.service`:
 
 ```ini
 [Unit]
@@ -77,91 +77,91 @@ DynamicUser=yes
 WantedBy=multi-user.target
 ```
 
-Run `periscope enroll -config /etc/periscope/periscope.toml -code <code>` once before the first start.
+Führen Sie vor dem ersten Start einmal `periscope enroll -config /etc/periscope/periscope.toml -code <code>` aus.
 
-## verify
+## verify {#verify}
 
-Asks nbq, the platform's query service, whether every applied thing received values in a window that ends now. See [Verify that data arrived](./verify.mdx).
+Fragt nbq, den Abfragedienst der Plattform, ob jedes angewendete Thing in einem Fenster, das jetzt endet, Werte erhalten hat. Siehe [Prüfen, ob Daten angekommen sind](./verify.mdx).
 
-| Flag | Default | Meaning |
+| Flag | Vorgabe | Bedeutung |
 | --- | --- | --- |
-| `-config` | `$PERISCOPE_CONFIG`, else `periscope.toml` | The configuration file. |
-| `-since` | `5m` | The window to look for values in. |
-| `-nbq-url` | `[ocb] url` + `/nbq` | nbq's base URL, to bypass the platform's proxy. |
+| `-config` | `$PERISCOPE_CONFIG`, sonst `periscope.toml` | Die Konfigurationsdatei. |
+| `-since` | `5m` | Das Fenster, in dem nach Werten gesucht wird. |
+| `-nbq-url` | `[ocb] url` + `/nbq` | Basis-URL von nbq, um den Proxy der Plattform zu umgehen. |
 
-| Exit | Meaning |
+| Exit | Bedeutung |
 | --- | --- |
-| 0 | Every applied thing received values, and none lies in the future. |
-| 1 | A thing received nothing, a value lies in the future, or nothing is applied. |
-| 2 | nbq couldn't be asked. Nothing was verified. |
+| 0 | Jedes angewendete Thing hat Werte erhalten, und kein Wert liegt in der Zukunft. |
+| 1 | Ein Thing hat nichts erhalten, ein Wert liegt in der Zukunft oder es ist nichts angewendet. |
+| 2 | nbq konnte nicht gefragt werden. Nichts wurde geprüft. |
 
-## enroll
+## enroll {#enroll}
 
-With `-code`, onboards the agent as a gateway: it generates an ES256 key pair in `agent.state_dir/gateway_key.pem` (mode 0600), redeems the one-time code with the public half, and keeps the gateway's IDs in `gateway.json`. Then set `[ocb] gateway = true`. A code works once.
+Mit `-code` richtet es den Agent als Gateway ein: Es erzeugt ein ES256-Schlüsselpaar in `agent.state_dir/gateway_key.pem` (Modus 0600), löst den einmaligen Code mit der öffentlichen Hälfte ein und behält die IDs des Gateways in `gateway.json`. Setzen Sie danach `[ocb] gateway = true`. Ein Code funktioniert einmal.
 
-Without `-code`, it signs the service account (`[ocb] email`) in once and stores the session in `agent.state_dir/enrollment.json`. The password comes from the first line of stdin or from `PERISCOPE_PASSWORD`, and is never stored.
+Ohne `-code` meldet es das Servicekonto (`[ocb] email`) einmal an und speichert die Sitzung in `agent.state_dir/enrollment.json`. Das Passwort kommt aus der ersten Zeile von stdin oder aus `PERISCOPE_PASSWORD` und wird nie gespeichert.
 
-| Flag | Default | Meaning |
+| Flag | Vorgabe | Bedeutung |
 | --- | --- | --- |
-| `-config` | `$PERISCOPE_CONFIG`, else `periscope.toml` | The configuration file. |
-| `-code` | off | Onboard as a gateway with this code. `-` reads it from stdin. |
-| `-email` | `[ocb] email` | The service account. |
-| `-password-stdin` | off, uses `$PERISCOPE_PASSWORD` | Read the password from the first line of stdin. |
-| `-force` | off | Replace an existing enrollment and end its session at the platform. A running `serve` signs in with the new key at its next token. |
-| `-revoke` | off | End the stored service-account session and remove `enrollment.json`. |
+| `-config` | `$PERISCOPE_CONFIG`, sonst `periscope.toml` | Die Konfigurationsdatei. |
+| `-code` | aus | Mit diesem Code als Gateway einrichten. `-` liest ihn von stdin. |
+| `-email` | `[ocb] email` | Das Servicekonto. |
+| `-password-stdin` | aus, verwendet `$PERISCOPE_PASSWORD` | Das Passwort aus der ersten Zeile von stdin lesen. |
+| `-force` | aus | Eine bestehende Registrierung ersetzen und ihre Sitzung bei der Plattform beenden. Ein laufendes `serve` meldet sich beim nächsten Token mit dem neuen Schlüssel an. |
+| `-revoke` | aus | Die gespeicherte Servicekonto-Sitzung beenden und `enrollment.json` entfernen. |
 
-Exit 0 on success, 1 when the sign-in or the file fails, and 2 for a usage error, such as no password or `-code` combined with `-email`, `-password-stdin` or `-revoke`.
+Exit 0 bei Erfolg, 1, wenn die Anmeldung oder die Datei fehlschlägt, und 2 bei einem Aufruffehler, etwa fehlendem Passwort oder `-code` zusammen mit `-email`, `-password-stdin` oder `-revoke`.
 
-## import telegraf-s7 and export telegraf
+## import telegraf-s7 und export telegraf {#import-telegraf-s7-and-export-telegraf}
 
-`import telegraf-s7 <file>` reads the `[[inputs.s7comm]]` of a Telegraf configuration, with field names `<thingType>/<thing>/<measure>[:<decimals>]`, into an S7 source that is confirmed and applied as usual. It reads no PLC.
+`import telegraf-s7 <file>` liest die `[[inputs.s7comm]]` einer Telegraf-Konfiguration mit Feldnamen `<thingType>/<thing>/<measure>[:<decimals>]` in eine S7-Quelle ein, die wie üblich bestätigt und angewendet wird. Es liest keine SPS.
 
-| Flag | Default | Meaning |
+| Flag | Vorgabe | Bedeutung |
 | --- | --- | --- |
-| `-config` | `$PERISCOPE_CONFIG`, else `periscope.toml` | The configuration file. |
-| `-overrides` | none | The payload sender's `config.json`. |
-| `-alias` | The plugin's `alias`, else its metric name | The source's name. |
-| `-mount` | `[ocb] mount` | Place the things under this path instead. |
-| `-path-from` | `type` | A thing's path: `type` for `<mount>/<thingType>/<thing>`, or `thing` for `<mount>/<thing>`. |
-| `-dry-run` | off | Print what would change. Writes nothing. |
+| `-config` | `$PERISCOPE_CONFIG`, sonst `periscope.toml` | Die Konfigurationsdatei. |
+| `-overrides` | keine | Die `config.json` des Payload-Senders. |
+| `-alias` | Der `alias` des Plugins, sonst sein Metrikname | Der Name der Quelle. |
+| `-mount` | `[ocb] mount` | Die Things stattdessen unter diesem Pfad ablegen. |
+| `-path-from` | `type` | Der Pfad eines Things: `type` für `<mount>/<thingType>/<thing>` oder `thing` für `<mount>/<thing>`. |
+| `-dry-run` | aus | Ausgeben, was sich ändern würde. Schreibt nichts. |
 
-`export telegraf` writes the applied model of the imported sources and the `[[inputs.s7]]` inputs back as Telegraf configuration.
+`export telegraf` schreibt das angewendete Modell der importierten Quellen und der `[[inputs.s7]]`-Eingänge als Telegraf-Konfiguration zurück.
 
-| Flag | Default | Meaning |
+| Flag | Vorgabe | Bedeutung |
 | --- | --- | --- |
-| `-config` | `$PERISCOPE_CONFIG`, else `periscope.toml` | The configuration file. |
-| `-input` | every source | The imported source or S7 input to export. |
-| `-o` | standard output | Write the configuration here, and `config.json` next to it. |
-| `-config-out` | next to `-o` | Write `config.json` here. |
+| `-config` | `$PERISCOPE_CONFIG`, sonst `periscope.toml` | Die Konfigurationsdatei. |
+| `-input` | jede Quelle | Die importierte Quelle oder der S7-Eingang, die exportiert werden. |
+| `-o` | Standardausgabe | Die Konfiguration hierhin schreiben, und `config.json` daneben. |
+| `-config-out` | neben `-o` | `config.json` hierhin schreiben. |
 
-## opcua reset-pin
+## opcua reset-pin {#opcua-reset-pin}
 
-`periscope opcua reset-pin <input>` removes `state_dir/opcua-<input>.pin`, the certificate an input pinned at its first connection, so the next connection pins what the server presents then. Run it after replacing a server's certificate on purpose and checking the new fingerprint, then restart `serve`. An input with `server_cert_sha256` has no pin file: change the key instead.
+`periscope opcua reset-pin <input>` entfernt `state_dir/opcua-<input>.pin`, das Zertifikat, das ein Eingang bei der ersten Verbindung angeheftet hat, sodass die nächste Verbindung anheftet, was der Server dann vorlegt. Führen Sie es aus, nachdem Sie das Zertifikat eines Servers absichtlich ersetzt und den neuen Fingerabdruck geprüft haben, und starten Sie dann `serve` neu. Ein Eingang mit `server_cert_sha256` hat keine Pin-Datei: Ändern Sie stattdessen den Schlüssel.
 
-## healthcheck
+## healthcheck {#healthcheck}
 
-Exits 0 on a 2xx answer from `/health-check/liveness` of the configured listener, and 1 otherwise, including a usage error, because Docker reserves exit code 2.
+Endet mit 0 bei einer 2xx-Antwort auf `/health-check/liveness` des konfigurierten Listeners und sonst mit 1, auch bei einem Aufruffehler, weil Docker den Exit-Code 2 reserviert.
 
-| Flag | Default | Meaning |
+| Flag | Vorgabe | Bedeutung |
 | --- | --- | --- |
-| `-config` | `$PERISCOPE_CONFIG`, else `periscope.toml` | The configuration file, read without `-url`. |
-| `-url` | The configured listener's liveness probe | The URL to probe. |
-| `-timeout` | `3s` | The request timeout. |
-| `-ca` | system roots | A PEM file trusted for an `https` URL. |
-| `-insecure` | off | Skip certificate verification. |
+| `-config` | `$PERISCOPE_CONFIG`, sonst `periscope.toml` | Die Konfigurationsdatei, ohne `-url` gelesen. |
+| `-url` | Die Liveness-Probe des konfigurierten Listeners | Die URL, die geprüft wird. |
+| `-timeout` | `3s` | Das Timeout der Anfrage. |
+| `-ca` | System-Roots | Eine PEM-Datei, der für eine `https`-URL vertraut wird. |
+| `-insecure` | aus | Die Zertifikatsprüfung überspringen. |
 
-## sim
+## sim {#sim}
 
-Test plants for a trial without hardware. They run until stopped.
+Testanlagen für einen Versuch ohne Hardware. Sie laufen, bis sie gestoppt werden.
 
-| Command | Serves | Flags and defaults |
+| Befehl | Stellt bereit | Flags und Vorgaben |
 | --- | --- | --- |
-| `sim sparkplug` | One Sparkplug B edge node with devices | `-broker tcp://localhost:1883`, `-group altena`, `-edge edge-7`, `-devices 2`, `-metrics 5`, `-interval 1s` |
-| `sim uns` | A retained ISA-95 topic tree | `-broker tcp://localhost:1883`, `-root lenneform/werk-altena`, `-interval 1s` |
-| `sim modbus` | A Modbus TCP server with changing values | `-listen 127.0.0.1:5020`, `-map` (default: sample plant), `-interval 1s` |
+| `sim sparkplug` | Einen Sparkplug-B-Edge-Node mit Geräten | `-broker tcp://localhost:1883`, `-group altena`, `-edge edge-7`, `-devices 2`, `-metrics 5`, `-interval 1s` |
+| `sim uns` | Einen retained ISA-95-Topic-Baum | `-broker tcp://localhost:1883`, `-root lenneform/werk-altena`, `-interval 1s` |
+| `sim modbus` | Einen Modbus-TCP-Server mit wechselnden Werten | `-listen 127.0.0.1:5020`, `-map` (Vorgabe: Beispielanlage), `-interval 1s` |
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Install Periscope and stream your first source](./install.mdx)
-- [Configuration reference](./configuration.mdx)
-- [Troubleshoot Periscope](./troubleshooting.mdx)
+- [Periscope installieren und die erste Quelle streamen](./install.mdx)
+- [Konfigurationsreferenz](./configuration.mdx)
+- [Periscope-Probleme beheben](./troubleshooting.mdx)

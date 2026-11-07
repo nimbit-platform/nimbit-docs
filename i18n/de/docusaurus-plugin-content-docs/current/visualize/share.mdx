@@ -1,60 +1,60 @@
 ---
-untranslated: true
-title: Share or embed a dashboard
-sidebar_label: Share or embed
-description: Decide who can see a dashboard, send a link that keeps the time range, or embed the dashboard in another page.
+title: Ein Dashboard teilen oder einbetten
+sidebar_label: Teilen oder einbetten
+description: Festlegen, wer ein Dashboard sehen darf, einen Link senden, der den Zeitraum beibehält, oder das Dashboard in eine andere Seite einbetten.
 type: how-to
 sidebar_position: 6
 app:
   routes: ["/dashboards", "/dashboards/:id"]
+translated_from: 810b8a2
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
 
-Choose who sees a dashboard, send someone a link to it, or put it into another web page.
+Legen Sie fest, wer ein Dashboard sieht, senden Sie jemandem einen Link darauf oder binden Sie es in eine andere Webseite ein.
 
-## Before you start
-- A role that may edit the dashboard.
-- Recipients with an account in the tenant and a role that may read dashboards. Reading, creating and editing dashboards are separate permissions.
+## Bevor Sie beginnen {#before-you-start}
+- Eine Rolle, die das Dashboard bearbeiten darf.
+- Empfänger mit einem Konto im Tenant und einer Rolle, die Dashboards lesen darf. Dashboards lesen, anlegen und bearbeiten sind getrennte Berechtigungen.
 
-## Decide who sees it
+## Festlegen, wer es sieht {#decide-who-sees-it}
 
-1. Open the dashboard and select the gear (**Dashboard settings**). On narrow screens, use **More › Dashboard settings**.
-2. Choose **Tenant dashboard** or **User dashboard**. A tenant dashboard is visible to the tenant's members. A user dashboard is yours alone: other members cannot open it.
-3. Select **Save**.
+1. Öffnen Sie das Dashboard und wählen Sie das Zahnrad (**Dashboard Einstellungen**). Auf schmalen Bildschirmen nehmen Sie **Mehr › Dashboard Einstellungen**.
+2. Wählen Sie **Tenant-Dashboard** oder **Benutzer-Dashboard**. Ein Tenant-Dashboard sehen alle Mitglieder des Tenants. Ein Benutzer-Dashboard gehört Ihnen allein: Andere Mitglieder können es nicht öffnen.
+3. Wählen Sie **Speichern**.
 
-## Send a link
+## Einen Link senden {#send-a-link}
 
-Copy the address of the open dashboard. The time range is part of the link, so others see what you see. On a Smart dashboard, pick the thing first.
+Kopieren Sie die Adresse des geöffneten Dashboards. Der Zeitraum ist Teil des Links, andere sehen also, was Sie sehen. Wählen Sie bei einem Smart-Dashboard zuerst das Thing.
 
-## Embed it in another page
+## In eine andere Seite einbetten {#embed-it-in-another-page}
 
-1. Open the dashboard and select **More › Embedd**. The label is spelled that way in the app.
-2. In **Embeddable url**, select the copy button.
-3. Paste the address where the dashboard should appear, for example in an iframe on an intranet page.
+1. Öffnen Sie das Dashboard und wählen Sie **Mehr › Einbetten**.
+2. Wählen Sie bei **Einbettbare URL** die Schaltfläche zum Kopieren.
+3. Fügen Sie die Adresse dort ein, wo das Dashboard erscheinen soll, zum Beispiel in einem Iframe auf einer Intranetseite.
 
 <Screenshot
   page="visualize/share"
   id="01-embeddable-url"
   route="/dashboards/:id"
   state="Embeddable url dialog open with the dashboard name, the info note and the URL with a copy button"
-  alt="The Embeddable url dialog with a copy button"
+  alt="Der Dialog Einbettbare URL mit Kopieren-Schaltfläche"
 />
 
-The embedded address has the form `<your IoT Breeze address>/bare/dashboard/<dashboardId>`. It shows the dashboard without the app's menus. For a dashboard on a thing type, the address also carries the thing as `?thingId=<thingId>`.
+Die eingebettete Adresse hat die Form `<your IoT Breeze address>/bare/dashboard/<dashboardId>`. Sie zeigt das Dashboard ohne die Menüs der App. Bei einem Dashboard für einen Thing-Typ enthält die Adresse außerdem das Thing als `?thingId=<thingId>`.
 
-Other options on the **More** menu: **Fullscreen** opens the dashboard without distractions, and **Duplicate dashboard** gives a copy you can change freely.
+Weitere Optionen im Menü **Mehr**: **Vollbild** öffnet das Dashboard ohne Ablenkung, und **Kopiere Dashboard** erzeugt eine Kopie, die Sie frei ändern können.
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-Open the link or the embedding page in a private window. After sign-in, the dashboard shows. If it does not, see below.
+Öffnen Sie den Link oder die einbettende Seite in einem privaten Fenster. Nach der Anmeldung erscheint das Dashboard. Wenn nicht, lesen Sie unten weiter.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **The embed asks for sign-in**: the embedded page is not public. Viewers must be signed in to the tenant.
-- **The viewer sees nothing or an error**: the dashboard is a **User dashboard**, or the viewer's role may not read dashboards.
-- **The page refuses to embed it**: the page that hosts the iframe may block the frame. {/* TODO(product): Which origins may embed IoT Breeze (frame-ancestors / CSP), and are the embed query parameters displayHeader and widgetId supported for users? */}
-- **No Embedd entry**: the **More** menu shows only what your role may do.
+- **Die Einbettung verlangt eine Anmeldung**: Die eingebettete Seite ist nicht öffentlich. Betrachter müssen im Tenant angemeldet sein.
+- **Der Betrachter sieht nichts oder einen Fehler**: Das Dashboard ist ein **Benutzer-Dashboard**, oder die Rolle des Betrachters darf keine Dashboards lesen.
+- **Die Seite lehnt die Einbettung ab**: Die Seite, die den Iframe enthält, blockiert den Frame möglicherweise. {/* TODO(product): Which origins may embed IoT Breeze (frame-ancestors / CSP), and are the embed query parameters displayHeader and widgetId supported for users? */}
+- **Kein Eintrag Einbetten**: Das Menü **Mehr** zeigt nur, was Ihre Rolle darf.
 
-## Related
-- [Dashboards, smart dashboards and time](./dashboards.mdx) · [Put a dashboard on Home](./home.mdx)
+## Verwandte Seiten {#related}
+- [Dashboards, Smart-Dashboards und Zeit](./dashboards.mdx) · [Ein Dashboard auf Home zeigen](./home.mdx)

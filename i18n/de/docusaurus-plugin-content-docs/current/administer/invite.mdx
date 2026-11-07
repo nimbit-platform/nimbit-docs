@@ -1,58 +1,58 @@
 ---
-untranslated: true
-title: Invite a colleague
-description: Invite people to your tenant with a role and access to groups, and resend, renew or withdraw an invitation.
+title: Einen Kollegen einladen
+description: Laden Sie Personen mit einer Rolle und Zugriff auf Gruppen in Ihren Tenant ein und senden Sie eine Einladung erneut, erneuern oder ziehen Sie sie zurück.
 type: how-to
 sidebar_position: 3
 app:
   routes: ["/administration/users", "/administration/users/:id"]
+translated_from: b6ed908
 ---
 
-Invite one or more people by email and decide at once what they may do and see. For how roles and groups combine, see [Users, groups and roles](./access.mdx).
+Laden Sie eine oder mehrere Personen per E-Mail ein und legen Sie sofort fest, was sie tun und sehen dürfen. Wie Rollen und Gruppen zusammenwirken, lesen Sie unter [Benutzer, Gruppen und Rollen](./access.mdx).
 
-## Before you start
+## Bevor Sie beginnen {#before-you-start}
 
-- You need the **Admin** role. **Manager** can change and remove users but not invite.
-- You can only give roles whose permissions you hold. A role you may not give is locked in the picker.
-- Create the [groups](./team-access.mdx) the person should be in, if they do not exist yet.
+- Sie brauchen die Rolle **Administrator**. **Manager** kann Benutzer ändern und entfernen, aber nicht einladen.
+- Sie können nur Rollen vergeben, deren Berechtigungen Sie selbst haben. Eine Rolle, die Sie nicht vergeben dürfen, ist in der Auswahl gesperrt.
+- Legen Sie die [Gruppen](./team-access.mdx) an, in denen die Person sein soll, falls es sie noch nicht gibt.
 
-## Steps
+## Schritte {#steps}
 
-1. Open **Administration › Users** and select **Invite user**.
-2. Under **Emails**, enter one or more addresses. You can invite up to 50 at once.
-3. Under **Roles**, choose at least one role.
-4. Under **Groups**, add the groups the people should see. **Read** is always on. Switch **Update** and **Execute** on if they may change things or run actions in that group.
-5. Optional: under **Things**, give access to single things the same way.
-6. Select **Send invitation**.
+1. Öffnen Sie **Administration › Benutzer** und wählen Sie **Benutzer einladen**.
+2. Geben Sie unter **E-Mails** eine oder mehrere Adressen ein. Sie können bis zu 50 auf einmal einladen.
+3. Wählen Sie unter **Rollen** mindestens eine Rolle.
+4. Fügen Sie unter **Gruppen** die Gruppen hinzu, die die Personen sehen sollen. **Gelesen** ist immer aktiv. Schalten Sie **Aktualisieren** und **Ausführen** ein, wenn sie in dieser Gruppe Dinge ändern oder Aktionen ausführen dürfen.
+5. Optional: Geben Sie unter **Things** auf dieselbe Weise Zugriff auf einzelne Things.
+6. Wählen Sie **Einladung senden**.
 
-IoT Breeze creates one invitation per address, each with its own link, and emails it.
+IoT Breeze erstellt pro Adresse eine Einladung mit eigenem Link und sendet sie per E-Mail.
 
-:::warning Share links with care
-Anyone with a link can open the invitation until it expires. If a link reached the wrong person, select **Resend**: the old link stops working.
+:::warning Links mit Bedacht weitergeben
+Jeder mit einem Link kann die Einladung öffnen, bis sie abläuft. Ist ein Link bei der falschen Person gelandet, wählen Sie **Erneut senden**: Der alte Link funktioniert dann nicht mehr.
 :::
 
-## Check that it worked
+## Prüfen, ob es funktioniert hat {#check-that-it-worked}
 
-The list shows each address with the status **Pending**. When the person accepts, the status disappears and the person appears as an active user. Open the user to see their **Roles** and **Groups** tabs.
+Die Liste zeigt jede Adresse mit dem Status **Ausstehend**. Nimmt die Person an, verschwindet der Status und die Person erscheint als aktiver Benutzer. Öffnen Sie den Benutzer, um seine Tabs **Rollen** und **Gruppen** zu sehen.
 
-## Change or withdraw an invitation
+## Eine Einladung ändern oder zurückziehen {#change-or-withdraw-an-invitation}
 
-| Status | Action in the status column |
+| Status | Aktion in der Statusspalte |
 | --- | --- |
-| **Pending** or **Expired** | **Resend** sends a new link. The previous link stops working. |
-| **Declined** | **Invite again** sends a fresh invitation. **Dismiss** removes it from the list. |
-| Any open invitation | Select it and delete it to revoke it. |
+| **Ausstehend** oder **Abgelaufen** | **Erneut senden** sendet einen neuen Link. Der vorherige Link funktioniert nicht mehr. |
+| **Abgelehnt** | **Erneut einladen** sendet eine neue Einladung. **Verwerfen** entfernt sie aus der Liste. |
+| Jede offene Einladung | Wählen Sie sie aus und löschen Sie sie, um sie zu widerrufen. |
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **The dialog says no email was sent**: your installation sends no email. Copy each link from the dialog and pass it on yourself.
-- **The dialog says there is no link yet**: the tenant has no web address registered. Resend the invitation once it has one.
-- **The person has no account and cannot sign up from the link**: on some platforms only people who already have an account can use invitation links.
-- **A role is locked**: it holds permissions you lack. Ask an admin to invite the person, or choose another role.
+- **Der Dialog sagt, es wurde keine E-Mail gesendet**: Ihre Installation versendet keine E-Mails. Kopieren Sie jeden Link aus dem Dialog und geben Sie ihn selbst weiter.
+- **Der Dialog sagt, es gibt noch keinen Link**: Für den Tenant ist keine Webadresse registriert. Senden Sie die Einladung erneut, sobald es eine gibt.
+- **Die Person hat kein Konto und kann sich über den Link nicht registrieren**: Auf manchen Plattformen können nur Personen mit bestehendem Konto Einladungslinks nutzen.
+- **Eine Rolle ist gesperrt**: Sie enthält Berechtigungen, die Ihnen fehlen. Bitten Sie einen Administrator, die Person einzuladen, oder wählen Sie eine andere Rolle.
 
 {/* TODO(product): How long is an invitation valid before it shows Expired? */}
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Users, groups and roles](./access.mdx) · [Roles and permissions](./roles.mdx)
-- [Give a team access to its things](./team-access.mdx)
+- [Benutzer, Gruppen und Rollen](./access.mdx) · [Rollen und Berechtigungen](./roles.mdx)
+- [Einem Team Zugriff auf seine Things geben](./team-access.mdx)

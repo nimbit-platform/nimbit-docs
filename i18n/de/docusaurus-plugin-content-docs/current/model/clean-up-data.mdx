@@ -1,76 +1,76 @@
 ---
-untranslated: true
-title: Clean up incoming data
+title: Eingehende Daten bereinigen
 sidebar_position: 7
-description: Convert units, check the shape or add calculated values to every message of a thing type before it is stored.
+description: Rechnen Sie Einheiten um, prüfen Sie die Form oder ergänzen Sie berechnete Werte in jeder Nachricht eines Thing-Typs, bevor sie gespeichert wird.
 type: how-to
 app:
   routes: ["/onboarding/thing-types/:id", "/onboarding/thing-types/:id/graph"]
+translated_from: 810b8a2
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
 
-Run every incoming message of a thing type through a small graph of steps, the **transformation pipeline**, before it is stored. The example converts a temperature from Fahrenheit to Celsius.
+Schicken Sie jede eingehende Nachricht eines Thing-Typs vor dem Speichern durch einen kleinen Graphen aus Schritten, die **Transformations-Pipeline**. Das Beispiel rechnet eine Temperatur von Fahrenheit in Celsius um.
 
-## Before you start
+## Bevor Sie beginnen {#before-you-start}
 
-- A [thing type](./create-thing-type.mdx) with a published measure `temperature`.
-- A desktop browser. The pipeline editor isn't available on a phone.
-- Your role can edit thing types.
+- Ein [Thing-Typ](./create-thing-type.mdx) mit einem veröffentlichten Messwert `temperature`.
+- Ein Desktop-Browser. Der Pipeline-Editor ist auf dem Smartphone nicht verfügbar.
+- Ihre Rolle darf Thing-Typen bearbeiten.
 
-## Steps
+## Schritte {#steps}
 
-1. Open **Settings › Onboarding › Thing Types** and select the thing type. On **Overview**, the **Pipeline** card shows **Transformation** as **Active** or **Inactive**. Select **Open editor**, or use **More actions › Open pipeline editor**. The editor opens as **Transformation rule (Version 1)** with a **Request** node connected to a **Response** node.
-2. Drag an **Expression** node from the **Components** panel onto the canvas. Connect **Request** to it, and it to **Response**: drag from the handle on the right of a node to the handle on the left of the next.
-3. Select **Edit Expression** on the node and add a row. Set **Key** to `data.temperature` and **Expression** to `(data.temperature - 32) * 5 / 9`.
-4. Open the **Simulator** from the left sidebar. It fills a test message with random values for your measures. Set `data.temperature` to `212` and select **Run**. The result shows `data.temperature` as `100`, and the rest of the message unchanged.
-5. Select **Save**. It is disabled while the graph is invalid or unchanged. Hover the status icon in the header for the reason.
-6. Select **Activate**.
+1. Öffnen Sie **Einstellungen › Onboarding › Thing Typen** und wählen Sie den Thing-Typ. Auf der **Übersicht** zeigt die Karte **Pipeline** die **Transformation** als **Aktiv** oder **Inaktiv**. Wählen Sie **Editor öffnen** oder nutzen Sie **Weitere Aktionen › Pipeline-Editor öffnen**. Der Editor öffnet sich als **Transformationsregel (Version 1)** mit einem Knoten **Request**, der mit einem Knoten **Response** verbunden ist.
+2. Ziehen Sie einen Knoten **Expression** aus dem Bereich **Components** auf die Fläche. Verbinden Sie **Request** mit ihm und ihn mit **Response**: Ziehen Sie vom Anschluss rechts an einem Knoten zum Anschluss links am nächsten.
+3. Wählen Sie am Knoten **Edit Expression** und fügen Sie eine Zeile hinzu. Setzen Sie **Key** auf `data.temperature` und **Expression** auf `(data.temperature - 32) * 5 / 9`.
+4. Öffnen Sie den **Simulator** in der linken Seitenleiste. Er füllt eine Testnachricht mit Zufallswerten für Ihre Messwerte. Setzen Sie `data.temperature` auf `212` und wählen Sie **Run**. Das Ergebnis zeigt `data.temperature` als `100`, der Rest der Nachricht bleibt unverändert.
+5. Wählen Sie **Speichern**. Es ist deaktiviert, solange der Graph ungültig oder unverändert ist. Fahren Sie mit der Maus über das Statussymbol im Kopfbereich, um den Grund zu sehen.
+6. Wählen Sie **Aktivieren**.
 
 <Screenshot
   page="model/clean-up-data"
   id="01-editor"
   route="/onboarding/thing-types/:id/graph"
   state="Pipeline editor with Request, one Expression node and Response connected, the simulator open with a successful result, Save and Activate in the header"
-  alt="The pipeline editor with a three-node pipeline"
+  alt="Der Pipeline-Editor mit einer Pipeline aus drei Knoten"
 />
 
 {/* TODO(product): Confirm in the running editor that an Expression node keeps the rest of the message when the key is a path such as data.temperature (its Passthrough setting), and which left-sidebar entries and canvas controls exist besides the Simulator. The deployed engine takes the pipeline's output as the whole message that is stored. */}
 
-## Choose what each step does
+## Wählen, was jeder Schritt tut {#choose-what-each-step-does}
 
-What reaches **Response** is what gets stored, so keep the message shape: `data` holds the measures, `geo` the location, `tags` the properties marked **Timeseries relevant**. A field the thing type's schema doesn't know is dropped, so a new calculated value needs its own measure.
+Was bei **Response** ankommt, wird gespeichert, behalten Sie also die Form der Nachricht: `data` enthält die Messwerte, `geo` den Standort, `tags` die Eigenschaften, die als **Zeitreihenrelevant** markiert sind. Ein Feld, das das Schema des Thing-Typs nicht kennt, wird verworfen, ein neuer berechneter Wert braucht also einen eigenen Messwert.
 
-| To… | Add a… |
+| Um … | Fügen Sie hinzu |
 | --- | --- |
-| Check messages against a JSON Schema | **Request** node: select **Configure**, then **Import** a sample payload to start. |
-| Calculate or overwrite values | **Expression** node: one **Key** and **Expression** per output field. |
-| Turn values into labels, for example a status code | **Decision Table** node: **Edit Table**. Rows are checked from top to bottom. |
-| Send messages down different branches | **Switch** node: one condition per output handle. |
-| Do what the others can't | **Function** node: **Edit Function**, in JavaScript. |
+| Nachrichten gegen ein JSON-Schema zu prüfen | Einen Knoten **Request**: Wählen Sie **Configure** und dann **Import** mit einer Beispiel-Payload, um zu beginnen. |
+| Werte zu berechnen oder zu überschreiben | Einen Knoten **Expression**: je ein **Key** und eine **Expression** pro Ausgabefeld. |
+| Werte in Bezeichnungen zu verwandeln, zum Beispiel einen Statuscode | Einen Knoten **Decision Table**: **Edit Table**. Zeilen werden von oben nach unten geprüft. |
+| Nachrichten auf verschiedene Zweige zu schicken | Einen Knoten **Switch**: eine Bedingung pro Ausgangsanschluss. |
+| Zu tun, was die anderen nicht können | Einen Knoten **Function**: **Edit Function**, in JavaScript. |
 
-Expressions use the ZEN language of the open-source [GoRules](https://docs.gorules.io/) editor, which also documents decision tables and functions.
+Ausdrücke verwenden die ZEN-Sprache des Open-Source-Editors [GoRules](https://docs.gorules.io/), der auch Entscheidungstabellen und Funktionen dokumentiert.
 
-## Change a pipeline that is live
+## Eine laufende Pipeline ändern {#change-a-pipeline-that-is-live}
 
-A pipeline has versions, and only one is **Active**. **Versions** opens the list, where you create a **New version** from the current graph or **Switch version**. **Deactivate** stops the pipeline, and data is stored as the device sent it.
+Eine Pipeline hat Versionen, und nur eine ist **Aktiv**. **Versionen** öffnet die Liste, in der Sie aus dem aktuellen Graphen eine **Neue Version** erstellen oder die **Version wechseln** können. **Deaktivieren** stoppt die Pipeline, und Daten werden so gespeichert, wie das Gerät sie gesendet hat.
 
-When you edit the active version, your changes stay a draft until you apply them. A floating toolbar offers **Apply draft**, **Reset draft** (confirm **Discard**) and a switch between **Draft** and **Show difference between draft and active graph**. **Apply draft** is off while the graph is invalid.
+Bearbeiten Sie die aktive Version, bleiben Ihre Änderungen ein Entwurf, bis Sie sie anwenden. Eine schwebende Werkzeugleiste bietet **Entwurf anwenden**, **Entwurf zurücksetzen** (bestätigen Sie **Verwerfen**) und einen Schalter zwischen **Entwurf** und **Unterschied zwischen Entwurfsdiagramm und aktivem Diagramm anzeigen**. **Entwurf anwenden** ist aus, solange der Graph ungültig ist.
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-On the thing type's **Overview**, the **Pipeline** card shows **Transformation** as **Active**. Send a message, or **Send data** from a thing's page, and look at the stored value in the thing's **Overview** or in [Explore telemetry](../watch/explore-telemetry.mdx): `100`, not `212`.
+Auf der **Übersicht** des Thing-Typs zeigt die Karte **Pipeline** die **Transformation** als **Aktiv**. Senden Sie eine Nachricht oder wählen Sie auf der Seite eines Things **Daten senden** und sehen Sie sich den gespeicherten Wert in der **Übersicht** des Things oder in [Telemetrie über die Zeit untersuchen](../watch/explore-telemetry.mdx) an: `100`, nicht `212`.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **A message never shows up**: a message that fails in the pipeline, by a schema check, an expression or function error, or a timeout, isn't stored. The sender of an HTTP message gets an error. Run the same message in the **Simulator** to see the node that failed.
-- **A calculated value is missing**: the schema doesn't have a measure with that name. Add the measure and publish.
-- **Activate is disabled**: you have unsaved changes, so select **Save** first, or the graph is invalid. A valid graph has a **Request** node, a **Response** node and a path between them.
-- **A message is refused after a slow step**: a transformation has a time limit, and a message that runs past it is refused.
+- **Eine Nachricht taucht nie auf**: Eine Nachricht, die in der Pipeline scheitert, durch eine Schemaprüfung, einen Ausdrucks- oder Funktionsfehler oder ein Timeout, wird nicht gespeichert. Der Absender einer HTTP-Nachricht erhält einen Fehler. Lassen Sie dieselbe Nachricht im **Simulator** laufen, um den Knoten zu sehen, der gescheitert ist.
+- **Ein berechneter Wert fehlt**: Das Schema hat keinen Messwert mit diesem Namen. Fügen Sie den Messwert hinzu und veröffentlichen Sie.
+- **Aktivieren ist deaktiviert**: Sie haben ungespeicherte Änderungen, wählen Sie also zuerst **Speichern**, oder der Graph ist ungültig. Ein gültiger Graph hat einen Knoten **Request**, einen Knoten **Response** und einen Pfad dazwischen.
+- **Eine Nachricht wird nach einem langsamen Schritt abgelehnt**: Eine Transformation hat ein Zeitlimit, und eine Nachricht, die es überschreitet, wird abgelehnt.
 
 {/* TODO(product): The earlier docs say a Function node fails after 5 seconds. The ingest service (tsflux) defaults to 250 ms for one whole transformation, including waiting for a free slot, and reads it from the zen eval_timeout setting. What limit applies to production tenants, and what does the sender see? */}
 
-## Related
+## Siehe auch {#related}
 
-- [Create a thing type](./create-thing-type.mdx) · [Measure and property types](./measure-types.mdx)
-- [Message format](../connect/message-format.mdx)
+- [Einen Thing-Typ anlegen](./create-thing-type.mdx) · [Messwert- und Eigenschaftstypen](./measure-types.mdx)
+- [Nachrichtenformat](../connect/message-format.mdx)

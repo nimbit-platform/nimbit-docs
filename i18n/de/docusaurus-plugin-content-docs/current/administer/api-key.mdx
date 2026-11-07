@@ -1,86 +1,86 @@
 ---
-untranslated: true
-title: Create an API key
-description: Create an API key for yourself or a service account, copy it once, and rotate or revoke it.
+title: Einen API-Schlüssel erstellen
+description: Erstellen Sie einen API-Schlüssel für sich oder ein Dienstkonto, kopieren Sie ihn einmalig und ersetzen oder widerrufen Sie ihn.
 type: how-to
 sidebar_position: 5
 app:
   routes: ["/administration/api-keys"]
+translated_from: dd3e5a5
 ---
 
-Give a script, integration or AI assistant its own key instead of sharing a password. A key is limited to its scopes, expires, and never holds more rights than its owner. To use a key in requests, see [Authentication](../api/authentication.mdx).
+Geben Sie einem Skript, einer Integration oder einem KI-Assistenten einen eigenen Schlüssel, statt ein Passwort zu teilen. Ein Schlüssel ist auf seine Scopes begrenzt, läuft ab und hat nie mehr Rechte als sein Eigentümer. Wie Sie einen Schlüssel in Anfragen verwenden, lesen Sie unter [Authentifizierung](../api/authentication.mdx).
 
-## Before you start
+## Bevor Sie beginnen {#before-you-start}
 
-- You need to create API keys. **Admin** and **Modeler** can; Modeler only for personal keys.
-- For a key that outlives your own membership, create a service account first (see below). Admin only.
-- If **Me** is missing under **Acts as**, your tenant has turned personal keys off. Ask an admin for a service account key.
+- Sie müssen API-Schlüssel erstellen dürfen. **Administrator** und **Modellierer** dürfen das; Modellierer nur für persönliche Schlüssel.
+- Für einen Schlüssel, der Ihre eigene Mitgliedschaft überdauert, erstellen Sie zuerst ein Dienstkonto (siehe unten). Nur Administrator.
+- Fehlt **Ich** unter **Handelt als**, hat Ihr Tenant persönliche Schlüssel abgeschaltet. Bitten Sie einen Administrator um einen Schlüssel für ein Dienstkonto.
 
-## Steps
+## Schritte {#steps}
 
-1. Open **Administration › API keys** and select **Create key**.
-2. Enter a **Name**, for example `SAP PM sync`.
-3. Under **Acts as**, choose **Me** or a service account.
-4. Optional: under **Start from**, choose **Read only**, **AI assistant** or **ERP or MES integration**.
-5. Under **Scopes**, tick what the key may do. Scopes marked **Sensitive** are only for service accounts, where the tenant's key policy allows it.
-6. Under **Expires**, choose 30, 90 or 365 days. **Never** is offered only for service account keys, and only if the policy sets no maximum.
-7. Optional: under **Allowed addresses**, enter networks in CIDR form, one per line. Empty allows every address.
-8. Select **Create key**.
+1. Öffnen Sie **Administration › API-Schlüssel** und wählen Sie **Schlüssel erstellen**.
+2. Geben Sie einen **Name** ein, zum Beispiel `SAP PM sync`.
+3. Wählen Sie unter **Handelt als** **Ich** oder ein Dienstkonto.
+4. Optional: Wählen Sie unter **Vorlage** **Nur lesen**, **KI-Assistent** oder **ERP- oder MES-Integration**.
+5. Setzen Sie unter **Scopes** Häkchen bei dem, was der Schlüssel tun darf. Mit **Sensibel** markierte Scopes gibt es nur für Dienstkonten, wo die Schlüsselrichtlinie des Tenants es erlaubt.
+6. Wählen Sie unter **Läuft ab** 30, 90 oder 365 Tage. **Nie** gibt es nur für Schlüssel von Dienstkonten, und nur, wenn die Richtlinie kein Maximum setzt.
+7. Optional: Geben Sie unter **Erlaubte Adressen** Netze in CIDR-Schreibweise ein, eines pro Zeile. Leer erlaubt jede Adresse.
+8. Wählen Sie **Schlüssel erstellen**.
 
-:::warning Copy the key now
-**Your new key** is shown once and cannot be read again. Store it in a secret manager, then select **I have copied the key**.
+:::warning Kopieren Sie den Schlüssel jetzt
+**Ihr neuer Schlüssel** wird einmal angezeigt und lässt sich nicht erneut lesen. Speichern Sie ihn in einem Secret-Manager und wählen Sie dann **Ich habe den Schlüssel kopiert**.
 :::
 
-## Create a service account
+## Ein Dienstkonto erstellen {#create-a-service-account}
 
-A service account is a tenant member for integrations. It never signs in and acts only through its keys.
+Ein Dienstkonto ist ein Tenant-Mitglied für Integrationen. Es meldet sich nie an und handelt nur über seine Schlüssel.
 
-1. Open the **Service accounts** tab and select **Create service account**.
-2. Enter a name and choose its roles. You can only choose roles you hold.
-3. Save, then create keys with **Acts as** set to this account.
+1. Öffnen Sie den Tab **Dienstkonten** und wählen Sie **Dienstkonto erstellen**.
+2. Geben Sie einen Namen ein und wählen Sie seine Rollen. Sie können nur Rollen wählen, die Sie selbst haben.
+3. Speichern Sie und erstellen Sie dann Schlüssel mit **Handelt als** auf diesem Konto.
 
-If you change its roles, its keys get them with their next token. If you delete it, its live keys are revoked.
+Ändern Sie seine Rollen, erhalten seine Schlüssel sie mit ihrem nächsten Token. Löschen Sie es, werden seine aktiven Schlüssel widerrufen.
 
-## Rotate or revoke a key
+## Einen Schlüssel ersetzen oder widerrufen {#rotate-or-revoke-a-key}
 
-| Action | Effect |
+| Aktion | Wirkung |
 | --- | --- |
-| **Roll key** | Creates a new key with the same scopes. Choose when the old one stops: now, after 1 hour, after 1 day or after 7 days. Give your clients the new key first. |
-| **Revoke** | Ends the key. Clients using it stop within five minutes. It cannot be reused. |
-| **Edit** | Changes the name and allowed networks. Scopes and expiry stay. |
-| **History** | Shows changes and refused uses (kept for a year) and daily use (90 days). |
+| **Schlüssel ersetzen** | Erstellt einen neuen Schlüssel mit denselben Scopes. Sie wählen, wann der alte endet: sofort, nach 1 Stunde, nach 1 Tag oder nach 7 Tagen. Geben Sie Ihren Clients zuerst den neuen Schlüssel. |
+| **Widerrufen** | Beendet den Schlüssel. Clients, die ihn verwenden, stoppen innerhalb von fünf Minuten. Er lässt sich nicht wiederverwenden. |
+| **Bearbeiten** | Ändert den Namen und die erlaubten Netze. Scopes und Ablauf bleiben. |
+| **Verlauf** | Zeigt Änderungen und abgelehnte Nutzungen (ein Jahr aufbewahrt) und die tägliche Nutzung (90 Tage). |
 
-## Set the key policy
+## Die Schlüsselrichtlinie festlegen {#set-the-key-policy}
 
-Admins set the rules for the whole tenant with **Edit policy**.
+Administratoren legen die Regeln für den ganzen Tenant mit **Richtlinie bearbeiten** fest.
 
-| Setting | Effect |
+| Einstellung | Wirkung |
 | --- | --- |
-| **Members may create personal keys** | If off, only service account keys can be created. |
-| **Maximum lifetime in days** | Longest allowed expiry. Empty allows service account keys that never expire. Personal keys always expire within a year. |
-| **Stop keys unused for this many days** | Keys idle that long stop working. |
-| **Service accounts may hold sensitive scopes** | Allows scopes marked **Sensitive** on service account keys. |
+| **Mitglieder dürfen persönliche Schlüssel erstellen** | Ist sie aus, lassen sich nur Schlüssel für Dienstkonten erstellen. |
+| **Maximale Laufzeit in Tagen** | Längster erlaubter Ablauf. Leer erlaubt Schlüssel für Dienstkonten, die nie ablaufen. Persönliche Schlüssel laufen immer innerhalb eines Jahres ab. |
+| **Schlüssel beenden, die so viele Tage ungenutzt sind** | So lange ungenutzte Schlüssel funktionieren nicht mehr. |
+| **Dienstkonten dürfen sensible Scopes haben** | Erlaubt mit **Sensibel** markierte Scopes bei Schlüsseln von Dienstkonten. |
 
-## Check that it worked
+## Prüfen, ob es funktioniert hat {#check-that-it-worked}
 
-The key appears on **My keys** (or **All keys**, if you may read every key) with its expiry. To test it, tick the scope **Read the platform** and read the identity the key acts as:
+Der Schlüssel erscheint mit seinem Ablauf unter **Meine Schlüssel** (oder **Alle Schlüssel**, wenn Sie jeden Schlüssel lesen dürfen). Um ihn zu testen, setzen Sie ein Häkchen beim Scope **Read the platform** und lesen Sie die Identität, als die der Schlüssel handelt:
 
 ```bash
 curl "https://<host>/ocb/rest/v2/users/me" \
   -H "Authorization: Bearer <api-key>"
 ```
 
-A `200` answer with a user object means the key is valid and reaches OCB. A `401` means it is malformed, expired, revoked or has no scope for OCB; see [Errors and limits](../api/errors-and-limits.mdx#api-key-exchange-errors). After the first call, **Last used** shows a date, and **History** lists the use.
+Eine `200`-Antwort mit einem Benutzerobjekt bedeutet, dass der Schlüssel gültig ist und OCB erreicht. Ein `401` bedeutet, dass er fehlerhaft, abgelaufen oder widerrufen ist oder keinen Scope für OCB hat; siehe [Fehler und Limits](../api/errors-and-limits.mdx#api-key-exchange-errors). Nach dem ersten Aufruf zeigt **Zuletzt verwendet** ein Datum, und **Verlauf** listet die Nutzung.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **The key is refused**: open **History**. **Use refused** events say why: expired, revoked, unused too long, outside its allowed addresses, or the policy no longer allows it.
-- **The key shows Stopped: unused too long**: the tenant's key policy stops idle keys. Create a new key and ask an admin about **Stop keys unused for this many days**.
-- **Expires is limited to a shorter time**: the policy sets a **Maximum lifetime in days**. Admins change it with **Edit policy**.
-- **A scope is locked**: it asks for permissions you or the service account lack, or it is retired.
+- **Der Schlüssel wird abgelehnt**: Öffnen Sie **Verlauf**. Ereignisse **Nutzung abgelehnt** nennen den Grund: abgelaufen, widerrufen, zu lange ungenutzt, außerhalb seiner erlaubten Adressen, oder die Richtlinie erlaubt ihn nicht mehr.
+- **Der Schlüssel zeigt Gestoppt: zu lange ungenutzt**: Die Schlüsselrichtlinie des Tenants stoppt ungenutzte Schlüssel. Erstellen Sie einen neuen Schlüssel und fragen Sie einen Administrator nach **Schlüssel beenden, die so viele Tage ungenutzt sind**.
+- **Für Läuft ab sind nur kürzere Zeiten wählbar**: Die Richtlinie setzt eine **Maximale Laufzeit in Tagen**. Administratoren ändern sie mit **Richtlinie bearbeiten**.
+- **Ein Scope ist gesperrt**: Er verlangt Berechtigungen, die Ihnen oder dem Dienstkonto fehlen, oder er ist eingestellt.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Authentication](../api/authentication.mdx)
-- [Roles and permissions](./roles.mdx)
-- [Tenant settings](./tenant-settings.mdx)
+- [Authentifizierung](../api/authentication.mdx)
+- [Rollen und Berechtigungen](./roles.mdx)
+- [Tenant-Einstellungen](./tenant-settings.mdx)

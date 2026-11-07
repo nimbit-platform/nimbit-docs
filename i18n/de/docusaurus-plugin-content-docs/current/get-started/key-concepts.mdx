@@ -1,12 +1,12 @@
 ---
-untranslated: true
-title: Key concepts
+title: Grundbegriffe
 sidebar_position: 4
-description: The terms you meet in IoT Breeze, what each one means, and how they fit together.
+description: Die Begriffe, die Ihnen in IoT Breeze begegnen, was jeder bedeutet und wie sie zusammenpassen.
 type: concept
+translated_from: 810b8a2
 ---
 
-IoT Breeze describes your devices once, as thing types, and then attaches everything else to that description: dashboards, rules, events and access. Learn these terms and the rest of the documentation falls into place.
+IoT Breeze beschreibt Ihre Geräte einmal als Thing-Typen und hängt alles Weitere an diese Beschreibung: Dashboards, Regeln, Events und Zugriff. Kennen Sie diese Begriffe, ordnet sich der Rest der Dokumentation von selbst.
 
 ```mermaid
 flowchart LR
@@ -19,55 +19,55 @@ flowchart LR
   E -->|grouped into| IN[Incident]
 ```
 
-## Who and where
+## Wer und wo {#who-and-where}
 
-**[Tenant](../administer/tenant-settings.mdx).** Your company's space in IoT Breeze. Data, users, settings and features belong to one tenant.
+**[Tenant](../administer/tenant-settings.mdx).** Der Bereich Ihres Unternehmens in IoT Breeze. Daten, Benutzer, Einstellungen und Funktionen gehören zu einem Tenant.
 
-**[Organization](../administer/access.mdx).** A group of type Organization: the top of a customer, company or site. Each thing belongs to one organization.
+**[Organisation](../administer/access.mdx).** Eine Gruppe vom Typ Organisation: die Spitze eines Kunden, eines Unternehmens oder eines Standorts. Jedes Thing gehört zu einer Organisation.
 
-**[Group](../administer/access.mdx).** A node in a tree of people and records. A user sees a thing only if a group of theirs contains it. A role says what the user may do, a group says with which things. Both are needed.
+**[Gruppe](../administer/access.mdx).** Ein Knoten in einem Baum aus Personen und Datensätzen. Ein Benutzer sieht ein Thing nur, wenn eine seiner Gruppen es enthält. Eine Rolle sagt, was der Benutzer tun darf, eine Gruppe sagt, mit welchen Things. Beides ist nötig.
 
-## Describing devices
+## Geräte beschreiben {#describing-devices}
 
-**[Thing type](../model/things-and-types.mdx).** The model of a kind of device. It lists the measures the device sends and the properties it has. Edits go into a draft; devices use the published version only.
+**[Thing-Typ](../model/things-and-types.mdx).** Das Modell einer Art von Gerät. Er listet die Messwerte, die das Gerät sendet, und die Eigenschaften, die es hat. Änderungen gehen in einen Entwurf; Geräte verwenden nur die veröffentlichte Version.
 
-**[Measure](../model/measure-types.mdx).** A value a device sends over time, such as `temperature`, with a type, unit and expected range.
+**[Messwert](../model/measure-types.mdx).** Ein Wert, den ein Gerät über die Zeit sendet, etwa `temperature`, mit Typ, Einheit und erwartetem Bereich.
 
-**[Property](../model/measure-types.mdx).** A fixed fact about a device, such as a serial number or a rated flow. It does not change with every message.
+**[Eigenschaft](../model/measure-types.mdx).** Eine feste Angabe zu einem Gerät, etwa eine Seriennummer oder ein Nenndurchfluss. Sie ändert sich nicht mit jeder Nachricht.
 
-**[Interface](../model/things-and-types.mdx).** A reusable set of fields, such as Temperature Sensing. Different thing types can implement the same interface, so one dashboard can serve all of them.
+**[Interface](../model/things-and-types.mdx).** Ein wiederverwendbarer Satz von Feldern, etwa Temperature Sensing. Verschiedene Thing-Typen können dasselbe Interface umsetzen, sodass ein Dashboard für alle taugt.
 
-**[Thing](../model/things-and-types.mdx).** One device or asset, such as one sensor in one room. It has a thing type, a unique ID, an organization, groups and its own credentials.
+**[Thing](../model/things-and-types.mdx).** Ein Gerät oder Asset, etwa ein Sensor in einem Raum. Es hat einen Thing-Typ, eine eindeutige ID, eine Organisation, Gruppen und eigene Zugangsdaten.
 
-## Getting data in
+## Daten hereinholen {#getting-data-in}
 
-**[Gateway](../gateways/how-gateways-work.mdx).** One box on site that speaks for many devices with a single credential. It may send only for the things assigned to it. Data enters the platform through tsflux, the ingestion service, and is read back through nbq, the query engine.
+**[Gateway](../gateways/how-gateways-work.mdx).** Eine Box vor Ort, die mit einer einzigen Zugangsberechtigung für viele Geräte spricht. Sie darf nur für die ihr zugewiesenen Things senden. Daten gelangen über tsflux, den Ingestion-Dienst, in die Plattform und werden über nbq, die Query-Engine, zurückgelesen.
 
-**[Periscope](../gateways/periscope/index.mdx).** The edge agent that runs on a machine next to your equipment. It discovers OPC UA, Sparkplug B, MQTT, Modbus, S7 and HTTP sources and streams their values into IoT Breeze.
+**[Periscope](../gateways/periscope/index.mdx).** Der Edge-Agent, der auf einem Rechner neben Ihrer Ausrüstung läuft. Er findet OPC-UA-, Sparkplug-B-, MQTT-, Modbus-, S7- und HTTP-Quellen und streamt deren Werte in IoT Breeze.
 
-## Seeing and reacting
+## Sehen und reagieren {#seeing-and-reacting}
 
-**[Dashboard](../visualize/dashboards.mdx).** A page of widgets. Each widget answers one question: how warm is it now, how did it change today, which things are offline.
+**[Dashboard](../visualize/dashboards.mdx).** Eine Seite aus Widgets. Jedes Widget beantwortet eine Frage: wie warm es jetzt ist, wie es sich heute verändert hat, welche Things offline sind.
 
-**[Smart dashboard](../visualize/smart-dashboard.mdx).** A dashboard built on interfaces instead of one device. It works for every thing whose type implements them, today's and tomorrow's. You pick the thing at the top.
+**[Smart Dashboard](../visualize/smart-dashboard.mdx).** Ein Dashboard, das auf Interfaces statt auf einem einzelnen Gerät aufbaut. Es funktioniert für jedes Thing, dessen Typ sie umsetzt, heutige wie künftige. Das Thing wählen Sie oben.
 
-**[Rule](../automate/rules-actions-reports.mdx).** A chain of steps built on a canvas: which things to watch, a condition on their data, a trigger that decides how often to act, and the actions to run. An action can raise an event, send an email, call a webhook and more.
+**[Regel](../automate/rules-actions-reports.mdx).** Eine Kette von Schritten auf einem Canvas: welche Things beobachtet werden, eine Bedingung auf ihren Daten, ein Trigger, der bestimmt, wie oft gehandelt wird, und die Aktionen, die laufen. Eine Aktion kann ein Event erzeugen, eine E-Mail senden, einen Webhook aufrufen und mehr.
 
-**[Event](../watch/events-incidents-notifications.mdx).** A record that something happened: a rule fired, a thing went offline, a record changed. Events are facts, with a severity of Information, Warning, Error or Critical. You cannot edit them.
+**[Event](../watch/events-incidents-notifications.mdx).** Ein Eintrag, dass etwas passiert ist: eine Regel hat ausgelöst, ein Thing ging offline, ein Datensatz wurde geändert. Events sind Fakten mit dem Schweregrad Information, Warnung, Fehler oder Kritisch. Sie lassen sich nicht bearbeiten.
 
-**[Incident](../watch/events-incidents-notifications.mdx).** A problem that needs a person. It collects related events, so an alarm that fires twenty times is one incident. Someone acknowledges it, works on it and resolves it.
+**[Vorfall](../watch/events-incidents-notifications.mdx).** Ein Problem, das eine Person braucht. Er sammelt zusammengehörige Events, sodass ein Alarm, der zwanzigmal auslöst, ein Vorfall ist. Jemand quittiert ihn, bearbeitet ihn und löst ihn.
 
-## Knowledge and AI
+## Knowledge und KI {#knowledge-and-ai}
 
-**[Knowledge graph](../knowledge/knowledge-graph.mdx).** An optional map of your business: things, the places they are in, and other records, with how they relate. A tenant admin switches it on under **Administration › Tenant Settings › Features**.
+**[Knowledge Graph](../knowledge/knowledge-graph.mdx).** Eine optionale Karte Ihres Geschäfts: Things, die Orte, an denen sie stehen, und weitere Datensätze, mit ihren Beziehungen. Ein Tenant-Admin schaltet sie unter **Administration › Mandanteneinstellungen › Funktionen** ein.
 
-**[Ask Nimble](../knowledge/ask-nimble-answers.mdx).** The assistant that answers questions in plain words from the knowledge graph, your live readings and your documents, and shows its sources. Open it with Ctrl/⌘+I. It needs the knowledge graph.
+**[Ask Nimble](../knowledge/ask-nimble-answers.mdx).** Der Assistent, der Fragen in einfachen Worten aus dem Knowledge Graph, Ihren Live-Messwerten und Ihren Dokumenten beantwortet und seine Quellen zeigt. Öffnen Sie ihn mit Strg/⌘+I. Er braucht den Knowledge Graph.
 
-## How they work together
+## Wie sie zusammenarbeiten {#how-they-work-together}
 
-You create a thing type, publish it, and create things of that type. Devices send messages that name their thing type; IoT Breeze checks each value against the published schema. Dashboards show the data. Rules watch it and raise events. Policies turn events into incidents, and notifications tell people. Groups decide who sees any of it.
+Sie legen einen Thing-Typ an, veröffentlichen ihn und legen Things dieses Typs an. Geräte senden Nachrichten, die ihren Thing-Typ nennen; IoT Breeze prüft jeden Wert gegen das veröffentlichte Schema. Dashboards zeigen die Daten. Regeln beobachten sie und erzeugen Events. Richtlinien machen aus Events Vorfälle, und Benachrichtigungen informieren Personen. Gruppen bestimmen, wer davon etwas sieht.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Quickstart](./quickstart.mdx): use each of these once.
-- [Glossary](../troubleshooting/glossary.mdx)
+- [Quickstart](./quickstart.mdx): jeden dieser Begriffe einmal verwenden.
+- [Glossar](../troubleshooting/glossary.mdx)

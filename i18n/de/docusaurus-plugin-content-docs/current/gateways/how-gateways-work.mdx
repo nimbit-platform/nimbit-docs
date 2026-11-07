@@ -1,74 +1,74 @@
 ---
-untranslated: true
-title: How gateways work
-description: What a gateway is, how it signs in, which things it may send for, and how IoT Breeze knows it is alive.
+title: Wie Gateways funktionieren
+description: Was ein Gateway ist, wie es sich anmeldet, für welche Things es senden darf und woran IoT Breeze erkennt, dass es lebt.
 type: concept
 sidebar_position: 2
 app:
   routes: ["/onboarding/gateways", "/onboarding/gateways/:id"]
+translated_from: 27a1e21
 ---
 
 {/* TODO(product): confirm after PRs #1613–#1623 merge */}
 
-A gateway is one box on site that speaks for many devices. Instead of giving every device its own credential, you give the box one credential. The platform lets that credential send data only for the things assigned to the gateway, and watches the box's own heartbeat to tell you whether it is alive.
+Ein Gateway ist eine Box vor Ort, die für viele Geräte spricht. Statt jedem Gerät eigene Zugangsdaten zu geben, vergeben Sie der Box eine einzige. Die Plattform lässt diese Zugangsdaten nur Daten für die Things senden, die dem Gateway zugeordnet sind, und beobachtet den eigenen Heartbeat der Box, um Ihnen zu zeigen, ob sie lebt.
 
 ```mermaid
 flowchart LR
-  Box["Gateway box on site"] -->|"its own credential"| Ingest["tsflux ingest"]
-  Ingest -->|"member of this gateway"| Things["Things of the gateway"]
-  Ingest -.->|"not a member"| Drop["Discarded and counted"]
-  Box -->|"health message every 5 min"| GT["Gateway thing"]
-  Ingest -.->|"traffic counts, never presence"| GT
-  GT --> Status["Online or Offline"]
+  Box["Gateway-Box vor Ort"] -->|"eigene Zugangsdaten"| Ingest["tsflux ingest"]
+  Ingest -->|"Mitglied dieses Gateways"| Things["Things des Gateways"]
+  Ingest -.->|"kein Mitglied"| Drop["Verworfen und gezählt"]
+  Box -->|"Zustandsmeldung alle 5 Min."| GT["Gateway-Thing"]
+  Ingest -.->|"Datenverkehr zählt, nie die Präsenz"| GT
+  GT --> Status["Online oder Offline"]
 ```
 
-## The parts
+## Die Bausteine {#the-parts}
 
-| Part | What it is |
+| Baustein | Was es ist |
 | --- | --- |
-| **Gateway** | A record in your organization with a name, a type, a namespace and a scope. You manage it under **Settings › Onboarding › Gateways**. |
-| **Type** | **Periscope**: a [Periscope](./periscope/index.mdx) agent that signs in with its own key. **MQTT device**: a device that connects over MQTT with a username and password, for example an eWON Flexy. |
-| **Gateway thing** | One thing that IoT Breeze creates with the gateway, with the alternate ID `gateway-<gateway id>`. Its connection status is the gateway's status. It is removed with the gateway, and you can't delete it on its own. |
-| **Namespace** | The prefix of the alternate IDs of the gateway's things: they equal the namespace or start with `<namespace>-`. IoT Breeze derives it from the name unless you type one. |
-| **Scope** | What the gateway may create: things inside its namespace, of the allowed thing types, up to a thing limit. The **Creation policy** is **Open** or **Locked**. |
-| **Membership** | A thing belongs to at most one gateway. The record decides, not where the data arrived. |
+| **Gateway** | Ein Eintrag in Ihrer Organisation mit Name, Typ, Namespace und Scope. Sie verwalten ihn unter **Einstellungen › Onboarding › Gateways**. |
+| **Typ** | **Periscope**: ein [Periscope](./periscope/index.mdx)-Agent, der sich mit einem eigenen Schlüssel anmeldet. **MQTT-Gerät**: ein Gerät, das sich per MQTT mit Benutzername und Passwort verbindet, zum Beispiel ein eWON Flexy. |
+| **Gateway-Thing** | Ein Thing, das IoT Breeze zusammen mit dem Gateway anlegt, mit der Alternate-ID `gateway-<gateway id>`. Sein Verbindungsstatus ist der Status des Gateways. Es wird mit dem Gateway entfernt und lässt sich nicht einzeln löschen. |
+| **Namespace** | Das Präfix der Alternate-IDs der Things des Gateways: Sie entsprechen dem Namespace oder beginnen mit `<namespace>-`. IoT Breeze leitet ihn aus dem Namen ab, wenn Sie keinen eingeben. |
+| **Bereich** (Scope) | Was das Gateway anlegen darf: Things innerhalb seines Namespace, von den erlaubten Thing-Typen, bis zu einem Thing-Limit. Das **Anlegen von Things** ist **Offen** oder **Gesperrt**. |
+| **Zugehörigkeit** | Ein Thing gehört zu höchstens einem Gateway. Maßgeblich ist der Eintrag, nicht der Weg, auf dem die Daten ankamen. |
 
-## How they work together
+## Wie sie zusammenarbeiten {#how-they-work-together}
 
-**Signing in.** For a Periscope gateway you get a one-time onboarding code. The box redeems it once, creates its own key pair, and from then on signs in with that key. For an MQTT device you get a broker username and password, shown once, and a config file that holds them.
+**Anmelden.** Für ein Periscope-Gateway erhalten Sie einen einmaligen Onboarding-Code. Die Box löst ihn einmal ein, erzeugt ein eigenes Schlüsselpaar und meldet sich danach mit diesem Schlüssel an. Für ein MQTT-Gerät erhalten Sie einen Broker-Benutzernamen und ein Passwort, die nur einmal angezeigt werden, sowie eine Konfigurationsdatei, die beides enthält.
 
-**Sending data.** Over MQTT, a gateway's credential can publish only on topics that contain its own gateway ID. Over HTTP and stream ingest, a Periscope gateway's token names the gateway. For each message, the platform then checks that the thing belongs to the gateway. A message for a thing of another gateway, for a thing that doesn't exist, or one that is malformed is discarded and counted by reason. See [Check gateway health and traffic](./fleet-health.mdx).
+**Daten senden.** Über MQTT darf eine Gateway-Zugangsberechtigung nur auf Topics veröffentlichen, die die eigene Gateway-ID enthalten. Über HTTP und Stream-Ingest nennt das Token eines Periscope-Gateways das Gateway. Für jede Nachricht prüft die Plattform dann, ob das Thing zum Gateway gehört. Eine Nachricht für ein Thing eines anderen Gateways, für ein nicht existierendes Thing oder eine fehlerhafte Nachricht wird verworfen und nach Grund gezählt. Siehe [Zustand und Datenverkehr von Gateways prüfen](./fleet-health.mdx).
 
-**Creating things.** A Periscope box creates its own thing types and things, and every thing it creates is stamped with the gateway. An MQTT device has no API access, so you create its things in IoT Breeze and assign them to the gateway. A **Locked** gateway creates no new things by any path. Things it already has keep working.
+**Things anlegen.** Eine Periscope-Box legt ihre Thing-Typen und Things selbst an, und jedes Thing, das sie anlegt, trägt die Kennung des Gateways. Ein MQTT-Gerät hat keinen API-Zugriff, daher legen Sie seine Things in IoT Breeze an und ordnen sie dem Gateway zu. Ein **gesperrtes** Gateway legt auf keinem Weg neue Things an. Things, die es schon hat, arbeiten weiter.
 
-**Being alive.** The gateway thing goes **Online** when the box's own health message arrives, which is every 5 minutes, and **Offline** after 15 minutes without one. The platform's traffic counts are written to the same thing but never make it online, so a dead box can't look alive. Each thing behind a gateway has its own timeout, so a gateway can be online while one device behind it is offline.
+**Am Leben sein.** Das Gateway-Thing wird **Online**, wenn die eigene Zustandsmeldung der Box eintrifft, also alle 5 Minuten, und **Offline**, wenn 15 Minuten lang keine kommt. Die Datenverkehrszahlen der Plattform werden in dasselbe Thing geschrieben, setzen es aber nie auf online, sodass eine tote Box nicht lebendig wirken kann. Jedes Thing hinter einem Gateway hat seinen eigenen Timeout, ein Gateway kann also online sein, während ein Gerät dahinter offline ist.
 
-**Cutting a gateway off.** Revoke a key, issue a new onboarding code or credential, or delete the gateway. An already connected MQTT session ends within ten minutes. A Periscope box's HTTP and stream tokens last at most ten minutes.
+**Ein Gateway aussperren.** Widerrufen Sie einen Schlüssel, stellen Sie einen neuen Onboarding-Code oder neue Zugangsdaten aus oder löschen Sie das Gateway. Eine bereits verbundene MQTT-Sitzung endet innerhalb von zehn Minuten. Die HTTP- und Stream-Token einer Periscope-Box gelten höchstens zehn Minuten.
 
-## Is a Periscope instance a gateway?
+## Ist eine Periscope-Instanz ein Gateway? {#is-a-periscope-instance-a-gateway}
 
-Only if you onboard it with an onboarding code. Then it is a gateway of type **Periscope**: it has a record, a gateway thing, a namespace and a scope, and it can send only for its own things.
+Nur wenn Sie sie mit einem Onboarding-Code einrichten. Dann ist sie ein Gateway vom Typ **Periscope**: Sie hat einen Eintrag, ein Gateway-Thing, einen Namespace und einen Scope und darf nur für ihre eigenen Things senden.
 
-A Periscope agent can also run as a service account (an email and password enrolled once). That agent is not a gateway. It has no record, no namespace and no health thing, and it sends with a tenant-wide credential. Use the onboarding code for new installations.
+Ein Periscope-Agent kann auch als Servicekonto laufen (E-Mail und Passwort, einmal registriert). Dieser Agent ist kein Gateway. Er hat keinen Eintrag, keinen Namespace und kein Gesundheits-Thing und sendet mit Zugangsdaten für den ganzen Tenant. Verwenden Sie für neue Installationen den Onboarding-Code.
 
-## Choosing between
+## Was wann? {#choosing-between}
 
-| You have | Use |
+| Sie haben | Verwenden Sie |
 | --- | --- |
-| A machine next to the equipment that can run Periscope | A **Periscope** gateway. It discovers sources and creates things. |
-| A device that speaks MQTT and can't run software of ours | An **MQTT device** gateway. You model the things in IoT Breeze. |
-| One device that sends only its own data | No gateway. [Send data over MQTT](../connect/mqtt.mdx) with a device credential. |
+| Eine Maschine neben der Anlage, auf der Periscope laufen kann | Ein **Periscope**-Gateway. Es erkennt Quellen und legt Things an. |
+| Ein Gerät, das MQTT spricht und keine Software von uns ausführen kann | Ein Gateway vom Typ **MQTT-Gerät**. Sie modellieren die Things in IoT Breeze. |
+| Ein Gerät, das nur seine eigenen Daten sendet | Kein Gateway. [Senden Sie Daten per MQTT](../connect/mqtt.mdx) mit Gerätezugangsdaten. |
 
-## Limits
+## Limits {#limits}
 
-- At most 1000 Periscope gateways per organization.
-- A thing belongs to at most one gateway.
-- An MQTT device can send for a thing only after the thing exists and is assigned to the gateway. Unknown things are not created from its messages.
-- Gateways need API keys. If your operator has turned them off, the page says **Gateways are not enabled**.
+- Höchstens 1000 Periscope-Gateways pro Organisation.
+- Ein Thing gehört zu höchstens einem Gateway.
+- Ein MQTT-Gerät kann nur für ein Thing senden, das bereits existiert und dem Gateway zugeordnet ist. Unbekannte Things werden aus seinen Nachrichten nicht angelegt.
+- Gateways brauchen API-Schlüssel. Hat Ihr Betreiber sie ausgeschaltet, zeigt die Seite **Gateways sind nicht aktiviert**.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Add a gateway](./add-a-gateway.mdx)
-- [Send data for many devices through one MQTT gateway](./mqtt-gateway.mdx)
-- [Gateway reference](./gateway-reference.mdx)
-- [Thing types, things and interfaces](../model/things-and-types.mdx)
+- [Gateway hinzufügen](./add-a-gateway.mdx)
+- [Daten vieler Geräte über ein MQTT-Gateway senden](./mqtt-gateway.mdx)
+- [Gateway-Referenz](./gateway-reference.mdx)
+- [Thing-Typen, Things und Interfaces](../model/things-and-types.mdx)

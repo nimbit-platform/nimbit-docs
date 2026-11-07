@@ -1,41 +1,41 @@
 ---
-untranslated: true
-title: Register a thing
+title: Ein Thing registrieren
 sidebar_position: 5
-description: Add one real device or asset in IoT Breeze, assign it to a thing type, an organization and groups.
+description: Fügen Sie in IoT Breeze ein echtes Gerät oder eine Anlage hinzu und ordnen Sie es einem Thing-Typ, einer Organisation und Gruppen zu.
 type: how-to
 app:
   routes: ["/onboarding/things", "/onboarding/things/:id"]
+translated_from: b6ed908
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
 
-Register one real device or asset, such as a sensor in a room, so IoT Breeze can accept its data and show it to the right people. Background: [Thing types, things and interfaces](./things-and-types.mdx).
+Registrieren Sie ein echtes Gerät oder eine Anlage, etwa einen Sensor in einem Raum, damit IoT Breeze seine Daten annehmen und den richtigen Personen zeigen kann. Hintergrund: [Thing-Typen, Things und Interfaces](./things-and-types.mdx).
 
-## Before you start
+## Bevor Sie beginnen {#before-you-start}
 
-- A [thing type](./create-thing-type.mdx) exists and its schema is published. With none, the page offers **Create Thing Type first**.
-- Your role can create things.
-- You know which organization and groups should see the thing. Members of the selected groups can see it.
+- Ein [Thing-Typ](./create-thing-type.mdx) existiert und sein Schema ist veröffentlicht. Gibt es keinen, bietet die Seite **Erstellen Sie zuerst den Thing Typ** an.
+- Ihre Rolle darf Things anlegen.
+- Sie wissen, welche Organisation und Gruppen das Thing sehen sollen. Mitglieder der gewählten Gruppen können es sehen.
 
-## Steps
+## Schritte {#steps}
 
-1. Open **Settings › Onboarding › Things** and select **Create thing**.
-2. Fill in the form:
+1. Öffnen Sie **Einstellungen › Onboarding › Things** und wählen Sie **Thing erstellen**.
+2. Füllen Sie das Formular aus:
 
-   | Field | What to enter |
+   | Feld | Was Sie eingeben |
    | --- | --- |
-   | **Name** | A name for the thing, for example `Meeting room 1`. Required, up to 128 characters. |
-   | **Thing Alternate ID** | The ID your device uses. Required, up to 128 ASCII characters, unique across the whole system and **can't be changed later**. Enter your own, such as a serial number, or select **Generate**. |
-   | **Description** | Optional. |
-   | **Thing type** | The type this thing is an instance of. Required. You can't change it later. |
-   | **Parent** | Optional. Another thing this one belongs to. |
-   | **Organization** | Required. |
-   | **Group** | Required. Select one or more. |
-   | **Tags** | Optional search tags. |
+   | **Name** | Ein Name für das Thing, zum Beispiel `Meeting room 1`. Pflicht, bis zu 128 Zeichen. |
+   | **Alternative Thing -ID** | Die ID, die Ihr Gerät verwendet. Pflicht, bis zu 128 ASCII-Zeichen, im gesamten System eindeutig und **lässt sich später nicht ändern**. Geben Sie eine eigene ein, etwa eine Seriennummer, oder wählen Sie **Generieren**. |
+   | **Beschreibung** | Optional. |
+   | **Thing Typ** | Der Typ, von dem dieses Thing eine Instanz ist. Pflicht. Lässt sich später nicht ändern. |
+   | **Übergeordnet** | Optional. Ein anderes Thing, zu dem dieses gehört. |
+   | **Organisation** | Pflicht. |
+   | **Gruppe** | Pflicht. Wählen Sie eine oder mehrere. |
+   | **Tags** | Optionale Such-Tags. |
 
-3. If the thing type's connector is Azure IoT Hub, an **Authentication type** field appears: choose **SAS Token** or **X.509 Certificate**. It can't be changed later.
-4. Select **Save**. The thing page opens.
+3. Ist der Konnektor des Thing-Typs Azure IoT Hub, erscheint ein Feld **Authentifizierungsart**: Wählen Sie **SAS-Token** oder **X.509 Certificate**. Es lässt sich später nicht ändern.
+4. Wählen Sie **Speichern**. Die Seite des Things öffnet sich.
 
 {/* TODO(product): What does Authentication type offer for the AWS IoT Core and SAP connectors? ThingForm.tsx lists options only for AZURE (SAS Token, X.509 Certificate) and SAP (X.509 Certificate), and falls back to X.509 for any other connector. */}
 
@@ -44,27 +44,27 @@ Register one real device or asset, such as a sensor in a room, so IoT Breeze can
   id="01-create-thing"
   route="/onboarding/things"
   state="Create new thing drawer filled in: name, generated alternate ID, thing type, organization and one group selected"
-  alt="The create thing form"
+  alt="Das Formular zum Anlegen eines Things"
 />
 
-:::tip Choose an ID that is safe in MQTT
-Use letters, digits, `-` and `_`. The ID becomes part of the MQTT client ID and of MQTT topics, where `:` has a special meaning. A generated ID is always safe. See [MQTT topics and client ID](../connect/mqtt-topics.mdx).
+:::tip Wählen Sie eine ID, die in MQTT sicher ist
+Verwenden Sie Buchstaben, Ziffern, `-` und `_`. Die ID wird Teil der MQTT-Client-ID und der MQTT-Topics, in denen `:` eine besondere Bedeutung hat. Eine generierte ID ist immer sicher. Siehe [MQTT-Topics und Client-ID](../connect/mqtt-topics.mdx).
 :::
 
-Next, create credentials on the thing's **Connections** tab: [Create and rotate device credentials](../connect/credentials.mdx). To see data before the hardware is ready, [simulate a device](../connect/simulate.mdx).
+Legen Sie als Nächstes auf dem Tab **Verbindungen** des Things Zugangsdaten an: [Gerätezugangsdaten anlegen und rotieren](../connect/credentials.mdx). Um Daten zu sehen, bevor die Hardware bereit ist, [simulieren Sie ein Gerät](../connect/simulate.mdx).
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-The thing appears in **Things**, in the **All** tab. Its **Device status** is **Unknown** until it sends its first message, then **Connected**. The thing page shows the thing's measures and properties on the **Schema** tab, taken from its thing type.
+Das Thing erscheint unter **Things** im Tab **Alle**. Sein **Gerätestatus** ist **Unbekannt**, bis es seine erste Nachricht sendet, dann **Verbunden**. Die Seite des Things zeigt die Messwerte und Eigenschaften des Things auf dem Tab **Schema**, übernommen von seinem Thing-Typ.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **The ID is rejected as taken**: a Thing Alternate ID is unique across the whole system, not only your tenant. Choose another or select **Generate**.
-- **The ID is rejected as invalid**: it contains characters outside ASCII, or is longer than 128 characters.
-- **Save is disabled**: **Name**, **Thing Alternate ID**, **Thing type**, **Organization** and at least one **Group** are required.
-- **The group you need isn't listed**: groups are managed by a tenant admin. See [Users, groups and roles](../administer/access.mdx).
+- **Die ID wird als vergeben abgelehnt**: Eine Alternative Thing -ID ist im gesamten System eindeutig, nicht nur in Ihrem Tenant. Wählen Sie eine andere oder wählen Sie **Generieren**.
+- **Die ID wird als ungültig abgelehnt**: Sie enthält Zeichen außerhalb von ASCII oder ist länger als 128 Zeichen.
+- **Speichern ist deaktiviert**: **Name**, **Alternative Thing -ID**, **Thing Typ**, **Organisation** und mindestens eine **Gruppe** sind Pflicht.
+- **Die benötigte Gruppe wird nicht aufgelistet**: Gruppen verwaltet ein Tenant-Admin. Siehe [Benutzer, Gruppen und Rollen](../administer/access.mdx).
 
-## Related
+## Siehe auch {#related}
 
-- [Thing types, things and interfaces](./things-and-types.mdx) · [Create a thing type](./create-thing-type.mdx)
-- [Send data over MQTT](../connect/mqtt.mdx) · [Send data over HTTP](../connect/http.mdx)
+- [Thing-Typen, Things und Interfaces](./things-and-types.mdx) · [Einen Thing-Typ anlegen](./create-thing-type.mdx)
+- [Daten über MQTT senden](../connect/mqtt.mdx) · [Daten über HTTP senden](../connect/http.mdx)

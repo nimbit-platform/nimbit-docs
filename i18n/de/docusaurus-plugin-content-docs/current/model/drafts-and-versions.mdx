@@ -1,14 +1,14 @@
 ---
-untranslated: true
-title: Drafts, publishing and versions
+title: Entwürfe, Veröffentlichen und Versionen
 sidebar_position: 3
-description: Schema edits go into a draft that devices ignore until you publish it. Published versions never change.
+description: Schema-Änderungen landen in einem Entwurf, den Geräte ignorieren, bis Sie ihn veröffentlichen. Veröffentlichte Versionen ändern sich nie.
 type: concept
 app:
   routes: ["/onboarding/thing-types/:id", "/onboarding/interfaces/:id"]
+translated_from: 810b8a2
 ---
 
-Thing types and interfaces both keep their schema in numbered versions. Your edits to measures and properties go into a draft that nothing uses. When you publish the draft it becomes the live version, and the version it replaces is archived.
+Thing-Typen und Interfaces halten ihr Schema in nummerierten Versionen. Ihre Änderungen an Messwerten und Eigenschaften landen in einem Entwurf, den nichts verwendet. Veröffentlichen Sie den Entwurf, wird er zur Live-Version, und die Version, die er ersetzt, wird archiviert.
 
 ```mermaid
 stateDiagram-v2
@@ -19,52 +19,52 @@ stateDiagram-v2
   Archived --> Draft: Restore
 ```
 
-## The parts
+## Die Bestandteile {#the-parts}
 
-| Part | What it is |
+| Bestandteil | Was es ist |
 | --- | --- |
-| **Published** | The version in use. Things use the published version of their thing type. Thing types use the version of an interface they pinned. It can't be edited. |
-| **Draft** | The next version, being edited. There is at most one draft. Its number is the number it gets when published. |
-| **Archived** | A version that was replaced. You can compare it with another version or restore it. |
-| **Changelog** | The note you enter when you publish, shown in the version history. |
+| **Veröffentlicht** | Die Version in Verwendung. Things nutzen die veröffentlichte Version ihres Thing-Typs. Thing-Typen nutzen die Version eines Interfaces, die sie fixiert haben. Sie lässt sich nicht bearbeiten. |
+| **Entwurf** | Die nächste Version, in Bearbeitung. Es gibt höchstens einen Entwurf. Seine Nummer ist die Nummer, die er beim Veröffentlichen erhält. |
+| **Archiviert** | Eine Version, die ersetzt wurde. Sie können sie mit einer anderen Version vergleichen oder wiederherstellen. |
+| **Änderungsnotiz** | Die Notiz, die Sie beim Veröffentlichen eingeben, angezeigt im Versionsverlauf. Bei Interfaces heißt sie **Änderungsprotokoll**. |
 
-A new thing type starts with an empty published v1. Your first edit opens draft v2.
+Ein neuer Thing-Typ beginnt mit einer leeren veröffentlichten v1. Ihre erste Änderung öffnet den Entwurf v2.
 
-## What goes into the draft
+## Was in den Entwurf kommt {#what-goes-into-the-draft}
 
-The rule is the same for thing types and interfaces: **every change to a measure or property goes into the draft, whatever field you change.** That includes names, types, units, ranges, descriptions, display names and, on interfaces, aliases. Adding and deleting fields goes into the draft too.
+Die Regel ist für Thing-Typen und Interfaces dieselbe: **Jede Änderung an einem Messwert oder einer Eigenschaft kommt in den Entwurf, egal welches Feld Sie ändern.** Das umfasst Namen, Typen, Einheiten, Bereiche, Beschreibungen, Anzeigenamen und bei Interfaces Aliase. Auch das Hinzufügen und Löschen von Feldern kommt in den Entwurf.
 
-| You change | Where it is saved |
+| Sie ändern | Wo es gespeichert wird |
 | --- | --- |
-| A measure or property, on a thing type or an interface | The draft. Live after you publish. |
-| The thing type's or interface's own settings: display name, description, tags (**Edit**) | Immediately. Not versioned. |
-| **Mark as stable** on an interface | Immediately. Can't be undone. |
-| **Show on overview** on a measure of a thing type | Immediately. A display preference, not part of the schema. |
-| **Attach interface**, **Detach**, **Update to v2** on a thing type | Immediately. Not through the draft. |
+| Einen Messwert oder eine Eigenschaft an einem Thing-Typ oder Interface | Im Entwurf. Live nach dem Veröffentlichen. |
+| Die eigenen Einstellungen des Thing-Typs oder Interfaces: Anzeigename, Beschreibung, Tags (**Bearbeiten**) | Sofort. Nicht versioniert. |
+| **Als stabil markieren** an einem Interface | Sofort. Lässt sich nicht rückgängig machen. |
+| **In der Übersicht anzeigen** an einem Messwert eines Thing-Typs | Sofort. Eine Anzeigeeinstellung, nicht Teil des Schemas. |
+| **Interface anhängen**, **Entfernen**, **Auf v2 aktualisieren** an einem Thing-Typ | Sofort. Nicht über den Entwurf. |
 
 {/* TODO(product): The interface Schema tab says "Descriptions and aliases save in place", and the API has an in-place update for them (PATCH /interfaces/{id} with a capabilities list). IoT Breeze never calls it: editing a description or alias of an interface field saves the whole draft instead. Which is intended? If in place is intended, this page and the thing type rule change. */}
 
-Aliases exist only on interface fields. A thing type's measure and property forms don't have them. A field inherited from an interface can't be edited on the thing type; you edit it in the interface.
+Aliase gibt es nur an Interface-Feldern. Die Formulare für Messwerte und Eigenschaften eines Thing-Typs haben sie nicht. Ein von einem Interface geerbtes Feld lässt sich am Thing-Typ nicht bearbeiten; Sie bearbeiten es im Interface.
 
-## How they work together
+## Wie sie zusammenspielen {#how-they-work-together}
 
-While a draft is open, the header shows **Draft v2 · 3 changes** and changed rows are marked **Draft: new** or **Draft: changed**. **Compare with v1** shows exactly what differs. **Publish v2** asks for a **Changelog**, tells you how many things (and, for an interface, thing types) the version affects, and archives v1. Devices use v2 from then on.
+Solange ein Entwurf offen ist, zeigt der Kopfbereich **Entwurf v2 · 3 Änderungen**, und geänderte Zeilen sind mit **Entwurf: neu** oder **Entwurf: geändert** markiert. **Mit v1 vergleichen** zeigt genau, was abweicht. **v2 veröffentlichen** fragt nach einer **Änderungsnotiz**, nennt, wie viele Things (und bei einem Interface Thing-Typen) die Version betrifft, und archiviert v1. Geräte nutzen danach v2.
 
-**Discard draft** deletes the draft and leaves the published version as it was. **Restore** on an archived version copies it into a new draft and takes you to the schema to review it. On an interface, restoring replaces a draft that is already open. Nothing goes live until you publish.
+**Entwurf verwerfen** löscht den Entwurf und lässt die veröffentlichte Version, wie sie war. **Wiederherstellen** an einer archivierten Version kopiert sie in einen neuen Entwurf und führt Sie zur Prüfung zum Schema. Bei einem Interface ersetzt das Wiederherstellen einen bereits offenen Entwurf. Nichts geht live, bevor Sie veröffentlichen.
 
-An interface adds one step. A thing type keeps using the interface version it pinned. When you publish v2 of the interface, thing types that attached v1 show **v2 available** and keep working with v1 until someone on that thing type selects **Update to v2**. **Compare** shows the difference first.
+Ein Interface fügt einen Schritt hinzu. Ein Thing-Typ nutzt weiter die Interface-Version, die er fixiert hat. Veröffentlichen Sie v2 des Interfaces, zeigen Thing-Typen, die v1 angehängt haben, **v2 verfügbar** und arbeiten mit v1 weiter, bis jemand an diesem Thing-Typ **Auf v2 aktualisieren** wählt. **Vergleichen** zeigt vorher den Unterschied.
 
-## Auto schema evolution does not use the draft
+## Auto-Schema-Evolution nutzt den Entwurf nicht {#auto-schema-evolution-does-not-use-the-draft}
 
-With **Auto Schema Evolution** on, a field that a device sends and the schema doesn't know is added to the thing type's published schema. This creates a new published version straight away and marks the field **auto-created**. If you have a draft open, the new field is added to it too, and your own edits stay. With it off, unknown fields are dropped.
+Ist **Auto-Schemas Entwicklung** an, wird ein Feld, das ein Gerät sendet und das Schema nicht kennt, zum veröffentlichten Schema des Thing-Typs hinzugefügt. Das erzeugt sofort eine neue veröffentlichte Version und markiert das Feld als **Automatisch erstellt**. Ist ein Entwurf offen, wird das neue Feld auch dort hinzugefügt, und Ihre eigenen Änderungen bleiben. Ist sie aus, werden unbekannte Felder verworfen.
 
-## Limits
+## Grenzen {#limits}
 
-- A published version is immutable. To go back, restore the old version as a draft and publish it.
-- A measure that exists only in a draft is unknown to the platform. Publish before devices send it.
-- A thing type's **Name** and a field's **Name** can't change in any version.
+- Eine veröffentlichte Version ist unveränderlich. Um zurückzugehen, stellen Sie die alte Version als Entwurf wieder her und veröffentlichen Sie sie.
+- Ein Messwert, der nur in einem Entwurf existiert, ist der Plattform unbekannt. Veröffentlichen Sie, bevor Geräte ihn senden.
+- Der **Name** eines Thing-Typs und der **Name** eines Felds können sich in keiner Version ändern.
 
-## Related
+## Siehe auch {#related}
 
-- [Create a thing type](./create-thing-type.mdx) · [Reuse an interface across thing types](./reuse-interface.mdx)
-- [Measure and property types](./measure-types.mdx)
+- [Einen Thing-Typ anlegen](./create-thing-type.mdx) · [Ein Interface für mehrere Thing-Typen wiederverwenden](./reuse-interface.mdx)
+- [Messwert- und Eigenschaftstypen](./measure-types.mdx)

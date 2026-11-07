@@ -1,27 +1,27 @@
 ---
-untranslated: true
-title: Poll an HTTP source
-description: Poll a JSON HTTP API with Periscope, tell it where the things and values are in the response, and check what it proposes.
+title: Eine HTTP-Quelle abfragen
+description: Eine JSON-HTTP-API mit Periscope abfragen, angeben, wo Things und Werte in der Antwort liegen, und prüfen, was es vorschlägt.
 type: how-to
 sidebar_position: 8
 app:
   routes: ["/onboarding/gateways"]
+translated_from: 4c9fc6e
 ---
 
-Periscope polls JSON HTTP APIs, such as a weather service, an inverter, a building management system or a device's REST interface, and turns their values into things and measures. You say where in the response the thing is, and it proposes a measure for every value it finds there. For the stages, read [How Periscope works](./how-periscope-works.mdx).
+Periscope fragt JSON-HTTP-APIs ab, etwa einen Wetterdienst, einen Wechselrichter, eine Gebäudeleittechnik oder die REST-Schnittstelle eines Geräts, und macht aus ihren Werten Things und Messwerte. Sie geben an, wo in der Antwort das Thing liegt, und es schlägt für jeden dort gefundenen Wert einen Messwert vor. Die Stufen erklärt [Wie Periscope funktioniert](./how-periscope-works.mdx).
 
-## Before you start
+## Voraussetzungen {#before-you-start}
 
-- Periscope is installed and connected. See [Install Periscope and stream your first source](./install.mdx).
-- From the API: the URL that returns JSON, with query parameters, and the method (`GET`, or `POST` with a body).
-- Credentials, if any: a bearer token, a user and password, or an API key header. Put them in the agent's environment and reference them as `${NAME}`. Don't write them into the file.
-- The response's shape. Fetch it once with `curl` and look for where the values sit, whether it is one object or a list, which field names a list element, and which field holds the time.
-- The API's update rate and quota. Poll no faster than it updates.
-- Outbound HTTPS from the box to the API's host, through the proxy in `HTTPS_PROXY` if the site needs one.
+- Periscope ist installiert und verbunden. Siehe [Periscope installieren und die erste Quelle streamen](./install.mdx).
+- Von der API: die URL, die JSON liefert, mit Query-Parametern, und die Methode (`GET` oder `POST` mit Body).
+- Zugangsdaten, falls nötig: ein Bearer-Token, Benutzer und Passwort oder ein API-Key-Header. Legen Sie sie in die Umgebung des Agents und verweisen Sie mit `${NAME}` darauf. Schreiben Sie sie nicht in die Datei.
+- Die Form der Antwort. Rufen Sie sie einmal mit `curl` ab und achten Sie darauf, wo die Werte liegen, ob es ein Objekt oder eine Liste ist, welches Feld ein Listenelement benennt und welches Feld die Zeit enthält.
+- Die Aktualisierungsrate und das Kontingent der API. Fragen Sie nicht schneller ab, als sie sich aktualisiert.
+- Ausgehendes HTTPS von der Box zum Host der API, über den Proxy in `HTTPS_PROXY`, falls der Standort einen braucht.
 
-## Steps
+## Schritte {#steps}
 
-1. Add an input for a single object, here the current weather at one place:
+1. Fügen Sie einen Eingang für ein einzelnes Objekt hinzu, hier das aktuelle Wetter an einem Ort:
 
    ```toml
    [[inputs.http]]
@@ -36,7 +36,7 @@ Periscope polls JSON HTTP APIs, such as a weather service, an inverter, a buildi
    exclude        = ["interval"]
    ```
 
-2. For a list in which each element is a thing, name the list and the field that identifies an element:
+2. Benennen Sie für eine Liste, in der jedes Element ein Thing ist, die Liste und das Feld, das ein Element identifiziert:
 
    ```toml
    [[inputs.http]]
@@ -54,31 +54,31 @@ Periscope polls JSON HTTP APIs, such as a weather service, an inverter, a buildi
    include          = ["temp", "humidity", "wind.*"]
    ```
 
-3. Validate and discover:
+3. Prüfen und erkennen:
 
    ```sh
    periscope validate -config /etc/periscope/periscope.toml
    periscope discover -config /etc/periscope/periscope.toml
    ```
 
-4. Review and confirm the proposals. See [Approve what Periscope discovers](./approve-discoveries.mdx).
+4. Prüfen und bestätigen Sie die Vorschläge. Siehe [Periscope-Erkennungen freigeben](./approve-discoveries.mdx).
 
-| Key | Meaning |
+| Schlüssel | Bedeutung |
 | --- | --- |
-| `urls` | The requests. Several URLs need `thing_path`. |
-| `interval`, `timeout` | Poll period, with a first poll at start, and the bound of one request. |
-| `bearer_token`, `username` and `password`, `headers` | Credentials and extra headers. |
-| `root` | Where the values are: a gjson path such as `current` or `data.items`. |
-| `thing`, or `items` with `thing_path` | One fixed thing, or a thing per array element named by one of its fields. |
-| `thing_type` | The thing type. Default: the alias. |
-| `timestamp_path`, `timestamp_format` | The values' time. Without it, the poll time. |
-| `units_path` | An object holding the units under the same keys. |
-| `include`, `exclude` | Which values to keep, by dotted path such as `wind.*`. |
-| `mapping` | A Bloblang mapping that reshapes the response first. |
+| `urls` | Die Anfragen. Mehrere URLs brauchen `thing_path`. |
+| `interval`, `timeout` | Abfrageperiode, mit einer ersten Abfrage beim Start, und die Grenze einer Anfrage. |
+| `bearer_token`, `username` und `password`, `headers` | Zugangsdaten und zusätzliche Header. |
+| `root` | Wo die Werte liegen: ein gjson-Pfad wie `current` oder `data.items`. |
+| `thing` oder `items` mit `thing_path` | Ein festes Thing oder ein Thing pro Array-Element, benannt durch eines seiner Felder. |
+| `thing_type` | Der Thing-Typ. Vorgabe: der Alias. |
+| `timestamp_path`, `timestamp_format` | Die Zeit der Werte. Ohne sie die Abfragezeit. |
+| `units_path` | Ein Objekt, das die Einheiten unter denselben Schlüsseln enthält. |
+| `include`, `exclude` | Welche Werte behalten werden, per gepunktetem Pfad wie `wind.*`. |
+| `mapping` | Ein Bloblang-Mapping, das die Antwort zuerst umformt. |
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-Discovery proposes one thing type per input, one thing per object, and one measure per number, boolean or string, named by its path (`wind.speed` becomes `wind_speed`), with the unit from `units_path`:
+Die Erkennung schlägt einen Thing-Typ pro Eingang vor, ein Thing pro Objekt und einen Messwert pro Zahl, Boolean oder String, benannt nach seinem Pfad (`wind.speed` wird zu `wind_speed`), mit der Einheit aus `units_path`:
 
 ```text
 KIND       NAME     TYPE        STATUS    NOTE
@@ -86,23 +86,23 @@ thingType  weather  3 measures  proposed  -
 thing      weimar   weather     proposed  -
 ```
 
-A value's address in the mapping and metrics is `<thing>/<dotted.path>`, for example `weimar/temperature_2m`.
+Die Adresse eines Werts in Zuordnung und Metriken lautet `<thing>/<dotted.path>`, zum Beispiel `weimar/temperature_2m`.
 
-## If it doesn't work
+## Wenn es nicht klappt {#if-it-doesnt-work}
 
-- **`HTTP 401` or `HTTP 403`**: credentials are missing or wrong. Check that the `${NAME}` variable is set for the agent, and the token's scope.
-- **`HTTP 429`**: you poll faster than the API's quota. Raise `interval`. The back-off slows down meanwhile.
-- **`timeout`**: the API or the proxy doesn't answer within `timeout`. Check egress and `HTTPS_PROXY`, or raise `timeout`.
-- **`root "…" is not in the response`**: the path doesn't match, or the API sent an error. Fetch the URL with `curl` and compare.
-- **`the response (below root) is an array`**: set `thing_path`, and `items` when the list is below `root`.
-- **`response body over max_body`**: the response is over 4 MiB. Ask the API for less, or raise `max_body`.
-- **`redirect to another host refused`**: put the final URL into `urls`.
-- **Many measures such as `levels_0` to `levels_31`**: arrays become indexed measures. Use `include` and lower `max_array`.
-- **Every value repeats with the same time**: you poll faster than the API updates. Raise `interval`.
+- **`HTTP 401` oder `HTTP 403`**: Zugangsdaten fehlen oder sind falsch. Prüfen Sie, ob die Variable `${NAME}` für den Agent gesetzt ist, und den Scope des Tokens.
+- **`HTTP 429`**: Sie fragen schneller ab, als das Kontingent der API erlaubt. Erhöhen Sie `interval`. Das Back-off bremst in der Zwischenzeit.
+- **`timeout`**: Die API oder der Proxy antwortet nicht innerhalb von `timeout`. Prüfen Sie den ausgehenden Verkehr und `HTTPS_PROXY` oder erhöhen Sie `timeout`.
+- **`root "…" is not in the response`**: Der Pfad passt nicht, oder die API hat einen Fehler gesendet. Rufen Sie die URL mit `curl` ab und vergleichen Sie.
+- **`the response (below root) is an array`**: Setzen Sie `thing_path`, und `items`, wenn die Liste unterhalb von `root` liegt.
+- **`response body over max_body`**: Die Antwort ist größer als 4 MiB. Fordern Sie von der API weniger an oder erhöhen Sie `max_body`.
+- **`redirect to another host refused`**: Tragen Sie die endgültige URL in `urls` ein.
+- **Viele Messwerte wie `levels_0` bis `levels_31`**: Arrays werden zu indizierten Messwerten. Verwenden Sie `include` und senken Sie `max_array`.
+- **Jeder Wert wiederholt sich mit derselben Zeit**: Sie fragen schneller ab, als die API sich aktualisiert. Erhöhen Sie `interval`.
 
-More in [Troubleshoot Periscope](./troubleshooting.mdx).
+Mehr unter [Periscope-Probleme beheben](./troubleshooting.mdx).
 
-## Related
+## Verwandte Seiten {#related}
 
-- [How Periscope works](./how-periscope-works.mdx) · [Configuration reference](./configuration.mdx)
-- [Transform values before they leave the edge](./processors.mdx)
+- [Wie Periscope funktioniert](./how-periscope-works.mdx) · [Konfigurationsreferenz](./configuration.mdx)
+- [Werte transformieren, bevor sie die Edge verlassen](./processors.mdx)

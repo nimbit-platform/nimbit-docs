@@ -1,71 +1,71 @@
 ---
-untranslated: true
-title: Email a weekly PDF report
+title: Einen wöchentlichen PDF-Bericht per E-Mail senden
 sidebar_position: 6
-description: Build a report from widgets, schedule it weekly, add subscribers and publish it.
+description: Erstellen Sie einen Bericht aus Widgets, planen Sie ihn wöchentlich, fügen Sie Abonnenten hinzu und veröffentlichen Sie ihn.
 type: how-to
 app:
   routes: ["/reports", "/reports/:id"]
+translated_from: 679f3a4
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
 
-Build a report of the last seven days that IoT Breeze renders to PDF every week, saves in a folder and sends to your subscribers. Every field is described in [Report settings](./report-settings.mdx).
+Erstellen Sie einen Bericht über die letzten sieben Tage, den IoT Breeze jede Woche zu PDF rendert, in einem Ordner speichert und an Ihre Abonnenten sendet. Jedes Feld ist unter [Berichtseinstellungen](./report-settings.mdx) beschrieben.
 
-## Before you start
+## Bevor Sie beginnen {#before-you-start}
 
-- A role that may create and update reports, and a desktop browser. The report editor does not open on a phone.
-- Things that have data in the period you want to report on.
-- For email delivery, a mail server set up for your tenant. Without one, subscribers can still get an in-app notification.
+- Eine Rolle, die Berichte erstellen und aktualisieren darf, und ein Desktop-Browser. Der Berichts-Editor öffnet sich nicht auf dem Smartphone.
+- Things, die im gewünschten Berichtszeitraum Daten haben.
+- Für die Zustellung per E-Mail ein für Ihren Tenant eingerichteter Mailserver. Ohne ihn können Abonnenten trotzdem eine In-App-Benachrichtigung erhalten.
 
-## Create the report
+## Den Bericht anlegen {#create-the-report}
 
-1. Open **Automation › Reports** and select **Create report**.
-2. Enter a unique **Name**, for example `Weekly overview`.
-3. Under **File settings**, enter the **File name**. Press `@` and choose a date value, so each week's PDF gets its own name. Select the **Folder** button, pick a folder, and select **Select this folder**.
-4. Under **Things**, choose the things the report covers.
-5. Under **Schedule**, set **Start date** and **Start time** to the first run. Leave **Timeframe** on **Last 7 days**. Under **Recurrence**, set **Repeat every** to `1` and **Week**.
-6. Save. The report appears in the list as not published.
+1. Öffnen Sie **Einstellungen › Automatisierung › Berichte** und wählen Sie **Bericht erstellen**.
+2. Geben Sie einen eindeutigen **Name** ein, zum Beispiel `Weekly overview`.
+3. Geben Sie unter **Dateieinstellungen** den **Dateiname** ein. Drücken Sie `@` und wählen Sie einen Datumswert, damit das PDF jeder Woche einen eigenen Namen erhält. Wählen Sie die Schaltfläche **Ordner**, suchen Sie einen Ordner aus und wählen Sie **Ordner auswählen**.
+4. Wählen Sie unter **Things** die Things, die der Bericht abdeckt.
+5. Setzen Sie unter **Zeitplan** **Startdatum** und **Startzeit** auf den ersten Lauf. Lassen Sie **Zeitfenster** auf **Letzte 7 Tage**. Setzen Sie unter **Wiederauftreten** **Wiederhole jeden** auf `1` und **Woche**.
+6. Speichern Sie. Der Bericht erscheint in der Liste als nicht veröffentlicht.
 
 <Screenshot
   page="automate/weekly-report"
   id="01-create-report"
   route="/reports"
   state="Create new report drawer filled in: name, file name with a date value, folder, one thing, Start date, Start time, Timeframe Last 7 days, Repeat every 1 Week"
-  alt="The Create new report drawer with a weekly schedule"
+  alt="Die Schublade „Neuen Bericht erstellen“ mit einem wöchentlichen Zeitplan"
 />
 
-## Design the report
+## Den Bericht gestalten {#design-the-report}
 
-1. Select the report name to open the editor.
-2. Select the pencil to enter edit mode. Add widgets from the panel on the left, or select **+** to use the widget wizard. Each widget is set up as on a dashboard. See [Widget gallery](../visualize/widgets.mdx).
-3. Drag widgets into place. Select **Add page** for more pages, and **Canvas size** to choose **A4 Portrait**, **A4 Landscape** or a custom size.
-4. Select the pencil again to save. The header shows **Saved**.
+1. Wählen Sie den Namen des Berichts, um den Editor zu öffnen.
+2. Wählen Sie den Stift, um in den Bearbeitungsmodus zu wechseln. Fügen Sie Widgets aus dem Bereich links hinzu oder wählen Sie **+**, um den Widget-Assistenten zu nutzen. Jedes Widget richten Sie wie auf einem Dashboard ein. Siehe [Widget-Galerie](../visualize/widgets.mdx).
+3. Ziehen Sie die Widgets an ihren Platz. Wählen Sie **Seite hinzufügen** für weitere Seiten und **Canvas-Größe**, um **A4 Hochformat**, **A4 Querformat** oder eine eigene Größe zu wählen.
+4. Wählen Sie den Stift noch einmal, um zu speichern. Im Kopfbereich steht **Gespeichert**.
 
-## Add subscribers
+## Abonnenten hinzufügen {#add-subscribers}
 
-1. Select **Subscriptions** in the editor header, then **Add user**.
-2. Pick a user, or enter an **External** email address for someone without an account.
-3. Choose **Send mail**, **Send notification**, or both. External addresses receive mail only.
+1. Wählen Sie im Kopfbereich des Editors **Abonnements** und dann **Nutzer hinzufügen**.
+2. Wählen Sie einen Benutzer, oder geben Sie unter **Extern** eine E-Mail-Adresse für jemanden ohne Konto ein.
+3. Wählen Sie **E-Mail**, **Benachrichtigung** oder beides. Externe Adressen erhalten nur E-Mails.
 
-## Publish and test
+## Veröffentlichen und testen {#publish-and-test}
 
-1. Select **Publish**. The button now reads **Unpublish**. The schedule runs from the start date and time you set.
-2. To test now, select **Generate**, choose a time range, and select **Generate and send**. The button then waits 30 seconds before you can use it again.
+1. Wählen Sie **Veröffentlichen**. Die Schaltfläche lautet jetzt **Veröffentlichung aufheben**. Der Zeitplan läuft ab dem Startdatum und der Startzeit, die Sie gesetzt haben.
+2. Um sofort zu testen, wählen Sie **Generieren**, wählen Sie einen Zeitraum und wählen Sie **Erstellen und senden**. Die Schaltfläche wartet dann 30 Sekunden, bevor Sie sie wieder nutzen können.
 
-## Check that it worked
+## Prüfen, ob es funktioniert hat {#check-that-it-worked}
 
-After about 30 seconds the PDF is in the folder you chose, which you can open in the file explorer. Subscribers receive the mail or notification. Open the schedule icon in the report list to see when the last report was created and when the next is due.
+Nach etwa 30 Sekunden liegt das PDF im gewählten Ordner, den Sie im Datei-Explorer öffnen können. Abonnenten erhalten die E-Mail oder Benachrichtigung. Öffnen Sie das Zeitplansymbol in der Berichtsliste, um zu sehen, wann der letzte Bericht erstellt wurde und wann der nächste fällig ist.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **Publish is refused: the timeframe is not fully defined**: open the report settings with the gear and fill in **Start date**, **Start time** and **Repeat every**.
-- **A warning says no mail server is configured**: subscriptions are not sent as email. Choose **Send notification**, or ask your administrator to set up a mail server in [Tenant settings](../administer/tenant-settings.mdx).
-- **The PDF is not in the folder**: wait the full 30 seconds, then check the exact folder chosen under **File settings**.
-- **The PDF covers the wrong period**: the **Timeframe** is relative to the moment the run starts. Change it in the report settings.
+- **Das Veröffentlichen wird abgelehnt: Der Bericht kann nicht veröffentlicht werden, da der Zeitraum nicht vollständig definiert ist**: Öffnen Sie mit dem Zahnrad die Berichtseinstellungen und füllen Sie **Startdatum**, **Startzeit** und **Wiederhole jeden** aus.
+- **Eine Warnung sagt, es ist kein Mailserver konfiguriert**: Abonnements werden nicht als E-Mail gesendet. Wählen Sie **Benachrichtigung**, oder bitten Sie Ihren Administrator, in den [Tenant-Einstellungen](../administer/tenant-settings.mdx) einen Mailserver einzurichten.
+- **Das PDF liegt nicht im Ordner**: Warten Sie die vollen 30 Sekunden und prüfen Sie dann genau den Ordner, den Sie unter **Dateieinstellungen** gewählt haben.
+- **Das PDF deckt den falschen Zeitraum ab**: Das **Zeitfenster** ist relativ zum Moment, in dem der Lauf startet. Ändern Sie es in den Berichtseinstellungen.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Report settings](./report-settings.mdx)
-- [Rules, actions and reports](./rules-actions-reports.mdx)
-- [Widget gallery](../visualize/widgets.mdx)
+- [Berichtseinstellungen](./report-settings.mdx)
+- [Regeln, Aktionen und Berichte](./rules-actions-reports.mdx)
+- [Widget-Galerie](../visualize/widgets.mdx)

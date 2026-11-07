@@ -1,87 +1,87 @@
 ---
-untranslated: true
-title: Simulate a device
-description: Send one test message or run a simulated device from the thing page, without any hardware.
+title: Ein Gerät simulieren
+description: Eine Testnachricht senden oder ein simuliertes Gerät von der Seite des Things aus laufen lassen, ganz ohne Hardware.
 sidebar_position: 6
 type: how-to
 app:
   routes: ["/onboarding/things/:id"]
+translated_from: b6ed908
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
 
-Fill charts and test dashboards or rules before the real device is online. IoT Breeze sends the data for the thing, as a device would. To connect real hardware, use [Send data over MQTT](./mqtt.mdx) or [Send data over HTTP](./http.mdx).
+Füllen Sie Diagramme und testen Sie Dashboards oder Regeln, bevor das echte Gerät online ist. IoT Breeze sendet die Daten für das Thing, wie es ein Gerät tun würde. Um echte Hardware zu verbinden, verwenden Sie [Daten über MQTT senden](./mqtt.mdx) oder [Daten über HTTP senden](./http.mdx).
 
-## Before you start
+## Bevor Sie beginnen {#before-you-start}
 
-- A thing of a published thing type. See [Register a thing](../model/register-thing.mdx).
-- The permission to send data to devices. Without it, the buttons are not shown.
+- Ein Thing mit einem veröffentlichten Thing-Typ. Siehe [Ein Thing registrieren](../model/register-thing.mdx).
+- Die Berechtigung, Daten an Geräte zu senden. Ohne sie werden die Schaltflächen nicht angezeigt.
 
-## Steps
+## Schritte {#steps}
 
-### Send one message
+### Eine Nachricht senden {#send-one-message}
 
-1. Open the thing (**Settings › Onboarding › Things**).
-2. Select **More actions**, then **Send data**. The **Send once** tab opens. On a thing that never reported, **Overview** also offers **Send a test message**.
-3. Each measure of the thing type is a row with **Measure** and **Value**. Untick measures you do not want to send, or use **Include all measures**.
-4. Under **Timestamp**, choose **Now** or **Pick a time…**.
-5. Select **Send message**.
+1. Öffnen Sie das Thing (**Einstellungen › Onboarding › Things**).
+2. Wählen Sie **Weitere Aktionen**, dann **Daten senden**. Der Tab **Einmal senden** öffnet sich. Bei einem Thing, das noch nie Daten gemeldet hat, bietet auch die **Übersicht** die Option **Testnachricht senden**.
+3. Jeder Messwert des Thing-Typs ist eine Zeile mit **Telemetrie** und **Wert**. Entfernen Sie den Haken bei Messwerten, die Sie nicht senden möchten, oder wählen Sie **Alle Messwerte einschließen**.
+4. Wählen Sie unter **Zeitstempel** **Jetzt** oder **Zeit wählen…**.
+5. Wählen Sie **Nachricht senden**.
 
-To add location or tags, edit the message as JSON. Delete a measure to leave it out.
+Um Standort oder Tags hinzuzufügen, bearbeiten Sie die Nachricht als JSON. Löschen Sie einen Messwert, um ihn wegzulassen.
 
 <Screenshot
   page="connect/simulate"
   id="01-send-once"
   route="/onboarding/things/:id"
   state="Send data dialog on the Send once tab with two measures filled in and the Timestamp set to Now"
-  alt="The Send once form"
+  alt="Das Formular Einmal senden"
 />
 
-### Run a simulation
+### Eine Simulation starten {#run-a-simulation}
 
-1. Select **More actions**, then **Simulate device…**. The **Simulate** tab opens.
-2. Choose **Run for**: 15 minutes, 30 minutes, 1 hour or 4 hours.
-3. Choose **Every**: how often a message is sent, from 1 second to 5 minutes. The default is 10 seconds.
-4. For each measure, choose a **Shape** and the **Min** and **Max**. **Preview** draws the result. Pick at least one measure.
-5. Select **Start simulation**.
+1. Wählen Sie **Weitere Aktionen**, dann **Gerät simulieren…**. Der Tab **Simulieren** öffnet sich.
+2. Wählen Sie **Laufzeit**: 15 Minuten, 30 Minuten, 1 Stunde oder 4 Stunden.
+3. Wählen Sie **Alle**: wie oft eine Nachricht gesendet wird, von 1 Sekunde bis 5 Minuten. Standard sind 10 Sekunden.
+4. Wählen Sie für jeden Messwert einen **Verlauf** sowie **Min** und **Max**. Die **Vorschau** zeichnet das Ergebnis. Wählen Sie mindestens einen Messwert.
+5. Wählen Sie **Simulation starten**.
 
-| Measure type | Shapes |
+| Messwerttyp | Verläufe |
 | --- | --- |
-| Numeric | **Random**, **Smooth**, **Wave**, **Ramp**, **Steps**, **Spikes**, **Constant**, **Off** |
-| Boolean | **Mostly true (95%)**, **Toggle every 5 min**, **Random**, **Always true**, **Always false**, **Off** |
-| Text | **Constant**, **Off** |
+| Numerisch | **Zufällig**, **Gleichmäßig**, **Welle**, **Rampe**, **Stufen**, **Ausreißer**, **Konstant**, **Aus** |
+| Boolean | **Meist true (95 %)**, **Alle 5 min wechseln**, **Zufällig**, **Immer true**, **Immer false**, **Aus** |
+| Text | **Konstant**, **Aus** |
 
-**Off** leaves the measure out.
+**Aus** lässt den Messwert weg.
 
 <Screenshot
   page="connect/simulate"
   id="02-simulate"
   route="/onboarding/things/:id"
   state="Send data dialog on the Simulate tab: Run for 15 min, Every 10 s, a temperature measure on Wave with min 18 and max 26 and a preview"
-  alt="The Simulate form"
+  alt="Das Formular Simulieren"
 />
 
-### Control a running simulation
+### Eine laufende Simulation steuern {#control-a-running-simulation}
 
-The simulation runs on IoT Breeze and keeps running when you leave the page. A banner on the thing page shows **Simulating**, the interval, the time left and the messages sent.
+Die Simulation läuft in IoT Breeze und läuft weiter, wenn Sie die Seite verlassen. Ein Banner auf der Seite des Things zeigt **Simulation läuft**, das Intervall, die verbleibende Zeit und die gesendeten Nachrichten.
 
-| Button | Effect |
+| Schaltfläche | Wirkung |
 | --- | --- |
-| **+15 min** | Runs 15 minutes longer. |
-| **Edit…** | Opens the form. **Restart simulation** applies changes. |
-| **Stop** | Ends the simulation. |
+| **+15 min** | Verlängert um 15 Minuten. |
+| **Bearbeiten…** | Öffnet das Formular. **Simulation neu starten** übernimmt Änderungen. |
+| **Stopp** | Beendet die Simulation. |
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-The values appear in **Live values** on the thing's **Overview** within a second. **Last signal** shows the current time.
+Die Werte erscheinen innerhalb einer Sekunde unter **Live-Werte** auf der **Übersicht** des Things. **Letztes Signal** zeigt die aktuelle Uhrzeit.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **The buttons are missing**: you lack the permission to send data to devices.
-- **The banner says Simulation stopped: the data could not be sent**: select **Dismiss**, then check that the thing type is published and start again.
-- **Simulated values are in a real device's history**: charts do not tell them apart. Remove them in **Administration › Tenant Settings › Data** with **Simulated data**, after stopping running simulations. Readings your devices sent are not touched.
+- **Die Schaltflächen fehlen**: Ihnen fehlt die Berechtigung, Daten an Geräte zu senden.
+- **Das Banner meldet „Simulation beendet: Die Daten konnten nicht gesendet werden“**: Wählen Sie **Ausblenden**, prüfen Sie, ob der Thing-Typ veröffentlicht ist, und starten Sie erneut.
+- **Simulierte Werte stehen im Verlauf eines echten Geräts**: Diagramme unterscheiden sie nicht. Entfernen Sie sie unter **Administration › Mandanteneinstellungen › Daten** mit **Simulierte Daten**, nachdem Sie laufende Simulationen gestoppt haben. Messwerte, die Ihre Geräte gesendet haben, bleiben unberührt.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [How devices connect](./how-devices-connect.mdx)
-- [Message format](./message-format.mdx)
+- [Wie Geräte sich verbinden](./how-devices-connect.mdx)
+- [Nachrichtenformat](./message-format.mdx)

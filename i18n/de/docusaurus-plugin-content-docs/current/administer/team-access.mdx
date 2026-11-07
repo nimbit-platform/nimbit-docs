@@ -1,70 +1,70 @@
 ---
-untranslated: true
-title: Give a team access to its things
-description: Create a group, add people, things and thing types to it, and set what each member may do.
+title: Einem Team Zugriff auf seine Things geben
+description: Legen Sie eine Gruppe an, fügen Sie Personen, Things und Thing-Typen hinzu und bestimmen Sie, was jedes Mitglied darf.
 type: how-to
 sidebar_position: 4
 app:
   routes: ["/administration/groups", "/administration/groups/:id"]
+translated_from: b6ed908
 ---
 
-Make a group for a team, a customer or a site so its members see exactly the things that belong to it. Members of a group also reach everything in its subgroups, as [Users, groups and roles](./access.mdx) explains.
+Legen Sie für ein Team, einen Kunden oder einen Standort eine Gruppe an, damit ihre Mitglieder genau die Things sehen, die dazugehören. Mitglieder einer Gruppe erreichen auch alles in ihren Untergruppen, wie [Benutzer, Gruppen und Rollen](./access.mdx) erklärt.
 
-## Before you start
+## Bevor Sie beginnen {#before-you-start}
 
-- You need a role that creates and changes groups. **Admin** and **Manager** have it.
-- The people must already be users of the tenant. [Invite them](./invite.mdx) first.
-- Decide the parent. Put a customer group at the top and a group per site below it.
+- Sie brauchen eine Rolle, die Gruppen anlegen und ändern darf. **Administrator** und **Manager** haben sie.
+- Die Personen müssen bereits Benutzer des Tenants sein. [Laden Sie sie](./invite.mdx) zuerst ein.
+- Legen Sie die übergeordnete Gruppe fest. Setzen Sie eine Kundengruppe nach oben und darunter je eine Gruppe pro Standort.
 
-## Create the group
+## Die Gruppe anlegen {#create-the-group}
 
-1. Open **Administration › Groups** and select **Create group**. To add below an existing group, select **Add subgroup** on it.
-2. Enter a **Group name**.
-3. Choose the **Group type**: **Default**, or **Organization** for the top of a customer, company or site.
-4. Choose the **Parent**.
-5. Optional: add **Tags** and a **Description**, then save.
+1. Öffnen Sie **Administration › Gruppen** und wählen Sie **Gruppe erstellen**. Um unterhalb einer bestehenden Gruppe anzulegen, wählen Sie bei ihr **Untergruppe hinzufügen**.
+2. Geben Sie einen **Gruppenname** ein.
+3. Wählen Sie den **Gruppentyp**: **Standard**, oder **Organisation** für die Spitze eines Kunden, Unternehmens oder Standorts.
+4. Wählen Sie unter **Übergeordnet** die übergeordnete Gruppe.
+5. Optional: Fügen Sie **Tags** und eine **Beschreibung** hinzu und speichern Sie.
 
-## Add people, things and types
+## Personen, Things und Typen hinzufügen {#add-people-things-and-types}
 
-Select the group to open it.
+Wählen Sie die Gruppe, um sie zu öffnen.
 
-1. On the **Users** tab, select **Add user** and choose people.
-2. On the **Things** tab, select **Add thing** and choose the things the team works with.
-3. To give the team every thing of a kind, add the kind on the **Thing Types** tab. Members then see all things of that type.
-4. On the **Event Types** tab, add the event types members may view and act on.
+1. Wählen Sie im Tab **Benutzer** die Option **Nutzer hinzufügen** und wählen Sie Personen.
+2. Wählen Sie im Tab **Things** die Option **Thing hinzufügen** und wählen Sie die Things, mit denen das Team arbeitet.
+3. Um dem Team jedes Thing einer Art zu geben, fügen Sie die Art im Tab **Thing Typen** hinzu. Mitglieder sehen dann alle Things dieses Typs.
+4. Fügen Sie im Tab **Event Typen** die Event-Typen hinzu, die Mitglieder ansehen und bearbeiten dürfen.
 
-You can also add a thing to groups when you create it.
+Sie können ein Thing auch beim Anlegen zu Gruppen hinzufügen.
 
-## Set what members may do
+## Festlegen, was Mitglieder dürfen {#set-what-members-may-do}
 
-Each member has three switches in the group.
+Jedes Mitglied hat in der Gruppe drei Schalter.
 
-| Switch | Allows |
+| Schalter | Erlaubt |
 | --- | --- |
-| **Read** | See the group's content. Always on. |
-| **Update** | Change, create and delete content in the group. |
-| **Execute** | Run actions, for example send a command to a thing. |
+| **Gelesen** | Den Inhalt der Gruppe ansehen. Immer aktiv. |
+| **Aktualisieren** | Inhalt der Gruppe ändern, anlegen und löschen. |
+| **Ausführen** | Aktionen ausführen, zum Beispiel einen Befehl an ein Thing senden. |
 
-Change them on the group's **Users** tab, or on the **Groups** tab of the user. To pre-set them for people added later, select **Set default permissions** on the group. This does not change current members.
+Ändern Sie sie im Tab **Benutzer** der Gruppe oder im Tab **Gruppen** des Benutzers. Um sie für später hinzugefügte Personen vorzubelegen, wählen Sie in der Gruppe **Legen Sie Standardberechtigungen fest**. Das ändert die aktuellen Mitglieder nicht.
 
-Members marked **Inherited** get their access from a parent group. Change it there.
+Mitglieder mit der Markierung **Vererbt** erhalten ihren Zugriff von einer übergeordneten Gruppe. Ändern Sie ihn dort.
 
-## Check that it worked
+## Prüfen, ob es funktioniert hat {#check-that-it-worked}
 
-Open the group: the **Members** and **Subgroups** counts match what you expect. Ask a member to sign in, or compare with the user's **Groups** tab. They should see the things you added and nothing else.
+Öffnen Sie die Gruppe: Die Anzahlen bei **Mitglieder** und **Untergruppen** entsprechen Ihrer Erwartung. Bitten Sie ein Mitglied, sich anzumelden, oder vergleichen Sie mit dem Tab **Gruppen** des Benutzers. Er sollte die Things sehen, die Sie hinzugefügt haben, und sonst nichts.
 
-## If it doesn't work
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
-- **A member sees nothing**: the person's role may lack read permissions, or the group holds no things or thing types. Both are needed. See [Roles and permissions](./roles.mdx).
-- **A member sees too much**: they may be in a parent group, or hold a thing type that covers more things than intended. Check the **Inherited** marker and the **Thing Types** tab.
-- **You cannot change a permission**: it is inherited. Change it on the parent group.
-- **You cannot change the type or parent of a group**: you lack the permission, or no valid parent exists.
+- **Ein Mitglied sieht nichts**: Der Rolle der Person fehlen möglicherweise Leseberechtigungen, oder die Gruppe enthält keine Things oder Thing-Typen. Beides ist nötig. Siehe [Rollen und Berechtigungen](./roles.mdx).
+- **Ein Mitglied sieht zu viel**: Es ist möglicherweise in einer übergeordneten Gruppe oder hat einen Thing-Typ, der mehr Things abdeckt als gedacht. Prüfen Sie die Markierung **Vererbt** und den Tab **Thing Typen**.
+- **Sie können eine Berechtigung nicht ändern**: Sie ist vererbt. Ändern Sie sie in der übergeordneten Gruppe.
+- **Sie können Typ oder übergeordnete Gruppe einer Gruppe nicht ändern**: Ihnen fehlt die Berechtigung, oder es gibt keine gültige übergeordnete Gruppe.
 
 :::warning
-Deleting a group removes the access it gave. The users, things and types stay. Check the **Users** tab first.
+Das Löschen einer Gruppe entzieht den Zugriff, den sie gegeben hat. Die Benutzer, Things und Typen bleiben. Prüfen Sie vorher den Tab **Benutzer**.
 :::
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Users, groups and roles](./access.mdx) · [Roles and permissions](./roles.mdx)
-- [Invite a colleague](./invite.mdx)
+- [Benutzer, Gruppen und Rollen](./access.mdx) · [Rollen und Berechtigungen](./roles.mdx)
+- [Einen Kollegen einladen](./invite.mdx)

@@ -1,108 +1,108 @@
 ---
-untranslated: true
-title: Event types
+title: Event-Typen
 sidebar_position: 9
-description: Where events come from, how they are classified, and the properties, display types and actions of an event type.
+description: Woher Events kommen, wie sie eingeordnet werden und welche Eigenschaften, Anzeigetypen und Aktionen ein Event-Typ hat.
 type: reference
 app:
   routes: ["/monitor/events", "/monitor/events/:id", "/manage/event-types", "/manage/event-types/:id"]
   tour: find-your-way-alerts
+translated_from: a4ace78
 ---
 
 import TourLink from "@site/src/components/TourLink";
 
-An event type names a kind of event and holds the actions that run when one occurs. Sources, severities, episode states, properties and actions are below.
+Ein Event-Typ benennt eine Art von Event und enthält die Aktionen, die laufen, wenn eines auftritt. Quellen, Schweregrade, Episodenzustände, Eigenschaften und Aktionen stehen unten.
 
 <TourLink id="find-your-way-alerts" />
 
-## Event sources
+## Event-Quellen {#event-sources}
 
-Every event has a source, shown in the event details and used in the **Raised by** clause of an incident policy.
+Jedes Event hat eine Quelle. Sie steht in den Event-Details und wird in der Klausel **Ausgelöst von** einer Vorfallsrichtlinie verwendet.
 
-| Source | Raised by |
+| Quelle | Ausgelöst durch |
 | --- | --- |
-| **Rule engine** | A rule you built matched device data |
-| **Connectivity** | A thing went offline or came back |
-| **Geofence** | A thing entered or left a geofence |
-| **API** | Another system sent an event to IoT Breeze |
-| **Manual** | A person recorded the event |
-| **Automation** | An **Event** action emitted it |
-| **Repair** | The platform corrected a state itself, for example a thing's online or offline state after its connectivity check found it wrong |
+| **Regel-Engine** | Eine von Ihnen gebaute Regel traf auf Gerätedaten zu |
+| **Konnektivität** | Ein Thing ging offline oder kam zurück |
+| **Geofence** | Ein Thing betrat oder verließ einen Geofence |
+| **API** | Ein anderes System sandte ein Event an IoT Breeze |
+| **Manuell** | Eine Person erfasste das Event |
+| **Automatisierung** | Eine **Ereignis**-Aktion hat es ausgesendet |
+| **Reparatur** | Die Plattform hat einen Zustand selbst korrigiert, zum Beispiel den Online- oder Offline-Zustand eines Things, nachdem ihre Konnektivitätsprüfung ihn als falsch erkannt hatte |
 
-Changes to records are events too: a thing, thing type, group or user was created, updated or deleted. Their event types carry the name of the record type.
+Auch Änderungen an Datensätzen sind Events: Ein Thing, Thing-Typ, eine Gruppe oder ein Benutzer wurde angelegt, geändert oder gelöscht. Ihre Event-Typen tragen den Namen des Datensatztyps.
 
-## Severity
+## Schweregrad {#severity}
 
-| Severity | Order |
+| Schweregrad | Rang |
 | --- | --- |
-| **Information** | Lowest |
-| **Warning** | Above Information |
-| **Error** | Above Warning |
-| **Critical** | Highest |
+| **Information** | Niedrigster |
+| **Warnung** | Über Information |
+| **Fehler** | Über Warnung |
+| **Kritisch** | Höchster |
 
-A **Minimum severity** on a channel or a policy means this severity and everything above it.
+Ein **Mindestschweregrad** an einem Kanal oder einer Richtlinie meint diesen Schweregrad und alles darüber.
 
-## Episode state
+## Episodenzustand {#episode-state}
 
-| State | Meaning |
+| Zustand | Bedeutung |
 | --- | --- |
-| **Open** | Something started and has not ended: a thing offline, a rule condition met, a thing inside a fence |
-| **Closed** | The matching end event arrived |
-| **Point** | A single fact with nothing to close it |
+| **Offen** | Etwas hat begonnen und noch nicht geendet: ein Thing offline, eine Regelbedingung erfüllt, ein Thing innerhalb eines Zauns |
+| **Beendet** | Das passende Ende-Event ist eingetroffen |
+| **Punkt** | Ein einzelner Fakt, den nichts beendet |
 
-The events of one episode share a correlation. Events that close an episode run no event type actions and are not routed to notification channels.
+Die Events einer Episode teilen sich eine Korrelation. Events, die eine Episode beenden, führen keine Aktionen des Event-Typs aus und werden nicht an Benachrichtigungskanäle geroutet.
 
-## Event type properties
+## Eigenschaften eines Event-Typs {#event-type-properties}
 
-| Property | Meaning |
+| Eigenschaft | Bedeutung |
 | --- | --- |
-| **Name** | The name shown in lists and used by rules, channels and policies |
-| **Type** | **System**: shipped with IoT Breeze (record changes, connectivity, geofence crossings, failed actions). You can read it, but not edit or delete it. **User**: yours. |
-| **Group**s | Groups that may see events of this type. A member sees an event only if they belong to one of them and can see the record it is about. The tenant's service user sees all. |
-| **Display type** | How an event of this type looks when opened |
-| **Search tags** | Tags to find the type |
-| **Description** | Free text, can be translated |
+| **Name** | Der Name, der in Listen steht und von Regeln, Kanälen und Richtlinien verwendet wird |
+| **Typ** | **System**: wird mit IoT Breeze ausgeliefert (Datensatzänderungen, Konnektivität, Geofence-Übergänge, fehlgeschlagene Aktionen). Sie können ihn lesen, aber nicht bearbeiten oder löschen. **Benutzer**: Ihrer. |
+| **Gruppen** | Gruppen, die Events dieses Typs sehen dürfen. Ein Mitglied sieht ein Event nur, wenn es zu einer von ihnen gehört und den Datensatz sehen kann, um den es geht. Der Service-Benutzer des Tenants sieht alle. |
+| **Anzeigetyp** | Wie ein Event dieses Typs aussieht, wenn es geöffnet wird |
+| **Search tags** | Tags, um den Typ zu finden |
+| **Beschreibung** | Freier Text, kann übersetzt werden |
 | **Icon** | Optional |
-| **Example payload** | Read only. The shape of the data events of this type carry. |
+| **Beispiel payload** | Nur lesbar. Die Form der Daten, die Events dieses Typs tragen. |
 
-### Display types
+### Anzeigetypen {#display-types}
 
-| Display type | Shows |
+| Anzeigetyp | Zeigt |
 | --- | --- |
-| **Default** | The details and the payload |
-| **Rule evaluation** | The rule, its conditions and the values that triggered it |
-| **Geofence** | The fence, entry and exit points and the time inside |
+| **Standard** | Die Details und die Payload |
+| **Regelauswertung** | Die Regel, ihre Bedingungen und die Werte, die sie ausgelöst haben |
+| **Geofence** | Den Zaun, Ein- und Austrittspunkte und die Zeit innerhalb |
 
-## Actions on an event type
+## Aktionen an einem Event-Typ {#actions-on-an-event-type}
 
-An action runs every time an event of the type is emitted, except for events that close an episode.
+Eine Aktion läuft jedes Mal, wenn ein Event des Typs ausgesendet wird, außer bei Events, die eine Episode beenden.
 
-| Action type | What it does |
+| Aktionstyp | Was sie tut |
 | --- | --- |
-| **Notification** | Pushes an in-app notification to users or groups, under the bell in the header |
-| **Notification channel** | Sends a message to a [notification channel](./channel-types.mdx) |
-| **Email** | Sends an email to recipients or groups, as plain text or with a [mail template](./mail-templates.mdx) |
-| **Webhook** | Sends an HTTP request to an external endpoint |
+| **Benachrichtigung** | Sendet eine In-App-Benachrichtigung an Benutzer oder Gruppen, unter der Glocke im Kopfbereich |
+| **Benachrichtigungskanal** | Sendet eine Nachricht an einen [Benachrichtigungskanal](./channel-types.mdx) |
+| **E-Mail** | Sendet eine E-Mail an Empfänger oder Gruppen, als reiner Text oder mit einer [E-Mail-Vorlage](./mail-templates.mdx) |
+| **Webhook** | Sendet eine HTTP-Anfrage an einen externen Endpunkt |
 
-The actions table shows **Type**, **Name**, **Users**, **Groups**, **Modified** and an **Active** switch. An action that is switched off does not run. A new action starts switched off, so turn on **Active** after you create it. When an action fails, the failure is recorded as its own event.
+Die Aktionstabelle zeigt **Typ**, **Name**, **Benutzer**, **Gruppen**, **Geändert** und einen Schalter **Aktiv**. Eine ausgeschaltete Aktion läuft nicht. Eine neue Aktion startet ausgeschaltet, schalten Sie **Aktiv** also nach dem Anlegen ein. Schlägt eine Aktion fehl, wird der Fehler als eigenes Event erfasst.
 
-Azure cloud-to-device and MQTT message actions belong to thing types. See [Action types](../automate/action-types.mdx).
+Azure-Cloud-to-Device- und MQTT-Nachrichtenaktionen gehören zu Thing-Typen. Siehe [Aktionstypen](../automate/action-types.mdx).
 
-## Event list filters
+## Filter der Event-Liste {#event-list-filters}
 
-**Monitoring › Events** shows the last 30 days by default.
+**Überwachung › Events** zeigt standardmäßig die letzten 30 Tage.
 
-| Filter | Options |
+| Filter | Optionen |
 | --- | --- |
-| **Title** | Text in the event title |
-| **Event Type** | One or more event types |
-| **Time range** | **Last 24 hours**, **Last 7 days**, **Last 30 Days**, **Last 90 Days**, **Last year** |
-| **Resource type** | What the event is about, for example Thing, Thing Type, Group, User |
-| **Severity** | One or more severities |
-| **Open episodes only** | Only alarms and outages that are still going on |
+| **Titel** | Text im Event-Titel |
+| **Event Typ** | Ein oder mehrere Event-Typen |
+| **Zeitraum** | **Letzte 24 Stunden**, **Letzte 7 Tage**, **Letzte 30 Tage**, **Letzte 90 Tage**, **Letztes Jahr** |
+| **Ressourcentyp** | Worum es im Event geht, zum Beispiel Thing, Thing-Typ, Gruppe, Benutzer |
+| **Schweregrad** | Ein oder mehrere Schweregrade |
+| **Nur offene Episoden** | Nur Alarme und Ausfälle, die noch andauern |
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Events, incidents and notifications](./events-incidents-notifications.mdx)
-- [Set up an incident policy](./incident-policy.mdx)
-- [Channel types](./channel-types.mdx)
+- [Events, Vorfälle und Benachrichtigungen](./events-incidents-notifications.mdx)
+- [Eine Vorfallsrichtlinie einrichten](./incident-policy.mdx)
+- [Kanaltypen](./channel-types.mdx)

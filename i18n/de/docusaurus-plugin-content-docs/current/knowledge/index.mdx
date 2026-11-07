@@ -1,20 +1,20 @@
 ---
-untranslated: true
-title: Knowledge and AI
+title: Knowledge und KI
 sidebar_position: 1
-description: Connect your devices, places, documents and records into one graph, then ask Ask Nimble questions about it in plain words.
+description: Verbinden Sie Geräte, Orte, Dokumente und Datensätze zu einem Graphen und stellen Sie Ask Nimble Fragen dazu in einfachen Worten.
 type: landing
 app:
   routes: ["/knowledge/explore", "/knowledge/chat"]
+translated_from: 810b8a2
 ---
 
-This section answers two questions: how do my things, places and documents relate, and what can I ask about them? The knowledge graph holds the records and their links. Ask Nimble answers questions from that graph, your live readings and your documents, and shows its sources.
+Dieser Bereich beantwortet zwei Fragen: Wie hängen meine Things, Orte und Dokumente zusammen, und was kann ich dazu fragen? Der Knowledge Graph enthält die Datensätze und ihre Verknüpfungen. Ask Nimble beantwortet Fragen aus diesem Graphen, Ihren Live-Messwerten und Ihren Dokumenten und zeigt seine Quellen.
 
-:::info This section needs "Ask Nimble and Knowledge" turned on
-Two switches must both be on, or **Knowledge** does not appear in the menu and every `/knowledge` page sends you back to Home:
+:::info Dieser Bereich braucht „Nimble fragen und Knowledge“
+Zwei Schalter müssen beide aktiv sein, sonst erscheint **Knowledge** nicht im Menü und jede `/knowledge`-Seite führt Sie zurück zur Startseite:
 
-1. **The installation.** Your platform administrator enables it. If it is off, **Administration › Tenant Settings › Features** shows "Not available on this installation".
-2. **Your tenant.** A tenant admin opens **Administration › Tenant Settings › Features** and turns on **Ask Nimble and Knowledge**.
+1. **Die Installation.** Ihre Plattform-Administration aktiviert sie. Ist sie aus, zeigt **Administration › Mandanteneinstellungen › Funktionen** „Auf dieser Installation nicht verfügbar“.
+2. **Ihr Tenant.** Ein Tenant-Admin öffnet **Administration › Mandanteneinstellungen › Funktionen** und schaltet **Nimble fragen und Knowledge** ein.
 :::
 
 ```mermaid
@@ -27,22 +27,22 @@ flowchart LR
   G --> A[Ask Nimble]
 ```
 
-Knowledge has its own permission, separate from things and dashboards. Everyone sees only the records they may open. Browsing and asking need read and run access, which every built-in role has. Changing the graph, data model, sources and schedule needs edit access (Modeler, Manager, Admin), and credentials need Admin. See [Roles and permissions](../administer/roles.mdx).
+Knowledge hat eine eigene Berechtigung, getrennt von Things und Dashboards. Jeder sieht nur die Datensätze, die er öffnen darf. Zum Durchsuchen und Fragen genügen Lese- und Ausführungsrechte, die jede eingebaute Rolle hat. Den Graphen, das Datenmodell, die Quellen und den Zeitplan ändern darf, wer Bearbeitungsrechte hat (Modeler, Manager, Admin). Zugangsdaten braucht Admin. Siehe [Rollen und Berechtigungen](../administer/roles.mdx).
 
-## Understand
+## Verstehen {#understand}
 
-- [The knowledge graph](./knowledge-graph.mdx): what the graph holds and how records connect.
-- [How Ask Nimble answers](./ask-nimble-answers.mdx): what it reads, how it cites, which model answers, and where it stops.
+- [Der Knowledge Graph](./knowledge-graph.mdx): was der Graph enthält und wie Datensätze zusammenhängen.
+- [Wie Ask Nimble antwortet](./ask-nimble-answers.mdx): was es liest, wie es Quellen angibt, welches Modell antwortet und wo es aufhört.
 
-## Do
+## Umsetzen {#do}
 
-- [Map your sites and buildings](./map-sites.mdx): build the place hierarchy and put things in it.
-- [Ask a question about your data](./ask.mdx): ask, read the sources, give feedback.
-- [Bring in an outside data source](./outside-source.mdx): load records from SAP, a database or a file.
-- [Fix data-health findings](./data-health.mdx): review links and schedule reconciliation.
-- [Choose the AI model](./ai-model.mdx): register a model and set the fallback order.
+- [Standorte und Gebäude abbilden](./map-sites.mdx): die Ortshierarchie aufbauen und Things darin platzieren.
+- [Eine Frage zu Ihren Daten stellen](./ask.mdx): fragen, die Quellen lesen, Feedback geben.
+- [Eine externe Datenquelle anbinden](./outside-source.mdx): Datensätze aus SAP, einer Datenbank oder einer Datei laden.
+- [Befunde zur Datenqualität beheben](./data-health.mdx): Verknüpfungen prüfen und den Abgleich planen.
+- [Das KI-Modell wählen](./ai-model.mdx): ein Modell registrieren und die Ausweichreihenfolge festlegen.
 
-## Look up
+## Nachschlagen {#look-up}
 
-- [Types and traits](./types-and-traits.mdx): the building blocks of a record type.
-- [Connector types](./connector-types.mdx): the fields of each connector.
+- [Typen und Traits](./types-and-traits.mdx): die Bausteine eines Datensatztyps.
+- [Konnektor-Typen](./connector-types.mdx): die Felder jedes Konnektors.

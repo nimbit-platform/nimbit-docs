@@ -1,144 +1,144 @@
 ---
-untranslated: true
-title: Canvas editor reference
-description: Every tool, element, binding option, state option, action type and setting of the canvas editor.
+title: Referenz des Canvas-Editors
+description: Jedes Werkzeug, Element, jede Bindungsoption, Zustandsoption, Aktionsart und Einstellung des Canvas-Editors.
 type: reference
 sidebar_position: 7
 app:
   routes: ["/canvas", "/canvas/:id"]
+translated_from: 679f3a4
 ---
 
-Every tool, element and option of the canvas editor, as named in the app. For tasks, start at [Canvas](./index.mdx).
+Jedes Werkzeug, Element und jede Option des Canvas-Editors, so benannt wie in der App. Aufgaben beginnen bei [Canvas](./index.mdx).
 
-## Create a canvas
+## Ein Canvas anlegen {#create-a-canvas}
 
-| Field | Values | Meaning |
+| Feld | Werte | Bedeutung |
 | --- | --- | --- |
-| **Name** | Text | Required. |
-| **Interfaces** | Interfaces | Viewers pick a context thing that implements them. Empty: every element binds to a fixed thing. |
-| **Start from** | **Blank canvas**, **From image**, **From P&ID drawing**, **From a template** | **From P&ID drawing** matches the drawing's tags to things (beta). A template is added **managed by Nimbit** or as **a copy to change freely**. |
+| **Name** | Text | Pflichtfeld. |
+| **Interfaces** | Interfaces | Betrachter wählen ein Kontext-Thing, das sie umsetzt. Leer: Jedes Element ist an ein festes Thing gebunden. |
+| **Ausgangspunkt** | **Leeres Canvas**, **Aus Bild**, **Aus R&I-Fließbild**, **Aus Vorlage** | **Aus R&I-Fließbild** ordnet die Kennzeichen der Zeichnung Things zu (Beta). Eine Vorlage wird **von Nimbit verwaltet** oder **als Kopie zum freien Ändern** hinzugefügt. |
 
-## Toolbar
+## Werkzeugleiste {#toolbar}
 
-| Tool | Key | Does |
+| Werkzeug | Taste | Funktion |
 | --- | --- | --- |
-| **Select tool** | <kbd>V</kbd> | Select and move. |
-| **Hand tool** | <kbd>H</kbd> | Pan. |
-| **Pen** | <kbd>P</kbd> | Freehand stroke. |
-| **Line** | <kbd>L</kbd> | Straight line. |
-| **Arrow** | <kbd>Shift</kbd>+<kbd>L</kbd> | Line with a head. |
-| **Rectangle** | <kbd>R</kbd> | Rectangle. |
+| **Auswahlwerkzeug** | <kbd>V</kbd> | Auswählen und verschieben. |
+| **Handwerkzeug** | <kbd>H</kbd> | Verschieben der Ansicht. |
+| **Stift** | <kbd>P</kbd> | Freihandstrich. |
+| **Linie** | <kbd>L</kbd> | Gerade Linie. |
+| **Pfeil** | <kbd>Umschalt</kbd>+<kbd>L</kbd> | Linie mit Spitze. |
+| **Rechteck** | <kbd>R</kbd> | Rechteck. |
 | **Ellipse** | <kbd>O</kbd> | Ellipse. |
-| **Zone** | <kbd>Z</kbd> | Polygon area. |
-| **Hotspot by hand** | none | Draw a clickable area. |
-| **Pipe** | <kbd>C</kbd> | Connect equipment. |
-| **Snap**, **Grid** | none | Line elements up. |
-| Text, note | <kbd>T</kbd>, <kbd>N</kbd> | Add a **Text** or a **Note**. |
-| Zoom in, out | <kbd>+</kbd>, <kbd>-</kbd> | Zoom. **Reset zoom** and **Center on content** are in the zoom menu. |
+| **Zone** | <kbd>Z</kbd> | Polygonfläche. |
+| **Hotspot von Hand** | keine | Einen anklickbaren Bereich zeichnen. |
+| **Rohrleitung** | <kbd>C</kbd> | Anlagen verbinden. |
+| **Einrasten**, **Raster** | keine | Elemente ausrichten. |
+| Text, Notiz | <kbd>T</kbd>, <kbd>N</kbd> | Einen **Text** oder eine **Notiz** hinzufügen. |
+| Vergrößern, Verkleinern | <kbd>+</kbd>, <kbd>-</kbd> | Zoomen. **Zoom zurücksetzen** und **Auf Inhalt zentrieren** stehen im Zoommenü. |
 
-<kbd>A</kbd> opens the element search. <kbd>Ctrl</kbd>+<kbd>Z</kbd> undoes. Keys are ignored while you type in a field. In the editor, <kbd>Space</kbd> + drag pans, Shift-click adds to the selection, and dragging on the background selects several.
+<kbd>A</kbd> öffnet die Elementsuche. <kbd>Strg</kbd>+<kbd>Z</kbd> macht rückgängig. Tasten werden ignoriert, während Sie in ein Feld tippen. Im Editor verschiebt <kbd>Leertaste</kbd> + Ziehen die Ansicht, Umschalt-Klick erweitert die Auswahl, und Ziehen auf dem Hintergrund wählt mehrere aus.
 
-## Elements
+## Elemente {#elements}
 
-| Section | Elements |
+| Abschnitt | Elemente |
 | --- | --- |
-| **Data** | **Value**, **KPI**, **Gauge**, **Linear gauge**, **Fill level**, **Chart**, **Compact chart**, **Sparkline**, **State badge**, **State icon**, **State timeline**, **Thing card**, **Aggregate** |
-| **Controls** | **Button**, **Switch**, **Setpoint**, **Hotspot** |
-| **Draw & basic** | **Text**, **Note**, **Shape**, **Line**, **Zone**, **Image** |
-| **Embeds** | **Dashboard widget**, **Canvas**, **Web page**, **VNC console** |
-| **P&ID symbols** | **Tank**, pumps, valves and other process symbols |
+| **Daten** | **Wert**, **KPI**, **Gauge**, **Lineares Gauge**, **Füllstand**, **Diagramm**, **Kompaktes Diagramm**, **Sparkline**, **Zustands-Badge**, **Zustands-Icon**, **Zustandsverlauf**, **Thing-Karte**, **Sammelwert** |
+| **Bedienelemente** | **Schaltfläche**, **Schalter**, **Sollwert**, **Hotspot** |
+| **Zeichnen & Grundformen** | **Text**, **Notiz**, **Form**, **Linie**, **Zone**, **Bild** |
+| **Einbettungen** | **Dashboard-Widget**, **Canvas**, **Webseite**, **VNC-Konsole** |
+| **R&I-Symbole** | **Tank**, Pumpen, Ventile und andere Prozesssymbole |
 
-Value, chart and thing card elements have a **Display** setting: **Canvas default**, **Full**, **Compact**, **Auto** or **Value tile, chart on hover**. Compact switches to a value chip below 96 × 72 px on screen.
+Wert-, Diagramm- und Thing-Karten-Elemente haben eine Einstellung **Anzeige**: **Canvas-Standard**, **Voll**, **Kompakt**, **Automatisch** oder **Werte-Kachel, Diagramm beim Überfahren**. Kompakt wechselt auf dem Bildschirm unter 96 × 72 px zu einem Wert-Chip.
 
-## Inspector
+## Inspektor {#inspector}
 
-Select an element to see its tabs. Nothing selected: *Select an element to edit its data, appearance, states and action.*
+Wählen Sie ein Element, um seine Tabs zu sehen. Ist nichts ausgewählt: *Wählen Sie ein Element aus, um seine Eigenschaften zu bearbeiten.*
 
-| Tab | Sets |
+| Tab | Legt fest |
 | --- | --- |
-| **Data** | Where the value comes from. |
-| **Appearance** | Look, position and size, **Align** and **Distribute**. |
-| **States** | Rules that change the look with the value. |
-| **Action** | What a click does. Only on buttons, symbols, hotspots, switches and setpoints. |
+| **Daten** | Woher der Wert kommt. |
+| **Darstellung** | Aussehen, Position und Größe, **Ausrichten** und **Verteilen**. |
+| **Zustände** | Regeln, die das Aussehen mit dem Wert ändern. |
+| **Aktion** | Was ein Klick bewirkt. Nur bei Schaltflächen, Symbolen, Hotspots, Schaltern und Sollwerten. |
 
-### Data options
+### Datenoptionen {#data-options}
 
-| Option | Values | Meaning |
+| Option | Werte | Bedeutung |
 | --- | --- | --- |
-| **Source** | **From context**, **Fixed thing** | The viewer's thing, or one device. |
-| **Bind value** | Thing, measure or property | Searchable. For text, also date and time values: **Date & time**, **Date**, **Time**, **Day of week**, **Month**, **Year**. |
-| **Thresholds** | **Equals**, **Greater than**, **Greater or equal**, **Less than**, **Less or equal**, **Range** | With a value, or **Min value** and **Max value**, a **Background** and a **Text color**. |
-| **Consider data stale after** | Duration | Per element. Default is the canvas's. |
+| **Quelle** | **Aus dem Kontext**, **Festes Thing** | Das Thing des Betrachters oder ein Gerät. |
+| **Wert binden** | Thing, Telemetrie oder Eigenschaft | Durchsuchbar. Bei Text auch Datums- und Zeitwerte: **Datum & Uhrzeit**, **Datum**, **Uhrzeit**, **Wochentag**, **Monat**, **Jahr**. |
+| **Schwellenwerte** | **Gleich**, **Größer als**, **Größer oder gleich**, **Kleiner als**, **Kleiner oder gleich**, **Bereich** | Mit einem Wert oder **Minimalwert** und **Maximalwert**, einem **Hintergrund** und einer **Textfarbe**. |
+| **Daten als veraltet betrachten nach** | Dauer | Je Element. Der Standard ist der des Canvas. |
 
-### State options
+### Zustandsoptionen {#state-options}
 
-| Option | Values |
+| Option | Werte |
 | --- | --- |
-| **State from** | The bound value, shown live. |
-| **When** | Operator and value. **Else if** adds a rule, **Otherwise** is the fallback. |
-| **State** | A name, such as `running` or `high alarm`. |
-| **Severity** | **Automatic**, **Normal**, **Info**, **Warning**, **Alarm**, **Fault**. Shown as **Stale** or **Unknown** when there is no current value. |
-| **Color** | Any color. Without one, warning, alarm and fault use their severity color. |
-| **Icon**, **Motion** | For icon elements. Motion: **Blink**, **Clock**, **Spin**, **No motion**. |
-| **Applies to** | Text elements: **Whole text** or **Only this value**. |
+| **Zustand aus** | Der gebundene Wert, live angezeigt. |
+| **Wenn** | Operator und Wert. **Sonst wenn** fügt eine Regel hinzu, **Sonst** ist die Rückfallregel. |
+| **Zustand** | Ein Name, etwa `running` oder `high alarm`. |
+| **Schweregrad** | **Automatisch**, **Normal**, **Info**, **Warnung**, **Alarm**, **Störung**. Wird als **Veraltet** oder **Unbekannt** angezeigt, wenn kein aktueller Wert vorliegt. |
+| **Farbe** | Jede Farbe. Ohne sie nutzen Warnung, Alarm und Störung die Farbe ihres Schweregrads. |
+| **Icon**, **Bewegung** | Für Icon-Elemente. Bewegung: **Blinken**, **Uhr**, **Drehen**, **Keine Bewegung**. |
+| **Gilt für** | Textelemente: **Ganzen Text** oder **Nur diesen Wert**. |
 
-**State timeline** states use **Equals**, **Below**, **Between** or **From**.
+Zustände eines **Zustandsverlaufs** nutzen **Gleich**, **Unter**, **Zwischen** oder **Ab**.
 
-### Action types
+### Aktionsarten {#action-types}
 
-| Type | What happens |
+| Art | Was geschieht |
 | --- | --- |
-| **Run an action** | Runs one of the thing's actions on the **Target** thing. |
-| **Navigation** | Opens another canvas or a link. |
-| **Switch context thing** | Changes the thing the canvas shows. |
-| **Set a variable** | Sets a canvas variable. Reports *Setting variables is not supported yet* where unsupported. |
-| **None** | Nothing. |
+| **Aktion ausführen** | Führt eine Aktion des Things auf dem **Ziel**-Thing aus. |
+| **Navigation** | Öffnet ein anderes Canvas oder einen Link. |
+| **Kontext-Thing wechseln** | Ändert das Thing, das das Canvas zeigt. |
+| **Variable setzen** | Setzt eine Canvas-Variable. Meldet *Variablen setzen wird noch nicht unterstützt*, wo es nicht unterstützt wird. |
+| **Keine** | Nichts. |
 
-Safeguards for **Run an action**: **Confirmation**, **Critical equipment** (typed confirmation), **Enabled only when**, **Expected result** with **Within**, **Cooldown**, **Consequence**, **Value sent**, **Label** and **More actions** (shown next to the main action).
+Sicherungen für **Aktion ausführen**: **Bestätigung**, **Kritisches Anlagenteil** (getippte Bestätigung), **Nur aktiv, wenn**, **Erwartetes Ergebnis** mit **Innerhalb**, **Sperrzeit**, **Folge**, **Gesendeter Wert**, **Beschriftung** und **Weitere Aktionen** (neben der Hauptaktion angezeigt).
 
-## Pipes
+## Rohrleitungen {#pipes}
 
-A pipe or **Signal line** connects two elements. Select it to set **Label**, **Line type**, **Routing** and its **Data** values. A label can show a live value with `{{value1}}`, where `value1` is a value from the **Data** tab. Drag a bend to move it, double-click the line to add one, double-click a bend or press <kbd>Delete</kbd> to remove it. A new pipe's **Flow direction not confirmed** until you **Confirm** or **Flip** it; until then it stays out of the plant graph.
+Eine Rohrleitung oder **Signalleitung** verbindet zwei Elemente. Wählen Sie sie, um **Beschriftung**, **Leitungsart**, **Verlauf** und ihre **Daten**-Werte zu setzen. Eine Beschriftung kann mit `{{value1}}` einen Live-Wert zeigen, wobei `value1` ein Wert aus dem Tab **Daten** ist. Ziehen Sie einen Knick, um ihn zu verschieben, doppelklicken Sie auf die Linie, um einen hinzuzufügen, und doppelklicken Sie auf einen Knick oder drücken Sie <kbd>Entf</kbd>, um ihn zu entfernen. Bei einer neuen Rohrleitung ist die **Flussrichtung nicht bestätigt**, bis Sie sie **Bestätigen** oder **Umkehren**. Bis dahin bleibt sie aus dem Anlagengraphen heraus.
 
-## Layers and arranging
+## Ebenen und Anordnen {#layers-and-arranging}
 
-| Where | Offers |
+| Wo | Bietet |
 | --- | --- |
-| **Layers** | Every element in drawing order. Rename, **Hide**, **Lock**. Elements on an image nest under it. **Pipes** are listed separately. |
-| Selection bar | Align, distribute, group, duplicate, lock. |
-| Right-click | **Bring to front**, **Bring forward**, **Send backward**, **Send to back**, **Copy**, **Paste**, **Duplicate**, **Group**, **Lock** or **Unlock**, **Delete**. |
+| **Ebenen** | Jedes Element in Zeichenreihenfolge. Umbenennen, **Ausblenden**, **Sperren**. Elemente auf einem Bild hängen darunter. **Rohrleitungen** stehen getrennt. |
+| Auswahlleiste | Ausrichten, verteilen, gruppieren, duplizieren, sperren. |
+| Rechtsklick | **In den Vordergrund**, **Eine Ebene nach vorne**, **Eine Ebene nach hinten**, **In den Hintergrund**, **Kopieren**, **Einfügen**, **Duplizieren**, **Gruppieren**, **Sperren** oder **Entsperren**, **Löschen**. |
 
-## Canvas settings
+## Canvas-Einstellungen {#canvas-settings}
 
-| Setting | Meaning |
+| Einstellung | Bedeutung |
 | --- | --- |
-| **Name**, **Description** | Identify the canvas. |
-| **Kind** | Sorts the canvas into the list's filters. |
-| **Interfaces** | The interfaces viewers pick a context thing from. |
-| **Theme** | The canvas's theme. |
-| **Default time range** | The range a viewer starts on. |
-| **Allow operation** | Lets buttons, switches, setpoints and valve actions send commands. Action permissions still apply. |
-| **Compact when zoomed out** | Sets how elements on **Canvas default** shrink. |
-| **Consider data stale after** | Canvas-wide default. |
-| **Plant graph** | When enabled for the tenant, saved pipes can update the plant graph. |
+| **Name**, **Beschreibung** | Kennzeichnen das Canvas. |
+| **Art** | Sortiert das Canvas in die Filter der Liste. |
+| **Interfaces** | Die Interfaces, aus denen Betrachter ein Kontext-Thing wählen. |
+| **Theme** | Das Theme des Canvas. |
+| **Standardzeitraum** | Der Zeitraum, mit dem ein Betrachter beginnt. |
+| **Bedienung erlauben** | Lässt Schaltflächen, Schalter, Sollwerte und Ventilaktionen Befehle senden. Aktionsberechtigungen gelten weiterhin. |
+| **Kompakt beim Herauszoomen** | Legt fest, wie Elemente auf **Canvas-Standard** schrumpfen. |
+| **Daten als veraltet betrachten nach** | Standard für das ganze Canvas. |
+| **Anlagengraph** | Ist er für den Tenant aktiviert, können gespeicherte Rohrleitungen den Anlagengraphen aktualisieren. |
 
-## Save, preview and managed canvases
+## Speichern, Vorschau und verwaltete Canvases {#save-preview-and-managed-canvases}
 
-| Item | Meaning |
+| Eintrag | Bedeutung |
 | --- | --- |
-| **Preview** | Shows the canvas as viewers see it, in both themes. Commands are dry runs. **End preview** returns to editing. |
-| Status | **Unsaved**, **Saving…**, **Saved**, **Conflict**. |
-| **Save**, **Save and exit**, **Save as copy** | Publish, publish and leave, or keep your work as a new canvas after a conflict. |
-| **Managed by Nimbit** | **Update to version …** applies a new template version. **Reset to Nimbit version** drops your changes. **Duplicate** gives a copy Nimbit no longer updates. |
+| **Vorschau** | Zeigt das Canvas, wie Betrachter es sehen, in beiden Themes. Befehle sind Probeläufe. **Vorschau beenden** kehrt zum Bearbeiten zurück. |
+| Status | **Nicht gespeichert**, **Wird gespeichert…**, **Gespeichert**, **Konflikt**. |
+| **Speichern**, **Speichern und beenden**, **Als Kopie speichern** | Veröffentlichen, veröffentlichen und verlassen oder Ihre Arbeit nach einem Konflikt als neues Canvas behalten. |
+| **Von Nimbit verwaltet** | **Auf Version … aktualisieren** übernimmt eine neue Vorlagenversion. **Auf Nimbit-Version zurücksetzen** verwirft Ihre Änderungen. **Duplizieren** erzeugt eine Kopie, die Nimbit nicht mehr aktualisiert. |
 
-## Viewer
+## Betrachter {#viewer}
 
-| Item | Meaning |
+| Eintrag | Bedeutung |
 | --- | --- |
-| Thing picker | Chooses the context thing. The link you share keeps the choice. |
-| Time range | A past range shows history; **Live** returns to now. |
-| Alarm chip | Lists alarms and stale values. Select it for the next one. |
-| Zoom | Drag to pan, scroll or Ctrl+scroll to zoom. |
+| Thing-Auswahl | Wählt das Kontext-Thing. Der Link, den Sie teilen, behält die Auswahl. |
+| Zeitraum | Ein vergangener Zeitraum zeigt den Verlauf. **Live** kehrt zur Gegenwart zurück. |
+| Alarm-Chip | Listet Alarme und veraltete Werte. Wählen Sie ihn für den nächsten. |
+| Zoom | Ziehen verschiebt die Ansicht, Scrollen oder Strg+Scrollen zoomt. |
 
-## Related
-- [How a canvas works](./how-canvas-works.mdx)
+## Verwandte Seiten {#related}
+- [Wie ein Canvas funktioniert](./how-canvas-works.mdx)

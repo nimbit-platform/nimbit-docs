@@ -1,69 +1,69 @@
 ---
-untranslated: true
-title: How Periscope works
-description: How Periscope discovers sources, proposes things, applies them, maps values and streams them, and when an instance is a gateway.
+title: Wie Periscope funktioniert
+description: Wie Periscope Quellen erkennt, Things vorschlägt, anwendet, Werte zuordnet und streamt – und wann eine Instanz ein Gateway ist.
 type: concept
 sidebar_position: 2
 app:
   routes: ["/onboarding/gateways"]
+translated_from: 4c9fc6e
 ---
 
-Periscope is a single Go binary configured with one TOML file. It does two jobs over one connection to your plant: discovery, which creates the model, and streaming, which sends the values. It needs no change in other services, and nothing has to reach it except the people who open its web UI.
+Periscope ist ein einzelnes Go-Binary, das mit einer TOML-Datei konfiguriert wird. Es erledigt über eine Verbindung zu Ihrer Anlage zwei Aufgaben: die Erkennung, die das Modell erzeugt, und das Streaming, das die Werte sendet. Es braucht keine Änderung an anderen Diensten, und nichts muss es erreichen außer den Personen, die seine Web-Oberfläche öffnen.
 
 ```mermaid
 flowchart LR
-  I[Inputs] --> D[Discover]
-  D --> P[Proposals]
-  P -->|confirm or zero-touch| A[Apply to the platform]
-  A --> M[Mapping]
-  I --> S[Stream]
+  I[Eingänge] --> D[Erkennen]
+  D --> P[Vorschläge]
+  P -->|bestätigen oder Zero-Touch| A[Auf die Plattform anwenden]
+  A --> M[Zuordnung]
+  I --> S[Streamen]
   M --> S
-  S --> O[Processors and outputs]
+  S --> O[Prozessoren und Ausgänge]
 ```
 
-## The parts
+## Die Bausteine {#the-parts}
 
-| Part | What it does |
+| Baustein | Was er tut |
 | --- | --- |
-| **Input** | Reads one source: OPC UA, Sparkplug B, MQTT or UNS, Siemens S7, Modbus or an HTTP API. Each input has an `alias`, and its address space is read-only. |
-| **Snapshot** | The last discovery of an input: folders, objects and variables with units, ranges and names where the source has them. |
-| **Proposals** | Thing types, things and measures derived from the snapshot, each with a status. The same plant always produces the same proposals with the same IDs. |
-| **Mapping** | Which source address feeds which thing and measure. Apply writes it. |
-| **Processor** | Changes values on the way: rename, scale, thin out, tag, convert. |
-| **Output** | Sends values to the platform: `tsflux_stream`, `tsflux`, `nimbit_mqtt`, and `file` or `stdout` for tests. |
-| **State directory** | Everything the agent keeps: snapshots, proposals, edits, mapping, keys, queues. |
+| **Eingang** | Liest eine Quelle: OPC UA, Sparkplug B, MQTT oder UNS, Siemens S7, Modbus oder eine HTTP-API. Jeder Eingang hat einen `alias`, und sein Adressraum ist schreibgeschützt. |
+| **Snapshot** | Die letzte Erkennung eines Eingangs: Ordner, Objekte und Variablen mit Einheiten, Bereichen und Namen, wo die Quelle sie hat. |
+| **Vorschläge** | Thing-Typen, Things und Messwerte, aus dem Snapshot abgeleitet, jeweils mit einem Status. Dieselbe Anlage erzeugt immer dieselben Vorschläge mit denselben IDs. |
+| **Zuordnung** | Welche Quelladresse welches Thing und welchen Messwert speist. „Anwenden“ schreibt sie. |
+| **Prozessor** | Verändert Werte unterwegs: umbenennen, skalieren, ausdünnen, taggen, konvertieren. |
+| **Ausgang** | Sendet Werte an die Plattform: `tsflux_stream`, `tsflux`, `nimbit_mqtt` sowie `file` oder `stdout` für Tests. |
+| **State-Verzeichnis** | Alles, was der Agent aufbewahrt: Snapshots, Vorschläge, Änderungen, Zuordnung, Schlüssel, Warteschlangen. |
 
-## How they work together
+## Wie sie zusammenarbeiten {#how-they-work-together}
 
-1. **Discover.** Each input reads its source and writes a snapshot. Periscope derives proposals: one thing type per kind of machine, one thing per machine, one measure per variable, placed under your `mount` path. It repeats every hour by default.
-2. **Confirm.** In `confirm` mode, a person reviews proposals in the web UI, renames and merges them, and confirms the rest. In `zero-touch` mode everything proposed is applied at once. A rediscovery sends a changed item back to `proposed`. Nothing is renamed or deleted silently.
-3. **Apply.** Periscope creates the confirmed thing types and then their things in IoT Breeze, and writes the mapping. Applying again creates nothing twice.
-4. **Stream.** Inputs deliver values, the mapping assigns each to a thing and measure, processors change them, and outputs send them.
-5. **Verify.** You check that every applied thing received values. See [Verify that data arrived](./verify.mdx).
+1. **Erkennen.** Jeder Eingang liest seine Quelle und schreibt einen Snapshot. Periscope leitet Vorschläge ab: einen Thing-Typ pro Maschinenart, ein Thing pro Maschine, einen Messwert pro Variable, abgelegt unter Ihrem `mount`-Pfad. Standardmäßig wiederholt es das stündlich.
+2. **Bestätigen.** Im Modus `confirm` prüft eine Person die Vorschläge in der Web-Oberfläche, benennt sie um, führt sie zusammen und bestätigt den Rest. Im Modus `zero-touch` wird alles Vorgeschlagene sofort angewendet. Eine erneute Erkennung setzt ein geändertes Element zurück auf `proposed`. Nichts wird stillschweigend umbenannt oder gelöscht.
+3. **Anwenden.** Periscope legt die bestätigten Thing-Typen und danach ihre Things in IoT Breeze an und schreibt die Zuordnung. Erneutes Anwenden legt nichts doppelt an.
+4. **Streamen.** Eingänge liefern Werte, die Zuordnung weist jeden einem Thing und Messwert zu, Prozessoren verändern sie, und Ausgänge senden sie.
+5. **Prüfen.** Sie kontrollieren, dass jedes angewendete Thing Werte erhalten hat. Siehe [Prüfen, ob Daten angekommen sind](./verify.mdx).
 
-`periscope serve` runs all of this continuously and serves the web UI and the HTTP API on one port.
+`periscope serve` führt all das fortlaufend aus und stellt die Web-Oberfläche und die HTTP-API auf einem Port bereit.
 
-## Is a Periscope instance a gateway?
+## Ist eine Periscope-Instanz ein Gateway? {#is-a-periscope-instance-a-gateway}
 
-Only when you onboard it with an onboarding code from **Settings › Onboarding › Gateways**. Set `[ocb] gateway = true` and the agent signs in with its own key, sends with a credential that names the gateway, and may create and update only its own things. IoT Breeze shows it as a gateway with a status, a namespace and a scope. See [How gateways work](../how-gateways-work.mdx).
+Nur wenn Sie sie mit einem Onboarding-Code aus **Einstellungen › Onboarding › Gateways** einrichten. Setzen Sie `[ocb] gateway = true`, dann meldet sich der Agent mit seinem eigenen Schlüssel an, sendet mit Zugangsdaten, die das Gateway nennen, und darf nur seine eigenen Things anlegen und aktualisieren. IoT Breeze zeigt ihn als Gateway mit Status, Namespace und Scope. Siehe [Wie Gateways funktionieren](../how-gateways-work.mdx).
 
-Without that, the agent runs in service-account mode: it signs in as a user of your organization with the `modeler` role, is not a gateway, and has no gateway thing, namespace or scope. New installations should use a gateway.
+Ohne das läuft der Agent im Servicekonto-Modus: Er meldet sich als Benutzer Ihrer Organisation mit der Rolle `modeler` an, ist kein Gateway und hat kein Gateway-Thing, keinen Namespace und keinen Scope. Neue Installationen sollten ein Gateway verwenden.
 
-| | Gateway mode | Service-account mode |
+| | Gateway-Modus | Servicekonto-Modus |
 | --- | --- | --- |
-| Sign-in | Key pair, onboarding code | Email and password, enrolled once |
-| Thing alternate IDs start with | The gateway's namespace | `agent.name` |
-| Appears in **Gateways** | Yes | No |
-| Health shown in IoT Breeze | Yes, on the gateway thing | No |
+| Anmeldung | Schlüsselpaar, Onboarding-Code | E-Mail und Passwort, einmal registriert |
+| Alternate-IDs der Things beginnen mit | Dem Namespace des Gateways | `agent.name` |
+| Erscheint unter **Gateways** | Ja | Nein |
+| Zustand in IoT Breeze sichtbar | Ja, am Gateway-Thing | Nein |
 
-## Limits
+## Limits {#limits}
 
-- The agent reads sources and never writes to them.
-- `agent.name` and `mount` become part of every thing's identity. Changing them later creates new things.
-- In gateway mode the agent sends health live, never from a queue, so a replayed backlog can't keep a dead agent online.
+- Der Agent liest Quellen und schreibt nie in sie.
+- `agent.name` und `mount` werden Teil der Identität jedes Things. Spätere Änderungen legen neue Things an.
+- Im Gateway-Modus sendet der Agent den Zustand live, nie aus einer Warteschlange, sodass ein nachgesendeter Rückstau einen toten Agenten nicht online halten kann.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Install Periscope and stream your first source](./install.mdx)
-- [Configuration reference](./configuration.mdx)
-- [Add a gateway](../add-a-gateway.mdx)
+- [Periscope installieren und die erste Quelle streamen](./install.mdx)
+- [Konfigurationsreferenz](./configuration.mdx)
+- [Gateway hinzufügen](../add-a-gateway.mdx)

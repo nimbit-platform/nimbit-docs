@@ -1,14 +1,14 @@
 ---
-untranslated: true
-title: Model your data
+title: Ihre Daten modellieren
 sidebar_position: 1
-description: Describe your devices once as thing types, register the real devices as things, and share field definitions through interfaces.
+description: Beschreiben Sie Ihre Geräte einmal als Thing-Typen, registrieren Sie die echten Geräte als Things und teilen Sie Felddefinitionen über Interfaces.
 type: landing
 app:
   routes: ["/onboarding/thing-types", "/onboarding/things", "/onboarding/interfaces"]
+translated_from: 810b8a2
 ---
 
-How do I describe my devices so IoT Breeze knows what they send? Define a thing type per kind of device, register each real device as a thing, and share fields between thing types through interfaces. All three are under **Settings › Onboarding**.
+Wie beschreibe ich meine Geräte, damit IoT Breeze weiß, was sie senden? Legen Sie pro Art von Gerät einen Thing-Typ an, registrieren Sie jedes echte Gerät als Thing und teilen Sie Felder zwischen Thing-Typen über Interfaces. Alle drei finden Sie unter **Einstellungen › Onboarding**.
 
 ```mermaid
 flowchart LR
@@ -17,16 +17,16 @@ flowchart LR
   T -->|sends data| D[Dashboards, rules, reports]
 ```
 
-## Understand
-- [Thing types, things and interfaces](./things-and-types.mdx): what each object is and when you need an interface.
-- [Drafts, publishing and versions](./drafts-and-versions.mdx): why your schema edits don't reach devices until you publish.
+## Verstehen {#understand}
+- [Thing-Typen, Things und Interfaces](./things-and-types.mdx): was jedes Objekt ist und wann Sie ein Interface brauchen.
+- [Entwürfe, Veröffentlichen und Versionen](./drafts-and-versions.mdx): warum Ihre Schema-Änderungen die Geräte erst nach dem Veröffentlichen erreichen.
 
-## Do
-- [Create a thing type](./create-thing-type.mdx): define the measures and properties of a kind of device.
-- [Register a thing](./register-thing.mdx): add one real device or asset.
-- [Reuse an interface across thing types](./reuse-interface.mdx): share fields, map differing names, get Smart dashboards.
-- [Clean up incoming data](./clean-up-data.mdx): convert, check or enrich messages before they are stored.
+## Umsetzen {#do}
+- [Einen Thing-Typ anlegen](./create-thing-type.mdx): die Messwerte und Eigenschaften einer Art von Gerät festlegen.
+- [Ein Thing registrieren](./register-thing.mdx): ein echtes Gerät oder eine Anlage hinzufügen.
+- [Ein Interface für mehrere Thing-Typen wiederverwenden](./reuse-interface.mdx): Felder teilen, abweichende Namen zuordnen, Smart-Dashboards erhalten.
+- [Eingehende Daten bereinigen](./clean-up-data.mdx): Nachrichten vor dem Speichern umrechnen, prüfen oder anreichern.
 
-## Look up
-- [Measure and property types](./measure-types.mdx): every data type, option and validation rule.
-- [Shipped interfaces](./shipped-interfaces.mdx): the interfaces that come with the platform.
+## Nachschlagen {#look-up}
+- [Messwert- und Eigenschaftstypen](./measure-types.mdx): jeder Datentyp, jede Option und Validierungsregel.
+- [Mitgelieferte Interfaces](./shipped-interfaces.mdx): die Interfaces, die mit der Plattform kommen.

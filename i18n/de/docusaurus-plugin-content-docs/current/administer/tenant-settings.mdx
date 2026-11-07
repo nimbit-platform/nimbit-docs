@@ -1,110 +1,110 @@
 ---
-untranslated: true
-title: "Tenant settings"
-description: "Every tab of Tenant Settings: general, features, theme, email, statistics, schedules, data, packs and connections."
+title: "Tenant-Einstellungen"
+description: "Jeder Tab der Mandanteneinstellungen: Allgemein, Funktionen, Theme, E-Mail, Statistiken, Zeitpläne, Daten, Pakete und Verbindungen."
 type: reference
 sidebar_position: 10
 app:
   routes: ["/tenant-settings"]
+translated_from: c8e4e12
 ---
 
-The tabs of **Administration › Tenant Settings**, which apply to everyone in the tenant. Only the **Admin** role can open it (it needs permission to update the tenant).
+Die Tabs unter **Administration › Mandanteneinstellungen**, die für alle im Tenant gelten. Nur die Rolle **Administrator** kann sie öffnen (sie braucht die Berechtigung, den Tenant zu aktualisieren).
 
-Changes on **General**, **Features**, **Theme** and **Email** are saved together with **Save**. A badge shows **Unsaved changes**. **Reset to default** resets theme colors, branding images and email settings after confirmation and cannot be undone.
+Änderungen auf **Allgemein**, **Funktionen**, **Theme** und **Email** werden gemeinsam mit **Speichern** gespeichert. Ein Badge zeigt **Ungespeicherte Änderungen**. **Zurücksetzen** setzt Themefarben, Branding-Bilder und E-Mail-Einstellungen nach einer Bestätigung zurück und lässt sich nicht rückgängig machen.
 
-## General
+## Allgemein {#general}
 
-| Setting | Meaning |
+| Einstellung | Bedeutung |
 | --- | --- |
-| **Name**, **Tenant Id** | Read only. |
-| **Display name** | The name people see in the app. |
-| **Time zone**, **Language** | Defaults for the tenant. |
-| **Allowed hosts** | Sites that may be embedded, for example on canvases. One host per line, such as `grafana.example.com`, or `*.example.com` for all subdomains. Empty allows none. |
-| **Branding Images** | **Favicon** (`.ico`, 48 × 48), **Default logo**, **Light mode logo**, **Dark mode logo** (PNG or SVG, up to 5 MB) and **Cover image** (PNG, SVG, JPEG or WebP, up to 5 MB). See [Brand your tenant](./branding.mdx). |
+| **Name**, **Tenant Id** | Schreibgeschützt. |
+| **Anzeigename** | Der Name, den Personen in der App sehen. |
+| **Zeitzone**, **Sprache** | Standardwerte für den Tenant. |
+| **Erlaubte Hosts** | Seiten, die eingebettet werden dürfen, zum Beispiel auf Canvases. Ein Host pro Zeile, etwa `grafana.example.com`, oder `*.example.com` für alle Subdomains. Leer erlaubt keine. |
+| **Branding-Bilder** | **Favicon** (`.ico`, 48 × 48), **Standardlogo**, **Logo für den hellen Modus**, **Logo für den dunklen Modus** (PNG oder SVG, bis 5 MB) und **Titelbild** (PNG, SVG, JPEG oder WebP, bis 5 MB). Siehe [Ihren Tenant mit Ihrer Marke gestalten](./branding.mdx). |
 
-## Features
+## Funktionen {#features}
 
-| Feature | Effect |
+| Funktion | Wirkung |
 | --- | --- |
-| **Dashboard hierarchy** | Groups dashboards in a tree of sites, buildings or areas, with a **Table** / **Hierarchy** switch on Dashboards. Turning it off hides the tree. Nodes and filed dashboards return when you turn it on again. |
-| **Dashboards open in** | **Table** or **Hierarchy**. Applies to people who have not used Dashboards yet. After that it opens where each person left it. |
-| **Ask Nimble and Knowledge** | The AI assistant and the Knowledge section. May be unavailable on your installation. A feature can show **On until** a date. |
+| **Dashboard-Hierarchie** | Gruppiert Dashboards in einem Baum aus Standorten, Gebäuden oder Bereichen, mit einem Schalter **Tabelle** / **Hierarchie** bei den Dashboards. Schalten Sie sie aus, ist der Baum verborgen. Knoten und einsortierte Dashboards kehren zurück, wenn Sie sie wieder einschalten. |
+| **Dashboards öffnen in** | **Tabelle** oder **Hierarchie**. Gilt für Personen, die Dashboards noch nicht benutzt haben. Danach öffnen sie dort, wo jede Person zuletzt war. |
+| **Nimble fragen und Knowledge** | Der KI-Assistent und der Bereich Knowledge. Auf Ihrer Installation möglicherweise nicht verfügbar. Eine Funktion kann **On until** mit einem Datum zeigen. |
 
-## Theme
+## Theme {#theme}
 
-| Setting | Meaning |
+| Einstellung | Bedeutung |
 | --- | --- |
-| **Tenant default appearance** | **Light** or **Dark**, for people without a personal preference. They can override it with the theme control in the header. |
-| Theme editor | Colors, layout and shadows per color mode. Select a preview to edit that mode. |
+| **Standarddarstellung des Tenants** | **Hell** oder **Dunkel**, für Personen ohne eigene Vorgabe. Sie können sie mit dem Theme-Schalter im Kopfbereich überschreiben. |
+| Theme-Editor | Farben, Layout und Schatten je Farbmodus. Wählen Sie eine Vorschau, um diesen Modus zu bearbeiten. |
 
-## Email
+## Email {#email}
 
-| Provider | Meaning |
+| Anbieter | Bedeutung |
 | --- | --- |
-| **System default** | Mail goes out from the platform mail server. No setup. |
-| **Microsoft 365** | Sign in with Microsoft (OAuth2). **Save** first, then **Sign in with Microsoft**. Optional **Shared mailbox address** to send from it. **Sign out** before switching provider. |
-| **Custom SMTP** | Your own mail server. Turn on **Enable custom SMTP**. |
+| **Systemstandard** | E-Mails gehen vom Mailserver der Plattform aus. Keine Einrichtung. |
+| **Microsoft 365** | Mit Microsoft anmelden (OAuth2). Wählen Sie zuerst **Speichern**, dann **Mit Microsoft anmelden**. Optional **Geteilte Postfachadresse**, um von dort zu senden. Wählen Sie **Abmelden**, bevor Sie den Anbieter wechseln. |
+| **Eigener SMTP-Server** | Ihr eigener Mailserver. Schalten Sie **Benutzerdefiniertes SMTP aktivieren** ein. |
 
-Custom SMTP fields: **Host**, **Port** (587 by default), **Username**, **Password**, **From**, and the security **STARTTLS** or **SSL/TLS**. **Send a test mail** sends a mail with the current configuration and needs an enabled provider.
+Felder für eigenes SMTP: **Host**, **Port** (standardmäßig 587), **Benutzername**, **Passwort**, **Absender** und die Verschlüsselung **STARTTLS** oder **SSL/TLS**. **Test email senden** sendet eine E-Mail mit der aktuellen Konfiguration und braucht einen aktivierten Anbieter.
 
-## Statistics
+## Statistiken {#statistics}
 
-Read only.
+Schreibgeschützt.
 
-| Item | Shows |
+| Eintrag | Zeigt |
 | --- | --- |
-| **Row Count**, **Storage** | Measurements and the space they use, each with the value for **Yesterday**. |
-| **Total file size in storage** | Size of all files in the tenant. |
-| Area charts, **Last 30 Days** table | Row count and storage per day. **No data available** before any measurement arrives. |
+| **Zeilenanzahl**, **Speicher** | Messungen und der Platz, den sie belegen, jeweils mit dem Wert für **Gestern**. |
+| **Gesamter Speicherverbrauch für Dateien** | Größe aller Dateien im Tenant. |
+| Flächendiagramme, Tabelle **Letzte 30 Tage** | Zeilenanzahl und Speicher pro Tag. **Keine Daten verfügbar**, bevor die erste Messung eintrifft. |
 
-## Schedules
+## Zeitpläne {#schedules}
 
-Read only list of the tenant's task schedules.
+Schreibgeschützte Liste der Aufgabenzeitpläne des Tenants.
 
-| Column | Meaning |
+| Spalte | Bedeutung |
 | --- | --- |
-| **URI**, **Owner** | What runs and who owns it. |
-| **Timing** | For example `every 15m`, `cron: 0 6 * * *` or `once @ date`. |
-| **Invocation**, **Status**, **Enabled** | How it runs, its state and whether it is on. |
-| **Last run**, **Next run** | Run times. |
+| **URI**, **Eigentümer** | Was läuft und wem es gehört. |
+| **Zeitsteuerung** | Zum Beispiel `every 15m`, `cron: 0 6 * * *` oder `once @ date`. |
+| **Aufruf**, **Status**, **Aktiviert** | Wie es läuft, in welchem Zustand und ob es an ist. |
+| **Letzter Lauf**, **Nächster Lauf** | Laufzeiten. |
 
-Data deletions appear here while they are scheduled or running. See [Delete data](./delete-data.mdx).
+Datenlöschungen erscheinen hier, solange sie geplant sind oder laufen. Siehe [Daten löschen](./delete-data.mdx).
 
-## Data
+## Daten {#data}
 
-Shows the data stores to everyone who may read them. **Delete recorded data** needs the **Data deletion** permission. See [Delete data](./delete-data.mdx).
+Zeigt die Datenspeicher allen, die sie lesen dürfen. **Aufgezeichnete Daten löschen** braucht die Berechtigung „Datenlöschung“. Siehe [Daten löschen](./delete-data.mdx).
 
-## Packs
+## Pakete {#packs}
 
-Packs are starter content from Nimbit: mail templates and blocks, interfaces, dashboards and canvases. Installed items belong to your tenant and you can edit them.
+Pakete sind Startinhalte von Nimbit: E-Mail-Vorlagen und -Bausteine, Interfaces, Dashboards und Canvases. Installierte Elemente gehören Ihrem Tenant, und Sie können sie bearbeiten.
 
-| State | Meaning |
+| Zustand | Bedeutung |
 | --- | --- |
-| **Not installed** | Not in your tenant. |
-| **Current** | Installed and equal to the shipped version. |
-| **Update available** | Nimbit ships a newer version. |
-| **Edited** | You changed it. |
-| **Deleted** | You deleted it. |
+| **Nicht installiert** | Nicht in Ihrem Tenant. |
+| **Aktuell** | Installiert und gleich der ausgelieferten Version. |
+| **Update verfügbar** | Nimbit liefert eine neuere Version aus. |
+| **Bearbeitet** | Sie haben es geändert. |
+| **Gelöscht** | Sie haben es gelöscht. |
 
-| Button | Effect |
+| Schaltfläche | Wirkung |
 | --- | --- |
-| **Install**, **Install missing items** | Adds the pack's content. |
-| **Reset** | Replaces an item with the shipped version, or recreates it if deleted. Your changes are lost. |
-| **Uninstall** | Content stays as your own but gets no updates. Installing again creates new copies. A pack that others require, or whose content is in use, cannot be uninstalled. |
+| **Installieren**, **Fehlende Elemente installieren** | Fügt den Inhalt des Pakets hinzu. |
+| **Zurücksetzen** | Ersetzt ein Element durch die ausgelieferte Version oder legt es neu an, wenn es gelöscht wurde. Ihre Änderungen gehen verloren. |
+| **Deinstallieren** | Der Inhalt bleibt als Ihr eigener, erhält aber keine Updates. Eine erneute Installation legt neue Kopien an. Ein Paket, das andere voraussetzen oder dessen Inhalt in Gebrauch ist, lässt sich nicht deinstallieren. |
 
-Filter by **Content type** at the top.
+Filtern Sie oben nach **Inhaltstyp**.
 
-## Connections
+## Verbindungen {#connections}
 
-Provisioning and messaging providers of the tenant.
+Provisionierungs- und Messaging-Anbieter des Tenants.
 
-| Item | Meaning |
+| Eintrag | Bedeutung |
 | --- | --- |
-| **Managed by Nimbit** | Internal providers. You can turn them on or off, not delete them. Turning one off asks **Deactivate**: things using it lose their connections and cannot send messages. |
-| **Tenant connection** | The address a thing connects to. Replace `<deviceId>` with the thing's ID. |
-| Credentials | Not stored. Generated tokens are available only in the current browser session. |
+| **Von Nimbit verwaltet** | Interne Anbieter. Sie können sie ein- oder ausschalten, aber nicht löschen. Beim Ausschalten fragt **Deaktivieren**: Things, die ihn verwenden, verlieren ihre Verbindungen und können keine Nachrichten senden. |
+| **Tenant-Verbindung** | Die Adresse, mit der sich ein Thing verbindet. Ersetzen Sie `<deviceId>` durch die ID des Things. |
+| Zugangsdaten | Werden nicht gespeichert. Erzeugte Tokens sind nur in der aktuellen Browsersitzung verfügbar. |
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Brand your tenant](./branding.mdx) · [Delete data](./delete-data.mdx)
-- [Roles and permissions](./roles.mdx)
+- [Ihren Tenant mit Ihrer Marke gestalten](./branding.mdx) · [Daten löschen](./delete-data.mdx)
+- [Rollen und Berechtigungen](./roles.mdx)

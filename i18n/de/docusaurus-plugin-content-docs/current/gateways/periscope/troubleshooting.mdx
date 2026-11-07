@@ -1,80 +1,80 @@
 ---
-untranslated: true
-title: Troubleshoot Periscope
-description: Find and fix the errors Periscope shows in its log, on its Overview and in command output, grouped by where they appear.
+title: Periscope-Probleme beheben
+description: Die Fehler finden und beheben, die Periscope in seinem Log, auf seiner Übersicht und in der Befehlsausgabe zeigt, gruppiert danach, wo sie erscheinen.
 type: how-to
 sidebar_position: 15
 app:
   routes: ["/onboarding/gateways"]
+translated_from: 4c9fc6e
 ---
 
-Find the cause of an error Periscope reports and fix it. Errors of a single plant protocol are at the end of each source page, for example [Connect an OPC UA server](./opc-ua.mdx). The agent also serves a longer list at `http://<listen>/ui/docs`.
+Finden Sie die Ursache eines Fehlers, den Periscope meldet, und beheben Sie ihn. Fehler einzelner Anlagenprotokolle stehen am Ende der jeweiligen Quellenseite, zum Beispiel [Einen OPC-UA-Server verbinden](./opc-ua.mdx). Der Agent liefert außerdem eine längere Liste unter `http://<listen>/ui/docs`.
 
-## Before you start
+## Voraussetzungen {#before-you-start}
 
-- You can open the agent's web UI and run commands on the box. In a container, use `docker exec periscope periscope <command>`.
-- Look first at three places:
-  1. The **Overview** screen: which input or output isn't `streaming` or `ok`, and the last failure of each.
-  2. The **Logs** screen, filtered to level `warn` and the source in question.
-  3. `periscope validate`, which checks the configuration and the sign-in in one go.
+- Sie können die Web-Oberfläche des Agents öffnen und Befehle auf der Box ausführen. In einem Container verwenden Sie `docker exec periscope periscope <command>`.
+- Sehen Sie zuerst an drei Stellen nach:
+  1. Der Bildschirm **Overview**: welcher Eingang oder Ausgang nicht `streaming` oder `ok` ist, und der letzte Fehler jedes einzelnen.
+  2. Der Bildschirm **Logs**, gefiltert auf die Ebene `warn` und die betreffende Quelle.
+  3. `periscope validate`, das Konfiguration und Anmeldung in einem Zug prüft.
 
-## Steps
+## Schritte {#steps}
 
-Find your symptom in the group that matches.
+Suchen Sie Ihr Symptom in der passenden Gruppe.
 
-### The configuration is rejected
+### Die Konfiguration wird abgelehnt {#the-configuration-is-rejected}
 
-- **`unknown keys: …`**: a misspelt key, or a key of another plugin. Unknown keys are never ignored. Check the key in the [Configuration reference](./configuration.mdx).
-- **`deadband "…" comes after heartbeat "…"`**: move `[[processors.heartbeat]]` to the end.
-- **A `mount` is refused**: it has empty elements, a leading or trailing `/`, `.` or `..`, or spaces. Write it as `a/b/c`.
-- **`password=unset` although it is in the environment**: `${NAME}` reads the agent's own environment. Use `EnvironmentFile=` or `--env-file`.
-- **`ocb: set exactly one credential`**: with `[ocb] url`, keep one of `gateway = true`, `email` or `token`.
-- **Overview shows `periscope.toml rejected: …; running the config from 10:42`**: the agent kept its last good configuration. Fix what the error names, then save again.
-- **Overview shows `restart required: …`**: a key changed that a running agent can't change. Restart the agent, or set the key back.
+- **`unknown keys: …`**: ein Tippfehler im Schlüssel oder ein Schlüssel eines anderen Plugins. Unbekannte Schlüssel werden nie ignoriert. Prüfen Sie den Schlüssel in der [Konfigurationsreferenz](./configuration.mdx).
+- **`deadband "…" comes after heartbeat "…"`**: Verschieben Sie `[[processors.heartbeat]]` ans Ende.
+- **Ein `mount` wird abgelehnt**: Er hat leere Elemente, ein führendes oder abschließendes `/`, `.` oder `..` oder Leerzeichen. Schreiben Sie ihn als `a/b/c`.
+- **`password=unset`, obwohl es in der Umgebung steht**: `${NAME}` liest die eigene Umgebung des Agents. Verwenden Sie `EnvironmentFile=` oder `--env-file`.
+- **`ocb: set exactly one credential`**: Behalten Sie bei `[ocb] url` genau eines von `gateway = true`, `email` oder `token`.
+- **Overview zeigt `periscope.toml rejected: …; running the config from 10:42`**: Der Agent hat seine letzte gute Konfiguration behalten. Beheben Sie, was der Fehler nennt, und speichern Sie erneut.
+- **Overview zeigt `restart required: …`**: Ein Schlüssel wurde geändert, den ein laufender Agent nicht ändern kann. Starten Sie den Agent neu oder setzen Sie den Schlüssel zurück.
 
-### The agent can't sign in or isn't connected
+### Der Agent kann sich nicht anmelden oder ist nicht verbunden {#the-agent-cant-sign-in-or-isnt-connected}
 
-- **`Not connected to Nimbit` banner on a gateway**: `[ocb] gateway = true` is set but the box isn't onboarded, so `state_dir/gateway.json` is missing. Run `periscope enroll -code ONB-…` with a new code.
-- **The onboarding code is refused**: it is unknown, used or expired. A code works once. Issue a new one in IoT Breeze: **New onboarding code**. If the identity directory or the platform was unreachable, the code wasn't used. If the platform answered after accepting it, the code is spent, so issue another.
-- **The box's state belongs to another organization**: use a state directory made for this organization, or start with an empty one.
-- **`Wrong or expired setup code`**: take the code printed at the latest start from `docker logs periscope`. Dashes, spaces and case don't matter.
-- **`the platform cannot be reached`**: no route from the box to the URL. Check DNS, the firewall, a proxy and `[ocb] url`. From the box, run `curl -sv <[auth] url>/.well-known/jwks.json` and `curl -sv https://nimbit.example.com/ocb/health`. Behind a corporate proxy, set `HTTPS_PROXY` in the agent's environment. `[ocb] url` is the platform's base URL, not the backend's, unless `path_prefix = ""`. Discovery and streaming continue meanwhile: the outputs keep values on disk within `buffer_bytes`.
-- **Service account: `has no active tenant`, or `belongs to tenant …`**: the account must be a member of this agent's organization and of no other. Use an account of that organization or an empty state directory.
-- **Service account: `not enrolled`**: run `periscope enroll -password-stdin`. If the platform revoked the session, enroll again. A running `serve` picks it up without a restart.
+- **Banner `Not connected to Nimbit` bei einem Gateway**: `[ocb] gateway = true` ist gesetzt, aber die Box ist nicht eingerichtet, daher fehlt `state_dir/gateway.json`. Führen Sie `periscope enroll -code ONB-…` mit einem neuen Code aus.
+- **Der Onboarding-Code wird abgelehnt**: Er ist unbekannt, benutzt oder abgelaufen. Ein Code funktioniert einmal. Stellen Sie in IoT Breeze einen neuen aus: **Neuer Onboarding-Code**. War das Identitätsverzeichnis oder die Plattform nicht erreichbar, wurde der Code nicht verbraucht. Hat die Plattform geantwortet, nachdem sie ihn akzeptiert hatte, ist der Code verbraucht, stellen Sie also einen weiteren aus.
+- **Der Zustand der Box gehört zu einer anderen Organisation**: Verwenden Sie ein für diese Organisation angelegtes State-Verzeichnis oder starten Sie mit einem leeren.
+- **`Wrong or expired setup code`**: Nehmen Sie den beim letzten Start ausgegebenen Code aus `docker logs periscope`. Bindestriche, Leerzeichen und Groß-/Kleinschreibung spielen keine Rolle.
+- **`the platform cannot be reached`**: Es gibt keine Route von der Box zur URL. Prüfen Sie DNS, Firewall, einen Proxy und `[ocb] url`. Führen Sie auf der Box `curl -sv <[auth] url>/.well-known/jwks.json` und `curl -sv https://nimbit.example.com/ocb/health` aus. Hinter einem Firmenproxy setzen Sie `HTTPS_PROXY` in der Umgebung des Agents. `[ocb] url` ist die Basis-URL der Plattform, nicht die des Backends, außer bei `path_prefix = ""`. Erkennung und Streaming laufen währenddessen weiter: Die Ausgänge halten Werte innerhalb von `buffer_bytes` auf der Platte.
+- **Servicekonto: `has no active tenant` oder `belongs to tenant …`**: Das Konto muss Mitglied der Organisation dieses Agents sein und keiner anderen. Verwenden Sie ein Konto dieser Organisation oder ein leeres State-Verzeichnis.
+- **Servicekonto: `not enrolled`**: Führen Sie `periscope enroll -password-stdin` aus. Hat die Plattform die Sitzung widerrufen, registrieren Sie erneut. Ein laufendes `serve` übernimmt es ohne Neustart.
 
-### Apply fails
+### Anwenden schlägt fehl {#apply-fails}
 
-A failed item stays `confirmed` with its reason, and the next apply retries it.
+Ein fehlgeschlagenes Element bleibt mit seinem Grund `confirmed`, und das nächste Anwenden versucht es erneut.
 
-- **`Root group not found` (400)**: the service account lacks read access to the organization's root group. Thing types are already created.
-- **`403` on every item**: the account's role can't create thing types or things. Give it the `modeler` role. On a gateway, check the gateway's **Scope**: **Locked**, an exhausted **Thing limit**, a thing type outside **Allowed thing types** and an alternate ID outside the namespace are all refused. See [Check gateway health and traffic](../fleet-health.mdx).
-- **`a thing named "…" already exists`**: thing names are unique in the organization. Rename the proposal and apply again.
-- **`the agent is busy applying or planning`**: try again in a moment.
-- **Things `skipped`**: their thing type isn't applied. Confirm the type too.
+- **`Root group not found` (400)**: Dem Servicekonto fehlt der Lesezugriff auf die Stammgruppe der Organisation. Thing-Typen sind bereits angelegt.
+- **`403` bei jedem Element**: Die Rolle des Kontos darf keine Thing-Typen oder Things anlegen. Geben Sie ihm die Rolle `modeler`. Bei einem Gateway prüfen Sie den **Bereich** des Gateways: **Gesperrt**, ein erschöpftes **Thing-Limit**, ein Thing-Typ außerhalb der **Erlaubten Thing-Typen** und eine Alternate-ID außerhalb des Namespace werden alle abgelehnt. Siehe [Zustand und Datenverkehr von Gateways prüfen](../fleet-health.mdx).
+- **`a thing named "…" already exists`**: Thing-Namen sind in der Organisation eindeutig. Benennen Sie den Vorschlag um und wenden Sie erneut an.
+- **`the agent is busy applying or planning`**: Versuchen Sie es gleich noch einmal.
+- **Things `skipped`**: Ihr Thing-Typ ist nicht angewendet. Bestätigen Sie auch den Typ.
 
-### Values don't arrive
+### Werte kommen nicht an {#values-dont-arrive}
 
-Start with `periscope verify -since 5m`. Its `PROBLEM` column names the thing and what is missing. See [Verify that data arrived](./verify.mdx).
+Beginnen Sie mit `periscope verify -since 5m`. Seine Spalte `PROBLEM` nennt das Thing und was fehlt. Siehe [Prüfen, ob Daten angekommen sind](./verify.mdx).
 
-- **`unmapped` grows on the Overview**: values of addresses that aren't applied. Confirm the proposals. The **Mapping** screen lists the unmapped addresses.
-- **`queued_values` grows**: the platform's ingest is unreachable. The backlog is sent when it returns.
-- **Everything is held and `dry_run_values` grows**: the dry run is on. Switch it off on the **Dry run** screen.
-- **`tsflux refused part of a batch … thing not found`**: the platform stores values only for things and measures it knows, and refuses the rest for good. The thing isn't applied yet, a processor writes a measure the thing type lacks, or a value's type differs from the measure's. Apply, add the measure, or use a `convert` processor.
-- **A value is in the future, or nothing arrives from a local-time source**: the source sends local time without an offset. For MQTT, set `timezone`.
-- **On a gateway, data arrives but the gateway is Offline**: the health message goes through an output with a live path. A gateway with no `tsflux_stream`, `tsflux` or `nimbit_mqtt` output sends no health. See [Outputs reference](./outputs.mdx).
-- **Discards appear on the gateway's Health tab**: read the reason. See [Gateway reference](../gateway-reference.mdx).
+- **`unmapped` wächst auf der Overview**: Werte von Adressen, die nicht angewendet sind. Bestätigen Sie die Vorschläge. Der Bildschirm **Mapping** listet die nicht zugeordneten Adressen.
+- **`queued_values` wächst**: Der Ingest der Plattform ist nicht erreichbar. Der Rückstau wird gesendet, sobald er wieder da ist.
+- **Alles wird zurückgehalten und `dry_run_values` wächst**: Der Probelauf ist eingeschaltet. Schalten Sie ihn auf dem Bildschirm **Dry run** aus.
+- **`tsflux refused part of a batch … thing not found`**: Die Plattform speichert Werte nur für Things und Messwerte, die sie kennt, und lehnt den Rest endgültig ab. Das Thing ist noch nicht angewendet, ein Prozessor schreibt einen Messwert, den der Thing-Typ nicht hat, oder der Typ eines Werts weicht vom Messwert ab. Wenden Sie an, fügen Sie den Messwert hinzu oder verwenden Sie einen `convert`-Prozessor.
+- **Ein Wert liegt in der Zukunft, oder aus einer Quelle in Ortszeit kommt nichts an**: Die Quelle sendet Ortszeit ohne Offset. Für MQTT setzen Sie `timezone`.
+- **Bei einem Gateway kommen Daten an, aber das Gateway ist Offline**: Die Zustandsmeldung läuft über einen Ausgang mit Live-Pfad. Ein Gateway ohne Ausgang `tsflux_stream`, `tsflux` oder `nimbit_mqtt` sendet keinen Zustand. Siehe [Ausgänge-Referenz](./outputs.mdx).
+- **Im Tab „Zustand“ des Gateways erscheinen Verworfene**: Lesen Sie den Grund. Siehe [Gateway-Referenz](../gateway-reference.mdx).
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-`periscope validate` ends with `configuration is valid`. The **Overview** shows each input `streaming` and each output `ok`, and `periscope verify` exits 0.
+`periscope validate` endet mit `configuration is valid`. Die **Overview** zeigt jeden Eingang als `streaming` und jeden Ausgang als `ok`, und `periscope verify` endet mit Exit 0.
 
-## If it doesn't work
+## Wenn es nicht klappt {#if-it-doesnt-work}
 
-- **The browser warns about the certificate**: `[server.tls]` without files uses the agent's self-signed certificate. Compare the fingerprint on the login page with the browser's, then trust it, or configure a certificate.
-- **The UI works on `localhost` but not behind a reverse proxy**: publish it at `/ui` on the proxy's host, pass `X-Forwarded-Proto: https`, and list the proxy in `server.trusted_proxies`.
-- **Still stuck**: download the last hour of logs from the **Logs** screen, run `periscope validate` and `periscope apply -dry-run`, and send both with the output of `periscope version` to your NimBit contact.
+- **Der Browser warnt vor dem Zertifikat**: `[server.tls]` ohne Dateien verwendet das selbstsignierte Zertifikat des Agents. Vergleichen Sie den Fingerabdruck auf der Anmeldeseite mit dem des Browsers und vertrauen Sie ihm dann, oder konfigurieren Sie ein Zertifikat.
+- **Die Oberfläche funktioniert auf `localhost`, aber nicht hinter einem Reverse Proxy**: Veröffentlichen Sie sie unter `/ui` auf dem Host des Proxys, übergeben Sie `X-Forwarded-Proto: https` und tragen Sie den Proxy in `server.trusted_proxies` ein.
+- **Immer noch festgefahren**: Laden Sie auf dem Bildschirm **Logs** das Log der letzten Stunde herunter, führen Sie `periscope validate` und `periscope apply -dry-run` aus und senden Sie beides mit der Ausgabe von `periscope version` an Ihren NimBit-Kontakt.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Configuration reference](./configuration.mdx) · [Command-line reference](./commands.mdx)
-- [How Periscope works](./how-periscope-works.mdx)
+- [Konfigurationsreferenz](./configuration.mdx) · [Kommandozeilen-Referenz](./commands.mdx)
+- [Wie Periscope funktioniert](./how-periscope-works.mdx)
