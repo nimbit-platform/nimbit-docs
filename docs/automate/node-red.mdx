@@ -1,0 +1,39 @@
+---
+title: Node-RED (legacy)
+sidebar_position: 10
+description: Where Node-RED appears in IoT Breeze, who can open it, and how it relates to Rule Designer.
+type: reference
+app:
+  routes: ["/automation/rule-designer"]
+---
+
+Node-RED is an external flow editor that an administrator can connect to IoT Breeze. It is legacy: new automation belongs in [Rule Designer](./rules-actions-reports.mdx).
+
+## Availability
+
+| Item | Detail |
+| --- | --- |
+| Menu entry | **Automation › Node Red** |
+| Shown when | A Node-RED address is configured for IoT Breeze, and your role has update permission on rules. |
+| Opens | In a new browser tab, at the configured address. |
+| Sign-in | Node-RED has its own sign-in page. Sign in with your IoT Breeze account. |
+
+If **Node Red** is not in the menu, the address is not configured or your role lacks permission. Ask your administrator.
+
+## Relation to Rule Designer
+
+| Item | Rule Designer | Node-RED |
+| --- | --- | --- |
+| Built into IoT Breeze | Yes | No, a separate application |
+| Versions and draft | Yes | No |
+| Flows listed in IoT Breeze | Yes, under **Automation › Rule Designer** | No |
+| Needs code | No | Depends on the flow |
+
+Flows built in Node-RED are not versioned by IoT Breeze and do not appear in the **Rule Designer** list.
+
+{/* TODO(product): Is Node-RED still supported for new customers, and what is it intended for today (for example data reshaping or custom protocols)? The code shows only the menu entry, the sign-in against the identity directory and a legacy service; the earlier guidance on when to choose it over Rule Designer was a guess and is left out. */}
+
+## Related
+
+- [Rules, actions and reports](./rules-actions-reports.mdx)
+- [Rule conditions and functions](./conditions.mdx)

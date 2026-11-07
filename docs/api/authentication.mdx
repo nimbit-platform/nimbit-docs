@@ -29,7 +29,7 @@ This page lists the credentials that tsflux, nbq and OCB accept and the exact he
 | JWT, API key, access token | `Authorization: Bearer <token>` |
 | nbq WebSocket (`/api/v1/ws`) | `Authorization: Bearer <token>`, or the subprotocol `nbq.auth.bearer.<token>` in `Sec-WebSocket-Protocol` |
 
-No API uses a custom header for the key, and none reads the tenant from a header. Other schemes (for example `Authorization: Token`) are refused: nbq answers `401` to any `Authorization` value that does not start with `Bearer `.
+The tenant always comes from the credential, never from a header.
 
 ## Device and tenant credentials (tsflux)
 
@@ -103,7 +103,7 @@ nbq reads the tenant, the permissions and the audience from the token. A token n
 | `GET /admin/analytics` | `QueryConfig:r` |
 | Other `/admin/analytics` routes | `QueryConfig:x` |
 
-The scope `telemetry:read` grants `Thing:r` and `QueryConfig:r` and `QueryConfig:x`, so it reaches queries and analytics but not raw rows, tag queries or events.
+The scope `telemetry:read` grants `Thing:r` and `QueryConfig:r` and `:x`, so it reaches queries and analytics but not raw rows, tag queries or events.
 
 OCB decides each route by the permissions in the token. Routes without declared permissions refuse key tokens with `403` `API_KEY_NOT_ALLOWED`, except `GET /users/me`.
 

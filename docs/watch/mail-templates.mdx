@@ -49,8 +49,8 @@ Sign-in code and password-reset emails are not sent from here. {/* TODO(product)
 | **Context** | See above. For alerts choose **Event**. |
 | Body | HTML, edited in the editor. **Format code** tidies it. |
 | **Email structure** | The header block and the footer block. **Go to header template** and **Go to footer template** open them. |
-| **Default translations** | Text per language, as a key and a text. Marked as translatable, each language gets its own version. |
-| **Dynamic variables** | The list of placeholders the context offers. Select one to insert it. |
+| **Default Translations** | Text per language, as a key and a text. Marked as translatable, each language gets its own version. |
+| **Dynamic Variables** | The list of placeholders the context offers. Select one to insert it. |
 | **Send test mail** | Sends the template to an address you enter |
 | **Open preview in new window** | Shows the preview larger |
 
@@ -64,8 +64,8 @@ Write a placeholder as the variable name in double curly brackets, for example `
 | --- | --- |
 | `{{tenant.name}}` | The tenant's name, or `NimBit` if the tenant has none |
 | `{{tenant.logo}}` | The tenant's logo, or a default logo |
-| Keys under **Default translations** | The text for the mail's language. Text set for one mail overrides the default. |
-| Context variables | Listed under **Dynamic variables** for the template's context |
+| Keys under **Default Translations** | The text for the mail's language. Text set for one mail overrides the default. |
+| Context variables | Listed under **Dynamic Variables** for the template's context |
 
 In an **Email** action on an event type, `{{event}}` is the event, so `{{event.title}}` is its title. {/* TODO(product): Which variables does each context offer (Event, Invitation, Report)? The list comes from the tenant's context data in the database, not from code. */}
 

@@ -1,5 +1,6 @@
 ---
 title: Rule conditions and functions
+sidebar_position: 7
 description: Operators, window functions and the Advanced expression syntax for the Condition node of a rule.
 type: reference
 app:
@@ -37,7 +38,7 @@ For a boolean measure the value is a **True** or **False** choice.
 
 | Option | Needs | What the row compares |
 | --- | --- | --- |
-| **Current value** | none | The value just received. This is the default. |
+| **Current value** | none | The value of the current message. This is the default. |
 | **Average**, **Minimum**, **Maximum**, **Sum**, **Count**, **Slope** | **Window**, optional **Compare with previous period** | The aggregate over the window. **Slope** is the least-squares change in units per second. |
 | **Change from previous** | none | The current value minus the previous sample. |
 | **Previous sample** | A sample number, 1 or higher | The value of the nth sample before this message. |

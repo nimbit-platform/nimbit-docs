@@ -31,7 +31,7 @@ This example opens one incident per thing for door alarms and resolves it ten mi
 2. Under **Name and priority**, enter the **Name** `Door alarms` and a **Priority**. Policies with lower numbers are checked first, and an event joins the first active policy that matches.
 3. Under **Which events**, enter `Door *` in **Event type names** and set **Minimum severity** to **Warning**. An event matches when every clause you fill in holds. Empty clauses are ignored.
 4. Under **Group into one incident by**, choose **Thing**.
-5. Under **Timing and resolution**, set **Open after** to `0` and **Quiet window** to 10 minutes. Set **Resolve when** to **Every episode closed (alarm off)** and **Close after resolving** to 1 day.
+5. Under **Timing and resolution**, set **Open after** to `0` and **Quiet window** to 10 minutes. Set **Resolves when** to **Every episode closed (alarm off)** and **Close after resolving** to 1 day.
 6. Check the line **In short** under the editor. It sums up the policy in one sentence.
 7. Save, then switch the policy on.
 
