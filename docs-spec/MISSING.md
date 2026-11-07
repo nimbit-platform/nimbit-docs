@@ -19,6 +19,40 @@ Notes for that pass, from a trial run on a local stack:
 - 69 shots need a record id in `scripts/screenshots/shots.json` (`params`), and most need `steps` to open the dialog or tab their state describes. The widget gallery shots want one demo dashboard holding all 42 widgets, captured with `clips` per widget.
 - Create the records the pages name (quickstart: thing type Room sensor, rule Room too warm, and so on) in a demo tenant before capturing.
 
+## IoT Breeze's German: labels to fix in the app
+
+Found while translating the docs. The German docs follow the app's labels exactly, so each fix in the app means a small docs change too (search the German pages for the label).
+
+**No German translation** (the German docs show the English label):
+
+| Label | Where |
+|---|---|
+| Search tags | Event type properties |
+| Rule alarms per thing, Connectivity outages, Geofence dwell | Shipped incident policy names (`ocb-contracts`) |
+| Number (custom field type) | Incident fields: only `enum` and `text` have keys |
+| Shape, Series, Chart definition, Image source, Search labels | Widget setup (Gauge, Custom chart, Image, File list) |
+| On until | Tenant settings › Features, Ask Nimble and Knowledge |
+| Method, Headers | Webhook action |
+| X.509 Certificate | Thing credentials |
+| Read the platform and the other API key scope labels | API key scopes |
+| Overview, Logs, Snapshot, Metrics, Mapping, Config, proposals screen | Periscope's own web UI (English only?) |
+| Pipeline editor labels (Request, Response, Expression, Decision Table, …) | GoRules editor in Clean up data |
+
+**Inconsistent or wrong German:**
+
+- Events: "Event Typen", "Ereignistypen", "Ereignis" and "Events" are all used. Pick one.
+- Measure: "Telemetrie" (`common:measure`), "Messwert" (canvas), "Telemetrien" for Measures. A measure is a "Messwert"; "Telemetrie" is the stream.
+- Acknowledged: `common:acknowledged` is "Anerkannt", elsewhere "Quittieren", "Nicht quittiert".
+- Thing type: "Thing Typ", "Thing-Typ" and "Thing Typen" mixed; correct German is "Thing-Typ".
+- "Alternative Thing -ID" has a stray space.
+- `lastNUnit`: "Letze" instead of "Letzte" (dashboard time ranges).
+- Knowledge level tab Things is "Dinge" (`contexus:tabThings`), everywhere else "Things".
+- Username: "Nutzername" (things) vs "Benutzername" elsewhere.
+- Tenant vs "Mandant" (Mandanteneinstellungen) and a few "du" strings where the app otherwise says "Sie".
+- Thing type measure form says "Mindestwert" / "Maximaler Wert", thresholds say "Minimalwert" / "Maximalwert".
+
+**English app strings with typos:** "Embedd" (dashboard More menu), "Colour by" (map; the app is otherwise American English), "Subscriptions will not be send as Email" (reports).
+
 ## Downloads
 
 | What | Docs affected | Waiting on |

@@ -77,3 +77,9 @@ Generated from `TODO(product)` markers in docs/. Answer here or in the page; rem
 - [ ] `watch/incident-policy.mdx`: How does someone create an action for an incident automation that does not also run on every event of an event type? The pickers only offer existing actions, and the event type page is the only place found where a Notification channel or Email action can be added. An action on an event type runs on every event of that type.
 - [ ] `watch/mail-templates.mdx`: The template form also knows a Tenant context. What is it used for, and can a template choose it?
 - [ ] `watch/mail-templates.mdx`: Which variables does each context offer (Event, Invitation, Report)? The list comes from the tenant's context data in the database, not from code.
+
+## Found while translating
+
+- [ ] `gateways/*`: token lifetimes read as contradictory. how-gateways-work says HTTP and stream tokens last "at most ten minutes", gateway-reference and periscope/configuration say the gateway access token lasts 5 minutes, periscope/outputs says ingest tokens last "at most 10 minutes". Which token lasts how long?
+- [ ] `gateways/periscope/*`: is Periscope's own web UI English only? The German docs keep its labels in English.
+- [ ] `administer/roles.mdx`: the German app shows role names Administrator, Modellierer, Manager, Viewer. Are role names localized everywhere (matrix, invitations), or do they come untranslated from the backend?
