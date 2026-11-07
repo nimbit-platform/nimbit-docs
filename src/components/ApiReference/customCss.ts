@@ -13,7 +13,9 @@ export const customCss = /* css */ `
   --scalar-custom-header-height: var(--ifm-navbar-height, 60px);
 }
 
-.light-mode {
+/* Scalar nests .dark-mode on code blocks; in light mode those stay light, like the design. */
+.light-mode,
+.light-mode .dark-mode {
   --scalar-color-1: #0d0f12;
   --scalar-color-2: #444b53;
   --scalar-color-3: #5d646d;
@@ -78,4 +80,60 @@ export const customCss = /* css */ `
   --scalar-sidebar-search-border-color: #2c3238;
   --scalar-sidebar-search-color: #aab1b9;
 }
+
+/* ---- Chrome we do not want ---- */
+.scalar-app a[href*="scalar.com"],
+.scalar-app button.bg-sidebar-b-search:has(svg):not(:first-child) { display: none !important; }
+
+/* ---- Typography: mono uppercase eyebrows ---- */
+.scalar-app .section-header-label--rule,
+.scalar-app .parameter-list-title--tree,
+.scalar-app .request-body-title,
+.scalar-app .callbacks-list-title,
+.scalar-app .endpoints-card .scalar-card-header,
+.scalar-app .scalar-card-header-title {
+  font-family: var(--scalar-font-code);
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--scalar-color-2);
+}
+.scalar-app h1.section-header-label { font-size: 2rem; letter-spacing: -0.02em; font-weight: 650; }
+.scalar-app h2.section-header-label { font-size: 1.5rem; letter-spacing: -0.015em; }
+
+/* ---- Cards: surface, hairline border, small radius ---- */
+.scalar-app .scalar-card {
+  border-radius: 6px;
+  background: var(--scalar-background-2);
+  box-shadow: none;
+}
+.scalar-app .scalar-card-header { background: var(--scalar-background-2); }
+
+/* ---- Parameters: dashed separators ---- */
+.scalar-app .parameter-item,
+.scalar-app .parameter-list-items > li,
+.scalar-app .property { border-top: 1px dashed #b3b9c0 !important; }
+.dark-mode .scalar-app .parameter-item,
+.dark-mode .scalar-app .parameter-list-items > li,
+.dark-mode .scalar-app .property { border-top-color: #444b53 !important; }
+.scalar-app .parameter-item:first-child { border-top: 0 !important; }
+.scalar-app .property-required { font-family: var(--scalar-font-code); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--scalar-color-red); }
+
+/* ---- Method pills: POST green etc. ---- */
+.scalar-app .sidebar-heading-type,
+.scalar-app .endpoints .http-method,
+.scalar-app .scalar-card .http-method {
+  font-family: var(--scalar-font-code);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.light-mode .scalar-app .sidebar-heading-type,
+.light-mode .scalar-app .http-method { color: var(--scalar-color-green); }
+
+/* ---- Tighter vertical rhythm ---- */
+.scalar-app .section-container { padding-block: 28px !important; }
+.scalar-app .introduction-section { padding-top: 20px !important; }
+.scalar-app .section { min-height: 0 !important; }
+.scalar-app .section-columns { gap: 32px; }
 `;

@@ -45,6 +45,7 @@ export default function Scalar({ specUrl, dark }: { specUrl: string; dark: boole
       // Samples use a placeholder host the reader replaces with their own.
       servers: [{ url: "https://YOUR-HOST" }],
       hiddenClients,
+      featuredClients: ["shell/curl", "python/requests", "node/fetch"],
       defaultHttpClient: { targetKey: "shell", clientKey: "curl" },
       hideClientButton: true,
       showDeveloperTools: "never" as const,

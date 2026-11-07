@@ -185,4 +185,4 @@ apps/periscope/README.md and apps/periscope/docs/ (served in the agent at /ui/do
 | authentication.mdx | reference | Authentication | developer/intro, administration/api-keys, onboarding/connections |
 | webhooks.mdx | reference | Webhook payloads | monitoring/notification-channels, automation/actions (HMAC, payload) |
 | errors-and-limits.mdx | reference | Errors and limits | onboarding/connections (status codes), API specs in openapi/ |
-| reference/tsflux.mdx, nbq.mdx, ocb.mdx | reference | Ingest API (tsflux) / Query API (nbq) / Platform API (OCB) | generated from openapi/ |
+| reference/tsflux.mdx, nbq.mdx, ocb.mdx | reference | Ingest API (tsflux) / Query API (nbq) / Platform API (OCB) | Scalar page at /api/reference/<id>, spec in static/openapi/ |

@@ -1,138 +1,844 @@
 {
-  "theme.ErrorPageContent.title": {
-    "message": "Die Seite ist abgestürzt.",
-    "description": "The title of the fallback page when the page crashed"
+  "api.backToOverview": {
+    "message": "API-Übersicht"
   },
-  "theme.blog.archive.title": {
-    "message": "Archiv",
-    "description": "The page & hero title of the blog archive page"
+  "api.eyebrow": {
+    "message": "API"
   },
-  "theme.blog.archive.description": {
-    "message": "Archiv",
-    "description": "The page & hero description of the blog archive page"
+  "api.loading": {
+    "message": "API-Referenz wird geladen …"
+  },
+  "api.nbq.description": {
+    "message": "Zeitreihendaten zurücklesen: Abfragen, Aggregationen und Zeiträume."
+  },
+  "api.nbq.eyebrow": {
+    "message": "Abfrage"
+  },
+  "api.nbq.select": {
+    "message": "Query-API (NBQ)"
+  },
+  "api.nbq.title": {
+    "message": "Query-API-Referenz"
+  },
+  "api.ocb.description": {
+    "message": "Things, Thing-Typen, Dashboards, Benutzer und den Rest der Plattform verwalten."
+  },
+  "api.ocb.eyebrow": {
+    "message": "Plattform"
+  },
+  "api.ocb.select": {
+    "message": "Plattform-API (OCB)"
+  },
+  "api.ocb.title": {
+    "message": "Plattform-API-Referenz"
+  },
+  "api.switch": {
+    "message": "API wechseln"
+  },
+  "api.tsflux.description": {
+    "message": "Gerätedaten senden: strukturiertes JSON, Line Protocol und InfluxDB-kompatible Writes."
+  },
+  "api.tsflux.eyebrow": {
+    "message": "Ingest"
+  },
+  "api.tsflux.select": {
+    "message": "Ingest-API (tsflux)"
+  },
+  "api.tsflux.title": {
+    "message": "Ingest-API-Referenz"
+  },
+  "app.address.change": {
+    "message": "Ihre IoT-Breeze-Adresse ändern"
+  },
+  "app.address.default": {
+    "message": "Standard verwenden"
+  },
+  "app.address.error": {
+    "message": "Geben Sie eine Adresse wie iot.example.com ein."
+  },
+  "app.address.hint": {
+    "message": "Auf Ihrer eigenen Domain? Geben Sie sie einmal ein. Links aus dieser Doku nach IoT Breeze und geführte Touren öffnen sich dann dort."
+  },
+  "app.address.label": {
+    "message": "Ihre IoT-Breeze-Adresse"
+  },
+  "app.address.save": {
+    "message": "Speichern"
+  },
+  "app.open": {
+    "message": "IoT Breeze öffnen"
+  },
+  "blog.category.announcement": {
+    "message": "Ankündigung"
+  },
+  "blog.category.announcement.plural": {
+    "message": "Ankündigungen"
+  },
+  "blog.category.engineering": {
+    "message": "Engineering"
+  },
+  "blog.category.engineering.plural": {
+    "message": "Engineering"
+  },
+  "blog.category.how-to": {
+    "message": "Anleitung"
+  },
+  "blog.category.how-to.plural": {
+    "message": "Anleitungen"
+  },
+  "blog.category.release": {
+    "message": "Release"
+  },
+  "blog.category.release.plural": {
+    "message": "Releases"
+  },
+  "blog.count": {
+    "message": "{shown} von {total} Beiträgen"
+  },
+  "blog.empty": {
+    "message": "Keine Beiträge passen zu diesen Filtern."
+  },
+  "blog.featured": {
+    "message": "Empfohlen"
+  },
+  "blog.filter.active": {
+    "message": "Aktiv"
+  },
+  "blog.filter.all": {
+    "message": "Alle"
+  },
+  "blog.filter.anyTopic": {
+    "message": "Alle Themen"
+  },
+  "blog.filter.anyYear": {
+    "message": "Alle Jahre"
+  },
+  "blog.filter.category": {
+    "message": "Kategorie"
+  },
+  "blog.filter.clear": {
+    "message": "Alle löschen"
+  },
+  "blog.filter.remove": {
+    "message": "Entfernen"
+  },
+  "blog.filter.topic": {
+    "message": "Thema"
+  },
+  "blog.filter.year": {
+    "message": "Jahr"
+  },
+  "blog.hero.eyebrow": {
+    "message": "Releases, Anleitungen, Ankündigungen"
+  },
+  "blog.hero.title.accent": {
+    "message": "Plattform-Team."
+  },
+  "blog.hero.title.start": {
+    "message": "Notizen aus dem"
+  },
+  "blog.inTheDocs": {
+    "message": "In der Doku"
+  },
+  "blog.loadMore": {
+    "message": "Weitere Beiträge laden"
+  },
+  "blog.newer": {
+    "message": "Neuerer Beitrag"
+  },
+  "blog.older": {
+    "message": "Älterer Beitrag"
+  },
+  "blog.pagination": {
+    "message": "Weitere Beiträge"
+  },
+  "blog.readIn": {
+    "message": "Lesen auf"
+  },
+  "blog.readMore": {
+    "message": "Weiterlesen"
+  },
+  "blog.readingTime": {
+    "message": "{n} Min. Lesezeit"
+  },
+  "blog.search": {
+    "message": "Beiträge durchsuchen …"
+  },
+  "blog.sort": {
+    "message": "Sortierung"
+  },
+  "blog.sort.newest": {
+    "message": "Neueste"
+  },
+  "blog.sort.oldest": {
+    "message": "Älteste"
+  },
+  "blog.subscribe": {
+    "message": "Abonnieren"
+  },
+  "blog.toTheGuide": {
+    "message": "Zur Seite"
+  },
+  "blog.toc": {
+    "message": "Inhalt"
+  },
+  "blog.topics": {
+    "message": "Themen"
+  },
+  "doc.app.eyebrow": {
+    "message": "In IoT Breeze"
+  },
+  "doc.app.open": {
+    "message": "In der App öffnen"
+  },
+  "doc.app.text": {
+    "message": "Diese Seite beschreibt den Bildschirm unter"
+  },
+  "doc.footer.markdown": {
+    "message": "Als Markdown ansehen"
+  },
+  "doc.footer.report": {
+    "message": "Problem mit dieser Seite melden"
+  },
+  "doc.meta.updated": {
+    "message": "Aktualisiert {date}"
+  },
+  "doc.type.concept": {
+    "message": "Konzept"
+  },
+  "doc.type.how-to": {
+    "message": "Anleitung"
+  },
+  "doc.type.reference": {
+    "message": "Referenz"
+  },
+  "doc.type.tutorial": {
+    "message": "Tutorial"
+  },
+  "doc.untranslated": {
+    "message": "Diese Seite ist noch nicht übersetzt. Sie lesen die englische Fassung."
+  },
+  "doc.untranslated.chip": {
+    "message": "Englisch"
+  },
+  "footer.contact": {
+    "message": "Seite fehlt? Schreiben Sie an {email}."
+  },
+  "home.area.addGateway": {
+    "message": "Gateway hinzufügen"
+  },
+  "home.area.alerts": {
+    "message": "Alarme an Teams oder Slack"
+  },
+  "home.area.apiKey": {
+    "message": "API-Schlüssel erstellen"
+  },
+  "home.area.ask": {
+    "message": "Eine Frage stellen"
+  },
+  "home.area.credentials": {
+    "message": "Gerätezugangsdaten"
+  },
+  "home.area.empty": {
+    "message": "Leeres Dashboard"
+  },
+  "home.area.fleet": {
+    "message": "Zustand und Datenverkehr"
+  },
+  "home.area.format": {
+    "message": "Nachrichtenformat"
+  },
+  "home.area.glossary": {
+    "message": "Glossar"
+  },
+  "home.area.graph": {
+    "message": "Der Knowledge Graph"
+  },
+  "home.area.health": {
+    "message": "Zustand eines Things"
+  },
+  "home.area.howGateways": {
+    "message": "Wie Gateways funktionieren"
+  },
+  "home.area.http": {
+    "message": "Daten über HTTP senden"
+  },
+  "home.area.incident": {
+    "message": "Vorfall bearbeiten"
+  },
+  "home.area.interface": {
+    "message": "Interface wiederverwenden"
+  },
+  "home.area.invite": {
+    "message": "Kollegen einladen"
+  },
+  "home.area.map": {
+    "message": "Things auf einer Karte"
+  },
+  "home.area.mqtt": {
+    "message": "Daten über MQTT senden"
+  },
+  "home.area.noSignal": {
+    "message": "Gerät ohne Signal"
+  },
+  "home.area.outside": {
+    "message": "Externe Datenquellen"
+  },
+  "home.area.periscope": {
+    "message": "Periscope installieren"
+  },
+  "home.area.policy": {
+    "message": "Vorfallsrichtlinie"
+  },
+  "home.area.register": {
+    "message": "Thing registrieren"
+  },
+  "home.area.report": {
+    "message": "Wöchentlicher Bericht"
+  },
+  "home.area.roles": {
+    "message": "Rollen und Berechtigungen"
+  },
+  "home.area.rule": {
+    "message": "Regel löst nicht aus"
+  },
+  "home.area.share": {
+    "message": "Teilen oder einbetten"
+  },
+  "home.area.sites": {
+    "message": "Standorte abbilden"
+  },
+  "home.area.smart": {
+    "message": "Dashboard für alle Things"
+  },
+  "home.area.tenant": {
+    "message": "Tenant-Einstellungen"
+  },
+  "home.area.thingType": {
+    "message": "Thing-Typ anlegen"
+  },
+  "home.area.threshold": {
+    "message": "Bei Grenzwert alarmieren"
+  },
+  "home.area.versions": {
+    "message": "Entwürfe und Versionen"
+  },
+  "home.area.webhook": {
+    "message": "Webhook aufrufen"
+  },
+  "home.area.widgets": {
+    "message": "Widget-Galerie"
+  },
+  "home.areas.label": {
+    "message": "Nach Bereich"
+  },
+  "home.blog.all": {
+    "message": "Alle Beiträge"
+  },
+  "home.blog.label": {
+    "message": "Aus dem Blog"
+  },
+  "home.changelog.all": {
+    "message": "Alle"
+  },
+  "home.changelog.title": {
+    "message": "Was neu ist."
+  },
+  "home.code.cta": {
+    "message": "Ersten Messwert senden"
+  },
+  "home.code.title": {
+    "message": "Erster Messwert · Ingest API"
+  },
+  "home.hero.eyebrow": {
+    "message": "Anleitungen, Referenzen, Release Notes"
+  },
+  "home.hero.text": {
+    "message": "Verbinden Sie Ihre Geräte, sehen Sie ihre Daten und reagieren Sie darauf. Anleitungen für alle, die IoT Breeze betreiben, und Referenzen für alle, die darauf aufbauen."
+  },
+  "home.hero.title.accent": {
+    "message": "Überall anwenden."
+  },
+  "home.hero.title.start": {
+    "message": "Einmal lernen."
+  },
+  "home.meta.description": {
+    "message": "Dokumentation für IoT Breeze: Geräte verbinden, ihre Daten sehen und darauf reagieren."
+  },
+  "home.meta.docs": {
+    "message": "Dokumentation"
+  },
+  "home.meta.title": {
+    "message": "Dokumentation"
+  },
+  "home.path.administer.cta": {
+    "message": "Für Administratoren"
+  },
+  "home.path.administer.text": {
+    "message": "Benutzer, Gruppen und Rollen, API-Schlüssel, Tenant-Einstellungen."
+  },
+  "home.path.administer.title": {
+    "message": "Verwalten"
+  },
+  "home.path.build.cta": {
+    "message": "Für Lösungsentwickler"
+  },
+  "home.path.build.text": {
+    "message": "Geräte modellieren und verbinden, Dashboards und Regeln bauen."
+  },
+  "home.path.build.title": {
+    "message": "Aufbauen"
+  },
+  "home.path.develop.cta": {
+    "message": "Für Entwickler"
+  },
+  "home.path.develop.text": {
+    "message": "Protokolle, Nachrichtenformate, Ingest-, Abfrage- und Plattform-APIs, Webhooks."
+  },
+  "home.path.develop.title": {
+    "message": "Entwickeln"
+  },
+  "home.path.operate.cta": {
+    "message": "Für den Betrieb"
+  },
+  "home.path.operate.text": {
+    "message": "Things beobachten, Vorfälle und Ereignisse bearbeiten, Nimble fragen."
+  },
+  "home.path.operate.title": {
+    "message": "Betreiben"
+  },
+  "home.popular": {
+    "message": "Beliebt"
+  },
+  "home.popular.apiKey": {
+    "message": "API-Schlüssel"
+  },
+  "home.popular.geofence": {
+    "message": "Geofence"
+  },
+  "home.popular.topics": {
+    "message": "MQTT-Topics"
+  },
+  "home.popular.widgets": {
+    "message": "Widget-Galerie"
+  },
+  "home.protocol.lineProtocol": {
+    "message": "Line Protocol"
+  },
+  "home.protocol.simulator": {
+    "message": "Gerätesimulator"
+  },
+  "home.quick.cta": {
+    "message": "Quickstart beginnen"
+  },
+  "home.quick.title": {
+    "message": "Vom leeren Tenant zum Live-Dashboard."
+  },
+  "home.search": {
+    "message": "Anleitungen, Widgets, API-Endpunkte suchen …"
+  },
+  "home.section.administer.title": {
+    "message": "Verwalten"
+  },
+  "home.section.automate.title": {
+    "message": "Automatisieren"
+  },
+  "home.section.connect.title": {
+    "message": "Geräte verbinden"
+  },
+  "home.section.gateways.title": {
+    "message": "Gateways und Edge"
+  },
+  "home.section.knowledge.title": {
+    "message": "Knowledge und KI"
+  },
+  "home.section.model.title": {
+    "message": "Daten modellieren"
+  },
+  "home.section.troubleshooting.title": {
+    "message": "Fehlerbehebung"
+  },
+  "home.section.visualize.title": {
+    "message": "Visualisieren"
+  },
+  "home.section.watch.title": {
+    "message": "Überwachen und reagieren"
+  },
+  "home.sections.text": {
+    "message": "Vom Gerät zur Entscheidung. Jeder Bereich beantwortet eine Frage."
+  },
+  "home.sections.title": {
+    "message": "Die Doku folgt Ihren Daten."
+  },
+  "home.start.label": {
+    "message": "Hier beginnen"
+  },
+  "home.start.title": {
+    "message": "Wählen Sie den Weg, der zu Ihrer Aufgabe passt."
+  },
+  "home.step.connect": {
+    "message": "Verbinden"
+  },
+  "home.step.dashboard": {
+    "message": "Dashboard bauen"
+  },
+  "home.step.label": {
+    "message": "Schritt {n}"
+  },
+  "home.step.model": {
+    "message": "Modellieren"
+  },
+  "home.step.simulate": {
+    "message": "Gerät simulieren"
+  },
+  "home.step.simulate.text": {
+    "message": "Senden Sie Messwerte ohne Hardware."
+  },
+  "home.step.thing": {
+    "message": "Thing anlegen"
+  },
+  "home.step.thing.text": {
+    "message": "Registrieren Sie einen Sensor dieses Typs."
+  },
+  "home.step.type": {
+    "message": "Thing-Typ anlegen"
+  },
+  "home.step.type.text": {
+    "message": "Beschreiben Sie die Werte, die ein Raumsensor sendet."
+  },
+  "home.step.visualize": {
+    "message": "Visualisieren"
+  },
+  "screenshot.file": {
+    "message": "Datei"
+  },
+  "screenshot.route": {
+    "message": "Route"
+  },
+  "screenshot.state": {
+    "message": "Zustand"
+  },
+  "screenshot.toCome": {
+    "message": "Screenshot folgt"
+  },
+  "sections.api.description": {
+    "message": "Ingest-, Query- und Plattform-APIs"
+  },
+  "sections.api.label": {
+    "message": "API"
+  },
+  "sections.changelog.description": {
+    "message": "Release Notes"
+  },
+  "sections.changelog.label": {
+    "message": "Changelog"
+  },
+  "sections.docs.description": {
+    "message": "Verbinden, modellieren, visualisieren, automatisieren"
+  },
+  "sections.docs.label": {
+    "message": "Doku"
+  },
+  "sections.get-started.description": {
+    "message": "Quickstart und Wege nach Rolle"
+  },
+  "sections.get-started.label": {
+    "message": "Erste Schritte"
+  },
+  "theme.AnnouncementBar.closeButtonAriaLabel": {
+    "message": "Schließen",
+    "description": "The ARIA label for close button of announcement bar"
   },
   "theme.BackToTopButton.buttonAriaLabel": {
     "message": "Zurück nach oben scrollen",
     "description": "The ARIA label for the back to top button"
   },
-  "theme.blog.paginator.navAriaLabel": {
-    "message": "Navigation der Blog-Listenseite",
-    "description": "The ARIA label for the blog pagination"
+  "theme.CodeBlock.copied": {
+    "message": "Kopiert",
+    "description": "The copied button label on code blocks"
   },
-  "theme.blog.paginator.newerEntries": {
-    "message": "Neuere Einträge",
-    "description": "The label used to navigate to the newer blog posts page (previous page)"
+  "theme.CodeBlock.copy": {
+    "message": "Kopieren",
+    "description": "The copy button label on code blocks"
   },
-  "theme.blog.paginator.olderEntries": {
-    "message": "Ältere Einträge",
-    "description": "The label used to navigate to the older blog posts page (next page)"
+  "theme.CodeBlock.copyButtonAriaLabel": {
+    "message": "In die Zwischenablage kopieren",
+    "description": "The ARIA label for copy code blocks button"
   },
-  "theme.blog.post.paginator.navAriaLabel": {
-    "message": "Blog Post Seiten Navigation",
-    "description": "The ARIA label for the blog posts pagination"
+  "theme.CodeBlock.wordWrapToggle": {
+    "message": "Toggle word wrap",
+    "description": "The title attribute for toggle word wrapping button of code block lines"
   },
-  "theme.blog.post.paginator.newerPost": {
-    "message": "Neuer Post",
-    "description": "The blog post button label to navigate to the newer/previous post"
+  "theme.DocSidebarItem.collapseCategoryAriaLabel": {
+    "message": "Collapse sidebar category '{label}'",
+    "description": "The ARIA label to collapse the sidebar category"
   },
-  "theme.blog.post.paginator.olderPost": {
-    "message": "Älterer Post",
-    "description": "The blog post button label to navigate to the older/next post"
+  "theme.DocSidebarItem.expandCategoryAriaLabel": {
+    "message": "Expand sidebar category '{label}'",
+    "description": "The ARIA label to expand the sidebar category"
   },
-  "theme.tags.tagsPageLink": {
-    "message": "Alle Tags anzeigen",
-    "description": "The label of the link targeting the tag list page"
+  "theme.ErrorPageContent.title": {
+    "message": "Die Seite ist abgestürzt.",
+    "description": "The title of the fallback page when the page crashed"
   },
-  "theme.colorToggle.ariaLabel": {
-    "message": "Umschalten zwischen dunkler und heller Ansicht (momentan {mode})",
-    "description": "The ARIA label for the color mode toggle"
+  "theme.ErrorPageContent.tryAgain": {
+    "message": "Nochmal versuchen",
+    "description": "The label of the button to try again rendering when the React error boundary captures an error"
   },
-  "theme.colorToggle.ariaLabel.mode.dark": {
-    "message": "dunkler Modus",
-    "description": "The name for the dark color mode"
+  "theme.IconExternalLink.ariaLabel": {
+    "message": "(opens in new tab)",
+    "description": "The ARIA label for the external link icon"
   },
-  "theme.colorToggle.ariaLabel.mode.light": {
-    "message": "heller Modus",
-    "description": "The name for the light color mode"
+  "theme.NavBar.navAriaLabel": {
+    "message": "Main",
+    "description": "The ARIA label for the main navigation"
   },
-  "theme.docs.breadcrumbs.navAriaLabel": {
-    "message": "Breadcrumbs",
-    "description": "The ARIA label for the breadcrumbs"
+  "theme.NotFound.p1": {
+    "message": "Wir konnten nicht finden, wonach Sie gesucht haben.",
+    "description": "The first paragraph of the 404 page"
   },
-  "theme.docs.DocCard.categoryDescription.plurals": {
-    "message": "1 Eintrag|{count} Einträge",
-    "description": "The default description for a category card in the generated index about how many items this category includes"
-  },
-  "theme.docs.paginator.navAriaLabel": {
-    "message": "Dokumentation Seiten",
-    "description": "The ARIA label for the docs pagination"
-  },
-  "theme.docs.paginator.previous": {
-    "message": "Zurück",
-    "description": "The label used to navigate to the previous doc"
-  },
-  "theme.docs.paginator.next": {
-    "message": "Weiter",
-    "description": "The label used to navigate to the next doc"
-  },
-  "theme.docs.tagDocListPageTitle.nDocsTagged": {
-    "message": "Ein doc getaggt|{count} docs getaggt",
-    "description": "Pluralized label for \"{count} docs tagged\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
-  },
-  "theme.docs.tagDocListPageTitle": {
-    "message": "{nDocsTagged} mit \"{tagName}\"",
-    "description": "The title of the page for a docs tag"
-  },
-  "theme.docs.versionBadge.label": {
-    "message": "Version: {versionLabel}"
-  },
-  "theme.docs.versions.unreleasedVersionLabel": {
-    "message": "Das ist die unveröffentlichte Dokumentation für {siteTitle} {versionLabel}.",
-    "description": "The label used to tell the user that he's browsing an unreleased doc version"
-  },
-  "theme.docs.versions.unmaintainedVersionLabel": {
-    "message": "Das ist die Dokumentation für {siteTitle} {versionLabel} und wird nicht weiter gewartet.",
-    "description": "The label used to tell the user that he's browsing an unmaintained doc version"
-  },
-  "theme.docs.versions.latestVersionSuggestionLabel": {
-    "message": "Für die aktuellste Dokumentation bitte auf {latestVersionLink} ({versionLabel}) gehen.",
-    "description": "The label used to tell the user to check the latest version"
-  },
-  "theme.docs.versions.latestVersionLinkLabel": {
-    "message": "letzte Version",
-    "description": "The label used for the latest version suggestion link label"
-  },
-  "theme.common.editThisPage": {
-    "message": "Diese Seite bearbeiten",
-    "description": "The link label to edit the current page"
-  },
-  "theme.common.headingLinkTitle": {
-    "message": "Direkter Link zur {heading}",
-    "description": "Title for link to heading"
-  },
-  "theme.lastUpdated.atDate": {
-    "message": " am {date}",
-    "description": "The words used to describe on which date a page has been last updated"
-  },
-  "theme.lastUpdated.byUser": {
-    "message": " von {user}",
-    "description": "The words used to describe by who the page has been last updated"
-  },
-  "theme.lastUpdated.lastUpdatedAtBy": {
-    "message": "Letztes Update{atDate}{byUser}",
-    "description": "The sentence used to display when a page has been last updated, and by who"
-  },
-  "theme.navbar.mobileVersionsDropdown.label": {
-    "message": "Versionen",
-    "description": "The label for the navbar versions dropdown on mobile view"
+  "theme.NotFound.p2": {
+    "message": "Bitte kontaktieren Sie den Besitzer der Seite, die Sie mit der ursprünglichen URL verlinkt hat, und teilen Sie ihm mit, dass der Link nicht mehr funktioniert.",
+    "description": "The 2nd paragraph of the 404 page"
   },
   "theme.NotFound.title": {
     "message": "Seite nicht gefunden",
     "description": "The title of the 404 page"
   },
-  "theme.tags.tagsListLabel": {
-    "message": "Tags:",
-    "description": "The label alongside a tag list"
+  "theme.SearchBar.label": {
+    "message": "Suche",
+    "description": "The ARIA label and placeholder for search button"
+  },
+  "theme.SearchBar.seeAll": {
+    "message": "Alle {count} Ergebnisse anzeigen"
+  },
+  "theme.SearchModal.askAiScreen.afterToolCallText": {
+    "message": "Gesucht nach ",
+    "description": "The text after tool call"
+  },
+  "theme.SearchModal.askAiScreen.copyButtonCopiedText": {
+    "message": "Kopiert!",
+    "description": "The text for copy button when copied"
+  },
+  "theme.SearchModal.askAiScreen.copyButtonText": {
+    "message": "Kopieren",
+    "description": "The text for copy button"
+  },
+  "theme.SearchModal.askAiScreen.copyButtonTitle": {
+    "message": "Kopieren",
+    "description": "The title for copy button"
+  },
+  "theme.SearchModal.askAiScreen.disclaimerText": {
+    "message": "Antworten werden von KI generiert und können Fehler enthalten. Bitte überprüfen Sie die Antworten.",
+    "description": "The disclaimer text for AI answers"
+  },
+  "theme.SearchModal.askAiScreen.dislikeButtonTitle": {
+    "message": "Gefällt mir nicht",
+    "description": "The title for dislike button"
+  },
+  "theme.SearchModal.askAiScreen.duringToolCallText": {
+    "message": "Suche nach ",
+    "description": "The text during tool call"
+  },
+  "theme.SearchModal.askAiScreen.likeButtonTitle": {
+    "message": "Gefällt mir",
+    "description": "The title for like button"
+  },
+  "theme.SearchModal.askAiScreen.preToolCallText": {
+    "message": "Suche...",
+    "description": "The text before tool call"
+  },
+  "theme.SearchModal.askAiScreen.relatedSourcesText": {
+    "message": "Verwandte Quellen",
+    "description": "The text for related sources"
+  },
+  "theme.SearchModal.askAiScreen.thanksForFeedbackText": {
+    "message": "Danke für Ihr Feedback!",
+    "description": "The text for thanks for feedback"
+  },
+  "theme.SearchModal.askAiScreen.thinkingText": {
+    "message": "Denkt nach...",
+    "description": "The text when AI is thinking"
+  },
+  "theme.SearchModal.errorScreen.helpText": {
+    "message": "You might want to check your network connection.",
+    "description": "The help text for error screen"
+  },
+  "theme.SearchModal.errorScreen.titleText": {
+    "message": "Unable to fetch results",
+    "description": "The title for error screen"
+  },
+  "theme.SearchModal.footer.backToSearchText": {
+    "message": "Zurück zur Suche",
+    "description": "The back to search text for footer"
+  },
+  "theme.SearchModal.footer.closeKeyAriaLabel": {
+    "message": "Escape key",
+    "description": "The ARIA label for close key in footer"
+  },
+  "theme.SearchModal.footer.closeText": {
+    "message": "to close",
+    "description": "The close text for footer"
+  },
+  "theme.SearchModal.footer.navigateDownKeyAriaLabel": {
+    "message": "Arrow down",
+    "description": "The ARIA label for navigate down key in footer"
+  },
+  "theme.SearchModal.footer.navigateText": {
+    "message": "to navigate",
+    "description": "The navigate text for footer"
+  },
+  "theme.SearchModal.footer.navigateUpKeyAriaLabel": {
+    "message": "Arrow up",
+    "description": "The ARIA label for navigate up key in footer"
+  },
+  "theme.SearchModal.footer.searchByText": {
+    "message": "Powered by",
+    "description": "The 'Powered by' text for footer"
+  },
+  "theme.SearchModal.footer.selectKeyAriaLabel": {
+    "message": "Enter key",
+    "description": "The ARIA label for select key in footer"
+  },
+  "theme.SearchModal.footer.selectText": {
+    "message": "to select",
+    "description": "The select text for footer"
+  },
+  "theme.SearchModal.footer.submitQuestionText": {
+    "message": "Frage absenden",
+    "description": "The submit question text for footer"
+  },
+  "theme.SearchModal.noResultsScreen.noResultsText": {
+    "message": "No results for",
+    "description": "The text when there are no results"
+  },
+  "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": {
+    "message": "Let us know.",
+    "description": "The link text for reporting missing results"
+  },
+  "theme.SearchModal.noResultsScreen.reportMissingResultsText": {
+    "message": "Believe this query should return results?",
+    "description": "The text for reporting missing results"
+  },
+  "theme.SearchModal.noResultsScreen.suggestedQueryText": {
+    "message": "Try searching for",
+    "description": "The text for suggested query"
+  },
+  "theme.SearchModal.placeholder": {
+    "message": "Search docs",
+    "description": "The placeholder of the input of the DocSearch pop-up modal"
+  },
+  "theme.SearchModal.resultsScreen.askAiPlaceholder": {
+    "message": "KI fragen: ",
+    "description": "The placeholder text for Ask AI input"
+  },
+  "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": {
+    "message": "Zurück zur Stichwortsuche",
+    "description": "The ARIA label for back to keyword search button"
+  },
+  "theme.SearchModal.searchBox.backToKeywordSearchButtonText": {
+    "message": "Zurück zur Stichwortsuche",
+    "description": "The text for back to keyword search button"
+  },
+  "theme.SearchModal.searchBox.cancelButtonText": {
+    "message": "Cancel",
+    "description": "The label and ARIA label for search box cancel button"
+  },
+  "theme.SearchModal.searchBox.enterKeyHint": {
+    "message": "suchen",
+    "description": "The hint for the search box enter key text"
+  },
+  "theme.SearchModal.searchBox.enterKeyHintAskAi": {
+    "message": "eingeben",
+    "description": "The hint for the Ask AI search box enter key text"
+  },
+  "theme.SearchModal.searchBox.placeholderText": {
+    "message": "Dokumentation durchsuchen",
+    "description": "The placeholder text for the main search input field"
+  },
+  "theme.SearchModal.searchBox.placeholderTextAskAi": {
+    "message": "Weitere Frage stellen...",
+    "description": "The placeholder text when in AI question mode"
+  },
+  "theme.SearchModal.searchBox.placeholderTextAskAiStreaming": {
+    "message": "Antwortet...",
+    "description": "The placeholder text for search box when AI is streaming an answer"
+  },
+  "theme.SearchModal.searchBox.resetButtonTitle": {
+    "message": "Clear the query",
+    "description": "The label and ARIA label for search box reset button"
+  },
+  "theme.SearchModal.searchBox.searchInputLabel": {
+    "message": "Suchen",
+    "description": "The ARIA label for search input"
+  },
+  "theme.SearchModal.startScreen.favoriteSearchesTitle": {
+    "message": "Favorite",
+    "description": "The title for favorite searches"
+  },
+  "theme.SearchModal.startScreen.noRecentSearchesText": {
+    "message": "No recent searches",
+    "description": "The text when there are no recent searches"
+  },
+  "theme.SearchModal.startScreen.recentConversationsTitle": {
+    "message": "Letzte Gespräche",
+    "description": "The title for recent conversations"
+  },
+  "theme.SearchModal.startScreen.recentSearchesTitle": {
+    "message": "Recent",
+    "description": "The title for recent searches"
+  },
+  "theme.SearchModal.startScreen.removeFavoriteSearchButtonTitle": {
+    "message": "Remove this search from favorites",
+    "description": "The title for remove favorite search button"
+  },
+  "theme.SearchModal.startScreen.removeRecentConversationButtonTitle": {
+    "message": "Dieses Gespräch aus dem Verlauf entfernen",
+    "description": "The title for remove recent conversation button"
+  },
+  "theme.SearchModal.startScreen.removeRecentSearchButtonTitle": {
+    "message": "Remove this search from history",
+    "description": "The title for remove recent search button"
+  },
+  "theme.SearchModal.startScreen.saveRecentSearchButtonTitle": {
+    "message": "Save this search",
+    "description": "The title for save recent search button"
+  },
+  "theme.SearchPage.algoliaLabel": {
+    "message": "Unterstützt von Algolia",
+    "description": "The description label for Algolia mention"
+  },
+  "theme.SearchPage.documentsFound.plurals": {
+    "message": "Ein Dokument gefunden|{count} Dokumente gefunden",
+    "description": "Pluralized label for \"{count} documents found\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+  },
+  "theme.SearchPage.emptyResultsTitle": {
+    "message": "Suche in der Dokumentation",
+    "description": "The search page title for empty query"
+  },
+  "theme.SearchPage.existingResultsTitle": {
+    "message": "Suchergebnisse für \"{query}\"",
+    "description": "The search page title for non-empty query"
+  },
+  "theme.SearchPage.fetchingNewResults": {
+    "message": "Neue Ergebnisse abrufen...",
+    "description": "The paragraph for fetching new search results"
+  },
+  "theme.SearchPage.inputLabel": {
+    "message": "Suche",
+    "description": "The ARIA label for search page input"
+  },
+  "theme.SearchPage.inputPlaceholder": {
+    "message": "Geben Sie hier Ihre Suche ein",
+    "description": "The placeholder for search page input"
+  },
+  "theme.SearchPage.noResultsText": {
+    "message": "Es wurden keine Ergebnisse gefunden",
+    "description": "The paragraph for empty search result"
+  },
+  "theme.TOCCollapsible.toggleButtonLabel": {
+    "message": "Auf dieser Seite",
+    "description": "The label used by the button on the collapsible TOC component"
   },
   "theme.admonition.caution": {
     "message": "vorsicht",
@@ -158,244 +864,17 @@
     "message": "warnung",
     "description": "The default label used for the Warning admonition (:::warning)"
   },
-  "theme.AnnouncementBar.closeButtonAriaLabel": {
-    "message": "Schließen",
-    "description": "The ARIA label for close button of announcement bar"
+  "theme.blog.archive.description": {
+    "message": "Archiv",
+    "description": "The page & hero description of the blog archive page"
   },
-  "theme.blog.sidebar.navAriaLabel": {
-    "message": "Navigation der letzten Beiträge im Blog",
-    "description": "The ARIA label for recent posts in the blog sidebar"
+  "theme.blog.archive.title": {
+    "message": "Archiv",
+    "description": "The page & hero title of the blog archive page"
   },
-  "theme.CodeBlock.copied": {
-    "message": "Kopiert",
-    "description": "The copied button label on code blocks"
-  },
-  "theme.CodeBlock.copyButtonAriaLabel": {
-    "message": "In die Zwischenablage kopieren",
-    "description": "The ARIA label for copy code blocks button"
-  },
-  "theme.CodeBlock.copy": {
-    "message": "Kopieren",
-    "description": "The copy button label on code blocks"
-  },
-  "theme.CodeBlock.wordWrapToggle": {
-    "message": "Toggle word wrap",
-    "description": "The title attribute for toggle word wrapping button of code block lines"
-  },
-  "theme.DocSidebarItem.expandCategoryAriaLabel": {
-    "message": "Expand sidebar category '{label}'",
-    "description": "The ARIA label to expand the sidebar category"
-  },
-  "theme.DocSidebarItem.collapseCategoryAriaLabel": {
-    "message": "Collapse sidebar category '{label}'",
-    "description": "The ARIA label to collapse the sidebar category"
-  },
-  "theme.NavBar.navAriaLabel": {
-    "message": "Main",
-    "description": "The ARIA label for the main navigation"
-  },
-  "theme.navbar.mobileLanguageDropdown.label": {
-    "message": "Sprachen",
-    "description": "The label for the mobile language switcher dropdown"
-  },
-  "theme.TOCCollapsible.toggleButtonLabel": {
-    "message": "Auf dieser Seite",
-    "description": "The label used by the button on the collapsible TOC component"
-  },
-  "theme.NotFound.p1": {
-    "message": "Wir konnten nicht finden, wonach Sie gesucht haben.",
-    "description": "The first paragraph of the 404 page"
-  },
-  "theme.NotFound.p2": {
-    "message": "Bitte kontaktieren Sie den Besitzer der Seite, die Sie mit der ursprünglichen URL verlinkt hat, und teilen Sie ihm mit, dass der Link nicht mehr funktioniert.",
-    "description": "The 2nd paragraph of the 404 page"
-  },
-  "theme.blog.post.readMore": {
-    "message": "Mehr lesen",
-    "description": "The label used in blog post item excerpts to link to full blog posts"
-  },
-  "theme.blog.post.readMoreLabel": {
-    "message": "Mehr lesen über {title}",
-    "description": "The ARIA label for the link to full blog posts from excerpts"
-  },
-  "theme.blog.post.readingTime.plurals": {
-    "message": "Eine Minute Lesezeit|{readingTime} Minuten Lesezeit",
-    "description": "Pluralized label for \"{readingTime} min read\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
-  },
-  "theme.docs.breadcrumbs.home": {
-    "message": "Home page",
-    "description": "The ARIA label for the home page in the breadcrumbs"
-  },
-  "theme.docs.sidebar.navAriaLabel": {
-    "message": "Docs sidebar",
-    "description": "The ARIA label for the sidebar navigation"
-  },
-  "theme.docs.sidebar.collapseButtonTitle": {
-    "message": "Seitenleiste einklappen",
-    "description": "The title attribute for collapse button of doc sidebar"
-  },
-  "theme.docs.sidebar.collapseButtonAriaLabel": {
-    "message": "Seitenleiste einklappen",
-    "description": "The title attribute for collapse button of doc sidebar"
-  },
-  "theme.docs.sidebar.closeSidebarButtonAriaLabel": {
-    "message": "Close navigation bar",
-    "description": "The ARIA label for close button of mobile sidebar"
-  },
-  "theme.docs.sidebar.toggleSidebarButtonAriaLabel": {
-    "message": "Toggle navigation bar",
-    "description": "The ARIA label for hamburger menu button of mobile navigation"
-  },
-  "theme.navbar.mobileSidebarSecondaryMenu.backButtonLabel": {
-    "message": "← Zurück zum Hauptmenü",
-    "description": "The label of the back button to return to main menu, inside the mobile navbar sidebar secondary menu (notably used to display the docs sidebar)"
-  },
-  "theme.docs.sidebar.expandButtonTitle": {
-    "message": "Seitenleiste ausklappen",
-    "description": "The ARIA label and title attribute for expand button of doc sidebar"
-  },
-  "theme.docs.sidebar.expandButtonAriaLabel": {
-    "message": "Seitenleiste ausklappen",
-    "description": "The ARIA label and title attribute for expand button of doc sidebar"
-  },
-  "theme.SearchBar.seeAll": {
-    "message": "Alle {count} Ergebnisse anzeigen"
-  },
-  "theme.SearchBar.label": {
-    "message": "Suche",
-    "description": "The ARIA label and placeholder for search button"
-  },
-  "theme.SearchModal.searchBox.resetButtonTitle": {
-    "message": "Clear the query",
-    "description": "The label and ARIA label for search box reset button"
-  },
-  "theme.SearchModal.searchBox.cancelButtonText": {
-    "message": "Cancel",
-    "description": "The label and ARIA label for search box cancel button"
-  },
-  "theme.SearchModal.startScreen.recentSearchesTitle": {
-    "message": "Recent",
-    "description": "The title for recent searches"
-  },
-  "theme.SearchModal.startScreen.noRecentSearchesText": {
-    "message": "No recent searches",
-    "description": "The text when there are no recent searches"
-  },
-  "theme.SearchModal.startScreen.saveRecentSearchButtonTitle": {
-    "message": "Save this search",
-    "description": "The title for save recent search button"
-  },
-  "theme.SearchModal.startScreen.removeRecentSearchButtonTitle": {
-    "message": "Remove this search from history",
-    "description": "The title for remove recent search button"
-  },
-  "theme.SearchModal.startScreen.favoriteSearchesTitle": {
-    "message": "Favorite",
-    "description": "The title for favorite searches"
-  },
-  "theme.SearchModal.startScreen.removeFavoriteSearchButtonTitle": {
-    "message": "Remove this search from favorites",
-    "description": "The title for remove favorite search button"
-  },
-  "theme.SearchModal.errorScreen.titleText": {
-    "message": "Unable to fetch results",
-    "description": "The title for error screen"
-  },
-  "theme.SearchModal.errorScreen.helpText": {
-    "message": "You might want to check your network connection.",
-    "description": "The help text for error screen"
-  },
-  "theme.SearchModal.footer.selectText": {
-    "message": "to select",
-    "description": "The select text for footer"
-  },
-  "theme.SearchModal.footer.selectKeyAriaLabel": {
-    "message": "Enter key",
-    "description": "The ARIA label for select key in footer"
-  },
-  "theme.SearchModal.footer.navigateText": {
-    "message": "to navigate",
-    "description": "The navigate text for footer"
-  },
-  "theme.SearchModal.footer.navigateUpKeyAriaLabel": {
-    "message": "Arrow up",
-    "description": "The ARIA label for navigate up key in footer"
-  },
-  "theme.SearchModal.footer.navigateDownKeyAriaLabel": {
-    "message": "Arrow down",
-    "description": "The ARIA label for navigate down key in footer"
-  },
-  "theme.SearchModal.footer.closeText": {
-    "message": "to close",
-    "description": "The close text for footer"
-  },
-  "theme.SearchModal.footer.closeKeyAriaLabel": {
-    "message": "Escape key",
-    "description": "The ARIA label for close key in footer"
-  },
-  "theme.SearchModal.footer.searchByText": {
-    "message": "Powered by",
-    "description": "The 'Powered by' text for footer"
-  },
-  "theme.SearchModal.noResultsScreen.noResultsText": {
-    "message": "No results for",
-    "description": "The text when there are no results"
-  },
-  "theme.SearchModal.noResultsScreen.suggestedQueryText": {
-    "message": "Try searching for",
-    "description": "The text for suggested query"
-  },
-  "theme.SearchModal.noResultsScreen.reportMissingResultsText": {
-    "message": "Believe this query should return results?",
-    "description": "The text for reporting missing results"
-  },
-  "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": {
-    "message": "Let us know.",
-    "description": "The link text for reporting missing results"
-  },
-  "theme.SearchModal.placeholder": {
-    "message": "Search docs",
-    "description": "The placeholder of the input of the DocSearch pop-up modal"
-  },
-  "theme.SearchPage.documentsFound.plurals": {
-    "message": "Ein Dokument gefunden|{count} Dokumente gefunden",
-    "description": "Pluralized label for \"{count} documents found\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
-  },
-  "theme.SearchPage.existingResultsTitle": {
-    "message": "Suchergebnisse für \"{query}\"",
-    "description": "The search page title for non-empty query"
-  },
-  "theme.SearchPage.emptyResultsTitle": {
-    "message": "Suche in der Dokumentation",
-    "description": "The search page title for empty query"
-  },
-  "theme.SearchPage.inputPlaceholder": {
-    "message": "Geben Sie hier Ihre Suche ein",
-    "description": "The placeholder for search page input"
-  },
-  "theme.SearchPage.inputLabel": {
-    "message": "Suche",
-    "description": "The ARIA label for search page input"
-  },
-  "theme.SearchPage.algoliaLabel": {
-    "message": "Unterstützt von Algolia",
-    "description": "The description label for Algolia mention"
-  },
-  "theme.SearchPage.noResultsText": {
-    "message": "Es wurden keine Ergebnisse gefunden",
-    "description": "The paragraph for empty search result"
-  },
-  "theme.SearchPage.fetchingNewResults": {
-    "message": "Neue Ergebnisse abrufen...",
-    "description": "The paragraph for fetching new search results"
-  },
-  "theme.blog.post.plurals": {
-    "message": "Ein Post|{count} Posts",
-    "description": "Pluralized label for \"{count} posts\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
-  },
-  "theme.blog.tagTitle": {
-    "message": "{nPosts} getaggt mit \"{tagName}\"",
-    "description": "The title of the page for a blog tag"
+  "theme.blog.author.noPosts": {
+    "message": "This author has not written any posts yet.",
+    "description": "The text for authors with 0 blog post"
   },
   "theme.blog.author.pageTitle": {
     "message": "{authorName} - {nPosts}",
@@ -409,548 +888,228 @@
     "message": "View All Authors",
     "description": "The label of the link targeting the blog authors page"
   },
-  "theme.blog.author.noPosts": {
-    "message": "This author has not written any posts yet.",
-    "description": "The text for authors with 0 blog post"
+  "theme.blog.paginator.navAriaLabel": {
+    "message": "Navigation der Blog-Listenseite",
+    "description": "The ARIA label for the blog pagination"
   },
-  "theme.contentVisibility.unlistedBanner.title": {
-    "message": "Unlisted page",
-    "description": "The unlisted content banner title"
+  "theme.blog.paginator.newerEntries": {
+    "message": "Neuere Einträge",
+    "description": "The label used to navigate to the newer blog posts page (previous page)"
   },
-  "theme.contentVisibility.unlistedBanner.message": {
-    "message": "This page is unlisted. Search engines will not index it, and only users having a direct link can access it.",
-    "description": "The unlisted content banner message"
+  "theme.blog.paginator.olderEntries": {
+    "message": "Ältere Einträge",
+    "description": "The label used to navigate to the older blog posts page (next page)"
   },
-  "theme.contentVisibility.draftBanner.title": {
-    "message": "Draft page",
-    "description": "The draft content banner title"
+  "theme.blog.post.paginator.navAriaLabel": {
+    "message": "Blog Post Seiten Navigation",
+    "description": "The ARIA label for the blog posts pagination"
   },
-  "theme.contentVisibility.draftBanner.message": {
-    "message": "This page is a draft. It will only be visible in dev and be excluded from the production build.",
-    "description": "The draft content banner message"
+  "theme.blog.post.paginator.newerPost": {
+    "message": "Neuer Post",
+    "description": "The blog post button label to navigate to the newer/previous post"
   },
-  "theme.ErrorPageContent.tryAgain": {
-    "message": "Nochmal versuchen",
-    "description": "The label of the button to try again rendering when the React error boundary captures an error"
+  "theme.blog.post.paginator.olderPost": {
+    "message": "Älterer Post",
+    "description": "The blog post button label to navigate to the older/next post"
   },
-  "theme.common.skipToMainContent": {
-    "message": "Zum Hauptinhalt springen",
-    "description": "The skip to content label used for accessibility, allowing to rapidly navigate to main content with keyboard tab/enter navigation"
+  "theme.blog.post.plurals": {
+    "message": "Ein Post|{count} Posts",
+    "description": "Pluralized label for \"{count} posts\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
   },
-  "theme.tags.tagsPageTitle": {
-    "message": "Tags",
-    "description": "The title of the tag list page"
+  "theme.blog.post.readMore": {
+    "message": "Mehr lesen",
+    "description": "The label used in blog post item excerpts to link to full blog posts"
+  },
+  "theme.blog.post.readMoreLabel": {
+    "message": "Mehr lesen über {title}",
+    "description": "The ARIA label for the link to full blog posts from excerpts"
+  },
+  "theme.blog.post.readingTime.plurals": {
+    "message": "Eine Minute Lesezeit|{readingTime} Minuten Lesezeit",
+    "description": "Pluralized label for \"{readingTime} min read\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+  },
+  "theme.blog.sidebar.navAriaLabel": {
+    "message": "Navigation der letzten Beiträge im Blog",
+    "description": "The ARIA label for recent posts in the blog sidebar"
+  },
+  "theme.blog.tagTitle": {
+    "message": "{nPosts} getaggt mit \"{tagName}\"",
+    "description": "The title of the page for a blog tag"
+  },
+  "theme.colorToggle.ariaLabel": {
+    "message": "Umschalten zwischen dunkler und heller Ansicht (momentan {mode})",
+    "description": "The ARIA label for the color mode toggle"
+  },
+  "theme.colorToggle.ariaLabel.mode.dark": {
+    "message": "dunkler Modus",
+    "description": "The name for the dark color mode"
+  },
+  "theme.colorToggle.ariaLabel.mode.light": {
+    "message": "heller Modus",
+    "description": "The name for the light color mode"
   },
   "theme.colorToggle.ariaLabel.mode.system": {
     "message": "system mode",
     "description": "The name for the system color mode"
   },
-  "theme.IconExternalLink.ariaLabel": {
-    "message": "(opens in new tab)",
-    "description": "The ARIA label for the external link icon"
+  "theme.common.editThisPage": {
+    "message": "Diese Seite bearbeiten",
+    "description": "The link label to edit the current page"
   },
-  "theme.navbar.mobileDropdown.collapseButton.expandAriaLabel": {
-    "message": "Expand the dropdown",
-    "description": "The ARIA label of the button to expand the mobile dropdown navbar item"
+  "theme.common.headingLinkTitle": {
+    "message": "Direkter Link zur {heading}",
+    "description": "Title for link to heading"
+  },
+  "theme.common.skipToMainContent": {
+    "message": "Zum Hauptinhalt springen",
+    "description": "The skip to content label used for accessibility, allowing to rapidly navigate to main content with keyboard tab/enter navigation"
+  },
+  "theme.contentVisibility.draftBanner.message": {
+    "message": "This page is a draft. It will only be visible in dev and be excluded from the production build.",
+    "description": "The draft content banner message"
+  },
+  "theme.contentVisibility.draftBanner.title": {
+    "message": "Draft page",
+    "description": "The draft content banner title"
+  },
+  "theme.contentVisibility.unlistedBanner.message": {
+    "message": "This page is unlisted. Search engines will not index it, and only users having a direct link can access it.",
+    "description": "The unlisted content banner message"
+  },
+  "theme.contentVisibility.unlistedBanner.title": {
+    "message": "Unlisted page",
+    "description": "The unlisted content banner title"
+  },
+  "theme.docs.DocCard.categoryDescription.plurals": {
+    "message": "1 Eintrag|{count} Einträge",
+    "description": "The default description for a category card in the generated index about how many items this category includes"
+  },
+  "theme.docs.breadcrumbs.home": {
+    "message": "Home page",
+    "description": "The ARIA label for the home page in the breadcrumbs"
+  },
+  "theme.docs.breadcrumbs.navAriaLabel": {
+    "message": "Breadcrumbs",
+    "description": "The ARIA label for the breadcrumbs"
+  },
+  "theme.docs.paginator.navAriaLabel": {
+    "message": "Dokumentation Seiten",
+    "description": "The ARIA label for the docs pagination"
+  },
+  "theme.docs.paginator.next": {
+    "message": "Weiter",
+    "description": "The label used to navigate to the next doc"
+  },
+  "theme.docs.paginator.previous": {
+    "message": "Zurück",
+    "description": "The label used to navigate to the previous doc"
+  },
+  "theme.docs.sidebar.closeSidebarButtonAriaLabel": {
+    "message": "Close navigation bar",
+    "description": "The ARIA label for close button of mobile sidebar"
+  },
+  "theme.docs.sidebar.collapseButtonAriaLabel": {
+    "message": "Seitenleiste einklappen",
+    "description": "The title attribute for collapse button of doc sidebar"
+  },
+  "theme.docs.sidebar.collapseButtonTitle": {
+    "message": "Seitenleiste einklappen",
+    "description": "The title attribute for collapse button of doc sidebar"
+  },
+  "theme.docs.sidebar.expandButtonAriaLabel": {
+    "message": "Seitenleiste ausklappen",
+    "description": "The ARIA label and title attribute for expand button of doc sidebar"
+  },
+  "theme.docs.sidebar.expandButtonTitle": {
+    "message": "Seitenleiste ausklappen",
+    "description": "The ARIA label and title attribute for expand button of doc sidebar"
+  },
+  "theme.docs.sidebar.navAriaLabel": {
+    "message": "Docs sidebar",
+    "description": "The ARIA label for the sidebar navigation"
+  },
+  "theme.docs.sidebar.toggleSidebarButtonAriaLabel": {
+    "message": "Toggle navigation bar",
+    "description": "The ARIA label for hamburger menu button of mobile navigation"
+  },
+  "theme.docs.tagDocListPageTitle": {
+    "message": "{nDocsTagged} mit \"{tagName}\"",
+    "description": "The title of the page for a docs tag"
+  },
+  "theme.docs.tagDocListPageTitle.nDocsTagged": {
+    "message": "Ein doc getaggt|{count} docs getaggt",
+    "description": "Pluralized label for \"{count} docs tagged\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+  },
+  "theme.docs.versionBadge.label": {
+    "message": "Version: {versionLabel}"
+  },
+  "theme.docs.versions.latestVersionLinkLabel": {
+    "message": "letzte Version",
+    "description": "The label used for the latest version suggestion link label"
+  },
+  "theme.docs.versions.latestVersionSuggestionLabel": {
+    "message": "Für die aktuellste Dokumentation bitte auf {latestVersionLink} ({versionLabel}) gehen.",
+    "description": "The label used to tell the user to check the latest version"
+  },
+  "theme.docs.versions.unmaintainedVersionLabel": {
+    "message": "Das ist die Dokumentation für {siteTitle} {versionLabel} und wird nicht weiter gewartet.",
+    "description": "The label used to tell the user that he's browsing an unmaintained doc version"
+  },
+  "theme.docs.versions.unreleasedVersionLabel": {
+    "message": "Das ist die unveröffentlichte Dokumentation für {siteTitle} {versionLabel}.",
+    "description": "The label used to tell the user that he's browsing an unreleased doc version"
+  },
+  "theme.lastUpdated.atDate": {
+    "message": " am {date}",
+    "description": "The words used to describe on which date a page has been last updated"
+  },
+  "theme.lastUpdated.byUser": {
+    "message": " von {user}",
+    "description": "The words used to describe by who the page has been last updated"
+  },
+  "theme.lastUpdated.lastUpdatedAtBy": {
+    "message": "Letztes Update{atDate}{byUser}",
+    "description": "The sentence used to display when a page has been last updated, and by who"
   },
   "theme.navbar.mobileDropdown.collapseButton.collapseAriaLabel": {
     "message": "Collapse the dropdown",
     "description": "The ARIA label of the button to collapse the mobile dropdown navbar item"
   },
-  "theme.SearchModal.searchBox.placeholderText": {
-    "message": "Dokumentation durchsuchen",
-    "description": "The placeholder text for the main search input field"
-  },
-  "theme.SearchModal.searchBox.placeholderTextAskAi": {
-    "message": "Weitere Frage stellen...",
-    "description": "The placeholder text when in AI question mode"
-  },
-  "theme.SearchModal.searchBox.placeholderTextAskAiStreaming": {
-    "message": "Antwortet...",
-    "description": "The placeholder text for search box when AI is streaming an answer"
-  },
-  "theme.SearchModal.searchBox.enterKeyHint": {
-    "message": "suchen",
-    "description": "The hint for the search box enter key text"
-  },
-  "theme.SearchModal.searchBox.enterKeyHintAskAi": {
-    "message": "eingeben",
-    "description": "The hint for the Ask AI search box enter key text"
-  },
-  "theme.SearchModal.searchBox.searchInputLabel": {
-    "message": "Suchen",
-    "description": "The ARIA label for search input"
-  },
-  "theme.SearchModal.searchBox.backToKeywordSearchButtonText": {
-    "message": "Zurück zur Stichwortsuche",
-    "description": "The text for back to keyword search button"
-  },
-  "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": {
-    "message": "Zurück zur Stichwortsuche",
-    "description": "The ARIA label for back to keyword search button"
-  },
-  "theme.SearchModal.startScreen.recentConversationsTitle": {
-    "message": "Letzte Gespräche",
-    "description": "The title for recent conversations"
-  },
-  "theme.SearchModal.startScreen.removeRecentConversationButtonTitle": {
-    "message": "Dieses Gespräch aus dem Verlauf entfernen",
-    "description": "The title for remove recent conversation button"
-  },
-  "theme.SearchModal.resultsScreen.askAiPlaceholder": {
-    "message": "KI fragen: ",
-    "description": "The placeholder text for Ask AI input"
-  },
-  "theme.SearchModal.askAiScreen.disclaimerText": {
-    "message": "Antworten werden von KI generiert und können Fehler enthalten. Bitte überprüfen Sie die Antworten.",
-    "description": "The disclaimer text for AI answers"
-  },
-  "theme.SearchModal.askAiScreen.relatedSourcesText": {
-    "message": "Verwandte Quellen",
-    "description": "The text for related sources"
-  },
-  "theme.SearchModal.askAiScreen.thinkingText": {
-    "message": "Denkt nach...",
-    "description": "The text when AI is thinking"
-  },
-  "theme.SearchModal.askAiScreen.copyButtonText": {
-    "message": "Kopieren",
-    "description": "The text for copy button"
-  },
-  "theme.SearchModal.askAiScreen.copyButtonCopiedText": {
-    "message": "Kopiert!",
-    "description": "The text for copy button when copied"
-  },
-  "theme.SearchModal.askAiScreen.copyButtonTitle": {
-    "message": "Kopieren",
-    "description": "The title for copy button"
-  },
-  "theme.SearchModal.askAiScreen.likeButtonTitle": {
-    "message": "Gefällt mir",
-    "description": "The title for like button"
-  },
-  "theme.SearchModal.askAiScreen.dislikeButtonTitle": {
-    "message": "Gefällt mir nicht",
-    "description": "The title for dislike button"
-  },
-  "theme.SearchModal.askAiScreen.thanksForFeedbackText": {
-    "message": "Danke für Ihr Feedback!",
-    "description": "The text for thanks for feedback"
-  },
-  "theme.SearchModal.askAiScreen.preToolCallText": {
-    "message": "Suche...",
-    "description": "The text before tool call"
-  },
-  "theme.SearchModal.askAiScreen.duringToolCallText": {
-    "message": "Suche nach ",
-    "description": "The text during tool call"
-  },
-  "theme.SearchModal.askAiScreen.afterToolCallText": {
-    "message": "Gesucht nach ",
-    "description": "The text after tool call"
-  },
-  "theme.SearchModal.footer.submitQuestionText": {
-    "message": "Frage absenden",
-    "description": "The submit question text for footer"
-  },
-  "theme.SearchModal.footer.backToSearchText": {
-    "message": "Zurück zur Suche",
-    "description": "The back to search text for footer"
-  },
-  "home.door.new.voice": {
-    "message": "Ich bin neu hier"
-  },
-  "home.door.new.title": {
-    "message": "Quickstart"
-  },
-  "home.door.new.text": {
-    "message": "Ein simuliertes Gerät, ein Live-Dashboard und ein Alarm in etwa 15 Minuten. Ohne Hardware."
-  },
-  "home.door.new.cta": {
-    "message": "Quickstart starten"
-  },
-  "home.door.task.voice": {
-    "message": "Ich will etwas erledigen"
-  },
-  "home.door.task.title": {
-    "message": "Doku nach Aufgaben"
-  },
-  "home.door.task.text": {
-    "message": "Geräte verbinden, Dashboards bauen, Vorfälle bearbeiten, automatisieren. Jede Aufgabe auf einer Seite."
-  },
-  "home.door.task.cta": {
-    "message": "Zur Doku"
-  },
-  "home.door.api.voice": {
-    "message": "Ich brauche die Details"
-  },
-  "home.door.api.title": {
-    "message": "API und Referenz"
-  },
-  "home.door.api.text": {
-    "message": "Ingest-, Query- und Plattform-APIs, Nachrichtenformate, MQTT-Topics, Statuscodes."
-  },
-  "home.door.api.cta": {
-    "message": "Zur API-Doku"
-  },
-  "home.section.connect.title": {
-    "message": "Geräte verbinden"
-  },
-  "home.section.connect.question": {
-    "message": "Wie kommen meine Daten rein?"
-  },
-  "home.section.gateways.title": {
-    "message": "Gateways und Edge"
-  },
-  "home.section.gateways.question": {
-    "message": "Wie binde ich Maschinen an?"
-  },
-  "home.section.model.title": {
-    "message": "Daten modellieren"
-  },
-  "home.section.model.question": {
-    "message": "Wie beschreibe ich meine Geräte?"
-  },
-  "home.section.visualize.title": {
-    "message": "Visualisieren"
-  },
-  "home.section.visualize.question": {
-    "message": "Wie sehe ich meine Daten?"
-  },
-  "home.section.watch.title": {
-    "message": "Überwachen und reagieren"
-  },
-  "home.section.watch.question": {
-    "message": "Was braucht mich gerade?"
-  },
-  "home.section.automate.title": {
-    "message": "Automatisieren"
-  },
-  "home.section.automate.question": {
-    "message": "Was erledigt es für mich?"
-  },
-  "home.section.knowledge.title": {
-    "message": "Knowledge und KI"
-  },
-  "home.section.knowledge.question": {
-    "message": "Was kann ich fragen?"
-  },
-  "home.section.administer.title": {
-    "message": "Verwalten"
-  },
-  "home.section.administer.question": {
-    "message": "Wer darf was?"
-  },
-  "home.section.troubleshooting.title": {
-    "message": "Fehlerbehebung"
-  },
-  "home.section.troubleshooting.question": {
-    "message": "Etwas stimmt nicht."
-  },
-  "home.role.operator.title": {
-    "message": "Betrieb"
-  },
-  "home.role.operator.text": {
-    "message": "Things überwachen, Vorfälle bearbeiten, Nimble fragen."
-  },
-  "home.role.builder.title": {
-    "message": "Lösungsbau"
-  },
-  "home.role.builder.text": {
-    "message": "Geräte modellieren und verbinden, Dashboards und Regeln bauen."
-  },
-  "home.role.developer.title": {
-    "message": "Entwicklung"
-  },
-  "home.role.developer.text": {
-    "message": "Protokolle, Payloads, APIs und Webhooks."
-  },
-  "home.role.administrator.title": {
-    "message": "Administration"
-  },
-  "home.role.administrator.text": {
-    "message": "Benutzer, Zugriff, API-Schlüssel und Tenant-Einstellungen."
-  },
-  "home.meta.title": {
-    "message": "Dokumentation"
-  },
-  "home.meta.description": {
-    "message": "Dokumentation für IoT Breeze: Geräte verbinden, ihre Daten sehen und darauf reagieren."
-  },
-  "home.hero.title": {
-    "message": "IoT Breeze Doku"
-  },
-  "home.hero.text": {
-    "message": "Verbinden Sie Ihre Geräte, sehen Sie ihre Daten und reagieren Sie darauf. Anleitungen für alle, die IoT Breeze betreiben, und Referenzen für alle, die darauf aufbauen."
-  },
-  "home.hero.quickstart": {
-    "message": "Quickstart"
-  },
-  "home.hero.demo": {
-    "message": "Demo buchen"
-  },
-  "home.doors.label": {
-    "message": "Wo Sie anfangen"
-  },
-  "home.sections.title": {
-    "message": "Die Doku folgt Ihren Daten"
-  },
-  "home.sections.text": {
-    "message": "Vom Gerät zur Entscheidung. Jeder Bereich beantwortet eine Frage."
-  },
-  "home.roles.title": {
-    "message": "Starten Sie bei Ihrer Rolle"
-  },
-  "home.first.title": {
-    "message": "Senden Sie Ihren ersten Messwert"
-  },
-  "home.first.text": {
-    "message": "Eine HTTP-Anfrage oder eine MQTT-Nachricht. Jedes Thing hat eigene Zugangsdaten, und die Verbindungsinformationen in IoT Breeze zeigen Host, Topic und Benutzername."
-  },
-  "home.first.mqtt": {
-    "message": "Daten per MQTT senden"
-  },
-  "home.first.http": {
-    "message": "Daten per HTTP senden"
-  },
-  "home.first.api": {
-    "message": "API-Überblick"
-  },
-  "home.changelog.title": {
-    "message": "Was sich geändert hat"
-  },
-  "home.changelog.text": {
-    "message": "Release Notes zu jeder Version, mit hervorgehobenen Breaking Changes."
-  },
-  "home.blog.title": {
-    "message": "Aus dem Blog"
-  },
-  "home.blog.text": {
-    "message": "Produktneuigkeiten, durchgespielte Beispiele und wie wir NimBit bauen."
-  },
-  "app.open": {
-    "message": "IoT Breeze öffnen"
-  },
-  "app.address.change": {
-    "message": "Ihre IoT-Breeze-Adresse ändern"
-  },
-  "app.address.label": {
-    "message": "Ihre IoT-Breeze-Adresse"
-  },
-  "app.address.error": {
-    "message": "Geben Sie eine Adresse wie iot.example.com ein."
-  },
-  "app.address.hint": {
-    "message": "Auf Ihrer eigenen Domain? Geben Sie sie einmal ein. Links aus dieser Doku nach IoT Breeze und geführte Touren öffnen sich dann dort."
-  },
-  "app.address.default": {
-    "message": "Standard verwenden"
-  },
-  "app.address.save": {
-    "message": "Speichern"
-  },
-  "screenshot.toCome": {
-    "message": "Screenshot folgt"
-  },
-  "screenshot.route": {
-    "message": "Route"
-  },
-  "screenshot.state": {
-    "message": "Zustand"
-  },
-  "screenshot.file": {
-    "message": "Datei"
-  },
-  "sections.get-started.label": {
-    "message": "Erste Schritte"
-  },
-  "sections.get-started.description": {
-    "message": "Quickstart und Wege nach Rolle"
-  },
-  "sections.docs.label": {
-    "message": "Doku"
-  },
-  "sections.docs.description": {
-    "message": "Verbinden, modellieren, visualisieren, automatisieren"
-  },
-  "sections.api.label": {
-    "message": "API"
-  },
-  "sections.api.description": {
-    "message": "Ingest-, Query- und Plattform-APIs"
-  },
-  "sections.changelog.label": {
-    "message": "Changelog"
-  },
-  "sections.changelog.description": {
-    "message": "Release Notes"
+  "theme.navbar.mobileDropdown.collapseButton.expandAriaLabel": {
+    "message": "Expand the dropdown",
+    "description": "The ARIA label of the button to expand the mobile dropdown navbar item"
+  },
+  "theme.navbar.mobileLanguageDropdown.label": {
+    "message": "Sprachen",
+    "description": "The label for the mobile language switcher dropdown"
+  },
+  "theme.navbar.mobileSidebarSecondaryMenu.backButtonLabel": {
+    "message": "← Zurück zum Hauptmenü",
+    "description": "The label of the back button to return to main menu, inside the mobile navbar sidebar secondary menu (notably used to display the docs sidebar)"
+  },
+  "theme.navbar.mobileVersionsDropdown.label": {
+    "message": "Versionen",
+    "description": "The label for the navbar versions dropdown on mobile view"
+  },
+  "theme.tags.tagsListLabel": {
+    "message": "Tags:",
+    "description": "The label alongside a tag list"
+  },
+  "theme.tags.tagsPageLink": {
+    "message": "Alle Tags anzeigen",
+    "description": "The label of the link targeting the tag list page"
+  },
+  "theme.tags.tagsPageTitle": {
+    "message": "Tags",
+    "description": "The title of the tag list page"
   },
   "tour.eyebrow": {
     "message": "Geführte Tour in IoT Breeze"
   },
-  "tours.more": {
-    "message": "Weitere Touren"
-  },
   "tours.fromHelpMenu": {
     "message": "(starten Sie sie über das Hilfemenü auf diesem Bildschirm)"
   },
-  "doc.type.tutorial": {
-    "message": "Tutorial"
-  },
-  "doc.type.how-to": {
-    "message": "Anleitung"
-  },
-  "doc.type.concept": {
-    "message": "Konzept"
-  },
-  "doc.type.reference": {
-    "message": "Referenz"
-  },
-  "doc.footer.markdown": {
-    "message": "Als Markdown ansehen"
-  },
-  "doc.footer.report": {
-    "message": "Problem mit dieser Seite melden"
-  },
-  "doc.untranslated": {
-    "message": "Diese Seite ist noch nicht übersetzt. Sie lesen die englische Fassung."
-  },
-  "footer.tagline": {
-    "message": "IoT-Lösungen bauen und betreiben, mit der NimBit-Plattform."
-  },
-  "footer.demo": {
-    "message": "Demo buchen"
-  },
-  "blog.category.release.plural": {
-    "message": "Releases"
-  },
-  "blog.category.how-to.plural": {
-    "message": "Anleitungen"
-  },
-  "blog.category.announcement.plural": {
-    "message": "Ankündigungen"
-  },
-  "blog.category.engineering.plural": {
-    "message": "Engineering"
-  },
-  "blog.category.release": {
-    "message": "Release"
-  },
-  "blog.category.how-to": {
-    "message": "Anleitung"
-  },
-  "blog.category.announcement": {
-    "message": "Ankündigung"
-  },
-  "blog.category.engineering": {
-    "message": "Engineering"
-  },
-  "blog.readingTime": {
-    "message": "{n} Min. Lesezeit"
-  },
-  "blog.featured": {
-    "message": "Empfohlen"
-  },
-  "blog.readMore": {
-    "message": "Weiterlesen"
-  },
-  "blog.filter.category": {
-    "message": "Kategorie"
-  },
-  "blog.filter.topic": {
-    "message": "Thema"
-  },
-  "blog.filter.year": {
-    "message": "Jahr"
-  },
-  "blog.filter.all": {
-    "message": "Alle"
-  },
-  "blog.filter.anyTopic": {
-    "message": "Alle Themen"
-  },
-  "blog.filter.anyYear": {
-    "message": "Alle Jahre"
-  },
-  "blog.sort": {
-    "message": "Sortierung"
-  },
-  "blog.sort.newest": {
-    "message": "Neueste"
-  },
-  "blog.sort.oldest": {
-    "message": "Älteste"
-  },
-  "blog.count": {
-    "message": "{shown} von {total} Beiträgen"
-  },
-  "blog.filter.active": {
-    "message": "Aktiv"
-  },
-  "blog.filter.remove": {
-    "message": "Entfernen"
-  },
-  "blog.filter.clear": {
-    "message": "Alle löschen"
-  },
-  "blog.search": {
-    "message": "Beiträge durchsuchen …"
-  },
-  "blog.empty": {
-    "message": "Keine Beiträge passen zu diesen Filtern."
-  },
-  "blog.loadMore": {
-    "message": "Weitere Beiträge laden"
-  },
-  "blog.hero.eyebrow": {
-    "message": "Releases, Anleitungen, Ankündigungen"
-  },
-  "blog.hero.title.start": {
-    "message": "Notizen aus dem"
-  },
-  "blog.hero.title.accent": {
-    "message": "Plattform-Team."
-  },
-  "blog.subscribe": {
-    "message": "Abonnieren"
-  },
-  "blog.readIn": {
-    "message": "Lesen auf"
-  },
-  "blog.topics": {
-    "message": "Themen"
-  },
-  "blog.toc": {
-    "message": "Inhalt"
-  },
-  "blog.inTheDocs": {
-    "message": "In der Doku"
-  },
-  "blog.toTheGuide": {
-    "message": "Zur Seite"
-  },
-  "blog.pagination": {
-    "message": "Weitere Beiträge"
-  },
-  "blog.newer": {
-    "message": "Neuerer Beitrag"
-  },
-  "blog.older": {
-    "message": "Älterer Beitrag"
-  },
-  "doc.meta.updated": {
-    "message": "Aktualisiert {date}"
-  },
-  "doc.app.eyebrow": {
-    "message": "In IoT Breeze"
-  },
-  "doc.app.text": {
-    "message": "Diese Seite beschreibt den Bildschirm unter"
-  },
-  "doc.app.open": {
-    "message": "In der App öffnen"
-  },
-  "doc.untranslated.chip": {
-    "message": "Englisch"
+  "tours.more": {
+    "message": "Weitere Touren"
   }
 }

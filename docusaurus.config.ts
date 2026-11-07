@@ -2,54 +2,6 @@ import type * as Preset from "@docusaurus/preset-classic";
 import type { Config } from "@docusaurus/types";
 import { themes as prismThemes } from "prism-react-renderer";
 
-const redocSpecUrls = {
-  dip: process.env.DIP_OPENAPI_URL ?? "https://demo.cloud.iotbreeze.com/dip/api/v1/api-json",
-  ocb: process.env.OCB_OPENAPI_URL ?? "https://demo.cloud.iotbreeze.com/ocb/api-json",
-  nbq: process.env.NBQ_OPENAPI_URL ?? "https://demo.cloud.iotbreeze.com/ocb/api-json",
-};
-
-// Remove this entire redocSpecs variable definition
-// const redocSpecs = [
-//   "redocusaurus",
-//   {
-//     theme: {
-//       // Change with your site colors
-//       primaryColor: "#1890ff",
-//       primaryColorDark: "#1890ff",
-//     },
-//     specs: [
-//       // Optionally provide individual files/urls to load
-//       {
-//         // Pass it a path to a local OpenAPI YAML file
-//         id: "dip",
-//         spec: redocSpecUrls.dip,
-//         route: "/docs/developer/api/redoc/dip",
-//       },
-//       // You can also pass it an OpenAPI spec URL
-//     ],
-//     // Theme Options for modifying how redoc renders them
-//   },
-// ] satisfies Redocusaurus.PresetEntry;
-
-// Remove this commented code block as well
-// const redocSpecs = [
-//   {
-//     id: "dip",
-//     spec: redocSpecUrls.dip,
-//     route: "/docs/developer/api/redoc/dip",
-//   },
-//   // {
-//   //   id: "ocb",
-//   //   spec: redocSpecUrls.ocb,
-//   //   route: "/docs/developer/api/redoc/ocb",
-//   // },
-//   {
-//     id: "nbq",
-//     spec: redocSpecUrls.nbq,
-//     route: "/docs/developer/api/redoc/nbq",
-//   },
-// ];
-
 const config: Config = {
   title: "NimBit Documentation",
   tagline: "Learn how NimBit builds its IoT solution.",
@@ -108,28 +60,6 @@ const config: Config = {
         },
       } satisfies Preset.Options,
     ],
-    [
-      "redocusaurus",
-      {
-        specs: [
-          {
-            id: "tsflux",
-            spec: "openapi/tsflux/.openapi.yaml",
-          },
-          {
-            id: "ocb",
-            spec: "openapi/ocb/.openapi.yaml",
-          },
-          {
-            id: "nbq",
-            spec: "openapi/nbq/.openapi.yaml",
-          },
-        ],
-        theme: {
-          primaryColor: "#197a87",
-        },
-      },
-    ],
   ],
 
   clientModules: [require.resolve("./src/clientModules/appUrl.ts")],
@@ -137,6 +67,7 @@ const config: Config = {
   plugins: [
     "docusaurus-plugin-image-zoom",
     require.resolve("./plugins/llms.js"),
+    require.resolve("./plugins/home-feed.js"),
     function customWebpackPlugin() {
       return {
         name: "custom-webpack-plugin",
@@ -261,7 +192,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} NimBit GmbH. All rights reserved.`,
+      copyright: `© ${new Date().getFullYear()} NimBit GmbH`,
     },
     prism: {
       theme: prismThemes.github,

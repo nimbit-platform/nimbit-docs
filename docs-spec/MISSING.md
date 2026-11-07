@@ -65,8 +65,8 @@ Found while translating the docs. The German docs follow the app's labels exactl
 
 | What | Waiting on |
 |---|---|
-| tsflux OpenAPI spec (`openapi/tsflux/.openapi.yaml`) is stale | Export from a running tsflux (`/tsflux/swagger/doc.json`) |
-| OCB OpenAPI spec (`openapi/ocb/.openapi.yaml`) is stale | Export from a running OCB (`/api/v2`) |
+| tsflux OpenAPI spec (`static/openapi/tsflux.yaml`) is stale | Export from a running tsflux (`/tsflux/swagger/doc.json`) |
+| OCB OpenAPI spec (`static/openapi/ocb.yaml`) is stale | Export from a running OCB (`/api/v2`) |
 
 ## Docs work not started
 
