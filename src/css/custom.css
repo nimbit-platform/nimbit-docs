@@ -449,3 +449,17 @@ img + em {
     display: none !important;
   }
 }
+
+/* Doc pages: room between the sidebar, the text and the table of contents, and lines short
+ * enough to read (about 75 characters). Wide content (tables, screenshots) keeps the column. */
+@media (min-width: 997px) {
+  main[class*="docMainContainer"] > .container {
+    padding: 2rem 2.5rem 4rem;
+  }
+  main[class*="docMainContainer"] .row > .col:first-child {
+    padding-right: 2.5rem;
+  }
+  .theme-doc-markdown > :not(figure, table, .docusaurus-mermaid-container, .tabs-container) {
+    max-width: 46rem;
+  }
+}
