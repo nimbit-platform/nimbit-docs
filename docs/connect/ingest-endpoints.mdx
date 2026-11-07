@@ -77,7 +77,7 @@ With a credential, the tenant always comes from the credential.
 | `207` | Some messages were stored. Resend only the entries with status `503`. | Failed `503` entries |
 | `400` | The request is invalid, or no message passed the checks: bad JSON, empty body, missing `tenant`, `id` or `thingType`, no data, unknown thing or thing type, credential mismatch, bad `precision`. | No |
 | `401` | The credential is missing, wrong or expired. | No |
-| `413` | The body is over 10 MB. | No |
+| `413` | The body is over 10 MiB. | No |
 | `422` | tsflux refused the message after accepting the request and will refuse it again, for example nothing valid was left in it. | No |
 | `429` | Too many requests are being handled. Sent with `Retry-After`. | Yes |
 | `503` | Busy, or a lookup did not answer. Sent with `Retry-After: 1`. | Yes |

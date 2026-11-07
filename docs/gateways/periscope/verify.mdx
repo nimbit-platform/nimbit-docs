@@ -66,7 +66,7 @@ Confirm that every thing Periscope applied receives values. `periscope verify` a
 
 - **Exit 2**: nbq couldn't be asked, for example a connection error, a timeout or a `401`. Check the platform connection, or pass `-nbq-url`.
 - **Everything reads `nothing received` with `provisioner = "tsflux"`**: nbq looks things up by platform ID, and this provisioner has none yet. This is expected until the `ocb` provisioner has run.
-- **A value is in the future, or nothing arrives from a source in local time**: the source sends local time labelled as UTC. East of Greenwich the values land in the future, west of it in the past, where the thing reads as nothing received. Fix the source's clock or zone. For MQTT, set `timezone`.
+- **A value is in the future, or nothing arrives from a source in local time**: the source sends local time labeled as UTC. East of Greenwich the values land in the future, west of it in the past, where the thing reads as nothing received. Fix the source's clock or zone. For MQTT, set `timezone`.
 - **A thing is missing from the table**: only applied things are checked. Confirm and apply it first. See [Approve what Periscope discovers](./approve-discoveries.mdx).
 - **`unmapped metrics` is above 0**: the summary names the most frequent unmapped address. Confirm its proposal.
 

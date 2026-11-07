@@ -19,10 +19,10 @@ Find out why a rule does not do what you expect when data arrives. How rules, tr
 
 ### 1. The rule is active and the change is published
 
-Open **Automation › Rule Designer**. The list shows **Active** or **Inactive**.
+Open **Settings › Automation › Rule Designer**. The list shows **Active** or **Inactive**.
 
 - **Inactive**: open the rule and select **Activate**. If **Activate** is disabled, the rule has no published version yet. Select the check mark in the floating bar first.
-- You edited an active rule but the old behaviour continues: edits are a draft until you select the check mark, which reads **Apply draft** once a version exists. One version of a rule is active at a time.
+- You edited an active rule but the old behavior continues: edits are a draft until you select the check mark, which reads **Apply draft** once a version exists. One version of a rule is active at a time.
 
 ### 2. The flow is valid and complete
 
@@ -66,7 +66,7 @@ Open the **Condition** node.
 
 The rule fires, but nothing reaches you:
 
-- **Event** action: the rule created an event. Open **Monitoring › Events** and look for it. You may not see it if the event type's **Groups** do not include a group of yours. Then check the **Actions** tab of that event type under **Configuration › Event Types**. An action added there is created with its **Active** switch off. An action that is off does not run.
+- **Event** action: the rule created an event. Open **Monitoring › Events** and look for it. You may not see it if the event type's **Groups** do not include a group of yours. Then check the **Actions** tab of that event type under **Settings › Configuration › Event Types**. An action added there is created with its **Active** switch off. An action that is off does not run.
 - **Notification**: **Users and groups** must contain you or a group you belong to.
 - **Webhook**: a failed call is recorded as an event. A `405` means the **Method** is wrong, `401` or `403` the **Authorization**, and a timeout that the receiver did not answer in time. See [Call another system from a rule](../automate/webhook-from-rule.mdx).
 - **Notification channel**: check the channel is enabled and its filters let the message through. See [An alert email never arrives](./email-not-arriving.mdx).

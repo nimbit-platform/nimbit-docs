@@ -1,6 +1,6 @@
 ---
 title: Connector types
-description: The connector types for loading outside data into the knowledge graph, their fields, defaults, credential types and write behaviours.
+description: The connector types for loading outside data into the knowledge graph, their fields, defaults, credential types and write behaviors.
 type: reference
 app:
   routes: ["/knowledge/connectors", "/knowledge/credentials", "/knowledge/mappings"]
@@ -110,8 +110,8 @@ A credential has a **Name** (fixed after creation) and **Allowed hosts**, one pe
 
 | Option | Values |
 | --- | --- |
-| **Write behaviour** | **Create** (fails if the record exists), **Upsert** and **Replace** (overwrite the whole record), **Merge** (updates only mapped fields). |
+| **Write behavior** | **Create** (fails if the record exists), **Upsert** and **Replace** (overwrite the whole record), **Merge** (updates only mapped fields). |
 | **Transform trigger** | **Manual**, **On new batch**, **Scheduled**. |
 | Field binding | **Source field**, **Constant**, **ƒx transform**. |
-| Relation match | By **alias**, by an **indexed field**, or by an identifier of the target type. An **Optional** relation that matches nothing lands the row without the link, which then appears in Link review. |
+| Relation match | By **alias**, by a **Match field**, or by an identifier of the target type. An **Optional** relation that matches nothing lands the row without the link, which then appears in Link review. |
 | **Built-in** mapping | Ships with the platform. Saving an edit makes your own copy. Deleting the copy restores the built-in. |

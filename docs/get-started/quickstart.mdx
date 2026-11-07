@@ -96,7 +96,7 @@ A rule can only raise an event of an event type you choose, so create the type f
 
 1. Open **Settings › Configuration › Event Types** and select **Create Event Type**.
 2. Enter the **Name** `Room too warm`, choose a **Group** you belong to, and leave **Display type** on **Default**. Save.
-3. Open **Automation › Rule Designer** and select **Create rule**. Enter the **Name** `Room too warm` and save.
+3. Open **Settings › Automation › Rule Designer** and select **Create rule**. Enter the **Name** `Room too warm` and save.
 4. Select the rule name to open it. On the **Start** node, choose **Thing type** and select `Room sensor`.
 5. Select **+** and add a **Condition**. On the **Simple** tab, set **Measure** `temperature`, **Operator** **Greater than** and the value `28`.
 6. Select **+** and add a **Toggle** trigger with **Direction** **In**. The rule fires when the room becomes too warm, not on every reading above 28.

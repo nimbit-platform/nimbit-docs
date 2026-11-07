@@ -56,8 +56,8 @@ To load a file once instead, use **Upload data** on the mapping screen. It accep
 2. Pick the **source** and the target **type**. The editor previews with sample rows, so upload some if the source has none yet.
 3. Set the **Source id**: the field that identifies each row. A row that comes again then updates its record.
 4. Bind each target field to a **Source field**, a **Constant** or an **ƒx transform**.
-5. To link each row to an existing record, add a **relation**. It matches by **alias** (an outside ID such as an SAP equipment number), an **indexed field** or an identifier of the target type. Mark it **Optional** if rows without a match should still land.
-6. Choose the **Write behaviour**: **Create** fails if the record exists; **Upsert** and **Replace** overwrite the whole record; **Merge** updates only mapped fields.
+5. To link each row to an existing record, add a **relation**. It matches by **alias** (an outside ID such as an SAP equipment number), a **Match field** or an identifier of the target type. Mark it **Optional** if rows without a match should still land.
+6. Choose the **Write behavior**: **Create** fails if the record exists; **Upsert** and **Replace** overwrite the whole record; **Merge** updates only mapped fields.
 7. Set the **Transform trigger**: **Manual**, **On new batch** or **Scheduled**.
 8. Select **Save mapping**, then run the transform. It reports how many rows were written and how many need review.
 
