@@ -1,0 +1,74 @@
+---
+untranslated: true
+title: Run Periscope in a container
+sidebar_label: Run in a container
+description: Start the Periscope container with its configuration and a state volume, keep it running across restarts and check that it is healthy.
+sidebar_position: 2
+type: how-to
+app:
+  routes: ["/onboarding/gateways"]
+---
+
+Start Periscope as a container that restarts with the box and keeps its state on a volume. This page ends with a running agent that is not yet connected to IoT Breeze; [onboard it](./onboard.mdx) next.
+
+## Before you start
+
+- Docker on a box that meets the [requirements](./requirements.mdx).
+- The image name and version. Request them from NimBit support at [info@nimbit.de](mailto:info@nimbit.de).
+- A configuration file with the agent's name and your sources, for example the one in [Install Periscope and stream your first source](../install.mdx).
+
+## Steps
+
+1. Put the configuration in `/etc/periscope/periscope.toml`. Secrets that the file reads as `${NAME}` go into `/etc/periscope/periscope.env`, one `NAME=value` per line. Restrict both files to root.
+2. Start the container:
+
+   ```sh
+   docker run -d --name periscope --restart unless-stopped \
+     -v /etc/periscope:/etc/periscope:ro \
+     -v periscope-state:/var/lib/periscope \
+     --env-file /etc/periscope/periscope.env \
+     -p 127.0.0.1:8400:8400 <periscope-image>:<version>
+   ```
+
+   Replace `<periscope-image>:<version>` with the image and version from NimBit support. Publish the port on `127.0.0.1` as shown to keep the web UI on the box. To open it to the network, drop `127.0.0.1:` and first set `server.token` or `[server.auth]`.
+3. Check the file:
+
+   ```sh
+   docker exec periscope periscope validate -config /etc/periscope/periscope.toml -offline
+   ```
+
+   It ends with `configuration is valid`.
+4. Read the log:
+
+   ```sh
+   docker logs periscope
+   ```
+
+   A box that is not connected prints a banner with the address of its setup screen and a one-time setup code. You need it to [onboard from the browser](./onboard.mdx).
+
+## What the image does
+
+- It reads `/etc/periscope/periscope.toml` (`PERISCOPE_CONFIG`) and keeps its state in the volume at `/var/lib/periscope`.
+- It runs as user ID 1001. The volume must be writable for that user.
+- It listens on `0.0.0.0:8400` unless the file sets `server.listen`.
+- Relative paths in the configuration resolve against `/etc/periscope`.
+- Its health check calls `periscope healthcheck` every 30 seconds.
+
+## Check that it worked
+
+```sh
+docker ps --filter name=periscope
+```
+
+The status column ends with `(healthy)` within about a minute. The container is healthy before it is connected: the check only tests that the agent runs.
+
+## If it doesn't work
+
+- **The container exits at once**: run `docker logs periscope`. A rejected configuration is printed with the key that is wrong. See [Troubleshoot Periscope](../troubleshooting.mdx).
+- **`permission denied` on the state directory**: the volume isn't writable for user ID 1001. Use a named volume as above, or change the owner of the bind-mounted directory.
+- **`${NAME}` is empty**: the container sees only the variables in `--env-file`, not the host's.
+
+## Related
+
+- [Run Periscope as a service](./run-as-a-service.mdx) · [Upgrade a box](./upgrade.mdx)
+- [What Periscope keeps on the box](./state-and-backup.mdx)

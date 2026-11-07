@@ -1,0 +1,112 @@
+---
+untranslated: true
+title: Manage the things behind a gateway
+description: Assign things to a gateway, move them between gateways, set what a gateway may have, and know what happens when you delete a thing.
+type: how-to
+sidebar_position: 6
+app:
+  routes: ["/onboarding/gateways/:id", "/onboarding/things/:id"]
+---
+
+Put things on a gateway, move or release them, and keep a gateway's scope in line with what it should have. A thing belongs to at most one gateway. Membership follows the thing's record, never where its data arrived. For the model, read [How gateways work](./how-gateways-work.mdx).
+
+## Before you start
+
+- To assign things you need update permission on gateways and on things. Without both, **Assign things** and the **Gateway** field don't appear.
+- The gateway exists. See [Add a gateway](./add-a-gateway.mdx).
+
+## Assign things to a gateway
+
+Use one of two ways.
+
+**From the gateway**
+
+1. Open **Settings › Onboarding › Gateways** and open the gateway.
+2. Select the **Things** tab, then **Assign things**.
+3. Search, select up to 200 things and select **Assign**.
+4. Read the summary, for example `3 assigned · 1 unchanged · 1 refused`. Each refused thing says why.
+
+**From a thing**
+
+1. Open **Settings › Onboarding › Things**, open the thing and select **Edit**.
+2. Under **Gateway**, choose the gateway, or **No gateway** to release the thing.
+3. Save. IoT Breeze applies the other fields first, then the gateway. If the gateway refuses, the form stays open and a message says **Not changed** with the reason.
+
+A thing that is on another gateway moves to the new one. To release a thing from the **Things** tab, select **Remove from gateway** on its row. A gateway's own thing can't be assigned: it stays with its gateway.
+
+The thing's header shows its gateway, and the Things list shows a chip with the gateway's name. The **Gateway** filter of the Things list finds things that are on any gateway, or none.
+
+## Why an assignment is refused
+
+| Message | Cause |
+| --- | --- |
+| **Thing limit reached** | The gateway already has as many things as its **Thing limit** allows. |
+| **Thing type not allowed** | The thing's type is not in the gateway's **Allowed thing types**. |
+| **Outside the namespace** | A **Periscope** gateway only takes things whose alternate ID is inside its namespace. See below. |
+| **A gateway's own thing stays with its gateway** | You tried to move a gateway thing. |
+| **Not found, or not yours to change** | The thing doesn't exist, or you can't change it. |
+
+The **Creation policy** doesn't apply to an assignment. You can assign things to a **Locked** gateway.
+
+## Namespace and alternate IDs
+
+A Periscope box finds its things by alternate IDs that start with its namespace followed by `-`. If you assign a thing from outside it, the box would create a duplicate. So IoT Breeze refuses the thing, unless you select **Move alternate IDs into the namespace**. The thing then gets the namespace and a hyphen in front of its alternate ID. Characters other than letters, digits, `_` and `-` become a single hyphen.
+
+These refuse the move:
+
+- **Its provider keeps its alternate ID**: only things of the NimBit provider can be renamed.
+- **The moved alternate ID is another thing's**.
+- **No alternate ID inside the namespace can be made from it**: the result would be empty or longer than 128 characters.
+
+For an **MQTT device** gateway nothing checks the namespace when you assign things. A thing keeps its alternate ID.
+
+## Set what a gateway may have
+
+Open the gateway, select the **Scope** tab, change the fields and select **Save scope**.
+
+| Field | Effect |
+| --- | --- |
+| **Thing limit** | Things the gateway may have besides its own thing, 0 to 100,000. Empty: only your organization's limits. Checked on assignment and on creation. |
+| **Allowed thing types** | Up to 200. Empty: any. Checked on assignment and on creation. |
+| **Creation policy** | **Open** lets a Periscope box create things inside its namespace. **Locked** creates none by any path. Things it has keep working. Messages of an MQTT device never create things, so the policy changes nothing for it. |
+
+The **Namespace** is fixed once the gateway has things, or once its Periscope box has enrolled. Renaming it earlier moves no thing.
+
+## Names on a gateway
+
+Thing names are unique in your organization. Two gateways in front of the same plant can try the same name. If a name a gateway creates is taken, the gateway tries once more with `<name> (<namespace>)`, cut to keep 256 characters. If that name is taken too, the create fails. A Periscope box keeps the name it used, so a later apply never renames the thing.
+
+## Delete things
+
+You delete a gateway's things like any other thing, with delete permission on things.
+
+A gateway's own thing, with the alternate ID `gateway-<gateway id>`, can't be deleted. **Delete** is disabled and says **Removed with its gateway**. A bulk deletion that includes it is refused as a whole. The API answers 403 with the code `GATEWAY_THING_PROTECTED`. It goes when you delete the gateway; see [Revoke, replace or remove a gateway](./revoke-and-replace.mdx).
+
+A deleted thing comes back when a Periscope box still sends for it, if the gateway is **Open**: the box re-creates it, at most once per thing every five minutes. On a **Locked** gateway it is not re-created, and the refusal appears under **Refused creates** on the **Scope** tab. A thing deleted from an MQTT device gateway stays deleted. Its messages are discarded as `unknown_thing`.
+
+## What happens to data
+
+Assigning, moving or releasing a thing takes effect on its next message, a few seconds after you save. The old gateway's next message for the thing is discarded as `not_member`. The thing keeps its ID and alternate ID.
+
+A thing on a gateway can also have its own device credential. Its messages on its own topic are stored. They carry no gateway, so the gateway's counts don't include them. A gateway credential can't publish on a thing's own topic: the broker acknowledges a QoS 1 publish and drops it.
+
+## Presence of things behind a gateway
+
+A thing is **Connected** only while messages for it arrive. A gateway sends nothing for a device it can't reach, so that thing times out and shows **Disconnected** while the gateway stays **Online**. The gateway's health message never keeps a device online. Re-sent values would, so don't re-send them.
+
+{/* TODO(product): Name the field on the thing type that sets how long a thing may stay silent before it shows Disconnected, as the UI labels it. */}
+
+## Check that it worked
+
+On the gateway's **Things** tab the thing is listed. After its next message, the **Traffic** card shows **Things active** counting it, and the thing page shows new values.
+
+## If it doesn't work
+
+- **The assignment is refused**: read the message in the table above.
+- **Data for an assigned thing is discarded**: the box sends the wrong ID or thing type. Check the discard reasons on the **Traffic** card; see [Check gateway health and traffic](./fleet-health.mdx).
+- **A Periscope box creates a duplicate after an assignment**: the alternate ID was outside the namespace. Assign again with **Move alternate IDs into the namespace**.
+
+## Related
+
+- [Gateway reference](./gateway-reference.mdx) · [Thing types, things and interfaces](../model/things-and-types.mdx)
+- [Send data for many devices through one MQTT gateway](./mqtt-gateway.mdx)

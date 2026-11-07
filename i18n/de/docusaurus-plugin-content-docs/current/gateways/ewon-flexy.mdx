@@ -1,0 +1,101 @@
+---
+untranslated: true
+title: Connect an eWON Flexy
+description: Send the tags of an eWON Flexy to IoT Breeze through an MQTT device gateway, with the config file from IoT Breeze and a BASIC program on the unit.
+type: how-to
+sidebar_position: 5
+app:
+  routes: ["/onboarding/gateways", "/onboarding/gateways/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Connect an eWON Flexy so that one MQTT credential on the unit sends the data of every PLC and meter behind it. A Flexy can't run Periscope, so it talks MQTT to the platform with a BASIC program. For the model, read [How gateways work](./how-gateways-work.mdx).
+
+:::warning Not yet run on hardware
+The topics, client ID rule, payload and limits below are read from the platform. The Flexy side has not been run on a unit yet. Points that need a check on your unit are marked **Unverified**.
+:::
+
+## Before you start
+
+- You need the **Gateway** permission (the built-in **Admin** role has it).
+- A Flexy with a network route to the platform's MQTT broker. As far as is known, the unit can't hold several MQTT sessions, so one gateway credential carries all of its devices.
+- The things for your PLCs and meters exist in IoT Breeze, with their thing types and measures. See [Register a thing](../model/register-thing.mdx).
+- The BASIC program. It is not a public download yet; see [Downloads](../downloads.mdx).
+
+## Steps
+
+1. In IoT Breeze, add an **MQTT device** gateway with **Config file format** set to **eWON Flexy BASIC parameters (.bas)**. Follow [Add the gateway](./mqtt-gateway.mdx#add-the-gateway).
+2. Select **Download config** before you close the drawer. The password is in the file only now. A file downloaded later holds a placeholder.
+3. Put the values on the unit, as the program expects them. The file is a list of BASIC comment lines, so loading it runs nothing. The layout of the file is provisional until it is confirmed against the program.
+
+   | Parameter in the file | Meaning |
+   | --- | --- |
+   | `NIMBIT_MQTT_HOST`, `NIMBIT_MQTT_PORT` | The broker. |
+   | `NIMBIT_MQTT_TLS` | `1` when the broker wants TLS, `0` when not. |
+   | `NIMBIT_MQTT_USERNAME`, `NIMBIT_MQTT_PASSWORD` | The gateway credential. |
+   | `NIMBIT_MQTT_CLIENT_ID` | The **Client ID prefix**, `<tenant>:gateway:<gateway id>`. You can add `:<suffix>`. |
+   | `NIMBIT_MQTT_TOPIC_PREFIX` | The prefix of every topic. |
+   | `NIMBIT_MQTT_TELEMETRY_TOPIC` | One thing's data. Replace `<thing>` with the thing's ID or alternate ID. |
+   | `NIMBIT_MQTT_BATCH_TOPIC` | One array for several things. |
+   | `NIMBIT_MQTT_STATUS_TOPIC` | The gateway's own health. |
+   | `NIMBIT_MQTT_GATEWAY_ID`, `NIMBIT_MQTT_TENANT` | The IDs inside the topics. |
+
+4. Load the program on the unit. It is expected to connect with MQTT 3.1.1, publish with QoS 1 and no retain, and reconnect with a back-off when the connection drops. On a timer it reads the tags, groups them by device and publishes. Every 5 minutes it sends the gateway's health to the status topic. **Unverified**: how the BASIC commands behave on your firmware.
+5. Publish in one of two ways. Both are described, with their checks, in [Send data for many devices through one MQTT gateway](./mqtt-gateway.mdx#publish-data).
+   - **One message per device** to `tenant/<tenant>/gateway/<gateway id>/device/<thing>/telemetry`.
+   - **One batch per cycle**: a JSON array to `tenant/<tenant>/gateway/<gateway id>/telemetry`, one element per device, each with `id`.
+6. In IoT Breeze, assign the devices' things to the gateway: open the gateway, select the **Things** tab and select **Assign things**. See [Manage the things behind a gateway](./things-behind-a-gateway.mdx).
+
+<Screenshot
+  page="gateways/ewon-flexy"
+  id="01-flexy-gateway-online"
+  route="/onboarding/gateways/:id"
+  state="Health tab of an MQTT device gateway named after a Flexy, online, with the Traffic card showing messages per minute"
+  alt="An online Flexy gateway with its traffic"
+/>
+
+Device IDs and measure names can't contain `/`, `.`, `+`, `#` or spaces on the per-device topic. A tag name such as `MB_10.2.0.15_U6_Temp` therefore can't be a device ID as it is. Choose an alternate ID without a dot for the thing, or send a batch and name the thing in `id`.
+
+If the unit's clock is not reliable, leave out `time`. The platform then uses the arrival time.
+
+A device the program can't reach must be left out of the batch. Don't send its last values again.
+
+## Try the platform side without the unit
+
+NimBit has a Node script, `flexy-sim.mjs`, that publishes like a Flexy. It needs Node 22 and the `mqtt` package. `--dry-run` prints the topics and payloads and needs neither.
+
+```sh
+export FLEXY_TENANT=<tenant>
+export FLEXY_USERNAME=<username>
+export FLEXY_PASSWORD=<password>
+node flexy-sim.mjs --broker <mqtt or mqtts>://<host>:<port> --gateway-id <gateway id> \
+  --mode batch --status --count 1
+```
+
+The script derives device IDs and thing type names from its options, so set `--devices`, `--device-prefix` and `--thing-type` to match your things. `--foreign <thing id>` adds an element for a thing of another gateway, and `--unknown` adds one for a thing that doesn't exist. Both must show up as discards, `not_member` and `unknown_thing`, while the gateway's own things are stored.
+
+{/* TODO(product): Is flexy-sim.mjs available to customers, and where is it downloaded from? It lives in the platform repository under tools/gateways/ewon-flexy/simulator. */}
+
+## Check that it worked
+
+Open the gateway. The **Health** tab shows **Online** after the first status message, and **Messages per minute** and **Things active** above zero while devices send. Open one of the things: its latest values are there.
+
+## If it doesn't work
+
+- **The broker refuses the connection**: check the client ID against **Client ID prefix** and the password. **Unverified**: whether the unit accepts a client ID of about 40 characters with colons, and a username of about 40 and a password of about 200 characters.
+- **No connection over TLS**: **Unverified**: whether the unit connects to a TLS broker with a certificate from a public authority, without a CA you upload, and which TLS versions it supports. Use the **TLS** row from IoT Breeze to decide.
+- **A publish is acknowledged but nothing is stored**: the topic is outside the **Topic prefix**. **Unverified**: the longest topic and the largest payload the unit's `PUBLISH` takes.
+- **The gateway is Offline while data arrives**: only the status message makes it online. Check the status topic and the 5-minute timer.
+- **Discards**: read the reason on the **Traffic** card. `not_member` means the thing isn't assigned, `unknown_thing` that the thing or its thing type doesn't exist.
+
+**Unverified on hardware**: how the unit buffers while the link is down and what a replay does; what a tag of a disconnected PLC reads; whether the BASIC program can redeem a code over HTTPS instead of holding the password.
+
+{/* TODO(product): The BASIC program (script/nimbit.bas) is not in the repository yet. Confirm how it is distributed, the firmware version it was tested on, and the final layout of the .bas parameter file. */}
+
+## Related
+
+- [Send data for many devices through one MQTT gateway](./mqtt-gateway.mdx)
+- [Manage the things behind a gateway](./things-behind-a-gateway.mdx)
+- [Gateway reference](./gateway-reference.mdx)
+- [MQTT topics and client ID](../connect/mqtt-topics.mdx)

@@ -1,0 +1,48 @@
+---
+untranslated: true
+title: What Periscope keeps on the box
+sidebar_label: State and backup
+description: The files in Periscope's state directory that give a box its gateway identity, its queues and its work, and which of them to back up.
+sidebar_position: 5
+type: reference
+app:
+  routes: ["/onboarding/gateways"]
+---
+
+Everything Periscope keeps is in its state directory, `agent.state_dir`, `/var/lib/periscope` by default. The directory is created with mode 0700 and its files with mode 0600. The full list of files is in the [Configuration reference](../configuration.mdx#state-directory); this page covers what matters for a gateway.
+
+## Identity of the gateway
+
+| File | Holds | If it is lost |
+| --- | --- | --- |
+| `gateway_key.pem` | The box's private key. It never leaves the box. | The box can't sign in. Onboard it again with a new code. |
+| `gateway_key.next.pem` | The next key, while a rotation is under way. The box registers a new key 30 days before the current one expires, and the current one keeps working for a week after that. | Nothing, unless a rotation was under way. |
+| `gateway.json` | The gateway's IDs, the key's expiry, the endpoints it signs in at, and the answer of the platform's `gateways.me`: namespace, gateway thing and its thing type. | The agent can't sign in as the gateway. Onboard again. |
+| `tenant.json` | The organization this state belongs to. The state can connect only to the same organization again. | The pin is made again at the next onboarding. |
+| `nimbit-gateway-credential.json` | The gateway's cached data credential for the platform outputs. | A new one is requested with the next token. |
+| `nimbit-mqtt-credential.json` | The tenant credential, cached by a box that runs as a service account. | A new one is requested. |
+
+A box that signs in as a gateway holds no password. Its sign-in tokens last 5 minutes and its ingest tokens at most 10 minutes. The one secret besides the key is the cached data credential.
+
+## Work
+
+| File | Holds | If it is lost |
+| --- | --- | --- |
+| `proposals.yaml` | Thing types and things, with their status. | Discovery proposes everything again. |
+| `edits.yaml` | Renames, merges, units and scales you made in the web UI. | Discovery proposes the generated names again. |
+| `mapping.json` | Which source address feeds which thing and measure. | The next apply writes it again. |
+| `tsflux-stream/<output>/`, `spool/<output>/` | Values not yet accepted by the platform. | Those values are lost. |
+| `config.ui.toml` | Keys written by the setup screen. | The agent is not connected until you set them again. |
+
+## What to back up
+
+Back up the whole directory while the agent is stopped, or at least `gateway_key.pem`, `gateway.json`, `tenant.json`, `proposals.yaml`, `edits.yaml`, `mapping.json` and your `periscope.toml`. The copy contains the box's private key: store it as you would a password.
+
+You don't need to back up the queues. A restored copy must run on one box only. Two boxes with the same key and the same MQTT client ID disconnect each other.
+
+To replace a box instead of restoring it, see [Replace a box](./replace-a-box.mdx).
+
+## Related
+
+- [Configuration reference](../configuration.mdx)
+- [Onboard a box with an onboarding code](./onboard.mdx)
