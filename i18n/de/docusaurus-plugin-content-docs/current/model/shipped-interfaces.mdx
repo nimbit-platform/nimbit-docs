@@ -1,0 +1,47 @@
+---
+untranslated: true
+title: Shipped interfaces
+sidebar_position: 9
+description: The interfaces that come with the platform, with their fields, and what you get when you attach them.
+type: reference
+app:
+  routes: ["/onboarding/interfaces"]
+---
+
+IoT Breeze ships one interface. It appears under **Settings › Onboarding › Interfaces** on the **Preshipped** tab, and is read-only: you can attach it, compare its versions and update to a newer one, but you can't edit it.
+
+## Temperature Sensing
+
+Ambient temperature and humidity. Its maturity is **Stable**.
+
+| Property | Value |
+| --- | --- |
+| Display name | **Temperature Sensing** |
+| Name | `temperature-sensing` |
+| Current version | v1 |
+| Maturity | **Stable** |
+
+| Field | Kind | Type | Unit | Display name | Aliases |
+| --- | --- | --- | --- | --- | --- |
+| `temperature` | Measure | `numeric` | `°C` | Temperature | `temp` |
+| `humidity` | Measure | `numeric` | `%` | Humidity | `rh`, `relativeHumidity` |
+
+Both fields are flagged **Timeseries relevant**.
+
+### Starter content
+
+The **Temperature sensing** pack adds content built on this interface. A tenant admin installs it under **Administration › Tenant Settings › Packs**; see [Tenant settings](../administer/tenant-settings.mdx).
+
+| Item | What it is |
+| --- | --- |
+| **Temperature Sensing** dashboard | A Smart dashboard with two gauges: temperature from -20 to 60, humidity from 0 to 100. |
+| **Room overview** canvas | Tiles with comfort bands, gauges and a 24-hour chart for one room. Works for any thing whose type implements the interface. |
+
+{/* TODO(product): The pack manifest (packs.gen.ts) is version 2, with the interface also named temperature-sensing, while the preshipped interface is v1 from the seed. Does installing the pack create a second, tenant-owned copy of the interface, or reuse the preshipped one? */}
+
+To use it, [attach it to a thing type](./reuse-interface.mdx#attach-it-to-another-thing-type) and map any fields that have other names.
+
+## Related
+
+- [Reuse an interface across thing types](./reuse-interface.mdx)
+- [Build one dashboard for every thing of a kind](../visualize/smart-dashboard.mdx)

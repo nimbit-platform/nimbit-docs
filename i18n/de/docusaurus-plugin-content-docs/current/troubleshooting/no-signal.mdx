@@ -1,0 +1,101 @@
+---
+untranslated: true
+title: A device shows no signal
+description: Find out why a thing says No signal yet or stopped reporting, from credentials and topics to dropped measures and gateways.
+sidebar_position: 2
+type: how-to
+app:
+  routes: ["/monitor/thing-details/:id", "/onboarding/things/:id"]
+---
+
+Work out why data from a device does not show up on its thing. How a message travels is in [How devices connect](../connect/how-devices-connect.mdx).
+
+## Symptoms
+
+- The thing's header says **No signal yet**, or **last signal** is older than it should be.
+- **Live values** says **No data yet**, or **Measures** reads `3 of 4 reporting`.
+- The device reports success, but nothing appears.
+
+## Check in this order
+
+### 1. Send a test message from IoT Breeze
+
+Open the thing (**Settings › Onboarding › Things**), select **More actions › Send data** and send one message. See [Simulate a device](../connect/simulate.mdx).
+
+- **It appears on Overview**: the thing, its thing type and the platform work. The problem is on the device side. Continue with checks 2 to 5.
+- **It does not appear**: the problem is in the thing type or the thing. Go to checks 6 and 7.
+
+### 2. Credentials and client ID
+
+Open the thing, go to **Connections**, select **Connection info** and compare each value with what the device uses.
+
+| Protocol | Symptom | Fix |
+| --- | --- | --- |
+| MQTT | The connection is refused | The client ID must be `<tenantId>:<deviceId>`, optionally followed by `:<suffix>`, and never empty. The username is the one in **Connection info**. The password is the basic password or the JWT token. |
+| MQTT | The device keeps reconnecting | Two clients with the same client ID replace each other. Add a suffix to one. |
+| HTTP | `401` | The credential is wrong, missing or expired. Check **Expires at** of a token. |
+
+If someone rotated the **Device key**, every older credential is refused. An open MQTT connection survives a rotation until it reconnects. Create new credentials: [Create and rotate device credentials](../connect/credentials.mdx).
+
+### 3. Port and TLS
+
+**Gateway url** in **Connection info** gives the scheme, host and port of your deployment. `mqtts://` means the client must use TLS. A client that uses the wrong scheme or port does not connect. The REST URLs under **REST** carry the scheme of your deployment too.
+
+### 4. Topic and IDs
+
+The device may publish only to the **Telemetry** topic, `tenant/<tenantId>/device/<deviceId>/telemetry`. Any other topic is refused. `<deviceId>` is the internal ID shown in **Connection info**, not the **Thing Alternate ID**.
+
+Over HTTP, `tenant`, `id` and `thingType` are required. `id` accepts the thing's ID or its **Thing Alternate ID**, and both must belong to the credential.
+
+### 5. Messages that are refused or dropped
+
+Subscribe to the **Errors** topic before you publish. The command is in [Send data over MQTT](../connect/mqtt.mdx#check-that-it-worked). A message refused after the broker accepted it, for example an unknown thing type, arrives there with `stage` and `error`.
+
+Some messages never reach that topic. Invalid JSON, a missing `thingType`, no `data` and no `geo`, or a `tenant` or `id` that does not match the topic are dropped without a notice. Check the payload against [Message format](../connect/message-format.mdx).
+
+Over HTTP the status code says what happened:
+
+| Status | Do |
+| --- | --- |
+| `400` | Read the body. It names the problem: bad JSON, unknown thing or thing type, credential mismatch. |
+| `401` | See check 2. |
+| `207` | Resend only the entries with status `503`. |
+| `422` | The message was refused and will be again. Fix it. |
+| `429`, `503` | Wait for `Retry-After`, then retry. |
+
+All codes: [Ingest endpoints and status codes](../connect/ingest-endpoints.mdx).
+
+### 6. Thing type name
+
+`thingType` must be the name or ID of the type the thing was created with. A thing's type cannot change. Compare it with the **Thing type** shown on the thing.
+
+### 7. Measures the thing type does not know
+
+A measure that is not in the **published** version of the thing type is dropped. If nothing else is left in the message, the whole message is refused. Open the thing type, **Schema** tab:
+
+- The measure exists only in a draft: publish it. See [Drafts, publishing and versions](../model/drafts-and-versions.mdx).
+- The name differs: names are stored in lower case. Make the device send the schema's name.
+- You want new measures added automatically: turn on **Auto Schema Evolution** on the thing type.
+- The thing type has a transformation pipeline: a step may remove or rename the value. See [Clean up incoming data](../model/clean-up-data.mdx).
+
+### 8. Timestamps
+
+Without `time`, the time of arrival is used. With a device clock that is wrong, values are stored, but at a time outside the range you look at, and **last signal** can show an unexpected time. For line protocol, a timestamp in seconds needs `precision=s`; the default is nanoseconds and puts the data in 1970. See [Message format](../connect/message-format.mdx#time).
+
+### 9. Devices behind a gateway
+
+A device behind a gateway does not connect itself. Check the gateway first, then that the device is known as a thing. See [Gateways and edge](../gateways/index.mdx).
+
+## Still stuck?
+
+Write to info@nimbit.de with:
+
+- Your tenant name, the thing's name and its **Client id** from **Connection info**.
+- Protocol (MQTT, HTTP, line protocol, gateway), and the time of one failed attempt with its time zone.
+- The HTTP status and body, or the text from the **Errors** topic.
+- The payload you sent, with secrets removed. Never send passwords or tokens.
+
+## Related
+
+- [Send data over MQTT](../connect/mqtt.mdx) · [Send data over HTTP](../connect/http.mdx)
+- [MQTT topics and client ID](../connect/mqtt-topics.mdx) · [Thing types, things and interfaces](../model/things-and-types.mdx)

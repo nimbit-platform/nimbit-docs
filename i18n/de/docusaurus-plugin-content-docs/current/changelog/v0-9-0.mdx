@@ -1,0 +1,52 @@
+---
+untranslated: true
+title: "0.9.0"
+description: "Released 10 February 2026: new sidebar, reworked dashboard menus and many dashboard, rule and sign-in fixes."
+type: reference
+date: 2026-02-10
+sidebar_position: 9
+---
+
+Released 10 February 2026. This release gives IoT Breeze a new sidebar and interface components, and fixes many dashboard, widget and sign-in problems.
+
+## Improved
+
+**Navigation and design**
+- The sidebar has a new design.
+- Dark mode now works on the tenant settings page.
+- Search shows a loading indicator next to the input.
+- Many missing translations were added across dashboards, reports, canvas and mail templates.
+
+**Dashboards**
+- The dashboard menu on thing and thing type pages is reworked.
+- The dashboard form is updated.
+- The graph page has a floating toolbar.
+- The time range settings on the report page use a calendar.
+- Report forms can be resized.
+
+**Events**
+- The event page is faster for correlated events and shows who last modified an event.
+
+**Automation**
+- The active/draft switch in the rule designer has a new look.
+
+**Geofences**
+- Latitude and longitude are numeric inputs in the geofence form.
+
+**Devices**
+- Heartbeats are now recorded by the platform and stored in its database.
+
+## Fixed
+
+- Dashboards: actions defined on things now show on dashboards, and missing widget actions are rendered.
+- Dashboards: fixed a 403 error on dashboards.
+- Dashboards: creating a widget now offers only the things of the dashboard, not all things.
+- Dashboards: fixed an endless loop on multi-asset dashboards, and unassigning a dashboard from the hierarchy page works.
+- Widgets: the status widget saves correctly with a color set.
+- Thing types: you can update a measure, and edit telemetry while a draft exists.
+- Connectivity: fixed the connection status.
+- Rules: fixed the **Replace** button in the rule designer and the recipient form.
+- Geofences: deleting a geofence updates the list, and navigation in the geofence page works.
+- Canvas: adding or deleting a canvas updates the list.
+- Sign-in: fixed the login flow, switching between password and one-time code, hidden input values on the login page, and the redirect after logout.
+- Dialogs: removed the scroll bar from the unassign dashboard dialog.

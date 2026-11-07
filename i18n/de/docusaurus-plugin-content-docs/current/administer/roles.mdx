@@ -1,0 +1,129 @@
+---
+untranslated: true
+title: Roles and permissions
+description: What the four system roles Admin, Manager, Modeler and Viewer may do, per resource type, and how custom roles work.
+type: reference
+sidebar_position: 9
+app:
+  routes: ["/administration/roles"]
+---
+
+The permissions of the four system roles in every tenant, per resource type. Roles say what kind of action is allowed. [Groups](./access.mdx) say on which things.
+
+## Reading the tables
+
+| Letter | Action | Matrix column |
+| --- | --- | --- |
+| `c` | Create | **Create** |
+| `r` | Read | **Read** |
+| `u` | Update | **Update** |
+| `d` | Delete | **Delete** |
+| `x` | Execute | **Execute** |
+
+A dash means the role has no permission on that resource. Resource names are as the permission matrix in **Administration › Roles** shows them. System roles cannot be changed. A user with several roles holds all their permissions together.
+
+## Things and models
+
+| Resource | Admin | Manager | Modeler | Viewer |
+| --- | --- | --- | --- | --- |
+| Thing | `crudx` | `crudx` | `crudx` | `r` |
+| Thing type | `crudx` | `crudx` | `crudx` | `r` |
+| Interface | `crudx` | `crudx` | `crudx` | `r` |
+| Label | `crudx` | `crudx` | `crudx` | `r` |
+| Search | `crudx` | `crudx` | `r` | `r` |
+| Resource Hierarchy | `crudx` | `crudx` | `crudx` | `r` |
+| Device Authentication | `crudx` | `r` | `crudx` | `r` |
+| Subscription | `crudx` | `crudx` | `crudx` | `r` |
+
+## Dashboards, data and files
+
+| Resource | Admin | Manager | Modeler | Viewer |
+| --- | --- | --- | --- | --- |
+| Dashboard | `crudx` | `crudx` | `crudx` | `r` |
+| Query | `crudx` | `crudx` | `crudx` | `crud` |
+| Canvas | `crudx` | `crudx` | `crudx` | `r` |
+| Report | `crudx` | `r` | `crudx` | `r` |
+| File | `crudx` | `crudx` | `crud` | `r` |
+| Data deletion | `crud` | – | – | – |
+
+## Events, rules and automation
+
+| Resource | Admin | Manager | Modeler | Viewer |
+| --- | --- | --- | --- | --- |
+| Event | `crudx` | `crudx` | `crudx` | `r` |
+| Event Type | `crudx` | `crudx` | `crudx` | `r` |
+| Rule | `crudx` | `crudx` | – | – |
+| Action | `crudx` | `crudx` | `crudx` | `rx` |
+| Action log | `crudx` | `crudx` | `crudx` | – |
+| Notification | `crudx` | `crudx` | `ru` | `r` |
+| Destination | `crudx` | `crudx` | – | – |
+| Job | `crudx` | `crudx` | – | – |
+| Geofence | `crudx` | `crudx` | `crudx` | `r` |
+| Schedule | `crudx` | – | – | – |
+| Task Schedule | `crudx` | – | – | – |
+| Mail Template | `crudx` | `crudx` | – | – |
+| Mail template block | `crudx` | `crudx` | – | – |
+| Incident | `crudx` | `crux` | – | `cr` |
+| Incident policy | `crudx` | `r` | – | – |
+| VNC Server | `crudx` | `crudx` | `crudx` | `rx` |
+| Knowledge | `crudx` | `crudx` | `crudx` | `rx` |
+| Context | `crudx` | – | – | – |
+
+## People, access and tenant
+
+| Resource | Admin | Manager | Modeler | Viewer |
+| --- | --- | --- | --- | --- |
+| User | `rudx` | `rud` | `r` | `r` |
+| Invitation | `crudx` | – | – | – |
+| Group | `crudx` | `crudx` | `r` | `r` |
+| Organization | `crudx` | `crudx` | `r` | `r` |
+| Role | `crudx` | `r` | `r` | `r` |
+| Tenant | `rudx` | `r` | `r` | `r` |
+| Theme | `crudx` | – | – | – |
+| Api Client | `crudx` | – | – | – |
+| ApiKey | `crud` | – | `c` | – |
+| ServiceAccount | `crud` | – | – | – |
+| Gateway | `crud` | – | – | – |
+| Audit log | `r` | – | – | – |
+
+The permission list also holds Property Set, Timeseries, Widget, Account and Rule version. No system role has permissions on them.
+
+## What the letters mean for some resources
+
+| Resource | Meaning |
+| --- | --- |
+| Action | `x` runs an action, such as a command to a thing. |
+| VNC Server | `x` opens a VNC connection. |
+| Knowledge | `r` reads the knowledge graph and its documents. `c`, `u` and `d` create, change and delete records and the Knowledge setup. `x` asks Nimble and uses the MCP tools. |
+| Incident | `c` creates an incident by hand. `x` resolves and merges incidents. Only Admin can delete. |
+| Incident policy | The same letters, for the policies and automations that open incidents, and for incident statuses, resolution reasons and custom fields. |
+| ApiKey | `c` creates a key, `r` lists the tenant's keys, `u` changes a key or the key policy, `d` revokes a key. Modeler's `c` covers personal keys. |
+| Gateway | `r` lists gateways and their keys, `c` creates one, `u` issues an onboarding code or revokes a key, `d` removes one. |
+
+## Notes on the system roles
+
+| Role | Note |
+| --- | --- |
+| **Admin** | Only role with Invitation, Theme, ApiKey, ServiceAccount, Gateway, Data deletion and Audit log. Has no create permission on User and Tenant; people join through invitations. |
+| **Manager** | Reads reports but cannot create or change them. Works incidents and reads incident policies. |
+| **Modeler** | Has no Rule, Destination, Job or Incident permission. |
+| **Viewer** | Dashboards are read-only: a Viewer cannot create or change them. May create incidents, run actions, open VNC connections and ask Nimble. Keeps `crud` on Query. |
+
+Older installations may also show roles taken over from earlier user management, such as **System Admin**, **Invitation** or **Theme Designer**. They appear as custom roles.
+
+## Custom roles
+
+| Rule | Detail |
+| --- | --- |
+| Type | Shown as **Custom** in the **Type** column. System roles show **System**. |
+| Granting | You can only tick permissions you hold yourself. The others are locked. |
+| Changing or deleting | Only a member who holds all permissions of the role can change or delete it. |
+| Deleting | Users who had the role lose its permissions. |
+
+{/* TODO(product): The Viewer role keeps crud on Query (QueryConfig). Is that intended now that Viewer dashboards are read-only? */}
+
+## Related
+
+- [Users, groups and roles](./access.mdx)
+- [Invite a colleague](./invite.mdx)
+- [Give a team access to its things](./team-access.mdx)

@@ -72,9 +72,10 @@ const config: Config = {
 
   i18n: {
     defaultLocale: "en",
-    locales: ["en"],
+    locales: ["en", "de"],
     localeConfigs: {
       en: { label: "English" },
+      de: { label: "Deutsch" },
     },
   },
 

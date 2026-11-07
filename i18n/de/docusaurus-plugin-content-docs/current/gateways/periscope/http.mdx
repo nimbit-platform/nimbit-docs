@@ -1,0 +1,108 @@
+---
+untranslated: true
+title: Poll an HTTP source
+description: Poll a JSON HTTP API with Periscope, tell it where the things and values are in the response, and check what it proposes.
+type: how-to
+sidebar_position: 8
+app:
+  routes: ["/onboarding/gateways"]
+---
+
+Periscope polls JSON HTTP APIs, such as a weather service, an inverter, a building management system or a device's REST interface, and turns their values into things and measures. You say where in the response the thing is, and it proposes a measure for every value it finds there. For the stages, read [How Periscope works](./how-periscope-works.mdx).
+
+## Before you start
+
+- Periscope is installed and connected. See [Install Periscope and stream your first source](./install.mdx).
+- From the API: the URL that returns JSON, with query parameters, and the method (`GET`, or `POST` with a body).
+- Credentials, if any: a bearer token, a user and password, or an API key header. Put them in the agent's environment and reference them as `${NAME}`. Don't write them into the file.
+- The response's shape. Fetch it once with `curl` and look for where the values sit, whether it is one object or a list, which field names a list element, and which field holds the time.
+- The API's update rate and quota. Poll no faster than it updates.
+- Outbound HTTPS from the box to the API's host, through the proxy in `HTTPS_PROXY` if the site needs one.
+
+## Steps
+
+1. Add an input for a single object, here the current weather at one place:
+
+   ```toml
+   [[inputs.http]]
+   alias          = "weather"
+   urls           = ["https://api.open-meteo.com/v1/forecast?latitude=50.98&longitude=11.33&current=temperature_2m,relative_humidity_2m,wind_speed_10m"]
+   interval       = "15m"
+   root           = "current"
+   thing          = "weimar"
+   thing_type     = "weather"
+   timestamp_path = "time"
+   units_path     = "current_units"
+   exclude        = ["interval"]
+   ```
+
+2. For a list in which each element is a thing, name the list and the field that identifies an element:
+
+   ```toml
+   [[inputs.http]]
+   alias            = "stations"
+   urls             = ["https://api.example.com/v2/stations/latest"]
+   bearer_token     = "${STATIONS_TOKEN}"
+   interval         = "5m"
+   timeout          = "20s"
+   root             = "data"
+   items            = "stations"
+   thing_path       = "id"
+   thing_type       = "station"
+   timestamp_path   = "observed"
+   timestamp_format = "unix_ms"
+   include          = ["temp", "humidity", "wind.*"]
+   ```
+
+3. Validate and discover:
+
+   ```sh
+   periscope validate -config /etc/periscope/periscope.toml
+   periscope discover -config /etc/periscope/periscope.toml
+   ```
+
+4. Review and confirm the proposals. See [Approve what Periscope discovers](./approve-discoveries.mdx).
+
+| Key | Meaning |
+| --- | --- |
+| `urls` | The requests. Several URLs need `thing_path`. |
+| `interval`, `timeout` | Poll period, with a first poll at start, and the bound of one request. |
+| `bearer_token`, `username` and `password`, `headers` | Credentials and extra headers. |
+| `root` | Where the values are: a gjson path such as `current` or `data.items`. |
+| `thing`, or `items` with `thing_path` | One fixed thing, or a thing per array element named by one of its fields. |
+| `thing_type` | The thing type. Default: the alias. |
+| `timestamp_path`, `timestamp_format` | The values' time. Without it, the poll time. |
+| `units_path` | An object holding the units under the same keys. |
+| `include`, `exclude` | Which values to keep, by dotted path such as `wind.*`. |
+| `mapping` | A Bloblang mapping that reshapes the response first. |
+
+## Check that it worked
+
+Discovery proposes one thing type per input, one thing per object, and one measure per number, boolean or string, named by its path (`wind.speed` becomes `wind_speed`), with the unit from `units_path`:
+
+```text
+KIND       NAME     TYPE        STATUS    NOTE
+thingType  weather  3 measures  proposed  -
+thing      weimar   weather     proposed  -
+```
+
+A value's address in the mapping and metrics is `<thing>/<dotted.path>`, for example `weimar/temperature_2m`.
+
+## If it doesn't work
+
+- **`HTTP 401` or `HTTP 403`**: credentials are missing or wrong. Check that the `${NAME}` variable is set for the agent, and the token's scope.
+- **`HTTP 429`**: you poll faster than the API's quota. Raise `interval`. The back-off slows down meanwhile.
+- **`timeout`**: the API or the proxy doesn't answer within `timeout`. Check egress and `HTTPS_PROXY`, or raise `timeout`.
+- **`root "…" is not in the response`**: the path doesn't match, or the API sent an error. Fetch the URL with `curl` and compare.
+- **`the response (below root) is an array`**: set `thing_path`, and `items` when the list is below `root`.
+- **`response body over max_body`**: the response is over 4 MiB. Ask the API for less, or raise `max_body`.
+- **`redirect to another host refused`**: put the final URL into `urls`.
+- **Many measures such as `levels_0` to `levels_31`**: arrays become indexed measures. Use `include` and lower `max_array`.
+- **Every value repeats with the same time**: you poll faster than the API updates. Raise `interval`.
+
+More in [Troubleshoot Periscope](./troubleshooting.mdx).
+
+## Related
+
+- [How Periscope works](./how-periscope-works.mdx) · [Configuration reference](./configuration.mdx)
+- [Transform values before they leave the edge](./processors.mdx)

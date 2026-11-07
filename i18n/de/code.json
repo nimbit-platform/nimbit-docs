@@ -45,7 +45,7 @@
   },
   "theme.colorToggle.ariaLabel": {
     "message": "Umschalten zwischen dunkler und heller Ansicht (momentan {mode})",
-    "description": "The ARIA label for the navbar color mode toggle"
+    "description": "The ARIA label for the color mode toggle"
   },
   "theme.colorToggle.ariaLabel.mode.dark": {
     "message": "dunkler Modus",
@@ -279,15 +279,15 @@
   },
   "theme.SearchModal.startScreen.noRecentSearchesText": {
     "message": "No recent searches",
-    "description": "The text when no recent searches"
+    "description": "The text when there are no recent searches"
   },
   "theme.SearchModal.startScreen.saveRecentSearchButtonTitle": {
     "message": "Save this search",
-    "description": "The label for save recent search button"
+    "description": "The title for save recent search button"
   },
   "theme.SearchModal.startScreen.removeRecentSearchButtonTitle": {
     "message": "Remove this search from history",
-    "description": "The label for remove recent search button"
+    "description": "The title for remove recent search button"
   },
   "theme.SearchModal.startScreen.favoriteSearchesTitle": {
     "message": "Favorite",
@@ -295,63 +295,63 @@
   },
   "theme.SearchModal.startScreen.removeFavoriteSearchButtonTitle": {
     "message": "Remove this search from favorites",
-    "description": "The label for remove favorite search button"
+    "description": "The title for remove favorite search button"
   },
   "theme.SearchModal.errorScreen.titleText": {
     "message": "Unable to fetch results",
-    "description": "The title for error screen of search modal"
+    "description": "The title for error screen"
   },
   "theme.SearchModal.errorScreen.helpText": {
     "message": "You might want to check your network connection.",
-    "description": "The help text for error screen of search modal"
+    "description": "The help text for error screen"
   },
   "theme.SearchModal.footer.selectText": {
     "message": "to select",
-    "description": "The explanatory text of the action for the enter key"
+    "description": "The select text for footer"
   },
   "theme.SearchModal.footer.selectKeyAriaLabel": {
     "message": "Enter key",
-    "description": "The ARIA label for the Enter key button that makes the selection"
+    "description": "The ARIA label for select key in footer"
   },
   "theme.SearchModal.footer.navigateText": {
     "message": "to navigate",
-    "description": "The explanatory text of the action for the Arrow up and Arrow down key"
+    "description": "The navigate text for footer"
   },
   "theme.SearchModal.footer.navigateUpKeyAriaLabel": {
     "message": "Arrow up",
-    "description": "The ARIA label for the Arrow up key button that makes the navigation"
+    "description": "The ARIA label for navigate up key in footer"
   },
   "theme.SearchModal.footer.navigateDownKeyAriaLabel": {
     "message": "Arrow down",
-    "description": "The ARIA label for the Arrow down key button that makes the navigation"
+    "description": "The ARIA label for navigate down key in footer"
   },
   "theme.SearchModal.footer.closeText": {
     "message": "to close",
-    "description": "The explanatory text of the action for Escape key"
+    "description": "The close text for footer"
   },
   "theme.SearchModal.footer.closeKeyAriaLabel": {
     "message": "Escape key",
-    "description": "The ARIA label for the Escape key button that close the modal"
+    "description": "The ARIA label for close key in footer"
   },
   "theme.SearchModal.footer.searchByText": {
-    "message": "Search by",
-    "description": "The text explain that the search is making by Algolia"
+    "message": "Powered by",
+    "description": "The 'Powered by' text for footer"
   },
   "theme.SearchModal.noResultsScreen.noResultsText": {
     "message": "No results for",
-    "description": "The text explains that there are no results for the following search"
+    "description": "The text when there are no results"
   },
   "theme.SearchModal.noResultsScreen.suggestedQueryText": {
     "message": "Try searching for",
-    "description": "The text for the suggested query when no results are found for the following search"
+    "description": "The text for suggested query"
   },
   "theme.SearchModal.noResultsScreen.reportMissingResultsText": {
     "message": "Believe this query should return results?",
-    "description": "The text for the question where the user thinks there are missing results"
+    "description": "The text for reporting missing results"
   },
   "theme.SearchModal.noResultsScreen.reportMissingResultsLinkText": {
     "message": "Let us know.",
-    "description": "The text for the link to report missing results"
+    "description": "The link text for reporting missing results"
   },
   "theme.SearchModal.placeholder": {
     "message": "Search docs",
@@ -378,8 +378,8 @@
     "description": "The ARIA label for search page input"
   },
   "theme.SearchPage.algoliaLabel": {
-    "message": "Suche von Algolia",
-    "description": "The ARIA label for Algolia mention"
+    "message": "Unterstützt von Algolia",
+    "description": "The description label for Algolia mention"
   },
   "theme.SearchPage.noResultsText": {
     "message": "Es wurden keine Ergebnisse gefunden",
@@ -440,5 +440,379 @@
   "theme.tags.tagsPageTitle": {
     "message": "Tags",
     "description": "The title of the tag list page"
+  },
+  "theme.colorToggle.ariaLabel.mode.system": {
+    "message": "system mode",
+    "description": "The name for the system color mode"
+  },
+  "theme.IconExternalLink.ariaLabel": {
+    "message": "(opens in new tab)",
+    "description": "The ARIA label for the external link icon"
+  },
+  "theme.navbar.mobileDropdown.collapseButton.expandAriaLabel": {
+    "message": "Expand the dropdown",
+    "description": "The ARIA label of the button to expand the mobile dropdown navbar item"
+  },
+  "theme.navbar.mobileDropdown.collapseButton.collapseAriaLabel": {
+    "message": "Collapse the dropdown",
+    "description": "The ARIA label of the button to collapse the mobile dropdown navbar item"
+  },
+  "theme.SearchModal.searchBox.placeholderText": {
+    "message": "Dokumentation durchsuchen",
+    "description": "The placeholder text for the main search input field"
+  },
+  "theme.SearchModal.searchBox.placeholderTextAskAi": {
+    "message": "Weitere Frage stellen...",
+    "description": "The placeholder text when in AI question mode"
+  },
+  "theme.SearchModal.searchBox.placeholderTextAskAiStreaming": {
+    "message": "Antwortet...",
+    "description": "The placeholder text for search box when AI is streaming an answer"
+  },
+  "theme.SearchModal.searchBox.enterKeyHint": {
+    "message": "suchen",
+    "description": "The hint for the search box enter key text"
+  },
+  "theme.SearchModal.searchBox.enterKeyHintAskAi": {
+    "message": "eingeben",
+    "description": "The hint for the Ask AI search box enter key text"
+  },
+  "theme.SearchModal.searchBox.searchInputLabel": {
+    "message": "Suchen",
+    "description": "The ARIA label for search input"
+  },
+  "theme.SearchModal.searchBox.backToKeywordSearchButtonText": {
+    "message": "Zurück zur Stichwortsuche",
+    "description": "The text for back to keyword search button"
+  },
+  "theme.SearchModal.searchBox.backToKeywordSearchButtonAriaLabel": {
+    "message": "Zurück zur Stichwortsuche",
+    "description": "The ARIA label for back to keyword search button"
+  },
+  "theme.SearchModal.startScreen.recentConversationsTitle": {
+    "message": "Letzte Gespräche",
+    "description": "The title for recent conversations"
+  },
+  "theme.SearchModal.startScreen.removeRecentConversationButtonTitle": {
+    "message": "Dieses Gespräch aus dem Verlauf entfernen",
+    "description": "The title for remove recent conversation button"
+  },
+  "theme.SearchModal.resultsScreen.askAiPlaceholder": {
+    "message": "KI fragen: ",
+    "description": "The placeholder text for Ask AI input"
+  },
+  "theme.SearchModal.askAiScreen.disclaimerText": {
+    "message": "Antworten werden von KI generiert und können Fehler enthalten. Bitte überprüfen Sie die Antworten.",
+    "description": "The disclaimer text for AI answers"
+  },
+  "theme.SearchModal.askAiScreen.relatedSourcesText": {
+    "message": "Verwandte Quellen",
+    "description": "The text for related sources"
+  },
+  "theme.SearchModal.askAiScreen.thinkingText": {
+    "message": "Denkt nach...",
+    "description": "The text when AI is thinking"
+  },
+  "theme.SearchModal.askAiScreen.copyButtonText": {
+    "message": "Kopieren",
+    "description": "The text for copy button"
+  },
+  "theme.SearchModal.askAiScreen.copyButtonCopiedText": {
+    "message": "Kopiert!",
+    "description": "The text for copy button when copied"
+  },
+  "theme.SearchModal.askAiScreen.copyButtonTitle": {
+    "message": "Kopieren",
+    "description": "The title for copy button"
+  },
+  "theme.SearchModal.askAiScreen.likeButtonTitle": {
+    "message": "Gefällt mir",
+    "description": "The title for like button"
+  },
+  "theme.SearchModal.askAiScreen.dislikeButtonTitle": {
+    "message": "Gefällt mir nicht",
+    "description": "The title for dislike button"
+  },
+  "theme.SearchModal.askAiScreen.thanksForFeedbackText": {
+    "message": "Danke für Ihr Feedback!",
+    "description": "The text for thanks for feedback"
+  },
+  "theme.SearchModal.askAiScreen.preToolCallText": {
+    "message": "Suche...",
+    "description": "The text before tool call"
+  },
+  "theme.SearchModal.askAiScreen.duringToolCallText": {
+    "message": "Suche nach ",
+    "description": "The text during tool call"
+  },
+  "theme.SearchModal.askAiScreen.afterToolCallText": {
+    "message": "Gesucht nach ",
+    "description": "The text after tool call"
+  },
+  "theme.SearchModal.footer.submitQuestionText": {
+    "message": "Frage absenden",
+    "description": "The submit question text for footer"
+  },
+  "theme.SearchModal.footer.backToSearchText": {
+    "message": "Zurück zur Suche",
+    "description": "The back to search text for footer"
+  },
+  "home.door.new.voice": {
+    "message": "Ich bin neu hier"
+  },
+  "home.door.new.title": {
+    "message": "Quickstart"
+  },
+  "home.door.new.text": {
+    "message": "Ein simuliertes Gerät, ein Live-Dashboard und ein Alarm in etwa 15 Minuten. Ohne Hardware."
+  },
+  "home.door.new.cta": {
+    "message": "Quickstart starten"
+  },
+  "home.door.task.voice": {
+    "message": "Ich will etwas erledigen"
+  },
+  "home.door.task.title": {
+    "message": "Doku nach Aufgaben"
+  },
+  "home.door.task.text": {
+    "message": "Geräte verbinden, Dashboards bauen, Vorfälle bearbeiten, automatisieren. Jede Aufgabe auf einer Seite."
+  },
+  "home.door.task.cta": {
+    "message": "Zur Doku"
+  },
+  "home.door.api.voice": {
+    "message": "Ich brauche die Details"
+  },
+  "home.door.api.title": {
+    "message": "API und Referenz"
+  },
+  "home.door.api.text": {
+    "message": "Ingest-, Query- und Plattform-APIs, Nachrichtenformate, MQTT-Topics, Statuscodes."
+  },
+  "home.door.api.cta": {
+    "message": "Zur API-Doku"
+  },
+  "home.section.connect.title": {
+    "message": "Geräte verbinden"
+  },
+  "home.section.connect.question": {
+    "message": "Wie kommen meine Daten rein?"
+  },
+  "home.section.gateways.title": {
+    "message": "Gateways und Edge"
+  },
+  "home.section.gateways.question": {
+    "message": "Wie binde ich Maschinen an?"
+  },
+  "home.section.model.title": {
+    "message": "Daten modellieren"
+  },
+  "home.section.model.question": {
+    "message": "Wie beschreibe ich meine Geräte?"
+  },
+  "home.section.visualize.title": {
+    "message": "Visualisieren"
+  },
+  "home.section.visualize.question": {
+    "message": "Wie sehe ich meine Daten?"
+  },
+  "home.section.watch.title": {
+    "message": "Überwachen und reagieren"
+  },
+  "home.section.watch.question": {
+    "message": "Was braucht mich gerade?"
+  },
+  "home.section.automate.title": {
+    "message": "Automatisieren"
+  },
+  "home.section.automate.question": {
+    "message": "Was erledigt es für mich?"
+  },
+  "home.section.knowledge.title": {
+    "message": "Knowledge und KI"
+  },
+  "home.section.knowledge.question": {
+    "message": "Was kann ich fragen?"
+  },
+  "home.section.administer.title": {
+    "message": "Verwalten"
+  },
+  "home.section.administer.question": {
+    "message": "Wer darf was?"
+  },
+  "home.section.troubleshooting.title": {
+    "message": "Fehlerbehebung"
+  },
+  "home.section.troubleshooting.question": {
+    "message": "Etwas stimmt nicht."
+  },
+  "home.role.operator.title": {
+    "message": "Betrieb"
+  },
+  "home.role.operator.text": {
+    "message": "Things überwachen, Vorfälle bearbeiten, Nimble fragen."
+  },
+  "home.role.builder.title": {
+    "message": "Lösungsbau"
+  },
+  "home.role.builder.text": {
+    "message": "Geräte modellieren und verbinden, Dashboards und Regeln bauen."
+  },
+  "home.role.developer.title": {
+    "message": "Entwicklung"
+  },
+  "home.role.developer.text": {
+    "message": "Protokolle, Payloads, APIs und Webhooks."
+  },
+  "home.role.administrator.title": {
+    "message": "Administration"
+  },
+  "home.role.administrator.text": {
+    "message": "Benutzer, Zugriff, API-Schlüssel und Tenant-Einstellungen."
+  },
+  "home.meta.title": {
+    "message": "Dokumentation"
+  },
+  "home.meta.description": {
+    "message": "Dokumentation für IoT Breeze: Geräte verbinden, ihre Daten sehen und darauf reagieren."
+  },
+  "home.hero.title": {
+    "message": "IoT Breeze Doku"
+  },
+  "home.hero.text": {
+    "message": "Verbinden Sie Ihre Geräte, sehen Sie ihre Daten und reagieren Sie darauf. Anleitungen für alle, die IoT Breeze betreiben, und Referenzen für alle, die darauf aufbauen."
+  },
+  "home.hero.quickstart": {
+    "message": "Quickstart"
+  },
+  "home.hero.demo": {
+    "message": "Demo buchen"
+  },
+  "home.doors.label": {
+    "message": "Wo Sie anfangen"
+  },
+  "home.sections.title": {
+    "message": "Die Doku folgt Ihren Daten"
+  },
+  "home.sections.text": {
+    "message": "Vom Gerät zur Entscheidung. Jeder Bereich beantwortet eine Frage."
+  },
+  "home.roles.title": {
+    "message": "Starten Sie bei Ihrer Rolle"
+  },
+  "home.first.title": {
+    "message": "Senden Sie Ihren ersten Messwert"
+  },
+  "home.first.text": {
+    "message": "Eine HTTP-Anfrage oder eine MQTT-Nachricht. Jedes Thing hat eigene Zugangsdaten, und die Verbindungsinformationen in IoT Breeze zeigen Host, Topic und Benutzername."
+  },
+  "home.first.mqtt": {
+    "message": "Daten per MQTT senden"
+  },
+  "home.first.http": {
+    "message": "Daten per HTTP senden"
+  },
+  "home.first.api": {
+    "message": "API-Überblick"
+  },
+  "home.changelog.title": {
+    "message": "Was sich geändert hat"
+  },
+  "home.changelog.text": {
+    "message": "Release Notes zu jeder Version, mit hervorgehobenen Breaking Changes."
+  },
+  "home.blog.title": {
+    "message": "Aus dem Blog"
+  },
+  "home.blog.text": {
+    "message": "Produktneuigkeiten, durchgespielte Beispiele und wie wir NimBit bauen."
+  },
+  "app.open": {
+    "message": "IoT Breeze öffnen"
+  },
+  "app.address.change": {
+    "message": "Ihre IoT-Breeze-Adresse ändern"
+  },
+  "app.address.label": {
+    "message": "Ihre IoT-Breeze-Adresse"
+  },
+  "app.address.error": {
+    "message": "Geben Sie eine Adresse wie iot.example.com ein."
+  },
+  "app.address.hint": {
+    "message": "Auf Ihrer eigenen Domain? Geben Sie sie einmal ein. Links aus dieser Doku nach IoT Breeze und geführte Touren öffnen sich dann dort."
+  },
+  "app.address.default": {
+    "message": "Standard verwenden"
+  },
+  "app.address.save": {
+    "message": "Speichern"
+  },
+  "screenshot.toCome": {
+    "message": "Screenshot folgt"
+  },
+  "screenshot.route": {
+    "message": "Route"
+  },
+  "screenshot.state": {
+    "message": "Zustand"
+  },
+  "screenshot.file": {
+    "message": "Datei"
+  },
+  "sections.get-started.label": {
+    "message": "Erste Schritte"
+  },
+  "sections.get-started.description": {
+    "message": "Quickstart und Wege nach Rolle"
+  },
+  "sections.docs.label": {
+    "message": "Doku"
+  },
+  "sections.docs.description": {
+    "message": "Verbinden, modellieren, visualisieren, automatisieren"
+  },
+  "sections.api.label": {
+    "message": "API"
+  },
+  "sections.api.description": {
+    "message": "Ingest-, Query- und Plattform-APIs"
+  },
+  "sections.changelog.label": {
+    "message": "Changelog"
+  },
+  "sections.changelog.description": {
+    "message": "Release Notes"
+  },
+  "tour.eyebrow": {
+    "message": "Geführte Tour in IoT Breeze"
+  },
+  "tours.more": {
+    "message": "Weitere Touren"
+  },
+  "tours.fromHelpMenu": {
+    "message": "(starten Sie sie über das Hilfemenü auf diesem Bildschirm)"
+  },
+  "doc.type.tutorial": {
+    "message": "Tutorial"
+  },
+  "doc.type.how-to": {
+    "message": "Anleitung"
+  },
+  "doc.type.concept": {
+    "message": "Konzept"
+  },
+  "doc.type.reference": {
+    "message": "Referenz"
+  },
+  "doc.footer.markdown": {
+    "message": "Als Markdown ansehen"
+  },
+  "doc.footer.report": {
+    "message": "Problem mit dieser Seite melden"
+  },
+  "doc.untranslated": {
+    "message": "Diese Seite ist noch nicht übersetzt. Sie lesen die englische Fassung."
   }
 }

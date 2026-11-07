@@ -1,0 +1,94 @@
+---
+untranslated: true
+title: An alert email never arrives
+description: Find out why an alert email does not arrive, from switched-off actions and recipients to mail templates, the mail server and channel filters.
+sidebar_position: 5
+type: how-to
+app:
+  routes: ["/monitor/events", "/manage/event-types/:id", "/manage/mail-templates", "/manage/notification-channels"]
+---
+
+Find out why an event happened but the email did not follow. Email and notification channels are separate paths, explained in [Events, incidents and notifications](../watch/events-incidents-notifications.mdx).
+
+## Symptoms
+
+- An event or incident exists under **Monitoring**, and nobody got a mail.
+- The mail arrives with empty or wrong content.
+- You expected a Teams, Slack or webhook message and got none.
+
+## Check in this order
+
+### 1. Which path should send it
+
+| You expect | Sent by |
+| --- | --- |
+| A mail about an event | An **Email** action on the event type, or on a rule |
+| A mail about an incident | IoT Breeze, to the incident's assignee and watchers |
+| A chat or webhook message | A notification channel. See check 6. |
+
+A notification channel cannot be an email address. Incidents reach a channel only through an automation on their incident policy.
+
+### 2. The event happened and the action ran
+
+Open **Monitoring › Events** and find the event.
+
+- **No event**: the rule did not fire. See [A rule doesn't fire](./rule-not-firing.mdx).
+- **An event of another type**: the **Email** action is on a different event type. Open **Configuration › Event Types**, the type of the event, and its **Actions** tab.
+- **The action is there with its Active switch off**: actions added on an event type are created switched off. Switch it on.
+- **The event closes an alarm**: events that end a state, such as a thing coming back online, run no actions.
+- **The action failed**: a failed run is recorded as its own event. Open it for the reason.
+
+### 3. Recipients
+
+Open the **Email** action. At least one user, group or external address is needed.
+
+- A group sends to its members. Check that the person is in it.
+- Check **From**, **CC** and **BCC** for typos.
+
+{/* TODO(product): What happens when a group recipient has no members, or a user has no email address? Is the run recorded as failed or silently skipped? */}
+
+### 4. Subject, body and mail template
+
+- Format **Plain**: **Subject** and **Body** are required, and `{{placeholders}}` in them are filled in.
+- Format **Mail template**: placeholders in **Subject** and **Body** do not apply. The template you pick in the action is used, whatever is assigned on the **Assignment** tab.
+- The template needs the context **Event**. On an event type's **Email** action, `{{event}}` is the event, so `{{event.title}}` is its title.
+- Open **Settings › Configuration › Mail templates**, then **Send test mail** to see the template render. A value that stays empty means the placeholder is not in the list under **Dynamic Variables**.
+
+Template parts and placeholders: [Mail templates and placeholders](../watch/mail-templates.mdx).
+
+### 5. The mail server and the spam folder
+
+Mail goes through your tenant's mail server if one is set up, and otherwise through the platform mail server. An administrator opens **Administration › Tenant Settings › Email**:
+
+- **System default**, **Microsoft 365** or **Custom SMTP**: check which one is in use. For Microsoft 365, the sign-in must be active. For SMTP, check **Host**, **Port**, security (**STARTTLS** or **SSL/TLS**), **Username** and **Password**.
+- Select **Send a test mail**. If it fails or does not arrive, the problem is the mail server, not the alert.
+- If the test arrives, look in the spam folder for the alert. Allow the sender address, which is the **From** of the action or of the server.
+- Some installations send no email. Ask your administrator.
+
+### 6. Chat or webhook message missing
+
+Open **Settings › Configuration › Notification Channels**.
+
+- **Enabled** must be on. A disabled channel receives nothing, and its deliveries show **Suppressed**.
+- The row says **Action only** when **Automatic routing** is off. The channel then gets messages only from actions that name it.
+- **Minimum severity** and **Event types** apply to every message, including those from actions. An event below the severity or of another type is not sent.
+- Select **Delivery log** on the channel. **Pending** means retrying, **Failed** shows the receiver's answer in **Error** after 5 attempts, **Sent** means the receiver accepted it. Select **Send test** to prove the path.
+- Incident messages are never routed automatically. Add an automation to the incident policy: [Set up an incident policy](../watch/incident-policy.mdx).
+
+### 7. Incident mails
+
+The assignee and watchers get an email on every change to the incident, except for what they did themselves. A person who selected **Mute this incident** gets none. Check **Watchers** on the incident.
+
+## Still stuck?
+
+Write to info@nimbit.de with:
+
+- Your tenant name, the event or incident and its ID, and the time it occurred, with its time zone.
+- The event type, and the name of the **Email** action or channel.
+- The recipient address and your mail provider setting (**System default**, **Microsoft 365** or **Custom SMTP**).
+- The result of **Send a test mail** and the **Error** from the **Delivery log**, if there is one.
+
+## Related
+
+- [Channel types](../watch/channel-types.mdx) · [Event types](../watch/event-types.mdx)
+- [Send alerts to Teams, Slack or a webhook](../watch/alert-channels.mdx) · [Action types](../automate/action-types.mdx)

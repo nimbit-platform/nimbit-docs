@@ -1,0 +1,70 @@
+---
+untranslated: true
+title: Give a team access to its things
+description: Create a group, add people, things and thing types to it, and set what each member may do.
+type: how-to
+sidebar_position: 4
+app:
+  routes: ["/administration/groups", "/administration/groups/:id"]
+---
+
+Make a group for a team, a customer or a site so its members see exactly the things that belong to it. Members of a group also reach everything in its subgroups, as [Users, groups and roles](./access.mdx) explains.
+
+## Before you start
+
+- You need a role that creates and changes groups. **Admin** and **Manager** have it.
+- The people must already be users of the tenant. [Invite them](./invite.mdx) first.
+- Decide the parent. Put a customer group at the top and a group per site below it.
+
+## Create the group
+
+1. Open **Administration › Groups** and select **Create group**. To add below an existing group, select **Add subgroup** on it.
+2. Enter a **Group name**.
+3. Choose the **Group type**: **Default**, or **Organization** for the top of a customer, company or site.
+4. Choose the **Parent**.
+5. Optional: add **Tags** and a **Description**, then save.
+
+## Add people, things and types
+
+Select the group to open it.
+
+1. On the **Users** tab, select **Add user** and choose people.
+2. On the **Things** tab, select **Add thing** and choose the things the team works with.
+3. To give the team every thing of a kind, add the kind on the **Thing Types** tab. Members then see all things of that type.
+4. On the **Event Types** tab, add the event types members may view and act on.
+
+You can also add a thing to groups when you create it.
+
+## Set what members may do
+
+Each member has three switches in the group.
+
+| Switch | Allows |
+| --- | --- |
+| **Read** | See the group's content. Always on. |
+| **Update** | Change, create and delete content in the group. |
+| **Execute** | Run actions, for example send a command to a thing. |
+
+Change them on the group's **Users** tab, or on the **Groups** tab of the user. To pre-set them for people added later, select **Set default permissions** on the group. This does not change current members.
+
+Members marked **Inherited** get their access from a parent group. Change it there.
+
+## Check that it worked
+
+Open the group: the **Members** and **Subgroups** counts match what you expect. Ask a member to sign in, or compare with the user's **Groups** tab. They should see the things you added and nothing else.
+
+## If it doesn't work
+
+- **A member sees nothing**: the person's role may lack read permissions, or the group holds no things or thing types. Both are needed. See [Roles and permissions](./roles.mdx).
+- **A member sees too much**: they may be in a parent group, or hold a thing type that covers more things than intended. Check the **Inherited** marker and the **Thing Types** tab.
+- **You cannot change a permission**: it is inherited. Change it on the parent group.
+- **You cannot change the type or parent of a group**: you lack the permission, or no valid parent exists.
+
+:::warning
+Deleting a group removes the access it gave. The users, things and types stay. Check the **Users** tab first.
+:::
+
+## Related
+
+- [Users, groups and roles](./access.mdx) · [Roles and permissions](./roles.mdx)
+- [Invite a colleague](./invite.mdx)

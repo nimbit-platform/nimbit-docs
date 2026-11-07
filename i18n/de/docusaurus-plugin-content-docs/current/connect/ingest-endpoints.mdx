@@ -1,0 +1,92 @@
+---
+untranslated: true
+title: Ingest endpoints and status codes
+description: The HTTP endpoints of tsflux that accept device data, their authentication, query parameters, response bodies and status codes.
+sidebar_position: 10
+type: reference
+app:
+  routes: ["/onboarding/things/:id"]
+---
+
+The HTTP endpoints that accept device data. How to call them: [Send data over HTTP](./http.mdx) and [Write InfluxDB line protocol](./line-protocol.mdx).
+
+## Base URL
+
+All endpoints take `POST`. **Connection info** lists the full URL of each under **REST**.
+
+| Mount | Endpoints |
+| --- | --- |
+| `<rest-base>`, which ends in `/tsflux` | The `/api/v1/...` endpoints. |
+| `<host>`, the same host without `/tsflux` | `/write` and `/api/v2/write`. |
+
+Host and TLS depend on your deployment: copy the URLs from **Connection info** instead of building them.
+
+## Authentication
+
+Send the thing's credential in the `Authorization` header.
+
+| Credential | Header |
+| --- | --- |
+| JWT token | `Authorization: Bearer <token>` |
+| Basic | `Authorization: Basic <base64 of username:password>` |
+
+The credential fixes the tenant and the device. A message for another tenant or device is refused. Create credentials in [Create and rotate device credentials](./credentials.mdx).
+
+## Endpoints
+
+| Endpoint | Body | Success answer |
+| --- | --- | --- |
+| `/api/v1/message/structured` (**Structured JSON**) | A [message](./message-format.mdx) or an array of messages. | `200` JSON |
+| `/api/v1/message/async-structured` (**Async structured JSON**) | Same. | `200` JSON |
+| `/api/v1/write/json` | Same. | `200` JSON |
+| `/api/v1/<tenant>/<thingType>/device/<id>/telemetry` | One message or an array. The path overrides `tenant`, `thingType` and `id`. | `200` JSON |
+| `/api/v1/write/line-protocol` (**Line protocol**) | InfluxDB line protocol. | `200` JSON |
+| `/api/v2/write` (**InfluxDB v2 compatible write**) | InfluxDB line protocol. | `204` |
+| `/write` (**InfluxDB v1 compatible write**) | InfluxDB line protocol. | `204` |
+
+The two `message` endpoints behave exactly like `/api/v1/write/json`: both wait for the result. Only `/api/v1/message/structured` and `/api/v1/message/async-structured` are in **Connection info**.
+
+## Query parameters and headers
+
+Line protocol endpoints only.
+
+| Name | Where | Meaning |
+| --- | --- | --- |
+| `precision` | query | Timestamp unit: `ns` (default), `us`, `ms` or `s`. Any other value answers `400`. |
+| `bucket`, `db` | query | Tenant, when the request carries no credential tenant. `bucket` wins over `db`. |
+| `X-Tenant` | header | Tenant, with the same rule. It wins over `bucket`. |
+
+With a credential, the tenant always comes from the credential.
+
+## Response bodies
+
+| Status | Body |
+| --- | --- |
+| `200` | `{"message": "success", "processed": <n>, "elapsed_ms": <ms>}` |
+| `207` | `{"message": "partially stored", "processed": <n>, "failed": [{"index": <i>, "status": <code>, "error": "<reason>"}]}` |
+| Errors | `{"code": <status>, "message": "<reason>"}` |
+| `401` | `{"error": "Unauthorized"}` |
+
+`index` counts messages from `0`. A failed entry has status `422` (will be refused again) or `503` (worth resending).
+
+## Status codes
+
+| Code | Meaning | Retry |
+| --- | --- | --- |
+| `200` | Every message was stored. A message can take a moment to show in charts. | No |
+| `204` | InfluxDB-compatible endpoints: every line was stored. | No |
+| `207` | Some messages were stored. Resend only the entries with status `503`. | Failed `503` entries |
+| `400` | The request is invalid, or no message passed the checks: bad JSON, empty body, missing `tenant`, `id` or `thingType`, no data, unknown thing or thing type, credential mismatch, bad `precision`. | No |
+| `401` | The credential is missing, wrong or expired. | No |
+| `413` | The body is over 10 MB. | No |
+| `422` | tsflux refused the message after accepting the request and will refuse it again, for example nothing valid was left in it. | No |
+| `429` | Too many requests are being handled. Sent with `Retry-After`. | Yes |
+| `503` | Busy, or a lookup did not answer. Sent with `Retry-After: 1`. | Yes |
+
+A retried request after `503` can store a message twice.
+
+On `/write` and `/api/v2/write`, a batch that was only partly stored answers `503` when any failed line is worth resending, and `400` with `partial write` otherwise. The body follows the InfluxDB version: `{"error": "..."}` for v1, `{"code": "...", "message": "..."}` for v2. Influx clients read the status code, not the body.
+
+## Refused messages
+
+A message refused after the request was accepted is also published on the device's `error` topic. See [MQTT topics and client ID](./mqtt-topics.mdx#error-notice).

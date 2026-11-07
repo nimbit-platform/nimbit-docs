@@ -1,0 +1,82 @@
+---
+untranslated: true
+title: Message format
+description: Every field of the JSON message that devices send over MQTT and HTTP, with the rules tsflux applies to it.
+sidebar_position: 8
+type: reference
+app:
+  routes: ["/onboarding/things/:id"]
+---
+
+The JSON message that MQTT and the HTTP JSON endpoints accept. For InfluxDB line protocol, see [Write InfluxDB line protocol](./line-protocol.mdx).
+
+## Fields
+
+| Field | Type | Required | Meaning |
+| --- | --- | --- | --- |
+| `thingType` | string | Yes | Name or ID of the thing's thing type. It must be the type the thing was created with. |
+| `data` | object | Yes, unless `geo` is set | Measure values by measure name. Values are numbers, booleans or strings. At least one value must not be `null`. Names are stored in lower case. |
+| `geo` | object | No | Location. See [geo](#geo). |
+| `time` | string or number | No | When the values were measured. Without it, the time of arrival is used. See [time](#time). |
+| `tags` | object | No | Extra labels, stored on the rows of this message. See [tags](#tags). |
+| `tenant` | string | HTTP: yes. MQTT: no | Tenant ID or name. Over MQTT it must match the topic if you send it. |
+| `id` | string | HTTP: yes. MQTT: no | The thing. Over MQTT it must match the topic if you send it. See [Identifying the thing](#identifying-the-thing). |
+| `evolveSchema` | boolean | No | `false` removes values for measures that are not in the thing type, even if the thing type has **Auto Schema Evolution** on. Omitted or `true`: the thing type's setting decides. |
+| `values` | object | No | Older name for `data`. If present, it replaces `data`. |
+
+A message needs `data` with at least one non-`null` value, or `geo` with a `latitude` and `longitude` that are not both `0`.
+
+## geo
+
+| Field | Type | Required | Meaning |
+| --- | --- | --- | --- |
+| `latitude` | number | Yes | Degrees. |
+| `longitude` | number | Yes | Degrees. |
+| `altitude` | number | No | Altitude. |
+| `heading` | number | No | Direction of travel. |
+| `speed` | number | No | Speed. |
+
+A `geo` object with both `latitude` and `longitude` missing or `0` is treated as no location.
+
+## time
+
+An ISO 8601 / RFC 3339 string with a time zone, for example `2026-11-07T09:30:00Z`. A number is read as a Unix epoch: seconds, milliseconds, microseconds or nanoseconds, decided by its size. A string that holds such a number is read the same way.
+
+## tags
+
+| Rule | Detail |
+| --- | --- |
+| Tag name | Starts with a letter or digit. Letters, digits, `_` and `-` after that. |
+| Tag value | Letters, digits, `_`, `-`, `.`, `/` and space. Not empty. |
+| Invalid tag | Dropped from the message. The rest of the message is stored. |
+
+{/* TODO(product): `time`, `tag_id` and `measure` are reserved names in the data model, but the ingest path does not reject them. Is a measure or tag with one of these names refused, renamed or stored? */}
+
+## Identifying the thing
+
+| Where | Rule |
+| --- | --- |
+| MQTT | The topic names the tenant and thing. Use the IDs shown by **Connection info**. |
+| HTTP | `id` accepts the thing's ID or its **Thing Alternate ID**. `tenant` accepts the tenant ID or name. Both must belong to the credential. |
+
+A message for another tenant or another device than the credential's is refused.
+
+## Example
+
+```json
+{
+  "thingType": "room_sensor",
+  "data": { "temperature": 22.5, "humidity": 61.3 },
+  "time": "2026-11-07T09:30:00Z",
+  "geo": { "latitude": 52.52, "longitude": 13.405 },
+  "tags": { "location": "warehouse-A" }
+}
+```
+
+## Limits
+
+| Limit | Value |
+| --- | --- |
+| Request body over HTTP | 10 MB. Larger answers `413`. |
+| MQTT payload | 4 MiB. |
+| Batch | HTTP only: a JSON array of messages in one request. |

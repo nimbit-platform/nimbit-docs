@@ -1,0 +1,75 @@
+---
+untranslated: true
+title: Add a gateway
+description: Create a gateway in IoT Breeze, set what it may create, and onboard a Periscope box with a one-time code.
+type: how-to
+sidebar_position: 3
+app:
+  routes: ["/onboarding/gateways"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Create a gateway record, get a one-time onboarding code, and connect a Periscope box with it. For background on namespaces and scope, read [How gateways work](./how-gateways-work.mdx).
+
+## Before you start
+
+- You need a role that holds the **Gateway** permission. The built-in **Admin** role does. You can give the gateway only roles whose permissions you hold, and you need permission to read roles.
+- Your platform operator has turned API keys on. Otherwise the page says **Gateways are not enabled**.
+- The box runs Periscope. If it doesn't yet, do [Install Periscope and stream your first source](./periscope/install.mdx) from step 2.
+- For an MQTT device instead, follow [Send data for many devices through one MQTT gateway](./mqtt-gateway.mdx).
+
+## Steps
+
+1. Open **Settings › Onboarding › Gateways** and select **Add gateway**.
+2. Under **Type**, choose **Periscope**.
+3. Enter a **Name**, for example `Hall 3 line controller`. It can be up to 100 characters.
+4. Leave **Namespace** empty to derive it from the name, or type one: 1 to 64 characters from `a-z`, `0-9`, `_` and `-`. The alternate IDs of the gateway's things start with it. The word `gateway` is reserved. A namespace that equals, starts with or extends another gateway's is refused.
+5. Under **Roles**, keep the default `modeler`, or choose others. The gateway acts with these roles, narrowed to what a gateway may do.
+6. Under **Code valid for**, choose how long the code works: 1 hour, 6 hours, 24 hours, 3 days or 7 days. The default is 24 hours.
+7. Select **Add gateway**.
+8. Copy the **Onboarding code** or the **Command to run on the gateway**. IoT Breeze shows them once. Select **Done**.
+
+9. On the box, enroll it with the code:
+
+   ```sh
+   periscope enroll -code ONB-XXXX-XXXX-XXXX-XXXX
+   ```
+
+   Or open the box's setup screen at `http://<box>:<port>/ui/setup`, choose **an onboarding code** under **Sign in with**, and paste the code. The setup screen also sets `ocb.gateway = true`. If you used the command, set `gateway = true` under `[ocb]` yourself, as in [Configuration reference](./periscope/configuration.mdx#ocb), and start `periscope serve`.
+
+<Screenshot
+  page="gateways/add-a-gateway"
+  id="01-onboarding-code"
+  route="/onboarding/gateways"
+  state="Add gateway drawer after creating a Periscope gateway, showing the onboarding code and the enroll command"
+  alt="The result of Add gateway: the onboarding code and the command to run on the gateway"
+/>
+
+## Set what the gateway may create
+
+Open the gateway and select the **Scope** tab. Everything here is optional.
+
+1. **Thing limit**: how many things it may have besides its own gateway thing. Leave it empty to apply only your organization's limits.
+2. **Allowed thing types**: the thing types it may create things of. Leave it empty to allow any.
+3. **Creation policy**: **Open** lets it create things inside its namespace. **Locked** makes it create none; data for an unknown thing is discarded and counted.
+4. Select **Save scope**.
+
+The **Namespace** is fixed once the gateway has things, or once its Periscope box has enrolled.
+
+## Check that it worked
+
+The gateway's row shows **Waiting for onboarding** until the box enrolls. After you start `periscope serve`, the status turns **Online** within about 5 minutes, when the first health message arrives. The **Things** tab lists the things the box creates.
+
+## If it doesn't work
+
+- **The code is refused or expired**: a code works once and only until its expiry. On the gateway's row menu, select **New onboarding code**. The earlier code stops working at once.
+- **The status stays Waiting for onboarding**: the box hasn't redeemed the code. Run `periscope enroll -code …` or paste the code into the setup screen, and check that the box reaches the platform URL.
+- **The status is Offline after enrolling**: the box has enrolled but isn't sending health messages. Check that `serve` runs with `gateway = true`, and that an output is configured. A gateway without an output sends no health.
+- **The status says Incomplete, delete it**: the identity directory no longer knows the gateway. Delete it and add it again.
+
+## Related
+
+- [How gateways work](./how-gateways-work.mdx) · [Gateway reference](./gateway-reference.mdx)
+- [Check gateway health and traffic](./fleet-health.mdx)
+- [Approve what Periscope discovers](./periscope/approve-discoveries.mdx)

@@ -1,0 +1,44 @@
+---
+untranslated: true
+title: Periscope
+description: Periscope is the edge agent that discovers OPC UA, Sparkplug B, MQTT, S7, Modbus and HTTP sources and streams their values to IoT Breeze.
+sidebar_position: 1
+type: landing
+app:
+  routes: ["/onboarding/gateways"]
+---
+
+Periscope is one program that runs on a machine next to your equipment. It reads your plant without writing to it, proposes the thing types and things that describe it, creates them in IoT Breeze once you confirm them, and then streams their values. Use this section to install it, connect each kind of source and look up its settings.
+
+```mermaid
+flowchart LR
+  S[Plant sources] --> D[Discover]
+  D --> P[Proposals]
+  P -->|you confirm| A[Apply]
+  A --> M[Mapping]
+  S --> V[Stream]
+  M --> V
+  V --> O[Outputs]
+```
+
+The agent serves its full documentation at `http://<listen>/ui/docs`, so an engineer at the box can read it without internet access. This section covers the same ground from the platform side.
+
+## Understand
+- [How Periscope works](./how-periscope-works.mdx): the stages, and whether an instance is a gateway.
+
+## Do
+- [Install Periscope and stream your first source](./install.mdx): a tutorial from container to values in IoT Breeze.
+- [Connect an OPC UA server](./opc-ua.mdx)
+- [Read Modbus registers](./modbus.mdx)
+- [Read a Siemens S7 PLC](./s7.mdx)
+- [Subscribe to Sparkplug B or an MQTT broker](./sparkplug-and-mqtt.mdx)
+- [Poll an HTTP source](./http.mdx)
+- [Approve what Periscope discovers](./approve-discoveries.mdx): rename, merge and confirm proposals.
+- [Transform values before they leave the edge](./processors.mdx)
+- [Verify that data arrived](./verify.mdx)
+- [Troubleshoot Periscope](./troubleshooting.mdx)
+
+## Look up
+- [Configuration reference](./configuration.mdx): every table and key of `periscope.toml`.
+- [Outputs reference](./outputs.mdx): where values go and how they are queued.
+- [Command-line reference](./commands.mdx): every `periscope` command and exit code.

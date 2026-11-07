@@ -1,0 +1,69 @@
+---
+untranslated: true
+title: Send a command to a device
+sidebar_position: 4
+description: Define an MQTT command on a thing type and fire it from a thing page or a dashboard.
+type: how-to
+app:
+  routes: ["/onboarding/thing-types/:id", "/onboarding/things/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Define a command such as **Restart pump** once on a thing type, then fire it at a single thing from the app. Commands are thing actions, which are separate from the actions a rule runs. See [Rules, actions and reports](./rules-actions-reports.mdx).
+
+## Before you start
+
+- A role that may create actions, and permission to run actions on the thing you want to command.
+- A thing connected over MQTT with the provider **Nimbit**. It must be online and subscribed to its command topic: a command is delivered only to a connected device and is not queued.
+- Know what your device expects: the topic below `cmd/` and the payload format.
+
+## Create the command
+
+1. Open **Settings › Onboarding › Thing Types**, open the thing type, and go to its **Actions** tab.
+2. Select **Create action** and choose **MQTT**.
+3. Enter a **Name**, for example `Restart pump`.
+4. In **Sub-topic**, enter the level the device listens on, for example `restart`. Leave it empty to publish on the bare `cmd` level. Use letters, digits, `_` or `-`, separated by `/`.
+5. Set **Payload format** to **JSON** or **Text**, and enter the **Payload**:
+
+   ```json
+   {"command": "restart", "requestedFor": "{{thing.name}}"}
+   ```
+
+   Use **Insert Placeholder** to add values of the thing. Only plain placeholders work, not sections or partials. With **JSON**, the result after substitution must be valid JSON.
+6. Optionally select **Allow usage as dashboard widget** so a dashboard can fire it. Anyone who can open that dashboard can then fire the command.
+7. Save. The action is active and shows in the list, and every thing of this type shows it as **Inherited**.
+
+<Screenshot
+  page="automate/device-command"
+  id="01-create-mqtt-action"
+  route="/onboarding/thing-types/:id"
+  state="Create action drawer, type MQTT, name Restart pump, sub-topic restart, format JSON, payload filled in"
+  alt="The Create action drawer for an MQTT command"
+/>
+
+## Fire it at a thing
+
+1. Open **Settings › Onboarding › Things** and open the thing.
+2. Go to **Actions** and select **Fire** next to `Restart pump`.
+
+On a thing type page, **Fire** asks which **Thing** to send the command to.
+
+To fire it from a dashboard, add an **Action** widget and choose the command. See [Widget gallery](../visualize/widgets.mdx).
+
+## Check that it worked
+
+A message reads `Command delivered on iot/tenant/<tenant>/device/<device>/cmd/restart`. Switch from **Actions** to **Log** (the control above the list): the run is listed with **When**, its status and where it came from.
+
+## If it doesn't work
+
+- **The device is not connected, so the command was not delivered**: no device session is subscribed. Bring the device online and fire again. The command is not queued.
+- **The Fire button is disabled**: your role may not run actions on this thing, or the action is inactive. Turn **Active** on from the thing type's action list.
+- **The topic of this action is not valid**: a sub-topic is at most 128 characters, at most 8 levels, and each level is at most 64 characters.
+- **The payload template did not produce a valid message**: with **JSON**, the payload must be valid JSON after placeholders are replaced. The message is limited to 64 KiB.
+
+## Related
+
+- [Action types](./action-types.mdx)
+- [Rules, actions and reports](./rules-actions-reports.mdx)
+- [Register a thing](../model/register-thing.mdx)

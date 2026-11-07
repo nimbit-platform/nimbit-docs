@@ -1,0 +1,104 @@
+---
+untranslated: true
+title: Transform values before they leave the edge
+description: Filter, convert, scale, thin out and aggregate values on the Periscope box with processors, and put them in the right order.
+type: how-to
+sidebar_position: 10
+app:
+  routes: ["/onboarding/gateways"]
+---
+
+Processors change values between the plant and the platform: they drop what you don't want, convert units and types, send only changes, re-send quiet machines and compute window statistics. They run in the order of the configuration file, after the mapping has found each value's thing and measure, so unmapped values never reach them.
+
+## Before you start
+
+- Periscope has applied things, so values are mapped. See [Approve what Periscope discovers](./approve-discoveries.mdx).
+- Know the **address** of the values you target, as the **Snapshot** screen shows it. Processors match addresses with globs: `*` matches any run of characters including `/`, and `?` matches one character.
+
+## Steps
+
+1. Pick the processors you need from the table. Add each as a `[[processors.<name>]]` table to `periscope.toml`.
+
+   | Processor | Use it to |
+   | --- | --- |
+   | `filter` | Keep only values whose address, quality and range pass. |
+   | `convert` | Turn strings into numbers or booleans and back, with maps for state words. |
+   | `scale` | Apply `value × factor + offset`. |
+   | `rename` | Rewrite the measure a value is written to, with a regular expression. |
+   | `tag` | Add fixed tags to matching values. The `tsflux_stream` output doesn't send tags. |
+   | `bloblang` | Run a Bloblang mapping per value for anything else. |
+   | `aggregate` | Send window statistics such as `frequency_5m_avg`. |
+   | `deadband` | Drop values that didn't change enough since the last one sent. |
+   | `throttle` | Send at most one value per address per interval. |
+   | `heartbeat` | Re-send a quiet thing's last values so it doesn't look dead. |
+
+2. Configure each one. Typical cases:
+
+   ```toml
+   [[processors.filter]]
+   exclude   = ["*/Debug*"]
+   qualities = ["good", "uncertain"]
+   min_value = -50
+   max_value = 400
+
+   [[processors.convert]]
+   addresses   = ["*/State"]
+   to          = "boolean"
+   boolean_map = { RUNNING = true, STOPPED = false }
+   on_error    = "drop"
+
+   [[processors.scale]]
+   addresses = ["*/Pressure"]
+   factor    = 100000                 # bar to Pa
+
+   [[processors.aggregate]]
+   windows = ["5m", "1h"]
+   fields  = { temperature = ["avg", "max"] }
+
+   [[processors.deadband]]
+   mode        = "percent"
+   percent     = 0.5
+   absolute    = 0.05                 # floor near zero
+   max_silence = "15m"                # still send a flat value now and then
+
+   [[processors.heartbeat]]
+   interval = "5m"
+   measure  = "online"
+   ```
+
+   For a value that needs a formula, use `bloblang`:
+
+   ```toml
+   [[processors.bloblang]]
+   mapping = '''
+   root = this
+   root.value = (this.value - 32) * 5 / 9
+   '''
+   ```
+
+3. Put them in this order: `filter`, then conversions (`convert`, `scale`, `rename`, `bloblang`, `tag`), then `aggregate`, then `deadband` and `throttle`, and `heartbeat` last. `periscope validate` refuses a `deadband` after a `heartbeat`.
+4. Validate. It checks every processor's keys, including Bloblang, without connecting:
+
+   ```sh
+   periscope validate -config /etc/periscope/periscope.toml
+   ```
+
+5. Reload or restart the agent. After adding `aggregate` or `heartbeat` with a `measure`, run discovery and apply: the new measures are proposed at the next discovery and created by apply. `periscope serve` does both.
+
+Polled inputs such as S7 and Modbus send every value on every poll, so a `deadband` is the largest saving for them. For a single measure's factor, the **Scale** column of the mapping editor does the same without changing the file.
+
+## Check that it worked
+
+Open the **Metrics** screen. Per processor, it shows what went in, what it dropped and how long it took. A `deadband` that works shows a drop count that grows while the plant is steady, and `filter` counts out-of-range values it removed.
+
+## If it doesn't work
+
+- **`validate` rejects a processor**: it names the table and the unknown or invalid key.
+- **A processor never sees a value**: the value isn't mapped. Processors run after the mapping, so confirm and apply the proposals first.
+- **A new aggregated measure doesn't appear**: discovery and apply haven't run since you added `aggregate`.
+- **On a gateway, `require_input = false` on `heartbeat` is refused**: it would re-send last values of a dead source, which would mask an outage. A heartbeat doesn't count bad values, such as a failed poll, as a delivery.
+
+## Related
+
+- [Configuration reference](./configuration.mdx) · [Outputs reference](./outputs.mdx)
+- [Read a Siemens S7 PLC](./s7.mdx)

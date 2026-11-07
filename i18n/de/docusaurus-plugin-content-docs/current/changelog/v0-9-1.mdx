@@ -1,0 +1,31 @@
+---
+untranslated: true
+title: "0.9.1"
+description: "Released 12 February 2026: sign-in fixes, a maintenance page and a change to the send test mail request."
+type: reference
+date: 2026-02-12
+sidebar_position: 8
+---
+
+Released 12 February 2026. This release fixes the sign-in flow and several dashboard display problems, and adds a maintenance page.
+
+## New
+
+- A maintenance page.
+
+## Improved
+
+- Navigation: the sidebar has a new color scheme.
+
+## Fixed
+
+- Sign-in: fixed the login flow.
+- Events: creating an event now checks that its event type is assigned to the root group.
+- Widgets: fixed the carousel widget height and the padding of the gauge widget (line and circle).
+- Dashboards: removed the double scroll bar.
+- Groups and things: the missing edit buttons are back.
+
+## Breaking changes
+
+- The send test mail request in the OCB API now uses `POST` instead of `GET`, and the separate send mail endpoint is removed. If you call these endpoints, update your client to use `POST` for send test mail.
+{/* TODO(product): confirm the exact endpoint paths affected so customers can find them */}

@@ -1,0 +1,69 @@
+---
+untranslated: true
+title: Explore telemetry over time
+sidebar_position: 4
+description: Chart measures from any things over a time range, compare them, and save the chart set as a query to reopen or share.
+type: how-to
+app:
+  routes: ["/monitor/telemetry", "/monitor/telemetry/query", "/monitor/telemetry/query/:id"]
+  tour: find-your-way-history
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Look back at how a measure behaved, compare two things, and save the result as a query. For a live view of one thing, use its thing page. For charts that stay on screen for everyone, build a dashboard.
+
+## Before you start
+
+- You need access to **Monitoring › Telemetry**.
+- The things you chart must have reported data.
+
+## Chart a measure
+
+1. Open **Monitoring › Telemetry** and select **Create query**. The explorer opens with one empty chart.
+2. In the first row, choose a **Thing type**, a **Thing** and a **Measure**. Each field depends on the one before.
+3. Choose an **Aggregation**: `raw`, `avg`, `min`, `max`, `sum`, `count`, `first` or `last`. Raw shows every reading. The others combine readings into buckets.
+4. Select **Run**. The chart draws.
+5. Set the time range at the top. The default is the last hour. Use the arrows to move the window.
+
+<Screenshot
+  page="watch/explore-telemetry"
+  id="01-explorer-chart"
+  route="/monitor/telemetry/query"
+  state="Explorer with one chart panel: thing type Room sensor, thing Meeting room 1, measure temperature, aggregation avg, last 24 hours, line chart drawn"
+  alt="The explorer with one temperature chart"
+/>
+
+## Compare and adjust
+
+1. Select **Add Query** in a chart to add another row to the same chart. Use it to compare two things or two measures.
+2. Select **Add Chart** to add another chart below.
+3. Set **Bucket size** at the top. **auto** picks a size from the time range. A chart can override it, and zooming into a chart increases the resolution.
+4. In a row, use the style button to set the **Chart type** (**Line**, **Area**, **Bar** or **Scatter**), the **Line style** and the **Series color**.
+5. Use **Custom time range** in a chart to give it its own range. Otherwise it says **Using global time range**.
+
+To take data away, open **More** in a chart and choose **Fullscreen**, **Download CSV** or **Save as SVG**.
+
+## Save and share a query
+
+1. Select **Save** and enter a **Query name**.
+2. Choose the **Access Type**: **Tenant** for everyone who may open telemetry, or **Personal** for only you.
+3. For tenant access you can add **Group**s. {/* TODO(product): Does adding groups to a Tenant query limit who can open it to members of those groups? The code stores the groups on the query, but no access rule for saved queries was found, unlike dashboards. */}
+4. Save. The query appears in the list.
+
+When you reopen a saved query, **Save** overwrites it. **Config** reopens the name and access settings, and **Delete** removes the query. To share without saving, select **Share** and copy the link. The whole chart setup is in the link, and the recipient needs access to the same things.
+
+## Check that it worked
+
+The query is in the **Monitoring › Telemetry** list with the access you chose. Opening it draws the same charts.
+
+## If it doesn't work
+
+- **A row is marked when you run**: a field is empty. Fill in the marked field.
+- **The button reads Run — chart is outdated**: you changed the query after the last run. Select it to redraw.
+- **The chart is empty**: the thing reported nothing in the time range. Widen the range.
+
+## Related
+
+- [Check a thing's health](./thing-health.mdx)
+- [Dashboards, smart dashboards and time](../visualize/dashboards.mdx)

@@ -1,0 +1,57 @@
+---
+untranslated: true
+title: Audit log
+description: What the audit log records, its columns and filters, and what the change dialog shows.
+type: reference
+sidebar_position: 11
+app:
+  routes: ["/manage/audit-log"]
+---
+
+The audit log records who created, changed or deleted things, thing types, groups and users. It is read only and lists the newest entries first. Open it at **Administration › Audit log**. Only the **Admin** role can read it.
+
+## Columns
+
+| Column | Shows |
+| --- | --- |
+| **Time** | When the change happened. |
+| **Resource** | The kind of record. |
+| **Reference** | The record's name or ID. |
+| **Action** | **Created**, **Updated** or **Deleted**. |
+| **What changed** | The fields that changed in this save. |
+| **Actor** | A person, an **API key**, or the system. |
+
+## Filters
+
+| Filter | Values |
+| --- | --- |
+| **Resource** | One or more of Things, Thing Types, Groups, Users. |
+| **Action** | One or more of created, updated, deleted. |
+| **Actor** | One person. |
+| Time range | Last 24 hours, 7, 30 or 90 days, last year, or all time. |
+| **Search by reference ID** | The history of one record. |
+
+**Clear filters** resets them. The filters are kept in the page address, so a link opens the filtered list from its first page.
+
+## Change dialog
+
+Select an entry to see its change.
+
+| Element | Shows |
+| --- | --- |
+| **Field** | Each field that changed. |
+| **Last recorded value** | The value from the previous entry for that record. |
+| **New value** | The value after this change. |
+| **Open** | The record, if it still exists. |
+| **Show raw change (JSON)**, **Copy JSON** | The stored change. |
+
+The last recorded value comes from earlier entries. If older changes are not loaded, a value can be missing. A field cleared to nothing is not recorded.
+
+Each thing's detail page also has an **Audit log** tab with the changes to that one thing. It needs the same permission.
+
+{/* TODO(product): How long are audit log entries kept? */}
+
+## Related
+
+- [Roles and permissions](./roles.mdx)
+- [Delete data](./delete-data.mdx)

@@ -1,0 +1,69 @@
+---
+untranslated: true
+title: Choose the AI model
+description: Register the language models Ask Nimble may use, pin one to a chat, and set the fallback order.
+type: how-to
+app:
+  routes: ["/knowledge/models"]
+  tour: setup-knowledge
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Register the language models your tenant may use, pin one to a chat, and set which models retry a question the usual model could not answer. How a model is used is in [How Ask Nimble answers](./ask-nimble-answers.mdx).
+
+## Before you start
+
+- Reading the page needs access to Knowledge setup. Changing models needs the admin or modeler role. **Test** is limited to platform administrators.
+- You need the provider's model id and an API key. The model must support tool calling.
+- Counts, lists and lookups work without any registered model. Without one, other questions use the model the platform or server provides.
+
+## Register a model
+
+1. Open **Settings › Knowledge setup › AI models**. The page is titled **Models & keys**. Select **Register a model**.
+2. Enter a **Name**. You use it in chat and in the fallback order. It cannot be changed.
+3. Choose the **Provider**: **Anthropic**, **OpenAI**, **Gemini** or **OpenAI-compatible**.
+4. Enter the **Provider's model id** and the **API key**. For OpenAI-compatible endpoints, also the **Base URL**. It must be https. Private, loopback and metadata addresses are refused.
+5. Under **Capabilities**, check what the model supports: **Strict JSON schema**, **Forced tool choice**. Leave strict schema off for Gemini-compatible endpoints.
+6. Save, then select **Test**.
+
+<Screenshot
+  page="knowledge/ai-model"
+  id="01-models"
+  route="/knowledge/models"
+  state="Models and keys page with two registered models, one marked Managed by the platform"
+  alt="The list of registered models"
+/>
+
+The API key is write-only: it is encrypted and never shown again. Leave the field empty when you edit to keep it. A model marked **Managed by the platform** is registered for you. Deleting a model destroys its key; chats pinned to it fall back to the default.
+
+## Pin a model to a chat
+
+In Ask Nimble, open the model menu in the question field's footer. Under **Model**, pick a registered model. The default is **Auto**. A pinned model answers alone: no fallback is tried.
+
+## Set the fallback order
+
+When the usual model finds nothing, the models in **Fallback order** retry the question in turn. The first one that answers wins.
+
+1. Under **Fallback order**, add a registered model.
+2. Use **Move earlier** and **Move later** to order them.
+3. Save.
+
+:::warning Each fallback costs a full extra attempt
+At most four fallbacks are allowed. A longer chain multiplies the cost of one question. With no fallback, a question the usual model cannot answer gets "I don't know".
+:::
+
+## Check that it worked
+
+The model shows **Reachable** after **Test**. In Ask Nimble, **Details** under an answer names the model that answered.
+
+## If it doesn't work
+
+- **Model did not answer** on Test: check the model id, the key and the base URL.
+- **Testing a model is restricted to platform administrators**: ask one to test it.
+- **A fallback step does nothing**: its model was deleted. Remove it from the order.
+- **This question needs an AI model** in chat: no model is available. Register one.
+
+## Related
+
+- [How Ask Nimble answers](./ask-nimble-answers.mdx) · [Ask a question about your data](./ask.mdx)

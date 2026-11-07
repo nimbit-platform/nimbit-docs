@@ -1,0 +1,117 @@
+---
+untranslated: true
+title: Write InfluxDB line protocol
+description: Send InfluxDB line protocol to tsflux with curl, Python requests or Node.js fetch, or point an existing InfluxDB client at it.
+sidebar_position: 5
+type: how-to
+app:
+  routes: ["/onboarding/things/:id"]
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Write measurements for a thing in InfluxDB line protocol, from your own code or from a tool that already writes to InfluxDB. For background, read [How devices connect](./how-devices-connect.mdx).
+
+## Before you start
+
+- A thing of a published thing type. See [Register a thing](../model/register-thing.mdx).
+- Credentials for the thing. See [Create and rotate device credentials](./credentials.mdx).
+- An HTTP client: `curl`, Python with `requests`, or Node.js 18 or later.
+
+## Steps
+
+### 1. Copy the connection details
+
+Open the thing (**Settings › Onboarding › Things**), go to **Connections** and select **Connection info**. Copy these values:
+
+| Placeholder | Source in **Connection info** |
+| --- | --- |
+| `<line-protocol-url>` | The URL under **REST** › **Line protocol**, ending in `/api/v1/write/line-protocol`. Host and TLS are those of your deployment. |
+| `<token>` | The JWT **Token**. With basic credentials, use **Username** and **Password** instead. |
+| `<deviceId>` | The thing's ID, the last part of **Client id**. The **Thing Alternate ID** also works. |
+
+For a tool that expects InfluxDB, use **InfluxDB v2 compatible write** or **InfluxDB v1 compatible write** instead. They accept the same lines and answer `204`.
+
+### 2. Send one line
+
+The measurement is the thing type. The tag `id` is the thing. The fields are the measures.
+
+```text
+room_sensor,id=<deviceId> temperature=22.5,humidity=61.3
+```
+
+<Tabs groupId="http-client">
+<TabItem value="curl" label="curl" default>
+
+```bash
+curl -X POST "<line-protocol-url>" \
+  -H "Authorization: Bearer <token>" \
+  --data-binary 'room_sensor,id=<deviceId> temperature=22.5,humidity=61.3'
+```
+
+With basic credentials, replace the `Authorization` header with `-u "<username>:<password>"`.
+
+</TabItem>
+<TabItem value="python" label="Python (requests)">
+
+```python
+import requests
+
+response = requests.post(
+    "<line-protocol-url>",
+    headers={"Authorization": "Bearer <token>"},  # basic: auth=("<username>", "<password>")
+    data="room_sensor,id=<deviceId> temperature=22.5,humidity=61.3",
+    timeout=10,
+)
+print(response.status_code, response.json())
+```
+
+</TabItem>
+<TabItem value="node" label="Node.js (fetch)">
+
+Save as `send.mjs` and run `node send.mjs`.
+
+```js
+const response = await fetch("<line-protocol-url>", {
+  method: "POST",
+  headers: { Authorization: "Bearer <token>" },
+  body: "room_sensor,id=<deviceId> temperature=22.5,humidity=61.3",
+});
+console.log(response.status, await response.json());
+```
+
+</TabItem>
+</Tabs>
+
+Field types follow line protocol: `22.5` is a number, `42i` an integer, `true` a boolean, `"on"` a string. Field names are stored in lower case.
+
+### 3. Add a timestamp and several lines
+
+Put one line per device reading, separated by newlines. A timestamp goes last. Without one, the time of arrival is used. The default unit is nanoseconds; set `precision` to `ns`, `us`, `ms` or `s` to change it.
+
+```bash
+curl -X POST "<line-protocol-url>?precision=s" \
+  -H "Authorization: Bearer <token>" \
+  --data-binary $'room_sensor,id=<deviceId>,location=warehouse-A temperature=22.5 1794043800\nroom_sensor,id=<deviceId>,location=warehouse-A temperature=22.7 1794043860'
+```
+
+Tags other than `id`, `tenant` and `thingtype` become [tags](./message-format.mdx#tags) of the message. Lines that start with `#` are skipped. Tags and fields are in [Message format](./message-format.mdx).
+
+## Check that it worked
+
+`/api/v1/write/line-protocol` answers `200` with a body like `{"message": "success", "processed": 2, "elapsed_ms": 3}`. The InfluxDB-compatible endpoints answer `204` with no body.
+
+Open the thing in IoT Breeze. **Overview** shows **Last signal** and **Live values** within a few seconds.
+
+## If it doesn't work
+
+- **401**: the credential is missing, wrong or expired. Check the `Authorization` header and the **Expires at** of the token.
+- **400 `tag 'id' is required`**: add `id=<deviceId>` as a tag. `device_id` and `deviceid` also work.
+- **400 `line 2: ...`**: the number counts lines from 1. Check that line's syntax, and that it has at least one field.
+- **A line is refused as another device**: the `id` tag must be the device the credential belongs to.
+
+## Related
+
+- [Ingest endpoints and status codes](./ingest-endpoints.mdx) · [Message format](./message-format.mdx)
+- [Send data over HTTP](./http.mdx) · [Send data over MQTT](./mqtt.mdx)

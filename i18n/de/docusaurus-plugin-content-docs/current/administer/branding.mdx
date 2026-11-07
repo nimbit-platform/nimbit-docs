@@ -1,0 +1,49 @@
+---
+untranslated: true
+title: Brand your tenant
+description: Upload your logos and favicon, set the default light or dark appearance, and edit the theme colors for everyone in the tenant.
+type: how-to
+sidebar_position: 6
+app:
+  routes: ["/tenant-settings"]
+---
+
+Make IoT Breeze look like your organization: logos, favicon, cover image and theme colors apply to everyone in the tenant.
+
+## Before you start
+
+- You need to update the tenant. Only the **Admin** role can.
+- Have your images ready. The favicon is an `.ico` file of 48 × 48 pixels. Logos are PNG or SVG. The cover image is PNG, SVG, JPEG or WebP. Each image up to 5 MB, except the favicon.
+
+## Upload images
+
+1. Open **Administration › Tenant Settings** and stay on **General**.
+2. In **Branding Images**, upload a **Favicon**, a **Default logo**, a **Light mode logo**, a **Dark mode logo** and a **Cover image**. All are optional.
+3. Select **Save**.
+
+The **Default logo** is used wherever a mode-specific logo is not set. Set the light and dark logos if your logo does not work on both backgrounds.
+
+## Set the colors
+
+1. Open the **Theme** tab.
+2. Under **Tenant default appearance**, choose **Light** or **Dark**. People who chose their own appearance keep it.
+3. Select a preview of a color mode in the theme editor and change its colors, layout and shadows. Edit light and dark separately.
+4. Select **Save**.
+
+Changes on **General**, **Features**, **Theme** and **Email** are saved together. A badge shows **Unsaved changes** until you save.
+
+## Check that it worked
+
+Reload the app. The browser tab shows your favicon. Switch between light and dark with the theme control in the header to see the colors of both modes.
+
+## If it doesn't work
+
+- **An image is rejected**: check the format and size above. The favicon must be exactly 48 × 48 pixels and an `.ico` file.
+- **Colors did not change for one person**: they chose their own appearance in their settings.
+- **You want the originals back**: **Reset to default** resets theme colors, branding images and email settings. It asks for confirmation and cannot be undone.
+
+{/* TODO(product): Where do the Cover image and the logos appear (sign-in page, header, emails, reports)? */}
+
+## Related
+
+- [Tenant settings](./tenant-settings.mdx)

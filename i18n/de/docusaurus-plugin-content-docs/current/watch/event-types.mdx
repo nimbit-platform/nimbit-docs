@@ -1,0 +1,108 @@
+---
+untranslated: true
+title: Event types
+sidebar_position: 9
+description: Where events come from, how they are classified, and the properties, display types and actions of an event type.
+type: reference
+app:
+  routes: ["/monitor/events", "/monitor/events/:id", "/manage/event-types", "/manage/event-types/:id"]
+  tour: find-your-way-alerts
+---
+
+import TourLink from "@site/src/components/TourLink";
+
+An event type names a kind of event and holds the actions that run when one occurs. Sources, severities, episode states, properties and actions are below.
+
+<TourLink id="find-your-way-alerts" />
+
+## Event sources
+
+Every event has a source, shown in the event details and used in the **Raised by** clause of an incident policy.
+
+| Source | Raised by |
+| --- | --- |
+| **Rule engine** | A rule you built matched device data |
+| **Connectivity** | A thing went offline or came back |
+| **Geofence** | A thing entered or left a geofence |
+| **API** | Another system sent an event to IoT Breeze |
+| **Manual** | A person recorded the event |
+| **Automation** | An **Event** action emitted it |
+| **Repair** | The platform corrected a state itself, for example a thing's online or offline state after its connectivity check found it wrong |
+
+Changes to records are events too: a thing, thing type, group or user was created, updated or deleted. Their event types carry the name of the record type.
+
+## Severity
+
+| Severity | Order |
+| --- | --- |
+| **Information** | Lowest |
+| **Warning** | Above Information |
+| **Error** | Above Warning |
+| **Critical** | Highest |
+
+A **Minimum severity** on a channel or a policy means this severity and everything above it.
+
+## Episode state
+
+| State | Meaning |
+| --- | --- |
+| **Open** | Something started and has not ended: a thing offline, a rule condition met, a thing inside a fence |
+| **Closed** | The matching end event arrived |
+| **Point** | A single fact with nothing to close it |
+
+The events of one episode share a correlation. Events that close an episode run no event type actions and are not routed to notification channels.
+
+## Event type properties
+
+| Property | Meaning |
+| --- | --- |
+| **Name** | The name shown in lists and used by rules, channels and policies |
+| **Type** | **System**: shipped with IoT Breeze (record changes, connectivity, geofence crossings, failed actions). You can read it, but not edit or delete it. **User**: yours. |
+| **Group**s | Groups that may see events of this type. A member sees an event only if they belong to one of them and can see the record it is about. The tenant's service user sees all. |
+| **Display type** | How an event of this type looks when opened |
+| **Search tags** | Tags to find the type |
+| **Description** | Free text, can be translated |
+| **Icon** | Optional |
+| **Example payload** | Read only. The shape of the data events of this type carry. |
+
+### Display types
+
+| Display type | Shows |
+| --- | --- |
+| **Default** | The details and the payload |
+| **Rule evaluation** | The rule, its conditions and the values that triggered it |
+| **Geofence** | The fence, entry and exit points and the time inside |
+
+## Actions on an event type
+
+An action runs every time an event of the type is emitted, except for events that close an episode.
+
+| Action type | What it does |
+| --- | --- |
+| **Notification** | Pushes an in-app notification to users or groups, under the bell in the header |
+| **Notification channel** | Sends a message to a [notification channel](./channel-types.mdx) |
+| **Email** | Sends an email to recipients or groups, as plain text or with a [mail template](./mail-templates.mdx) |
+| **Webhook** | Sends an HTTP request to an external endpoint |
+
+The actions table shows **Type**, **Name**, **Users**, **Groups**, **Modified** and an **Active** switch. An action that is switched off does not run. A new action starts switched off, so turn on **Active** after you create it. When an action fails, the failure is recorded as its own event.
+
+Azure cloud-to-device and MQTT message actions belong to thing types. See [Action types](../automate/action-types.mdx).
+
+## Event list filters
+
+**Monitoring › Events** shows the last 30 days by default.
+
+| Filter | Options |
+| --- | --- |
+| **Title** | Text in the event title |
+| **Event Type** | One or more event types |
+| **Time range** | **Last 24 hours**, **Last 7 days**, **Last 30 Days**, **Last 90 Days**, **Last year** |
+| **Resource type** | What the event is about, for example Thing, Thing Type, Group, User |
+| **Severity** | One or more severities |
+| **Open episodes only** | Only alarms and outages that are still going on |
+
+## Related
+
+- [Events, incidents and notifications](./events-incidents-notifications.mdx)
+- [Set up an incident policy](./incident-policy.mdx)
+- [Channel types](./channel-types.mdx)

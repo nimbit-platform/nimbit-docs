@@ -1,0 +1,107 @@
+---
+untranslated: true
+title: Connect an OPC UA server
+description: Add an OPC UA input to Periscope, set security and a browse scope, and check what discovery proposes.
+type: how-to
+sidebar_position: 4
+app:
+  routes: ["/onboarding/gateways"]
+---
+
+Add one `[[inputs.opcua]]` table per server. Periscope browses its address space read-only, proposes a thing type per object type, and streams the variables over one subscription. For the stages, read [How Periscope works](./how-periscope-works.mdx).
+
+## Before you start
+
+- Periscope is installed and connected. See [Install Periscope and stream your first source](./install.mdx).
+- Get these from the plant:
+  - **The endpoint**: `opc.tcp://<host>:<port>`. 4840 is the standard port. Periscope uses the address you configure even when the server advertises another host name.
+  - **The security the server accepts**: `None` on a trusted plant network, or `Basic256Sha256` with `Sign` or `SignAndEncrypt`.
+  - **A user**, if the server refuses anonymous sessions: a user name and password, or a client certificate.
+  - **Where the machines are**, for example `Objects/Machines`, so you browse that subtree and not the whole server.
+
+## Steps
+
+1. Add the input to `periscope.toml`. Pick the example that matches the server:
+
+   ```toml
+   # Anonymous, unsecured, one subtree
+   [[inputs.opcua]]
+   alias     = "press-shop"
+   endpoint  = "opc.tcp://192.168.10.20:4840"
+   include   = ["Machines/**"]
+   subscribe = ["Machines/*/Telemetry/**"]
+   ```
+
+   ```toml
+   # Signed and encrypted, with a user
+   [[inputs.opcua]]
+   alias           = "assembly"
+   endpoint        = "opc.tcp://assembly-plc.plant.local:4840"
+   security_policy = "Basic256Sha256"
+   security_mode   = "SignAndEncrypt"
+   auth            = "username"
+   username        = "periscope"
+   password        = "${PERISCOPE_OPCUA_PASSWORD}"
+   include         = ["Assembly/**"]
+   exclude         = ["Assembly/*/Diagnostics/**"]
+   ```
+
+   `alias` names the input in the mapping, the metrics and the state files. `include` and `exclude` are browse-path globs below `Objects`.
+
+2. With a secure policy, trust the agent's certificate. On first use Periscope generates one and logs its fingerprint. Ask the plant's administrator to move it from the server's rejected list to its trusted list, then wait for the input to reconnect.
+3. Check the file, then run a discovery:
+
+   ```sh
+   periscope validate -config /etc/periscope/periscope.toml
+   periscope discover -config /etc/periscope/periscope.toml
+   ```
+
+4. Review the proposals as described in [Approve what Periscope discovers](./approve-discoveries.mdx).
+
+### Keys you change most
+
+| Key | Default | Use |
+| --- | --- | --- |
+| `include`, `exclude` | all | Browse-path globs. `Machines/**` keeps that subtree. |
+| `subscribe` | all | Which variables to stream. |
+| `sampling_interval`, `publishing_interval` | `1s` | How fast the server samples and reports. |
+| `deadband_absolute` | `0` | Let the server suppress small changes of numeric values. |
+| `max_nodes`, `max_depth` | 20000, 10 | Stop a browse that would run away on a large server. |
+| `events` | `false` | Turn events and alarms into measures of their things. |
+
+Every key is in the [Configuration reference](./configuration.mdx).
+
+## Check that it worked
+
+`periscope discover` prints one row per input with the nodes and things it found and an empty `ERROR` column, then the proposals:
+
+```text
+INPUT       NODES  THINGS  ERROR
+press-shop  412    18      -
+```
+
+Periscope maps the server like this:
+
+| In the server | Becomes |
+| --- | --- |
+| A folder | A path element |
+| An object with a type | A thing, with a thing type named after the object type |
+| An untyped object, or a folder with variables | A thing, with a thing type per set of variable names |
+| A variable | A measure, with the data type, unit (`EngineeringUnits`) and range (`EURange`) where the server has them |
+
+Identical machines share one thing type. An untyped machine's thing type is named after its first machine and a hash, such as `Oven1_49b35a`. Rename it before you confirm.
+
+## If it doesn't work
+
+- **`BadSecurityChecksFailed` or `BadCertificateUntrusted`**: the server doesn't trust the agent's certificate yet. Move it to the server's trusted list.
+- **`BadIdentityTokenRejected` or `BadUserAccessDenied`**: wrong user or password, or anonymous sessions are off. Set `auth = "username"` with the right credentials.
+- **`connection refused` or `i/o timeout`**: wrong host or port, a firewall, or the server is down. Check from the box with `nc -vz <host> 4840`. The input retries with back-off.
+- **Discovery is slow, or warns about `max_nodes`**: the whole server is browsed. Set `include`, and `root_nodes`, to the machines' subtree.
+- **A variable is missing**: arrays and structures are skipped, because the platform has no measure type for them. Check the **Snapshot** screen.
+
+More in [Troubleshoot Periscope](./troubleshooting.mdx).
+
+## Related
+
+- [How Periscope works](./how-periscope-works.mdx) · [Configuration reference](./configuration.mdx)
+- [Verify that data arrived](./verify.mdx)

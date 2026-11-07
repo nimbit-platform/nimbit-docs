@@ -161,7 +161,7 @@ for (const theme of /** @type {const} */ (["light", "dark"])) {
       const clip = clips[shot.key];
       if (clip) await page.locator(clip).first().screenshot({ path: file });
       else await page.screenshot({ path: file });
-      if (theme === "dark") available.add(shot.key);
+      if (theme === "dark") available.add(lang === "en" ? shot.key : `${lang}:${shot.key}`);
       console.log(`✓ ${shot.key} (${theme})`);
     } catch (error) {
       failed.push(`${shot.key} (${theme}): ${error instanceof Error ? error.message.split("\n")[0] : error}`);

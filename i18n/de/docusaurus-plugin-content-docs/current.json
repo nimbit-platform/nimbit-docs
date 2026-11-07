@@ -3,148 +3,64 @@
     "message": "Next",
     "description": "The label for version current"
   },
-  "sidebar.userManualSidebar.category.Home": {
-    "message": "Home",
-    "description": "The label for category Home in sidebar userManualSidebar"
+  "sidebar.getStartedSidebar.category.Paths by role": {
+    "message": "Wege nach Rolle",
+    "description": "The label for category 'Paths by role' in sidebar 'getStartedSidebar'"
   },
-  "sidebar.userManualSidebar.category.Home.link.generated-index.description": {
-    "message": "Die zentrale Startseite mit allen wichtigen Infos.",
-    "description": "The generated-index page description for category Home in sidebar userManualSidebar"
+  "sidebar.docsSidebar.category.Connect devices": {
+    "message": "Geräte verbinden",
+    "description": "The label for category 'Connect devices' in sidebar 'docsSidebar'"
   },
-  "sidebar.userManualSidebar.category.Onboarding": {
-    "message": "Onboarding",
-    "description": "The label for category Onboarding in sidebar userManualSidebar"
+  "sidebar.docsSidebar.category.Gateways and edge": {
+    "message": "Gateways und Edge",
+    "description": "The label for category 'Gateways and edge' in sidebar 'docsSidebar'"
   },
-  "sidebar.userManualSidebar.category.Onboarding.link.generated-index.description": {
-    "message": "Lerne, wie du mit der Plattform startest.",
-    "description": "The generated-index page description for category Onboarding in sidebar userManualSidebar"
+  "sidebar.docsSidebar.category.Periscope": {
+    "message": "Periscope",
+    "description": "The label for category 'Periscope' in sidebar 'docsSidebar'"
   },
-  "sidebar.userManualSidebar.category.Monitoring": {
-    "message": "Monitoring",
-    "description": "The label for category Monitoring in sidebar userManualSidebar"
+  "sidebar.docsSidebar.category.Model your data": {
+    "message": "Daten modellieren",
+    "description": "The label for category 'Model your data' in sidebar 'docsSidebar'"
   },
-  "sidebar.userManualSidebar.category.Monitoring.link.generated-index.description": {
-    "message": "Überwachung und Status von Things.",
-    "description": "The generated-index page description for category Monitoring in sidebar userManualSidebar"
+  "sidebar.docsSidebar.category.Visualize": {
+    "message": "Visualisieren",
+    "description": "The label for category 'Visualize' in sidebar 'docsSidebar'"
   },
-  "sidebar.userManualSidebar.category.Dashboards": {
-    "message": "Dashboards",
-    "description": "The label for category Dashboards in sidebar userManualSidebar"
+  "sidebar.docsSidebar.category.Canvas": {
+    "message": "Canvas",
+    "description": "The label for category 'Canvas' in sidebar 'docsSidebar'"
   },
-  "sidebar.userManualSidebar.category.Dashboards.link.generated-index.description": {
-    "message": "Dashboard Funktionen und Visualisierungen.",
-    "description": "The generated-index page description for category Dashboards in sidebar userManualSidebar"
+  "sidebar.docsSidebar.category.Watch and respond": {
+    "message": "Überwachen und reagieren",
+    "description": "The label for category 'Watch and respond' in sidebar 'docsSidebar'"
   },
-  "sidebar.userManualSidebar.category.User Management": {
-    "message": "User Management",
-    "description": "The label for category User Management in sidebar userManualSidebar"
+  "sidebar.docsSidebar.category.Automate": {
+    "message": "Automatisieren",
+    "description": "The label for category 'Automate' in sidebar 'docsSidebar'"
   },
-  "sidebar.userManualSidebar.category.User Management.link.generated-index.description": {
-    "message": "Benutzerverwaltung und Gruppenzuweisungen.",
-    "description": "The generated-index page description for category User Management in sidebar userManualSidebar"
+  "sidebar.docsSidebar.category.Knowledge and AI": {
+    "message": "Knowledge und KI",
+    "description": "The label for category 'Knowledge and AI' in sidebar 'docsSidebar'"
   },
-  "sidebar.userManualSidebar.category.Automation": {
-    "message": "Automation",
-    "description": "The label for category Automation in sidebar userManualSidebar"
+  "sidebar.docsSidebar.category.Administer": {
+    "message": "Verwalten",
+    "description": "The label for category 'Administer' in sidebar 'docsSidebar'"
   },
-  "sidebar.userManualSidebar.category.Automation.link.generated-index.description": {
-    "message": "Automatische Prozesse und Regeln einrichten.",
-    "description": "The generated-index page description for category Automation in sidebar userManualSidebar"
+  "sidebar.docsSidebar.category.Troubleshooting": {
+    "message": "Fehlerbehebung",
+    "description": "The label for category 'Troubleshooting' in sidebar 'docsSidebar'"
   },
-  "sidebar.userManualSidebar.category.ETL Pipeline": {
-    "message": "ETL Pipeline",
-    "description": "The label for category ETL Pipeline in sidebar userManualSidebar"
+  "sidebar.docsSidebar.doc.Overview": {
+    "message": "Überblick",
+    "description": "The label for the doc item 'Overview' in sidebar 'docsSidebar', linking to the doc index"
   },
-  "sidebar.userManualSidebar.category.ETL Pipeline.link.generated-index.description": {
-    "message": "ETL Pipelines zur Datenverarbeitung.",
-    "description": "The generated-index page description for category ETL Pipeline in sidebar userManualSidebar"
+  "sidebar.docsSidebar.doc.Downloads": {
+    "message": "Downloads",
+    "description": "The label for the doc item 'Downloads' in sidebar 'docsSidebar', linking to the doc downloads"
   },
-  "sidebar.userManualSidebar.category.Tenant Settings": {
-    "message": "Tenant Settings",
-    "description": "The label for category Tenant Settings in sidebar userManualSidebar"
-  },
-  "sidebar.userManualSidebar.category.Tenant Settings.link.generated-index.description": {
-    "message": "Individuelle Einstellungen für deine Umgebung.",
-    "description": "The generated-index page description for category Tenant Settings in sidebar userManualSidebar"
-  },
-  "sidebar.userManualSidebar.category.Dateien": {
-    "message": "Dateien",
-    "description": "The label for category Dateien in sidebar userManualSidebar"
-  },
-  "sidebar.userManualSidebar.category.Dateien.link.generated-index.description": {
-    "message": "Dateiverwaltung und Speicheroptionen.",
-    "description": "The generated-index page description for category Dateien in sidebar userManualSidebar"
-  },
-  "sidebar.userManualSidebar.category.Konfig-Verwalten": {
-    "message": "Konfig-Verwalten",
-    "description": "The label for category Konfig-Verwalten in sidebar userManualSidebar"
-  },
-  "sidebar.userManualSidebar.category.Konfig-Verwalten.link.generated-index.description": {
-    "message": "Konfiguration von Events und Einstellungen.",
-    "description": "The generated-index page description for category Konfig-Verwalten in sidebar userManualSidebar"
-  },
-  "sidebar.userManualSidebar.category.Reporting / Berichte": {
-    "message": "Reporting / Berichte",
-    "description": "The label for category Reporting / Berichte in sidebar userManualSidebar"
-  },
-  "sidebar.userManualSidebar.category.Reporting / Berichte.link.generated-index.description": {
-    "message": "Erstellung und Analyse von Berichten.",
-    "description": "The generated-index page description for category Reporting / Berichte in sidebar userManualSidebar"
-  },
-  "sidebar.userManualSidebar.category.Getting Started": {
-    "message": "Getting Started",
-    "description": "The label for category Getting Started in sidebar userManualSidebar"
-  },
-  "sidebar.userManualSidebar.category.Getting Started.link.generated-index.description": {
-    "message": "Erste Schritte für Benutzer.",
-    "description": "The generated-index page description for category Getting Started in sidebar userManualSidebar"
-  },
-  "sidebar.userManualSidebar.category.Tutorials": {
-    "message": "Tutorials",
-    "description": "The label for category Tutorials in sidebar userManualSidebar"
-  },
-  "sidebar.userManualSidebar.category.Tutorials.link.generated-index.description": {
-    "message": "Anleitungen für Benutzer.",
-    "description": "The generated-index page description for category Tutorials in sidebar userManualSidebar"
-  },
-  "sidebar.developersSidebar.category.Technical Details": {
-    "message": "Technical Details",
-    "description": "The label for category Technical Details in sidebar developersSidebar"
-  },
-  "sidebar.developersSidebar.category.Technical Details.link.generated-index.description": {
-    "message": "Technische Architektur und Konzepte.",
-    "description": "The generated-index page description for category Technical Details in sidebar developersSidebar"
-  },
-  "sidebar.developersSidebar.category.Deployment": {
-    "message": "Deployment",
-    "description": "The label for category Deployment in sidebar developersSidebar"
-  },
-  "sidebar.developersSidebar.category.Deployment.link.generated-index.description": {
-    "message": "Deployment-Anleitungen.",
-    "description": "The generated-index page description for category Deployment in sidebar developersSidebar"
-  },
-  "sidebar.developersSidebar.category.API Documentation": {
-    "message": "API Documentation",
-    "description": "The label for category API Documentation in sidebar developersSidebar"
-  },
-  "sidebar.developersSidebar.category.API Documentation.link.generated-index.description": {
-    "message": "Informationen zur API-Nutzung.",
-    "description": "The generated-index page description for category API Documentation in sidebar developersSidebar"
-  },
-  "sidebar.developersSidebar.category.API References": {
-    "message": "API References",
-    "description": "The label for category API References in sidebar developersSidebar"
-  },
-  "sidebar.developersSidebar.category.API References.link.generated-index.description": {
-    "message": "Technische API-Referenzen.",
-    "description": "The generated-index page description for category API References in sidebar developersSidebar"
-  },
-  "sidebar.developersSidebar.category.DIP": {
-    "message": "DIP",
-    "description": "The label for category DIP in sidebar developersSidebar"
-  },
-  "sidebar.developersSidebar.category.DIP.link.generated-index.description": {
-    "message": "API-Dokumentation für das Data Ingestion Pipeline (DIP) Modul.",
-    "description": "The generated-index page description for category DIP in sidebar developersSidebar"
+  "sidebar.apiSidebar.category.Reference": {
+    "message": "Referenz",
+    "description": "The label for category 'Reference' in sidebar 'apiSidebar'"
   }
 }

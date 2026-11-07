@@ -1,0 +1,147 @@
+---
+untranslated: true
+title: Incident states and fields
+sidebar_position: 10
+description: The incident workflow, its buttons, the permissions they need, and every setting of an incident policy and of the incident settings.
+type: reference
+app:
+  routes: ["/monitor/incidents", "/monitor/incidents/:id", "/manage/incident-policies/:id", "/manage/incident-settings"]
+---
+
+Incident states, workflow buttons, policy settings and tenant-wide incident settings.
+
+## Workflow
+
+An incident moves through five fixed categories: **Open** → **Acknowledged** → **In progress** → **Resolved** → **Closed**.
+
+| Button | Available when | Does |
+| --- | --- | --- |
+| **Acknowledge** | Open | Marks that you have seen it |
+| **Assign** | Open, acknowledged, in progress | Gives it to a person. Assigning an acknowledged incident moves it to in progress. |
+| **Resolve** | Open, acknowledged, in progress | Records the fix with a resolution reason |
+| **Close** | Resolved | Ends it |
+| **Reopen** | Resolved or closed | Opens it again, until the reopen window passes |
+
+### Permissions
+
+| You can | Needs |
+| --- | --- |
+| See incidents | Read on incidents |
+| Report, comment, watch | Create on incidents |
+| Acknowledge, assign, edit, link, remove events | Update on incidents |
+| Resolve, close, reopen | Update and execute on incidents |
+| See policies, automations and incident settings | Read on incident policies |
+| Change them | Create, update or delete on incident policies |
+
+### How an incident was resolved
+
+| Shown in Details | Meaning |
+| --- | --- |
+| **All episodes closed** | Every alarm cleared |
+| **Resolved manually** | A person resolved it |
+| **Resolved by an automation** | An automation resolved it |
+| **Resolved by timeout** | The policy's timeout passed |
+
+## Policy: which events
+
+An event matches when every filled-in clause holds.
+
+| Clause | Meaning |
+| --- | --- |
+| **Event type names** | Patterns on the event type name. Whole name, any case, `*` matches any characters, for example `Door *`. |
+| **Specific event types** | Event types of your tenant |
+| **Minimum severity** | **Any severity**, or a severity and above |
+| **Thing types** | Only events about things of these types |
+| **Raised by** | **Rule engine**, **Geofence**, **Connectivity**, **API**, an action or **Repair**. None checked means any. |
+| **Alarm going on / going off / single events** | An alarm going on is **Open**, going off is **Close**, anything else is a **Point** |
+| **Payload conditions** | Up to 20 conditions on the event data. A dotted path such as `sensor.name`, an operator and a value. Every condition must hold. |
+
+Payload operators: equals, does not equal, is greater than, is at least, is less than, is at most, contains, is one of, exists.
+
+## Policy: group into one incident by
+
+| Option | One incident per |
+| --- | --- |
+| **Thing** | Thing, for all its events |
+| **Thing and rule** | Rule or fence on one thing |
+| **Hierarchy level** | Site, hall or line. Pick the level. |
+| **Thing type** | Thing type, across the fleet |
+| **Event type** | Event type, tenant-wide |
+| **Payload field** | Value of a field in the event data, for example `batch_id`. Enter the dotted path. |
+
+## Policy: timing and resolution
+
+| Setting | Meaning |
+| --- | --- |
+| **Name** | Up to 255 characters, unique |
+| **Priority** | A whole number from 0 to 10000. Lower numbers are checked first. |
+| **Open after** | Open only if the alarm is still on after this long. `0` opens at once. |
+| **Quiet window** | No new event for this long before the incident can resolve |
+| **Resolves when** | **Every episode closed (alarm off)**, **A matching event**, **Only by a person or an automation**, or **A timeout** |
+| **Resolving event** | For **A matching event**: clauses that identify the event that resolves it |
+| **Resolve after** | For **A timeout**: how long after opening it resolves |
+| **Close after resolving** | A matching event in this time reopens the incident. `0` closes at once. |
+| **Severity** | **Highest of its events, rises only**, or **Severity of the event that opened it** |
+| **Title template** | Up to 500 characters. Insert **Event title**, **Thing name** or **Event type**. |
+
+You can enter durations in seconds, minutes, hours or days. **Open after**, **Quiet window** and **Resolve after** take at most 30 days. **Close after resolving** takes at most one year.
+
+## Shipped policies
+
+They arrive switched off.
+
+| Policy | Priority | Events | Groups by | Opens | Quiet | Closes |
+| --- | --- | --- | --- | --- | --- | --- |
+| **Rule alarms per thing** | 100 | Rule engine | Thing | At once | 10 min | 1 day after resolving |
+| **Connectivity outages** | 110 | Connectivity, open and close | Thing | After 5 min offline | 5 min | 1 day after resolving |
+| **Geofence dwell** | 120 | Geofence | Thing and rule | After 30 min | None | 1 day after resolving |
+
+All three resolve when every episode is closed.
+
+## Policy automations
+
+| Transition | Runs when the incident | Needs **Wait** |
+| --- | --- | --- |
+| **Opened** | is opened | No |
+| **Escalated** | is escalated (severity rises) | No |
+| **Acknowledged** | is acknowledged | No |
+| **Unacknowledged for** | stays unacknowledged for the wait time | Yes |
+| **Resolved** | is resolved | No |
+| **Reopened** | is reopened | No |
+| **Timeout after** | is still open after the wait time | Yes |
+
+**Order** (0 to 10000) sets the sequence of several automations on one transition. An automation runs an existing action that is switched on.
+
+## Incident settings
+
+### Statuses
+
+Your own names over the five categories. Automations and auto-resolution follow the category.
+
+| Rule | Detail |
+| --- | --- |
+| Default | Each category keeps exactly one active default. |
+| Name | Up to 100 characters. Choose a color. |
+| Delete | Not while incidents use the status. |
+| Category | Can't change while incidents use the status. |
+
+### Resolution reasons
+
+The reasons a person picks to resolve. At least one must exist before anyone can resolve. A reason in use can't be deleted. A policy that resolves an incident records **Condition cleared** or **Resolution event**.
+
+### Custom fields
+
+| Property | Detail |
+| --- | --- |
+| **Label** | Shown name |
+| **Key** | Lower-case letters, digits and underscores, starting with a letter. Fixed after creation. |
+| **Type** | **Text**, **Number**, **Choice**, **Date** or **User**. Fixed after creation. For **Choice**, one option per line: a value, or a value and a label separated by a vertical bar. |
+| **Required when resolving** | People must fill it in to resolve. A change only affects later resolutions. |
+
+A field that holds values can't be deleted.
+
+## Related
+
+- [Work an incident](./work-an-incident.mdx)
+- [Set up an incident policy](./incident-policy.mdx)
+- [Event types](./event-types.mdx)

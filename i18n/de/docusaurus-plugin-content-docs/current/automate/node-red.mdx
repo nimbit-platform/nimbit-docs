@@ -1,0 +1,41 @@
+---
+untranslated: true
+title: Node-RED
+sidebar_position: 10
+description: "Node-RED is a supported option for custom flows. When to use it instead of Rule Designer or Periscope, and how to open it."
+type: reference
+app:
+  routes: ["/automation/rule-designer"]
+---
+
+Node-RED is an external flow editor that an administrator can connect to IoT Breeze. It is supported, and it is an option for flows the built-in tools can't express. For most work, use the built-in tools:
+
+- Automation on your data: [Rule Designer](./rules-actions-reports.mdx). Rules are versioned, listed in IoT Breeze and need no code.
+- Reading machines and field networks on site: [Periscope](../gateways/periscope/index.mdx), the NimBit edge agent.
+
+## Availability
+
+| Item | Detail |
+| --- | --- |
+| Menu entry | **Automation › Node Red** |
+| Shown when | A Node-RED address is configured for IoT Breeze, and your role has update permission on rules. |
+| Opens | In a new browser tab, at the configured address. |
+| Sign-in | Node-RED has its own sign-in page. Sign in with your IoT Breeze account. |
+
+If **Node Red** is not in the menu, the address is not configured or your role lacks permission. Ask your administrator.
+
+## Relation to Rule Designer
+
+| Item | Rule Designer | Node-RED |
+| --- | --- | --- |
+| Built into IoT Breeze | Yes | No, a separate application |
+| Versions and draft | Yes | No |
+| Flows listed in IoT Breeze | Yes, under **Automation › Rule Designer** | No |
+| Needs code | No | Depends on the flow |
+
+Flows built in Node-RED are not versioned by IoT Breeze and do not appear in the **Rule Designer** list.
+
+## Related
+
+- [Rules, actions and reports](./rules-actions-reports.mdx)
+- [Rule conditions and functions](./conditions.mdx)

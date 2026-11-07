@@ -1,0 +1,55 @@
+---
+untranslated: true
+title: Show state by color, icon and motion
+sidebar_label: States and colors
+description: Add rules so an element changes color, icon and motion when its value crosses a limit.
+type: how-to
+sidebar_position: 4
+app:
+  routes: ["/canvas/:id"]
+  tour: canvas-data
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Set rules on a bound element so that trouble stands out: a tank turns red, a pump icon spins, an alarm blinks. Rules decide a named state; the state decides how the element looks.
+
+## Before you start
+- A role that may update canvases.
+- An element already bound to a value. Without a binding the **States** tab says to add a live value first. See [Bind elements to live values](./bind-live-values.mdx).
+
+## Steps
+
+1. Open the canvas, select **Edit canvas** and select the element.
+2. Open the **States** tab. **State from** shows the value now.
+3. Add a rule. Under **When**, pick the operator and the value, for example greater than a limit.
+4. In **State**, name the state, for example `high alarm`.
+5. Pick a **Severity**: **Automatic**, **Normal**, **Info**, **Warning**, **Alarm** or **Fault**. **Automatic** derives it from the state name (fault, alarm, warning); any other name is Normal.
+6. Optional: pick a **Color**. Without one, a warning, alarm or fault takes its severity's color, and quiet states keep the element's look. For icon elements you can also pick an **Icon** and a **Motion**: **Blink**, **Clock**, **Spin** or **No motion**.
+7. Add more rules with **Else if**, and a fallback with **Otherwise**. Rules run top to bottom and the first match sets the state. Use **Move up** and **Move down** to order them.
+8. For a text element, choose **Applies to**: **Whole text** or **Only this value**.
+9. Select **Preview**, then **Save**.
+
+<Screenshot
+  page="visualize/canvas/states-and-colors"
+  id="01-states-tab"
+  route="/canvas/:id"
+  state="Inspector States tab for a Value element with two rules: greater than 80 named high alarm with severity Alarm, and Otherwise named normal"
+  alt="The States tab with two rules for a Value element"
+/>
+
+For a **State timeline** element the rules are **States** instead: each has an operator (**Equals**, **Below**, **Between** or **From**) and a color. Values that match no state are left blank. With no states defined, every distinct value gets its own color.
+
+## Check that it worked
+
+In **Preview**, the element shows the color, icon and motion of the matching state. When a value is in alarm, a chip in the canvas header lists it; selecting the chip jumps to the next alarm.
+
+## If it doesn't work
+
+- **The element keeps its normal look**: the matching rule has severity Normal and no color. Pick a color or raise the severity.
+- **A rule never matches**: an earlier rule matches first. Reorder the rules.
+- **The element turns Stale**: the value stopped updating. Set **Consider data stale after** on the **Data** tab.
+- **Too many different values to color**: a timeline over a text measure has no states. Define states in the inspector.
+
+## Related
+- [Bind elements to live values](./bind-live-values.mdx) · [Canvas editor reference](./editor-reference.mdx)

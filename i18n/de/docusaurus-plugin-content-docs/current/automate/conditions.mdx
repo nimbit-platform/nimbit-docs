@@ -1,0 +1,113 @@
+---
+untranslated: true
+title: Rule conditions and functions
+sidebar_position: 7
+description: Operators, window functions and the Advanced expression syntax for the Condition node of a rule.
+type: reference
+app:
+  routes: ["/automation/rule-designer/:id"]
+---
+
+The **Condition** node of a rule has two tabs, **Simple** and **Advanced**. Only the selected tab is evaluated. While **Advanced** is selected, the **Simple** rows are kept as a draft and ignored.
+
+## Simple tab
+
+Each row checks one measure. A row has a **Measure**, optionally **Look at** (numeric measures only), an **Operator**, and a value. The value field is labelled **Condition**. Select **Add condition** to add rows and join them with **and** or **or**.
+
+| Joining | Result |
+| --- | --- |
+| Rows joined with **and** | All of them must hold. |
+| Rows joined with **or** | At least one of them must hold. The group of **or** rows is then combined with **and** with the other rows. |
+
+A row passes only if the measure is present in the message. A message without the measure never matches a row.
+
+### Operators
+
+| Operator | Measure types | Meaning |
+| --- | --- | --- |
+| **Greater than**, **Less than** | Number | `>` and `<` |
+| **Greater Than or Equal**, **Less Than or Equal** | Number | `>=` and `<=` |
+| **Equals**, **Not Equal** | Number, string, boolean | `==` and `!=` |
+| **Modulo** | Number | Holds when the value divided by your divisor leaves no remainder. |
+| **Starts with**, **Ends with** | String | Prefix and suffix match. |
+| **Contains**, **Does not contain** | String | Substring match. |
+| **In (Array)**, **Not In (Array)** | String | The value is, or is not, one of the values you list. Open **Values** to enter them. |
+
+For a boolean measure the value is a **True** or **False** choice.
+
+### Look at
+
+| Option | Needs | What the row compares |
+| --- | --- | --- |
+| **Current value** | none | The value of the current message. This is the default. |
+| **Average**, **Minimum**, **Maximum**, **Sum**, **Count**, **Slope** | **Window**, optional **Compare with previous period** | The aggregate over the window. **Slope** is the least-squares change in units per second. |
+| **Change from previous** | none | The current value minus the previous sample. |
+| **Previous sample** | A sample number, 1 or higher | The value of the nth sample before this message. |
+| **Rising**, **Falling** | Optional **Window**, optional **Minimum change** | Whether the measure rose or fell over the window by more than the minimum change. |
+
+**Rising** and **Falling** are true or false on their own, so the row has no **Operator** and no value. They answer false until the stored history covers the whole window.
+
+**Window** offers `1m`, `5m`, `15m`, `30m`, `1h`, `6h`, `24h` and **Custom**, where you enter a duration such as `90s` or `1h30m`. The default is `15m`. **Compare with previous period** shifts the window back by that duration, so you can compare this hour with the one before. With **Default** selected, the window ends at the current message and includes its value.
+
+## Advanced tab
+
+Select **Open editor** and write a Grule `when` clause. The thing's data is the object `event`. Select **Test** to check the expression against a sample JSON payload. The editor reports **Valid** or **Invalid expression**. **Test** has no history, so window functions read as missing: test them on live data.
+
+```
+event.HasNumeric("temperature") && event.Numeric("temperature") > 25.0
+```
+
+Operators are `&&`, `||`, `!`, `==`, `!=`, `<`, `<=`, `>`, `>=` and `%`. Always guard a read with the matching `Has` call: reading a missing field returns `0`, `""` or `false`, not an error.
+
+### Reading fields
+
+| Function | Returns | If missing or of another type |
+| --- | --- | --- |
+| `event.HasField("m")` | true if the field exists, any type | false |
+| `event.HasNumeric("m")`, `event.HasString("m")`, `event.HasBool("m")` | true if the field exists with that type | false |
+| `event.Numeric("m")` | number | `0` |
+| `event.Str("m")` | string. Supports `.HasPrefix("x")`, `.HasSuffix("x")` and `.Contains("x")`. | `""` |
+| `event.Bool("m")` | boolean | `false` |
+
+### Identity, tags and labels
+
+| Function | Returns |
+| --- | --- |
+| `event.DeviceID()`, `event.ThingType()`, `event.Tenant()`, `event.Timestamp()` | The thing, its thing type, the tenant and the message time. |
+| `event.HasTag("k")`, `event.TagValue("k")` | Whether the message or the thing carries tag `k`, and its value. |
+| `event.HasLabel("l")` | Whether the thing carries the label. |
+
+### Window functions
+
+`m` is a measure name, `w` and `offset` are duration strings such as `"15m"`, `n` is an integer of 1 or more, and `minDelta` is a number of 0 or more.
+
+| Function | Meaning |
+| --- | --- |
+| `event.Avg(m, w)`, `Min`, `Max`, `Sum`, `Slope`, `Count` | The aggregate of samples from `w` before the current message up to it, plus the current value. `Count` returns an integer. Empty windows return `0`. |
+| `event.Avg(m, w, offset)` and the same for the others | The same over the window that ends `offset` earlier. The current value is excluded. |
+| `event.HasPrev(m)`, `event.HasPrev(m, n)` | Whether the nth previous sample exists. `n` defaults to 1. |
+| `event.Prev(m)`, `event.Prev(m, n)` | Its value. |
+| `event.Delta(m)` | Current value minus the previous sample. `0` if either is missing. |
+| `event.Span(m, n)` | Seconds from the nth previous sample to the current message, as a decimal. |
+| `event.Rising(m)`, `event.Rising(m, minDelta)` | True if the measure rose by more than `minDelta` over the platform's default window for the thing type. |
+| `event.RisingFor(m, w)`, `event.RisingFor(m, w, minDelta)` | The same over the window you give. |
+| `event.Falling(m)`, `event.FallingFor(m, w)` | Mirror of the rising functions. |
+
+```
+event.Count("temperature", "1h") >= 10 && event.Avg("temperature", "1h") > event.Avg("temperature", "1h", "1h") + 2.0
+```
+
+Rules for arguments:
+
+- Measure names, durations, `n` and `minDelta` must be literals. A variable or a nested call is not accepted.
+- Durations are Go durations: `"30s"`, `"15m"`, `"2h"`.
+- Compare `Span` with a decimal such as `900.0`. Compare `Count` with an integer.
+- Window functions use numeric samples only. There is no history of strings or booleans.
+
+{/* TODO(product): The trend-window design notes say an invalid window call, such as a non-literal argument or an unparsable duration, rejects the whole rule set for the tenant and keeps the previous rules running. Does the Advanced editor's Test or validity check catch this before the rule is saved? If not, the docs should warn. */}
+
+## Related
+
+- [Alert when a value crosses a limit](./threshold-alert.mdx)
+- [Rules, actions and reports](./rules-actions-reports.mdx)
+- [Action types](./action-types.mdx)

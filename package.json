@@ -5,7 +5,7 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
-    "build": "docusaurus build",
+    "build": "node scripts/i18n/status.mjs --fill > /dev/null && docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
@@ -14,7 +14,9 @@
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc",
     "screenshots": "node scripts/screenshots/capture.mjs",
-    "screenshots:list": "node scripts/screenshots/inventory.mjs"
+    "screenshots:list": "node scripts/screenshots/inventory.mjs",
+    "i18n:status": "node scripts/i18n/status.mjs",
+    "i18n:label": "node scripts/i18n/ui-label.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

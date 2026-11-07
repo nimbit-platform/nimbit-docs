@@ -4,6 +4,7 @@ import type FooterType from "@theme/DocItem/Footer";
 import type { WrapperProps } from "@docusaurus/types";
 import { useDoc } from "@docusaurus/plugin-content-docs/client";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
+import Translate from "@docusaurus/Translate";
 import styles from "./styles.module.css";
 
 type Props = WrapperProps<typeof FooterType>;
@@ -25,10 +26,12 @@ export default function FooterWrapper(props: Props): React.JSX.Element {
       <div className={styles.actions}>
         {!isGenerated && (
           <a href={markdownUrl(metadata.permalink)} target="_blank" rel="noopener">
-            View as Markdown
+            <Translate id="doc.footer.markdown">View as Markdown</Translate>
           </a>
         )}
-        <a href={`mailto:info@nimbit.de?subject=${subject}&body=${body}`}>Report a problem with this page</a>
+        <a href={`mailto:info@nimbit.de?subject=${subject}&body=${body}`}>
+          <Translate id="doc.footer.report">Report a problem with this page</Translate>
+        </a>
       </div>
     </>
   );

@@ -1,0 +1,82 @@
+---
+untranslated: true
+title: Set up an incident policy
+sidebar_position: 6
+description: Turn on the shipped incident policies, write your own, and run an action once when an incident opens or goes unacknowledged.
+type: how-to
+app:
+  routes: ["/manage/incident-policies", "/manage/incident-policies/new", "/manage/incident-policies/:id", "/manage/incident-policies/:id/automations", "/manage/incident-settings"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Decide which events open incidents, how they group into one incident, and who is told when it changes. Without a policy, events never open incidents. For the idea, read [Events, incidents and notifications](./events-incidents-notifications.mdx).
+
+## Before you start
+
+- You need permission to write incident policies. With read permission only, the page says **You can view this configuration but not change it.**
+- To add automations you also need permission to run actions.
+- For the settings of each field, see [Incident states and fields](./incident-fields.mdx).
+
+## Turn on the shipped policies
+
+1. Open **Settings › Configuration › Incidents**. The **Incident policies** tab lists your policies.
+2. Select **Import default policies**, then **Import**. IoT Breeze creates **Rule alarms per thing**, **Connectivity outages** and **Geofence dwell**, except those you already have. Importing twice creates nothing new.
+3. The new policies are switched off. Switch on the ones you want with the **Active** switch in the list.
+
+## Write your own policy
+
+This example opens one incident per thing for door alarms and resolves it ten minutes after the last alarm clears.
+
+1. Select **New policy**.
+2. Under **Name and priority**, enter the **Name** `Door alarms` and a **Priority**. Policies with lower numbers are checked first, and an event joins the first active policy that matches.
+3. Under **Which events**, enter `Door *` in **Event type names** and set **Minimum severity** to **Warning**. An event matches when every clause you fill in holds. Empty clauses are ignored.
+4. Under **Group into one incident by**, choose **Thing**.
+5. Under **Timing and resolution**, set **Open after** to `0` and **Quiet window** to 10 minutes. Set **Resolves when** to **Every episode closed (alarm off)** and **Close after resolving** to 1 day.
+6. Check the line **In short** under the editor. It sums up the policy in one sentence.
+7. Save, then switch the policy on.
+
+<Screenshot
+  page="watch/incident-policy"
+  id="01-policy-editor"
+  route="/manage/incident-policies/:id"
+  state="Policy editor for Rule alarms per thing: Which events with Raised by Rule engine, Group by Thing selected, Timing section with Quiet window 10 minutes and Close after 1 day, In short summary visible"
+  alt="The policy editor with the In short summary"
+/>
+
+## Add an automation
+
+An automation runs an existing action once when an incident of the policy changes state. This is how you tell people once, even if the alarm flaps.
+
+1. Open the policy and select **Edit automations**. Save a new policy first.
+2. Select **Add automation**.
+3. Under **When the incident**, choose **Opened**.
+4. Under **Run action**, pick the action, for example one that posts to a [notification channel](./alert-channels.mdx).
+5. Select **Save automation**.
+
+To escalate, add a second automation with **Unacknowledged for**, set **Wait** to 15 minutes, and pick a louder action, such as a message to another channel.
+
+An automation skips an action that is switched off, and every action you create on an event type starts switched off. Turn on **Active** in the event type's **Actions** tab first. {/* TODO(product): How does someone create an action for an incident automation that does not also run on every event of an event type? The pickers only offer existing actions, and the event type page is the only place found where a Notification channel or Email action can be added. An action on an event type runs on every event of that type. */}
+
+## Add the statuses and reasons your team needs
+
+1. Open the **Incident settings** tab.
+2. Under **Resolution reasons**, select **Add resolution reason**. People can't resolve an incident until one exists.
+3. Optionally rename statuses with **Add status** or edit one, and add **Custom fields**.
+
+## Check that it worked
+
+The policy shows in the list with **Active** on. When a matching event arrives, **Last match** shows the time and a new incident appears under **Monitoring › Incidents** with the policy's name in **Policy**.
+
+## If it doesn't work
+
+- **Nothing opens**: the policy is inactive, or another active policy with a lower priority number matched first. Check **Priority** and **Active**.
+- **The incident opens late**: **Open after** holds it back until the alarm has stayed on that long. The shipped **Connectivity outages** policy waits 5 minutes.
+- **Too many incidents**: group by something wider, such as **Thing**, and set a **Quiet window**.
+- **The action never runs**: the action is switched off, or you lack permission to run actions.
+
+## Related
+
+- [Work an incident](./work-an-incident.mdx)
+- [Incident states and fields](./incident-fields.mdx)
+- [Event types](./event-types.mdx)

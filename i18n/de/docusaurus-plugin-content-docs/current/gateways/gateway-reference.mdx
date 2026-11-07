@@ -1,0 +1,130 @@
+---
+untranslated: true
+title: Gateway reference
+description: Gateway types, fields, statuses, limits, health and traffic measures, discard reasons and refusal reasons for gateways in IoT Breeze.
+type: reference
+sidebar_position: 6
+app:
+  routes: ["/onboarding/gateways", "/onboarding/gateways/:id"]
+---
+
+Lookup tables for gateways. For the model, read [How gateways work](./how-gateways-work.mdx).
+
+## Gateway types
+
+| Type | Identity | Needs | Own thing type |
+| --- | --- | --- | --- |
+| **Periscope** | Key pair registered at enrollment | A one-time onboarding code | `periscope_gateway` |
+| **MQTT device** | Broker username and password | A config file or the shown credential | `mqtt_gateway` |
+
+Every gateway has one thing of its own, with the alternate ID `gateway-<id>`. It is created with the gateway and stays with it.
+
+## Fields
+
+| Field | Applies to | Rules |
+| --- | --- | --- |
+| **Name** | Both | 1 to 100 characters, unique in the organization. |
+| **Namespace** | Both | 1 to 64 characters from `a-z`, `0-9`, `_` and `-`. Without one, it follows the name. Can't be `gateway`. It can't equal another gateway's namespace, start with it, or extend it with `-`. Fixed once the gateway has things or its box has enrolled. Renaming doesn't move existing things. |
+| **Roles** | Periscope | The roles the gateway acts with, narrowed to what a gateway may do. Default: **Modeler**. You can't give a role with permissions you lack. |
+| **Code valid for** | Periscope | 1 hour to 7 days. Default 1 day. |
+| **Config file format** | MQTT device | **Environment file (.env)**, **JSON (.json)** or **eWON Flexy BASIC parameters (.bas)**. |
+| **Allowed thing types** | Scope | Up to 200. Empty means any thing type. |
+| **Thing limit** | Scope | 0 to 100,000, besides the gateway's own thing. Empty means only the organization's limits apply. |
+| **Creation policy** | Scope | **Open** creates things inside the scope. **Locked** creates none by any path: data for an unknown thing is discarded and counted, and existing things keep working. |
+
+## Statuses
+
+| Status | Meaning |
+| --- | --- |
+| **Online** | The gateway thing is connected: its own health message arrived in the last 15 minutes. |
+| **Offline** | Enrolled, and the gateway thing is not connected or has no health message yet. |
+| **Waiting for onboarding** | An onboarding code is pending. |
+| **Not enrolled** | No live key and no pending code. |
+| **Incomplete, delete it** | Only the identity directory knows the gateway. Delete it and add it again. |
+
+## Limits
+
+| Limit | Value |
+| --- | --- |
+| Periscope gateways per organization | 1000 |
+| Gateways a thing belongs to | 1 |
+| Things assigned in one action | 200 |
+| Alternate ID length | 128 characters |
+| Access token lifetime | 5 minutes |
+| MQTT batch | 500 elements, 1 MiB |
+| Events per page | up to 200 |
+
+## MQTT connection
+
+| Item | Value |
+| --- | --- |
+| Client ID | `<tenant>:gateway:<gateway id>`, optionally followed by `:<suffix>` |
+| Protocol | MQTT 3.1.1 |
+| QoS | 0 or 1 |
+| Topics | **Telemetry topic** for one thing, **Batch topic** for an array, **Status topic** for health. All under the **Topic prefix** |
+
+Batch element fields: `id` (required), `thingType`, `time`, `data`. Element and message rules are in [Message format](../connect/message-format.mdx), topics in [MQTT topics and client ID](../connect/mqtt-topics.mdx).
+
+## Health measures
+
+The gateway reports these about itself every 5 minutes (interface `GatewayHealth`). `data` must not be empty. Send them live; replaying a buffered message would keep a dead gateway online.
+
+| Name | Meaning | Unit |
+| --- | --- | --- |
+| `uptime_s` | Uptime | s |
+| `buffer_used_pct` | Buffer used | % |
+| `buffer_oldest_s` | Oldest buffered message | s |
+| `errors_per_min` | Errors per minute | 1/min |
+| `clock_offset_ms` | Clock offset | ms |
+| `sw_version` | Software version (tag) | |
+| `link_type` | Link type (tag) | |
+
+A Periscope gateway adds the interface `PeriscopeAgent`: `outputs_failing`, `inputs_failing`, `output_p95_ms`, `restart_required`, `config_hash` and `last_apply`.
+
+## Traffic measures
+
+The platform writes these to the gateway thing about every minute (interface `GatewayTraffic`). They never make a gateway online.
+
+| Measure | Meaning |
+| --- | --- |
+| `traffic_messages_per_min` | Messages stored per minute |
+| `traffic_values_per_min` | Measure values stored per minute |
+| `traffic_things_active` | Things with a stored message in the window |
+| `traffic_last_data_age_s` | Seconds from the last stored message to the window's end |
+| `discards_per_min` | Messages refused for good per minute, all reasons |
+| `discards_<reason>_per_min` | The same per reason, 0 when none |
+
+## Discard reasons
+
+| Reason | Counted when |
+| --- | --- |
+| `identity_mismatch` | The message names another organization or thing than its connection |
+| `not_member` | The thing's record names another gateway, or none |
+| `unknown_thing` | The thing or its thing type doesn't exist |
+| `invalid` | Anything else refused for good: undecodable, malformed, failing validation, wrong thing type for the thing |
+| `id_missing` | A batch element has no `id` |
+| `too_large` | A batch is over 1 MiB, dropped whole |
+| `too_many` | A batch has more than 500 elements, dropped whole |
+
+A lookup the platform couldn't answer is retried, not discarded.
+
+## Refused creates
+
+A Periscope gateway's attempt to create a thing can be refused. **Refused creates** on the **Scope** tab counts them by reason, and the **Events** tab lists each one.
+
+| Reason | Meaning |
+| --- | --- |
+| **Thing limit reached** | The gateway has as many things as its limit allows. |
+| **Creation locked** | The creation policy is **Locked**. |
+| **Outside the namespace** | The thing's alternate ID doesn't start with the gateway's namespace. |
+| **Thing type not allowed** | The thing type isn't in the allowed list. |
+
+## Events
+
+The **Events** tab shows changes to the gateway and its gateway thing, the directory's record of its keys and a pending onboarding code (**Key registered**, **Key used**, **Onboarding code pending**), and refused creates. The identity directory keeps no history of its own.
+
+## Related
+
+- [Add a gateway](./add-a-gateway.mdx)
+- [Send data for many devices through one MQTT gateway](./mqtt-gateway.mdx)
+- [Check gateway health and traffic](./fleet-health.mdx)

@@ -7,6 +7,7 @@
  * Kept in localStorage; falls back to the default when storage is unavailable.
  */
 import { useEffect, useState } from "react";
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 
 export const DEFAULT_APP_URL = "https://iotbreeze.nimbit.ai";
 const KEY = "nimbit-docs.app-url";
@@ -76,4 +77,14 @@ export function appHref(base: string, route = "/", options: { tour?: string; lan
   const url = new URL(path, base);
   if (options.tour) url.searchParams.set("tour", options.tour);
   return url.toString();
+}
+
+/**
+ * Builds links into the reader's IoT Breeze, in the language of the page they read:
+ *   const href = useAppHref(); href("/dashboards", { tour: "build-dashboards" })
+ */
+export function useAppHref(): (route?: string, options?: { tour?: string }) => string {
+  const base = useAppUrl();
+  const { i18n } = useDocusaurusContext();
+  return (route = "/", options = {}) => appHref(base, route, { ...options, lang: i18n.currentLocale });
 }

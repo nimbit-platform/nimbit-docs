@@ -1,0 +1,119 @@
+---
+untranslated: true
+title: Authentication
+description: Every credential each NimBit API accepts, with the exact headers, and how device credentials and API keys are issued.
+type: reference
+sidebar_position: 3
+app:
+  routes: ["/onboarding/things/:id", "/administration/api-keys"]
+---
+
+The base URL, the credentials that tsflux, nbq and OCB accept, and the exact headers to send.
+
+## Base URL
+
+Use the host you open IoT Breeze on, with the path prefix of the API: `https://<host>/nbq/api/v1/...`. All three APIs share the host. The tenant is not part of the URL: it comes from the credential. The one exception is the device telemetry route of tsflux, which also carries the tenant in its path.
+
+{/* TODO(product): Does every tenant get its own host (primary and additional domains are registered per tenant), or do tenants of a shared cell share one host? Say which hostname an integrator should use. */}
+
+## Which credential works where
+
+| Credential | tsflux (`/tsflux`) | nbq (`/nbq`) | OCB (`/ocb`) |
+| --- | --- | --- | --- |
+| Device or tenant basic credentials | Yes | No | No |
+| Device or tenant JWT | Yes | No | No |
+| API key (`nbk_...`) as bearer | No | Yes | Yes |
+| Access token from the key exchange | No | Yes (audience `nimbit:nbq`) | Yes (audience `nimbit:ocb`) |
+| User access token | No | Yes | Yes |
+
+{/* TODO(product): nbq takes an API key as bearer only when the deployment sets its directory address (`SECURITY_API_KEYS_DIRECTORY_URL`). Is that on in every cell? Until confirmed, use the explicit exchange below for nbq. */}
+
+## Headers
+
+| Credential | Header |
+| --- | --- |
+| Basic credentials | `Authorization: Basic <base64 of username:password>` |
+| JWT, API key, access token | `Authorization: Bearer <token>` |
+| nbq WebSocket (`/api/v1/ws`) | `Authorization: Bearer <token>`, or the subprotocol `nbq.auth.bearer.<token>` in `Sec-WebSocket-Protocol` |
+
+The tenant always comes from the credential, never from a header.
+
+## Device and tenant credentials (tsflux)
+
+tsflux accepts basic credentials and HS256 JWTs. Both are derived from a tenant key and carry a scope.
+
+| Scope | Valid for | Username identity |
+| --- | --- | --- |
+| `device` | One thing | `<tenantId>/<deviceId>` |
+| `tenant` | Every thing of the tenant | `<tenantId>/*` |
+
+- **Basic username**: the identity, base64url-encoded without padding. **Password**: an opaque string you copy from IoT Breeze. Do not build it by hand.
+- **JWT claims**: `version` (`v1`), `tenant_id`, `device_id`, `key_id`, `key_type` (`primary` or `secondary`), `signed_by` (`device` or `tenant`), `scope`, `exp`, and optionally `nonce`. A token without `exp`, or past it, is refused.
+- A device-scoped credential may send data only for its own thing. The `tenant` and `id` in a message must match the credential, or the message is refused.
+- Every credential comes from a primary or a secondary tenant key. Rotating a key stops new sign-ins with credentials derived from it. tsflux caches a verified bearer token for up to one minute.
+
+### Get credentials
+
+In IoT Breeze, open a thing and use the **Connections** tab; see [Send data over MQTT](../connect/mqtt.mdx). Basic credentials do not expire. JWT validity in IoT Breeze is 30 days to 7 years.
+
+Over the API, OCB issues them. All routes take `keyType` (`primary` or `secondary`, default `primary`).
+
+| Route (under `/ocb/rest/v2`) | Body | Returns |
+| --- | --- | --- |
+| `POST /thing-auth/nimbit/device/token` | `deviceId`, optional `expiresIn` | `token`, `username`, `expiresAt`, `scope` |
+| `POST /thing-auth/nimbit/device/basic-auth` | `deviceId`, optional `nonce` | `username`, `password`, `scope` |
+| `POST /tenant-auth/nimbit/token` | optional `expiresIn` | `token`, `username`, `expiresAt`, `scope` |
+| `POST /tenant-auth/nimbit/basic-auth` | none | `username`, `password`, `scope` |
+| `POST /tenant-auth/nimbit/rotate-key` | `primary` and/or `secondary` (boolean) | The new key. Every credential derived from a rotated key stops verifying. |
+
+{/* TODO(product): Which permission or API key scope do the credential routes need, and is a key token allowed on them? */}
+
+```bash
+curl -X POST "https://<host>/tsflux/api/v1/message/structured" \
+  -u "<username>:<password>" \
+  -H "Content-Type: application/json" \
+  -d '{"tenant":"<tenantId>","thingType":"<thingType>","id":"<deviceId>","data":{"temperature":22.5}}'
+```
+
+## API key exchange
+
+You can send the key itself as the bearer to OCB and, where enabled, to nbq. To get a token explicitly, for example for nbq:
+
+```bash
+curl -X POST "https://<host>/v1/token" \
+  -d "grant_type=client_credentials" \
+  -d "client_secret=<api-key>" \
+  -d "resource=nimbit:nbq"
+```
+
+| Field | Meaning |
+| --- | --- |
+| `grant_type` | `client_credentials`. |
+| `client_secret` | The API key. Alternatively send it as the password of HTTP Basic. |
+| `resource` | The app the token is for: `nimbit:ocb`, `nimbit:nbq`, `nimbit:contexus` or `nimbit:mcp`. |
+| `scope` | Optional. Space-separated subset of the key's scopes, all of one app. |
+
+The answer is `{"access_token": "...", "token_type": "Bearer", "expires_in": 300, "scope": "..."}`. There is no refresh token: exchange again before `expires_in` runs out. A key whose scopes span several apps needs `resource` or `scope`, otherwise the answer is `400 invalid_scope`.
+
+The body must be `application/x-www-form-urlencoded`, at most 16 KiB, without a query string, sent over HTTPS. Errors are listed in [Errors and limits](./errors-and-limits.mdx#api-key-exchange-errors).
+
+## What each API checks after sign-in
+
+nbq reads the tenant, the permissions and the audience from the token. A token needs the permission of the route:
+
+| nbq routes | Permission |
+| --- | --- |
+| `/datasources`, `/timeseries/query`, `/timeseries/fleet/query`, `/snapshot/query`, `/geo/*`, `/analytics/{id}`, `/ws`, `/metrics/query` | `Thing:r` (`Tenant:u` for cache metrics only) |
+| `/timeseries/raw/query`, `/tags/query` | `Thing:u` |
+| `/events/*` | `Event:r` (scope `events:read`) |
+| `/last-value-cache/status` | `Tenant:u` |
+| `GET /admin/analytics` | `QueryConfig:r` |
+| Other `/admin/analytics` routes | `QueryConfig:x` |
+
+The scope `telemetry:read` grants `Thing:r` and `QueryConfig:r` and `:x`, so it reaches queries and analytics but not raw rows, tag queries or events.
+
+OCB decides each route by the permissions in the token. Routes without declared permissions refuse key tokens with `403` `API_KEY_NOT_ALLOWED`, except `GET /users/me`.
+
+## Related
+
+- [API keys](./api-keys.mdx) · [Errors and limits](./errors-and-limits.mdx) · [Create an API key](../administer/api-key.mdx)

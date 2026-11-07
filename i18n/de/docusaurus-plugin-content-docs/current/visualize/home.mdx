@@ -1,0 +1,50 @@
+---
+untranslated: true
+title: Put a dashboard on Home
+sidebar_label: Dashboard on Home
+description: Show a dashboard that needs no thing on Home, for everyone or only for you.
+type: how-to
+sidebar_position: 5
+app:
+  routes: ["/dashboards/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Home is the page people land on. A Smart dashboard that needs no thing, such as one of tenant figures or pinned widgets, can go there. Background on dashboard kinds is in [Dashboards, smart dashboards and time](./dashboards.mdx).
+
+## Before you start
+- A Smart dashboard with no interfaces. If it requires interfaces, it needs a thing and the button is not offered. Create one as in [Build one dashboard for every thing of a kind](./smart-dashboard.mdx), leaving the interfaces empty.
+- For **For everyone**, the dashboard must be a **Tenant dashboard**. Other members cannot open a private dashboard.
+- Tenant-wide widgets for the page: see **Overview** and **Connectivity** in the [widget gallery](./widgets.mdx).
+
+## Steps
+
+1. Open the dashboard.
+2. Select **Show on Home** in the edit bar.
+3. Tick **For everyone** to put it on everyone's Home, or **Just for me** for your own.
+
+Each tick saves at once; there is nothing more to save.
+
+<Screenshot
+  page="visualize/home"
+  id="01-show-on-home"
+  route="/dashboards/:id"
+  state="Dashboard header with the Show on Home menu open, showing the checkboxes For everyone and Just for me"
+  alt="The Show on Home menu with For everyone and Just for me"
+/>
+
+To take it off Home, clear the tick.
+
+## Check that it worked
+
+The button reads **On Home for everyone** or **On my Home**. Open **Home**: the dashboard shows there.
+
+## If it doesn't work
+
+- **No Show on Home button**: the dashboard requires interfaces, or your role may not edit it.
+- **No For everyone tick**: the dashboard is a **User dashboard**. Change it to a **Tenant dashboard** in **Dashboard settings**.
+- **Getting started card disappeared**: Home leaves it out while a **Setup journey** widget is on the page.
+
+## Related
+- [Widget gallery](./widgets.mdx) · [Share or embed a dashboard](./share.mdx)

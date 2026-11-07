@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { DEFAULT_APP_URL, appHref, normalizeAppUrl, setAppUrl, useAppUrl } from "@site/src/lib/appUrl";
+import Translate, { translate } from "@docusaurus/Translate";
+import { DEFAULT_APP_URL, normalizeAppUrl, setAppUrl, useAppHref, useAppUrl } from "@site/src/lib/appUrl";
 import styles from "./styles.module.css";
 
 /**
@@ -9,6 +10,7 @@ import styles from "./styles.module.css";
  */
 export default function OpenAppNavbarItem({ mobile }: { mobile?: boolean }) {
   const base = useAppUrl();
+  const href = useAppHref();
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState(base);
   const [error, setError] = useState(false);
@@ -39,8 +41,8 @@ export default function OpenAppNavbarItem({ mobile }: { mobile?: boolean }) {
   if (mobile) {
     return (
       <li className="menu__list-item">
-        <a className="menu__link" href={appHref(base)} target="_blank" rel="noopener noreferrer">
-          Open IoT Breeze
+        <a className="menu__link" href={href()} target="_blank" rel="noopener noreferrer">
+          <Translate id="app.open">Open IoT Breeze</Translate>
         </a>
       </li>
     );
@@ -48,13 +50,13 @@ export default function OpenAppNavbarItem({ mobile }: { mobile?: boolean }) {
 
   return (
     <div className={styles.wrap} ref={ref}>
-      <a className={`navbar-book-demo ${styles.open}`} href={appHref(base)} target="_blank" rel="noopener noreferrer">
-        Open IoT Breeze
+      <a className={`navbar-book-demo ${styles.open}`} href={href()} target="_blank" rel="noopener noreferrer">
+        <Translate id="app.open">Open IoT Breeze</Translate>
       </a>
       <button
         type="button"
         className={styles.toggle}
-        aria-label="Change your IoT Breeze address"
+        aria-label={translate({ id: "app.address.change", message: "Change your IoT Breeze address" })}
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
       >
@@ -63,7 +65,7 @@ export default function OpenAppNavbarItem({ mobile }: { mobile?: boolean }) {
       {open && (
         <form className={styles.panel} onSubmit={save}>
           <label htmlFor="app-url" className={styles.label}>
-            Your IoT Breeze address
+            <Translate id="app.address.label">Your IoT Breeze address</Translate>
           </label>
           <input
             id="app-url"
@@ -74,16 +76,20 @@ export default function OpenAppNavbarItem({ mobile }: { mobile?: boolean }) {
             spellCheck={false}
             autoFocus
           />
-          {error && <p className={styles.error}>Enter an address such as iot.example.com.</p>}
+          {error && <p className={styles.error}>
+              <Translate id="app.address.error">Enter an address such as iot.example.com.</Translate>
+            </p>}
           <p className={styles.hint}>
-            On your own domain? Enter it once. Links from these docs into IoT Breeze, and guided tours, then open there.
+            <Translate id="app.address.hint">
+              On your own domain? Enter it once. Links from these docs into IoT Breeze, and guided tours, then open there.
+            </Translate>
           </p>
           <div className={styles.actions}>
             <button type="button" className={styles.reset} onClick={() => setDraft(DEFAULT_APP_URL)}>
-              Use default
+              <Translate id="app.address.default">Use default</Translate>
             </button>
             <button type="submit" className={`navbar-book-demo ${styles.save}`}>
-              Save
+              <Translate id="app.address.save">Save</Translate>
             </button>
           </div>
         </form>

@@ -2,257 +2,328 @@
   {
     "id": "knowledge-setup",
     "title": "Knowledge setup",
-    "route": "/knowledge/types"
+    "route": "/knowledge/types",
+    "titleDe": "Knowledge-Einrichtung"
   },
   {
     "id": "canvas",
     "title": "Canvas: an introduction",
-    "route": "/canvas"
+    "route": "/canvas",
+    "titleDe": "Canvas: eine Einführung"
   },
   {
     "id": "canvas-view",
     "title": "Canvas: read a canvas",
-    "route": "/canvas/:canvasId"
+    "route": "/canvas/:canvasId",
+    "titleDe": "Canvas: ein Canvas lesen"
   },
   {
     "id": "canvas-build",
     "title": "Canvas: build a canvas",
-    "route": "/canvas/:canvasId"
+    "route": "/canvas/:canvasId",
+    "titleDe": "Canvas: ein Canvas bauen"
   },
   {
     "id": "canvas-data",
     "title": "Canvas: connect live data",
-    "route": "/canvas/:canvasId"
+    "route": "/canvas/:canvasId",
+    "titleDe": "Canvas: Live-Daten verbinden"
   },
   {
     "id": "getting-started-thing-type",
     "title": "Create a thing type",
     "route": "/onboarding/thing-types",
     "guide": "getting-started",
-    "guideTitle": "Get your first device online"
+    "guideTitle": "Get your first device online",
+    "titleDe": "Einen Thing Typ anlegen",
+    "guideTitleDe": "Ihr erstes Gerät online bringen"
   },
   {
     "id": "getting-started-thing",
     "title": "Create a thing",
     "route": "/onboarding/things",
     "guide": "getting-started",
-    "guideTitle": "Get your first device online"
+    "guideTitle": "Get your first device online",
+    "titleDe": "Ein Thing anlegen",
+    "guideTitleDe": "Ihr erstes Gerät online bringen"
   },
   {
     "id": "getting-started-data",
     "title": "See live data",
     "route": "/onboarding/things/:thingId",
     "guide": "getting-started",
-    "guideTitle": "Get your first device online"
+    "guideTitle": "Get your first device online",
+    "titleDe": "Live-Daten sehen",
+    "guideTitleDe": "Ihr erstes Gerät online bringen"
   },
   {
     "id": "explore-find-your-way",
     "title": "Find your way",
     "route": "/knowledge/explore",
     "guide": "explore-and-ask",
-    "guideTitle": "Explore and ask"
+    "guideTitle": "Explore and ask",
+    "titleDe": "Sich zurechtfinden",
+    "guideTitleDe": "Erkunden und fragen"
   },
   {
     "id": "explore-connections",
     "title": "Follow the connections",
     "route": "/knowledge/explore?sel=:level",
     "guide": "explore-and-ask",
-    "guideTitle": "Explore and ask"
+    "guideTitle": "Explore and ask",
+    "titleDe": "Den Verbindungen folgen",
+    "guideTitleDe": "Erkunden und fragen"
   },
   {
     "id": "explore-ask",
     "title": "Ask Nimble",
     "route": "/knowledge/explore",
     "guide": "explore-and-ask",
-    "guideTitle": "Explore and ask"
+    "guideTitle": "Explore and ask",
+    "titleDe": "Nimble fragen",
+    "guideTitleDe": "Erkunden und fragen"
   },
   {
     "id": "explore-trust",
     "title": "Read and trust the answer",
     "route": "/knowledge/chat?conversation=:conversation",
     "guide": "explore-and-ask",
-    "guideTitle": "Explore and ask"
+    "guideTitle": "Explore and ask",
+    "titleDe": "Die Antwort lesen und ihr vertrauen",
+    "guideTitleDe": "Erkunden und fragen"
   },
   {
     "id": "explore-keep-going",
     "title": "Keep going",
     "route": "/knowledge/chat?conversation=:conversation",
     "guide": "explore-and-ask",
-    "guideTitle": "Explore and ask"
+    "guideTitle": "Explore and ask",
+    "titleDe": "Weitermachen",
+    "guideTitleDe": "Erkunden und fragen"
   },
   {
     "id": "graph-first-site",
     "title": "Create your first site",
     "route": "/knowledge/explore",
     "guide": "build-graph",
-    "guideTitle": "Build your graph"
+    "guideTitle": "Build your graph",
+    "titleDe": "Ihren ersten Standort anlegen",
+    "guideTitleDe": "Ihren Graph aufbauen"
   },
   {
     "id": "graph-levels",
     "title": "Add levels below",
     "route": "/knowledge/explore?sel=:level",
     "guide": "build-graph",
-    "guideTitle": "Build your graph"
+    "guideTitle": "Build your graph",
+    "titleDe": "Ebenen darunter hinzufügen",
+    "guideTitleDe": "Ihren Graph aufbauen"
   },
   {
     "id": "graph-things",
     "title": "Place your things",
     "route": "/knowledge/explore?sel=:level&tab=things",
     "guide": "build-graph",
-    "guideTitle": "Build your graph"
+    "guideTitle": "Build your graph",
+    "titleDe": "Ihre Things platzieren",
+    "guideTitleDe": "Ihren Graph aufbauen"
   },
   {
     "id": "graph-visualizations",
     "title": "Attach dashboards and canvases",
     "route": "/knowledge/explore?sel=:level&tab=visualizations",
     "guide": "build-graph",
-    "guideTitle": "Build your graph"
+    "guideTitle": "Build your graph",
+    "titleDe": "Dashboards und Canvases anhängen",
+    "guideTitleDe": "Ihren Graph aufbauen"
   },
   {
     "id": "graph-relations",
     "title": "Relate records",
     "route": "/knowledge/explore",
     "guide": "build-graph",
-    "guideTitle": "Build your graph"
+    "guideTitle": "Build your graph",
+    "titleDe": "Datensätze verknüpfen",
+    "guideTitleDe": "Ihren Graph aufbauen"
   },
   {
     "id": "graph-access",
     "title": "Decide who sees what",
     "route": "/knowledge/explore",
     "guide": "build-graph",
-    "guideTitle": "Build your graph"
+    "guideTitle": "Build your graph",
+    "titleDe": "Festlegen, wer was sieht",
+    "guideTitleDe": "Ihren Graph aufbauen"
   },
   {
     "id": "setup-starting-point",
     "title": "Choose a starting point",
     "route": "/knowledge/types",
     "guide": "setup-knowledge",
-    "guideTitle": "Set up Knowledge"
+    "guideTitle": "Set up Knowledge",
+    "titleDe": "Einen Ausgangspunkt wählen",
+    "guideTitleDe": "Knowledge einrichten"
   },
   {
     "id": "setup-bring-data",
     "title": "Bring data in",
     "route": "/knowledge/connectors",
     "guide": "setup-knowledge",
-    "guideTitle": "Set up Knowledge"
+    "guideTitle": "Set up Knowledge",
+    "titleDe": "Daten hereinholen",
+    "guideTitleDe": "Knowledge einrichten"
   },
   {
     "id": "setup-map",
     "title": "Map it to your types",
     "route": "/knowledge/mappings",
     "guide": "setup-knowledge",
-    "guideTitle": "Set up Knowledge"
+    "guideTitle": "Set up Knowledge",
+    "titleDe": "Auf Ihre Typen abbilden",
+    "guideTitleDe": "Knowledge einrichten"
   },
   {
     "id": "setup-check",
     "title": "Check it landed",
     "route": "/knowledge/monitoring",
     "guide": "setup-knowledge",
-    "guideTitle": "Set up Knowledge"
+    "guideTitle": "Set up Knowledge",
+    "titleDe": "Prüfen, ob alles angekommen ist",
+    "guideTitleDe": "Knowledge einrichten"
   },
   {
     "id": "setup-link",
     "title": "Link records to your things",
     "route": "/knowledge/link-review",
     "guide": "setup-knowledge",
-    "guideTitle": "Set up Knowledge"
+    "guideTitle": "Set up Knowledge",
+    "titleDe": "Datensätze mit Ihren Things verknüpfen",
+    "guideTitleDe": "Knowledge einrichten"
   },
   {
     "id": "setup-fresh",
     "title": "Keep it fresh",
     "route": "/knowledge/reconciliation",
     "guide": "setup-knowledge",
-    "guideTitle": "Set up Knowledge"
+    "guideTitle": "Set up Knowledge",
+    "titleDe": "Aktuell halten",
+    "guideTitleDe": "Knowledge einrichten"
   },
   {
     "id": "find-your-way-frame",
     "title": "The frame",
     "route": "/",
     "guide": "find-your-way",
-    "guideTitle": "Find your way around"
+    "guideTitle": "Find your way around",
+    "titleDe": "Der Rahmen",
+    "guideTitleDe": "Finden Sie sich zurecht"
   },
   {
     "id": "find-your-way-watch",
     "title": "Watch your things",
     "route": "/",
     "guide": "find-your-way",
-    "guideTitle": "Find your way around"
+    "guideTitle": "Find your way around",
+    "titleDe": "Ihre Dinge beobachten",
+    "guideTitleDe": "Finden Sie sich zurecht"
   },
   {
     "id": "find-your-way-history",
     "title": "Look back in time",
     "route": "/monitor/events",
     "guide": "find-your-way",
-    "guideTitle": "Find your way around"
+    "guideTitle": "Find your way around",
+    "titleDe": "Zurückblicken",
+    "guideTitleDe": "Finden Sie sich zurecht"
   },
   {
     "id": "find-your-way-alerts",
     "title": "Get told when it matters",
     "route": "/manage/event-types",
     "guide": "find-your-way",
-    "guideTitle": "Find your way around"
+    "guideTitle": "Find your way around",
+    "titleDe": "Informiert werden, wenn es zählt",
+    "guideTitleDe": "Finden Sie sich zurecht"
   },
   {
     "id": "find-your-way-tenant",
     "title": "Run the tenant",
     "route": "/administration/users",
     "guide": "find-your-way",
-    "guideTitle": "Find your way around"
+    "guideTitle": "Find your way around",
+    "titleDe": "Den Mandanten führen",
+    "guideTitleDe": "Finden Sie sich zurecht"
   },
   {
     "id": "build-dashboards-read",
     "title": "Read a dashboard",
     "route": "/dashboards/:dashboardId",
     "guide": "build-dashboards",
-    "guideTitle": "Build dashboards"
+    "guideTitle": "Build dashboards",
+    "titleDe": "Ein Dashboard lesen",
+    "guideTitleDe": "Dashboards bauen"
   },
   {
     "id": "build-dashboards-follow-pin",
     "title": "Follow or pin",
     "route": "/dashboards/:dashboardId",
     "guide": "build-dashboards",
-    "guideTitle": "Build dashboards"
+    "guideTitle": "Build dashboards",
+    "titleDe": "Folgen oder anheften",
+    "guideTitleDe": "Dashboards bauen"
   },
   {
     "id": "build-dashboards-thing-based",
     "title": "Build a thing-based dashboard",
     "route": "/dashboards",
     "guide": "build-dashboards",
-    "guideTitle": "Build dashboards"
+    "guideTitle": "Build dashboards",
+    "titleDe": "Ein Thing-basiertes Dashboard bauen",
+    "guideTitleDe": "Dashboards bauen"
   },
   {
     "id": "build-dashboards-interface-based",
     "title": "Build an interface-based dashboard",
     "route": "/dashboards",
     "guide": "build-dashboards",
-    "guideTitle": "Build dashboards"
+    "guideTitle": "Build dashboards",
+    "titleDe": "Ein Interface-basiertes Dashboard bauen",
+    "guideTitleDe": "Dashboards bauen"
   },
   {
     "id": "build-dashboards-mix",
     "title": "Mix both",
     "route": "/dashboards/:followingDashboardId",
     "guide": "build-dashboards",
-    "guideTitle": "Build dashboards"
+    "guideTitle": "Build dashboards",
+    "titleDe": "Beides kombinieren",
+    "guideTitleDe": "Dashboards bauen"
   },
   {
     "id": "build-dashboards-widgets",
     "title": "Pick the right widget",
     "route": "/dashboards/:dashboardId",
     "guide": "build-dashboards",
-    "guideTitle": "Build dashboards"
+    "guideTitle": "Build dashboards",
+    "titleDe": "Das passende Widget wählen",
+    "guideTitleDe": "Dashboards bauen"
   },
   {
     "id": "build-dashboards-assign",
     "title": "Assign it where people look",
     "route": "/onboarding/things/:thingId?tab=dashboard",
     "guide": "build-dashboards",
-    "guideTitle": "Build dashboards"
+    "guideTitle": "Build dashboards",
+    "titleDe": "Dort zuweisen, wo man hinschaut",
+    "guideTitleDe": "Dashboards bauen"
   },
   {
     "id": "build-dashboards-extras",
     "title": "Extras: mock data and files",
     "route": "/dashboards/:dashboardId",
     "guide": "build-dashboards",
-    "guideTitle": "Build dashboards"
+    "guideTitle": "Build dashboards",
+    "titleDe": "Extras: Testdaten und Dateien",
+    "guideTitleDe": "Dashboards bauen"
   }
 ]

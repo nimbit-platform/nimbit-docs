@@ -1,0 +1,114 @@
+---
+untranslated: true
+title: Measure and property types
+sidebar_position: 8
+description: Every data type, field, option and validation rule of the measure and property forms in thing types and interfaces.
+type: reference
+app:
+  routes: ["/onboarding/thing-types/:id", "/onboarding/interfaces/:id"]
+---
+
+The measure and property forms are the same on a thing type's **Schema** tab and on an interface's **Schema** tab, except where noted. The forms open from **Add measure**, **Add property**, or the edit button of a row.
+
+## Data types
+
+| Type | Used for | Set in |
+| --- | --- | --- |
+| `numeric` | Numbers. The default for a measure. | Measure form, **Type** |
+| `string` | Text. The default for a property. | Measure form, **Type** |
+| `boolean` | True or false. | Measure form, **Type** |
+| `datetime` | A date and time. Accepted by the platform, but not offered in the **Type** list. | API only |
+
+The property form has no type picker: a property you create in IoT Breeze is a `string`. Changing a measure's type clears **Decimals**, **Min value** and **Max value** where they no longer apply.
+
+## Measure fields
+
+| Field | Applies to | Meaning |
+| --- | --- | --- |
+| **Display name** | All | Name shown in charts and tables. Up to 128 characters. Can be translated. |
+| **Name** | All | Technical name. The device sends data under it. Can't be changed after saving. See [Names](#names). |
+| **Type** | All | `numeric`, `string` or `boolean`. |
+| **Description** | All | Optional. Can be translated. |
+| **Aliases** | Interfaces only | Other names the field is known by, for example `temp`. Not available on thing types. |
+| **Unit of measure** | `numeric`, `string` | A unit such as `°C`. Pick one of the [suggested units](#suggested-units) or type your own. Hidden for `boolean`. |
+| **Decimals** | `numeric` | How many decimal places to display. |
+| **Ignore outliers** | `numeric` | Drops values outside min and max instead of storing them. Requires **Min value** and **Max value**. |
+| **Min value**, **Max value** | `numeric` | The expected range. |
+| **Min length**, **Max length** | `string` | The same two inputs, as a text length. |
+| **Offset** | `numeric` | Applied to each value before it is stored. Default `0`. |
+| **Factor** | `numeric` | Applied to each value before it is stored. Default `1`. Use **Offset** and **Factor** to convert units. |
+| **Show on overview** | Thing types only | Pins the measure to lead the live values on the overview of every thing of the type. With nothing pinned, the overview rotates through all measures. A toggle in the measures list, saved at once. |
+
+A `boolean` measure has only **Display name**, **Name**, **Description** (and **Aliases** on an interface).
+
+## Property fields
+
+| Field | Meaning |
+| --- | --- |
+| **Display name** | Name shown in tables and pages. Up to 128 characters. Can be translated. |
+| **Name** | Technical name. Can't be changed after saving. See [Names](#names). |
+| **Initial Value** | The value a thing gets when it is created. |
+| **Description** | Optional. Can be translated. |
+| **Aliases** | Interfaces only. Other names the field is known by. |
+| **Used for linking** | How records from other systems find the devices with this property. **Not used** (default); **Identifier**, a number other systems know the device by, such as a serial or equipment number, so a record with the same value is linked to the device; **Reference**, which names something other records also name, such as a manufacturer, so it suggests links but never links alone. |
+| **Private** | Hides the property in dashboards. It can still be used as a tag or in other processes. |
+| **Timeseries relevant** | Adds the property value to every telemetry message of the thing, so you can filter and group by it. The property is shown with a **Timeseries tag** badge. |
+| **Has precedence** | A value set in IoT Breeze wins over a value sent by the device. Shown only while **Timeseries relevant** is on. |
+
+{/* TODO(product): How are Aliases used when a device sends data or a dashboard binds a field: do telemetry under an alias name resolve to the field, or are they used only for matching during field mapping and interface suggestions? */}
+
+## Names
+
+| Where | Rule |
+| --- | --- |
+| Measure or property **Name** | 1 to 128 characters. Lowercase letters `a-z`, digits, `_` and `-`. Must not start with a digit or `-`, and must not end with `_`. IoT Breeze fills it in from the display name: `Outside Temp` becomes `outside_temp`, and umlauts are transliterated (`ä` becomes `ae`). |
+| Thing type **Name** | Letters, digits and `_`. Must not start with a digit or `_`, and must not end with `_`. Unique in the tenant. |
+
+The interface form only requires an interface's **Name** to be non-empty.
+
+## Validation
+
+| Rule | Applies to |
+| --- | --- |
+| **Min value** and **Max value** are both required when **Ignore outliers** is on. | `numeric` |
+| **Max value** must be greater than **Min value**. | `numeric`, `string` |
+| A numeric limit is at most 28 characters long. | `numeric` |
+| **Min length** must be greater than 0. | `string` |
+| **Min length** and **Max length** are at most 10000, and **Max length** must be greater than 0. | `string` |
+
+## Suggested units
+
+The **Unit of measure** list is a suggestion list, not a whitelist. Any text you type is saved as entered, under **Custom unit**.
+
+| Group | Units |
+| --- | --- |
+| Temperature | `°C`, `°F`, `K` |
+| Humidity & ratio | `%`, `%RH`, `ppm`, `ppb`, `pH` |
+| Pressure | `bar`, `mbar`, `Pa`, `kPa`, `hPa`, `psi` |
+| Flow | `l/min`, `l/h`, `m³/h`, `m³/min`, `gpm` |
+| Volume | `l`, `ml`, `m³`, `gal` |
+| Mass & weight | `kg`, `g`, `mg`, `t`, `lb` |
+| Electrical | `V`, `mV`, `kV`, `A`, `mA`, `Ω`, `Hz` |
+| Power | `W`, `kW`, `MW`, `VA`, `kVA`, `var` |
+| Energy | `Wh`, `kWh`, `MWh`, `J`, `kJ` |
+| Length & level | `mm`, `cm`, `m`, `km`, `in`, `ft`, `mi` |
+| Speed & rotation | `m/s`, `km/h`, `mph`, `rpm` |
+| Time | `ms`, `s`, `min`, `h`, `d` |
+| Concentration | `µg/m³`, `mg/m³`, `mg/l`, `g/l` |
+| Sound & light | `dB`, `dB(A)`, `lx`, `lm`, `cd` |
+| Angle | `°`, `rad` |
+| Data | `B`, `kB`, `MB`, `GB`, `TB`, `bit/s`, `kbit/s`, `Mbit/s` |
+
+## Set outside the forms
+
+These values exist on a measure in the platform but have no field in the schema editor.
+
+| Value | Meaning |
+| --- | --- |
+| `aggregationState` | `aggregated` or `nonAggregated`. |
+| `thresholds` | A list of `min`, `max`, `name`, `color` and an optional `severity`: `INFO`, `WARNING`, `ERROR` or `CRITICAL`. |
+
+## Related
+
+- [Create a thing type](./create-thing-type.mdx) · [Drafts, publishing and versions](./drafts-and-versions.mdx)
+- [Thing types, things and interfaces](./things-and-types.mdx)

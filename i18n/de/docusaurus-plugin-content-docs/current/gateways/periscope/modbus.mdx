@@ -1,0 +1,107 @@
+---
+untranslated: true
+title: Read Modbus registers
+description: Describe Modbus points in a register map, add an input for Modbus TCP or RTU, and check what Periscope proposes.
+type: how-to
+sidebar_position: 5
+app:
+  routes: ["/onboarding/gateways"]
+---
+
+Modbus has no address space to browse, so you describe each point in a register map. The map is the discovery: Periscope proposes one thing type, thing and measure per row, and the stream polls the map. For the stages, read [How Periscope works](./how-periscope-works.mdx).
+
+## Before you start
+
+- Periscope is installed and connected. See [Install Periscope and stream your first source](./install.mdx).
+- For Modbus TCP, the device's `host:port`, usually 502.
+- For Modbus RTU, the serial device on the box (`/dev/ttyUSB0`), baud rate, parity and stop bits, and the unit IDs on the line. The agent's user needs access to the serial device, usually the `dialout` group.
+- The register list from the device manual. Use protocol addresses, which start at 0: holding register 40001 is address `0`.
+
+## Steps
+
+1. Write the register map as CSV, one row per point. The name is `<thingType>/<thing>/<measure>`:
+
+   ```csv
+   name,unit_id,register,address,type,length,bit,order,scale,offset,unit,display_name,description
+   Pump/P01/Pressure,1,holding,0,float32,,,CDAB,,,bar,Pressure,Discharge pressure
+   Pump/P01/Speed,1,holding,2,uint16,,,,0.1,,rpm,Speed,
+   Pump/P01/Running,1,coil,0,bool,,,,,,,Running,
+   Meter/M01/DoorOpen,3,holding,200,bool,,3,,,,,Door open,Bit 3 of the status word
+   ```
+
+   | Column | Meaning |
+   | --- | --- |
+   | `unit_id` | The unit on the line. Default: the input's `unit_id`, 1. |
+   | `register` | `coil`, `discrete`, `input` or `holding` (default). |
+   | `address` | The 0-based protocol address. |
+   | `type` | `bool`, `int16`, `uint16`, `int32`, `uint32`, `int64`, `uint64`, `float32`, `float64` or `string`. |
+   | `order` | Byte and word order: `ABCD` (Modbus' own), `CDAB` (low word first), `BADC`, `DCBA`. |
+   | `scale`, `offset` | `value × scale + offset`. |
+   | `bit` | For a `bool` inside a register: the bit, 0 to 15. |
+   | `unit`, `display_name`, `description` | The measure's unit, display name and description. |
+
+2. Add an input for each device or line to `periscope.toml`:
+
+   ```toml
+   [[inputs.modbus]]
+   alias    = "pumps"
+   address  = "192.168.10.40:502"      # Modbus TCP
+   map      = "/etc/periscope/pumps.csv"
+   interval = "1s"
+
+   [[inputs.modbus]]
+   alias    = "meters"
+   port     = "/dev/ttyUSB0"           # Modbus RTU
+   baud     = 9600
+   parity   = "E"
+   map      = "/etc/periscope/meters.csv"
+   interval = "5s"
+   ```
+
+3. To read some points more often than others, add a poll cycle that names its points by glob. The input's own `interval` reads every point no cycle names:
+
+   ```toml
+   [[inputs.modbus.cycles]]
+   name     = "fast"
+   interval = "200ms"
+   names    = ["Pump/*/Pressure"]
+   ```
+
+4. Validate and discover:
+
+   ```sh
+   periscope validate -config /etc/periscope/periscope.toml
+   periscope discover -config /etc/periscope/periscope.toml
+   ```
+
+5. Review and confirm the proposals. See [Approve what Periscope discovers](./approve-discoveries.mdx).
+
+To try the setup without hardware, run `periscope sim modbus`. It serves a sample map on `127.0.0.1:5020`.
+
+## Check that it worked
+
+`periscope discover` lists a thing type per first segment and a thing per second segment, with the units and names from the map:
+
+```text
+KIND       NAME   TYPE        STATUS    NOTE
+thingType  Pump   6 measures  proposed  -
+thing      P01    Pump        proposed  -
+```
+
+After apply, a point's address in the mapping and metrics is `<unit>:<table><address>[.<bit>]`, for example `1:hr0` or `3:hr200.3`.
+
+## If it doesn't work
+
+- **`validate` names a map line**: the row can't be used, for example it has two name segments or a `bit` on a coil. `validate` reports all of them at once.
+- **Values are wildly wrong**, such as `1.2e-38` or `16384`: wrong byte or word order, or a 1-based address. Try `CDAB`, and subtract 1 from a Modicon-style address.
+- **`illegal data address` (exception 2)**: the device has no register there. That read fails and the others continue.
+- **`read_errors` grows, or RTU times out**: wrong baud rate or parity, or a unit that doesn't answer.
+- **`overruns` grows on the Metrics screen**: a poll takes longer than `interval`. Raise `interval` or `max_gap`, reduce the points, or move points to a slower cycle.
+- **A changed map has no effect**: the map is read at start. Restart the agent.
+
+More in [Troubleshoot Periscope](./troubleshooting.mdx).
+
+## Related
+
+- [How Periscope works](./how-periscope-works.mdx) · [Configuration reference](./configuration.mdx)
+- [Transform values before they leave the edge](./processors.mdx)

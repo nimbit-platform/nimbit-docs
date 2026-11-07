@@ -1,3 +1,4 @@
+import { translate } from "@docusaurus/Translate";
 import { BookOpen, Braces, FileText, Rocket, type LucideIcon } from "lucide-react";
 
 export interface Section {
@@ -13,34 +14,34 @@ export interface Section {
 export const SECTIONS: Section[] = [
     {
         id: "get-started",
-        label: "Get started",
+        label: translate({ id: "sections.get-started.label", message: "Get started" }),
         icon: Rocket,
         to: "/docs/get-started",
-        description: "Quickstart and paths by role",
+        description: translate({ id: "sections.get-started.description", message: "Quickstart and paths by role" }),
         paths: ["get-started"],
     },
     {
         id: "docs",
-        label: "Docs",
+        label: translate({ id: "sections.docs.label", message: "Docs" }),
         icon: BookOpen,
         to: "/docs",
-        description: "Connect, model, visualize, automate",
+        description: translate({ id: "sections.docs.description", message: "Connect, model, visualize, automate" }),
         paths: ["", "connect", "gateways", "model", "visualize", "watch", "automate", "knowledge", "administer", "troubleshooting"],
     },
     {
         id: "api",
-        label: "API",
+        label: translate({ id: "sections.api.label", message: "API" }),
         icon: Braces,
         to: "/docs/api",
-        description: "Ingest, query and platform APIs",
+        description: translate({ id: "sections.api.description", message: "Ingest, query and platform APIs" }),
         paths: ["api"],
     },
     {
         id: "changelog",
-        label: "Changelog",
+        label: translate({ id: "sections.changelog.label", message: "Changelog" }),
         icon: FileText,
         to: "/docs/changelog",
-        description: "Release notes",
+        description: translate({ id: "sections.changelog.description", message: "Release notes" }),
         paths: ["changelog"],
     },
 ];

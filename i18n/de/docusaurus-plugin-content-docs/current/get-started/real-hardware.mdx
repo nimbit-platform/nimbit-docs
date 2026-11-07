@@ -1,0 +1,107 @@
+---
+untranslated: true
+title: Connect a real device
+sidebar_position: 3
+description: Create credentials for the quickstart thing and send its first real reading with mosquitto_pub over MQTT.
+type: tutorial
+app:
+  routes: ["/onboarding/things/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+In about 10 minutes you will send a temperature to the `Meeting room 1` thing from a command line, the way a real device does, and see it arrive. Any MQTT client behaves the same; `mosquitto_pub` makes the values easy to see.
+
+:::info What you need
+- The thing `Meeting room 1` and its published thing type from the [Quickstart](./quickstart.mdx).
+- `mosquitto_pub` and `mosquitto_sub` from the Mosquitto clients package.
+- A role that may create credentials for the thing.
+:::
+
+## 1. Stop the simulator
+
+If the simulation from the quickstart is still running, open the thing and select **Stop** in the **Simulating** banner. Otherwise simulated readings mix with yours.
+
+## 2. Create credentials
+
+1. Open **Settings › Onboarding › Things**, select `Meeting room 1` and open the **Connections** tab.
+2. In the **Nimbit** block, under **Basic authentication**, select **Primary**, then **Generate credentials**.
+3. Copy **Username** and **Password**.
+
+Basic credentials never expire. The password is for this thing only: a device cannot publish for any other thing.
+
+<Screenshot
+  page="get-started/real-hardware"
+  id="01-credentials"
+  route="/onboarding/things/:id"
+  state="Connections tab, Nimbit block, Basic authentication with generated Username and Password"
+  alt="Basic authentication credentials generated for a thing"
+/>
+
+## 3. Copy the connection details
+
+Select **Connection info**. In the **Device connection** drawer copy:
+
+- **Gateway url**: the MQTT broker, for example `mqtt://host:1883`.
+- **Client id**: `<tenantId>:<deviceId>`.
+- **Telemetry**: the topic to publish to.
+- **Errors**: the topic that reports refused messages.
+
+:::warning Copy, don't compose
+In the drawer, `<deviceId>` is the thing's internal ID, not the **Thing Alternate ID** shown on the thing page. Copy the **Client id** and topics from the drawer. A wrong client ID is the most common reason a connection is refused.
+:::
+
+## 4. Publish a reading
+
+Replace the placeholders with the values you copied. The host and port come from **Gateway url**.
+
+```bash
+mosquitto_pub -h <mqtt-host> -p 1883 \
+  -i "<tenantId>:<deviceId>" \
+  -u "<username>" -P "<password>" \
+  -t "tenant/<tenantId>/device/<deviceId>/telemetry" \
+  -m '{"thingType":"room_sensor","data":{"temperature":22.5}}'
+```
+
+If **Gateway url** starts with `mqtts://`, use port 8883 and add `--cafile` or `--capath` so `mosquitto_pub` trusts the broker certificate.
+
+The command ends without output. Open the thing: **Last signal** shows a moment ago, and **Live values** shows `22.5`.
+
+## 5. Cross the rule's limit
+
+Publish a second reading above 28:
+
+```bash
+mosquitto_pub -h <mqtt-host> -p 1883 \
+  -i "<tenantId>:<deviceId>" \
+  -u "<username>" -P "<password>" \
+  -t "tenant/<tenantId>/device/<deviceId>/telemetry" \
+  -m '{"thingType":"room_sensor","data":{"temperature":31.5}}'
+```
+
+The `Meeting room 1` dashboard draws both points. If you built the rule in the quickstart, **Monitoring › Events** shows a new `Room too warm` event.
+
+## If it doesn't work
+
+Subscribe to the **Errors** topic in a second terminal. Every message refused for good appears there with the reason. Use a different client ID suffix from the publisher:
+
+```bash
+mosquitto_sub -h <mqtt-host> -p 1883 \
+  -i "<tenantId>:<deviceId>:errors" \
+  -u "<username>" -P "<password>" \
+  -t "iot/tenant/<tenantId>/device/<deviceId>/error"
+```
+
+- **The connection is refused**: check client ID, username and password against **Connection info**. Always send a client ID.
+- **The thing still says No signal yet**: check host and port, and that the message is valid JSON with `thingType` and `data`.
+- **A measure is missing**: the measure must be in the published schema of the thing type, and the name in `data` must match.
+
+## What you built
+
+A device identity with its own credentials, and a message path from your terminal to a chart and a rule. A production device does the same from firmware.
+
+## Next
+
+- [Send data over MQTT](../connect/mqtt.mdx): every field and option.
+- [Send data over HTTP](../connect/http.mdx) if the device cannot speak MQTT.
+- [Create and rotate device credentials](../connect/credentials.mdx).

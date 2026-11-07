@@ -1,0 +1,64 @@
+---
+untranslated: true
+title: Approve what Periscope discovers
+description: Review Periscope's proposed thing types and things on the Proposals screen, rename, merge, set units, then confirm and apply them.
+type: how-to
+sidebar_position: 9
+app:
+  routes: ["/onboarding/gateways"]
+---
+
+In `confirm` mode, Periscope waits for a person before it creates anything in IoT Breeze. Review its proposals in the agent's web UI, fix the names, and confirm. For the stages, read [How Periscope works](./how-periscope-works.mdx).
+
+## Before you start
+
+- Periscope has run at least one discovery. See [Install Periscope and stream your first source](./install.mdx).
+- You can sign in to the agent's web UI as a Periscope admin, which is a tenant admin or the holder of `server.token`. A viewer sees the page without the controls.
+- The agent runs with `mode = "confirm"`, the default. In `zero-touch` mode everything proposed is applied at once, and you edit afterwards.
+
+## Steps
+
+1. Open `http://<listen>/ui/proposals` and sign in. The page shows counts per status, what the last discovery changed or no longer found, a hierarchy preview, thing types and things.
+2. Check the **hierarchy preview**. It shows the tree that apply will create, each node marked `new` or `existing`. A mount typo shows as a second `new` branch next to the existing one. Fix a wrong level where the path comes from: `mount` and `levels` under `[ocb]`, or the source's structure, then run discovery again. Renaming a thing doesn't move it.
+3. Rename generated thing type names, such as `Oven1_49b35a`, to real ones. Type the new name and select **Rename**. Thing type names use letters, digits and `_` and start with a letter. Thing names must be unique in your organization.
+4. If discovery made two types for one kind of machine, select **Merge into** on the proposed type. Its things move to the target, which gains the measures it lacks.
+5. In the mapping editor under a proposed thing type, set one row per measure. A cell saves when you leave it:
+
+   | Column | What you can change |
+   | --- | --- |
+   | **Measure** | The measure's name, lowercase `a-z`, `0-9` and `_`. |
+   | **Display name** | What dashboards show. |
+   | **Unit** | The engineering unit. Sent only where the platform has no unit yet. |
+   | **Scale** | A factor applied to numeric values. Applies to the stream only. |
+   | **Enabled** | Untick to stop streaming the measure. It stays in the thing type. |
+
+6. Select **Reject** on what shouldn't reach the platform, such as test variables or diagnostics. A rejected item stays rejected after the next discovery.
+7. Select **Confirm all proposed**, then **Apply now**. A thing is applied only after its type, so confirm both.
+
+To see what apply would send first, switch the dry run on, or run `periscope apply -dry-run`.
+
+## Check that it worked
+
+The statuses move from `proposed` to `confirmed` to `applied`. A failed item stays `confirmed` with its reason, and the next apply retries it.
+
+| Status | Meaning |
+| --- | --- |
+| `proposed` | Found by discovery, waiting for a person. |
+| `confirmed` | A person confirmed it. The next apply creates it. |
+| `applied` | It exists in IoT Breeze, and the stream maps its values. |
+| `rejected` | It never goes to the platform. |
+
+The new thing types and things are in **Settings › Onboarding**. If the agent is a gateway, they are on the gateway's **Things** tab. A change you made is kept in `edits.yaml`, so the next discovery doesn't undo it.
+
+## If it doesn't work
+
+- **Changes are refused with "the agent is busy applying or planning"**: an apply is running. Try again in a few seconds.
+- **A rename is refused**: an applied thing type and an applied thing keep their names. Rename them in IoT Breeze. You can still rename an applied measure: the new measure is added next to the old one and nothing is deleted.
+- **A merge is refused**: only a thing type that isn't applied can be merged.
+- **Apply fails per item with `403`**: in service-account mode, the account lacks the `modeler` role. In gateway mode, check the gateway's **Scope**: a **Locked** policy, an exhausted **Thing limit**, a thing type outside **Allowed thing types** or an alternate ID outside the namespace refuses the create. See [Check gateway health and traffic](../fleet-health.mdx).
+- **Every thing fails with `400 Root group not found`**: the service account has no read access to the organization's root group.
+
+## Related
+
+- [How Periscope works](./how-periscope-works.mdx) · [Gateway reference](../gateway-reference.mdx)
+- [Verify that data arrived](./verify.mdx)
