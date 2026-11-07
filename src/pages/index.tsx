@@ -11,6 +11,7 @@ import {
   LayoutDashboard,
   LifeBuoy,
   Plug,
+  Router,
   Rocket,
   ShieldCheck,
   Siren,
@@ -54,6 +55,7 @@ type Section = { icon: LucideIcon; title: string; question: string; to: string }
 
 const sections: Section[] = [
   { icon: Plug, title: "Connect devices", question: "How do I get data in?", to: "/docs/connect" },
+  { icon: Router, title: "Gateways and edge", question: "How do I bring in machines?", to: "/docs/gateways" },
   { icon: Boxes, title: "Model your data", question: "How do I describe my devices?", to: "/docs/model" },
   { icon: LayoutDashboard, title: "Visualize", question: "How do I see my data?", to: "/docs/visualize" },
   { icon: Siren, title: "Watch and respond", question: "What needs me right now?", to: "/docs/watch" },
@@ -76,7 +78,7 @@ const curl = `curl -X POST "<ingest-url>/api/v1/message/structured" \\
   -u "<username>:<password>" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "thingType": "Room sensor",
+    "thingType": "room_sensor",
     "id": "<deviceId>",
     "data": { "temperature": 22.5 }
   }'`;
@@ -144,7 +146,7 @@ export default function Home(): React.JSX.Element {
             <p className="mt-1 text-muted-foreground">
               From a device to a decision. Each section answers one question.
             </p>
-            <ol className="mt-6 grid list-none grid-cols-1 gap-3 p-0 sm:grid-cols-2 lg:grid-cols-4">
+            <ol className="mt-6 grid list-none grid-cols-1 gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3">
               {sections.map(({ icon: Icon, title, question, to }, i) => (
                 <li key={title}>
                   <Link to={to} className={`${card} p-4!`}>

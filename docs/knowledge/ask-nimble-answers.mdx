@@ -12,12 +12,11 @@ Ask Nimble does not answer from general knowledge. It looks things up in your te
 ```mermaid
 flowchart LR
   Q[Your question] --> P{Known pattern?}
-  P -->|yes| T[Run the lookup directly]
+  P -->|yes, no model call| T[Run the lookup directly]
   P -->|no| L[Model picks lookups, up to 6 rounds]
   L --> T
   T --> R[Records, readings, documents]
-  R --> W[Model writes a cited answer]
-  T -->|count or list| O[Answer without a model]
+  R --> W[Cited answer written, by the model unless a count or list]
   W --> C[Checks]
   C --> A[Answer with sources]
 ```

@@ -15,6 +15,7 @@ const GROUPS = [
   ["get-started", "Get started"],
   ["", "Docs"],
   ["connect", "Connect devices"],
+  ["gateways", "Gateways and edge"],
   ["model", "Model your data"],
   ["visualize", "Visualize"],
   ["watch", "Watch and respond"],

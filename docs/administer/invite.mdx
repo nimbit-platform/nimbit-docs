@@ -1,0 +1,57 @@
+---
+title: Invite a colleague
+description: Invite people to your tenant with a role and access to groups, and resend, renew or withdraw an invitation.
+type: how-to
+sidebar_position: 3
+app:
+  routes: ["/administration/users", "/administration/users/:id"]
+---
+
+Invite one or more people by email and decide at once what they may do and see. For how roles and groups combine, see [Users, groups and roles](./access.mdx).
+
+## Before you start
+
+- You need the **Admin** role. **Manager** can change and remove users but not invite.
+- You can only give roles whose permissions you hold. A role you may not give is locked in the picker.
+- Create the [groups](./team-access.mdx) the person should be in, if they do not exist yet.
+
+## Steps
+
+1. Open **Administration › Users** and select **Invite user**.
+2. Under **Emails**, enter one or more addresses. You can invite up to 50 at once.
+3. Under **Roles**, choose at least one role.
+4. Under **Groups**, add the groups the people should see. **Read** is always on. Switch **Update** and **Execute** on if they may change things or run actions in that group.
+5. Optional: under **Things**, give access to single things the same way.
+6. Select **Send invitation**.
+
+IoT Breeze creates one invitation per address, each with its own link, and emails it.
+
+:::warning Share links with care
+Anyone with a link can open the invitation until it expires. If a link reached the wrong person, select **Resend**: the old link stops working.
+:::
+
+## Check that it worked
+
+The list shows each address with the status **Pending**. When the person accepts, the status disappears and the person appears as an active user. Open the user to see their **Roles** and **Groups** tabs.
+
+## Change or withdraw an invitation
+
+| Status | Action in the status column |
+| --- | --- |
+| **Pending** or **Expired** | **Resend** sends a new link. The previous link stops working. |
+| **Declined** | **Invite again** sends a fresh invitation. **Dismiss** removes it from the list. |
+| Any open invitation | Select it and delete it to revoke it. |
+
+## If it doesn't work
+
+- **The dialog says no email was sent**: your installation sends no email. Copy each link from the dialog and pass it on yourself.
+- **The dialog says there is no link yet**: the tenant has no web address registered. Resend the invitation once it has one.
+- **The person has no account and cannot sign up from the link**: on some platforms only people who already have an account can use invitation links.
+- **A role is locked**: it holds permissions you lack. Ask an admin to invite the person, or choose another role.
+
+{/* TODO(product): How long is an invitation valid before it shows Expired? */}
+
+## Related
+
+- [Users, groups and roles](./access.mdx) · [Roles and permissions](./roles.mdx)
+- [Give a team access to its things](./team-access.mdx)

@@ -1,43 +1,42 @@
 ---
-id: index
-title: Get started
-sidebar_label: Overview
+title: Welcome to IoT Breeze
+sidebar_label: Welcome
 sidebar_position: 1
-description: Where to start with IoT Breeze, depending on what you want to do.
+description: IoT Breeze collects data from your devices, shows it on dashboards and tells you when something needs attention. Start here.
+type: landing
 app:
   routes: ["/"]
 ---
 
-import Screenshot from "@site/src/components/Screenshot";
+IoT Breeze is the application of the NimBit platform for connected devices. Your devices send measurements, such as a temperature every ten seconds. IoT Breeze stores them, draws them on dashboards and maps, and checks them against rules you define. When a rule fires, it records an event and can notify people.
 
-IoT Breeze collects data from your devices, shows it on dashboards and maps, and tells you when something needs attention. Pick the path that matches what you want to do first.
+```mermaid
+flowchart LR
+  D[Device or simulator] -->|MQTT or HTTP| I[Ingest: check against thing type]
+  I --> S[(Time-series storage)]
+  S --> V[Dashboards, map, Ask Nimble]
+  I --> R[Rules]
+  R --> E[Events]
+  E --> N[Incidents and notifications]
+```
 
-| You want to… | Start here | Time |
-| --- | --- | --- |
-| Get a first device online and see its data on a dashboard | [First device to first dashboard](./first-device.mdx) | about 30 minutes |
-| Find your way around a tenant someone already set up | [Tour of IoT Breeze](./tour.mdx) | about 10 minutes |
-| Send data from your own code or gateway | [Connections and credentials](../user/onboarding/connections.mdx) | about 15 minutes |
+## What do you want to do?
 
-<Screenshot
-  page="get-started/overview"
-  id="01-home"
-  route="/"
-  state="Home of a tenant with live data: Things online, Messages, Connectivity by thing type"
-  alt="IoT Breeze Home with the tenant overview dashboard"
-/>
+- **I'm new.** Follow the [Quickstart](./quickstart.mdx). In about 15 minutes you go from nothing to a simulated device, a dashboard and an alert.
+- **I want to get something done.** Go to the [documentation home](../index.mdx) and pick a section by the question you have.
+- **I need the details.** Open the [API overview](../api/index.mdx).
 
-## What you need
+## Choose your path
 
-- An IoT Breeze account and a tenant. If you don't have one, contact [info@nimbit.de](mailto:info@nimbit.de).
-- To set up devices, a role that may create thing types and things (for example the tenant admin role).
-- A device is optional: IoT Breeze can simulate one.
+- [For operators](./roles/operator.mdx): you watch things and react when something goes wrong.
+- [For solution builders](./roles/builder.mdx): you model devices, connect them, and build dashboards and rules.
+- [For developers](./roles/developer.mdx): you send data from your own code and read it back through the APIs.
+- [For administrators](./roles/administrator.mdx): you decide who can see and do what in the tenant.
 
-## Words you'll meet
+## Words you will meet
 
-| Term | Meaning |
-| --- | --- |
-| Tenant | Your organisation's space in IoT Breeze. Data, users and settings belong to one tenant. |
-| Thing type | The model of a kind of device: which measures it sends (temperature, pressure…) and which properties it has. |
-| Thing | One real device of a thing type, with its own ID and credentials. |
-| Interface | A reusable set of capabilities that thing types implement, so dashboards can work across types. |
-| Dashboard | A page of widgets showing live and historical data from your things. |
+[Key concepts](./key-concepts.mdx) explains each term in a short paragraph: tenant, thing type, thing, rule, event and the rest.
+
+## Need an account?
+
+You need a tenant to sign in. To get one, contact [info@nimbit.de](mailto:info@nimbit.de).

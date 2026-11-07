@@ -1,0 +1,90 @@
+---
+title: Fix data-health findings
+description: Check that your sources landed in the graph, confirm links to devices, and schedule reconciliation rounds.
+type: how-to
+app:
+  routes: ["/knowledge/monitoring", "/knowledge/link-review", "/knowledge/reconciliation"]
+  tour: setup-knowledge
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Find rows that did not land, records that are linked to nothing, and source records that no device matches yet, then fix them. Ask Nimble answers only what the graph connects, so loose records give weaker answers.
+
+## Before you start
+
+- Permission to edit Knowledge to change the reconciliation schedule or run transforms. Deciding links needs permission to edit thing types.
+- At least one source loaded: see [Bring in an outside data source](./outside-source.mdx).
+
+Open **Settings › Knowledge setup › Data health**. The tabs are **Ingestion**, **Link review** and **Reconciliation**. A badge on the menu entry shows how many links are open.
+
+:::note The Ingestion tab covers knowledge sources
+Its address is `/knowledge/monitoring`, an older name. For device data use **Monitoring › Things**.
+:::
+
+## Fix rows that did not land
+
+1. Open **Ingestion** and pick a **Source**.
+2. Read **Batches**. Each is **Pending**, **Processed** or **Quarantined**.
+3. Open **Needs review** for rows the last transform could not write. Each row gives the reason: an alias that did not resolve, a missing source id, or a validation failure.
+4. Open **Dead letters** for failed deliveries. **Unresolved** ones need action.
+5. Fix the mapping (**Open the mapping**) or the source data, then select **Run transform**, or **Replay** on a dead letter.
+
+## Check the graph's links
+
+1. On **Ingestion**, under **Graph health**, select **Check now**.
+2. Read each check: a count, examples and a result of **Critical**, **Warning**, **Info** or **OK**. Large counts may come from a capped sample.
+3. Select **Show records** or **Review** to fix the finding.
+
+| Finding | Fix |
+| --- | --- |
+| Records without a type | Assign a type, so their fields and measures apply. |
+| Records without a location | Place them at a level: [Map your sites and buildings](./map-sites.mdx). |
+| Records linked to nothing | Add a relation, or attach a document. |
+| Relations without links | Use the relation, or remove it from the type. |
+| Links stored as text | Replace the name in an attribute with a relation. |
+| Records without identifiers or aliases | Add the outside ID so mappings find them. |
+| Records without a description | Add a one-sentence description. |
+| Documents not attached | Attach the document to a record in Explore. |
+| Measures that never reported | The device never connected. Check the device. |
+| Open links to review | Work through **Link review**. |
+
+## Confirm links to devices
+
+A source record, such as a pump in an SAP export, waits here when no device matches it automatically.
+
+1. Open **Link review**. The **Open** tab lists records with their **Best match**, a score (**Strong match**, **Likely match**, **Worth a look**) and the reasons.
+2. Select **Review** on a record and pick **This is the device**, or **None of these**.
+3. Confirm. The identifier is saved on the device, so the next sync links it.
+4. To handle many, tick rows and use **Confirm best match** or **Reject**.
+
+Choose **Link in Knowledge only** to link without changing the device. If the device already has a different number, you are warned that replacing it unlinks whatever that number links to now. A near-identical number is flagged **Typo fix**.
+
+<Screenshot
+  page="knowledge/data-health"
+  id="01-link-review"
+  route="/knowledge/link-review"
+  state="Link review Open tab with three records and a sheet showing candidate devices"
+  alt="Link review with candidate devices for a record"
+/>
+
+## Schedule reconciliation
+
+A round runs across all sources: it re-runs batches that have rows in review, makes links that now resolve, checks confirmed links and ranks open links again. It never picks a link for you.
+
+1. Open **Reconciliation**.
+2. Choose a **Schedule**: **Off**, **Every hour**, **Every day** or **Every week**. Times are UTC. Or select **Run now**.
+
+## Check that it worked
+
+Batches show **Processed**, the **Link review** badge is gone, and the **Graph health** checks improve. The **Reconciliation** list shows **Linked**, **Reopened**, **Still open** and **Batches re-run** for each round.
+
+## If it doesn't work
+
+- **A link shows under Not on device**: saving the identifier on the device failed. Select **Try again**.
+- **The schedule is read-only text**: you lack permission to edit Knowledge.
+- **A replayed entry stays in the list**: it is kept as **Resolved**.
+
+## Related
+
+- [Bring in an outside data source](./outside-source.mdx) · [The knowledge graph](./knowledge-graph.mdx)

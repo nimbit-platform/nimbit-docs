@@ -7,6 +7,7 @@ import type { SidebarsConfig } from "@docusaurus/plugin-content-docs";
  */
 export const DOC_SECTIONS = [
   { dir: "connect", label: "Connect devices" },
+  { dir: "gateways", label: "Gateways and edge" },
   { dir: "model", label: "Model your data" },
   { dir: "visualize", label: "Visualize" },
   { dir: "watch", label: "Watch and respond" },

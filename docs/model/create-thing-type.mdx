@@ -1,0 +1,63 @@
+---
+title: Create a thing type
+sidebar_position: 4
+description: Define a kind of device with its measures and properties, then publish the schema so devices can use it.
+type: how-to
+app:
+  routes: ["/onboarding/thing-types", "/onboarding/thing-types/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Define the values a kind of device sends and the fixed facts it has, and publish that schema. For how thing types relate to things and interfaces, read [Thing types, things and interfaces](./things-and-types.mdx).
+
+## Before you start
+
+- Your role can create and edit thing types. If **Thing Types** is missing from **Settings › Onboarding**, ask your tenant admin.
+- Know the names your device sends its values under, for example `temperature`.
+
+## Steps
+
+1. Open **Settings › Onboarding › Thing Types** and select **Create Thing Type**.
+2. Fill in the form:
+
+   | Field | What to enter |
+   | --- | --- |
+   | **Display name** | The name people see, for example `Room sensor`. Required. |
+   | **Name** | The technical name. It is filled in from the display name. It must be unique in your tenant, can't be changed later, and may use letters, digits and underscores. It can't start with a digit or an underscore, and can't end with an underscore. |
+   | **Connector** | The service the devices send data through, usually **Nimbit**. You see the connectors your tenant has switched on. |
+   | **Description**, **Tags** | Optional. |
+   | **Auto Schema Evolution** | Leave it off. See [Drafts, publishing and versions](./drafts-and-versions.mdx#auto-schema-evolution-does-not-use-the-draft). |
+   | **Quantile Profile Generation** | Calculates percentile profiles regularly, used for anomaly detection. Leave it off unless you need that. |
+
+3. Select **Save**. The thing type page opens on **Published · v1**.
+4. Open **Schema**, and in the **Measures** pane select **Add measure**. Enter the **Display name**, check the **Name** matches what the device sends, choose the **Type** and, for numbers, the **Unit of measure**. Save. Repeat for each value.
+5. In the **Properties** pane, select **Add property** for each fixed fact, such as a serial number. Set **Timeseries relevant** if you want to filter or group telemetry by it.
+6. Review the draft. The header shows **Draft v2 · 4 changes**. Select **Compare with v1** in the draft line to check it.
+7. Select **Publish v2** in the header, describe the change in **Changelog** and confirm.
+
+<Screenshot
+  page="model/create-thing-type"
+  id="01-schema-measures"
+  route="/onboarding/thing-types/:id"
+  state="Schema tab, Measures pane, two measures in the table, a draft line reading Draft v2 · 2 changes, Publish v2 button in the header"
+  alt="A thing type schema with two measures in draft"
+/>
+
+Every option of the measure and property forms is in [Measure and property types](./measure-types.mdx).
+
+## Check that it worked
+
+The header shows **Published · v2**. The **Versions** tab lists v2 as **Published** and v1 as **Archived**, with a summary of what changed. The measures appear on the **Schema** tab without the draft markers.
+
+## If it doesn't work
+
+- **The Name is rejected**: a thing type name allows letters, digits and underscores, and can't start with a digit or underscore. A measure or property name allows only lowercase letters, digits, hyphens and underscores, and can't start with a digit or hyphen, or end with an underscore.
+- **Save is disabled in a measure form**: with **Ignore outliers** on, both **Min value** and **Max value** are required, and the maximum must be greater than the minimum.
+- **A value arrives but isn't stored**: the schema doesn't know it yet. Check that you published, and that the measure's **Name** matches what the device sends. Without **Auto Schema Evolution**, unknown values are dropped.
+- **There is no Publish button**: it appears only while a draft exists, so make an edit first. If you can't edit the schema at all, your role lacks permission to edit thing types.
+
+## Related
+
+- [Thing types, things and interfaces](./things-and-types.mdx) · [Drafts, publishing and versions](./drafts-and-versions.mdx)
+- [Measure and property types](./measure-types.mdx) · [Register a thing](./register-thing.mdx)

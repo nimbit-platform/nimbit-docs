@@ -29,12 +29,43 @@ Order within a section = sidebar order (`sidebar_position` 1, 2, 3 … in the or
 | mqtt.mdx | how-to | Send data over MQTT | onboarding/connections |
 | http.mdx | how-to | Send data over HTTP | onboarding/connections |
 | line-protocol.mdx | how-to | Write InfluxDB line protocol | onboarding/connections |
-| gateways.mdx | how-to | Connect devices through a gateway | administration/gateways |
 | simulate.mdx | how-to | Simulate a device | onboarding/simulate-device |
 | credentials.mdx | how-to | Create and rotate device credentials | onboarding/connections |
 | message-format.mdx | reference | Message format | onboarding/connections |
 | mqtt-topics.mdx | reference | MQTT topics and client ID | onboarding/connections |
 | ingest-endpoints.mdx | reference | Ingest endpoints and status codes | onboarding/connections |
+
+## gateways/ — "Gateways and edge": How do I bring in machines and field networks?
+
+A gateway is one thing that speaks for many devices. Periscope is NimBit's edge agent: a single
+binary on a machine next to the equipment that discovers sources (OPC UA, Sparkplug B, MQTT/UNS,
+Modbus, S7, HTTP) and streams their values to tsflux. Sources: the gateway PRs #1613–#1623
+(nimbit-platform/nimbit, `git fetch origin pull/<n>/head`), docs/user/administration/gateways.mdx,
+apps/periscope/README.md and apps/periscope/docs/ (served in the agent at /ui/docs).
+
+| File | Type | Title | Sources |
+| --- | --- | --- | --- |
+| index.mdx | landing | Gateways and edge | — |
+| how-gateways-work.mdx | concept | How gateways work | PRs #1613, #1617, #1620, #1622; #1318 |
+| add-a-gateway.mdx | how-to | Add a gateway | PRs #1614, #1617, #1621 |
+| mqtt-gateway.mdx | how-to | Send data for many devices through one MQTT gateway | PRs #1621, #1622 |
+| fleet-health.mdx | how-to | Check gateway health and traffic | PRs #1613, #1623 |
+| gateway-reference.mdx | reference | Gateway reference | all gateway PRs |
+| periscope/index.mdx | landing | Periscope | periscope README, docs/index |
+| periscope/how-periscope-works.mdx | concept | How Periscope works | docs/architecture, contract, ocb, record-format |
+| periscope/install.mdx | tutorial | Install Periscope and stream your first source | docs/guides/getting-started |
+| periscope/opc-ua.mdx | how-to | Connect an OPC UA server | docs/inputs/opcua |
+| periscope/modbus.mdx | how-to | Read Modbus registers | docs/inputs/modbus |
+| periscope/s7.mdx | how-to | Read a Siemens S7 PLC | docs/inputs/s7, s7-addresslist |
+| periscope/sparkplug-and-mqtt.mdx | how-to | Subscribe to Sparkplug B or an MQTT broker | docs/inputs/sparkplug, mqtt |
+| periscope/http.mdx | how-to | Poll an HTTP source | docs/inputs/http |
+| periscope/approve-discoveries.mdx | how-to | Approve what Periscope discovers | docs/ocb, ui |
+| periscope/processors.mdx | how-to | Transform values before they leave the edge | docs/processors, guides/processors |
+| periscope/verify.mdx | how-to | Verify that data arrived | docs/guides/commands (`periscope verify`) |
+| periscope/configuration.mdx | reference | Configuration reference | docs/configuration |
+| periscope/outputs.mdx | reference | Outputs reference | docs/outputs/*, guides/outputs |
+| periscope/commands.mdx | reference | Command-line reference | docs/guides/commands |
+| periscope/troubleshooting.mdx | how-to | Troubleshoot Periscope | docs/guides/troubleshooting, hardening |
 
 ## model/ — "Model your data": How do I describe my devices?
 
@@ -60,7 +91,14 @@ Order within a section = sidebar order (`sidebar_position` 1, 2, 3 … in the or
 | smart-dashboard.mdx | how-to | Build one dashboard for every thing of a kind | dashboards/smart-dashboards |
 | home.mdx | how-to | Put a dashboard on Home | dashboards/create-and-edit |
 | share.mdx | how-to | Share or embed a dashboard | dashboards/create-and-edit |
-| canvas.mdx | how-to | Draw a floor plan with live values | dashboards/canvas/* |
+| canvas/index.mdx | landing | Canvas | dashboards/canvas/* |
+| canvas/how-canvas-works.mdx | concept | How a canvas works | dashboards/canvas/*, components/Canvas |
+| canvas/draw-a-floor-plan.mdx | how-to | Draw a floor plan with live values | dashboards/canvas/* |
+| canvas/bind-live-values.mdx | how-to | Bind live values to shapes | dashboards/canvas/* |
+| canvas/states-and-colours.mdx | how-to | Show state with colour and visibility | dashboards/canvas/* |
+| canvas/actions.mdx | how-to | Add click actions | dashboards/canvas/* |
+| canvas/embed-a-canvas.mdx | how-to | Put a canvas on a dashboard | dashboards/canvas/*, widgets |
+| canvas/editor-reference.mdx | reference | Canvas editor reference | components/Canvas |
 | map.mdx | how-to | Show things on a map | monitoring/map |
 | widgets.mdx | reference | Widget gallery | dashboards/widgets/* (one H2 per group, one H3 per widget) |
 
@@ -143,7 +181,8 @@ Order within a section = sidebar order (`sidebar_position` 1, 2, 3 … in the or
 | File | Type | Title | Sources |
 | --- | --- | --- | --- |
 | index.mdx | landing | API overview | developer/intro |
+| api-keys.mdx | concept | API keys | administration/api-keys, apps/identity-directory |
 | authentication.mdx | reference | Authentication | developer/intro, administration/api-keys, onboarding/connections |
 | webhooks.mdx | reference | Webhook payloads | monitoring/notification-channels, automation/actions (HMAC, payload) |
 | errors-and-limits.mdx | reference | Errors and limits | onboarding/connections (status codes), API specs in openapi/ |
-| reference/dip.mdx, nbq.mdx, ocb.mdx | reference | Ingest API (DIP) / Query API (NBQ) / Platform API (OCB) | generated from openapi/ |
+| reference/tsflux.mdx, nbq.mdx, ocb.mdx | reference | Ingest API (tsflux) / Query API (nbq) / Platform API (OCB) | generated from openapi/ |

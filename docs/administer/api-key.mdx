@@ -1,0 +1,78 @@
+---
+title: Create an API key
+description: Create an API key for yourself or a service account, copy it once, and rotate or revoke it.
+type: how-to
+sidebar_position: 5
+app:
+  routes: ["/administration/api-keys"]
+---
+
+Give a script, integration or AI assistant its own key instead of sharing a password. A key is limited to its scopes, expires, and never holds more rights than its owner. To use a key in requests, see [Authentication](../api/authentication.mdx).
+
+## Before you start
+
+- You need to create API keys. **Admin** and **Modeler** can; Modeler only for personal keys.
+- For a key that outlives your own membership, create a service account first (see below). Admin only.
+- If **Me** is missing under **Acts as**, your tenant has turned personal keys off. Ask an admin for a service account key.
+
+## Steps
+
+1. Open **Administration › API keys** and select **Create key**.
+2. Enter a **Name**, for example `SAP PM sync`.
+3. Under **Acts as**, choose **Me** or a service account.
+4. Optional: under **Start from**, choose **Read only**, **AI assistant** or **ERP or MES integration**.
+5. Under **Scopes**, tick what the key may do. Scopes marked **Sensitive** are only for service accounts, where the tenant's key policy allows it.
+6. Under **Expires**, choose 30, 90 or 365 days. **Never** is offered only for service account keys, and only if the policy sets no maximum.
+7. Optional: under **Allowed addresses**, enter networks in CIDR form, one per line. Empty allows every address.
+8. Select **Create key**.
+
+:::warning Copy the key now
+**Your new key** is shown once and cannot be read again. Store it in a secret manager, then select **I have copied the key**.
+:::
+
+## Create a service account
+
+A service account is a tenant member for integrations. It never signs in and acts only through its keys.
+
+1. Open the **Service accounts** tab and select **Create service account**.
+2. Enter a name and choose its roles. You can only choose roles you hold.
+3. Save, then create keys with **Acts as** set to this account.
+
+If you change its roles, its keys get them with their next token. If you delete it, its live keys are revoked.
+
+## Rotate or revoke a key
+
+| Action | Effect |
+| --- | --- |
+| **Roll key** | Creates a new key with the same scopes. Choose when the old one stops: now, after 1 hour, after 1 day or after 7 days. Give your clients the new key first. |
+| **Revoke** | Ends the key. Clients using it stop within five minutes. It cannot be reused. |
+| **Edit** | Changes the name and allowed networks. Scopes and expiry stay. |
+| **History** | Shows changes and refused uses (kept for a year) and daily use (90 days). |
+
+## Set the key policy
+
+Admins set the rules for the whole tenant with **Edit policy**.
+
+| Setting | Effect |
+| --- | --- |
+| **Members may create personal keys** | If off, only service account keys can be created. |
+| **Maximum lifetime in days** | Longest allowed expiry. Empty allows service account keys that never expire. Personal keys always expire within a year. |
+| **Stop keys unused for this many days** | Keys idle that long stop working. |
+| **Service accounts may hold sensitive scopes** | Allows scopes marked **Sensitive** on service account keys. |
+
+## Check that it worked
+
+The key appears on **My keys** (or **All keys**, if you may read every key) with its expiry. After the first call, **Last used** shows a date, and **History** lists the use.
+
+## If it doesn't work
+
+- **The key is refused**: open **History**. **Use refused** events say why: expired, revoked, unused too long, outside its allowed addresses, or the policy no longer allows it.
+- **The key shows Stopped: unused too long**: the tenant's key policy stops idle keys. Create a new key and ask an admin about **Stop keys unused for this many days**.
+- **Expires is limited to a shorter time**: the policy sets a **Maximum lifetime in days**. Admins change it with **Edit policy**.
+- **A scope is locked**: it asks for permissions you or the service account lack, or it is retired.
+
+## Related
+
+- [Authentication](../api/authentication.mdx)
+- [Roles and permissions](./roles.mdx)
+- [Tenant settings](./tenant-settings.mdx)

@@ -1,0 +1,52 @@
+---
+title: Bind elements to live values
+description: Connect a canvas element to a thing's measure or property, choose context or fixed, and set thresholds.
+type: how-to
+sidebar_position: 3
+app:
+  routes: ["/canvas/:id"]
+  tour: canvas-data
+---
+
+Give an element its value: choose the thing, pick a measure or property and, if you like, colour it by thresholds. For how context and fixed things differ, see [How a canvas works](./how-canvas-works.mdx).
+
+## Before you start
+- A role that may update canvases.
+- A canvas with at least one element, for example from [Draw a floor plan](./draw-a-floor-plan.mdx). On an empty canvas, add a **Value** from the library first.
+- Things that send data, or mock data to design with.
+
+## Steps
+
+1. Open the canvas and select **Edit canvas**.
+2. Select an element, in the canvas or in **Layers**. The **Inspector** on the right shows its tabs: **Data**, **Appearance**, **States** and **Action**. An element that shows no live data says **This element does not show live data.**
+3. On the **Data** tab, choose the source:
+   - **From context** reads the thing the viewer picked. One canvas then serves every matching thing.
+   - **Fixed thing** always reads the same device.
+4. In **Bind value**, search things, measures and properties, select one and continue.
+5. Optional: under **Thresholds**, select **Add**, then pick an operator (**Equals**, **Greater than**, **Greater or equal**, **Less than**, **Less or equal** or **Range**), a value, a **Background** and a **Text color**. With no thresholds the value uses the default style.
+6. Optional: set **Consider data stale after** to override the canvas default for this element.
+7. Select **Preview** to check, then **Save**.
+
+<Screenshot
+  page="visualize/canvas/bind-live-values"
+  id="01-bind-value"
+  route="/canvas/:id"
+  state="Editor with a Value element selected, Data tab open, Source set to From context, the Bind value dialog showing a measure and its current value"
+  alt="The Data tab and the Bind value dialog for a Value element"
+/>
+
+Text elements can show several values inline. In the text, choose **Insert value**, pick the value, and edit its thresholds by clicking its token. The same element can bind more than one value this way.
+
+## Check that it worked
+
+Select **Preview** and pick a thing in the header: the element shows its current value with the thresholds applied. Pick another thing and the value follows, for elements on **From context**.
+
+## If it doesn't work
+
+- **Not provided by this thing**: the viewed thing does not have that measure. Pick another thing, or check the interfaces in **Canvas settings**.
+- **No context thing selected**: the element reads **From context** but the canvas has no thing chosen. Pick one in the header.
+- **Thing not found** or **Broken**: the bound thing was deleted or you may not see it. Rebind the element.
+- **Stale**: no update arrived within the stale limit. Check the device, or raise **Consider data stale after**.
+
+## Related
+- [Show state by colour, icon and motion](./states-and-colours.mdx) · [Canvas editor reference](./editor-reference.mdx)

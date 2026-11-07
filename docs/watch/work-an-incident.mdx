@@ -1,0 +1,82 @@
+---
+title: Work an incident
+sidebar_position: 5
+description: Pick up an incident, take it from open to closed, and report one by hand when no policy caught the problem.
+type: how-to
+app:
+  routes: ["/monitor/incidents", "/monitor/incidents/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Take an incident from open to closed: acknowledge it, assign it, record the fix and resolve it. For what an incident is, read [Events, incidents and notifications](./events-incidents-notifications.mdx).
+
+## Before you start
+
+- You need permission to see incidents. To acknowledge, assign or edit you need update permission. To resolve, close or reopen you need update and execute permission. A missing button means your role lacks the permission.
+- An administrator must have added at least one resolution reason, or nobody can resolve. See [Incident states and fields](./incident-fields.mdx#resolution-reasons).
+
+## Pick up an incident
+
+1. Open **Monitoring › Incidents**. The menu entry shows how many open incidents nobody has acknowledged.
+2. Stay on the **Active** tab, or open **Unacknowledged**. Each tab shows its count.
+3. To narrow the list, search by title or incident number such as `INC-1042`, or use the filters **Severity**, **Status**, **Policy**, **Assignee** and **Thing**. **Assigned to me** and **Watching** show yours.
+4. Select the incident.
+
+To act on several at once, tick the rows and use **Acknowledge** or **Assign** in the bar. Incidents that can't take the action are skipped, and a message tells you how many.
+
+<Screenshot
+  page="watch/work-an-incident"
+  id="01-incident-detail"
+  route="/monitor/incidents/:id"
+  state="Incident detail: header with title, severity, status and Acknowledge, Assign, Resolve buttons; Events section with an episode; Activity thread with a comment; side panels Details, Watchers, Links"
+  alt="An incident page with workflow buttons, events and activity"
+/>
+
+## Acknowledge and assign
+
+1. Select **Acknowledge** to show you have seen it.
+2. Select **Assign**, or **Assign to me**, to give it to a person. Assigning an acknowledged incident moves it to in progress.
+3. Under **Events**, check what raised it. **Episodes** groups an alarm's open and close events. **All events** lists each one.
+4. Write in **Add a comment** to record what you find. Ctrl+Enter sends.
+5. Under **Links**, select **Add a link** to attach a thing, a document, a work order, a report, a dashboard or an external page.
+
+The assignee and the watchers get an in-app notification and an email on every change. Select **Watch** in the **⋯** menu to follow an incident, or **Mute this incident** to stop notifications for you.
+
+## Resolve and close
+
+1. Select **Resolve**.
+2. Choose a reason, and fill in any custom field marked **Required on resolve**.
+3. Select **Resolve incident**. If alarms are still active, the dialog warns you. A matching new event can reopen the incident.
+4. When the incident is resolved, select **Close** to end it.
+
+A policy can resolve an incident for you, for example when every alarm has cleared. **Details** shows how: **All episodes closed**, **Resolved manually**, **Resolved by an automation** or **Resolved by timeout**.
+
+To reopen, select **Reopen** on a resolved or closed incident. It is available until the reopen window of the policy passes. After that, report a new incident.
+
+## Report a problem by hand
+
+1. Select **New incident**, or open **⋯ › Report a problem** on a thing page.
+2. Enter a **Title** and choose a **Severity**.
+3. Choose the **Thing**. With some roles it is required. If it is optional, leave it empty for a site, a process or something you didn't model, and name it under **About (optional)**.
+4. Optionally add a **Description**, an **Assignee** and custom fields.
+5. Optionally select **Link events** to attach events of that thing from the last 24 hours. An event can belong to one incident only.
+6. Select **Create incident**.
+
+A manual incident works like any other: assign, comment, resolve.
+
+## Check that it worked
+
+The incident's status reads **Resolved** or **Closed**, and **Activity** shows each step with who did it. Under **Monitoring › Incidents**, the **Active** count drops by one.
+
+## If it doesn't work
+
+- **No Resolve button**: you need update and execute permission, and the incident must still be open, acknowledged or in progress.
+- **The resolution reason list is empty**: an administrator must add reasons first.
+- **Reopen is gone**: the reopen window of the policy has passed. Report a new incident.
+- **You can't remove an event**: the event that opened the incident can't be removed. You can remove events you added by mistake.
+
+## Related
+
+- [Events, incidents and notifications](./events-incidents-notifications.mdx)
+- [Incident states and fields](./incident-fields.mdx) · [Set up an incident policy](./incident-policy.mdx)

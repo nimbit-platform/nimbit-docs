@@ -1,0 +1,74 @@
+---
+title: Bring in an outside data source
+description: Load records from a database, a web API, SAP or a file into the knowledge graph with a connector and a mapping.
+type: how-to
+app:
+  routes: ["/knowledge/connectors", "/knowledge/mappings", "/knowledge/credentials"]
+  tour: setup-knowledge
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Load rows from another system into the graph as records of your own types. A connector (or a file upload) lands rows in a staging source, and a mapping turns them into records. The fields of each connector are in [Connector types](./connector-types.mdx).
+
+## Before you start
+
+- You need permission to edit Knowledge. Saving a mapping and running a transform need the modeler or admin role. Creating credentials needs the tenant admin.
+- The record type must exist. Create it in **Settings › Knowledge setup › Data model**, or install a pack from the **Library** tab. See [Types and traits](./types-and-traits.mdx).
+- For an API or database that needs a secret, have it ready.
+
+## Create a credential (optional)
+
+Do this when several connectors share a secret or when the secret must not sit in a connector.
+
+1. Open **Settings › Knowledge setup › Sources › Credentials** and select **Create**.
+2. Enter a **Name**. It cannot be changed later.
+3. Choose **User and password**, **Bearer token**, **API key** or **OAuth 2 client credentials**, and enter the secret.
+4. Under **Allowed hosts**, list one host per line. The credential is only sent to these hosts. `*.example.com` covers subdomains.
+5. Save.
+
+Secrets are stored encrypted and never shown again. **Rotate** replaces the secret for every connector that uses the credential, and those connectors restart.
+
+## Create a connector
+
+1. Open the **Connectors** tab and select **Create**.
+2. Enter a **Name** (letters, numbers, dashes, underscores) and choose the **Type**. Both are fixed afterwards.
+3. Enter the **Staging source**: lowercase letters, numbers and dashes, for example `sap-pm`.
+4. Fill in the connection fields. For a web API, select **Try it** to fetch the first page and then **Use what was detected**. For OData, select **Read service** and pick the **Entity set**, **Fields to read** and the **Change field**.
+5. Save.
+
+<Screenshot
+  page="knowledge/outside-source"
+  id="01-connector"
+  route="/knowledge/connectors"
+  state="Create connector dialog, type OData, entity set picked after Read service"
+  alt="The connector form for an OData service"
+/>
+
+To load a file once instead, use **Upload data** on the mapping screen. It accepts `.csv`, `.json`, `.jsonl`, `.ndjson` and `.parquet` up to 64 MB. JSON must hold one object per row.
+
+## Map the rows to a type
+
+1. Open the **Mappings** tab and select **New mapping**.
+2. Pick the **source** and the target **type**. The editor previews with sample rows, so upload some if the source has none yet.
+3. Set the **Source id**: the field that identifies each row. A row that comes again then updates its record.
+4. Bind each target field to a **Source field**, a **Constant** or an **ƒx transform**.
+5. To link each row to an existing record, add a **relation**. It matches by **alias** (an outside ID such as an SAP equipment number), an **indexed field** or an identifier of the target type. Mark it **Optional** if rows without a match should still land.
+6. Choose the **Write behaviour**: **Create** fails if the record exists; **Upsert** and **Replace** overwrite the whole record; **Merge** updates only mapped fields.
+7. Set the **Transform trigger**: **Manual**, **On new batch** or **Scheduled**.
+8. Select **Save mapping**, then run the transform. It reports how many rows were written and how many need review.
+
+## Check that it worked
+
+The connector shows **Running** or **Completed**. After the transform, open **Settings › Knowledge setup › Data health › Ingestion**, pick your source and confirm the batch is **Processed**. Search the record in **Explore**.
+
+## If it doesn't work
+
+- **The connector shows Failed or Retrying**: open it for **Failing since** and the reason. Check the URL, the credential and its **Allowed hosts**.
+- **Database connector says "driver not available"**: only PostgreSQL is supported. Choose it under **Driver**.
+- **HTTP connector reads only the first page**: set the paging fields. **Try it** shows what was detected.
+- **Rows land under Needs review**: an alias did not resolve, a source id is missing, or validation failed. Fix the mapping or the data and run the transform again. See [Fix data-health findings](./data-health.mdx).
+
+## Related
+
+- [Connector types](./connector-types.mdx) · [The knowledge graph](./knowledge-graph.mdx)

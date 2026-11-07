@@ -1,0 +1,89 @@
+---
+title: Channel types
+sidebar_position: 11
+description: The fields, routing filters, delivery behaviour and message format of each notification channel type.
+type: reference
+app:
+  routes: ["/manage/notification-channels"]
+  tour: find-your-way-alerts
+---
+
+This page lists what each notification channel needs, how routing filters work, how a delivery is tracked, and what each channel receives.
+
+## Channel fields
+
+| Field | Applies to | Meaning |
+| --- | --- | --- |
+| **Name** | All | Up to 255 characters |
+| **Channel type** | All | **Slack**, **Microsoft Teams**, **Webhook** or **ntfy**. Fixed after creation. |
+| **Enabled** | All | A disabled channel receives nothing |
+| **Slack webhook URL** | Slack | Incoming webhook URL of the Slack channel |
+| **Teams workflow webhook URL** | Microsoft Teams | URL of a Teams workflow that accepts a webhook request |
+| **Webhook URL** | Webhook | Where IoT Breeze sends a `POST` request |
+| **HMAC secret (optional)** | Webhook | Signs each request so the receiver can check it |
+| **ntfy topic** | ntfy | The topic to publish to |
+| **ntfy server URL** | ntfy | Optional. Default `https://ntfy.sh` |
+| **Auth token (optional)** | ntfy | Optional bearer token for your server |
+
+After you save, URLs and secrets are hidden. Leave a field empty on edit to keep the stored value, or enter a new one to replace it. Email and Expo Push channels are not available.
+
+## Routing
+
+Each message reaches a channel in one of three ways: **Automatic routing** on the channel, a **Notification channel** action on an [event type](./event-types.mdx), or an automation on an [incident policy](./incident-fields.mdx#policy-automations).
+
+| Setting | Meaning |
+| --- | --- |
+| **Automatic routing** | On: every new event that passes the filters is sent, with or without actions on its event type. Off: the list shows **Action only**. |
+| **Minimum severity** | **Information**, **Warning**, **Error** or **Critical**, or none. Only this severity and above is sent. |
+| **Event types** | Only these event types. Empty means all. An incident message is matched on the event type of the event that opened the incident. |
+
+The filters apply to every message sent to the channel, including messages from actions and automations. Automatic routing does not send events that close an episode, or incident notifications.
+
+The list sums up the filters in **Automatic routing**, for example `≥ Warning · Door opened`.
+
+## Delivery log
+
+Open **Delivery log** on a channel row to see its deliveries.
+
+| Status | Meaning |
+| --- | --- |
+| **Pending** | Queued, or being retried |
+| **Sent** | Accepted by the receiver |
+| **Failed** | Not delivered after 5 attempts. **Error** shows the last answer. **Attempts** shows the count. |
+| **Suppressed** | The channel was disabled when the message was due |
+
+**Retry** on a failed delivery queues it again with a fresh set of attempts. **Send test** sends a test notification through the channel and creates a delivery. Both need permission to run notification channels. A request to the receiver times out after 10 seconds. Redirects are treated as failures.
+
+## What each channel receives
+
+| Channel | Message |
+| --- | --- |
+| **Slack** | A text message: the title in bold, then the body |
+| **Microsoft Teams** | An Adaptive Card with the title, the body and a link to IoT Breeze |
+| **ntfy** | The body as text. The title and a link to IoT Breeze travel as headers. Priority follows severity: **Information** 2, **Warning** 3, **Error** 4, **Critical** 5. |
+| **Webhook** | JSON, below |
+
+### Webhook body
+
+Event messages:
+
+| Field | Meaning |
+| --- | --- |
+| `id` | Delivery key of the message |
+| `tenantId` | Your tenant |
+| `type` | Event type name |
+| `severity` | `INFO`, `WARNING`, `ERROR` or `CRITICAL` |
+| `title`, `body` | Text of the message |
+| `context` | Extra facts, such as the event ID |
+| `occurredAt` | Time, ISO 8601 |
+| `deepLink` | Link to the event in IoT Breeze |
+
+Incident messages carry `kind: "incident"`, `transition`, `incident` and `link` instead of `context`, and a `type` such as `incident.opened`.
+
+Each request has the headers `content-type: application/json` and `user-agent: IotBreeze-NotificationChannel/1.0`. With an HMAC secret it also has `x-iotbreeze-signature: sha256=<hex>`, the HMAC-SHA256 of the raw request body. See [Webhook payloads](../api/webhooks.mdx).
+
+## Related
+
+- [Send alerts to Teams, Slack or a webhook](./alert-channels.mdx)
+- [Events, incidents and notifications](./events-incidents-notifications.mdx)
+- [Event types](./event-types.mdx)

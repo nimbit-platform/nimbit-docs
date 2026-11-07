@@ -1,0 +1,53 @@
+---
+title: Draw a floor plan
+sidebar_label: Draw a floor plan
+description: Create a canvas from a plan image, place live elements on it, arrange them and save.
+type: how-to
+sidebar_position: 2
+app:
+  routes: ["/canvas", "/canvas/:id"]
+  tour: canvas-build
+---
+
+Start a canvas from a floor plan or machine photo and place elements on it. The values come in [Bind elements to live values](./bind-live-values.mdx). For the ideas behind it, see [How a canvas works](./how-canvas-works.mdx).
+
+## Before you start
+- A role that may create and update canvases. **Canvas** appears in the menu only for such roles.
+- A plan image: PNG, JPG, SVG or WebP, up to 20 MB. Export a PDF as an image first.
+- The interfaces your things implement, if you want one canvas for many things.
+
+## Steps
+
+1. Open **Monitoring › Canvas** and select **Create new canvas**.
+2. Enter a name.
+3. Select the interfaces the canvas reads. With interfaces, viewers pick a context thing and one canvas serves every matching thing. Without them, every element binds to a fixed thing.
+4. Under **Start from**, choose **From image**, then create the canvas. The editor opens.
+5. In **Add image**, drop your plan or browse for it. Leave **Use as background** on if you want the plan locked behind everything.
+6. Open the **Elements** library on the left. Click an element to add it, or drag it to a spot on the plan. **Search elements and symbols** or press <kbd>A</kbd> finds one by name. For values start with **Value**, **Gauge** or **Fill level** in the **Data** section.
+7. Draw around the plan with the toolbar: shapes, zones and text. Press <kbd>C</kbd> to connect equipment with pipes. **Snap** and **Grid** line elements up. Hover a tool for its key.
+8. Arrange. Drag to move and Shift-click to select several. The bar above a selection aligns, distributes, groups, duplicates and locks. Right-click for **Bring to front**, **Send to back** and more. <kbd>Ctrl</kbd>+<kbd>Z</kbd> undoes.
+9. Open **Layers** to rename, hide and lock elements and to find those hidden behind others. Elements placed on the image nest under it and move and scale with it.
+10. Select **Preview** to see the canvas as viewers will, in both themes.
+11. Select **Save**. **Save and exit** also leaves the editor.
+
+<Screenshot
+  page="visualize/canvas/draw-a-floor-plan"
+  id="01-editor-overview"
+  route="/canvas/:id"
+  state="Canvas editor with a floor plan image as background, the Elements library open on the left, three Value elements placed on the plan, Layers and the Inspector on the right"
+  alt="The canvas editor with a floor plan, the element library, layers and inspector"
+/>
+
+## Check that it worked
+
+The status next to the buttons reads **Saved**. Open the canvas from the list: the plan shows with your elements in place. Elements not yet bound show a placeholder until you bind them.
+
+## If it doesn't work
+
+- **The image is rejected**: it is not PNG, JPG, SVG or WebP, or it is over 20 MB. Export it again smaller.
+- **Someone else saved meanwhile**: the app says **Someone else saved this canvas**. Reloading discards your unsaved changes; **Save as copy** keeps your work.
+- **The canvas is too large to save**: remove elements or split it into several canvases.
+- **You replaced the image and elements look off**: the new image is scaled to the old size and elements stay in place. If the aspect ratio differs, the app warns you. Check elements near the edges.
+
+## Related
+- [Bind elements to live values](./bind-live-values.mdx) · [Canvas editor reference](./editor-reference.mdx)

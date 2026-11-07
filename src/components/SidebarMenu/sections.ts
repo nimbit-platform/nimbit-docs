@@ -25,7 +25,7 @@ export const SECTIONS: Section[] = [
         icon: BookOpen,
         to: "/docs",
         description: "Connect, model, visualize, automate",
-        paths: ["", "connect", "model", "visualize", "watch", "automate", "knowledge", "administer", "troubleshooting"],
+        paths: ["", "connect", "gateways", "model", "visualize", "watch", "automate", "knowledge", "administer", "troubleshooting"],
     },
     {
         id: "api",

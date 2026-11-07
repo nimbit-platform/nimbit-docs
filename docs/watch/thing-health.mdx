@@ -1,0 +1,67 @@
+---
+title: Check a thing's health
+sidebar_position: 3
+description: See whether a thing is connected, when it last reported, what its latest values are and what happened to it.
+type: how-to
+app:
+  routes: ["/monitor/thing-details", "/monitor/thing-details/:id"]
+  tour: find-your-way-watch
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Find a thing, see whether it is connected and reporting, and read its recent events and incidents.
+
+## Before you start
+
+- You need to see the thing: it belongs to one of your groups, or your role sees all things.
+- To create or change things, use **Settings › Onboarding › Things** instead. **Monitoring › Things** is read only.
+
+## Find the thing
+
+1. Open **Monitoring › Things**.
+2. Type in the search box to search by name, or select **Filters** to narrow by **Name**, **Group**, **Thing type** or **Tags**.
+3. Read **Device status**: **Connected**, **Disconnected** or **Unknown**, with the time since the last change. A **Simulated** chip means the values come from a simulation, not the device.
+4. Select the thing's name.
+
+The URL carries your search and filters, so you can bookmark a filtered list or send it to a colleague.
+
+## Read the thing page
+
+<Screenshot
+  page="watch/thing-health"
+  id="01-thing-overview"
+  route="/monitor/thing-details/:id"
+  state="Overview tab of a connected thing with three measures reporting, Live values and Trend visible, header with Connected chip and last signal"
+  alt="A thing page with header, figures strip and Overview tab"
+/>
+
+1. In the header, read the **Connection** chip and the **last signal**, for example `last signal 4 min ago`. Hover for the exact time. A thing that never reported says **No signal yet**.
+2. Read the figures under the header: **Connection**, **Measures** (for example `3 of 4 reporting`), **Events** (the last 30 days, with a count of errors and warnings), **Incidents** (open ones about this thing) and **Last action**. Select a figure to jump to its tab.
+3. On the **Overview** tab, read **Live values**: the latest reading of each measure with the range of the last 24 hours. Use **Pinned** to show only the measures pinned on the thing type.
+4. Read **Trend** for the last readings. It shows at most 4 measures and at most 2 different units.
+5. Open the **Events** tab. **Events** lists what happened to the thing. **Incidents** lists the incidents about it. **Open in Incidents** goes to the full list.
+
+:::info Last signal is not the same as Connected
+**Connected** comes from the thing's connection state. **Last signal** is the time of the newest reading. A thing can be connected and still have an old last signal if it only sends when something changes.
+:::
+
+To chart one measure over a longer time, open the **Schema** tab, select the measure, and select **Open in Explore**. See [Explore telemetry over time](./explore-telemetry.mdx).
+
+To raise a problem by hand, open **⋯ › Report a problem**. See [Work an incident](./work-an-incident.mdx).
+
+## Check that it worked
+
+You can say whether the thing is connected, when it last reported, and whether it has open incidents.
+
+## If it doesn't work
+
+- **The list is empty**: **Before you can create Thing, you need to create Thing Type** means your tenant has no thing types yet. **Create Thing first** means thing types exist but no things.
+- **Live values says No data yet**: the thing never reported. Open **⋯** and choose **Send data** for one message or **Simulate device…** for a run. See [Simulate a device](../connect/simulate.mdx). For real hardware, open the **Connections** tab.
+- **A tab is missing or greyed**: some tabs only show for roles that may use them, and a tab with nothing in it stays greyed.
+
+## Related
+
+- [Events, incidents and notifications](./events-incidents-notifications.mdx)
+- [Event types](./event-types.mdx)
+- [Draw a geofence](./geofence.mdx)

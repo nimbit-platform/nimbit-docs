@@ -1,0 +1,56 @@
+---
+title: Alert when a value crosses a limit
+description: Build a rule that notifies you once when a thing's temperature goes above 25 °C.
+type: how-to
+app:
+  routes: ["/automation/rule-designer", "/automation/rule-designer/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Build a rule that sends you an in-app notification once each time a thing's `temperature` goes above 25 °C. For how rules fit with actions and events, read [Rules, actions and reports](./rules-actions-reports.mdx).
+
+## Before you start
+
+- A role that may create rules, and a desktop browser. The rule canvas does not open on a phone.
+- A thing type with a numeric `temperature` measure and at least one thing that sends it. This page uses a thing type called `Room sensor`. See [Create a thing type](../model/create-thing-type.mdx).
+
+## Steps
+
+1. Open **Automation › Rule Designer** and select **Create rule**.
+2. Enter the **Name** `Room too warm` and save. The name must be unique in your tenant. The rule appears in the list as **Inactive**.
+3. Select the rule name to open it. The canvas opens in edit mode with a **Start** node.
+4. On **Start**, choose **Thing type** and select `Room sensor`.
+5. Select **+** and add a **Condition**. On the **Simple** tab, set **Measure** to `temperature`, **Operator** to **Greater than**, and the value field (labelled **Condition**) to `25`.
+6. Select **+** and add a **Toggle** trigger. Set **Direction** to **In**. The actions run when the room becomes too warm, not for every reading above 25.
+7. Select **+** and add a **Notification** action. Enter a **Subject** such as `Room too warm`, set **Severity** to **Warning** and write a **Message**. On **Users and groups**, add yourself.
+8. Hover the validity icon next to the rule name until it reads **The flow is Valid**.
+9. Select the check mark in the floating bar above the canvas. Before the first publish its tooltip reads **Publish**.
+10. Select **Activate**. A message confirms it, and the rule is **Active** in the list.
+
+<Screenshot
+  page="automate/threshold-alert"
+  id="01-rule-canvas"
+  route="/automation/rule-designer/:id"
+  state="Rule Room too warm in edit mode: Start (Room sensor), Condition temperature Greater than 25, Toggle In, Notification action"
+  alt="The finished rule with four connected nodes"
+/>
+
+## Check that it worked
+
+Open a `Room sensor` thing and use **Simulate device…** to send a `temperature` of `26`. See [Simulate a device](../connect/simulate.mdx). A notification arrives for the users and groups you chose. Send `24`, then `26` again: you get a second notification, because the state changed from not met to met.
+
+## If it doesn't work
+
+- **Nothing arrives**: check that the rule is **Active**, that the thing is of the type chosen on **Start**, and that the measure name matches the thing type exactly. See [A rule doesn't fire](../troubleshooting/rule-not-firing.mdx).
+- **The check mark is disabled**: the flow is invalid. Hover the validity icon to read what is missing, for example a node with required fields empty.
+- **Activate is disabled**: the rule has no published version yet. Select the check mark first.
+- **You want email instead**: swap step 7 for an **Email** action. It needs a recipient and a subject and body. Email goes through your tenant's mail server if one is set up, and otherwise through the platform mail server.
+
+{/* TODO(product): Where can a user see that a rule evaluation failed or was skipped (condition not met, invalid expression)? The code writes rule evaluation events whose detail depends on enableDetailedRuleEvaluation and logs other errors on the server. Should the docs promise that users can see failed evaluations? */}
+
+## Related
+
+- [Rule conditions and functions](./conditions.mdx) · [Action types](./action-types.mdx)
+- [Call another system from a rule](./webhook-from-rule.mdx)
+- [Events, incidents and notifications](../watch/events-incidents-notifications.mdx)

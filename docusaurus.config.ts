@@ -111,9 +111,8 @@ const config: Config = {
       {
         specs: [
           {
-            id: "dip",
-            spec: "openapi/dip/.openapi.yaml",
-            // route: "/docs/developer/api/dip",
+            id: "tsflux",
+            spec: "openapi/tsflux/.openapi.yaml",
           },
           {
             id: "ocb",

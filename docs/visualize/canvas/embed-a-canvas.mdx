@@ -1,0 +1,51 @@
+---
+title: Put a canvas on a dashboard
+sidebar_label: Canvas on a dashboard
+description: Show an existing canvas next to other widgets with the Canvas widget, or nest one canvas in another.
+type: how-to
+sidebar_position: 6
+app:
+  routes: ["/dashboards/:id", "/canvas/:id"]
+---
+
+Show a canvas inside a dashboard so the drawing sits beside charts and figures. You add the **Canvas** widget; the drawing itself stays on the canvas page.
+
+## Before you start
+- An existing canvas, see [Draw a floor plan](./draw-a-floor-plan.mdx).
+- A role that may edit the dashboard, and read the canvas. A role that may only read canvases sees them embedded in dashboards.
+- A dashboard that is not a report. The Canvas widget is not offered on reports or on General dashboards.
+
+## Steps
+
+1. Open the dashboard and select **Edit**.
+2. Select **Add widget** and open the group **Thing details**.
+3. Pick **Canvas**.
+4. Under **Canvas**, choose the canvas to embed. Required.
+5. If the canvas reads a context thing and the dashboard cannot give one, a **Thing** field asks which thing to use. {/* TODO(product): The wizard shows Thing only on Multi-asset dashboards for a canvas built on interfaces; confirm what a Smart dashboard does with a canvas on interfaces. */}
+6. Optional: set **Appearance** colours.
+7. Select **Add to dashboard**, arrange and size the widget, then **Save** the dashboard.
+
+<Screenshot
+  page="visualize/canvas/embed-a-canvas"
+  id="01-canvas-widget"
+  route="/dashboards/:id"
+  state="Dashboard in edit mode with a Canvas widget showing a small plant drawing next to two chart widgets"
+  alt="A Canvas widget on a dashboard beside two charts"
+/>
+
+## Check that it worked
+
+The widget shows the canvas with live values. On a Smart dashboard that follows a thing, the canvas takes the dashboard's thing. Select the widget's open-full-page link to see the canvas on its own page.
+
+## Nest one canvas in another
+
+Inside the canvas editor, the **Embeds** section of the library holds **Canvas**. It shows another canvas, view-only and fitted to its frame, with the name and **Open**. Its context thing comes from the canvas it sits in, or a fixed thing. A canvas never embeds itself, and nesting stops after three levels. Too small on screen, it shows a placeholder with **Open**.
+
+## If it doesn't work
+
+- **This canvas does not exist or is not visible to you**: it was deleted, or your role may not read it.
+- **You cannot operate from the widget**: buttons, switches and setpoints in an embed ask you to open the canvas. Select **Open this canvas to operate**.
+- **No Canvas card in the picker**: the dashboard is a report or a General dashboard.
+
+## Related
+- [How a canvas works](./how-canvas-works.mdx) · [Widget gallery](../widgets.mdx#canvas)

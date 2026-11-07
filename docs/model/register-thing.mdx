@@ -1,0 +1,69 @@
+---
+title: Register a thing
+sidebar_position: 5
+description: Add one real device or asset in IoT Breeze, assign it to a thing type, an organization and groups.
+type: how-to
+app:
+  routes: ["/onboarding/things", "/onboarding/things/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Register one real device or asset, such as a sensor in a room, so IoT Breeze can accept its data and show it to the right people. Background: [Thing types, things and interfaces](./things-and-types.mdx).
+
+## Before you start
+
+- A [thing type](./create-thing-type.mdx) exists and its schema is published. With none, the page offers **Create Thing Type first**.
+- Your role can create things.
+- You know which organization and groups should see the thing. Members of the selected groups can see it.
+
+## Steps
+
+1. Open **Settings › Onboarding › Things** and select **Create thing**.
+2. Fill in the form:
+
+   | Field | What to enter |
+   | --- | --- |
+   | **Name** | A name for the thing, for example `Meeting room 1`. Required, up to 128 characters. |
+   | **Thing Alternate ID** | The ID your device uses. Required, up to 128 ASCII characters, unique across the whole system and **can't be changed later**. Enter your own, such as a serial number, or select **Generate**. |
+   | **Description** | Optional. |
+   | **Thing type** | The type this thing is an instance of. Required. You can't change it later. |
+   | **Parent** | Optional. Another thing this one belongs to. |
+   | **Organization** | Required. |
+   | **Group** | Required. Select one or more. |
+   | **Tags** | Optional search tags. |
+
+3. If the thing type's connector is Azure IoT Hub, an **Authentication type** field appears: choose **SAS Token** or **X.509 Certificate**. It can't be changed later.
+4. Select **Save**. The thing page opens.
+
+{/* TODO(product): What does Authentication type offer for the AWS IoT Core and SAP connectors? ThingForm.tsx lists options only for AZURE (SAS Token, X.509 Certificate) and SAP (X.509 Certificate), and falls back to X.509 for any other connector. */}
+
+<Screenshot
+  page="model/register-thing"
+  id="01-create-thing"
+  route="/onboarding/things"
+  state="Create new thing drawer filled in: name, generated alternate ID, thing type, organization and one group selected"
+  alt="The create thing form"
+/>
+
+:::tip Choose an ID that is safe in MQTT
+Use letters, digits, `-` and `_`. The ID becomes part of the MQTT client ID and of MQTT topics, where `:` has a special meaning. A generated ID is always safe. See [MQTT topics and client ID](../connect/mqtt-topics.mdx).
+:::
+
+Next, create credentials on the thing's **Connections** tab: [Create and rotate device credentials](../connect/credentials.mdx). To see data before the hardware is ready, [simulate a device](../connect/simulate.mdx).
+
+## Check that it worked
+
+The thing appears in **Things**, in the **All** tab. Its **Device status** is **Unknown** until it sends its first message, then **Connected**. The thing page shows the thing's measures and properties on the **Schema** tab, taken from its thing type.
+
+## If it doesn't work
+
+- **The ID is rejected as taken**: a Thing Alternate ID is unique across the whole system, not only your tenant. Choose another or select **Generate**.
+- **The ID is rejected as invalid**: it contains characters outside ASCII, or is longer than 128 characters.
+- **Save is disabled**: **Name**, **Thing Alternate ID**, **Thing type**, **Organization** and at least one **Group** are required.
+- **The group you need isn't listed**: groups are managed by a tenant admin. See [Users, groups and roles](../administer/access.mdx).
+
+## Related
+
+- [Thing types, things and interfaces](./things-and-types.mdx) · [Create a thing type](./create-thing-type.mdx)
+- [Send data over MQTT](../connect/mqtt.mdx) · [Send data over HTTP](../connect/http.mdx)
