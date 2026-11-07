@@ -16,8 +16,6 @@ Each API has its own error format. This page lists them, the status codes you ca
 | OCB | Contract errors: `{"defined": true, "code": "...", "status": 400, "message": "...", "data": {}}`. Other errors: `{"message": "...", "msgCode": "...", "type": "ocb"}`. |
 | Key exchange | `{"error": "...", "error_description": "..."}` (RFC 6749). |
 
-OCB's unexpected errors answer `500` with the fixed message `Internal server error`. The cause stays in the server log.
-
 ## tsflux
 
 All write endpoints answer the same way: `/api/v1/message/structured`, `/api/v1/message/async-structured`, `/api/v1/write/json`, `/api/v1/{tenant}/{thingType}/device/{id}/telemetry`, `/api/v1/write/line-protocol`, and the InfluxDB-compatible `/write` and `/api/v2/write` at the host root.
@@ -34,7 +32,7 @@ All write endpoints answer the same way: `/api/v1/message/structured`, `/api/v1/
 | `429` | Too many write requests in flight. Carries `Retry-After: 1`. | Retry after the delay. |
 | `503` | tsflux could not take the message now, or could not look up the tenant. Carries `Retry-After: 1`. | Retry. A retry can store a message twice. |
 
-On the InfluxDB-compatible endpoints a partly stored batch never answers `207`. A batch with failures worth resending answers `503` (resend the whole batch, stored lines are stored again). A batch with only permanent failures answers `400` with `partial write`. Error bodies follow InfluxDB: v1 `{"error": "..."}`, v2 `{"code": "...", "message": "..."}`.
+On the InfluxDB-compatible endpoints a partly stored batch never answers `207`. A batch with failures worth resending answers `503` (resend the whole batch, stored lines are stored again). A batch with only permanent failures answers `400` with `partial write`.
 
 ## nbq
 
@@ -74,7 +72,7 @@ When you fire a webhook action through the API, OCB reports the target's answer:
 
 | Status | `error` | Meaning |
 | --- | --- | --- |
-| `400` | `invalid_request`, `unsupported_grant_type` | Malformed form body, or `grant_type` is not `client_credentials`. Also when sent over plain HTTP. |
+| `400` | `invalid_request`, `unsupported_grant_type` | Malformed form body, or `grant_type` is not `client_credentials`. |
 | `400` | `invalid_scope` | The key's scopes (or the ones asked for) span several apps. Ask for one app's scopes. |
 | `400` | `invalid_target` | The key holds no scope of the app named in `resource`, or a named scope belongs to another app. |
 | `401` | `invalid_client` | The key is malformed, unknown, revoked, expired, idle, used from a disallowed address, or its owner is no longer a usable member. One answer for all, by design. |
