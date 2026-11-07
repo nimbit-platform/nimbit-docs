@@ -62,7 +62,14 @@ Admins set the rules for the whole tenant with **Edit policy**.
 
 ## Check that it worked
 
-The key appears on **My keys** (or **All keys**, if you may read every key) with its expiry. After the first call, **Last used** shows a date, and **History** lists the use.
+The key appears on **My keys** (or **All keys**, if you may read every key) with its expiry. To test it, tick the scope **Read the platform** and read the identity the key acts as:
+
+```bash
+curl "https://<host>/ocb/rest/v2/users/me" \
+  -H "Authorization: Bearer <api-key>"
+```
+
+A `200` answer with a user object means the key is valid and reaches OCB. A `401` means it is malformed, expired, revoked or has no scope for OCB; see [Errors and limits](../api/errors-and-limits.mdx#api-key-exchange-errors). After the first call, **Last used** shows a date, and **History** lists the use.
 
 ## If it doesn't work
 

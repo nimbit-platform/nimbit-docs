@@ -7,7 +7,13 @@ app:
   routes: ["/onboarding/things/:id", "/administration/api-keys"]
 ---
 
-This page lists the credentials that tsflux, nbq and OCB accept and the exact headers to send.
+The base URL, the credentials that tsflux, nbq and OCB accept, and the exact headers to send.
+
+## Base URL
+
+Use the host you open IoT Breeze on, with the path prefix of the API: `https://<host>/nbq/api/v1/...`. All three APIs share the host. The tenant is not part of the URL: it comes from the credential. The one exception is the device telemetry route of tsflux, which also carries the tenant in its path.
+
+{/* TODO(product): Does every tenant get its own host (primary and additional domains are registered per tenant), or do tenants of a shared cell share one host? Say which hostname an integrator should use. */}
 
 ## Which credential works where
 

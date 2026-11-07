@@ -12,7 +12,7 @@ An API key is a secret that lets a script, an integration or an AI assistant cal
 A key looks like `nbk_<key id>_<secret><checksum>`. The key id is the public handle you see in lists and logs. IoT Breeze stores only a hash of the secret, so the full key is shown once, when you create it.
 
 ```mermaid
-flowchart LR
+flowchart TB
   C["Client: Authorization Bearer nbk_..."] --> A[ocb or nbq]
   A --> D["Identity directory: POST /v1/token"]
   D --> K{Key valid?}
@@ -74,11 +74,7 @@ OCB routes that declare permissions are decided by those permissions. Routes tha
 
 ## Lifetime and rotation
 
-- **Expiry.** Choose 30, 90 or 365 days. **Never** is offered only for service account keys when the policy sets no maximum. No access token outlives its key.
-- **Roll key** creates a new key with the same scopes. You choose when the old one stops: now, after 1 hour, after 1 day or after 7 days. Give your clients the new key before then.
-- **Revoke** ends a key for good. Clients that use it stop working within five minutes, the life of a token already issued.
-- A key that is unused for longer than the policy's idle limit stops working.
-- **History** keeps changes and refused uses for a year, and daily use for 90 days.
+A key expires after 30, 90 or 365 days. **Never** is offered only for service account keys when the policy sets no maximum. No access token outlives its key. To replace a key without downtime, roll it: the new key has the same scopes and the old one keeps working for a period you choose. Revoking ends a key for good, and clients that use it stop within five minutes. The steps are in [Create an API key](../administer/api-key.mdx#rotate-or-revoke-a-key).
 
 ## Keep keys safe
 
