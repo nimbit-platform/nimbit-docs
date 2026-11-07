@@ -1,0 +1,110 @@
+---
+id: users
+title: Users
+sidebar_position: 2
+description: Invite people to your tenant, change their roles and groups, and remove them.
+app:
+  routes: ["/administration/users", "/administration/users/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+A user is a person who can sign in to your tenant. Each user has one or more [roles](./roles.mdx) and belongs to [groups](./groups.mdx).
+
+:::info What you need
+To open **Users** you need to read users and to edit or delete them, or to create or delete invitations. The built-in **Admin** and **Manager** roles can do this.
+:::
+
+## The user list
+
+Open **Administration › Users**. The list shows members and open invitations.
+
+<Screenshot
+  page="user/administration/users"
+  id="01-user-list"
+  route="/administration/users"
+  state="User list with active users, one pending invitation and one expired invitation; the tenant owner has its icon"
+  alt="User list with name, email, roles and status columns"
+/>
+
+| Status | Meaning |
+| --- | --- |
+| **Active** | The person has joined. Active users show no marker. |
+| **Pending** | The invitation was sent and is still valid. |
+| **Expired** | The invitation ran out before the person accepted. |
+| **Declined** | The person declined the invitation. |
+
+You can search, filter by name, email, status or role, and sort by name. The header shows how many users the tenant has.
+
+## Invite users
+
+1. Select **Invite user**.
+2. Under **Emails**, enter one or more addresses. You can invite up to 50 at once.
+3. Under **Roles**, choose at least one role.
+4. Under **Groups**, add the groups the people should see. For each group, **Read** is always on. Switch **Update** and **Execute** on if the people may change things or run actions in that group.
+5. Optional: under **Things**, give access to single things in the same way.
+6. Select **Send invitation**.
+
+<Screenshot
+  page="user/administration/users"
+  id="02-invite-form"
+  route="/administration/users"
+  state="Invite user drawer filled in: two emails, the Viewer role, one group with Read on and Update on"
+  alt="Invite user form with emails, roles, groups and things"
+/>
+
+IoT Breeze creates one invitation per address and shows the result. Each invitation has its own link. The platform also emails the link, unless your installation sends no email. In that case the dialog says so and you must pass the link on yourself.
+
+:::warning Share links with care
+Anyone who has a link can open the invitation until it expires. Send each link only to its invitee. If a link reached someone else, resend the invitation: the old link then stops working.
+:::
+
+You can only give roles whose permissions you hold yourself. A role with permissions you lack is locked in the picker.
+
+### Resend, invite again, dismiss
+
+| Situation | Action in the status column |
+| --- | --- |
+| Pending or expired | **Resend** sends a new link. The previous link stops working. |
+| Declined | **Invite again** sends a fresh invitation. |
+| Declined | **Dismiss** removes the declined invitation from the list. |
+
+## Change a user
+
+1. Select the user's name to open the detail page.
+2. Select **Edit**.
+3. Change the first and last name, or the **Roles**.
+4. Select **Save**.
+
+The detail page has two tabs.
+
+| Tab | What it shows |
+| --- | --- |
+| **Roles** | The roles of the user. Use **Assign role** to add one. |
+| **Groups** | The groups of the user with **Read**, **Update** and **Execute** per group. Use **Assign to group** to add one. |
+
+<Screenshot
+  page="user/administration/users"
+  id="03-user-detail"
+  route="/administration/users/:id"
+  state="User detail page on the Groups tab with two groups and their Read, Update, Execute switches"
+  alt="User detail page with the Groups tab open"
+/>
+
+:::info Roles not confirmed
+Some members were taken over from an earlier user management by role name. They show **Roles not confirmed** and have no permissions until an administrator checks the roles. Open the user, check the roles, then confirm them as directory roles or replace them in **Edit**.
+:::
+
+## Remove a user
+
+There is no deactivate switch. To end someone's access, remove them.
+
+1. Open the user and select **Delete**, or select several rows in the list and delete them.
+2. Confirm **Delete the User?**.
+
+The same works for open invitations: deleting one revokes it.
+
+:::warning
+You cannot remove the tenant owner. The directory also refuses to remove the last admin.
+:::
+{/* TODO: verify that the last-admin refusal message applies to every role that holds the admin permissions */}

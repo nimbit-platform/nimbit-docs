@@ -1,0 +1,127 @@
+---
+id: reports
+title: Reports
+sidebar_position: 4
+description: Build a PDF report from widgets, schedule it, and choose who receives it.
+app:
+  routes: ["/reports", "/reports/:id"]
+  tour: find-your-way-alerts
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+A report is a document built from widgets, like a dashboard, but for a fixed time window. IoT Breeze turns it into a PDF on a schedule, saves it in a folder and sends it to the people who subscribed. Use it for recurring summaries, such as a weekly overview for managers.
+
+:::info What you need
+- A role that may read reports to see **Automation › Reports**, and one that may create and update them to build one.
+- A desktop browser. The report editor does not open on a phone.
+- Things with data in the period you want to report on.
+:::
+
+## Create a report
+
+1. Open **Automation › Reports** and select **Create report**.
+2. Enter a **Name**. It must be unique. Add a description if you like.
+3. Under **File settings**, enter the **File name** of the PDF. Type `@` to add dynamic values, such as the date. Choose the **Folder** where the PDF is saved. You find it later in the file explorer.
+4. Under **Things**, choose the things the report covers.
+5. Under **Users** and **Groups**, choose who may open the report. If you pick neither, everyone in the tenant can see it.
+6. Optionally add **Tags** to find the report in the list.
+7. Set the **Schedule** (see below) and save.
+
+<Screenshot
+  page="user/automation/reports"
+  id="01-create-report"
+  route="/reports"
+  state="Create new report drawer filled in: name, file name, folder, one thing, schedule section visible"
+  alt="The Create new report drawer"
+/>
+
+## Set the schedule
+
+| Setting | Meaning |
+| --- | --- |
+| **Start date** and **Start time** | When the first report is generated. |
+| **Timeframe** | The period the report covers, for example the last day. You choose it relative to the run time. |
+| **Repeat every** | How often a report is generated, in days, weeks or other units. |
+
+Each run covers the **Timeframe** up to the moment it runs.
+
+:::warning A report only runs when it is published
+A new report is not published, so it has no schedule yet. Publishing needs a fully defined timeframe. See [Publish](#publish-the-report).
+:::
+
+The list shows the schedule per report. Open the schedule to see when the last report was created and when the next one is due.
+
+## Design the report
+
+Select the report name to open the editor.
+
+1. Add widgets from the widget panel on the left, or select the **+** to open the widget wizard. Each widget is configured like on a dashboard.
+2. Drag widgets on the canvas. Use the context menu to **Move to front** or **Move to back**.
+3. Select **Add page** for more pages. Use **Canvas size** to switch between A4 portrait, A4 landscape or a custom size.
+4. Select **Show grid** if you want help aligning widgets.
+5. Select the pencil to leave edit mode and **Save** when you are done. The header shows **Saved** or **Unsaved changes**.
+
+<Screenshot
+  page="user/automation/reports"
+  id="02-report-editor"
+  route="/reports/:id"
+  state="Report editor with one A4 page, three widgets on the canvas, widget panel on the left and settings sidebar on the right"
+  alt="The report editor with widgets on an A4 page"
+/>
+
+Use **Preview** to open the report in a new tab. The gear opens the report settings.
+
+## Choose who receives it
+
+Select **Subscriptions** in the editor header. Subscribers receive each generated report.
+
+1. Select **Add user**.
+2. Pick a user, or add an **External** email address for someone without an account.
+3. Choose how to deliver: **Send mail**, **Send notification**, or both.
+
+:::warning Mail needs a mail server
+If your tenant has no mail server, the app warns that subscriptions will not be sent as email. Use **Send notification** instead, or ask your administrator.
+:::
+
+To remove a subscriber, delete the row.
+
+## Publish the report
+
+Select **Publish** in the editor header. IoT Breeze starts the schedule from your start date. The button then reads **Unpublish**. Use it to pause the schedule.
+
+If publishing is refused, the timeframe is not fully defined. Open the report settings and complete the schedule.
+
+## Generate one now
+
+You don't have to wait for the schedule.
+
+1. In the editor, select **Generate**.
+2. Choose the time range to report on.
+3. Select **Download** to get the PDF in your browser, or **Generate and send** to create it, save it to the folder and send it to the subscribers.
+
+After **Generate and send**, the button waits 30 seconds. The PDF appears in the file explorer in about 30 seconds.
+
+<Screenshot
+  page="user/automation/reports"
+  id="03-generate"
+  route="/reports/:id"
+  state="Generate popover open with a relative time range chosen and the Download and Generate and send buttons"
+  alt="The Generate popover with Download and Generate and send"
+/>
+
+## Manage reports in the list
+
+| Column | Meaning |
+| --- | --- |
+| **Name** | Select it to open the editor. |
+| **Status** | Published or not. |
+| **Published at** | When it was last published. |
+| **Schedule** | Last and next run. |
+| **Groups**, **Users**, **Things** | Who sees it and what it covers. |
+| **Tags** | Your labels. |
+
+Each row also lets you copy the report or preview it. To delete reports, select them and use the delete action.
+
+{/* TODO: verify the exact row action labels and the delete flow in the list. */}
+{/* TODO: verify the available Repeat every units and Timeframe presets. */}

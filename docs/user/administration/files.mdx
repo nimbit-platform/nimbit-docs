@@ -1,0 +1,76 @@
+---
+id: files
+title: Files
+sidebar_position: 9
+description: Upload, organise, tag and share files in your tenant's storage.
+app:
+  routes: ["/files"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+**Files** is the file explorer of your tenant. Dashboards, reports and things show files from here, for example images, documents and attachments.
+
+:::info What you need
+Permission to create, update or delete files. The built-in **Admin**, **Manager** and **Modeler** roles have it. The **Viewer** role only sees files where a dashboard, report or thing shows them.
+:::
+
+## Browse
+
+Open **Administration › Files**. Switch between **List view** and **Grid view**. Use **Search files** to find a file by name. Each row shows **Name**, **Size**, **Type**, **Modified** and **Tags**.
+
+Two folders are special.
+
+| Folder | What it is |
+| --- | --- |
+| **Things** and **Thing types** | One folder per thing or thing type. You cannot create, rename, move or delete these folders here. Put files inside them. |
+| `_internal_` | Files that other pages of the app use. |
+
+<Screenshot
+  page="user/administration/files"
+  id="01-explorer"
+  route="/files"
+  state="Files explorer in list view with a few folders, the Things folder open, and several files with tags"
+  alt="File explorer in list view"
+/>
+
+## Upload and organise
+
+| Task | How |
+| --- | --- |
+| Upload | Select **Upload**, or drag and drop files into the explorer. The dialog shows the **Max file size**. |
+| New folder | Select **New Folder** and enter a name. Inside a folder use **New Subfolder**. |
+| Rename, cut, copy, paste | Use the actions on a file or folder. Cut or copy, open the target folder, then **Paste into folder**. |
+| Download, preview | **Download**, or **Preview** for supported file types. |
+| Delete | **Delete**, then confirm. This cannot be undone. |
+
+<Screenshot
+  page="user/administration/files"
+  id="02-upload"
+  route="/files"
+  state="Upload Files dialog open with two files queued and the max file size shown"
+  alt="Upload Files dialog"
+/>
+
+## Tags
+
+Select **Tag** on a file to add tags. Tags help you find and filter files.
+
+## Share a link
+
+1. Select **Share link** on a file.
+2. Choose how long the link is valid: **Expires in** hours or days.
+3. Select **Generate link**, then **Copy link**.
+
+Anyone with the link can open the file until it expires.
+
+## Search index
+
+Files can be used to answer questions in **Ask Nimble**. The **Search index** setting on a file controls this: **Answers can cite this file** or **Not used when answering questions**. Files in a record's own folder are on by default.
+{/* TODO: verify that the Search index control only appears when Ask Nimble and Knowledge is enabled for the tenant */}
+
+## Delete with care
+
+Before you delete files from a folder that a dashboard's file list widget shows, IoT Breeze warns you with **Folder used by widgets** and lists the dashboards. After the deletion those widgets show no files or fewer files.
+
+Deleting from `_internal_` asks for a second confirmation (**Delete anyway**) because other pages may break.

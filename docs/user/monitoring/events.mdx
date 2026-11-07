@@ -1,0 +1,104 @@
+---
+id: events
+title: Events
+sidebar_position: 6
+description: Read the log of what happened in your tenant, filter it, and open one event to see why it fired.
+app:
+  routes: ["/monitor/events", "/monitor/events/:id"]
+  tour: find-your-way-history
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+An event is a record that something happened: a rule fired, a thing went offline, a thing entered a geofence, someone changed a record, or another system reported a fact. **Monitoring › Events** is the log of all of them.
+
+Events are facts. You cannot edit them. To follow up on a problem, work an [incident](./incidents.mdx). To react to events automatically, use [event types](./event-types.mdx) and rules. {/* TODO: link to the Automation track, Rule designer */}
+
+<Screenshot
+  page="user/monitoring/events"
+  id="01-events-list"
+  route="/monitor/events"
+  state="Events list for the last 30 days with a mix of Warning and Information rows: rule events, a connectivity event, a geofence event, a Thing updated event"
+  alt="The Events list with severity, thing and type columns"
+/>
+
+## Where events come from
+
+| Source | Examples |
+| --- | --- |
+| **Rule engine** | A rule you built in the rule designer matched device data |
+| **Connectivity** | A thing went offline or came back |
+| **Geofence** | A thing entered or left a geofence |
+| **API** | Another system sent an event to IoT Breeze |
+| **Manual** | A person recorded one |
+| **Repair** | The platform corrected a state itself, for example a connection outage {/* TODO: verify what repair events cover */} |
+
+The log also holds change events: a thing, thing type, group or user was created, updated or deleted. Their event types carry the name of the record type.
+
+An **Event** action on an event type can emit further events. See [Event types](./event-types.mdx).
+
+Every event has a **severity**: **Information**, **Warning**, **Error** or **Critical**. It also has an **event type**, which says what kind of event it is.
+
+### Episodes and point events
+
+Some events open and close. A thing goes offline (open) and comes back (close). A rule condition starts and stops being met. A thing enters and leaves a fence. These pairs are an **episode**, and the events share a correlation. While the closing event has not arrived, the episode is **Open**.
+
+An event with nothing to close it is a **point event**: a single fact.
+
+## Find an event
+
+The list shows the last 30 days by default.
+
+1. Type in the search box to search titles.
+2. Select **Filters** to narrow the list.
+3. Select a row to open the event.
+
+| Filter | Options |
+| --- | --- |
+| **Title** | Text in the event title |
+| **Event type** | One or more event types |
+| **Time range** | **Last 24 hours**, **Last 7 days**, **Last 30 days**, **Last 90 days**, **Last year** |
+| **Resource type** | What the event is about, for example Thing, Thing Type, Group, User |
+| **Severity** | One or more severities |
+
+Use the **Open episodes only** toggle to show only alarms and outages that are still going on.
+
+:::info Too many events
+If the time range holds more events than the list can show, you see **Too many events to list for this view. Narrow the time range.** Choose a shorter range or add a filter. A range can also reach back past what your tenant stores. The list then says older events are not shown.
+:::
+
+## Read one event
+
+Select a row to open `/monitor/events/<id>`. The page starts with a heading and **What happened**, then shows what fits the kind of event. Use the copy-link button in the heading to share it.
+
+| Kind | What you see |
+| --- | --- |
+| **Rule evaluation** | The rule, how its condition was written, which conditions were **met** or **not met** with the values from the message, how the trigger is set (for example **Met for 5 min**), and the **Actions** the rule runs |
+| **Geofence** | The fence, entry and exit points, time inside, and **Show on the map** |
+| **Connection** | The outage and when it closes, with a bar of connection changes |
+| **Episode** | **Open** or **Closed**, how long it lasted, and which event opens and closes it |
+| Other events | The details, the payload as fields, and the metadata |
+
+Every event also shows:
+
+- **Details**: the event ID and the other technical facts, such as the correlation.
+- **Related events**: earlier events on the same record or from the same rule, so you can see what led up to it.
+- **Payload**: the event data. Select **Copy JSON** to copy it.
+
+<Screenshot
+  page="user/monitoring/events"
+  id="02-event-rule-detail"
+  route="/monitor/events/:id"
+  state="Detail page of a rule event: What happened, Rule evaluation with two conditions (one met, one not), values from the message, Actions list"
+  alt="An event detail page with the rule evaluation"
+/>
+
+:::tip A failed action
+When an action of an event type fails, the failure is its own event. Its page tells you whether anything was delivered, and has **Edit the event type's actions** and **Open its event** to go to the cause.
+:::
+
+## Related
+
+- [Event types](./event-types.mdx)
+- [Incidents](./incidents.mdx)
+- [A thing page](./thing-page.mdx), where the **Events** tab shows one thing's events

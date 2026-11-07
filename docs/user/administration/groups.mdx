@@ -1,0 +1,107 @@
+---
+id: groups
+title: Groups
+sidebar_position: 3
+description: Build a tree of groups to control which things, thing types and event types people can see and change.
+app:
+  routes: ["/administration/groups", "/administration/groups/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Groups decide what people see. A group holds users and the things, thing types and event types they may work with. A user who is not in a group that contains a thing does not see that thing.
+
+Groups form a tree. A group has one parent and can have subgroups.
+
+:::info How access is decided
+Access needs two parts. A [role](./roles.mdx) gives the kind of permission, for example "may edit things". Group membership gives the scope: which things. Inside a group, each member also has **Read**, **Update** and **Execute**.
+:::
+
+## Plan your tree
+
+Mirror how you split responsibility. For example one group per customer, with a subgroup per site. People in a customer group then reach everything below it, while people in a site group only reach that site.
+{/* TODO: verify that membership in a parent group gives access to the things of its subgroups (the Things tab text says "assigned to this group or a parent group") */}
+
+| Group type | Use it for |
+| --- | --- |
+| **Default** | Ordinary groups. |
+| **Organization** | The top of a customer, company or site. When you create a thing you can pick an organisation. |
+
+## The groups page
+
+Open **Administration › Groups**. The page lists the groups as a tree with the number of **Members** and **Subgroups** of each. The header shows how many groups the tenant has. Use **Search groups** to find one.
+
+<Screenshot
+  page="user/administration/groups"
+  id="01-group-tree"
+  route="/administration/groups"
+  state="Group hierarchy with one Organization group, two child groups and one grandchild, with member and subgroup counts"
+  alt="Group hierarchy list with members and subgroups columns"
+/>
+
+## Create a group
+
+1. Select **Create group**. On an existing group you can select **Add subgroup** instead.
+2. Enter a **Group name**.
+3. Choose the **Group type**: **Default** or **Organization**.
+4. Choose the **Parent**.
+5. Optional: add **Tags** to find the group later, and a **Description**.
+6. Save.
+
+<Screenshot
+  page="user/administration/groups"
+  id="02-create-group"
+  route="/administration/groups"
+  state="Create new group drawer with name, group type, parent, tags and description filled in"
+  alt="Create new group form"
+/>
+
+## Fill a group
+
+Select a group to open it. Its tabs hold the content.
+
+| Tab | What belongs there | To add |
+| --- | --- | --- |
+| **Users** | People with direct or inherited access to the group | **Add user** |
+| **Things** | Things the group's members can see | **Add thing** |
+| **Thing Types** | Schemas available to the members | Add a thing type |
+| **Event Types** | Events members can view and act on | Add an event type |
+
+To remove an entry, select **Delete** next to it and confirm. This only removes it from the group. The user, thing or type itself stays.
+
+<Screenshot
+  page="user/administration/groups"
+  id="03-group-users"
+  route="/administration/groups/:id"
+  state="Group detail on the Users tab: one direct member with Read, Update, Execute and one member marked Inherited"
+  alt="Group detail page with the Users tab and permission switches"
+/>
+
+You can also add a thing to groups when you create it, and a user to groups when you invite them. See [Users](./users.mdx).
+
+## Permissions inside a group
+
+Every member has three permissions per group.
+
+| Permission | Allows |
+| --- | --- |
+| **Read** | See the group's content. Always on. |
+| **Update** | Change, create and delete content in the group. |
+| **Execute** | Run actions, for example send a command to a thing. |
+
+Change them for one member on the **Users** tab of the group, or on the **Groups** tab of the user.
+
+Members whose access comes from a parent group are marked **Inherited**. You change an inherited permission on the parent group, not on the child.
+
+### Default permissions for new members
+
+Select **Set default permissions** on a group to choose what each new user gets when added to it. This does not change people who are already members.
+
+## Edit or delete a group
+
+- **Edit** changes the name, type, parent, tags and description. The type or parent may be locked if you lack the permission or the group has no valid parent choice.
+- **Delete** removes the group after you confirm **Delete the Group?**. Members lose the access that came from it.
+
+:::warning
+Deleting a group removes the access it gave. Check the **Users** tab first.
+:::

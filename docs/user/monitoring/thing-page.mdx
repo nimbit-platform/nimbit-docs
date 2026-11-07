@@ -1,0 +1,122 @@
+---
+id: thing-page
+title: A thing page
+sidebar_position: 3
+description: Read one thing's connection, last signal, live values, trend, events and incidents.
+app:
+  routes: ["/monitor/thing-details/:id"]
+  tour: find-your-way-watch
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Open a thing from **Monitoring › Things** to see everything about it in one place: is it online, when did it last report, what are its latest values and what happened to it.
+
+<Screenshot
+  page="user/monitoring/thing-page"
+  id="01-thing-overview"
+  route="/monitor/thing-details/:id"
+  state="Overview tab of a connected thing with three measures reporting, Live values and Trend visible, header with Connected chip and last signal"
+  alt="A thing page with header, figures strip and Overview tab"
+/>
+
+## The header and the figures
+
+The header stays in view on every tab.
+
+- The **Connection** chip shows **Connected**, **Disconnected** or **Unknown**, and next to it the **last signal**: how long ago the thing last sent data, for example `last signal 4 min ago`. Hover to see the exact time. A thing that never reported says **No signal yet**.
+- The **Edit** button opens the thing for changes. The **⋯** menu holds **Send data**, **Simulate device…**, **Report a problem**, **Copy device ID** and **Delete thing**. You only see what your role allows.
+
+Under the header is a row of figures. Select one to jump to the matching tab.
+
+| Figure | Shows |
+| --- | --- |
+| **Connection** | The state and a strip of connection changes over the recent past |
+| **Measures** | How many measures report, for example `3 of 4 reporting`, and the newest reading |
+| **Events** | Events in the last 30 days, with a count of errors and warnings |
+| **Incidents** | Open incidents whose subject is this thing |
+| **Last action** | The last action run on this thing, if you may see actions |
+
+:::info Last signal is not the same as Connected
+**Connected** comes from the thing's connection state. **Last signal** is the time of the newest reading. A thing can be connected and still have an old last signal if it only sends when something changes.
+:::
+
+## The tabs
+
+| Tab | What it holds |
+| --- | --- |
+| **Overview** | The working view, below |
+| **Dashboards** | The dashboards that show this thing |
+| **Schema** | The measures and properties from the thing type |
+| **Documents** | Files stored for this thing and its type |
+| **Actions** | Actions you can run on the thing, and the log of runs |
+| **Events** | The thing's events, and its incidents in a second pane |
+| **Connections** | Register the thing with a provider and switch it on or off |
+| **Users and Groups** | Who owns and who may see the thing |
+| **Audit log** | Who changed the thing, and when |
+
+Some tabs only show for roles that may use them. A tab with nothing in it stays in place, greyed.
+
+## Overview: live values, trend and the rest
+
+The **Overview** tab has a main column and a side column.
+
+- **Live values**: the latest reading of each measure, with the range of the last 24 hours. Use **Pinned** to see only the measures pinned on the thing type, or show all of them. Pin measures on the thing type, in the **Schema** tab.
+- **Trend**: a chart of the last readings. The chart shows at most 4 measures, and at most 2 different units. The page tells you when you hit a limit.
+- **Dashboards**: the dashboards for this thing, with **View all**.
+- **Details**: thing type, alternate ID, group, parent, provider, organisation and ID.
+- **Actions**: run an action in place. {/* TODO: verify the section only appears if the thing has actions */}
+- **Location**: where the thing is, with **Open on the map**. A thing that reports latitude and longitude sets this by itself. Otherwise use **Set location** to enter it by hand.
+- **Events**: the latest events, with **View all**.
+- **People**: the users and groups assigned to the thing.
+
+<Screenshot
+  page="user/monitoring/thing-page"
+  id="02-live-values-trend"
+  route="/monitor/thing-details/:id"
+  state="Overview tab: Live values section with measures and 24 h ranges, Trend chart with two measures below it"
+  alt="Live values and Trend sections of the Overview tab"
+/>
+
+### To chart one measure over a longer time
+
+1. Open the **Schema** tab and select a measure.
+2. In the side sheet, select **Open in Explore**.
+
+This opens the [Telemetry explorer](./telemetry-explorer.mdx) with that thing and measure, for the last day.
+
+## When a thing has never reported
+
+**Live values** shows **No data yet**. You have three options:
+
+- **Send a test message** sends one message now.
+- **Simulate device…** sends messages on an interval.
+- **Connect a real device** opens the **Connections** tab.
+
+### Send a test message or simulate the device
+
+1. In the header, open **⋯** and select **Send data** for one message, or **Simulate device…** for a run.
+2. For one message, untick the measures you do not want to send. Values start from the last reading. Use **Timestamp** to send it with a time other than now. Select **Send once**.
+3. For a simulation, set **Every** (the interval) and **Run for** (the duration), then select **Start simulation**. It keeps running when you leave the page. Select **Stop** to end it early.
+
+<Screenshot
+  page="user/monitoring/thing-page"
+  id="03-simulate"
+  route="/monitor/thing-details/:id"
+  state="Simulate device sheet open on a thing with three measures, interval and duration filled, Start simulation button visible"
+  alt="The simulation sheet with interval and run time"
+/>
+
+## Events and incidents of this thing
+
+The **Events** tab has two panes: **Events** and **Incidents**. **Incidents** lists the incidents whose subject is this thing. Use the filter to show open or all, and **Open in Incidents** to go to the full [Incidents](./incidents.mdx) page. To raise a problem by hand, use **⋯ › Report a problem**.
+
+:::tip
+The old **Map** and **Incidents** tabs are gone. Old links to them land on **Overview** and on the **Events** tab.
+:::
+
+## Related
+
+- [Events](./events.mdx)
+- [Incidents](./incidents.mdx)
+- [Telemetry explorer](./telemetry-explorer.mdx)

@@ -1,0 +1,65 @@
+---
+id: hierarchy
+title: Dashboard hierarchy
+sidebar_position: 4
+description: Optional tree of sites, buildings or areas to file and browse dashboards.
+app:
+  routes: ["/dashboards"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+The dashboard hierarchy is a tree of nodes, such as sites, buildings or areas. You file dashboards under a node and browse them as a tree. It is optional and your tenant admin turns it on.
+
+:::info The hierarchy does not decide where a dashboard shows up
+A dashboard appears on a thing through its [assignment](./smart-dashboards.mdx#assign-the-dashboard), not through its node. The tree only helps people find dashboards.
+:::
+
+## Turn it on
+
+A tenant admin does this once.
+
+1. Open **Administration › Tenant Settings** and go to the **Features** tab. {/* TODO: link to tenant settings page */}
+2. Switch on **Dashboard hierarchy**.
+3. Optionally, under **Dashboards open in**, choose whether the Dashboards page opens as **Table** or **Hierarchy**.
+4. Save the settings.
+
+If you switch it off later, the tree is hidden. Its nodes and the dashboards filed under them are kept and come back when you switch it on again.
+
+<Screenshot
+  page="user/dashboards/hierarchy"
+  id="01-feature-switch"
+  route="/tenant-settings"
+  state="Tenant settings, Features tab, Dashboard hierarchy switched on with the Dashboards open in selector showing Hierarchy"
+  alt="The Features tab of the tenant settings with Dashboard hierarchy switched on"
+/>
+
+## Browse the tree
+
+With the feature on, the Dashboards page has a **Table** and **Hierarchy** switch. In **Hierarchy** view, nodes show on the left with their dashboard counts. Select a node to list its dashboards. **From subnodes** shows dashboards of nodes below it. Dashboards without a node appear under **All dashboards** and in the table, not in the tree.
+
+<Screenshot
+  page="user/dashboards/hierarchy"
+  id="02-tree-view"
+  route="/dashboards"
+  state="Dashboards page in Hierarchy view with a three-level tree, one node selected, its dashboards listed on the right"
+  alt="The Dashboards page in hierarchy view with a node selected"
+/>
+
+## Create a node
+
+1. In **Hierarchy** view, select **Create hierarchy node**.
+2. Enter a **Name**.
+3. Pick a **Parent** to make it a child. Leave it empty for a top-level node. You can have several top-level nodes.
+4. Save.
+
+Open a node's menu to edit it (**Edit hierarchy node**) or delete it (**Delete hierarchy node**). {/* TODO: verify whether nodes also have Groups to control access, as the older docs said */}
+
+## File a dashboard under a node
+
+- Select **Add dashboard** on a node, or
+- Pick a **Hierarchy node** in the dashboard form when you create or edit a dashboard.
+
+To take a dashboard out of the tree, use **Unassign Dashboard**. It stays available in the table view.
+
+Keep the tree shallow. Three or four levels are easier to browse than more.

@@ -1,0 +1,228 @@
+---
+id: transformation-pipeline
+title: Transformation pipeline
+sidebar_position: 7
+description: Check, convert and enrich incoming data with a visual pipeline before it is stored.
+app:
+  routes: ["/onboarding/thing-types/:id", "/onboarding/thing-types/:id/graph"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+A thing type can have a **transformation pipeline**: a graph of steps that runs on every incoming message of that type before it is stored. Use it to:
+
+- **Check** that messages have the shape you expect.
+- **Convert** values, for example Fahrenheit to Celsius.
+- **Enrich** messages with calculated values.
+- **Decide**, for example turn a status code into a label.
+
+The pipeline is optional. Without an active pipeline, data is stored as the device sent it. The pipeline runs per thing type, so it applies to every thing of that type.
+
+:::info The engine
+The pipeline editor and engine come from the open-source rules engine [GoRules](https://docs.gorules.io/). Their documentation covers expression syntax and decision tables in depth.
+:::
+
+## Open the editor
+
+1. Open **Settings › Onboarding › Thing Types** and select a thing type.
+2. On **Overview**, find the **Pipeline** card. It shows **Transformation** as **Active** or **Inactive**.
+3. Select **Open editor**. You can also use **More actions › Open pipeline editor**.
+
+<Screenshot
+  page="user/onboarding/transformation-pipeline"
+  id="01-pipeline-card"
+  route="/onboarding/thing-types/:id"
+  state="Thing type Overview tab with the Pipeline card showing Transformation Active and the Open editor button"
+  alt="The Pipeline card on a thing type overview"
+/>
+
+## A first pipeline
+
+The editor opens as **Transformation rule (Version 1)**. A pipeline needs at least one input node and one output node, and a path between them. This is the smallest useful one, which converts a temperature:
+
+1. Drag an **Expression** node from the **Components** panel onto the canvas.
+2. Connect **Request** to the Expression node, and the Expression node to **Response**. Drag from the handle on the right of a node to the handle on the left of the next one.
+3. Select **Edit Expression** on the node. Add a row with **Key** `temperatureCelsius` and **Expression** `(temperature - 32) * 5 / 9`.
+4. Use the simulator to test it ([below](#test-with-the-simulator)).
+5. Select **Save**, then **Activate**.
+
+From now on every message of this thing type goes through the pipeline.
+
+<Screenshot
+  page="user/onboarding/transformation-pipeline"
+  id="02-editor"
+  route="/onboarding/thing-types/:id/graph"
+  state="Pipeline editor with Request, one Expression node and Response connected on the canvas, Save and Activate in the header"
+  alt="The pipeline editor with a three-node pipeline"
+/>
+
+## The editor
+
+| Area | What it does |
+| --- | --- |
+| **Header** | **Save**, a status icon that tells you if the graph is valid (hover for the reason), **Activate** or **Deactivate**, and **Versions**. |
+| **Canvas** | Where you place and connect nodes. Zoom, fit the view and arrange nodes with the controls. |
+| **Components** panel | The node types. Drag one onto the canvas. |
+| **Left sidebar** | Import, export and the simulator. |
+| **Tabs** | **Graph** is always open. **Edit Table**, **Edit Expression** and **Edit Function** open the node's editor in another tab. |
+
+{/* TODO: verify the sidebar, canvas controls and the Components panel against the current editor; they come from the GoRules editor component. */}
+
+To delete a node, select it and press **Backspace**, or use its **more** menu. To delete a connection, select it and use the delete button.
+
+When several nodes feed one node, their outputs are merged into one object. If two use the same field name, the later one wins. Any node can read an upstream node's output with `$nodes`, for example `$nodes.expression1.temperatureCelsius`.
+
+## The message your pipeline gets
+
+The **Request** node hands each message to the pipeline in this shape:
+
+```json
+{
+  "tenant": "your-tenant",
+  "thingType": "room_sensor",
+  "id": "device-001",
+  "data": { "temperature": 72.5 },
+  "geo": { "latitude": 48.137, "longitude": 11.576 },
+  "tags": { "room": "A1" }
+}
+```
+
+`data` holds the measures by name. `geo` is the location, if the device sends it. `tags` holds the properties marked **Timeseries relevant**.
+
+## Node types
+
+| Node | Use it to |
+| --- | --- |
+| **Request** | Check the incoming message against a JSON Schema. Without a schema, nothing is checked. |
+| **Response** | Describe the shape of the output, with the same schema editor. |
+| **Expression** | Calculate values with one-line formulas. |
+| **Decision Table** | Map values to results with a table of rules. |
+| **Function** | Write JavaScript for logic that tables and expressions cannot do. |
+| **Switch** | Send messages down different branches by condition. |
+
+### Request and Response
+
+Select **Configure** to open the **Schema** tab. Write or paste a JSON Schema. **Import** converts a sample JSON payload into a schema, which is the quickest way to start. The **format** button tidies the schema.
+
+### Expression
+
+**Edit Expression** opens a table of **Key** and **Expression** pairs. Each key is a field written to the output.
+
+| Setting | Meaning |
+| --- | --- |
+| **Passthrough** | Pass the input through when there are no expressions. |
+| **Input field** | The path used as the starting point of the expressions. |
+| **Output path** | Where the results are written in the output. |
+| **Execution mode** | **Single** runs once per message. **Loop** runs for each item of an array. |
+
+The expression language (ZEN) supports:
+
+| Category | Examples |
+| --- | --- |
+| Data access | `data.temperature`, `order.items[0].price`, `$nodes.MyNode.field` |
+| Arithmetic | `+`, `-`, `*`, `/`, `%`, `^` |
+| Comparison and logic | `==`, `!=`, `<`, `>`, `<=`, `>=`, `and`, `or`, `not` |
+| Conditions | `x > 80 ? "hot" : "ok"`, `value ?? fallback` |
+| Ranges | `x in [18..26]` (inclusive), `x in (0..100)` (exclusive) |
+| Math | `abs()`, `round()`, `floor()`, `ceil()`, `min()`, `max()`, `sum()`, `avg()` |
+| Text | `len()`, `upper()`, `lower()`, `trim()`, `contains()`, `startsWith()`, `split()` |
+| Arrays | `map()`, `filter()`, `some()`, `all()`, with `#` for the current item |
+| Dates | `d()` with `.year()`, `.month()`, `.day()`, `.add(n, unit)`, `.diff(d2, unit)` |
+
+### Decision Table
+
+**Edit Table** opens a table. Input columns hold conditions, output columns hold results. Rows are checked from top to bottom, so put specific rows above general ones.
+
+| Input (status code) | Output (label) |
+| --- | --- |
+| `0` | `"OK"` |
+| `1` | `"Warning"` |
+| `2` | `"Error"` |
+
+Click a column header to set the field it tests. In a cell, write only the operator and the value:
+
+| Kind | Syntax | Example |
+| --- | --- | --- |
+| Comparison | `>`, `<`, `>=`, `<=`, `==`, `!=` | `>= 100` |
+| Range | `[min..max]` or `(min..max)` | `[18..65]` |
+| List | `'a', 'b', 'c'` | `'US', 'CA'` |
+| Combined | `and`, `or` | `> 10 and < 50` |
+| Anything | empty cell | matches every value |
+
+Set the input field to `-` to write full expressions in the cells. The table has **Export Excel** and **Import Excel**.
+
+| Setting | Meaning |
+| --- | --- |
+| **Hit Policy** | **First** returns the first matching row. **Collect** returns all matching rows as a list. |
+| **Passthrough** | Passes the input through when no row matches. |
+| **Input field**, **Output path** | As for Expression. |
+| **Execution mode** | **Single** or **Loop**. |
+
+### Function
+
+**Edit Function** opens a code editor with this starting point:
+
+```js
+import zen from "zen";
+
+/** @type {Handler} **/
+export const handler = async (input) => {
+  return input;
+};
+```
+
+`handler` gets the message and returns the new one. You can use `async` and `await`, and read upstream nodes with `input.$nodes.NodeName.field`. The **Console** tab shows `console.log()` output from a simulation. The **Libraries** tab lists what you can import: `big.js`, `dayjs`, `http`, `zen` and `zod`.
+
+:::warning Five seconds
+A function that runs longer than 5 seconds fails. The message is then refused.
+:::
+
+### Switch
+
+Each condition has its own output handle. Write the condition after **If**, for example `data.temperature > 80`, and use **Add Condition** for more. The dropdown decides what happens when several match: **First** uses only the first match, **Collect** uses all of them. If none match, nothing is passed on.
+
+## Test with the simulator
+
+Open the simulator from the left sidebar. It fills a test message with random values for the measures of the thing type, within their min and max, plus a random location and random tag values. Edit the JSON for special cases and select **Run**. You see the result, or the node that failed and why.
+
+<Screenshot
+  page="user/onboarding/transformation-pipeline"
+  id="03-simulator"
+  route="/onboarding/thing-types/:id/graph"
+  state="Pipeline editor with the simulator open showing a test message and a successful result"
+  alt="The pipeline simulator showing input and output"
+/>
+
+## Versions, activating and drafts
+
+A pipeline has versions. Each is its own copy of the graph. **Only one version is active** and processes live data. You can edit or create other versions without changing what runs.
+
+| Action | What it does |
+| --- | --- |
+| **Save** | Saves your changes as a draft of this version. Disabled while the graph is invalid or unchanged. |
+| **Versions** | Opens the version list. Create a **New version** from the current graph or **Switch version** to load another one. |
+| **Activate** | Makes this version the one that processes data. Save first. |
+| **Deactivate** | Stops the pipeline. Data is then stored as received. |
+
+When you change a version that is already active, your changes stay a draft until you apply them. A floating toolbar offers:
+
+- **Apply draft**: puts the draft live.
+- **Reset draft**: throws the draft away. This cannot be undone.
+- **Draft** and a diff view: switch between your draft and a comparison with the live version.
+
+Before the first version has been activated, the toolbar offers **Publish** instead.
+
+{/* TODO: verify the toolbar wording (Apply draft, Reset draft, diff) and the Publish label before the first activation. */}
+
+## Export and import
+
+Export saves the pipeline as a JSON file. Import loads such a file and replaces the current graph. Use them for backups or to copy a pipeline to another thing type or tenant.
+
+## If a message is refused
+
+A message that fails in the pipeline, for example by a schema check, a function error or a timeout, is not stored. The device gets an error answer on HTTP, and the reason is published on the thing's **Errors** topic. See [Connections and credentials](./connections.mdx#check-that-data-arrives).
+
+## Related
+
+- [Thing types](./thing-types.mdx)
+- Rules that react to data: **Automation › Rule Designer** {/* TODO: link */}

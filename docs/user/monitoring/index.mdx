@@ -1,0 +1,57 @@
+---
+id: index
+title: Monitoring and alerts
+sidebar_label: Overview
+sidebar_position: 1
+description: Watch your things, find what happened, and set up how people are told when something goes wrong.
+app:
+  routes: ["/monitor", "/monitor/thing-details", "/geo/map", "/monitor/telemetry", "/monitor/events", "/monitor/incidents"]
+  tour: find-your-way-watch
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+This section covers two jobs. **Watching** is what you do every day: see which things are online, where they are, what they measured and what happened. **Alerting** is what you set up once: decide which events matter, who is told and how.
+
+You can open every page below from **Monitoring** in the menu on the left. Setup pages for alerts are under **Settings › Configuration**. You only see the entries your role allows.
+
+<Screenshot
+  page="user/monitoring/index"
+  id="01-monitoring-menu"
+  route="/monitor"
+  state="Menu with Monitoring expanded: Dashboards, Things, Map, Incidents, Events, Telemetry. Settings › Configuration expanded in a second panel or crop"
+  alt="The Monitoring menu group and the Configuration group"
+/>
+
+## Watch your things
+
+| Page | Use it to | Menu path |
+| --- | --- | --- |
+| [Things](./things.mdx) | Find a thing and see whether it is connected | **Monitoring › Things** |
+| [A thing page](./thing-page.mdx) | See one thing's live values, trend, events and incidents | Open a thing from the list |
+| [Map](./map.mdx) | See where things are, replay routes and manage geofences | **Monitoring › Map** |
+| [Telemetry explorer](./telemetry-explorer.mdx) | Chart measures over time and save the chart as a query | **Monitoring › Telemetry** |
+
+Dashboards are their own section: {/* TODO: link to the Dashboards track */}**Monitoring › Dashboards**.
+
+## Find out what happened
+
+| Page | Use it to | Menu path |
+| --- | --- | --- |
+| [Events](./events.mdx) | Read the log of everything that happened: alarms, outages, geofence crossings, changes | **Monitoring › Events** |
+| [Incidents](./incidents.mdx) | Work on problems that need a person: acknowledge, assign, resolve | **Monitoring › Incidents** |
+
+## Decide who is told
+
+Set these up in this order. Each step builds on the one before.
+
+1. [Event types](./event-types.mdx) name the things that can happen and can run actions each time one happens. **Settings › Configuration › Event Types**.
+2. [Notification channels](./notification-channels.mdx) are the places alerts are sent to: Slack, Microsoft Teams, a webhook or ntfy. **Settings › Configuration › Notification Channels**.
+3. [Mail templates](./mail-templates.mdx) shape the emails IoT Breeze sends. **Settings › Configuration › Mail templates**.
+4. [Incident configuration](./incident-configuration.mdx) decides which events open an incident and what runs when it changes state. **Settings › Configuration › Incidents**.
+
+Rules that create events from device data are built under **Automation**. {/* TODO: link to the Automation track, Rule designer */}
+
+:::tip New here?
+The app has guided tours for this section. Open the **?** help drawer and pick **Find your way around**. The chapters **Watch**, **History** and **Alerts** walk through the pages above.
+:::

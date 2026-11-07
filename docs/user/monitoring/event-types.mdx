@@ -1,0 +1,99 @@
+---
+id: event-types
+title: Event types
+sidebar_position: 7
+description: Name the kinds of events your tenant can have, and attach actions that run each time one is emitted.
+app:
+  routes: ["/manage/event-types", "/manage/event-types/:id"]
+  tour: find-your-way-alerts
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+An event type says what kind of event something is, for example `Door opened` or `Compressor overheating`. It also holds the **actions** that run each time an event of that type is emitted: send an email, push a notification, post to a channel, call a webhook.
+
+Open **Settings › Configuration › Event Types**. You need permission to create, edit or delete event types to see the entry.
+
+<Screenshot
+  page="user/monitoring/event-types"
+  id="01-event-types-list"
+  route="/manage/event-types"
+  state="Event types list with some System types (Thing, Geofence, ThingConnectivityEvent) and two User types; columns Name, Type, Display type, Actions, Created"
+  alt="The Event Types list with system and user types"
+/>
+
+## System and user types
+
+| Type | Who creates it | Can you change it? |
+| --- | --- | --- |
+| **System** | Shipped with IoT Breeze: record changes (Thing, Thing Type, Group, User), connectivity, geofence crossings and failed actions | No. You can read it. It cannot be edited or deleted. |
+| **User** | You | Yes |
+
+The page header counts the event types in your tenant. Use the **Type** filter to show one kind.
+
+## Create an event type
+
+1. Select **Create Event Type**.
+2. Enter a **Name**.
+3. Optionally add search tags, choose one or more **Group**s that may see events of this type, and write a **Description**. The description can be translated.
+4. Choose a **Display type**. This decides how an event of this type looks when you open it.
+5. Optionally choose an **Icon**.
+6. Save.
+
+| Display type | Use it for |
+| --- | --- |
+| **Default** | Most events. Shows the details and the payload. |
+| **Rule evaluation** | Events created by a rule. Shows the rule, its conditions and the values that triggered it. |
+| **Geofence** | Events about entering or leaving a geofence. Shows the journey. |
+
+:::info Who sees events
+Groups work as on things. A member sees an event when the event type's groups, or the thing's groups, allow it. {/* TODO: verify the exact visibility rule for events */}
+:::
+
+Rules that create events pick an event type. Create the type first, then choose it in the rule designer. {/* TODO: link to the Automation track, Rule designer */}
+
+## Open an event type
+
+Select a name to open the event type. The top shows **Active actions**, the **Display type** and the **Search tags**, and below it an **Example payload**, the shape of the data events of this type carry. **Edit** and **Delete** are in the header. Deleting cannot be undone.
+
+<Screenshot
+  page="user/monitoring/event-types"
+  id="02-event-type-detail"
+  route="/manage/event-types/:id"
+  state="Detail of a user event type: header with Edit and Delete, Active actions 2, Display type Default, Example payload, Actions section with two actions"
+  alt="An event type with two actions"
+/>
+
+## Add an action
+
+Actions run each time an event of this type is emitted. On the event type page:
+
+1. In **Actions**, select **Add action**.
+2. Choose the action type.
+3. Fill in the form and save.
+
+| Action type | What it does |
+| --- | --- |
+| **Notification** | Pushes an in-app notification to users or groups. They see it under the bell in the header. |
+| **Notification channel** | Sends a message to a [notification channel](./notification-channels.mdx), such as Slack or Teams |
+| **Email** | Sends an email to recipients or groups, as plain text or with a [mail template](./mail-templates.mdx) |
+| **Webhook** | Sends an HTTP request to an external endpoint |
+| **Azure C2D** | Issues a cloud-to-device command through Azure IoT Hub |
+| **Event** | Emits another typed event for downstream rules to react to |
+| **MQTT** | Publishes a message on an MQTT topic |
+
+{/* TODO: verify which action types the create form offers on a standard tenant; MQTT and Azure C2D may depend on the setup */}
+
+The actions table shows **Type**, **Name**, **Users**, **Groups**, **Modified** and an **Active** switch. Switch an action off to pause it without deleting it. Filter by type with the chips above the table.
+
+When an action fails, IoT Breeze records the failure as an event. See [Events](./events.mdx#read-one-event).
+
+:::warning Actions run on every event
+If a sensor sends the same alarm twenty times an hour, an action on the event type runs twenty times. To notify once per problem instead, use an [incident automation](./incident-configuration.mdx#automations).
+:::
+
+## Related
+
+- [Events](./events.mdx)
+- [Notification channels](./notification-channels.mdx)
+- [Incident configuration](./incident-configuration.mdx)

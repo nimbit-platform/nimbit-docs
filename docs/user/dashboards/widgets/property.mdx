@@ -1,0 +1,37 @@
+---
+id: property
+title: "Property"
+sidebar_position: 7
+description: "One property of a thing and its value, such as a firmware version or serial number."
+app:
+  routes: ["/dashboards/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+One property of a thing and its value, such as a firmware version or serial number.
+
+This widget reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own. See [Smart dashboards](../smart-dashboards.mdx#follow-or-pin).
+
+<Screenshot
+  page="user/dashboards/widgets/property"
+  id="01-property"
+  route="/dashboards/:id"
+  state="Property widget showing the firmware version of a thing"
+  alt="The Property widget on a dashboard"
+/>
+
+## Settings
+
+Add the widget with **Add widget**, in the group **State**. Select **Help** in the setup to read about its settings in the app.
+
+| Setting | What it does |
+| --- | --- |
+| **Property** | The property to show. The list comes from the thing type. |
+| **Title** | Optional, replaces the default title. |
+
+Every widget also has a **Title** and, where it shows a card, **Appearance** settings for colours. Time-based widgets follow the dashboard's [time range](../time-range-and-filters.mdx) unless you set their own.
+
+Properties are fixed facts or slowly changing metadata. The time of the last update shows below the value.
+
+Back to [all widgets](./index.mdx).

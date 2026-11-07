@@ -1,8 +1,0 @@
-{
-  "label": "Tenant Settings",
-  "position": 9,
-  "link": {
-    "type": "doc",
-    "id": "user/tenant-configuration/overview"
-  }
-}

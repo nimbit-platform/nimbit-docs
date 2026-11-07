@@ -1,0 +1,39 @@
+---
+id: vnc
+title: "VNC Console"
+sidebar_position: 38
+description: "A remote screen over VNC."
+app:
+  routes: ["/dashboards/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+A remote screen over VNC.
+
+This widget needs no thing and is offered on any dashboard.
+
+<Screenshot
+  page="user/dashboards/widgets/vnc"
+  id="01-vnc"
+  route="/dashboards/:id"
+  state="VNC Console widget showing a remote desktop"
+  alt="The VNC Console widget on a dashboard"
+/>
+
+## Settings
+
+Add the widget with **Add widget**, in the group **Layout and content**. Select **Help** in the setup to read about its settings in the app.
+
+| Setting | What it does |
+| --- | --- |
+| **VNC server** | The server to show. Required. |
+| **Quality** | **Server default**, **Low**, **Balanced** or **High**. |
+| **Auto connect** | Connect when the dashboard opens. |
+| **Show toolbar** | Show the connection toolbar. |
+
+Every widget also has a **Title** and, where it shows a card, **Appearance** settings for colours. Time-based widgets follow the dashboard's [time range](../time-range-and-filters.mdx) unless you set their own.
+
+Only offered when VNC is enabled for your deployment. Whether you can type into the screen is set on the VNC server, not on the widget. {/* TODO: verify labels of the quality options and where VNC servers are managed */}
+
+Back to [all widgets](./index.mdx).

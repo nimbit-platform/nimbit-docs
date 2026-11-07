@@ -1,0 +1,122 @@
+---
+id: sources
+title: Sources and connectors
+sidebar_position: 4
+description: Bring data into the graph with connectors or file uploads, share secrets as credentials, and map rows to your types.
+app:
+  routes: ["/knowledge/connectors", "/knowledge/credentials", "/knowledge/mappings"]
+  tour: setup-knowledge
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Data reaches the graph in three steps. A **connector** or an upload lands rows in a **staging source**. A **mapping** turns those rows into records of your types. Open **Settings › Knowledge setup › Sources**: its tabs are **Connectors**, **Mappings** and **Credentials**.
+
+```
+Connector or upload  →  staging source (batches)  →  mapping  →  records in the graph
+```
+
+Create the types first: see [Data model](./data-model.mdx).
+
+## Connectors
+
+A connector streams records into a staging source. Open the **Connectors** tab and select **Create**.
+
+| Type | Reads from |
+| --- | --- |
+| **File** | A JSONL file inside the folder the server allows. |
+| **HTTP/REST** | A web API, with paging. |
+| **OData** | An OData service. |
+| **MQTT** | A broker topic. |
+| **NATS** | A NATS stream. |
+| **Database** | A SQL database. |
+
+1. Enter a **Name**: letters, numbers, dashes and underscores. Name and type are fixed after creation.
+2. Enter the **Staging source** the records land in. Lowercase letters, numbers and dashes, for example `sap-pm`.
+3. Fill in the connection fields. They depend on the type.
+4. Optionally open **Advanced**, for example **Delivery** tuning for batch size and wait time.
+5. Save. The list shows each connector's state: **Running**, **Retrying**, **Failed**, **Completed** or **Stopped**, with **Failing since** when reads keep failing.
+
+<Screenshot
+  page="user/knowledge/sources"
+  id="01-connectors"
+  route="/knowledge/connectors"
+  state="Connectors list with one Running and one Failed connector"
+  alt="The Connectors list with states"
+/>
+
+:::caution Database connectors
+Database connectors save and validate, but no SQL driver ships yet. The connector reports "driver not available" until one is enabled.
+:::
+
+{/* TODO: verify the database driver notice is still current in this release. */}
+
+### HTTP/REST and OData helpers
+
+- **Try it** on an HTTP connector fetches the first page with your settings and shows the records, fields and paging it detected. **Use what was detected** copies them into the form. Without a paging setting, the connector may read only the first page.
+- **Read service** on an OData connector reads the service's `$metadata`, so you can pick the **Entity set**, the **Fields to read** and the **Change field**. With a change field, later reads take only what changed.
+
+### Upload a file
+
+No connector yet? Upload data from the mapping screen with **Upload data**. Accepted: `.csv`, `.json`, `.jsonl`, `.ndjson`, `.parquet`, up to 64 MB. JSON must be an object per row.
+
+## Credentials
+
+A credential holds a secret that several connectors share. Open the **Credentials** tab.
+
+| Type | Holds |
+| --- | --- |
+| **User and password** | Basic sign-in. |
+| **Bearer token** | A token. |
+| **API key** | A key sent in a header or a query parameter. |
+| **OAuth 2 client credentials** | Client ID, secret and **Token URL**. |
+
+1. Select **Create** and enter a **Name**. Connectors refer to it by name; it is fixed after creation.
+2. Choose the type and enter the secret.
+3. Under **Allowed hosts**, list one host per line. The credential is only ever sent to these hosts. A wildcard like `*.example.com` covers subdomains.
+4. Save, then pick the credential in a connector's connection fields.
+
+Secrets are stored encrypted and never shown again, not even to admins. **Rotate** replaces the secret for every connector that uses it; those connectors restart. A credential that connectors still use cannot be deleted. A connector's own secret can be moved into a shared credential with **Move to a shared credential**.
+
+Only tenant admins create, rotate or delete credentials. Other people with Knowledge setup access see them read-only.
+
+{/* TODO: verify who can open the Credentials tab: the screen says "shown to admins and modelers only", while changing needs Tenant:u. */}
+
+## Mappings
+
+A mapping turns the rows of one source into records of one type. A source can have several mappings to different types. Open the **Mappings** tab and select **New mapping**.
+
+1. Pick the **source** and the target **type**. Upload data if the source has no sample yet; the editor needs sample rows to preview.
+2. Set the **Source id**: the field that uniquely identifies each row. Re-running a batch then updates records instead of duplicating them.
+3. Bind each target field to a **Source field**, a **Constant** or an **ƒx transform**.
+4. Optionally add **joins** (another source or a reference file) to enrich rows, and **relations** to link each row to an existing record.
+5. Choose the **Write behaviour**:
+
+| Option | Effect |
+| --- | --- |
+| **Create** | Fails if the record exists. |
+| **Upsert**, **Replace** | Overwrites the whole record. |
+| **Merge** | Updates only mapped fields and keeps the rest. |
+
+6. Set the **Transform trigger**: **Manual**, **On new batch** or **Scheduled**.
+7. Select **Save mapping**. To transform the staged batch now, run the transform. It reports how many rows were written and how many need review.
+
+Previewing dry-runs the mapping over the sample rows and writes nothing. Saving and running a transform need the modeler or admin role.
+
+<Screenshot
+  page="user/knowledge/sources"
+  id="02-mapping-editor"
+  route="/knowledge/mappings"
+  state="Mapping editor open for a source with source fields on the left, target fields on the right, several bound"
+  alt="The mapping editor binding source fields to target fields"
+/>
+
+:::info Relations to existing records
+A relation matches the source value by **alias** (an external ID such as an SAP equipment number), by an **indexed field**, or by an identifier of the target type. An **Optional** relation that matches nothing does not hold the row back: the row lands without the link, and the link appears in [Link review](./data-health.mdx).
+:::
+
+A **Built-in** mapping ships with the platform. Saving an edit makes your own copy; deleting the copy brings the built-in back.
+
+## Next
+
+[Data health](./data-health.mdx) shows whether the rows landed.

@@ -1,0 +1,37 @@
+---
+id: property-list
+title: "Property List"
+sidebar_position: 8
+description: "Several properties of a thing and their values, in a searchable, sortable table."
+app:
+  routes: ["/dashboards/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Several properties of a thing and their values, in a searchable, sortable table.
+
+This widget reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own. See [Smart dashboards](../smart-dashboards.mdx#follow-or-pin).
+
+<Screenshot
+  page="user/dashboards/widgets/property-list"
+  id="01-property-list"
+  route="/dashboards/:id"
+  state="Property list with five rows and a search box"
+  alt="The Property List widget on a dashboard"
+/>
+
+## Settings
+
+Add the widget with **Add widget**, in the group **State**. Select **Help** in the setup to read about its settings in the app.
+
+| Setting | What it does |
+| --- | --- |
+| **Thing** | Which thing to read, on a dashboard that does not follow one. |
+| **Search** | Filter by property name (viewing). |
+
+Every widget also has a **Title** and, where it shows a card, **Appearance** settings for colours. Time-based widgets follow the dashboard's [time range](../time-range-and-filters.mdx) unless you set their own.
+
+Rows are sorted by name. The last update shows as relative time, for example 2 minutes ago.
+
+Back to [all widgets](./index.mdx).

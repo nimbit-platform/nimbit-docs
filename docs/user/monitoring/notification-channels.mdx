@@ -1,0 +1,106 @@
+---
+id: notification-channels
+title: Notification channels
+sidebar_position: 10
+description: Set up Slack, Microsoft Teams, webhook and ntfy channels, choose what is sent to them, and check what was delivered.
+app:
+  routes: ["/manage/notification-channels"]
+  tour: find-your-way-alerts
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+A notification channel is a place alerts are sent to: a Slack channel, a Microsoft Teams channel, a webhook endpoint or an ntfy topic. Channels are how a problem reaches people who are not looking at IoT Breeze.
+
+Open **Settings › Configuration › Notification Channels**. You need permission to change notifications to see the entry.
+
+<Screenshot
+  page="user/monitoring/notification-channels"
+  id="01-channels-list"
+  route="/manage/notification-channels"
+  state="List with a Slack channel (automatic routing, Warning and above), a Teams channel (action only) and a disabled ntfy channel; row action icons visible"
+  alt="The Notification Channels list"
+/>
+
+## How alerts reach a channel
+
+There are three ways to send something to a channel. A channel can use more than one.
+
+| Way | Set up in | Use it when |
+| --- | --- | --- |
+| **Automatic routing** | The channel itself | Everything of a kind, for example all errors, should go to this channel |
+| **Notification channel action** | An [event type](./event-types.mdx#add-an-action) | One event type should post to this channel each time |
+| **Incident automation** | A [policy's automations](./incident-configuration.mdx#automations) | Post once per incident, when it opens or escalates |
+
+Email does not use channels. For email, add an **Email** action. See [Mail templates](./mail-templates.mdx).
+
+## Create a channel
+
+1. Select **Create channel**.
+2. Enter a **Name**, for example `Plant 1 alerts`.
+3. Choose the **Channel type**. You cannot change it later.
+4. Fill in the fields of the type.
+5. Leave **Enabled** on.
+6. Optionally set up **Automatic routing**. See below.
+7. Select **Send test**. A test message goes to the channel. Check that it arrives.
+8. Save.
+
+| Channel type | Fields |
+| --- | --- |
+| **Slack** | **Slack webhook URL** from an incoming webhook in your Slack workspace |
+| **Microsoft Teams** | **Teams workflow webhook URL** from a Teams workflow |
+| **Webhook** | **Webhook URL**, and an optional **HMAC secret** so the receiver can check the sender |
+| **ntfy** | **ntfy topic**, and optionally **ntfy server URL** and **Auth token** |
+
+:::info Secrets are masked
+After you save, URLs and secrets are hidden. Enter a new value to replace one. Leave the field alone to keep it.
+:::
+
+<Screenshot
+  page="user/monitoring/notification-channels"
+  id="02-channel-form"
+  route="/manage/notification-channels"
+  state="Create channel dialog with type Slack, name filled, webhook URL filled, Automatic routing on with Minimum severity Warning and one event type, Send test button visible"
+  alt="The channel dialog for a Slack channel with automatic routing"
+/>
+
+## Automatic routing
+
+With **Automatic routing** on, matching notifications are delivered to the channel without any action. With it off, the channel only receives messages from actions and automations that name it. The list shows **Action only** for such a channel.
+
+Narrow what is routed:
+
+- **Minimum severity**: only notifications at this severity or above. The choices are **Information**, **Warning**, **Error** and **Critical**.
+- **Event types**: only these event types. Leave it empty to match all. An incident is matched on the event type of the event that opened it.
+
+Automatic routing covers new events, incidents and in-app notifications. {/* TODO: verify that every new event is routed, not only those of types with actions, and what the example names FromRule and FromEvent in the field hint stand for */}
+
+The **Automatic routing** column in the list sums up the filters, for example `≥ Warning · Door opened`.
+
+## Check delivery
+
+Each row has icons for **Send test**, the delivery log, **Edit channel** and **Delete channel**.
+
+1. Open the delivery log, **Delivery log**.
+2. Read the **Status** of each delivery:
+
+| Status | Meaning |
+| --- | --- |
+| **Pending** | Queued, not yet sent |
+| **Sent** | Delivered to the channel |
+| **Failed** | Could not be delivered. **Error** says why. **Attempts** shows how often IoT Breeze tried. |
+| **Suppressed** | Not sent because the channel was disabled when the message was due |
+
+3. For a failed delivery, select **Retry**. The delivery is queued again.
+
+Delete a channel only when you no longer need it. Deleting removes its delivery history.
+
+:::tip A channel that goes quiet
+Check **Enabled** first, then the delivery log. A failed delivery with a status from the target, for example an expired webhook URL, means you need to replace the URL.
+:::
+
+## Related
+
+- [Event types](./event-types.mdx)
+- [Incident configuration](./incident-configuration.mdx)
+- [Mail templates](./mail-templates.mdx)

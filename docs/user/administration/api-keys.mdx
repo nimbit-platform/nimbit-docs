@@ -1,0 +1,111 @@
+---
+id: api-keys
+title: API keys
+sidebar_position: 6
+description: Create API keys and service accounts so scripts, integrations and AI assistants can call IoT Breeze, and set the key policy of your tenant.
+app:
+  routes: ["/administration/api-keys"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+API keys let scripts, integrations and AI assistants call IoT Breeze. Each key is limited to its **scopes** and expires.
+
+A key acts as you or as a **service account**. It never has more rights than its owner holds.
+
+:::info What you need
+To open **API keys** you need to create or read API keys, or to read service accounts. A member who may create none still sees their own keys. The built-in **Admin** role can do everything on this page. The **Modeler** role can create keys.
+:::
+
+## The page
+
+Open **Administration › API keys**. The tabs depend on your permissions.
+
+| Tab | Shows | Who sees it |
+| --- | --- | --- |
+| **My keys** | Your own keys | Everyone with access to the page |
+| **Connected apps** | Apps such as AI assistants that you allowed to use IoT Breeze as you. **Revoke** ends the access at once. | Everyone with access to the page |
+| **Service accounts** | Accounts for integrations | Members who may read service accounts |
+| **All keys** | Every key in the tenant | Members who may read API keys |
+
+<Screenshot
+  page="user/administration/api-keys"
+  id="01-my-keys"
+  route="/administration/api-keys"
+  state="API keys page on My keys with two keys: one active, one expiring soon; Create key button visible"
+  alt="My keys tab with a list of keys and the Create key button"
+/>
+
+## Create a key
+
+1. Select **Create key**.
+2. Enter a **Name**, for example `SAP PM sync`.
+3. Under **Acts as**, choose **Me** or a service account.
+4. Optional: under **Start from**, choose a preset: **Read only**, **AI assistant** or **ERP or MES integration**.
+5. Under **Scopes**, tick what the key may do. Scopes marked **Sensitive** are only for service accounts, where the key policy allows it.
+6. Under **Expires**, choose 30, 90 or 365 days. **Never** is only offered for service account keys when the policy sets no maximum.
+7. Optional: under **Allowed addresses**, enter networks in CIDR form, one per line. Empty allows every address.
+8. Select **Create key**.
+
+<Screenshot
+  page="user/administration/api-keys"
+  id="02-create-key"
+  route="/administration/api-keys"
+  state="Create key dialog with a name, Acts as Me, the Read only preset, scopes ticked and Expires 90 days"
+  alt="Create key dialog"
+/>
+
+The dialog then shows **Your new key**.
+
+:::warning Copy the key now
+The key is shown only once and cannot be read again. Select **I have copied the key** only after you stored it safely.
+:::
+
+## Manage a key
+
+Each key shows its status, such as **Expires soon**, **Expired**, **Revoked**, or **Stopped: unused too long**.
+
+| Action | What it does |
+| --- | --- |
+| **Edit** | Change the name and allowed networks. Scopes and expiry stay. |
+| **Roll key** | Create a new key with the same scopes. Choose when the old one stops: now, after 1 hour, after 1 day or after 7 days. Give your clients the new key before then. |
+| **Revoke** | End the key. Clients using it stop working within five minutes. A revoked key cannot be used again. |
+| **History** | Changes and refused uses are kept for a year, daily use for 90 days. |
+
+<Screenshot
+  page="user/administration/api-keys"
+  id="03-history"
+  route="/administration/api-keys"
+  state="History sheet of a key with a Key created event, a Use refused event and the usage per day chart"
+  alt="History of a key with events and daily use"
+/>
+
+## Service accounts
+
+A service account is a member of the tenant for integrations. It never signs in and acts only through its keys, with its roles.
+
+1. Open the **Service accounts** tab and select **Create service account**.
+2. Enter a name and choose its roles. You can only choose roles whose permissions you hold.
+3. Save. Then create keys that act as this account.
+
+If you edit a service account, its keys get the new roles with their next token. If you delete it, its live keys are revoked with it.
+
+## Key policy
+
+Admins set the rules for the tenant with **Edit policy**.
+
+| Setting | Effect |
+| --- | --- |
+| **Members may create personal keys** | If off, only service account keys can be created. |
+| **Maximum lifetime in days** | Longest allowed expiry. Empty allows service account keys that never expire. Personal keys always expire within a year. |
+| **Stop keys unused for this many days** | Keys that sit idle that long stop working. |
+| **Service accounts may hold sensitive scopes** | Allows scopes marked **Sensitive** on service account keys. |
+
+<Screenshot
+  page="user/administration/api-keys"
+  id="04-key-policy"
+  route="/administration/api-keys"
+  state="Key policy dialog with the four settings filled in"
+  alt="Key policy dialog"
+/>
+{/* TODO: verify the exact labels in the key policy dialog (KeyDialogs.tsx) */}

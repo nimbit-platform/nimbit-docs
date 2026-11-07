@@ -1,0 +1,105 @@
+---
+id: map
+title: Map
+sidebar_position: 4
+description: See where things are, replay the routes of mobile things, and draw geofences that raise entry and exit events.
+app:
+  routes: ["/geo/map"]
+  tour: find-your-way-watch
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+**Monitoring › Map** shows every thing that has reported a position. It has four modes, switched with the pills above the side panel: **Explore**, **Routes**, **Geofences** and **Events**. The mode is in the URL (`?mode=fences`), so you can bookmark it.
+
+:::info Where positions come from
+A thing appears on the map once it has a position. A thing that reports latitude and longitude in its data sets this by itself. For others, enter a location on the thing page with **Set location**. If no thing has a position yet, the map says **No thing has a reported position yet.**
+:::
+
+<Screenshot
+  page="user/monitoring/map"
+  id="01-map-explore"
+  route="/geo/map"
+  state="Explore mode with 15 things around one city, some clustered; side panel open showing Things on map count and filters; legend visible"
+  alt="The map in Explore mode with the filter panel"
+/>
+
+## Explore: find things on the map
+
+Explore is the default mode. The panel header reads **Things on map** with a count such as `12 of 15 with a position`.
+
+1. Type a name or ID in the search box. It shows the first matches; refine the search to see more.
+2. Narrow the map with the filters below. **Reset** clears them.
+3. Select a pin to see the thing's name, connection and last position. **Open thing** goes to its [thing page](./thing-page.mdx).
+4. Use **Fit to things** to zoom to what is currently shown.
+
+| Filter | Options |
+| --- | --- |
+| **Thing type** | One or more thing types |
+| **Things** | Pick single things |
+| **Tags** | Things with these tags |
+| **Connection** | **Online**, **Offline**, **Stale · no fix 30 min+** |
+| **Last position** | **Any time**, **Within 15 min**, **Within 1 h**, **Within 24 h**, **Older than 24 h** |
+| **Motion** | **Any**, **Moving**, **Parked** |
+| **Geofence** | **Anywhere**, or **Inside** a chosen geofence |
+
+Use **Colour by** to colour pins by **Status** or **Thing type**. The legend shows the colours. Square or arrow pins are mobile things. When many things are close together, the map groups them into clusters; zoom in to split them.
+
+## Routes: replay where a thing went
+
+1. Switch to **Routes**.
+2. Select mobile things in the panel. You can select up to 10.
+3. Pick a **Time window**: **24 h**, **7 days** or **30 days**.
+4. Select **Show routes**. The map draws each route and the panel shows the distance, for example `42 km total`.
+5. Select **Play** to replay the movement. Change the **Playback speed**, and use **Point spacing** to thin out a dense track.
+
+The panel also lists **Stops & dwell**: places where the thing stayed. Set **Minimum dwell** to hide short stops. **Highlight travelled part** marks how far the replay has got. **Fit to routes** zooms to the tracks.
+
+<Screenshot
+  page="user/monitoring/map"
+  id="02-map-routes"
+  route="/geo/map?mode=routes"
+  state="Routes mode with two mobile things selected, 7 days window, routes drawn, Stops and dwell list with three stops"
+  alt="Routes mode showing two routes and the stops list"
+/>
+
+## Geofences: draw areas to watch
+
+A geofence is an area on the map. When a thing enters or leaves it, IoT Breeze records an entry or exit [event](./events.mdx).
+
+You can reach this mode from the **Geofences** pill or from **Settings › Configuration › Geofences**. Both open the same screen. You need permission to write geofences to see the menu entry.
+
+The panel shows the count, for example `3 active · 5 total`, and lists each geofence with the number of things inside right now.
+
+### Create a geofence
+
+1. Select **Create geofence**.
+2. Enter a **Name**, for example `Hamburg depot`, and optionally a **Description**.
+3. Pick a **Shape**: **Circle**, **Rectangle** or **Polygon**, then draw it on the map. For a circle, click the centre, then click to set the radius, or type the **Radius**. The radius must be at least 10 m. For a polygon, click to add points and click the first point to close it.
+4. Set **Status** to **Active** or **Inactive**. Entry and exit events are only generated while the geofence is active.
+5. Under **Applies to**, choose **Tags** or **Thing type**. Pick the tags or the thing type, and optionally limit it to chosen **Things**. The panel shows how many things and thing types match.
+6. Select **Save**.
+
+To change the shape, delete it on the map and draw a new one. Drag a shape to move it. Use **⋯ › Edit** or **⋯ › Delete** on a list entry; deleting cannot be undone.
+
+<Screenshot
+  page="user/monitoring/map"
+  id="03-geofence-editor"
+  route="/geo/map?mode=fences"
+  state="Geofences mode with the editor open: circle drawn on the map, Name filled, Radius 250 m, Status Active, Applies to Thing type selected"
+  alt="The geofence editor with a circle on the map"
+/>
+
+:::tip Turn crossings into incidents
+The shipped incident policy **Geofence dwell** opens an incident when a thing stays inside or outside a fence for thirty minutes. See [Incident configuration](./incident-configuration.mdx).
+:::
+
+## Events: see crossings on the map
+
+**Events** shows the enter and exit transitions of active geofences. It is marked **Preview**. Pick a **Time window** (**1 h**, **24 h** or **7 days**), a geofence or **All geofences**, and a **Transition** (**All**, **Enter**, **Exit**). The panel counts **Enters**, **Exits** and **Things**, and lists each crossing, with the dwell time for completed visits. The map shows at most the most recent crossings and says so when it caps the list.
+
+## Related
+
+- [Things](./things.mdx)
+- [A thing page](./thing-page.mdx)
+- [Events](./events.mdx)

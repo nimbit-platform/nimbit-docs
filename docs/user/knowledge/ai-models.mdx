@@ -1,0 +1,56 @@
+---
+id: ai-models
+title: AI models
+sidebar_position: 6
+description: Register the language models that answer in Ask Nimble and set the fallback order.
+app:
+  routes: ["/knowledge/models"]
+  tour: setup-knowledge
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Open **Settings › Knowledge setup › AI models**. The page is titled **Models & keys**. It lists the language models your tenant may answer with, and the order to fall back through.
+
+Until you register one, Ask Nimble uses the model the server is set up with. Counts, lists and lookups work without any model.
+
+:::info Who can change it
+Everyone with Knowledge setup access can read the page. Changing models needs the admin or modeler role. Testing a model is limited to platform administrators.
+:::
+
+## Register a model
+
+1. Select **Register a model**.
+2. Enter a **Name**. You use it in chat and in the fallback order. It cannot be changed later.
+3. Choose the **Provider**: **Anthropic**, **OpenAI**, **Gemini** or **OpenAI-compatible**.
+4. Enter the **Provider's model id** and the **API key**. For OpenAI-compatible endpoints, also the **Base URL**. It must be https. Private, loopback and metadata addresses are refused.
+5. Under **Capabilities**, check what the model supports (**Strict JSON schema**, **Forced tool choice**). Leave strict schema off for Gemini-compatible endpoints.
+6. Save, then **Test**.
+
+The model must support tool calling. Nimble answers by querying your graph, so a model that cannot call tools cannot answer.
+
+The API key is write-only. It is encrypted and never shown again. To keep it when you edit, leave the field empty. Deleting a model destroys the key; chats pinned to it fall back to the default.
+
+<Screenshot
+  page="user/knowledge/ai-models"
+  id="01-models"
+  route="/knowledge/models"
+  state="Models and keys page with two registered models, one marked Managed by the platform"
+  alt="The list of registered models"
+/>
+
+A model marked **Managed by the platform** is registered for you.
+
+## Set the fallback order
+
+When the usual model looks and finds nothing, the models in **Fallback order** are tried in turn. The first one that answers wins. Nothing is tried when a chat pins a model itself.
+
+1. Under **Fallback order**, add a registered model.
+2. Use **Move earlier** and **Move later** to order them.
+3. Save.
+
+:::warning Cost
+At most a few fallbacks are allowed, and each is a full extra attempt. A longer chain multiplies the cost of one question. With no fallback, a question the usual model cannot answer gets "I don't know".
+:::
+
+{/* TODO: the maximum number of fallbacks is set in the app; add the number. */}

@@ -19,9 +19,9 @@ const steps = [
   {
     title: "Monitoring",
     items: [
-      { text: "Übersicht der Systemüberwachung", link: "/docs/user/monitoring/overview" },
-      { text: "Thing-Details anzeigen", link: "/docs/user/monitoring/thing-details" },
-      { text: "Telemetrie-Daten analysieren", link: "/docs/user/monitoring/telemetrie" },
+      { text: "Übersicht der Systemüberwachung", link: "/docs/user/monitoring" },
+      { text: "Thing-Details anzeigen", link: "/docs/user/monitoring/thing-page" },
+      { text: "Telemetrie-Daten analysieren", link: "/docs/user/monitoring/telemetry-explorer" },
     ],
   },
   {

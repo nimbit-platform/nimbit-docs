@@ -1,0 +1,150 @@
+---
+id: smart-dashboards
+title: Smart dashboards
+sidebar_position: 2
+description: Build one dashboard that works for every thing implementing an interface, follow or pin widgets, assign the dashboard and try it with mock data.
+app:
+  routes: ["/dashboards/:id", "/onboarding/things/:id", "/onboarding/thing-types/:id"]
+  tour: build-dashboards
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+A Smart dashboard matches things through the interfaces their thing types implement. You build it once. It then works for every thing that fits, today's and tomorrow's.
+
+## How it works
+
+An interface names measures, such as supply and return temperature, that a thing type promises to send. A Smart dashboard on an interface works for every thing whose type implements it.
+
+At the top of the dashboard you pick which thing to look at. Widgets that *follow* the selection switch to it.
+
+<Screenshot
+  page="user/dashboards/smart-dashboards"
+  id="01-pick-thing"
+  route="/dashboards/:id"
+  state="Smart dashboard with the thing picker at the top, open list of things, the first thing selected, charts below"
+  alt="A Smart dashboard with the thing picker open at the top"
+/>
+
+A thing that implements only some of the dashboard's interfaces can still be picked. It shows its coverage, such as **2 of 3 interfaces**. Widgets on the missing interfaces stay empty. Pick another thing, or try mock data.
+
+## Follow or pin
+
+Each widget reads its data in one of two ways. You choose when you add the widget.
+
+| Mode | The widget shows | Use it for |
+| --- | --- | --- |
+| **Follow the dashboard** | Whichever thing is picked at the top. | The same view of every air handler, pump or room. |
+| **Its own things** (pinned) | The thing you name, whatever is picked. | One specific thing, such as the outdoor temperature or the main meter. |
+
+A pinned widget shows a pin in its header with the thing's name.
+
+A dashboard can hold both. For example, a following chart of the selected air handler next to a pinned outdoor temperature.
+
+:::tip Which to start with
+Start with following widgets on a dashboard made **From interfaces**. Add a pinned widget when you need a fixed reference.
+:::
+
+## Build a dashboard for every thing of a kind
+
+1. Open **Monitoring › Dashboards** and select **New dashboard**.
+2. Choose **From interfaces**.
+3. Name it, pick one or more interfaces (a thing type works too) and select **Save**. The preview counts the things that fit.
+4. Select **Add widget**, pick for example **Chart**, then **Line**.
+5. Keep **Follow the dashboard**. Pick a measure and select **Add to dashboard**.
+6. Select **Save**.
+
+Pick another thing at the top. The widget follows.
+
+## Build a dashboard for chosen things
+
+1. Select **New dashboard** and choose **From interfaces**.
+2. Leave the interfaces empty. Every widget will name its own thing.
+3. Add a widget and choose **Its own things**.
+4. In each row, pick the thing and its measure.
+5. Save the dashboard.
+
+<Screenshot
+  page="user/dashboards/smart-dashboards"
+  id="02-follow-or-pin"
+  route="/dashboards/:id"
+  state="Widget setup screen on the data area with the Follow the dashboard and Its own things choice visible, Its own things selected with two rows"
+  alt="The widget setup showing the choice between following the dashboard and pinning to things"
+/>
+
+## Assign the dashboard
+
+Assigning decides where the dashboard is offered. You can assign it in four places.
+
+| Where | How | Effect |
+| --- | --- | --- |
+| A thing | Open the thing, go to its **Dashboard** tab, select **Assign dashboards**. | Pinned on that thing only. |
+| A thing type | Open the thing type, go to its **Dashboards** tab, select **Manage dashboards**. | Offered on every thing of the type, now and later. |
+| The dashboard | In edit mode, select **Assigned to**, open **Thing types** or **Things** and select **Assign**. | Same result, from the other side. Only things and types the dashboard fits are listed. |
+| A Knowledge level | On the level's **Visualizations** tab. | Sites, buildings and other levels show dashboards there. {/* TODO: link to the Knowledge track page */} |
+
+On a thing's **Dashboard** tab, the star marks the default dashboard. It opens first. Drag the rows to set the order of the others.
+
+A thing also offers the dashboards of its thing type. They are marked as coming from the type, and you edit them on the type.
+
+:::info A type implies an assignment
+If a dashboard requires an interface, every thing type with that interface gets the dashboard automatically. To remove it, detach the interface from the type or change the dashboard's interfaces.
+:::
+
+<Screenshot
+  page="user/dashboards/smart-dashboards"
+  id="03-thing-dashboard-tab"
+  route="/onboarding/things/:id"
+  state="Dashboard tab of a thing with two pinned dashboards, one starred as default, and one dashboard coming from its thing type"
+  alt="The Dashboard tab of a thing with pinned dashboards and a default star"
+/>
+
+<Screenshot
+  page="user/dashboards/smart-dashboards"
+  id="04-assigned-to-dialog"
+  route="/dashboards/:id"
+  state="Assigned to dialog on a dashboard in edit mode, Thing types tab with two types assigned and others listed with Assign buttons"
+  alt="The Assigned to dialog listing thing types with Assign buttons"
+/>
+
+## Generate a dashboard from an interface
+
+An interface can generate a Smart dashboard with widgets for its measures: line charts, gauges, state tiles and property rows. The dialog **Generate Smart dashboard** previews what it will create. {/* TODO: verify where the Generate dashboard button sits (interface page?) */}
+
+## Try it with mock data or a file
+
+You can design a dashboard before any device sends data. Open the data source menu at the top of the dashboard.
+
+| Source | What it does |
+| --- | --- |
+| **Device** | Live values from a thing the dashboard fits. This is the default. |
+| **Mock data** | Made-up values. Pick a pattern and an interval. Widgets pinned to a thing still show real data. |
+| **File** | A CSV, Parquet or JSON file, mapped onto the dashboard's measures. |
+
+Mock patterns: **Random**, **Smooth**, **Wave**, **Ramp**, **Steps** and **Spikes**. A banner and a **MOCK** mark remind you that nothing was measured. Select **Turn off mock data** to go back.
+
+To play a file:
+
+1. Open the data source menu and select **File**.
+2. Drop a file, or pick one from **Files**. No file at hand? Select **Try the sample air handler file**.
+3. Map the columns: the **Time column**, and a column for each measure. For a file with several devices, use **Device column** to route each device.
+4. Name the mapping and select **Save and use**. Use **Use mapping** to pick one you saved before.
+
+Rows that do not fit, such as a cut-off line or an unreadable time, are skipped and counted. Select the count to see which and why.
+
+:::info Nothing is stored
+Mock data and files are read in your browser and played on the dashboard. Nothing is sent to a device or written to its history. After a reload, pick a local file again, or tick **Save a copy to Files** so the dashboard can reopen it.
+:::
+
+<Screenshot
+  page="user/dashboards/smart-dashboards"
+  id="05-data-source-menu"
+  route="/dashboards/:id"
+  state="Data source menu open at the top of a Smart dashboard with Device, Mock data and File entries, Mock data hovered showing patterns"
+  alt="The data source menu with Device, Mock data and File"
+/>
+
+## Next
+
+- [Time range and data source](./time-range-and-filters.mdx)
+- [Widgets](./widgets/index.mdx)

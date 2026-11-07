@@ -1,0 +1,47 @@
+---
+id: statistic
+title: "Statistic"
+sidebar_position: 23
+description: "A ready-made figure about the whole tenant."
+app:
+  routes: ["/dashboards/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+A ready-made figure about the whole tenant. Needs no data setup: pick the statistic and it works.
+
+This widget is about the whole tenant. It is offered on Home and other tenant-wide dashboards, not on a dashboard about a thing.
+
+<Screenshot
+  page="user/dashboards/widgets/statistic"
+  id="01-statistic"
+  route="/dashboards/:id"
+  state="Statistic widget Things online showing online, offline and never seen"
+  alt="The Statistic widget on a dashboard"
+/>
+
+## Settings
+
+Add the widget with **Add widget**, in several groups. Select **Help** in the setup to read about its settings in the app.
+
+| Setting | What it does |
+| --- | --- |
+| **Statistic** | Which figure to show. The picker lists one card per statistic, grouped as **Messages**, **Connectivity**, **Events and rules**, **Overview** and **Data and access**. |
+| **Time range** | Uses the dashboard's range unless you override it. |
+
+Every widget also has a **Title** and, where it shows a card, **Appearance** settings for colours. Time-based widgets follow the dashboard's [time range](../time-range-and-filters.mdx) unless you set their own.
+
+## Statistics
+
+| Group | Statistics |
+| --- | --- |
+| Overview | **Health score**: one figure from 0 to 100 over the last 24 hours. |
+| Events and rules | **Events by severity**, **Events by thing type**, **Rule activity**, **Geofence events** |
+| Messages | **Messages**, **Messages per day**, **Message rate**, **Messages by thing type**, **Top things**, **Activity by hour**, **Data volume**, **Message size** |
+| Connectivity | **Things online**, **Connectivity by thing type**, **Recently offline**, **Active things** |
+| Data and access | **Data in the system**, **Raw data and aggregates**, **Data stores**, **API keys** |
+
+Message figures come from platform metrics, which arrive in batches and can be up to 5 minutes behind. Health score, data stores and API keys always cover the whole tenant. API keys needs a role that may read the tenant's API keys. A viewer whose role cannot query metrics sees a note instead of the figures.
+
+Back to [all widgets](./index.mdx).

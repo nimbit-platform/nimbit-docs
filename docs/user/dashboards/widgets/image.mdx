@@ -1,0 +1,37 @@
+---
+id: image
+title: "Image"
+sidebar_position: 27
+description: "A picture from your files or an external address."
+app:
+  routes: ["/dashboards/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+A picture from your files or an external address.
+
+This widget needs no thing and is offered on any dashboard.
+
+<Screenshot
+  page="user/dashboards/widgets/image"
+  id="01-image"
+  route="/dashboards/:id"
+  state="Image widget showing a floor plan"
+  alt="The Image widget on a dashboard"
+/>
+
+## Settings
+
+Add the widget with **Add widget**, in the group **Layout and content**. Select **Help** in the setup to read about its settings in the app.
+
+| Setting | What it does |
+| --- | --- |
+| **Image source** | Upload a file or enter a URL. External URLs must be public. |
+| **Size** | **Cover** fills the widget and may crop. **Contain** shows the whole image. |
+| **Alignment** | Which part stays visible when cropped. |
+| **Appearance** | Background colour, border colour and transparency. |
+
+Every widget also has a **Title** and, where it shows a card, **Appearance** settings for colours. Time-based widgets follow the dashboard's [time range](../time-range-and-filters.mdx) unless you set their own.
+
+Back to [all widgets](./index.mdx).

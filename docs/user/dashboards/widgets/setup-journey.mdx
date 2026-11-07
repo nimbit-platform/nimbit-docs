@@ -1,0 +1,38 @@
+---
+id: setup-journey
+title: "Setup journey"
+sidebar_position: 36
+description: "A tenant's first steps, ticked off from its data: create a thing type, add a thing, get data arriving, create a rule, build your own dashboard, invite a teammate."
+app:
+  routes: ["/dashboards/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+A tenant's first steps, ticked off from its data: create a thing type, add a thing, get data arriving, create a rule, build your own dashboard, invite a teammate.
+
+This widget is about the whole tenant. It is offered on Home and other tenant-wide dashboards, not on a dashboard about a thing.
+
+<Screenshot
+  page="user/dashboards/widgets/setup-journey"
+  id="01-setup-journey"
+  route="/dashboards/:id"
+  state="Setup journey with a progress bar at 3 of 6 steps"
+  alt="The Setup journey widget on a dashboard"
+/>
+
+## Settings
+
+Add the widget with **Add widget**, in the group **Layout and content**. Select **Help** in the setup to read about its settings in the app.
+
+| Setting | What it does |
+| --- | --- |
+| **Title** | Shown above the steps. |
+| **Show done steps** | Off lists only the open steps. |
+| **Card** | Background and border colours. |
+
+Every widget also has a **Title** and, where it shows a card, **Appearance** settings for colours. Time-based widgets follow the dashboard's [time range](../time-range-and-filters.mdx) unless you set their own.
+
+A step counts as done once the tenant has what it builds, however it was made. While Home shows this widget, the Getting started card is left out.
+
+Back to [all widgets](./index.mdx).

@@ -1,0 +1,97 @@
+---
+id: index
+title: Widgets
+sidebar_position: 0
+description: Every widget type you can add to a dashboard, what it shows and whether it needs a thing.
+app:
+  routes: ["/dashboards/:id"]
+  tour: build-dashboards
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+A widget is one tile on a dashboard. This page lists every widget type. Open a type for its settings.
+
+## Add a widget
+
+1. Open a dashboard and select **Edit**, or **Add widget** on an empty dashboard.
+2. Pick a card. Cards are grouped by the question they answer.
+3. Set it up. The live preview shows the result. **Help** at the top explains the widget.
+4. Select **Add to dashboard**, then save the dashboard.
+
+See [Create and edit a dashboard](../create-and-edit.mdx) for the whole flow.
+
+<Screenshot
+  page="user/dashboards/widgets/index"
+  id="01-widget-picker"
+  route="/dashboards/:id"
+  state="Add widget dialog on a Smart dashboard with the groups Values, State, Charts, Thing details and Layout and content listed, Charts selected"
+  alt="The widget picker with widget groups and cards"
+/>
+
+## Which widget answers my question
+
+| Question | Group | Widgets |
+| --- | --- | --- |
+| What does it read right now? | **Values** | Snapshot, Gauge, Fill level, Compare |
+| Is it running, open, on? | **State** | Stat, Boolean, Property, Property List, Aggregated State |
+| How did it change? | **Charts** | Chart, Timeline, Heatmap, Doughnut, Pivot table, Custom |
+| What is it doing, and what can I do? | **Thing details** | Status, Action, Canvas |
+| What happened, and what fired? | **Events and rules** | Events, Incidents, and event statistics |
+| How is the tenant doing? | **Overview** | Counter strip, Health score |
+| Is data coming in? Which things are offline? | **Messages**, **Connectivity** | Statistic, Thing map, Thing List & Map |
+| Where is the data kept? | **Data and access** | Statistic: data stores, API keys |
+| Structure and explain the dashboard | **Layout and content** | Section header, Text, Image, Container and others |
+
+## All widget types
+
+The **Needs a thing** column says whether the widget reads one thing's data. Such a widget follows the selected thing or is pinned to a thing of its own. **Tenant-wide** widgets are offered on Home and other tenant-wide dashboards. See [follow or pin](../smart-dashboards.mdx#follow-or-pin).
+
+| Widget | Group | Shows | Needs a thing |
+| --- | --- | --- | --- |
+| [Snapshot](./snapshot.mdx) | Values | The latest values of a thing's measures in a searchable table: measure name, last value with unit and time | A thing |
+| [Gauge](./gauge.mdx) | Values | One measure on a dial, with its range | A thing |
+| [Fill level](./fill-level.mdx) | Values | How full a tank or silo is, as a filling bar | A thing |
+| [Compare](./compare.mdx) | Values | Two values side by side, with the difference | A thing |
+| [Stat](./state.mdx) | State | A value with colours for its ranges | A thing |
+| [Boolean](./boolean.mdx) | State | A yes-or-no measure as a switch or lamp | A thing |
+| [Property](./property.mdx) | State | One property of a thing and its value, such as a firmware version or serial number | A thing |
+| [Property List](./property-list.mdx) | State | Several properties of a thing and their values, in a searchable, sortable table | A thing |
+| [Aggregated State](./aggregated-state.mdx) | State | One measure aggregated over a time range, shown with an icon | A thing |
+| [Chart](./chart.mdx) | Charts | Measures over time | A thing |
+| [Timeline](./timeline.mdx) | Charts | States over time as coloured segments, one lane per measure | A thing |
+| [Heatmap](./heatmap.mdx) | Charts | A measure by hour and day as a colour grid | A thing |
+| [Doughnut](./doughnut.mdx) | Charts | Shares of a whole, as a doughnut or pie | A thing |
+| [Pivot table](./pivot-table.mdx) | Charts | Values by period in a table you can group by rows and columns | A thing |
+| [Custom](./custom-chart.mdx) | Charts | Any chart, from a chart definition | A thing |
+| [Status](./status.mdx) | Thing details | Maps a measure's value to an icon, text and colour, for example online or offline | A thing |
+| [Action](./action.mdx) | Thing details | A button that sends a command to a thing | A thing |
+| [Canvas](./canvas.mdx) | Thing details | Embeds an existing canvas, a drawing of the plant with live values, into the dashboard | A thing |
+| [Events](./events.mdx) | Events and rules | The events of the dashboard: on a tenant-wide dashboard every event of the tenant, otherwise the events of its things | No |
+| [Incidents](./incidents.mdx) | Events and rules | The problems someone is working on, newest activity first, with severity, number, who opened them and status | No |
+| [Counter](./counter.mdx) | Overview | The count of a resource type: things, assets or spaces | No |
+| [Counter strip](./counter-strip.mdx) | Overview | Up to six tenant figures in one bar: things, things online, messages today, events and what the tenant stores | Tenant-wide |
+| [Statistic](./statistic.mdx) | Several groups | A ready-made figure about the whole tenant | Tenant-wide |
+| [Thing map](./thing-map.mdx) | Connectivity | Every thing by connection state, as one tile per thing type or group with how many are online and a bar of connected, offline and never connected things | Tenant-wide |
+| [Thing List & Map](./thing-list-map.mdx) | Connectivity | Your things with their status, problems first, with an optional map | Tenant-wide |
+| [Text](./text.mdx) | Layout and content | Formatted text and links, for instructions, descriptions or labels | No |
+| [Image](./image.mdx) | Layout and content | A picture from your files or an external address | No |
+| [File List](./file-list.mdx) | Layout and content | Files to download, picked from the file explorer or uploaded by viewers | No |
+| [Iframe](./iframe.mdx) | Layout and content | Another web page, embedded | No |
+| [Container](./container.mdx) | Layout and content | A frame that groups widgets or leaves space on the grid | No |
+| [Section header](./section-header.mdx) | Layout and content | Names a group of widgets, with an optional description and link, above a thin divider | No |
+| [Quick links](./quick-links.mdx) | Layout and content | Pages and sites people need most, as a two-column grid of links with a title and one line each | No |
+| [Recently viewed](./recently-viewed.mdx) | Layout and content | What you opened last in this tenant: things, thing types, dashboards, rules and groups | No |
+| [Journeys](./journeys.mdx) | Layout and content | The guided walkthroughs you can take, with time and progress | No |
+| [What's new](./whats-new.mdx) | Layout and content | The product's newest announcements | Tenant-wide |
+| [Setup journey](./setup-journey.mdx) | Layout and content | A tenant's first steps, ticked off from its data: create a thing type, add a thing, get data arriving, create a rule, build your own dashboard, invite a teammate | Tenant-wide |
+| [Map](./map.mdx) | Layout and content | A map with things and geofences | No |
+| [VNC Console](./vnc.mdx) | Layout and content | A remote screen over VNC | No |
+
+:::info What your picker shows
+The picker offers only the widgets that fit the dashboard. A dashboard about things offers value, state and chart widgets. A Home dashboard offers tenant figures first. **VNC Console** appears only if VNC is enabled for your deployment.
+:::
+
+:::info Older widgets
+Charts used to be separate widgets for line, bar, scatter and combination. They are now layouts of one [Chart](./chart.mdx) widget. Older widgets keep working.
+:::

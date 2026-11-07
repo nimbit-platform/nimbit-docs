@@ -1,0 +1,39 @@
+---
+id: gauge
+title: "Gauge"
+sidebar_position: 2
+description: "One measure on a dial, with its range."
+app:
+  routes: ["/dashboards/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+One measure on a dial, with its range.
+
+This widget reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own. See [Smart dashboards](../smart-dashboards.mdx#follow-or-pin).
+
+<Screenshot
+  page="user/dashboards/widgets/gauge"
+  id="01-gauge"
+  route="/dashboards/:id"
+  state="Gauge widget showing a temperature of 21.4 °C on a 0 to 40 dial with green, yellow and red zones"
+  alt="The Gauge widget on a dashboard"
+/>
+
+## Settings
+
+Add the widget with **Add widget**, in the group **Values**. Select **Help** in the setup to read about its settings in the app.
+
+| Setting | What it does |
+| --- | --- |
+| **Measure** | The measure to show. Required. |
+| **Min / Max** | The range of the dial. Required. |
+| **Shape** | Wide or narrow arc. |
+| **Thresholds** | Colour zones for value ranges. |
+| **Gradient** | Smooth colour transitions between zones. |
+| **Icon, Compact number, Text size** | How the value is drawn. |
+
+Every widget also has a **Title** and, where it shows a card, **Appearance** settings for colours. Time-based widgets follow the dashboard's [time range](../time-range-and-filters.mdx) unless you set their own.
+
+Back to [all widgets](./index.mdx).

@@ -1,0 +1,46 @@
+---
+id: index
+title: Devices and data
+sidebar_position: 1
+description: Set up thing types, interfaces and things in IoT Breeze, connect real or simulated devices, and process incoming data.
+app:
+  routes: ["/onboarding", "/onboarding/things", "/onboarding/thing-types", "/onboarding/interfaces"]
+---
+
+This track covers everything you do before data shows up on a dashboard: describe your devices, register them, connect them and check that data arrives. You find it in the menu under **Settings › Onboarding**.
+
+Three kinds of object work together:
+
+| Object | What it is | Menu entry |
+| --- | --- | --- |
+| **Thing type** | The model of a device: which values it sends (measures) and which fixed facts it has (properties). | **Thing Types** |
+| **Thing** | One real device or asset. It has a thing type, an ID and credentials. | **Things** |
+| **Interface** | A reusable set of fields, such as **Temperature Sensing**. Several thing types can implement the same interface. | **Interfaces** |
+
+## The order that works
+
+1. [Create a thing type](./thing-types.mdx) and publish its schema.
+2. Optional: [attach an interface](./interfaces.mdx) so Smart dashboards work for every thing of that type.
+3. [Create a thing](./things.mdx) of that type.
+4. [Connect the device](./connections.mdx): create credentials and read the connection details.
+5. [Send data](./simulate-device.mdx) from the device, or simulate it while you wait for the hardware.
+6. Optional: [process incoming data](./transformation-pipeline.mdx) before it is stored.
+
+:::tip First time here?
+**First device to first dashboard** walks through all of this in one go, including the dashboard: [First device to first dashboard](../../get-started/first-device.mdx). The pages in this track go into more detail on each step.
+:::
+
+## Who can do what
+
+Each page needs a role with the matching permission. If an entry is missing from your menu, or a button is disabled, ask your tenant admin. Editing thing types, things and credentials are separate permissions.
+
+## Pages in this track
+
+| Page | Read it when |
+| --- | --- |
+| [Thing types](./thing-types.mdx) | You add a new kind of device, or change what it sends. |
+| [Things](./things.mdx) | You register devices, or look for something on a thing page. |
+| [Interfaces](./interfaces.mdx) | You want Smart dashboards or shared field definitions. |
+| [Connections and credentials](./connections.mdx) | You connect a device by MQTT or HTTP. |
+| [Simulate a device](./simulate-device.mdx) | You want test data without hardware. |
+| [Transformation pipeline](./transformation-pipeline.mdx) | You need to convert, check or enrich data before it is stored. |

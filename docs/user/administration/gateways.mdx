@@ -1,0 +1,87 @@
+---
+id: gateways
+title: Gateways
+sidebar_position: 5
+description: Add a Periscope gateway to your tenant, enrol it with a one-time code and manage its keys.
+app:
+  routes: ["/administration/gateways"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+A gateway is a Periscope box on site. It enrols once with an onboarding code. After that it creates and updates its things in your tenant.
+
+:::info What you need
+To open **Gateways** you need to read gateways and to create, edit or delete them. The built-in **Admin** role can.
+:::
+
+:::warning Gateways need API keys
+Gateways sign in with API keys. If your platform operator has turned API keys off, the page says **Gateways are not enabled**. Ask your operator to turn them on.
+:::
+
+## The gateway list
+
+Open **Administration › Gateways**. Each row shows the **Name**, its **Status**, its **Last sign-in**, the **Things** it created and its **Keys**. The header shows how many gateways the tenant has.
+
+| Status | Meaning |
+| --- | --- |
+| **Waiting for enrollment** | A code was issued and no box has used it yet. |
+| **Enrolled** | A box enrolled and holds a key. |
+| **Not enrolled** | No live code and no key. |
+| **Incomplete, delete it** | The gateway is not known to the identity directory. Delete it and add it again. |
+
+<Screenshot
+  page="user/administration/gateways"
+  id="01-gateway-list"
+  route="/administration/gateways"
+  state="Gateway list with one Enrolled gateway with two things and one key, and one Waiting for enrollment gateway"
+  alt="Gateway list with status, last sign-in, things and keys"
+/>
+
+## Add a gateway
+
+1. Select **Add gateway**.
+2. Enter a **Name**, for example `Hall 3 line controller`.
+3. Choose the **Roles**. The gateway acts with these roles, narrowed to what a gateway may do. You can only pick roles whose permissions you hold.
+4. Select **Add gateway**.
+
+<Screenshot
+  page="user/administration/gateways"
+  id="02-add-gateway"
+  route="/administration/gateways"
+  state="Add gateway dialog with a name and one role chosen"
+  alt="Add gateway dialog"
+/>
+
+IoT Breeze then shows the **Onboarding code** and the **Command to run on the gateway**.
+
+<Screenshot
+  page="user/administration/gateways"
+  id="03-onboarding-code"
+  route="/administration/gateways"
+  state="Onboarding code dialog with the code, the enrol command and the expiry date"
+  alt="Onboarding code dialog with the command to run on the gateway"
+/>
+
+1. Copy the code or the command now. It is shown only once.
+2. Run the command on the gateway before the code expires. The dialog shows the expiry date.
+
+If the code expires, issue a new one.
+
+## Issue a new onboarding code
+
+Open the row menu and select **New onboarding code**. Use it to:
+
+- replace an expired code,
+- move the gateway to new hardware: the gateway keeps its things,
+- cut off a box.
+
+The earlier code stops working. The gateway's keys keep working until a box enrols with the new code. Enrolling replaces all keys.
+
+## Revoke a key
+
+In the **Keys** column, select **Revoke key** next to the key. The box can no longer sign in with it. A token it already holds works until it expires, after five minutes at most. Without another key, the gateway needs a new onboarding code.
+
+## Delete a gateway
+
+Open the row menu and select **Delete gateway**. Its keys are revoked and the box can no longer sign in. The things it created stay, but are no longer linked to a gateway.

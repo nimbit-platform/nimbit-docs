@@ -1,0 +1,124 @@
+---
+id: things
+title: Things
+sidebar_position: 3
+description: Create things, find them in the list, and use the tabs of a thing page.
+app:
+  routes: ["/onboarding/things", "/onboarding/things/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+A thing is one real device or asset, such as one sensor in one room. It has a name, an ID, a [thing type](./thing-types.mdx) that defines its schema, and credentials for [connecting](./connections.mdx).
+
+Open **Settings › Onboarding › Things**.
+
+## Find a thing
+
+The list shows **Name**, **Thing type**, **Device status**, **Groups** and **Tags** for each thing. The tabs above the list filter by connection state:
+
+| Tab | Shows |
+| --- | --- |
+| **All** | Every thing. |
+| **Connected** | Things that are connected now. |
+| **Disconnected** | Things that were connected and are not. |
+| **Unknown** | Things that have no connection state yet, for example new ones. |
+
+Use the search box for name, ID and tags. The filter menu narrows the list by name, group, thing type and tags.
+
+<Screenshot
+  page="user/onboarding/things"
+  id="01-things-list"
+  route="/onboarding/things"
+  state="Things list with a mix of connected, disconnected and unknown things; status tabs with counts above the table"
+  alt="List of things with status tabs"
+/>
+
+## Create a thing
+
+You need a thing type first. If there is none, the page offers **Create Thing Type first**.
+
+1. Select **Create thing**.
+2. Fill in the form:
+
+   | Field | What to enter |
+   | --- | --- |
+   | **Name** | A unique name, for example `Meeting room 1`. Required. |
+   | **Thing Alternate ID** | The ID your device uses. Required, unique in the whole system, and **cannot be changed later**. Enter your own, for example a serial number, or select **Generate**. |
+   | **Description** | Optional. |
+   | **Thing type** | The type this thing is an instance of. Required. |
+   | **Parent** | Optional. Another thing this one belongs to. |
+   | **Organization** | Required. The organisation the thing belongs to. |
+   | **Group** | Required. One or more groups. Members of these groups can see the thing. |
+   | **Tags** | Optional search tags. |
+
+3. Save. The thing page opens.
+
+You can also add a device picture.
+
+:::tip Choosing an ID
+Use letters, digits, `-` and `_`. The ID becomes part of the MQTT client ID, where `:` has a special meaning, and of MQTT topics. A generated ID is safe to use.
+:::
+
+<Screenshot
+  page="user/onboarding/things"
+  id="02-create-thing"
+  route="/onboarding/things"
+  state="Create new thing drawer filled in: name, generated alternate ID, thing type, organization and one group selected"
+  alt="The create thing form"
+/>
+
+:::info Who sees the thing
+Groups decide who can see a thing. See {/* TODO: link */} **Administration › Groups** for how groups and roles work.
+:::
+
+## The thing page
+
+The header shows the device ID (with a copy button), the thing type, the interface, the group and the connector. The buttons:
+
+- **Edit** opens the same form. The ID cannot be changed.
+- **Run action** fires an action of this type on the thing, if there are any.
+- **Send data** and **Simulate device…** send test data. See [Simulate a device](./simulate-device.mdx).
+- **Copy device ID** copies the ID.
+- **Delete thing** removes it.
+
+The tabs:
+
+| Tab | What it shows |
+| --- | --- |
+| **Overview** | Last signal, live values, a trend chart, location and open incidents. |
+| **Dashboards** | Dashboards for this thing. |
+| **Schema** | The measures and properties it takes from its thing type, with the latest value of each. To change them, change the thing type. |
+| **Documents** | Files for this thing. |
+| **Actions** | Actions you can run on the thing and a log of past runs. |
+| **Events** | Events and incidents of this thing. |
+| **Connections** | Credentials and connection details. See [Connections and credentials](./connections.mdx). |
+| **Users and Groups** | Who owns the thing and which groups can see it. You can add and remove them here. |
+| **Audit log** | The history of changes to the thing. |
+
+Some tabs only show for roles that have the matching permission. A tab with no content is dimmed, not hidden.
+
+<Screenshot
+  page="user/onboarding/things"
+  id="03-thing-page"
+  route="/onboarding/things/:id"
+  state="Thing page on the Overview tab, with live values and the tab strip visible"
+  alt="Thing page with its tabs"
+/>
+
+## Delete a thing
+
+1. Open the thing and select **Delete thing**.
+2. To delete the recorded data too, switch on the option that offers it and confirm as asked. Select **Delete thing and data**. Without it, only the thing is deleted and its data stays in storage.
+3. Confirm.
+
+:::caution
+Deleting cannot be undone.
+:::
+
+{/* TODO: verify the exact wording and the confirmation step of the data deletion opt-in (DataDeletionOptIn). */}
+
+## Next steps
+
+- [Connect the device](./connections.mdx).
+- [Simulate a device](./simulate-device.mdx) to see data right away.

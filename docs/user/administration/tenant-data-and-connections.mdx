@@ -1,0 +1,89 @@
+---
+id: tenant-data-and-connections
+title: Data, packs and connections
+sidebar_position: 8.5
+description: The Schedules, Data, Packs and Connections tabs of Tenant Settings.
+app:
+  routes: ["/tenant-settings"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+These tabs of **Administration › Tenant Settings** are about what runs in your tenant and what it is connected to. The other tabs are on [Tenant settings](./tenant-settings.mdx).
+
+## Schedules
+
+A read-only list of the task schedules of your tenant. Each row shows the **URI**, **Owner**, **Timing**, **Invocation**, **Status**, **Last run**, **Next run** and whether it is **Enabled**.
+
+Timing reads, for example, `every 15m`, `cron: 0 6 * * *` or `once @ date`. If the tab says it could not load schedules, you may lack permission to view them.
+
+## Data
+
+Use this tab to delete recorded data. It shows the data stores to everyone who may read them. The delete form needs the **Data deletion** permission. Without it the tab says **Deleting data needs permission**.
+
+**Delete recorded data** clears readings of the whole tenant, of a thing type or of selected things:
+
+- all readings,
+- only simulated readings,
+- or only readings with a tag, within a time range.
+
+To delete one thing or thing type together with its data, use its delete action in **Settings › Onboarding** instead.
+
+:::warning Deleting data cannot be undone
+Check the scope and the time range before you confirm.
+:::
+{/* TODO: verify the form fields (scope, simulated, tag, range) in the data deletion form */}
+
+<Screenshot
+  page="user/administration/tenant-data-and-connections"
+  id="01-data"
+  route="/tenant-settings"
+  state="Data tab with the data stores and the Delete recorded data form filled in for one thing type, simulated data only"
+  alt="Data tab with the delete recorded data form"
+/>
+
+## Packs
+
+Packs are starter content from Nimbit: mail templates and blocks, interfaces, dashboards and canvases. Installed items belong to your tenant. Edit them freely.
+
+| State | Meaning |
+| --- | --- |
+| **Not installed** | The item is not in your tenant. |
+| **Current** | Installed and matches the shipped version. |
+| **Update available** | Nimbit ships a newer version. |
+| **Edited** | You changed it. |
+| **Deleted** | You deleted it. |
+
+Filter by **Content type** at the top. Then use the buttons:
+
+| Button | What it does |
+| --- | --- |
+| **Install** or **Install missing items** | Adds the pack's content to your tenant. |
+| **Reset** | Replaces an item with the version Nimbit ships, or creates it again if you deleted it. Your changes are lost. |
+| **Uninstall** | Content stays as your own but no longer receives updates. Installing again creates new copies. |
+
+You cannot uninstall a pack that other packs require, or whose content is in use. The dialog lists what blocks it.
+
+<Screenshot
+  page="user/administration/tenant-data-and-connections"
+  id="02-packs"
+  route="/tenant-settings"
+  state="Packs tab with one pack expanded showing items in states Current, Update available and Edited"
+  alt="Packs tab with item states and buttons"
+/>
+
+## Connections
+
+Provisioning and messaging providers configured for your tenant. Things use them to connect.
+
+- The providers listed as **Managed by Nimbit** are internal. You can turn them on or off, but not delete them. Turning one off asks **Deactivate**: things using it lose their connections and can no longer send messages.
+- Expand a provider to see how to connect. The **Tenant connection** shows an address with `<deviceId>`: replace it with the ID of the thing you want to connect.
+- Credentials are not stored. Generated tokens are only available in the current browser session, so copy them when they appear.
+
+<Screenshot
+  page="user/administration/tenant-data-and-connections"
+  id="03-connections"
+  route="/tenant-settings"
+  state="Connections tab with one provider expanded showing the tenant connection address"
+  alt="Connections tab with a provider expanded"
+/>

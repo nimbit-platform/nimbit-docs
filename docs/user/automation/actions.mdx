@@ -1,0 +1,98 @@
+---
+id: actions
+title: Actions
+sidebar_position: 3
+description: Define commands for a thing type or a single thing, such as an MQTT message or a webhook, and fire them from the app.
+app:
+  routes: ["/onboarding/thing-types/:id", "/onboarding/things/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+An action is a command you define once and fire when you need it. For example **Restart pump** sends a message to a device, or calls a web address. People fire actions from the thing page. They can also add them to dashboards, and every run is logged.
+
+:::info Actions are not rule actions
+The **Actions** tab on a thing type or thing is about commands for devices. The steps a rule runs (**Email**, **Notification channel** and so on) are separate. You build those in [Rule Designer](./rule-designer.mdx).
+:::
+
+## Where actions live
+
+| Level | Where | Effect |
+| --- | --- | --- |
+| Thing type | Thing type page, **Actions** tab | Available to every thing of that type. On a thing they show as **Inherited**. |
+| Thing | Thing page, **Actions** tab | Only for that thing. |
+
+Open **Settings › Onboarding › Thing Types** {/* TODO: link */} or **Settings › Onboarding › Things** {/* TODO: link */}, open one, then go to **Actions**.
+
+<Screenshot
+  page="user/automation/actions"
+  id="01-actions-tab"
+  route="/onboarding/things/:id"
+  state="Actions tab of a thing with two actions: one inherited MQTT message and one on/off action showing its state"
+  alt="The Actions tab of a thing with its list of actions"
+/>
+
+## Create an action
+
+1. On the **Actions** tab, select **Create action**.
+2. Choose the action type and fill in the form.
+3. Save.
+
+| Type | Use it to |
+| --- | --- |
+| **MQTT message** | Publish a message to the device's command topic. Works for devices connected with the provider **Nimbit**. |
+| **Webhook** | Call an HTTP address of another system. |
+| **Azure cloud-to-device** | Send a message to a device registered with the provider type Azure. |
+
+### MQTT message
+
+| Field | Meaning |
+| --- | --- |
+| **Sub-topic** | Optional. Appended to the device's command topic `iot/tenant/<tenant>/device/<device>/cmd/`. Use letters, digits, `_` or `-`, separated by `/`. |
+| **Payload format** | **JSON** or **Text**. With JSON, the result must be valid JSON. |
+| **Payload** | The message. Placeholders are replaced when the command is sent. Only plain placeholders work, no sections or partials. |
+
+### Webhook
+
+The form has three steps: **Request**, **Authorization** and **Overview**.
+
+| Field | Meaning |
+| --- | --- |
+| **Name** | Shown in lists and dashboards. |
+| **Method** | `GET`, `POST`, `PUT`, `PATCH` or `DELETE`. |
+| **URL** | The address to call. |
+| **Body** | The request body. Not for `GET`. |
+| **Headers** | Extra HTTP headers. |
+
+Under **Authorization** you choose how the call signs in: no authentication, Basic (username and password), a Bearer token, credentials as query parameters, or OAuth 2.0. The **Overview** step lets you try the request before you save.
+
+### Azure cloud-to-device
+
+The message is sent on the `/devicebound` topic, which the connected device reads. {/* TODO: verify the field list of the Azure form beyond the payload fields. */}
+
+### On/off actions
+
+Turn on **Is toggle action** to make an on/off action. You give it an on payload and an off payload (**Payload off**). On a thing page, the action shows whether the thing reports it as on or off, based on the latest reading of its measure. The thing needs to have reported that measure at least once. {/* TODO: verify that the toggle option also exists for MQTT message actions; the code shows it in the Azure form. */}
+
+## Fire an action
+
+- **On a thing page:** select the action's button on the **Actions** tab. On/off actions show **Turn on** or **Turn off**.
+- **On a thing type page:** select **Fire**. Because a type has many things, a dialog asks which **Thing** to send it to.
+
+A message confirms delivery, for example that the command was delivered on a topic. If the button is disabled, your role may not run actions, or the action is inactive. An inactive action has **Active** turned off.
+
+<Screenshot
+  page="user/automation/actions"
+  id="02-fire-dialog"
+  route="/onboarding/thing-types/:id"
+  state="Fire dialog on a thing type action with a thing selected"
+  alt="The dialog that asks which thing to send the action to"
+/>
+
+## Check what ran
+
+Switch from **Actions** to **Log** (the pill control above the list). Every run is listed with **When**, its status and where it came from: a dashboard, a rule or the API.
+
+## Edit or delete
+
+Use the pencil and bin icons on a row. Deleting cannot be undone. Actions marked **Inherited** come from the thing type. Change them there.

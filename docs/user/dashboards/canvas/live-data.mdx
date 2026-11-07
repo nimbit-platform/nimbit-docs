@@ -1,0 +1,100 @@
+---
+id: live-data
+title: Live values and actions
+sidebar_position: 2
+description: Bind canvas elements to values, let states follow them and run actions from the canvas.
+app:
+  routes: ["/canvas/:id"]
+  tour: canvas-data
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Elements get their values, states and actions in the **Inspector** on the right of the editor. Open the editor first: select **Edit canvas**.
+
+Select an element to see its tabs. An empty selection says *Select an element to edit its data, appearance, states and action.*
+
+| Tab | What it sets |
+| --- | --- |
+| **Data** | Where the value comes from. |
+| **Appearance** | How it looks. |
+| **States** | How it changes when the value changes. |
+| **Action** | What happens when someone clicks it. |
+
+## Bind a value
+
+1. Select an element, for example a **Value** from the library.
+2. On the **Data** tab, choose the source.
+   - **From context** reads the thing the viewer picked. One canvas then serves every matching thing.
+   - **Fixed thing** always reads the same device.
+3. In **Bind value**, search things, measures and properties, select one and continue.
+4. Optionally, set **Thresholds**: pick an operator (**Greater than**, **Less than**, **Range** and so on), a value and a colour.
+
+An element with no matching value on the viewed thing shows **Not provided by this thing**.
+
+{/* TODO: verify the exact label of the From context / Fixed thing choice in the Data tab */}
+
+<Screenshot
+  page="user/dashboards/canvas/live-data"
+  id="01-bind-value"
+  route="/canvas/:id"
+  state="Bind value dialog open on a Value element, a thing and a measure selected, Thresholds step visible with one threshold row"
+  alt="The Bind value dialog with a measure selected and a threshold"
+/>
+
+## Let states follow values
+
+On the **States** tab, add rules. A rule sets the **State**, **Severity**, **Color**, **Icon** and **Motion** when a value crosses a limit, so trouble stands out at a glance.
+
+1. Add a rule: **When** the value is, for example, greater than a limit.
+2. Name the state, for example `high alarm`.
+3. Pick the severity: **Automatic**, **Normal**, **Info**, **Warning**, **Alarm** or **Fault**. **Automatic** derives it from the state name.
+4. Add more rules with **Else if** and a fallback with **Otherwise**.
+
+Values that stop updating turn **Stale**. Set **Consider data stale after** to change when. Alarms and stale values appear as chips in the canvas header.
+
+<Screenshot
+  page="user/dashboards/canvas/live-data"
+  id="02-states-tab"
+  route="/canvas/:id"
+  state="Inspector States tab with two rules, a Warning rule and an Alarm rule, and the Otherwise row"
+  alt="The States tab of the inspector with two rules and an otherwise row"
+/>
+
+## Run actions from the canvas
+
+Buttons, symbols, hotspots, switches and setpoints have an **Action** tab. Other elements do not.
+
+On **On click**, choose a **Type**:
+
+| Type | What happens |
+| --- | --- |
+| **Run an action** | Runs one of the thing's actions. Pick **Select an action** and the target. |
+| **Navigation** | Opens another canvas or a link. |
+| **Switch context thing** | Changes the thing the canvas shows. |
+| **Set a variable** | Sets a variable of the canvas. {/* TODO: verify, the app says setting variables is not supported yet in some places */} |
+| **None** | Nothing. |
+
+For **Run an action**, safeguards you can set:
+
+- **Confirmation**, including a typed confirmation for **Critical equipment**.
+- **Enabled only when** a live value allows it. Otherwise the button is disabled and says why.
+- **Expected result** and **Within**: the canvas waits for a value to confirm the action worked, and flags it if not.
+- **Cooldown** between two runs.
+- **Consequence**: a note on what happens when it runs.
+
+Viewers need permission to operate the thing, and the canvas must have **Operation allowed**. Without it the element says **Operation is off for this canvas**. Operation is paused while a past range is shown, and the full page is needed to operate from a side panel or embed.
+
+<Screenshot
+  page="user/dashboards/canvas/live-data"
+  id="03-action-tab"
+  route="/canvas/:id"
+  state="Inspector Action tab of a Button element with Run an action selected, an action chosen, confirmation switched on"
+  alt="The Action tab of a button with Run an action and confirmation set"
+/>
+
+## Check and save
+
+Select **Preview** to see the canvas with live values. Commands run as dry runs. Then select **Save**.
+
+See [Build a canvas](./build.mdx) for the editor basics.

@@ -1,0 +1,36 @@
+---
+id: fill-level
+title: "Fill level"
+sidebar_position: 3
+description: "How full a tank or silo is, as a filling bar."
+app:
+  routes: ["/dashboards/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+How full a tank or silo is, as a filling bar.
+
+This widget reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own. See [Smart dashboards](../smart-dashboards.mdx#follow-or-pin).
+
+<Screenshot
+  page="user/dashboards/widgets/fill-level"
+  id="01-fill-level"
+  route="/dashboards/:id"
+  state="Fill level widget at 64 percent, vertical bar in yellow"
+  alt="The Fill level widget on a dashboard"
+/>
+
+## Settings
+
+Add the widget with **Add widget**, in the group **Values**. Select **Help** in the setup to read about its settings in the app.
+
+| Setting | What it does |
+| --- | --- |
+| **Measure** | The measure that holds the level. |
+| **Conditions** | Ranges with colours, for example green below 50 %, yellow below 80 %, red above. |
+| **Display** | Vertical or horizontal bar. |
+
+Every widget also has a **Title** and, where it shows a card, **Appearance** settings for colours. Time-based widgets follow the dashboard's [time range](../time-range-and-filters.mdx) unless you set their own.
+
+Back to [all widgets](./index.mdx).

@@ -1,0 +1,36 @@
+---
+id: action
+title: "Action"
+sidebar_position: 17
+description: "A button that sends a command to a thing."
+app:
+  routes: ["/dashboards/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+A button that sends a command to a thing.
+
+This widget reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own. See [Smart dashboards](../smart-dashboards.mdx#follow-or-pin).
+
+<Screenshot
+  page="user/dashboards/widgets/action"
+  id="01-action"
+  route="/dashboards/:id"
+  state="Action widget with a Restart button"
+  alt="The Action widget on a dashboard"
+/>
+
+## Settings
+
+Add the widget with **Add widget**, in the group **Thing details**. Select **Help** in the setup to read about its settings in the app.
+
+| Setting | What it does |
+| --- | --- |
+| **Action** | The action to trigger. Required. |
+| **Icon** | The button's icon. |
+| **Target thing** | On a dashboard that does not follow one, the thing that receives the command. |
+
+Every widget also has a **Title** and, where it shows a card, **Appearance** settings for colours. Time-based widgets follow the dashboard's [time range](../time-range-and-filters.mdx) unless you set their own.
+
+Back to [all widgets](./index.mdx).

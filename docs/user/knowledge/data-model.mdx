@@ -1,0 +1,112 @@
+---
+id: data-model
+title: Data model
+sidebar_position: 3
+description: Define what your graph holds with types, traits and packs from the Library.
+app:
+  routes: ["/knowledge/types", "/knowledge/traits", "/knowledge/library"]
+  tour: setup-knowledge
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+The data model says what kinds of records exist and which fields and relations they have. Open **Settings › Knowledge setup › Data model**. It has three tabs: **Types**, **Traits** and **Library**.
+
+:::info Not the same as thing types
+A **thing type** under **Settings › Onboarding** describes a device. A Knowledge **type** describes any record in the graph: a hall, an asset, an order, or a device as the graph sees it.
+:::
+
+## Types
+
+A type is a kind of record, for example `Hall` or `MaintenanceOrder`.
+
+| Owner | Meaning |
+| --- | --- |
+| **System** | Shipped with the platform. Read-only, but you can extend it. |
+| **Tenant** | Yours. You compose it from traits, add your own fields and relations, and version it. |
+
+A type that came from a pack shows a **pack** badge and is locked to it. Change it by upgrading or uninstalling the pack in the Library.
+
+### Create a type
+
+1. Open the **Types** tab and select **New type**.
+2. Enter a name. It is PascalCase, unique in your tenant and cannot be renamed.
+3. Write a one-sentence description. Nimble uses it to understand the type.
+4. Pick traits (see below).
+5. Add your own properties, and relations to other types.
+6. Save. A new type is saved as v1. Each later save creates a new version.
+
+<Screenshot
+  page="user/knowledge/data-model"
+  id="01-type-editor"
+  route="/knowledge/types"
+  state="Type editor for a new type Hall with the Hierarchical and Describable traits ticked and one property"
+  alt="The type editor with traits and fields"
+/>
+
+Useful settings:
+
+- **Synonyms** (comma-separated) help Nimble and search match how people talk, for example "plant" for `Site`. You can add them per language.
+- A relation has a free-form name such as `feedsInto` and a target type. Add a description and synonyms so Nimble can follow it.
+- A field can be **Required**, **Indexed** (fast filtering) and **Full-text** (searchable by its words).
+- **Extend this type** adds your own traits, properties and relations to a system type. **Remove extension** takes them off again.
+
+:::warning Narrowing a type
+When a new version no longer declares a field, existing records keep the value. It is only dropped from the type. **Versions** shows a diff of added, retyped and no-longer-declared fields.
+:::
+
+A type cannot be deleted while it has records, another type links to it, or a mapping uses it.
+
+## Traits
+
+A trait is a bundle of fields that types share. The **Traits** tab lists them. Reserved traits are managed by the platform.
+
+| Trait | Gives a record |
+| --- | --- |
+| **Hierarchical** | A place in the containment tree: parent, root, path. Needed for sites and levels. |
+| **Describable** | Name, description, tags and alternative names. |
+| **Aliased** | Identifiers it has in other systems, so incoming data finds it. |
+| **Governed** | Access control: which groups and users may read it. |
+| **Measured** | The measurement channels it exposes, with units and ranges. |
+| **Connectivity** | Connection state and last connect or disconnect. |
+| **Lifecycle** | Current status and status history. |
+| **Spatial** | A position or a physical location. |
+| **Scheduled** | Planned and actual start and end. |
+| **Sourced** | Source system and the record's ID there. |
+| **Versioned** | Valid period and the version it replaces. |
+| **Attributed**, **Extensible** | Custom attributes and tenant-defined fields. |
+| **Embedded**, **Searchable** | Findable by meaning or keyword. |
+| **Imaged**, **Pending** | Pictures; links to records that did not exist yet. |
+
+## Components
+
+Types are built from traits and from the properties and relations you add, so there is no separate screen for components. Each field shows where it comes from: a trait, the system type, a pack, or **Added by this tenant**.
+
+{/* TODO: verify the intended meaning of "components" for end users; the app has no menu entry or screen named Components under /knowledge (the components folder holds UI code only). */}
+
+## Library
+
+The **Library** tab holds packs: ready-made types, mapping templates and connector presets for a known system.
+
+1. Open the **Library** tab. **Data models** lists packs that install types. **Integrations** lists mapping templates and connector presets.
+2. Open a pack and tick the types you want. A type brings the pack types it links to.
+3. Install. The types become your tenant's own, locked to the pack.
+4. To start a mapping, copy a **mapping template** under a source name. The copy is yours to change. If it needs types you lack, creating it installs only those.
+
+When a pack has a new version you see **Upgrade to version**. **Review upgrade** checks the whole version against your types first. If it does not fit, nothing changes. Mappings that write a narrowed type may send rows to review until you adjust them.
+
+**Uninstall** removes the pack's types. It is refused while a type has records, another type links to one, or a mapping uses one. Mappings made from templates stay.
+
+<Screenshot
+  page="user/knowledge/data-model"
+  id="02-library"
+  route="/knowledge/library"
+  state="Library with one pack open, its types listed with an Installed badge on some"
+  alt="A pack in the Library with its types"
+/>
+
+If the Library is empty, no packs ship with this installation. Platform admins add them.
+
+## Next
+
+[Sources and connectors](./sources.mdx) fill your types with data.

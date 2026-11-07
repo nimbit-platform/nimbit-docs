@@ -1,0 +1,166 @@
+---
+id: thing-types
+title: Thing types
+sidebar_position: 2
+description: Describe a kind of device with measures and properties, publish versions of its schema, and manage it over time.
+app:
+  routes: ["/onboarding/thing-types", "/onboarding/thing-types/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+A thing type is the model of a device. It says which values the device sends (**measures**) and which fixed facts it has (**properties**). Every [thing](./things.mdx) belongs to exactly one thing type and takes its schema from it.
+
+Open **Settings › Onboarding › Thing Types**. The page lists your thing types, with the number of things, the schema size and a connection summary for each.
+
+<Screenshot
+  page="user/onboarding/thing-types"
+  id="01-thing-types-list"
+  route="/onboarding/thing-types"
+  state="Thing Types list with three or four thing types, one of them with a draft"
+  alt="List of thing types with thing counts and schema sizes"
+/>
+
+## Create a thing type
+
+1. Select **Create Thing Type**.
+2. Fill in the form:
+
+   | Field | What to enter |
+   | --- | --- |
+   | **Display name** | The name people see, for example `Room sensor`. Required. |
+   | **Name** | The technical name. IoT Breeze fills it in from the display name. It must be unique in your tenant, **cannot be changed later**, and may contain letters, digits and underscores. It cannot start with a digit. Devices can use it to say which type they are. |
+   | **Connector** | The service the devices send their data through. Normally **Nimbit**. You see the connectors your tenant has switched on. |
+   | **Description** | Optional text. |
+   | **Auto Schema Evolution** | Off by default. See [Let new fields appear automatically](#let-new-fields-appear-automatically). |
+   | **Quantile Profile Generation** | Calculates percentile profiles for this type regularly. They are used for anomaly detection. |
+   | **Tags** | Optional search tags. |
+
+3. Save. The thing type page opens.
+
+You can also add a picture for the thing type.
+
+<Screenshot
+  page="user/onboarding/thing-types"
+  id="02-create-thing-type"
+  route="/onboarding/thing-types"
+  state="Create new thing type drawer filled in: display name Room sensor, generated name, Connector Nimbit"
+  alt="The create thing type form"
+/>
+
+## The thing type page
+
+The header shows the display name, the state (**Published · v1** or **Draft v2 · 3 changes**) and the actions:
+
+- **Create thing**: creates a thing of this type.
+- **Edit**: changes display name, description, tags and the other settings from the form.
+- **More actions**: **Open pipeline editor** ([transformation pipeline](./transformation-pipeline.mdx)), **Schema evolution settings**, **Copy ID** and **Delete thing type**.
+
+The tabs:
+
+| Tab | What it shows |
+| --- | --- |
+| **Overview** | Summary: schema, things and how many are connected, dashboards, the transformation pipeline, schema evolution, rollups. |
+| **Dashboards** | Dashboards that use this type. |
+| **Schema** | Measures, properties and attached interfaces. |
+| **Versions** | The history of published versions. |
+| **Statistics** | Rows and storage per day for things of this type. |
+| **Rollups** | Settings for precomputed aggregates, which speed up charts over long ranges. |
+| **Things** | All things of this type, with their connection state. |
+| **Actions** | Commands that things of this type understand. |
+| **Documents** | Files shared by every thing of this type. |
+
+## Define the schema
+
+Open the **Schema** tab. It has three panes: **Measures**, **Properties** and **Interfaces**.
+
+### Measures
+
+A measure is a value the device sends over time, such as `temperature`. Select **Add measure** and fill in:
+
+| Field | Meaning |
+| --- | --- |
+| **Display name** | The name shown in charts and tables. |
+| **Name** | The technical name. The device sends data under this name. |
+| **Type** | Numeric, boolean or string. |
+| **Description** | Optional. |
+| **Unit of Measure** | For example `°C`. |
+| **Decimals** | How many decimal places to show. |
+| **Min value**, **Max value** | The expected range. |
+| **Ignore outliers** | Drops values outside min and max instead of storing them. |
+| **Offset**, **Factor** | Applied to each value before it is stored. Use them to convert units. |
+
+Pin a measure with **Show on overview** to make it lead the live values on the overview of every thing of this type.
+
+<Screenshot
+  page="user/onboarding/thing-types"
+  id="03-schema-measures"
+  route="/onboarding/thing-types/:id"
+  state="Schema tab, Measures pane, with two measures and the Add measure button; Publish button visible in the header"
+  alt="Schema tab with the measures of a thing type"
+/>
+
+### Properties
+
+A property is a fixed fact about the device, such as a serial number or a rated flow. Select **Add property** and fill in the display name, name, initial value and description. Three switches change how a property is used:
+
+| Switch | Effect |
+| --- | --- |
+| **Timeseries relevant** | The property value is added to every telemetry message, so you can filter and group by it. It is shown with a **Timeseries tag** badge. |
+| **Private** | Hidden in dashboards. It can still be used as a tag or in other processes. |
+| **Has precedence** | A value set in IoT Breeze wins over a value sent by the device. |
+
+**Used for linking** tells IoT Breeze how records from other systems find the devices with this property: **Identifier** (a number such as a serial that other systems know), **Reference** (for example a manufacturer, which only suggests links) or **Not used**.
+
+### Interfaces
+
+The **Interfaces** pane lists the interfaces this type implements. See [Interfaces](./interfaces.mdx).
+
+## Drafts, publishing and versions
+
+The schema has versions. Things always use the **published** version. Your edits go into a **draft** that nobody uses until you publish it.
+
+1. Edit the schema. The header shows **Draft v2 · 3 changes** and the Schema tab shows a draft line.
+2. Check your work. Select **Compare with v1** in the draft line to see what changed.
+3. Select **Publish v2** in the header. Enter what changed in **Changelog** and confirm.
+
+The confirmation tells you how many things the new version affects. A published version cannot be edited any more. To change it, make a new draft.
+
+To throw away a draft, select **Discard draft** in the draft line.
+
+{/* TODO: verify which edits on a thing type save in place and which start a draft. The interface schema says name, type, unit and range start a draft while descriptions and aliases save in place; the thing type schema is assumed to work the same way. */}
+
+:::warning Publish before you send data
+Devices use the published version. A measure that exists only in a draft is not known to the platform yet.
+:::
+
+### The Versions tab
+
+The **Versions** tab lists every version, newest first, with its status (**Draft**, **Published**, **Archived**) and a summary of what changed. Select **Compare** to see how a version differs from the one things use now. Select **Restore** to copy an old version into a new draft. It takes you to **Schema** to review it. Nothing goes live until you publish.
+
+<Screenshot
+  page="user/onboarding/thing-types"
+  id="04-versions"
+  route="/onboarding/thing-types/:id"
+  state="Versions tab with a draft v3, published v2 and archived v1, each with a change summary"
+  alt="Versions tab of a thing type"
+/>
+
+## Let new fields appear automatically
+
+With **Auto Schema Evolution** on, a field that a device sends but the schema doesn't know yet is added to the schema as a measure, in the draft, so you can review it. Fields that were added this way are marked **auto-created**. With it off, unknown fields are dropped and you add measures by hand.
+
+Turn it on for a first test with a new device. Turn it off again once the schema is settled. Change it with **Edit** or **More actions › Schema evolution settings**.
+
+## Delete a thing type
+
+Select **More actions › Delete thing type**. A thing type that still has things cannot be deleted. The message offers **Show its things**, so you can delete them or change their type first. You can choose to delete the stored data together with the thing type.
+
+:::caution
+Deleting cannot be undone.
+:::
+
+## Next steps
+
+- [Create a thing](./things.mdx) of this type.
+- [Attach an interface](./interfaces.mdx) to use Smart dashboards.

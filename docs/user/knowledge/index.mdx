@@ -1,0 +1,72 @@
+---
+id: index
+title: Knowledge and Ask Nimble
+sidebar_label: Overview
+sidebar_position: 0
+description: What the knowledge graph is, how to turn it on, and which page to read first.
+app:
+  routes: ["/knowledge/explore", "/knowledge/chat"]
+  tour: explore-and-ask
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+The knowledge graph is IoT Breeze's map of your business. It holds your **things** (devices), the **places** they are in (sites, plants, halls, lines), and other records such as assets, maintenance orders and documents. It also holds how they **relate**: this machine is in that hall, this order belongs to that asset, this manual covers that device.
+
+Because the records are connected, you can ask in plain words: "Which things in Hall 2 are offline, and since when?" **Ask Nimble** answers from the graph, your live readings and your documents, and shows the sources.
+
+<Screenshot
+  page="user/knowledge/index"
+  id="01-explore-overview"
+  route="/knowledge/explore"
+  state="Explore on the Hierarchy view with a site selected and its Insights tab open"
+  alt="Explore showing a site tree on the left and the level panel on the right"
+/>
+
+## Turn it on
+
+Knowledge is optional. Two switches must be on:
+
+1. The installation has it enabled. Your platform administrator controls this. If it is off, **Administration › Tenant Settings › Features** says "Not available on this installation".
+2. Your tenant has it on. A tenant admin opens **Administration › Tenant Settings › Features** and switches on **Ask Nimble and Knowledge**.
+
+When both are on, **Knowledge** appears in the menu. When either is off, every `/knowledge` page sends you back to Home.
+
+:::info Who sees what
+- **Knowledge › Explore** needs permission to read Knowledge.
+- **Knowledge › Ask Nimble** needs permission to read and to run Knowledge.
+- **Settings › Knowledge setup** needs permission to edit Knowledge. Without it the menu entry is hidden; you can still open a setup page by its link and read it.
+- Nimble and Explore only show records you are allowed to see.
+:::
+
+{/* TODO: verify the role names that hold these permissions (tenant admin, modeler) in Administration › Roles. */}
+
+## Where things are
+
+| You want to | Go to |
+| --- | --- |
+| Browse sites, halls and things | **Knowledge › Explore** |
+| Ask a question | **Knowledge › Ask Nimble**, or Ctrl/⌘+I on any page |
+| Define what the graph holds | **Settings › Knowledge setup › Data model** |
+| Bring in data from other systems | **Settings › Knowledge setup › Sources** |
+| Check that data landed and is linked | **Settings › Knowledge setup › Data health** |
+| Choose the AI model that answers | **Settings › Knowledge setup › AI models** |
+
+## In this section
+
+1. [Explore](./explore.mdx): browse the graph.
+2. [Ask Nimble](./ask-nimble.mdx): ask questions and judge the answers.
+3. [Data model](./data-model.mdx): types, traits and the Library.
+4. [Sources and connectors](./sources.mdx): connectors, credentials and mappings.
+5. [Data health](./data-health.mdx): ingestion, link review and reconciliation.
+6. [AI models](./ai-models.mdx): register models and set the fallback order.
+
+## Guided tours
+
+The app has three guides, in the **?** help drawer:
+
+| Guide | For |
+| --- | --- |
+| **Explore and ask** | Everyone who can read Knowledge. Nothing in it changes data. |
+| **Build your graph** | Sites, levels, placing things, relations, access. |
+| **Set up Knowledge** | From an empty tenant to records in the graph. |

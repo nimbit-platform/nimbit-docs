@@ -1,0 +1,37 @@
+---
+id: canvas
+title: "Canvas"
+sidebar_position: 18
+description: "Embeds an existing canvas, a drawing of the plant with live values, into the dashboard."
+app:
+  routes: ["/dashboards/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Embeds an existing canvas, a drawing of the plant with live values, into the dashboard.
+
+This widget reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own. See [Smart dashboards](../smart-dashboards.mdx#follow-or-pin).
+
+<Screenshot
+  page="user/dashboards/widgets/canvas"
+  id="01-canvas"
+  route="/dashboards/:id"
+  state="Canvas widget showing a small process drawing with live values"
+  alt="The Canvas widget on a dashboard"
+/>
+
+## Settings
+
+Add the widget with **Add widget**, in the group **Thing details**. Select **Help** in the setup to read about its settings in the app.
+
+| Setting | What it does |
+| --- | --- |
+| **Canvas** | Which canvas to embed. Required. |
+| **Thing** | If the canvas is built on interfaces and the dashboard does not follow a thing, which thing gives the context. |
+
+Every widget also has a **Title** and, where it shows a card, **Appearance** settings for colours. Time-based widgets follow the dashboard's [time range](../time-range-and-filters.mdx) unless you set their own.
+
+Not offered on reports. To operate the canvas, open it on its own page. See [Canvas](../canvas/index.mdx).
+
+Back to [all widgets](./index.mdx).

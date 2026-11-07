@@ -1,0 +1,104 @@
+---
+id: mail-templates
+title: Mail templates
+sidebar_position: 11
+description: Design the emails IoT Breeze sends, from reusable header and footer blocks, and choose which template each kind of email uses.
+app:
+  routes: ["/manage/mail-templates", "/manage/mail-templates/new", "/manage/mail-templates/:id", "/manage/mail-templates/assignment"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+IoT Breeze sends email for alerts and for account tasks such as invitations. A **mail template** controls how those emails look: subject, header, body and footer, in each language you need.
+
+Alert emails come from an **Email** action on an [event type](./event-types.mdx#add-an-action). The action can send plain text, or use a mail template. Use a template when you want your branding and the event's data in the message.
+
+Open **Settings › Configuration › Mail templates**. You need permission to read mail templates to see the entry.
+
+<Screenshot
+  page="user/monitoring/mail-templates"
+  id="01-templates-list"
+  route="/manage/mail-templates"
+  state="Templates tab with a System template (lock chip) for each context and one custom Event template marked Active; columns Template, Context, Blocks, Languages, Updated, Status"
+  alt="The Mail templates list"
+/>
+
+## How a template is built
+
+The page has four tabs: **Templates**, **Header blocks**, **Footer blocks** and **Assignment**.
+
+| Part | What it is |
+| --- | --- |
+| **Template** | The email itself: subject and body, with a header and a footer block around it |
+| **Header block / Footer block** | Reusable pieces that wrap the body. Blocks are shared: editing a block updates every template that links to it. |
+| **Context** | What the email is for. It decides which data you can put in the email. |
+| **Assignment** | Which template is used for each context |
+
+The contexts are **Event** (event notification emails), **Invitation**, **OTP** (one-time passwords), **Report** and **Reset password**.
+
+Templates marked **System** are managed by NimBit and cannot be edited or deleted. Copy one to make your own version.
+
+## Create a template
+
+1. On the **Templates** tab, select **Create template**.
+2. Enter a **Name** and a **Subject**.
+3. Choose the **Context**. For alerts, choose **Event**.
+4. Write the body in the editor. It is HTML. Use **Format code** to tidy it.
+5. To put data in the email, use double curly brackets around a variable name, for example `{{title}}`. The **Dynamic variables** list shows what the context offers; select a variable to insert it. Values are filled in when the email is sent.
+6. In **Email structure**, choose the header and the footer block, or create them. **Go to header template** and **Go to footer template** open the blocks.
+7. Add translations under **Default translations**: add a language, then a key and text per language. Mark text as translatable so each language gets its own version.
+8. Check the preview. **Open preview in new window** shows it larger.
+9. Select **Save Template**.
+
+<Screenshot
+  page="user/monitoring/mail-templates"
+  id="02-template-editor"
+  route="/manage/mail-templates/:id"
+  state="Template editor for an Event template: name and subject filled, HTML body with a variable inserted, Dynamic variables list on the right, Email structure rail with header and footer chosen, preview below"
+  alt="The mail template editor with variables and preview"
+/>
+
+:::tip Test before you rely on it
+Open the template and select **Send test mail**. Enter an address and send. Fix problems before an alarm sends the template for real.
+:::
+
+## Header and footer blocks
+
+Blocks hold the parts every email shares, such as a logo and a legal line.
+
+1. Open the **Header blocks** or **Footer blocks** tab.
+2. Select **New block** and fill it in.
+3. Select **Save block**.
+
+A block shows how many templates it is linked in, for example **Linked in 3 templates**. A block that templates use cannot be deleted. Remove it from those templates first. The default header and footer cannot be changed or deleted.
+
+## Assign a template to a context
+
+A template only sends once it is assigned to its context.
+
+1. Open the **Assignment** tab.
+2. In the row for a context, such as **Event**, choose a template.
+3. Save the row, or select **Save All**.
+
+A template that is assigned shows **Active** in the list. One that is not shows **Unassigned**. To go back to the default, remove the mapping with **Remove**.
+
+<Screenshot
+  page="user/monitoring/mail-templates"
+  id="03-assignment"
+  route="/manage/mail-templates/assignment"
+  state="Assignment tab: rows Event, Invitation, OTP, Report, Reset password, with Event set to a custom template and the others to system templates"
+  alt="The Assignment tab with a template chosen for Event"
+/>
+
+## Use a template in an alert
+
+1. Open the [event type](./event-types.mdx) and select **Add action**, then **Email**.
+2. Choose **Mail template** instead of plain text.
+3. Pick the template, set the recipients and save.
+
+{/* TODO: verify whether the Email action uses the template picked in the action or the one assigned to the Event context */}
+
+## Related
+
+- [Event types](./event-types.mdx)
+- [Notification channels](./notification-channels.mdx)

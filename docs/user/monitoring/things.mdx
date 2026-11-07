@@ -1,0 +1,56 @@
+---
+id: things
+title: Things
+sidebar_position: 2
+description: Find a thing in your tenant and see at a glance whether it is connected.
+app:
+  routes: ["/monitor/thing-details"]
+  tour: find-your-way-watch
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+**Monitoring › Things** lists every thing you may see. It is a read view for day-to-day work. To create, edit or delete things, use **Settings › Onboarding › Things**. {/* TODO: link to the Onboarding track, Things page */}
+
+<Screenshot
+  page="user/monitoring/things"
+  id="01-things-list"
+  route="/monitor/thing-details"
+  state="List with about 8 things of two thing types; a mix of Connected, Disconnected and one Simulated; Groups and Tags columns filled"
+  alt="The Things list with a Device status column"
+/>
+
+## Read the list
+
+| Column | What it shows |
+| --- | --- |
+| **Thing** | The name, with the alternate ID or the thing type underneath |
+| **Device status** | **Connected**, **Disconnected** or **Unknown**, with the time since the last change |
+| **Groups** | The groups that may see the thing (first two, then a count) |
+| **Tags** | The thing's tags (first two, then a count) |
+
+A thing shows a **Simulated** chip while IoT Breeze sends simulated messages for it. While it simulates, the values you see come from the simulation, not from the device. See [A thing page](./thing-page.mdx#send-a-test-message-or-simulate-the-device).
+
+Select a name to open the [thing page](./thing-page.mdx).
+
+## Find a thing
+
+1. Type in the search box to search by name.
+2. Select **Filters** to narrow by **Name**, **Group**, **Thing type** or **Tags**. Each filter matches text that contains what you type.
+3. Select the **Thing** column header to sort by name.
+
+The URL carries your search and filters, so you can bookmark a filtered list or send it to a colleague. The table remembers your column layout.
+
+## When the list is empty
+
+An empty list has two causes. The empty state tells you which:
+
+- **Before you can create Thing, you need to create Thing Type**: your tenant has no thing types yet. The button takes you to **Thing Types**.
+- **Create Thing first**: thing types exist but no things. The button takes you to **Things**.
+
+The guide [First device to first dashboard](../../get-started/first-device.mdx) walks through both.
+
+## Related
+
+- [A thing page](./thing-page.mdx)
+- [Map](./map.mdx) to see the same things by location

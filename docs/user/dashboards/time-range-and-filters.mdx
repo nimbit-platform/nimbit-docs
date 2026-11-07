@@ -1,0 +1,95 @@
+---
+id: time-range-and-filters
+title: Time range and data source
+sidebar_label: Time range and data source
+sidebar_position: 3
+description: Choose the thing, the time range and the refresh mode of a dashboard, and look back in time.
+app:
+  routes: ["/dashboards/:id"]
+  tour: build-dashboards
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+The bar at the top of a dashboard controls what every widget shows: which thing, which period and how often it refreshes.
+
+<Screenshot
+  page="user/dashboards/time-range-and-filters"
+  id="01-dashboard-bar"
+  route="/dashboards/:id"
+  state="Smart dashboard header showing the thing picker, the time range token Last 24 hours, the refresh mode and the Time travel toggle"
+  alt="The top bar of a dashboard with thing picker, time range and refresh controls"
+/>
+
+## Pick the thing
+
+On a Smart dashboard, the thing picker shows the thing the dashboard displays. Pick another thing and every widget that follows the selection switches to it. Pinned widgets stay. See [follow or pin](./smart-dashboards.mdx#follow-or-pin).
+
+## Set the time range
+
+Charts and other time-based widgets show the dashboard's time range.
+
+1. Select the time range at the top, for example **Last 1 hour**.
+2. Pick a preset, or set your own start and end.
+
+Presets include **Last 5 minutes** up to **Last 5 years**, plus **Today**, **Yesterday** and other calendar ranges.
+
+The range is part of the link. Share the link and others see what you see.
+
+### Keep a range as the default
+
+When you change the range and then save the dashboard in edit mode, a prompt asks **Save this time range too?**
+
+- **Save with range** stores it as the dashboard's default.
+- **Dashboard only** saves the layout and keeps the old default.
+
+## Choose how it refreshes
+
+Under **Updates** you pick the mode, and under **Refresh Rate** how often data reloads automatically.
+
+| Mode | Behaviour |
+| --- | --- |
+| **Live mode** | Values arrive as they are reported. |
+| **Interval mode** | The dashboard reloads at the **Refresh Rate** you choose. |
+| **Manual** | Data reloads only when you select the refresh button. |
+
+The bar reads like a sentence, for example *Showing … over the last 1 hour, refreshed live*. If you refresh again within a few seconds, the app asks you to wait.
+
+<Screenshot
+  page="user/dashboards/time-range-and-filters"
+  id="02-time-settings"
+  route="/dashboards/:id"
+  state="Time settings popover open with the time range presets list and the Updates section showing Live mode, Interval mode and Manual"
+  alt="The time settings popover with range presets and update modes"
+/>
+
+## Widgets with their own range
+
+A widget can keep its own time range. When some do, the bar reads *N widgets keep their own*.
+
+To make all widgets use the dashboard's range, turn on **Enable Dashboard Timeframe** in the dashboard settings. When it is off, each widget can use its own. {/* TODO: verify the exact path of the Enable Dashboard Timeframe switch */}
+
+## Look back in time
+
+**Time travel** shows the whole dashboard as it was at an earlier moment.
+
+1. Turn on **Time travel**.
+2. Drag along the bar, or pick a date and time. **Previous reading** and **Next reading** step between values.
+3. Select **Live** to return to now.
+
+<Screenshot
+  page="user/dashboards/time-range-and-filters"
+  id="03-time-travel"
+  route="/dashboards/:id"
+  state="Dashboard with the Time travel scrubber bar open under the header, cursor in the middle of the range, widgets showing past values"
+  alt="A dashboard with the time travel scrubber showing an earlier moment"
+/>
+
+## Per-widget actions
+
+Point at a widget to see actions in its top corner. You can download its data as CSV or open it full screen.
+
+## Next
+
+- [Widgets](./widgets/index.mdx)
+- [Smart dashboards](./smart-dashboards.mdx)

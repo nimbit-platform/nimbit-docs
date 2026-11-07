@@ -1,0 +1,129 @@
+---
+id: interfaces
+title: Interfaces
+sidebar_position: 4
+description: Describe device capabilities once, implement them on thing types, and let Smart dashboards work for every device that has them.
+app:
+  routes: ["/onboarding/interfaces", "/onboarding/interfaces/:id", "/onboarding/thing-types/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+An interface is a reusable set of fields, for example **Temperature Sensing** with the measures `temperature` and `humidity`. A thing type that **implements** an interface has those fields. Several thing types, from different manufacturers, can implement the same interface.
+
+That is what makes interfaces useful:
+
+- A **Smart dashboard** is built on an interface, not on one device. It shows every thing whose thing type implements the interface. Add a new device and it appears without any dashboard work.
+- Devices send values under different names. You map each interface field to the field a thing type really has, so one dashboard works for all of them.
+
+You do not need interfaces to get data into IoT Breeze. They pay off once you have more than a handful of devices of different kinds.
+
+Open **Settings › Onboarding › Interfaces**.
+
+## Shipped and own interfaces
+
+The tabs above the list separate the interfaces:
+
+| Tab | Meaning |
+| --- | --- |
+| **All** | Every interface you can use. |
+| **Own** | Interfaces your tenant created. You can edit them. |
+| **Preshipped** | Interfaces that come with the platform. They are read-only. You can attach them, compare versions and update to a newer one. |
+
+The preshipped interface **Temperature Sensing** has two measures:
+
+| Field | Unit | Also known as |
+| --- | --- | --- |
+| `temperature` | °C | `temp` |
+| `humidity` | % | `rh`, `relativeHumidity` |
+
+<Screenshot
+  page="user/onboarding/interfaces"
+  id="01-interfaces-list"
+  route="/onboarding/interfaces"
+  state="Interfaces list, Preshipped tab selected, showing Temperature Sensing with its version, fields and implemented-by count"
+  alt="Interfaces list with the preshipped Temperature Sensing interface"
+/>
+
+:::tip Starter dashboards
+The **Temperature sensing** pack adds a ready-made dashboard and a **Room overview** canvas for this interface. Install it under **Administration › Tenant Settings › Packs**. {/* TODO: link to the tenant settings page */}
+:::
+
+## Use an interface on a thing type
+
+1. Open **Settings › Onboarding › Thing Types** and select your thing type.
+2. Open **Schema › Interfaces**.
+3. Select **Attach interface**, pick the interface from **Attachable interfaces** and select **Attach**.
+
+The attached interface appears under **Attached interfaces**. A pinned version is shown for it, because your thing type keeps using the version you attached until you update it. Your own fields stay under **Own capabilities**.
+
+If your thing type already has fields with the same names, the button reads **Attach & absorb**. The interface's definition then replaces your own fields. The interface itself does not change.
+
+When your thing type has fields that match an interface, a **Suggested** card offers it. Select **Apply** to attach it.
+
+<Screenshot
+  page="user/onboarding/interfaces"
+  id="02-attach-interface"
+  route="/onboarding/thing-types/:id"
+  state="Thing type Schema tab, Interfaces pane, with the Attach interface dialog open and Temperature Sensing selected"
+  alt="Attaching an interface to a thing type"
+/>
+
+### Map fields that have other names
+
+Your device may send `temp_c` where the interface says `temperature`. You do not have to rename anything on the device.
+
+1. In the attached interface, open **Field mapping**.
+2. Find the interface field in the **Interface field** column.
+3. In **This type's field**, choose the field of your thing type that serves it (**Serve temperature from**).
+
+The row now reads that the interface field is served by your field. A line such as **2 served from another field** summarises it. Select **Remove mapping** to undo it. **Mapped only** shows just the mapped rows.
+
+:::warning Same name, different value
+If your type has its own field with the interface field's name, the mapping wins. The own field's value is never read. IoT Breeze warns you in the row.
+:::
+
+### Update or detach
+
+| Action | What it does |
+| --- | --- |
+| **Compare** | Shows what differs between your pinned version and the newest one. |
+| **Update to v2** | Pins the newer version. Shown when **v2 available** appears. A pinned version that is current says **Up to date**. |
+| **Generate dashboard** | Creates a Smart dashboard from the interface. See [below](#smart-dashboards). |
+| **Detach** | Removes the interface from the thing type. The dialog says how many thing types and things it affects. |
+
+## Smart dashboards
+
+A Smart dashboard picks its things by interface. Two ways to get one:
+
+- On a thing type, select **Generate dashboard** for an attached interface (it is also offered right after you attach). IoT Breeze creates a **Smart dashboard** with one widget per field of the interface. It becomes an ordinary dashboard that you can edit.
+- Create one yourself in **Monitoring › Dashboards**: {/* TODO: link to the dashboards track */} choose a **Smart dashboard** and pick the interface.
+
+Because the dashboard is tied to the interface, it covers every current and future thing whose thing type implements it. Fields you mapped are read from the right measure.
+
+## Create your own interface
+
+1. Select **New interface**.
+2. Enter **Display name**, **Name** and **Description**, and save. The interface page opens with the state **Not published**.
+3. Select **Edit schema** and use **Add capability** to add measures and properties.
+4. Select **Publish draft**, describe the change in **Changelog** and confirm.
+
+The interface page has the tabs **Overview**, **Schema**, **Versions** and **Implemented by**. The last one lists the thing types that implement it.
+
+How versions work is the same as for [thing types](./thing-types.mdx#drafts-publishing-and-versions):
+
+- Changing a name, type, unit or range starts a draft that goes live when you publish it. Descriptions and aliases save in place.
+- A published version is immutable. Thing types stay on the version they pinned.
+- **Restore as new draft** copies an old version into a new draft.
+- A new interface is **Experimental**. **Mark as stable** tells the people who implement it that the schema is settled. You cannot go back to experimental.
+
+An interface that is implemented by thing types cannot be deleted. Detach it everywhere first.
+
+### Move fields from a thing type into an interface
+
+If a thing type already has good fields, you do not have to retype them. On the thing type, open **Schema › Interfaces** and select **Move to interface**. Select the published own fields to move. Create a **New interface** from them or publish them as the next version of an **Existing interface**. The thing type pins the new version, so its schema does not change. Other implementers stay on their pinned version and see **Update available**.
+
+## Next steps
+
+- [Create a thing](./things.mdx) of the thing type.
+- Build a dashboard on the interface {/* TODO: link */}: **Monitoring › Dashboards**.

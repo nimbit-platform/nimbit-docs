@@ -1,0 +1,125 @@
+---
+id: tenant-settings
+title: Tenant settings
+sidebar_position: 8
+description: Name, features, theme and branding, email sending and usage statistics of your tenant.
+app:
+  routes: ["/tenant-settings"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+**Tenant Settings** holds what applies to everyone in your tenant. It has tabs. This page covers **General**, **Features**, **Theme**, **Email** and **Statistics**. For **Schedules**, **Data**, **Packs** and **Connections** see [Data, packs and connections](./tenant-data-and-connections.mdx).
+
+:::info What you need
+Permission to update the tenant. The built-in **Admin** role has it. **Manager**, **Modeler** and **Viewer** can only read the tenant and do not see the entry.
+:::
+
+Open **Administration › Tenant Settings**. Changes on the **General**, **Features**, **Theme** and **Email** tabs are saved together. A badge shows **Unsaved changes**. Select **Save** when you are done.
+
+**Reset to default** resets the theme colours, branding images and email settings to their defaults. It asks for confirmation and cannot be undone.
+
+<Screenshot
+  page="user/administration/tenant-settings"
+  id="01-tabs"
+  route="/tenant-settings"
+  state="Tenant Settings with the General tab open and the tab row visible: General, Features, Theme, Email, Statistics, Schedules, Data, Packs, Connections"
+  alt="Tenant Settings page with its tabs"
+/>
+
+## General
+
+| Setting | What it does |
+| --- | --- |
+| **Name** and **Tenant Id** | Read only. |
+| **Display name** | The name people see in the app. |
+| **Time zone** and **Language** | The defaults for the tenant. |
+| **Allowed hosts** | Sites that may be embedded, for example as web pages on canvases. One host per line, such as `grafana.example.com`, or `*.example.com` for all subdomains. Leave empty to allow none. |
+| **Branding Images** | Logos and images, see below. |
+
+### Branding images
+
+Upload optional images for your organisation: a **Favicon**, a logo, a light-mode logo, a dark-mode logo and a **Cover image**. The default logo is used when a mode-specific logo is not set.
+
+<Screenshot
+  page="user/administration/tenant-settings"
+  id="02-general"
+  route="/tenant-settings"
+  state="General tab with display name, time zone, language, allowed hosts and the branding images section with a logo uploaded"
+  alt="General tab with regional settings and branding images"
+/>
+
+## Features
+
+Optional parts of the app, switched on or off for everyone in the tenant.
+
+| Feature | Effect |
+| --- | --- |
+| **Dashboard hierarchy** | Group dashboards in a tree of sites, buildings or areas. Adds a **Table** / **Hierarchy** switch to the Dashboards page. If you turn it off, the tree is hidden. Its nodes and filed dashboards come back when you turn it on again. |
+| **Dashboards open in** | Where Dashboards opens for someone who has not used it yet: **Table** or **Hierarchy**. After that it opens where each person left it. |
+| **Ask Nimble and Knowledge** | The AI assistant and the Knowledge section. May be unavailable on your installation. A feature can also show **On until** a date. Nimbit can extend it. |
+
+## Theme
+
+1. Under **Tenant default appearance**, choose **Light** or **Dark**. It applies to people who have not chosen a personal preference. They can still override it with the theme control in the header.
+2. Use the theme editor to change colours, layout and shadows for each colour mode. Select a preview to edit that mode.
+3. Select **Save**.
+
+<Screenshot
+  page="user/administration/tenant-settings"
+  id="03-theme"
+  route="/tenant-settings"
+  state="Theme tab with Tenant default appearance set to Light and the theme editor showing light and dark previews"
+  alt="Theme tab with default appearance and colour editor"
+/>
+
+## Email
+
+Choose how IoT Breeze sends email, for example notifications and report mails.
+
+| Provider | When to use it |
+| --- | --- |
+| **System default** | No setup. Mail goes out from the platform mail server. |
+| **Microsoft 365** | Sign in with Microsoft. OAuth2, no credentials to store. |
+| **Custom SMTP** | Your own mail server. |
+
+### Custom SMTP
+
+1. Choose **Custom SMTP** and turn on **Enable custom SMTP**.
+2. Enter **Host**, **Port** (587 by default), **Username**, **Password** and **From**.
+3. Choose the security: **STARTTLS** or **SSL/TLS**.
+4. Select **Save**.
+
+<Screenshot
+  page="user/administration/tenant-settings"
+  id="04-email-smtp"
+  route="/tenant-settings"
+  state="Email tab with Custom SMTP chosen and host, port, username, from filled in, password masked"
+  alt="Email tab with custom SMTP fields"
+/>
+
+### Microsoft 365
+
+1. Choose **Microsoft 365**.
+2. If asked, **Save** first. The sign-in only works on saved settings.
+3. Select **Sign in with Microsoft** and approve.
+4. Optional: enter a **Shared mailbox address** to send from it.
+
+To switch to another provider, **Sign out** of Microsoft first.
+
+### Test the setup
+
+Under **Send a test mail**, send a mail with the current configuration. You need an enabled provider first.
+
+## Statistics
+
+Read only. Shows the data your tenant stores: the **Row Count** of measurements and their **Storage** per day, for **Yesterday** and the **Last 30 Days**, and the total size of files in storage. Before any measurement arrives it says **No data available**.
+
+<Screenshot
+  page="user/administration/tenant-settings"
+  id="05-statistics"
+  route="/tenant-settings"
+  state="Statistics tab with row count and storage figures and a 30 day chart"
+  alt="Statistics tab with row count, storage and 30-day history"
+/>
+{/* TODO: verify the exact layout of the Statistics tab (MeteringTabTenant.tsx) */}

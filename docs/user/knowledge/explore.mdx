@@ -1,0 +1,113 @@
+---
+id: explore
+title: Explore
+sidebar_position: 1
+description: Browse your sites, halls and things, search every record, and follow how they connect.
+app:
+  routes: ["/knowledge/explore"]
+  tour: explore-and-ask
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+**Knowledge › Explore** shows what is in your graph. You can browse by place, list the records of one type, or draw how records connect.
+
+## The three views
+
+A switch at the top changes the view. The record you selected stays selected.
+
+| View | Use it to |
+| --- | --- |
+| **Hierarchy** | Walk your sites, plants, halls and lines, and see what is located in each. |
+| **Table** | List the records of one type, for example all `Thing` records. |
+| **Graph** | Draw a record and what it is connected to. |
+
+Press `/` to jump to the search box. Search finds records of every type by name or value. By default it searches the words you type. Select **Search semantically** to also find related wording.
+
+<Screenshot
+  page="user/knowledge/explore"
+  id="01-views"
+  route="/knowledge/explore"
+  state="Explore with the view switch (Hierarchy, Table, Graph) and the search box visible"
+  alt="The Explore header with the three views and the search box"
+/>
+
+## Browse by place
+
+1. Open **Knowledge › Explore**. **Hierarchy** shows **All sites**: connectivity of every located thing, and thing events from the last hours. Sites with the most offline things come first.
+2. Select a site, plant, hall or line in the tree.
+3. Read its panel. The tabs are:
+
+| Tab | Shows |
+| --- | --- |
+| **Insights** | A summary of its things and events, data activity over the last 24 hours, and **Things that need a look** (offline, reporting errors, or silent). |
+| **Things** | The things located here, offline first. |
+| **Visualizations** | Dashboards and canvases assigned to this level or below it. |
+| **Documents** | Manuals and drawings about this level. |
+
+:::tip Keyboard
+In the tree, arrow keys move and open levels, Enter selects, Shift+F10 opens the row menu and G shows the row in the graph.
+:::
+
+<Screenshot
+  page="user/knowledge/explore"
+  id="02-level-panel"
+  route="/knowledge/explore?sel=:level"
+  state="A hall selected in the tree, Insights tab open with data activity and Things that need a look"
+  alt="Level panel with the Insights tab of a hall"
+/>
+
+## Follow connections in the graph
+
+1. Open a record and select **Show in graph**. In Table view, you can also tick rows and choose **Show in graph**.
+2. Double-click a node to bring in its neighbours. Right-click it for more: **Expand one hop**, **Focus here**, **Pin in place**, **Hide this node**.
+3. Open **Graph controls** to hide node types or relations, change the **Layout** (Organic, Radial, Tiered, Tree) and **Group by**.
+4. Use **Undo**, **Redo** and **Fit** to step back or see everything.
+
+The graph opens on a context. If it says **Nothing on the canvas**, pick rows in Table, open a node from the hierarchy, or open a record from an Ask Nimble answer.
+
+<Screenshot
+  page="user/knowledge/explore"
+  id="03-graph"
+  route="/knowledge/explore?view=graph"
+  state="Graph view with one hall expanded one hop, Graph controls open on the left"
+  alt="Graph with connected nodes and the Graph controls legend"
+/>
+
+:::info Query
+The **Query** panel in Graph view runs a read-only query (JSON, or SurrealQL) with your own permissions. It adds rows with an `id` to the canvas. Results stop at 500 rows.
+:::
+
+## What you can change
+
+With permission to edit Knowledge, Explore is also where you build the graph:
+
+| Task | How |
+| --- | --- |
+| Add a top level | **Add site** above the tree. |
+| Add a level below | The level's menu, **Add level below**. |
+| Rename or move a level | The level's menu, or drag it onto another level. Everything below it moves too. |
+| Place things | On the **Things** tab, **Add things…**. A thing placed elsewhere moves here. |
+| Place many things | In Table, select them and choose **Place in level**. |
+| Assign a dashboard or canvas | On the **Visualizations** tab, **Assign**, or create a new Smart dashboard for the level. |
+| Add documents | On the **Documents** tab, **Add documents**, or attach from Files. |
+| Relate records | Open a record, then add a relation on its **Relations** tab. |
+| Decide who sees a record | Open a governed record such as an asset; use its **Access** panel to add groups or users. |
+
+:::warning Hierarchy only needs a level type
+**Add site** needs a type that has the **Hierarchical** trait. If it says **Create a level type first**, create one in [Data model](./data-model.mdx).
+:::
+
+Documents you add are stored in a folder in Files, where everyone in the tenant can open them. Ask Nimble reads PDF, Office, text, Markdown, CSV and HTML files up to 50 MB, once they are indexed.
+
+<Screenshot
+  page="user/knowledge/explore"
+  id="04-add-things"
+  route="/knowledge/explore?sel=:level&tab=things"
+  state="Add things to a level dialog with a few things ticked"
+  alt="The Add things dialog for a level"
+/>
+
+## Next
+
+[Ask Nimble](./ask-nimble.mdx) answers questions about what you see here.

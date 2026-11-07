@@ -1,0 +1,40 @@
+---
+id: state
+title: "Stat"
+sidebar_position: 5
+description: "A value with colours for its ranges."
+app:
+  routes: ["/dashboards/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+A value with colours for its ranges. Shows the current value of one or more measures, optionally with a sparkline.
+
+This widget reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own. See [Smart dashboards](../smart-dashboards.mdx#follow-or-pin).
+
+<Screenshot
+  page="user/dashboards/widgets/state"
+  id="01-state"
+  route="/dashboards/:id"
+  state="Stat widget stacking three measures with sparklines"
+  alt="The Stat widget on a dashboard"
+/>
+
+## Settings
+
+Add the widget with **Add widget**, in the group **State**. Select **Help** in the setup to read about its settings in the app.
+
+| Setting | What it does |
+| --- | --- |
+| **Measures** | One or more measures. Each row has a thing, a measure, an icon and an icon colour. |
+| **Sparkline** | A small trend behind each value: off, 24 h, 7 d or 30 d. |
+| **Display mode** | **Carousel** cycles through measures; **Stacked** shows all at once. |
+| **Orientation** | Horizontal or vertical (stacked only). |
+| **Compact number, Alignment, Text size** | How the value is drawn. |
+
+Every widget also has a **Title** and, where it shows a card, **Appearance** settings for colours. Time-based widgets follow the dashboard's [time range](../time-range-and-filters.mdx) unless you set their own.
+
+Its card in the picker is named **Stat**.
+
+Back to [all widgets](./index.mdx).
