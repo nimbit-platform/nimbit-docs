@@ -27,7 +27,7 @@ Define the values a kind of device sends and the fixed facts it has, and publish
    | **Name** | The technical name. It is filled in from the display name. It must be unique in your tenant, can't be changed later, and may use letters, digits and underscores. It can't start with a digit or an underscore, and can't end with an underscore. |
    | **Connector** | The service the devices send data through, usually **Nimbit**. You see the connectors your tenant has switched on. |
    | **Description**, **Tags** | Optional. |
-   | **Auto Schema Evolution** | Leave it off. See [Drafts, publishing and versions](./drafts-and-versions.mdx#auto-schema-evolution-does-not-use-the-draft). |
+   | **Auto Schema Evolution** | Leave it off unless devices should add their own fields. See [Drafts, publishing and versions](./drafts-and-versions.mdx#auto-schema-evolution-does-not-use-the-draft). |
    | **Quantile Profile Generation** | Calculates percentile profiles regularly, used for anomaly detection. Leave it off unless you need that. |
 
 3. Select **Save**. The thing type page opens on **Published · v1**.
@@ -52,7 +52,7 @@ The header shows **Published · v2**. The **Versions** tab lists v2 as **Publish
 
 ## If it doesn't work
 
-- **The Name is rejected**: a thing type name allows letters, digits and underscores, and can't start with a digit or underscore. A measure or property name allows only lowercase letters, digits, hyphens and underscores, and can't start with a digit or hyphen, or end with an underscore.
+- **The Name is rejected**: a thing type name allows letters, digits and underscores, and can't start with a digit or underscore or end with an underscore. A measure or property name allows only lowercase letters, digits, hyphens and underscores, and can't start with a digit or hyphen, or end with an underscore.
 - **Save is disabled in a measure form**: with **Ignore outliers** on, both **Min value** and **Max value** are required, and the maximum must be greater than the minimum.
 - **A value arrives but isn't stored**: the schema doesn't know it yet. Check that you published, and that the measure's **Name** matches what the device sends. Without **Auto Schema Evolution**, unknown values are dropped.
 - **There is no Publish button**: it appears only while a draft exists, so make an edit first. If you can't edit the schema at all, your role lacks permission to edit thing types.

@@ -7,7 +7,7 @@ app:
   routes: ["/onboarding/thing-types/:id", "/onboarding/interfaces/:id"]
 ---
 
-Thing types and interfaces both keep their schema in numbered versions. Your edits to measures and properties go into a draft that nothing uses. When you publish the draft it becomes the live version, and the version it replaces is archived. This lets you change a schema in several steps without breaking the devices that depend on it.
+Thing types and interfaces both keep their schema in numbered versions. Your edits to measures and properties go into a draft that nothing uses. When you publish the draft it becomes the live version, and the version it replaces is archived.
 
 ```mermaid
 stateDiagram-v2
@@ -56,8 +56,6 @@ An interface adds one step. A thing type keeps using the interface version it pi
 ## Auto schema evolution does not use the draft
 
 With **Auto Schema Evolution** on, a field that a device sends and the schema doesn't know is added to the thing type's published schema. This creates a new published version straight away and marks the field **auto-created**. If you have a draft open, the new field is added to it too, and your own edits stay. With it off, unknown fields are dropped.
-
-{/* TODO(product): The thing type Overview card says new fields are added "to the draft for review". The code (Evolution.service.ts calling updateSchema, which publishes) adds them to the published schema. This page follows the code. Confirm. */}
 
 ## Limits
 

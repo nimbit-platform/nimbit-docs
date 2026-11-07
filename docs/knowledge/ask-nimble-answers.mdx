@@ -10,7 +10,7 @@ app:
 Ask Nimble does not answer from general knowledge. It looks things up in your tenant, as you, and writes an answer only from what it found. Some answers need no AI model at all. The rest use a model, but a set of checks stops numbers, units and citations that the evidence does not back.
 
 ```mermaid
-flowchart LR
+flowchart TB
   Q[Your question] --> P{Known pattern?}
   P -->|yes, no model call| T[Run the lookup directly]
   P -->|no| L[Model picks lookups, up to 6 rounds]

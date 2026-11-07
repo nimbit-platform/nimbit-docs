@@ -56,6 +56,28 @@ Creates the confirmed proposals, thing types first and then their things, and re
 
 `run` streams with the stored mapping until stopped with Ctrl-C or SIGTERM. It writes `stats.json` every 30 seconds. `serve` is what the container image starts. It also discovers at start and every `agent.discovery_interval`, applies after every discovery and confirmation, and serves the HTTP API and web UI on `[server] listen`. It reloads when the file changes, on SIGHUP, and at `POST /api/v1/agent/reload`. Flag: `-config`.
 
+### Run as a systemd service
+
+Without a container, copy the binary to `/usr/local/bin/periscope` and install this unit as `/etc/systemd/system/periscope.service`:
+
+```ini
+[Unit]
+Description=Periscope edge connector
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/local/bin/periscope serve -config /etc/periscope/periscope.toml
+StateDirectory=periscope
+Restart=on-failure
+DynamicUser=yes
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Run `periscope enroll -config /etc/periscope/periscope.toml -code <code>` once before the first start.
+
 ## verify
 
 Asks nbq, the platform's query service, whether every applied thing received values in a window that ends now. See [Verify that data arrived](./verify.mdx).

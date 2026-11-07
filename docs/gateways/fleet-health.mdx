@@ -51,7 +51,7 @@ A healthy gateway is **Online**, shows **Messages per minute** above zero while 
 
 ## If it doesn't work
 
-- **No traffic counted yet**: the platform hasn't stored a message from this gateway. Check that the gateway is **Online** first. For an MQTT device, check its topics in [Send data through one MQTT gateway](./mqtt-gateway.mdx).
+- **No traffic counted yet**: the platform hasn't stored a message from this gateway. Check that the gateway is **Online** first. For an MQTT device, check its topics in [Send data for many devices through one MQTT gateway](./mqtt-gateway.mdx).
 - **Online, but a thing shows no data**: look at the discard reasons. `not_member` means the thing isn't assigned to this gateway, `unknown_thing` that it or its thing type doesn't exist, `invalid` that the message failed validation, `identity_mismatch` that the message names another organization or thing than its connection.
 - **Offline, but the box is running**: a Periscope gateway needs its health reporter running and a valid key; open **Access & keys** for **Last sign-in**. An MQTT device must publish to its **Status topic** every 5 minutes.
 - **Waiting for onboarding**: the box hasn't enrolled with its code yet, or the code expired. See [Add a gateway](./add-a-gateway.mdx).

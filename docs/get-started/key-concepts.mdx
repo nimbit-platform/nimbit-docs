@@ -40,9 +40,9 @@ flowchart LR
 
 ## Getting data in
 
-**[Gateway](../gateways/index.mdx).** A box or service on site that connects devices that cannot reach IoT Breeze themselves and forwards their data. The platform ingests it through tsflux, the ingestion service, and reads it back through nbq, the query engine.
+**[Gateway](../gateways/how-gateways-work.mdx).** One box on site that speaks for many devices with a single credential. It may send only for the things assigned to it. Data enters the platform through tsflux, the ingestion service, and is read back through nbq, the query engine.
 
-**[Periscope](../gateways/index.mdx).** The edge agent that runs on a gateway. It discovers OPC UA, Sparkplug, Modbus and MQTT sources and streams them into IoT Breeze.
+**[Periscope](../gateways/periscope/index.mdx).** The edge agent that runs on a machine next to your equipment. It discovers OPC UA, Sparkplug B, MQTT, Modbus, S7 and HTTP sources and streams their values into IoT Breeze.
 
 ## Seeing and reacting
 

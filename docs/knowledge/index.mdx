@@ -26,18 +26,7 @@ flowchart LR
   G --> A[Ask Nimble]
 ```
 
-## Who can use what
-
-Knowledge has its own permission, separate from the permissions for things and dashboards. Everyone sees only the records they are allowed to open.
-
-| You want to | Permission needed | Built-in roles |
-| --- | --- | --- |
-| Browse in **Knowledge › Explore** | Read Knowledge | Viewer, Modeler, Manager, Admin |
-| Ask in **Knowledge › Ask Nimble** or with Ctrl/⌘+I | Read and run Knowledge | Viewer, Modeler, Manager, Admin |
-| Change the graph, the data model, sources, links and the reconciliation schedule | Edit Knowledge | Modeler, Manager, Admin |
-| Register models, create or rotate credentials | Edit Knowledge, plus the admin or modeler role; credentials need the tenant admin | Admin, Modeler (models); Admin (credentials) |
-
-Without the edit permission, **Settings › Knowledge setup** is hidden from the menu. You can still read a setup page if you open its link. See [Roles and permissions](../administer/roles.mdx).
+Knowledge has its own permission, separate from things and dashboards. Everyone sees only the records they may open. Browsing and asking need read and run access, which every built-in role has. Changing the graph, data model, sources and schedule needs edit access (Modeler, Manager, Admin), and credentials need Admin. See [Roles and permissions](../administer/roles.mdx).
 
 ## Understand
 

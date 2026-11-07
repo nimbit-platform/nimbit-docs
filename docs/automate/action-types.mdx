@@ -7,14 +7,14 @@ app:
   routes: ["/automation/rule-designer/:id", "/manage/event-types/:id", "/onboarding/thing-types/:id", "/onboarding/things/:id"]
 ---
 
-Each place that runs actions offers a different list. This page gives the list per place, then the fields of each type.
+Each place that runs actions offers a different list. The list per place comes first, then the fields of each type.
 
 ## Which place offers which type
 
 | Place | Action types | Runs |
 | --- | --- | --- |
 | **Rule**, **Actions** node | **Notification**, **Notification channel**, **Email**, **Webhook**, **Event**, **Update Measures** | When the rule's trigger fires |
-| **Event type**, **Actions** tab | **Notification**, **Notification channel**, **Email**, **Webhook** | When an event of that type is created |
+| **Event type**, **Actions** tab | **Notification**, **Notification channel**, **Email**, **Webhook** | When an event of that type is created, except events that close an episode. A new action starts switched off: turn on **Active**. |
 | **Thing type** or **thing**, **Actions** tab | **Webhook**, **Azure C2D**, **MQTT** | When a person, a dashboard or the API fires it |
 
 **Update Measures** is available only when the rule's **Start** node uses **Thing type**. Severity is one of **Information**, **Warning**, **Error** or **Critical**.

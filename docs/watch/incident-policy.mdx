@@ -55,7 +55,7 @@ An automation runs an existing action once when an incident of the policy change
 
 To escalate, add a second automation with **Unacknowledged for**, set **Wait** to 15 minutes, and pick a louder action, such as a message to another channel.
 
-An automation skips an action that is switched off. {/* TODO(product): How does someone create an action for an incident automation that does not also run on every event of an event type? The pickers only offer existing actions, and the event type page is the only place found where a Notification channel or Email action can be added. An action on an event type runs on every event of that type. */}
+An automation skips an action that is switched off, and every action you create on an event type starts switched off. Turn on **Active** in the event type's **Actions** tab first. {/* TODO(product): How does someone create an action for an incident automation that does not also run on every event of an event type? The pickers only offer existing actions, and the event type page is the only place found where a Notification channel or Email action can be added. An action on an event type runs on every event of that type. */}
 
 ## Add the statuses and reasons your team needs
 
