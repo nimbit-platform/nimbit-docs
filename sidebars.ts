@@ -1,3 +1,5 @@
+import { existsSync } from "fs";
+import { join } from "path";
 import type { SidebarsConfig } from "@docusaurus/plugin-content-docs";
 
 /**
@@ -5,7 +7,7 @@ import type { SidebarsConfig } from "@docusaurus/plugin-content-docs";
  * Each folder has an index.mdx (the section landing page, linked from the
  * category label) and its pages. See docs-spec/SITEMAP.md.
  */
-export const DOC_SECTIONS = [
+const DOC_SECTIONS = [
   { dir: "connect", label: "Connect devices" },
   { dir: "gateways", label: "Gateways and edge" },
   { dir: "model", label: "Model your data" },
@@ -22,7 +24,8 @@ const sidebars: SidebarsConfig = {
 
   docsSidebar: [
     { type: "doc", id: "index", label: "Overview" },
-    ...DOC_SECTIONS.map(({ dir, label }) => ({
+    // A section without a landing page is not ready yet; leave it out.
+    ...DOC_SECTIONS.filter(({ dir }) => existsSync(join(__dirname, "docs", dir, "index.mdx"))).map(({ dir, label }) => ({
       type: "category" as const,
       label,
       collapsed: true,

@@ -1,0 +1,94 @@
+---
+title: A rule doesn't fire
+description: Find out why a rule stays quiet, from inactive rules and missing triggers to toggle state, conditions and switched-off actions.
+sidebar_position: 4
+type: how-to
+app:
+  routes: ["/automation/rule-designer", "/automation/rule-designer/:id", "/monitor/events"]
+---
+
+Find out why a rule does not do what you expect when data arrives. How rules, triggers and actions fit together is in [Rules, actions and reports](../automate/rules-actions-reports.mdx).
+
+## Symptoms
+
+- A value passes your limit and no notification, event, email or webhook follows.
+- The rule fired once and never again.
+- The rule fires, but one of its actions does nothing.
+
+## Check in this order
+
+### 1. The rule is active and the change is published
+
+Open **Automation › Rule Designer**. The list shows **Active** or **Inactive**.
+
+- **Inactive**: open the rule and select **Activate**. If **Activate** is disabled, the rule has no published version yet. Select the check mark in the floating bar first.
+- You edited an active rule but the old behaviour continues: edits are a draft until you select the check mark, which reads **Apply draft** once a version exists. One version of a rule is active at a time.
+
+### 2. The flow is valid and complete
+
+Hover the validity icon next to the rule name. It must read **The flow is Valid**, otherwise it says what is missing.
+
+A rule is a chain of **Start**, **Condition**, **Trigger** and **Actions**. Actions run only after a trigger. A flow without a **Trigger**, or with a **Condition** that is not linked to one, is invalid and the check mark stays disabled.
+
+### 3. The data is in scope
+
+On **Start**, check the thing type or the tags you chose. The thing that sent data must be of that thing type. Then check that its message carries the measure the condition reads. A message without the measure never matches a row. See [A device shows no signal](./no-signal.mdx) if no data arrives.
+
+### 4. The trigger lets it fire
+
+The trigger turns "condition met" into "fire". Check which one you chose.
+
+| Trigger | Fires | Typical surprise |
+| --- | --- | --- |
+| **Default** | Every match | Too many runs, not too few. |
+| **Toggle**, **In** | Once, when the condition changes from not met to met | The condition has been met since before you activated or changed the rule, or is still met from the last reading. It fires again only after a reading that does not meet it. |
+| **Toggle**, **Out** | Once, when the condition changes from met to not met | Nothing happens while the condition stays met. |
+| **Toggle**, **Every** | On each change in either direction | |
+| **Sleep** | At most once per period | Matches inside the period are skipped. |
+
+For the other trigger types, such as holding for a duration, read the settings on the **Trigger** node.
+
+To test a **Toggle**, send a value that does not meet the condition, then one that does. See [Simulate a device](../connect/simulate.mdx).
+
+### 5. The condition matches
+
+Open the **Condition** node.
+
+- **Advanced** is selected. Only the selected tab is evaluated, so the **Simple** rows are ignored.
+- **Rising** and **Falling** answer false until the stored history covers the whole **Window**. A new thing, or a window longer than its history, does not fire.
+- Rows joined with **and** all have to hold. A measure of another type, for example a string compared with **Greater than**, never matches.
+- In an expression, a read of a missing field returns `0`, `""` or `false`. Guard it with the matching `Has` call.
+- Window functions read numeric samples only.
+
+**Test** on the **Advanced** tab checks the expression against a sample payload, without history. Operators and functions: [Rule conditions and functions](../automate/conditions.mdx).
+
+### 6. The actions are on and complete
+
+The rule fires, but nothing reaches you:
+
+- **Event** action: the rule created an event. Open **Monitoring › Events** and look for it. You may not see it if the event type's **Groups** do not include a group of yours. Then check the **Actions** tab of that event type under **Configuration › Event Types**. An action added there is created with its **Active** switch off. An action that is off does not run.
+- **Notification**: **Users and groups** must contain you or a group you belong to.
+- **Webhook**: a failed call is recorded as an event. A `405` means the **Method** is wrong, `401` or `403` the **Authorization**, and a timeout that the receiver did not answer in time. See [Call another system from a rule](../automate/webhook-from-rule.mdx).
+- **Notification channel**: check the channel is enabled and its filters let the message through. See [An alert email never arrives](./email-not-arriving.mdx).
+
+An event that closes an episode, such as a thing coming back online, runs no event type actions.
+
+### 7. Where an evaluation shows
+
+{/* TODO(product): Where can a user see that a rule evaluation failed or was skipped (condition not met, invalid expression)? The code writes rule evaluation events whose detail depends on enableDetailedRuleEvaluation and logs other errors on the server. Should the docs promise that users can see failed evaluations? */}
+
+A rule that fires with an **Event** action leaves an event with the display type **Rule evaluation**. It shows the rule, its conditions and the values that triggered it. Failed action runs are events as well.
+
+## Still stuck?
+
+Write to info@nimbit.de with:
+
+- Your tenant name, the rule's name and whether it is **Active**.
+- The thing that should have fired it, and the time of the reading, with its time zone.
+- The reading you sent, for example `temperature` of `26`.
+- A screenshot of the **Condition** and **Trigger** nodes.
+
+## Related
+
+- [Alert when a value crosses a limit](../automate/threshold-alert.mdx) · [Action types](../automate/action-types.mdx)
+- [Event types](../watch/event-types.mdx)
