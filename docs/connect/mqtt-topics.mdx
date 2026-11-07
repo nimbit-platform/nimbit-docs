@@ -1,13 +1,13 @@
 ---
 title: MQTT topics and client ID
-description: The broker address, credentials, client ID, topics, QoS and permissions for devices that connect over MQTT.
-sidebar_position: 9
+description: The broker address, credentials, client IDs, topics, QoS and permissions for devices and gateways that connect over MQTT.
+sidebar_position: 4
 type: reference
 app:
   routes: ["/onboarding/things/:id"]
 ---
 
-Everything a device needs to know to connect to the IoT Breeze MQTT broker. How to send a message: [Send data over MQTT](./mqtt.mdx).
+Everything a device or a gateway needs to know to connect to the IoT Breeze MQTT broker. How to send a message: [Send data over MQTT](./mqtt.mdx). How a gateway sends: [Send data for many devices through one MQTT gateway](../gateways/mqtt-gateway.mdx).
 
 ## Broker
 
@@ -52,6 +52,28 @@ Two connections with the same client ID replace each other. Use a suffix when on
 `<deviceId>` is the thing's internal ID as **Connection info** shows it, not the **Thing Alternate ID** on the thing page.
 
 A device can publish only to its own telemetry topic and subscribe only to its own `cmd` and `error` topics. Anything else is refused.
+
+## Gateways
+
+A gateway connects with its own credential and sends for the things assigned to it. Its values come from the gateway's connection info, not from a thing's.
+
+| Item | Value |
+| --- | --- |
+| Username | The base64url encoding of `<tenantId>/gateway:<gatewayId>`. |
+| Password | The gateway's password, or a gateway token. A gateway token lives at most ten minutes. |
+| Client ID | `<tenantId>:gateway:<gatewayId>`, optionally with `:<suffix>`. Device credentials can't take this form. |
+| Session | Ends after at most ten minutes. The gateway reconnects with the same credential. This is how a revoked gateway is cut off. |
+
+| Direction | Topic | Meaning |
+| --- | --- | --- |
+| Publish | `tenant/<tenantId>/gateway/<gatewayId>/device/<thing>/telemetry` | One [message](./message-format.mdx) for one thing. `<thing>` is the thing's ID or alternate ID. |
+| Publish | `tenant/<tenantId>/gateway/<gatewayId>/telemetry` | A gateway batch: a JSON array of messages, each naming its thing in `id`. |
+| Subscribe | `iot/tenant/<tenantId>/gateway/<gatewayId>/device/+/cmd/#` | Allowed, for commands to things behind the gateway. |
+| Subscribe | `iot/tenant/<tenantId>/gateway/<gatewayId>/device/+/error` | Allowed, for refusal notices. |
+
+A gateway credential can't publish on a thing's own `tenant/<tenantId>/device/<deviceId>/telemetry` topic. The broker acknowledges such a publish at QoS 1 but drops it. A message for a thing that is not assigned to the gateway is discarded and counted on the gateway; see [Check gateway health and traffic](../gateways/fleet-health.mdx).
+
+{/* TODO(product): Commands via a gateway are planned (edge gateways plan D12) but nothing publishes on the gateway cmd topics yet. Document sending commands to things behind a gateway once it lands. */}
 
 ## Delivery
 
