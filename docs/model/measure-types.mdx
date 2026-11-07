@@ -18,7 +18,7 @@ The measure and property forms are the same on a thing type's **Schema** tab and
 | `boolean` | True or false. | Measure form, **Type** |
 | `datetime` | A date and time. Accepted by the platform, but not offered in the **Type** list. | API only |
 
-The property form has no type picker: a property you create in IoT Breeze is a `string`. Changing a measure's type clears the options that no longer apply.
+The property form has no type picker: a property you create in IoT Breeze is a `string`. Changing a measure's type clears **Decimals**, **Min value** and **Max value** where they no longer apply.
 
 ## Measure fields
 
@@ -33,9 +33,9 @@ The property form has no type picker: a property you create in IoT Breeze is a `
 | **Decimals** | `numeric` | How many decimal places to display. |
 | **Ignore outliers** | `numeric` | Drops values outside min and max instead of storing them. Requires **Min value** and **Max value**. |
 | **Min value**, **Max value** | `numeric` | The expected range. |
-| **Min length**, **Max length** | `string` | The same two inputs, as a text length. Whole numbers above 0, up to 10000. |
-| **Offset** | `numeric` | Added to each value before it is stored. Default `0`. |
-| **Factor** | `numeric` | Each value is multiplied by it before it is stored. Default `1`. Use **Offset** and **Factor** to convert units. |
+| **Min length**, **Max length** | `string` | The same two inputs, as a text length. |
+| **Offset** | `numeric` | Applied to each value before it is stored. Default `0`. |
+| **Factor** | `numeric` | Applied to each value before it is stored. Default `1`. Use **Offset** and **Factor** to convert units. |
 | **Show on overview** | Thing types only | Pins the measure to lead the live values on the overview of every thing of the type. With nothing pinned, the overview rotates through all measures. A toggle in the measures list, saved at once. |
 
 A `boolean` measure has only **Display name**, **Name**, **Description** (and **Aliases** on an interface).
@@ -60,20 +60,20 @@ A `boolean` measure has only **Display name**, **Name**, **Description** (and **
 
 | Where | Rule |
 | --- | --- |
-| Measure or property **Name** | 1 to 128 characters. Lowercase letters `a-z`, digits, `_` and `-`. Must not start with a digit, `.` or `-`, and must not end with `_` or `.`. IoT Breeze fills it in from the display name: `Outside Temp` becomes `outside_temp`, and umlauts are transliterated (`ä` becomes `ae`). |
-| Thing type **Name** | Letters, digits and `_`. Must not start with a digit, `.` or `_`, and must not end with `_` or `.`. Unique in the tenant. |
+| Measure or property **Name** | 1 to 128 characters. Lowercase letters `a-z`, digits, `_` and `-`. Must not start with a digit or `-`, and must not end with `_`. IoT Breeze fills it in from the display name: `Outside Temp` becomes `outside_temp`, and umlauts are transliterated (`ä` becomes `ae`). |
+| Thing type **Name** | Letters, digits and `_`. Must not start with a digit or `_`, and must not end with `_`. Unique in the tenant. |
 
-An interface's **Name** is only required to be non-empty in the form.
+The interface form only requires an interface's **Name** to be non-empty.
 
 ## Validation
 
 | Rule | Applies to |
 | --- | --- |
-| **Min value** and **Max value** are both required when **Ignore outliers** is on. | `numeric`, `string` |
+| **Min value** and **Max value** are both required when **Ignore outliers** is on. | `numeric` |
 | **Max value** must be greater than **Min value**. | `numeric`, `string` |
 | A numeric limit is at most 28 characters long. | `numeric` |
 | **Min length** must be greater than 0. | `string` |
-| **Min length** and **Max length** are at most 10000. | `string` |
+| **Min length** and **Max length** are at most 10000, and **Max length** must be greater than 0. | `string` |
 
 ## Suggested units
 
@@ -100,12 +100,12 @@ The **Unit of measure** list is a suggestion list, not a whitelist. Any text you
 
 ## Set outside the forms
 
-These values exist on a measure but have no field in the schema editor. Dashboards and canvases set thresholds on their own widgets.
+These values exist on a measure in the platform but have no field in the schema editor.
 
 | Value | Meaning |
 | --- | --- |
-| `aggregationState` | `aggregated` or `nonAggregated`. Kept as it is when you edit a measure. |
-| `thresholds` | A list of `min`, `max`, `name`, `color` and optional `severity` (`INFO`, `WARNING`, `ERROR`, `CRITICAL`). Kept as it is. |
+| `aggregationState` | `aggregated` or `nonAggregated`. |
+| `thresholds` | A list of `min`, `max`, `name`, `color` and an optional `severity`: `INFO`, `WARNING`, `ERROR` or `CRITICAL`. |
 
 ## Related
 
