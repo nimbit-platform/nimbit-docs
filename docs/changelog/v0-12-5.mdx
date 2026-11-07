@@ -1,0 +1,35 @@
+---
+title: "0.12.5"
+description: "Released 17 August 2026: knowledge ingestion, better Ask Nimble answers and a built-in device simulator."
+type: reference
+date: 2026-08-17
+sidebar_position: 2
+---
+
+Released 17 August 2026. This release adds data ingestion and a type builder to Knowledge, improves Ask Nimble answers, and adds a device simulator.
+
+## New
+
+**Knowledge**
+- Type Builder: define your own types for the knowledge graph.
+- Ingestion: bring in data from outside sources through connectors, map it to your types and monitor each run.
+- MCP clients can now run graph queries (`query_graph`) and read the schema (`describe_schema`).
+
+**Devices**
+- A device simulator is now part of the platform.
+- MQTT clients can use a device or tenant token (JWT) as the password.
+
+## Improved
+
+**Knowledge**
+- Ingestion monitoring shows clearer statuses and reports what actually happened.
+- Ask Nimble: answers now use real telemetry values. When a value is not available, Ask Nimble still answers with what it has.
+- Ask Nimble: general improvements to answer quality.
+- Chat and Explore are more reliable.
+
+**IoT Breeze**
+- The support tooltip now shows the build version.
+
+## Fixed
+
+- Knowledge: workspaces are now set up for tenants whose ID contains hyphens.
