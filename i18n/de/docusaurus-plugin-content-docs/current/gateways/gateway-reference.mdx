@@ -2,10 +2,10 @@
 title: Gateway-Referenz
 description: Gateway-Typen, Felder, Status, Limits, Zustands- und Datenverkehr-Messwerte, Verwerfungs- und Ablehnungsgründe für Gateways in IoT Breeze.
 type: reference
-sidebar_position: 6
+sidebar_position: 9
 app:
   routes: ["/onboarding/gateways", "/onboarding/gateways/:id"]
-translated_from: 2b309f4
+translated_from: 06bddd1
 ---
 
 Nachschlagetabellen für Gateways. Das Modell erklärt [Wie Gateways funktionieren](./how-gateways-work.mdx).
@@ -24,13 +24,13 @@ Jedes Gateway hat ein eigenes Thing mit der Alternate-ID `gateway-<id>`. Es wird
 | Feld | Gilt für | Regeln |
 | --- | --- | --- |
 | **Name** | Beide | 1 bis 100 Zeichen, eindeutig in der Organisation. |
-| **Namespace** | Beide | 1 bis 64 Zeichen aus `a-z`, `0-9`, `_` und `-`. Ohne Angabe folgt er dem Namen. Darf nicht `gateway` sein. Er darf nicht dem Namespace eines anderen Gateways entsprechen, damit beginnen oder ihn mit `-` erweitern. Fest, sobald das Gateway Things hat oder seine Box registriert ist. Umbenennen verschiebt keine bestehenden Things. |
+| **Namespace** | Beide | 1 bis 64 Zeichen aus `a-z`, `0-9`, `_` und `-`. Ohne Angabe folgt er dem Namen. Darf nicht `gateway` sein. Er darf nicht dem Namespace eines anderen Gateways entsprechen, damit beginnen oder ihn mit `-` erweitern. Fest, sobald das Gateway Things hat oder, bei Periscope, seine Box registriert ist. Umbenennen verschiebt keine bestehenden Things. Things eines Periscope-Gateways müssen eine Alternate-ID haben, die ihm entspricht oder mit `<namespace>-` beginnt. Bei einem Gateway vom Typ MQTT-Gerät wird das nicht geprüft. |
 | **Rollen** | Periscope | Die Rollen, mit denen das Gateway handelt, beschränkt auf das, was ein Gateway darf. Vorgabe: **Modellierer**. Sie können keine Rolle mit Berechtigungen vergeben, die Sie selbst nicht haben. |
 | **Code gültig für** | Periscope | 1 Stunde bis 7 Tage. Vorgabe 1 Tag. |
 | **Format der Konfigurationsdatei** | MQTT-Gerät | **Umgebungsdatei (.env)**, **JSON (.json)** oder **eWON-Flexy-BASIC-Parameter (.bas)**. |
 | **Erlaubte Thing-Typen** | Bereich | Bis zu 200. Leer heißt jeder Thing-Typ. |
 | **Thing-Limit** | Bereich | 0 bis 100.000, neben dem eigenen Thing des Gateways. Leer heißt, nur die Limits der Organisation gelten. |
-| **Anlegen von Things** | Bereich | **Offen** legt Things innerhalb des Scopes an. **Gesperrt** legt auf keinem Weg welche an: Daten für ein unbekanntes Thing werden verworfen und gezählt, bestehende Things arbeiten weiter. |
+| **Anlegen von Things** | Bereich | **Offen** legt Things innerhalb des Scopes an. **Gesperrt** legt auf keinem Weg welche an: Daten für ein unbekanntes Thing werden verworfen und gezählt, bestehende Things arbeiten weiter. Gilt nicht, wenn Sie Things zuordnen. Nachrichten eines MQTT-Geräts legen nie Things an. |
 
 ## Status {#statuses}
 
@@ -39,7 +39,7 @@ Jedes Gateway hat ein eigenes Thing mit der Alternate-ID `gateway-<id>`. Es wird
 | **Online** | Das Gateway-Thing ist verbunden: Seine eigene Zustandsmeldung kam in den letzten 15 Minuten an. |
 | **Offline** | Registriert, und das Gateway-Thing ist nicht verbunden oder hat noch keine Zustandsmeldung. |
 | **Wartet auf Onboarding** | Ein Onboarding-Code steht aus. |
-| **Nicht registriert** | Kein gültiger Schlüssel und kein ausstehender Code. |
+| **Nicht registriert** | Periscope: kein gültiger Schlüssel und kein ausstehender Code. MQTT-Gerät: Seine Zugangsdaten sind widerrufen. |
 | **Unvollständig, bitte löschen** | Nur das Identitätsverzeichnis kennt das Gateway. Löschen Sie es und fügen Sie es erneut hinzu. |
 
 ## Limits {#limits}
@@ -50,8 +50,12 @@ Jedes Gateway hat ein eigenes Thing mit der Alternate-ID `gateway-<id>`. Es wird
 | Gateways, zu denen ein Thing gehört | 1 |
 | Things, die in einer Aktion zugeordnet werden | 200 |
 | Länge der Alternate-ID | 128 Zeichen |
-| Lebensdauer des Zugriffstokens | 5 Minuten |
-| MQTT-Batch | 500 Elemente, 1 MiB |
+| Anmelde-Token einer Periscope-Box | 5 Minuten |
+| Gateway-Token für HTTP- und Stream-Ingest | höchstens 10 Minuten |
+| MQTT-Sitzung eines Gateways | höchstens 10 Minuten |
+| Gültigkeit des Onboarding-Codes | 1 Stunde bis 7 Tage |
+| Erlaubte Thing-Typen pro Gateway | 200 |
+| MQTT-Batch | 1 MiB und standardmäßig 500 Elemente |
 | Ereignisse pro Seite | bis zu 200 |
 
 ## MQTT-Verbindung {#mqtt-connection}
@@ -76,14 +80,14 @@ Das Gateway meldet diese Werte alle 5 Minuten über sich selbst (Interface `Gate
 | `buffer_oldest_s` | Älteste gepufferte Nachricht | s |
 | `errors_per_min` | Fehler pro Minute | 1/min |
 | `clock_offset_ms` | Uhrenabweichung | ms |
-| `sw_version` | Softwareversion (Tag) | |
-| `link_type` | Verbindungsart (Tag) | |
+| `sw_version` | Softwareversion (Property) | |
+| `link_type` | Verbindungsart (Property) | |
 
 Ein Periscope-Gateway ergänzt das Interface `PeriscopeAgent`: `outputs_failing`, `inputs_failing`, `output_p95_ms`, `restart_required`, `config_hash` und `last_apply`.
 
 ## Datenverkehr-Messwerte {#traffic-measures}
 
-Die Plattform schreibt diese Werte etwa jede Minute in das Gateway-Thing (Interface `GatewayTraffic`). Sie setzen ein Gateway nie auf online.
+Die Plattform schreibt diese Werte etwa jede Minute in das Gateway-Thing (Interface `GatewayTraffic`). Sie setzen ein Gateway nie auf online. Bei mehreren Ingest-Instanzen schreibt jede ihren eigenen Anteil, ein Wert kann also die Sicht einer einzelnen Instanz sein.
 
 | Messwert | Bedeutung |
 | --- | --- |
@@ -101,12 +105,12 @@ Die Plattform schreibt diese Werte etwa jede Minute in das Gateway-Thing (Interf
 | `identity_mismatch` | Die Nachricht nennt eine andere Organisation oder ein anderes Thing als ihre Verbindung |
 | `not_member` | Der Eintrag des Things nennt ein anderes Gateway oder keines |
 | `unknown_thing` | Das Thing oder sein Thing-Typ existiert nicht |
-| `invalid` | Alles andere, was endgültig abgelehnt wird: nicht dekodierbar, fehlerhaft, Validierung nicht bestanden, falscher Thing-Typ für das Thing |
+| `invalid` | Alles andere, was endgültig abgelehnt wird: nicht dekodierbar, fehlerhaft, kein `thingType`, keine Daten und kein Standort, ein Batch, der weder Array noch Objekt ist, falscher Thing-Typ für das Thing |
 | `id_missing` | Ein Batch-Element hat keine `id` |
-| `too_large` | Ein Batch ist größer als 1 MiB und wird ganz verworfen |
-| `too_many` | Ein Batch hat mehr als 500 Elemente und wird ganz verworfen |
+| `too_large` | Ein Batch ist größer als 1 MiB, wird ganz verworfen und einmal gezählt |
+| `too_many` | Ein Batch hat mehr Elemente als das Limit (standardmäßig 500), wird ganz verworfen und einmal gezählt |
 
-Eine Abfrage, die die Plattform nicht beantworten konnte, wird wiederholt und nicht verworfen.
+Eine Abfrage, die die Plattform nicht beantworten konnte, wird wiederholt und nicht verworfen. Ein Batch-Element wird einzeln geprüft: Ein fehlerhaftes wird verworfen, die übrigen werden gespeichert.
 
 ## Abgelehnte Anlagen {#refused-creates}
 
@@ -118,6 +122,42 @@ Der Versuch eines Periscope-Gateways, ein Thing anzulegen, kann abgelehnt werden
 | **Anlegen gesperrt** | Die Einstellung **Anlegen von Things** ist **Gesperrt**. |
 | **Außerhalb des Namespace** | Die Alternate-ID des Things beginnt nicht mit dem Namespace des Gateways. |
 | **Thing-Typ nicht erlaubt** | Der Thing-Typ steht nicht in der Liste der erlaubten. |
+
+## Ablehnungen bei der Zuordnung {#assignment-refusals}
+
+Wenn Sie Things zuordnen, nennt IoT Breeze für jedes Thing, das es unverändert lässt, den Grund.
+
+| Meldung | Bedeutung |
+| --- | --- |
+| **Thing-Limit erreicht** | Das Gateway hat so viele Things, wie sein Limit erlaubt. |
+| **Thing-Typ nicht erlaubt** | Der Thing-Typ steht nicht in der Liste der erlaubten. |
+| **Außerhalb des Namespace** | Ein Thing eines Periscope-Gateways braucht eine Alternate-ID innerhalb des Namespace. |
+| **Das eigene Thing eines Gateways bleibt bei seinem Gateway** | Gateway-Things lassen sich nicht verschieben. |
+| **Nicht gefunden oder nicht von dir änderbar** | Das Thing existiert nicht oder Sie können es nicht ändern. |
+| **Sein Provider behält seine Alternate-ID** | **Alternate-IDs in den Namespace verschieben** braucht ein Thing des Providers NimBit. |
+| **Die verschobene Alternate-ID gehört einem anderen Thing** | Die neue Alternate-ID ist schon vergeben. |
+| **Daraus lässt sich keine Alternate-ID im Namespace bilden** | Die verschobene ID wäre leer oder länger als 128 Zeichen. |
+
+## API-Fehlercodes {#api-error-codes}
+
+Diese Codes kommen im Feld `code` eines API-Fehlers zurück.
+
+| Code | Status | Bedeutung |
+| --- | --- | --- |
+| `GATEWAY_NAME_TAKEN` | 409 | Ein Gateway mit diesem Namen existiert. |
+| `GATEWAY_LIMIT_REACHED` | 409 | Der Tenant hat die größte zulässige Zahl von Gateways. |
+| `GATEWAY_NAMESPACE_TAKEN` | 409 | Der Namespace entspricht dem eines anderen Gateways, beginnt damit oder erweitert ihn, oder er ist reserviert. |
+| `GATEWAY_NAMESPACE_LOCKED` | 409 | Der Namespace ist in Gebrauch: Das Gateway hat Things, oder seine Periscope-Box ist registriert. |
+| `GATEWAY_TYPE_MISMATCH` | 409 | Der Aufruf passt nicht zum Gateway-Typ: Ein MQTT-Gerät erhält neue Zugangsdaten, eine Periscope-Box einen neuen Code. |
+| `GATEWAY_NOT_IN_DIRECTORY` | 409 | Das Identitätsverzeichnis kennt das Gateway nicht. |
+| `GATEWAY_TOKEN_REQUIRED` | 403 | Nur das eigene Token eines Gateways darf die Gateway-Zugangsdaten oder seinen `me`-Aufruf anfordern. |
+| `GATEWAY_SCOPE_REQUIRED` | 403 | Das Token eines Gateways darf nur die Gateway-Zugangsdaten anfordern, nicht die des Tenants. |
+| `GATEWAY_SCOPE_NAMESPACE` | 403 | Die Alternate-ID liegt außerhalb des Namespace. |
+| `GATEWAY_SCOPE_THING_TYPE` | 403 | Der Thing-Typ ist nicht erlaubt. |
+| `GATEWAY_LOCKED` | 403 | Das **Anlegen von Things** ist **Gesperrt**. |
+| `GATEWAY_SCOPE_LIMIT` | 409 | Das Thing-Limit ist erreicht. |
+| `GATEWAY_THING_PROTECTED` | 403 | Das eigene Thing eines Gateways lässt sich nicht löschen, und ein Gateway kann es nicht ändern. |
+| `GATEWAY_DEVICE_CREDENTIAL_REFUSED` | 403 | Das Token eines Gateways darf keine Zugangsdaten pro Gerät anlegen. |
 
 ## Ereignisse {#events}
 

@@ -1,14 +1,14 @@
 ---
 title: MQTT-Topics und Client-ID
-description: Broker-Adresse, Zugangsdaten, Client-ID, Topics, QoS und Berechtigungen für Geräte, die sich über MQTT verbinden.
-sidebar_position: 9
+description: Broker-Adresse, Zugangsdaten, Client-IDs, Topics, QoS und Berechtigungen für Geräte und Gateways, die sich über MQTT verbinden.
+sidebar_position: 4
 type: reference
 app:
   routes: ["/onboarding/things/:id"]
-translated_from: b6ed908
+translated_from: f26536e
 ---
 
-Alles, was ein Gerät wissen muss, um sich mit dem IoT-Breeze-MQTT-Broker zu verbinden. Wie Sie eine Nachricht senden: [Daten über MQTT senden](./mqtt.mdx).
+Alles, was ein Gerät oder ein Gateway wissen muss, um sich mit dem IoT-Breeze-MQTT-Broker zu verbinden. Wie Sie eine Nachricht senden: [Daten über MQTT senden](./mqtt.mdx). Wie ein Gateway sendet: [Daten vieler Geräte über ein MQTT-Gateway senden](../gateways/mqtt-gateway.mdx).
 
 ## Broker {#broker}
 
@@ -53,6 +53,28 @@ Zwei Verbindungen mit derselben Client-ID ersetzen sich gegenseitig. Verwenden S
 `<deviceId>` ist die interne ID des Things, wie die **Verbindungsinformationen** sie zeigen, nicht die **Alternative Thing -ID** auf der Seite des Things.
 
 Ein Gerät darf nur in sein eigenes Telemetrie-Topic veröffentlichen und nur seine eigenen Topics `cmd` und `error` abonnieren. Alles andere wird abgelehnt.
+
+## Gateways {#gateways}
+
+Ein Gateway verbindet sich mit eigenen Zugangsdaten und sendet für die Things, die ihm zugeordnet sind. Seine Werte stammen aus den Verbindungsinformationen des Gateways, nicht aus denen eines Things.
+
+| Eintrag | Wert |
+| --- | --- |
+| Benutzername | Die base64url-Kodierung von `<tenantId>/gateway:<gatewayId>`. |
+| Passwort | Das Passwort des Gateways oder ein Gateway-Token. Ein Gateway-Token gilt höchstens zehn Minuten. |
+| Client-ID | `<tenantId>:gateway:<gatewayId>`, optional mit `:<suffix>`. Gerätezugangsdaten können diese Form nicht annehmen. |
+| Sitzung | Endet nach höchstens zehn Minuten. Das Gateway verbindet sich mit denselben Zugangsdaten neu. So wird ein widerrufenes Gateway ausgesperrt. |
+
+| Richtung | Topic | Bedeutung |
+| --- | --- | --- |
+| Publish | `tenant/<tenantId>/gateway/<gatewayId>/device/<thing>/telemetry` | Eine [Nachricht](./message-format.mdx) für ein Thing. `<thing>` ist die ID oder Alternate-ID des Things. |
+| Publish | `tenant/<tenantId>/gateway/<gatewayId>/telemetry` | Ein Gateway-Batch: ein JSON-Array von Nachrichten, die ihr Thing jeweils in `id` nennen. |
+| Subscribe | `iot/tenant/<tenantId>/gateway/<gatewayId>/device/+/cmd/#` | Erlaubt, für Befehle an Things hinter dem Gateway. |
+| Subscribe | `iot/tenant/<tenantId>/gateway/<gatewayId>/device/+/error` | Erlaubt, für Hinweise auf abgelehnte Nachrichten. |
+
+Gateway-Zugangsdaten können nicht auf dem eigenen Topic `tenant/<tenantId>/device/<deviceId>/telemetry` eines Things veröffentlichen. Der Broker bestätigt eine solche Veröffentlichung mit QoS 1, verwirft sie aber. Eine Nachricht für ein Thing, das nicht dem Gateway zugeordnet ist, wird verworfen und am Gateway gezählt; siehe [Zustand und Datenverkehr von Gateways prüfen](../gateways/fleet-health.mdx).
+
+{/* TODO(product): Commands via a gateway are planned (edge gateways plan D12) but nothing publishes on the gateway cmd topics yet. Document sending commands to things behind a gateway once it lands. */}
 
 ## Zustellung {#delivery}
 

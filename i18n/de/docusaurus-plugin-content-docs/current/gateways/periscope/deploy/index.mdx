@@ -1,44 +1,44 @@
 ---
-untranslated: true
-title: Deploy Periscope
-description: Put Periscope on an edge box, onboard it as a gateway, keep it running, upgrade it and replace it.
+title: Periscope bereitstellen
+description: Periscope auf einer Edge-Box installieren, als Gateway einrichten, im Betrieb halten, aktualisieren und ersetzen.
 sidebar_position: 0
 type: landing
 app:
   routes: ["/onboarding/gateways"]
+translated_from: 06bddd1
 ---
 
-Use this section to run Periscope on a box in production and keep it healthy. It starts where the [first-steps tutorial](../install.mdx) ends: you have seen it work once, and now you install it on every site. A box is ready when its gateway shows **Online** in IoT Breeze.
+In diesem Bereich betreiben Sie Periscope im Produktivbetrieb auf einer Box und halten es gesund. Er beginnt dort, wo das [Tutorial für die ersten Schritte](../install.mdx) endet: Sie haben es einmal funktionieren sehen und installieren es nun an jedem Standort. Eine Box ist bereit, wenn ihr Gateway in IoT Breeze **Online** zeigt.
 
 ```mermaid
 flowchart LR
-  A[Add the gateway in IoT Breeze] --> B[Check the box]
-  B --> C[Install Periscope]
-  C --> D[Onboard with the code]
-  D --> E[First health message]
+  A[Gateway in IoT Breeze hinzufügen] --> B[Box prüfen]
+  B --> C[Periscope installieren]
+  C --> D[Mit dem Code einrichten]
+  D --> E[Erste Zustandsmeldung]
   E --> F[Gateway Online]
 ```
 
-The path takes five steps:
+Der Weg umfasst fünf Schritte:
 
-1. In IoT Breeze, [add a gateway](../../add-a-gateway.mdx) and copy its onboarding code.
-2. Check the box against the [requirements](./requirements.mdx).
-3. Install Periscope [in a container](./run-in-a-container.mdx) or [as a service](./run-as-a-service.mdx).
-4. [Onboard the box](./onboard.mdx) with the code.
-5. Wait for the first health message. It is sent about 15 seconds after the agent has learned its gateway's namespace, and the gateway is **Online** when it arrives.
+1. [Fügen Sie in IoT Breeze ein Gateway hinzu](../../add-a-gateway.mdx) und kopieren Sie seinen Onboarding-Code.
+2. Prüfen Sie die Box anhand der [Voraussetzungen](./requirements.mdx).
+3. Installieren Sie Periscope [in einem Container](./run-in-a-container.mdx) oder [als Dienst](./run-as-a-service.mdx).
+4. [Richten Sie die Box](./onboard.mdx) mit dem Code ein.
+5. Warten Sie auf die erste Zustandsmeldung. Sie wird etwa 15 Sekunden gesendet, nachdem der Agent den Namespace seines Gateways kennt, und mit ihrem Eintreffen ist das Gateway **Online**.
 
-## Understand
-- [What Periscope keeps on the box](./state-and-backup.mdx): the files that make a box a gateway, and what to back up.
-- [How gateways work](../../how-gateways-work.mdx): namespace, scope and health, from the platform side.
+## Verstehen {#understand}
+- [Was Periscope auf der Box aufbewahrt](./state-and-backup.mdx): die Dateien, die eine Box zum Gateway machen, und was zu sichern ist.
+- [Wie Gateways funktionieren](../../how-gateways-work.mdx): Namespace, Bereich und Zustand aus Sicht der Plattform.
 
-## Do
-- [Run Periscope in a container](./run-in-a-container.mdx)
-- [Run Periscope as a service](./run-as-a-service.mdx)
-- [Onboard a box with an onboarding code](./onboard.mdx)
-- [Upgrade a box](./upgrade.mdx): what changes, and in which order.
-- [Move a box from a service account to a gateway](./move-to-a-gateway.mdx)
-- [Replace a box](./replace-a-box.mdx)
+## Umsetzen {#do}
+- [Periscope in einem Container betreiben](./run-in-a-container.mdx)
+- [Periscope als Dienst betreiben](./run-as-a-service.mdx)
+- [Eine Box mit einem Onboarding-Code einrichten](./onboard.mdx)
+- [Eine Box aktualisieren](./upgrade.mdx): was sich ändert und in welcher Reihenfolge.
+- [Eine Box von einem Servicekonto auf ein Gateway umstellen](./move-to-a-gateway.mdx)
+- [Eine Box ersetzen](./replace-a-box.mdx)
 
-## Look up
-- [Requirements for an edge box](./requirements.mdx): systems, disk, network and clock.
-- [Configuration reference](../configuration.mdx) · [Command-line reference](../commands.mdx)
+## Nachschlagen {#look-up}
+- [Voraussetzungen für eine Edge-Box](./requirements.mdx): Systeme, Speicherplatz, Netzwerk und Uhr.
+- [Konfigurationsreferenz](../configuration.mdx) · [Kommandozeilen-Referenz](../commands.mdx)

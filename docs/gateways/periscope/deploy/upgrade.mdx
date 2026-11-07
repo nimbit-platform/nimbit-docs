@@ -41,7 +41,7 @@ Upgrade enrolled boxes to a Periscope version that uses the gateway's namespace 
 | Ingest tokens | HTTP and stream ingest use a token of at most 10 minutes. A revoked gateway stops within one token lifetime. |
 | Health interval | `agent.health_interval` is at most `5m`. A longer value is refused. |
 
-A box on the old version that has no cached credential, such as a new box or one with a reset state, gets none: the platform refuses a gateway's token the tenant credential. That is why you upgrade the boxes first. See [Outputs reference](../outputs.mdx#the-gateway-credential).
+A box on the old version that has no cached credential, such as a new box or one with a reset state, gets no credential at all: the platform no longer gives a gateway's token the tenant credential, and the old version doesn't ask for the gateway credential. That is why you upgrade the boxes first. See [Outputs reference](../outputs.mdx#the-gateway-credential).
 
 If `agent.name` already equals the gateway's namespace, the alternate IDs don't change and no thing is proposed twice.
 

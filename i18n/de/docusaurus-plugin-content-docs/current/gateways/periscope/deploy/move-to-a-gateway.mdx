@@ -1,31 +1,31 @@
 ---
-untranslated: true
-title: Move a box from a service account to a gateway
-sidebar_label: Move to a gateway
-description: Switch a Periscope box that signs in with a service account to a gateway with its own key, and what happens to the things it created.
+title: Eine Box von einem Servicekonto auf ein Gateway umstellen
+sidebar_label: Auf ein Gateway umstellen
+description: Eine Periscope-Box, die sich mit einem Servicekonto anmeldet, auf ein Gateway mit eigenem Schlüssel umstellen und was mit den Things geschieht, die sie angelegt hat.
 sidebar_position: 7
 type: how-to
 app:
   routes: ["/onboarding/gateways"]
+translated_from: 06bddd1
 ---
 
-Switch a box that signs in as a user with email and password to a gateway that signs in with its own key. The box then shows up in **Gateways** with a status, and sends with a credential that is limited to its own things. For the difference, see [How Periscope works](../how-periscope-works.mdx#is-a-periscope-instance-a-gateway).
+Stellen Sie eine Box, die sich als Benutzer mit E-Mail und Passwort anmeldet, auf ein Gateway um, das sich mit eigenem Schlüssel anmeldet. Die Box erscheint dann unter **Gateways** mit einem Status und sendet mit Zugangsdaten, die auf ihre eigenen Things beschränkt sind. Den Unterschied beschreibt [Wie Periscope funktioniert](../how-periscope-works.mdx#is-a-periscope-instance-a-gateway).
 
-## Before you start
+## Voraussetzungen {#before-you-start}
 
-- The **Gateway** permission in IoT Breeze, and an up-to-date platform and box. See [Upgrade a box](./upgrade.mdx).
-- A gateway of type **Periscope** with an onboarding code. See [Add a gateway](../../add-a-gateway.mdx). The namespace is fixed once the gateway has things, so choose it when you add the gateway.
-- A backup of the box's [state directory](./state-and-backup.mdx).
+- Die Berechtigung **Gateway** in IoT Breeze sowie eine aktuelle Plattform und Box. Siehe [Eine Box aktualisieren](./upgrade.mdx).
+- Ein Gateway vom Typ **Periscope** mit einem Onboarding-Code. Siehe [Gateway hinzufügen](../../add-a-gateway.mdx). Der Namespace steht fest, sobald das Gateway Things hat, wählen Sie ihn also beim Hinzufügen des Gateways.
+- Ein Backup des [State-Verzeichnisses](./state-and-backup.mdx) der Box.
 
-## Steps
+## Schritte {#steps}
 
-1. End the service account's session and remove its enrollment. Do this before you change the configuration, because the command reads the account from the file:
+1. Beenden Sie die Sitzung des Servicekontos und entfernen Sie seine Registrierung. Tun Sie das, bevor Sie die Konfiguration ändern, weil der Befehl das Konto aus der Datei liest:
 
    ```sh
    periscope enroll -config /etc/periscope/periscope.toml -revoke
    ```
 
-2. In `periscope.toml`, remove `email` and `password` (or `token`) from `[ocb]`, and set `gateway = true`. Remove `PERISCOPE_PASSWORD` from the box's environment. A file with two credentials is refused.
+2. Entfernen Sie in `periscope.toml` `email` und `password` (oder `token`) aus `[ocb]` und setzen Sie `gateway = true`. Entfernen Sie `PERISCOPE_PASSWORD` aus der Umgebung der Box. Eine Datei mit zwei Zugangsarten wird abgelehnt.
 
    ```toml
    [ocb]
@@ -33,31 +33,31 @@ Switch a box that signs in as a user with email and password to a gateway that s
    gateway = true
    ```
 
-3. Onboard the box with the code, as in [Onboard a box with an onboarding code](./onboard.mdx). From the setup screen, an admin first selects **Disconnect**, which also ends the service account's session.
-4. Wait for the gateway to show **Online**. Then disable the service account in IoT Breeze if nothing else uses it.
+3. Richten Sie die Box mit dem Code ein, wie in [Eine Box mit einem Onboarding-Code einrichten](./onboard.mdx). Vom Einrichtungsbildschirm aus wählt ein Admin zuerst **Disconnect**, was auch die Sitzung des Servicekontos beendet.
+4. Warten Sie, bis das Gateway **Online** zeigt. Deaktivieren Sie dann das Servicekonto in IoT Breeze, wenn es sonst niemand verwendet.
 
-## What changes
+## Was sich ändert {#what-changes}
 
-| Before | After |
+| Vorher | Nachher |
 | --- | --- |
-| Alternate IDs start with `agent.name`. | They start with the gateway's namespace. The box proposes its things again, and the old ones stay with a reason. |
-| The outputs send with the tenant credential. | They send with the gateway credential, on the gateway's topics. |
-| No health. | A health message every `agent.health_interval`. |
-| Placement in Contexus is posted after an apply. | It is not. A gateway's token is for the platform backend only. |
+| Alternate-IDs beginnen mit `agent.name`. | Sie beginnen mit dem Namespace des Gateways. Die Box schlägt ihre Things erneut vor, und die alten bleiben mit einem Grund. |
+| Die Ausgänge senden mit den Tenant-Zugangsdaten. | Sie senden mit den Gateway-Zugangsdaten, auf den Topics des Gateways. |
+| Kein Zustand. | Eine Zustandsmeldung alle `agent.health_interval`. |
+| Die Platzierung in Contexus wird nach einem Anwenden gesendet. | Sie wird nicht gesendet. Das Token eines Gateways gilt nur für das Plattform-Backend. |
 
-New things get new IDs, so their history starts empty. Clean up the old things as described in [Upgrade a box](./upgrade.mdx#clean-up-the-old-things).
+Neue Things erhalten neue IDs, ihre Historie beginnt also leer. Räumen Sie die alten Things auf, wie in [Eine Box aktualisieren](./upgrade.mdx#clean-up-the-old-things) beschrieben.
 
 {/* TODO(product): Is there a supported way to keep the existing things and their history, for example choosing a namespace equal to agent.name and assigning the existing things to the gateway? Does the box then link them instead of creating duplicates? */}
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-The gateway is **Online**, `periscope validate` prints the gateway as the credential, and the gateway's **Things** tab lists the things under the namespace.
+Das Gateway ist **Online**, `periscope validate` gibt das Gateway als Zugangsart aus, und der Tab **Things** des Gateways listet die Things unter dem Namespace.
 
-## If it doesn't work
+## Wenn es nicht klappt {#if-it-doesnt-work}
 
-- **`ocb: set exactly one credential`**: `email`, `password` or `token` is still in `[ocb]`, in `periscope.toml` or in the overlay `state_dir/config.ui.toml`.
-- **The onboarding is refused because the state belongs to another organization**: use a state directory made for this organization.
+- **`ocb: set exactly one credential`**: `email`, `password` oder `token` steht noch in `[ocb]`, in `periscope.toml` oder im Overlay `state_dir/config.ui.toml`.
+- **Das Onboarding wird abgelehnt, weil der State zu einer anderen Organisation gehört**: Verwenden Sie ein für diese Organisation angelegtes State-Verzeichnis.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Replace a box](./replace-a-box.mdx) · [Configuration reference](../configuration.mdx#ocb)
+- [Eine Box ersetzen](./replace-a-box.mdx) · [Konfigurationsreferenz](../configuration.mdx#ocb)

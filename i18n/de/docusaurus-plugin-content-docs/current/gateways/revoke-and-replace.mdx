@@ -1,88 +1,88 @@
 ---
-untranslated: true
-title: Revoke, replace or remove a gateway
-description: Cut off a gateway's key or credential, move a gateway to new hardware, remove a gateway, and know how fast each takes effect.
+title: Gateway widerrufen, ersetzen oder entfernen
+description: Den Schlüssel oder die Zugangsdaten eines Gateways sperren, ein Gateway auf neue Hardware umziehen, ein Gateway entfernen und wissen, wie schnell jedes davon wirkt.
 type: how-to
 sidebar_position: 8
 app:
   routes: ["/onboarding/gateways", "/onboarding/gateways/:id"]
+translated_from: 06bddd1
 ---
 
-Stop a gateway from sending, hand its identity to a new box, or delete it. For how a gateway signs in, read [How gateways work](./how-gateways-work.mdx).
+Verhindern Sie, dass ein Gateway sendet, übergeben Sie seine Identität an eine neue Box oder löschen Sie es. Wie sich ein Gateway anmeldet, steht unter [Wie Gateways funktionieren](./how-gateways-work.mdx).
 
-## Before you start
+## Voraussetzungen {#before-you-start}
 
-- To revoke a key or issue a new code or credential you need update permission on gateways. To delete a gateway you need delete permission.
-- Know the gateway's type. A **Periscope** gateway has keys and onboarding codes. An **MQTT device** gateway has one credential.
+- Um einen Schlüssel zu widerrufen oder einen neuen Code oder neue Zugangsdaten auszustellen, brauchen Sie die Berechtigung zum Ändern von Gateways. Um ein Gateway zu löschen, brauchen Sie die Berechtigung zum Löschen.
+- Kennen Sie den Typ des Gateways. Ein **Periscope**-Gateway hat Schlüssel und Onboarding-Codes. Ein Gateway vom Typ **MQTT-Gerät** hat einen Satz Zugangsdaten.
 
-## How fast it takes effect
+## Wie schnell es wirkt {#how-fast-it-takes-effect}
 
-| What | When it stops |
+| Was | Wann es endet |
 | --- | --- |
-| A new MQTT login with the old credential | At once. The platform may remember a successful check for a few seconds. |
-| An MQTT session that is already open | Within 10 minutes. Every gateway session ends after at most 10 minutes. |
-| A Periscope box's HTTP and stream writes | When its current token expires, after 10 minutes at most. It gets no new token. |
-| A Periscope sign-in with a revoked key | At once. A sign-in token the key already got works for 5 minutes at most. |
+| Eine neue MQTT-Anmeldung mit den alten Zugangsdaten | Sofort. Die Plattform merkt sich eine erfolgreiche Prüfung unter Umständen einige Sekunden lang. |
+| Eine MQTT-Sitzung, die schon offen ist | Innerhalb von 10 Minuten. Jede Gateway-Sitzung endet nach höchstens 10 Minuten. |
+| HTTP- und Stream-Schreibzugriffe einer Periscope-Box | Wenn ihr aktuelles Token abläuft, nach höchstens 10 Minuten. Sie erhält kein neues Token. |
+| Eine Periscope-Anmeldung mit einem widerrufenen Schlüssel | Sofort. Ein Anmelde-Token, das der Schlüssel schon erhalten hat, gilt höchstens 5 Minuten. |
 
-## Revoke a Periscope key
+## Einen Periscope-Schlüssel widerrufen {#revoke-a-periscope-key}
 
-1. Open the gateway and select the **Access & keys** tab.
-2. Under **Keys**, find the key and select **Revoke key**, then **Revoke**.
+1. Öffnen Sie das Gateway und wählen Sie den Tab **Zugriff & Schlüssel**.
+2. Suchen Sie unter **Schlüssel** den Schlüssel und wählen Sie **Schlüssel widerrufen**, dann **Widerrufen**.
 
-The box can no longer sign in with that key. If it was the gateway's last key, the gateway turns **Not enrolled**. It then gets no credential at all until a box enrolls again with a new onboarding code. If other keys remain, the gateway stays as it is and its box asks for a new credential at its next login.
+Die Box kann sich mit diesem Schlüssel nicht mehr anmelden. War es der letzte Schlüssel des Gateways, wird das Gateway **Nicht registriert**. Es erhält dann gar keine Zugangsdaten mehr, bis sich eine Box mit einem neuen Onboarding-Code wieder registriert. Bleiben andere Schlüssel, bleibt das Gateway, wie es ist, und seine Box fragt bei der nächsten Anmeldung nach neuen Zugangsdaten.
 
-## Replace a Periscope box
+## Eine Periscope-Box ersetzen {#replace-a-periscope-box}
 
-1. To cut off the old box at once, revoke its key first, as above.
-2. Open the gateway's row menu and select **New onboarding code**, then **Issue code**. Choose how long the code is valid.
-3. Copy the code. The earlier code stops working immediately, even if nobody redeemed it.
-4. On the new box, enroll it: `periscope enroll -code ONB-XXXX-XXXX-XXXX-XXXX`, or paste the code into the setup screen. See [Add a gateway](./add-a-gateway.mdx).
+1. Um die alte Box sofort auszusperren, widerrufen Sie zuerst ihren Schlüssel, wie oben.
+2. Öffnen Sie das Zeilenmenü des Gateways und wählen Sie **Neuer Onboarding-Code**, dann **Code ausstellen**. Wählen Sie, wie lange der Code gültig ist.
+3. Kopieren Sie den Code. Der frühere Code verliert sofort seine Gültigkeit, auch wenn ihn niemand eingelöst hat.
+4. Registrieren Sie die neue Box: `periscope enroll -code ONB-XXXX-XXXX-XXXX-XXXX`, oder fügen Sie den Code in die Einrichtungsseite ein. Siehe [Gateway hinzufügen](./add-a-gateway.mdx).
 
-Enrolling replaces every key of the gateway. The gateway keeps its name, namespace, scope and things, and the new box finds its things again by their alternate IDs. Until a box enrolls with the new code, the old keys keep working. So revoke the old key first when you must cut it off.
+Die Registrierung ersetzt jeden Schlüssel des Gateways. Das Gateway behält seinen Namen, seinen Namespace, seinen Scope und seine Things, und die neue Box findet ihre Things über ihre Alternate-IDs wieder. Bis sich eine Box mit dem neuen Code registriert, funktionieren die alten Schlüssel weiter. Widerrufen Sie den alten Schlüssel also zuerst, wenn Sie ihn sperren müssen.
 
 {/* TODO(product): Does enrolling with a new code also end the MQTT credential the old box already holds, or only a key revoke does? The code bumps no credential serial. */}
 
-## Replace an MQTT device
+## Ein MQTT-Gerät ersetzen {#replace-an-mqtt-device}
 
-1. Open the gateway's row menu and select **New credential**, then **Issue credential**.
-2. Copy the **Password** or select **Download config**. IoT Breeze shows it once.
-3. Put the new credential on the device or on its replacement.
+1. Öffnen Sie das Zeilenmenü des Gateways und wählen Sie **Neue Zugangsdaten**, dann **Zugangsdaten ausstellen**.
+2. Kopieren Sie das **Passwort** oder wählen Sie **Konfiguration herunterladen**. IoT Breeze zeigt es einmal an.
+3. Übertragen Sie die neuen Zugangsdaten auf das Gerät oder auf sein Ersatzgerät.
 
-Logins with the old password are refused at once. A connection that is already open ends within 10 minutes. The gateway keeps its things. Don't run the old and the new unit with the same client ID: two connections with one client ID evict each other. Give each its own `:<suffix>` to run them side by side.
+Anmeldungen mit dem alten Passwort werden sofort abgelehnt. Eine Verbindung, die schon offen ist, endet innerhalb von 10 Minuten. Das Gateway behält seine Things. Betreiben Sie das alte und das neue Gerät nicht mit derselben Client-ID: Zwei Verbindungen mit einer Client-ID verdrängen sich gegenseitig. Geben Sie jedem ein eigenes `:<suffix>`, um sie nebeneinander zu betreiben.
 
-## Remove a gateway
+## Ein Gateway entfernen {#remove-a-gateway}
 
-1. Open the gateway's row menu and select **Delete gateway**.
-2. Confirm.
+1. Öffnen Sie das Zeilenmenü des Gateways und wählen Sie **Gateway löschen**.
+2. Bestätigen Sie.
 
-IoT Breeze deletes:
+IoT Breeze löscht:
 
-- the gateway record, and with it its keys and any pending onboarding code, or its MQTT credential;
-- the gateway thing, `gateway-<gateway id>`.
+- den Gateway-Eintrag und damit seine Schlüssel und einen ausstehenden Onboarding-Code oder seine MQTT-Zugangsdaten;
+- das Gateway-Thing, `gateway-<gateway id>`.
 
-The things the gateway created or was given stay. They are no longer on a gateway, so a message for one over the gateway's path would be discarded. Release or reassign them as you need; see [Manage the things behind a gateway](./things-behind-a-gateway.mdx). The gateway's ID is never reused.
+Die Things, die das Gateway angelegt oder zugeordnet bekommen hat, bleiben. Sie gehören zu keinem Gateway mehr, eine Nachricht für eines über den Pfad des Gateways würde also verworfen. Geben Sie sie frei oder ordnen Sie sie neu zu, wie Sie es brauchen; siehe [Die Things hinter einem Gateway verwalten](./things-behind-a-gateway.mdx). Die ID des Gateways wird nie wiederverwendet.
 
-The box can no longer sign in. Open MQTT sessions end within 10 minutes. To move a gateway to new hardware and keep its things, issue a new onboarding code instead of deleting it.
+Die Box kann sich nicht mehr anmelden. Offene MQTT-Sitzungen enden innerhalb von 10 Minuten. Um ein Gateway auf neue Hardware umzuziehen und seine Things zu behalten, stellen Sie stattdessen einen neuen Onboarding-Code aus, statt es zu löschen.
 
-If the gateway thing can't be deleted along with the gateway, the gateway is gone and `gateway-<gateway id>` stays as an ordinary thing. Delete it by hand.
+Lässt sich das Gateway-Thing nicht zusammen mit dem Gateway löschen, ist das Gateway weg, und `gateway-<gateway id>` bleibt als gewöhnliches Thing. Löschen Sie es von Hand.
 
 {/* TODO(product): Is the history of the gateway thing's health and traffic measures deleted with the thing, or kept? */}
 
-## End every MQTT gateway credential at once
+## Alle MQTT-Gateway-Zugangsdaten auf einmal beenden {#end-every-mqtt-gateway-credential-at-once}
 
-Rotating the tenant's signing key ends the credentials that were signed with the rotated key. MQTT device gateways use the **Primary** key. After you rotate it, every MQTT gateway needs a **New credential**. The same rotation also cuts off every device credential of that key. Do it only when all of them must change; see [Create and rotate device credentials](../connect/credentials.mdx).
+Das Rotieren des Signaturschlüssels des Tenants beendet die Zugangsdaten, die mit dem rotierten Schlüssel signiert wurden. MQTT-Geräte-Gateways verwenden den Schlüssel **Primär**. Nach der Rotation braucht jedes MQTT-Gateway **Neue Zugangsdaten**. Dieselbe Rotation sperrt auch alle Gerätezugangsdaten dieses Schlüssels. Tun Sie das nur, wenn sich alle ändern müssen; siehe [Gerätezugangsdaten anlegen und rotieren](../connect/credentials.mdx).
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-The gateway's status changes in the list: **Not enrolled** after the last key is revoked, **Waiting for onboarding** after a new code, **Online** once the new box or device sends its health. After a delete, the gateway is gone from the list.
+Der Status des Gateways ändert sich in der Liste: **Nicht registriert**, nachdem der letzte Schlüssel widerrufen ist, **Wartet auf Onboarding** nach einem neuen Code, **Online**, sobald die neue Box oder das neue Gerät seinen Zustand sendet. Nach dem Löschen ist das Gateway aus der Liste verschwunden.
 
-## If it doesn't work
+## Wenn es nicht klappt {#if-it-doesnt-work}
 
-- **The old box still sends after a revoke**: wait up to 10 minutes for its MQTT session or HTTP token to end.
-- **The code is refused**: a code works once and until its expiry. Issue another.
-- **A new credential is refused**: the device still holds the old password, or a config file downloaded later, which holds a placeholder instead of the password. Load the password or file from the **New credential** result. Lost it? Issue another credential.
+- **Die alte Box sendet nach einem Widerruf noch**: Warten Sie bis zu 10 Minuten, bis ihre MQTT-Sitzung oder ihr HTTP-Token endet.
+- **Der Code wird abgelehnt**: Ein Code funktioniert einmal und bis zu seinem Ablauf. Stellen Sie einen neuen aus.
+- **Neue Zugangsdaten werden abgelehnt**: Das Gerät hält noch das alte Passwort oder eine Konfigurationsdatei, die später heruntergeladen wurde und einen Platzhalter statt des Passworts enthält. Laden Sie das Passwort oder die Datei aus dem Ergebnis von **Neue Zugangsdaten**. Verloren? Stellen Sie neue Zugangsdaten aus.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Add a gateway](./add-a-gateway.mdx) · [Send data for many devices through one MQTT gateway](./mqtt-gateway.mdx)
-- [Gateway reference](./gateway-reference.mdx)
+- [Gateway hinzufügen](./add-a-gateway.mdx) · [Daten vieler Geräte über ein MQTT-Gateway senden](./mqtt-gateway.mdx)
+- [Gateway-Referenz](./gateway-reference.mdx)

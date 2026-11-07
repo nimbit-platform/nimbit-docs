@@ -3,10 +3,10 @@ title: Zustand und Datenverkehr von Gateways prüfen
 sidebar_label: Zustand und Datenverkehr
 description: Sehen, welche Gateways online sind, ob Daten fließen und warum Nachrichten verworfen werden – in der Gateway-Liste und im Tab „Zustand“ eines Gateways.
 type: how-to
-sidebar_position: 5
+sidebar_position: 7
 app:
   routes: ["/onboarding/gateways", "/onboarding/gateways/:id"]
-translated_from: 810b8a2
+translated_from: 06bddd1
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
@@ -41,10 +41,10 @@ Finden Sie heraus, welche Gateways leben, ob sie Daten senden und was die Plattf
   alt="Der Tab „Zustand“ mit „Verbindung“ und der Karte „Datenverkehr“"
 />
 
-5. Ist **Verworfen pro Minute** größer als null, lesen Sie den Grund daneben und öffnen Sie den Tab **Ereignisse**. Dort ist jedes abgelehnte Anlegen eines Things aufgeführt.
-6. Öffnen Sie **Bereich**, um **Abgelehnte Anlagen** zu sehen: die Anzahl je Grund und wann die letzte stattfand.
+5. Ist **Verworfen pro Minute** größer als null, lesen Sie den Grund daneben. Die Gründe stehen in der [Gateway-Referenz](./gateway-reference.mdx#discard-reasons). Verworfene Nachrichten werden gezählt, nicht einzeln aufgelistet.
+6. Öffnen Sie **Bereich**, um **Abgelehnte Anlagen** zu sehen: die Anzahl je Grund und wann die letzte stattfand. Der Tab **Ereignisse** listet jedes abgelehnte Anlegen eines Things und die Änderungen am Gateway.
 
-Den Datenverkehr zählt die Plattform und schreibt ihn etwa jede Minute in das Gateway-Thing. Er setzt ein Gateway nie auf online. Das tut nur die eigene Zustandsmeldung des Gateways. Ein Gateway, das **Offline** ist, obwohl **Letzte Daten** aktuell ist, hat also einen angehaltenen Health-Reporter und schweigt nicht.
+Den Datenverkehr zählt die Plattform und schreibt ihn etwa jede Minute in das Gateway-Thing. Bei mehreren Ingest-Instanzen schreibt jede ihren eigenen Anteil, ein Wert kann also die Sicht einer einzelnen Instanz sein. Er setzt ein Gateway nie auf online. Das tut nur die eigene Zustandsmeldung des Gateways. Ein Gateway, das **Offline** ist, obwohl **Letzte Daten** aktuell ist, hat also einen angehaltenen Health-Reporter und schweigt nicht.
 
 ## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
@@ -53,7 +53,7 @@ Ein gesundes Gateway ist **Online**, zeigt **Nachrichten pro Minute** über null
 ## Wenn es nicht klappt {#if-it-doesnt-work}
 
 - **Noch kein Datenverkehr gezählt**: Die Plattform hat noch keine Nachricht dieses Gateways gespeichert. Prüfen Sie zuerst, ob das Gateway **Online** ist. Bei einem MQTT-Gerät prüfen Sie seine Topics unter [Daten vieler Geräte über ein MQTT-Gateway senden](./mqtt-gateway.mdx).
-- **Online, aber ein Thing zeigt keine Daten**: Sehen Sie sich die Verwerfungsgründe an. `not_member` heißt, das Thing ist diesem Gateway nicht zugeordnet, `unknown_thing`, dass es oder sein Thing-Typ nicht existiert, `invalid`, dass die Nachricht die Validierung nicht bestanden hat, `identity_mismatch`, dass die Nachricht eine andere Organisation oder ein anderes Thing nennt als ihre Verbindung.
+- **Online, aber ein Thing zeigt keine Daten**: Sehen Sie sich die Verwerfungsgründe an. `not_member` heißt, das Thing ist diesem Gateway nicht zugeordnet (siehe [Die Things hinter einem Gateway verwalten](./things-behind-a-gateway.mdx)), `unknown_thing`, dass es oder sein Thing-Typ nicht existiert, `invalid`, dass die Nachricht die Validierung nicht bestanden hat, `identity_mismatch`, dass die Nachricht eine andere Organisation oder ein anderes Thing nennt als ihre Verbindung, `id_missing`, dass ein Batch-Element keine `id` hat.
 - **Offline, aber die Box läuft**: Ein Periscope-Gateway braucht einen laufenden Health-Reporter und einen gültigen Schlüssel; öffnen Sie **Zugriff & Schlüssel** für **Letzte Anmeldung**. Ein MQTT-Gerät muss alle 5 Minuten auf sein **Status-Topic** veröffentlichen.
 - **Wartet auf Onboarding**: Die Box hat sich noch nicht mit ihrem Code registriert, oder der Code ist abgelaufen. Siehe [Gateway hinzufügen](./add-a-gateway.mdx).
 - **Things sind aktiv, aber ein Wert fehlt**: Dem Thing-Typ fehlt möglicherweise der Messwert, daher hat die Plattform ihn verworfen. Prüfen Sie den Thing-Typ unter [Thing-Typen, Things und Interfaces](../model/things-and-types.mdx).
@@ -63,3 +63,4 @@ Ein gesundes Gateway ist **Online**, zeigt **Nachrichten pro Minute** über null
 - [Gateway-Referenz](./gateway-reference.mdx) für jeden Verwerfungsgrund und jeden Datenverkehr-Messwert
 - [Den Zustand eines Things prüfen](../watch/thing-health.mdx) für den eigenen Verlauf des Gateway-Things
 - [Telemetrie erkunden](../watch/explore-telemetry.mdx)
+- [Gateway widerrufen, ersetzen oder entfernen](./revoke-and-replace.mdx)

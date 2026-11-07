@@ -1,26 +1,26 @@
 ---
-untranslated: true
-title: Run Periscope in a container
-sidebar_label: Run in a container
-description: Start the Periscope container with its configuration and a state volume, keep it running across restarts and check that it is healthy.
+title: Periscope in einem Container betreiben
+sidebar_label: In einem Container betreiben
+description: Den Periscope-Container mit seiner Konfiguration und einem State-Volume starten, über Neustarts hinweg laufen lassen und prüfen, ob er gesund ist.
 sidebar_position: 2
 type: how-to
 app:
   routes: ["/onboarding/gateways"]
+translated_from: 06bddd1
 ---
 
-Start Periscope as a container that restarts with the box and keeps its state on a volume. This page ends with a running agent that is not yet connected to IoT Breeze; [onboard it](./onboard.mdx) next.
+Starten Sie Periscope als Container, der mit der Box neu startet und seinen Zustand auf einem Volume hält. Diese Seite endet mit einem laufenden Agent, der noch nicht mit IoT Breeze verbunden ist; [richten Sie ihn](./onboard.mdx) als Nächstes ein.
 
-## Before you start
+## Voraussetzungen {#before-you-start}
 
-- Docker on a box that meets the [requirements](./requirements.mdx).
-- The image name and version. Request them from NimBit support at [info@nimbit.de](mailto:info@nimbit.de).
-- A configuration file with the agent's name and your sources, for example the one in [Install Periscope and stream your first source](../install.mdx).
+- Docker auf einer Box, die die [Voraussetzungen](./requirements.mdx) erfüllt.
+- Der Image-Name und die Version. Fordern Sie sie beim NimBit-Support unter [info@nimbit.de](mailto:info@nimbit.de) an.
+- Eine Konfigurationsdatei mit dem Namen des Agents und Ihren Quellen, zum Beispiel die aus [Periscope installieren und die erste Quelle streamen](../install.mdx).
 
-## Steps
+## Schritte {#steps}
 
-1. Put the configuration in `/etc/periscope/periscope.toml`. Secrets that the file reads as `${NAME}` go into `/etc/periscope/periscope.env`, one `NAME=value` per line. Restrict both files to root.
-2. Start the container:
+1. Legen Sie die Konfiguration in `/etc/periscope/periscope.toml` ab. Geheimnisse, die die Datei als `${NAME}` liest, kommen nach `/etc/periscope/periscope.env`, eines pro Zeile als `NAME=value`. Beschränken Sie beide Dateien auf root.
+2. Starten Sie den Container:
 
    ```sh
    docker run -d --name periscope --restart unless-stopped \
@@ -30,45 +30,45 @@ Start Periscope as a container that restarts with the box and keeps its state on
      -p 127.0.0.1:8400:8400 <periscope-image>:<version>
    ```
 
-   Replace `<periscope-image>:<version>` with the image and version from NimBit support. Publish the port on `127.0.0.1` as shown to keep the web UI on the box. To open it to the network, drop `127.0.0.1:` and first set `server.token` or `[server.auth]`.
-3. Check the file:
+   Ersetzen Sie `<periscope-image>:<version>` durch das Image und die Version vom NimBit-Support. Veröffentlichen Sie den Port wie gezeigt auf `127.0.0.1`, damit die Web-Oberfläche auf der Box bleibt. Um sie für das Netzwerk zu öffnen, lassen Sie `127.0.0.1:` weg und setzen Sie zuerst `server.token` oder `[server.auth]`.
+3. Prüfen Sie die Datei:
 
    ```sh
    docker exec periscope periscope validate -config /etc/periscope/periscope.toml -offline
    ```
 
-   It ends with `configuration is valid`.
-4. Read the log:
+   Die Ausgabe endet mit `configuration is valid`.
+4. Lesen Sie das Log:
 
    ```sh
    docker logs periscope
    ```
 
-   A box that is not connected prints a banner with the address of its setup screen and a one-time setup code. You need it to [onboard from the browser](./onboard.mdx).
+   Eine Box, die nicht verbunden ist, gibt ein Banner mit der Adresse ihres Einrichtungsbildschirms und einem einmaligen Einrichtungscode aus. Sie brauchen ihn, um [im Browser einzurichten](./onboard.mdx).
 
-## What the image does
+## Was das Image tut {#what-the-image-does}
 
-- It reads `/etc/periscope/periscope.toml` (`PERISCOPE_CONFIG`) and keeps its state in the volume at `/var/lib/periscope`.
-- It runs as user ID 1001. The volume must be writable for that user.
-- It listens on `0.0.0.0:8400` unless the file sets `server.listen`.
-- Relative paths in the configuration resolve against `/etc/periscope`.
-- Its health check calls `periscope healthcheck` every 30 seconds.
+- Es liest `/etc/periscope/periscope.toml` (`PERISCOPE_CONFIG`) und hält seinen Zustand im Volume unter `/var/lib/periscope`.
+- Es läuft mit der Benutzer-ID 1001. Das Volume muss für diesen Benutzer beschreibbar sein.
+- Es lauscht auf `0.0.0.0:8400`, außer die Datei setzt `server.listen`.
+- Relative Pfade in der Konfiguration werden gegen `/etc/periscope` aufgelöst.
+- Sein Health-Check ruft alle 30 Sekunden `periscope healthcheck` auf.
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
 ```sh
 docker ps --filter name=periscope
 ```
 
-The status column ends with `(healthy)` within about a minute. The container is healthy before it is connected: the check only tests that the agent runs.
+Die Spalte „Status“ endet innerhalb von etwa einer Minute mit `(healthy)`. Der Container ist gesund, bevor er verbunden ist: Der Check prüft nur, dass der Agent läuft.
 
-## If it doesn't work
+## Wenn es nicht klappt {#if-it-doesnt-work}
 
-- **The container exits at once**: run `docker logs periscope`. A rejected configuration is printed with the key that is wrong. See [Troubleshoot Periscope](../troubleshooting.mdx).
-- **`permission denied` on the state directory**: the volume isn't writable for user ID 1001. Use a named volume as above, or change the owner of the bind-mounted directory.
-- **`${NAME}` is empty**: the container sees only the variables in `--env-file`, not the host's.
+- **Der Container beendet sich sofort**: Führen Sie `docker logs periscope` aus. Eine abgelehnte Konfiguration wird mit dem falschen Schlüssel ausgegeben. Siehe [Periscope-Probleme beheben](../troubleshooting.mdx).
+- **`permission denied` im State-Verzeichnis**: Das Volume ist für die Benutzer-ID 1001 nicht beschreibbar. Verwenden Sie ein benanntes Volume wie oben oder ändern Sie den Eigentümer des eingebundenen Verzeichnisses.
+- **`${NAME}` ist leer**: Der Container sieht nur die Variablen aus `--env-file`, nicht die des Hosts.
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Run Periscope as a service](./run-as-a-service.mdx) · [Upgrade a box](./upgrade.mdx)
-- [What Periscope keeps on the box](./state-and-backup.mdx)
+- [Periscope als Dienst betreiben](./run-as-a-service.mdx) · [Eine Box aktualisieren](./upgrade.mdx)
+- [Was Periscope auf der Box aufbewahrt](./state-and-backup.mdx)

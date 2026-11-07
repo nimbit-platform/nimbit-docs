@@ -19,6 +19,10 @@
     "message": "Periscope",
     "description": "The label for category 'Periscope' in sidebar 'docsSidebar'"
   },
+  "sidebar.docsSidebar.category.Deploy Periscope": {
+    "message": "Periscope bereitstellen",
+    "description": "The label for category 'Deploy Periscope' in sidebar 'docsSidebar'"
+  },
   "sidebar.docsSidebar.category.Model your data": {
     "message": "Daten modellieren",
     "description": "The label for category 'Model your data' in sidebar 'docsSidebar'"

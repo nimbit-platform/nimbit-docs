@@ -1,60 +1,60 @@
 ---
-untranslated: true
-title: Replace a box
-description: Put a gateway's Periscope on new hardware, or onboard a box again, without changing the gateway's namespace or things.
+title: Eine Box ersetzen
+description: Das Periscope eines Gateways auf neue Hardware setzen oder eine Box erneut einrichten, ohne Namespace oder Things des Gateways zu ändern.
 sidebar_position: 8
 type: how-to
 app:
   routes: ["/onboarding/gateways"]
+translated_from: 06bddd1
 ---
 
-Replace the hardware behind a gateway, or give a box a new key, and keep the gateway's namespace, gateway thing and things. You replace the box, not the gateway: a new gateway has a new namespace and new things.
+Ersetzen Sie die Hardware hinter einem Gateway oder geben Sie einer Box einen neuen Schlüssel, und behalten Sie Namespace, Gateway-Thing und Things des Gateways. Sie ersetzen die Box, nicht das Gateway: Ein neues Gateway hat einen neuen Namespace und neue Things.
 
-## Before you start
+## Voraussetzungen {#before-you-start}
 
-- The **Gateway** permission in IoT Breeze.
-- The old box's `periscope.toml`, and if you have them, `edits.yaml`, `proposals.yaml` and `mapping.json` from its [state directory](./state-and-backup.mdx). Without the last three, the new box proposes everything again and, in `confirm` mode, waits for you to confirm it.
-- If the old box was lost or compromised, first revoke its key. See [Revoke, replace or remove a gateway](../../revoke-and-replace.mdx).
+- Die Berechtigung **Gateway** in IoT Breeze.
+- Die `periscope.toml` der alten Box und, falls vorhanden, `edits.yaml`, `proposals.yaml` und `mapping.json` aus ihrem [State-Verzeichnis](./state-and-backup.mdx). Ohne die letzten drei schlägt die neue Box wieder alles vor und wartet im Modus `confirm` auf Ihre Bestätigung.
+- Ging die alte Box verloren oder wurde sie kompromittiert, widerrufen Sie zuerst ihren Schlüssel. Siehe [Ein Gateway widerrufen, ersetzen oder entfernen](../../revoke-and-replace.mdx).
 
-## Steps
+## Schritte {#steps}
 
-1. In IoT Breeze, open **Settings › Onboarding › Gateways**, open the row menu of the gateway, and select **New onboarding code**. Copy the code. An earlier code stops working at once.
-2. Install Periscope on the new box, [in a container](./run-in-a-container.mdx) or [as a service](./run-as-a-service.mdx), with the old `periscope.toml` and the files you kept in the state directory.
-3. Onboard the new box with the new code. Its state directory has no gateway, so you don't need `-force`:
+1. Öffnen Sie in IoT Breeze **Einstellungen › Onboarding › Gateways**, öffnen Sie das Zeilenmenü des Gateways und wählen Sie **Neuer Onboarding-Code**. Kopieren Sie den Code. Ein früherer Code funktioniert sofort nicht mehr.
+2. Installieren Sie Periscope auf der neuen Box, [in einem Container](./run-in-a-container.mdx) oder [als Dienst](./run-as-a-service.mdx), mit der alten `periscope.toml` und den Dateien, die Sie im State-Verzeichnis behalten haben.
+3. Richten Sie die neue Box mit dem neuen Code ein. Ihr State-Verzeichnis hat kein Gateway, Sie brauchen also kein `-force`:
 
    ```sh
    periscope enroll -config /etc/periscope/periscope.toml -code ONB-XXXX-XXXX-XXXX-XXXX
    ```
 
-4. Start the agent with `gateway = true`.
-5. Switch the old box off. When the new box has onboarded, the platform drops the old key, and the old box fails at its next sign-in. A token it already holds works for a short time: see [Revoke, replace or remove a gateway](../../revoke-and-replace.mdx) for how fast each step takes effect. Don't run both: they would send under the same client ID and disconnect each other.
+4. Starten Sie den Agent mit `gateway = true`.
+5. Schalten Sie die alte Box aus. Hat sich die neue Box eingerichtet, verwirft die Plattform den alten Schlüssel, und die alte Box scheitert bei ihrer nächsten Anmeldung. Ein Token, das sie schon hält, funktioniert noch kurze Zeit: Wie schnell jeder Schritt wirkt, steht in [Ein Gateway widerrufen, ersetzen oder entfernen](../../revoke-and-replace.mdx). Betreiben Sie nicht beide: Sie würden unter derselben Client-ID senden und sich gegenseitig trennen.
 
-## Onboard the same box again
+## Dieselbe Box erneut einrichten {#onboard-the-same-box-again}
 
-When the box and its state stay but you want a new key, run the command with `-force`:
+Bleiben die Box und ihr State, Sie wollen aber einen neuen Schlüssel, führen Sie den Befehl mit `-force` aus:
 
 ```sh
 periscope enroll -config /etc/periscope/periscope.toml -code ONB-XXXX-XXXX-XXXX-XXXX -force
 ```
 
-Without `-force`, the command refuses because the box is already a gateway. The platform then drops the old key. A running agent signs in with the new key at its next sign-in, without a restart. From the setup screen, select **Disconnect** first.
+Ohne `-force` lehnt der Befehl ab, weil die Box schon ein Gateway ist. Die Plattform verwirft dann den alten Schlüssel. Ein laufender Agent meldet sich bei seiner nächsten Anmeldung ohne Neustart mit dem neuen Schlüssel an. Wählen Sie im Einrichtungsbildschirm zuerst **Disconnect**.
 
-## What stays the same
+## Was gleich bleibt {#what-stays-the-same}
 
-The namespace, the gateway thing and the things keep their IDs, so the new box derives the same alternate IDs and links the existing things instead of creating them twice. Values that were queued on the old box and not sent are lost with it.
+Namespace, Gateway-Thing und Things behalten ihre IDs, die neue Box leitet also dieselben Alternate-IDs ab und verknüpft die vorhandenen Things, statt sie doppelt anzulegen. Werte, die auf der alten Box in der Warteschlange lagen und nicht gesendet wurden, gehen mit ihr verloren.
 
 {/* TODO(product): Can a backed-up gateway_key.pem be restored on new hardware instead of onboarding with a new code, and is that supported? */}
 
-## Check that it worked
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-The gateway is **Online** again, and `periscope verify -since 5m` exits 0. See [Verify that data arrived](../verify.mdx).
+Das Gateway ist wieder **Online**, und `periscope verify -since 5m` endet mit 0. Siehe [Prüfen, ob Daten angekommen sind](../verify.mdx).
 
-## If it doesn't work
+## Wenn es nicht klappt {#if-it-doesnt-work}
 
-- **The code is refused**: it is unknown, used or expired. Issue another with **New onboarding code**.
-- **The state belongs to another organization**: the new state directory has a `tenant.json` from another organization. Start with an empty directory.
-- **The gateway stays Offline**: see [Onboard a box with an onboarding code](./onboard.mdx#if-it-doesnt-work).
+- **Der Code wird abgelehnt**: Er ist unbekannt, benutzt oder abgelaufen. Stellen Sie mit **Neuer Onboarding-Code** einen weiteren aus.
+- **Der State gehört zu einer anderen Organisation**: Das neue State-Verzeichnis hat eine `tenant.json` einer anderen Organisation. Beginnen Sie mit einem leeren Verzeichnis.
+- **Das Gateway bleibt Offline**: Siehe [Eine Box mit einem Onboarding-Code einrichten](./onboard.mdx#if-it-doesnt-work).
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Revoke, replace or remove a gateway](../../revoke-and-replace.mdx) · [Upgrade a box](./upgrade.mdx)
+- [Ein Gateway widerrufen, ersetzen oder entfernen](../../revoke-and-replace.mdx) · [Eine Box aktualisieren](./upgrade.mdx)

@@ -1,48 +1,48 @@
 ---
-untranslated: true
-title: What Periscope keeps on the box
-sidebar_label: State and backup
-description: The files in Periscope's state directory that give a box its gateway identity, its queues and its work, and which of them to back up.
+title: Was Periscope auf der Box aufbewahrt
+sidebar_label: State und Backup
+description: Die Dateien im State-Verzeichnis von Periscope, die einer Box ihre Gateway-Identität, ihre Warteschlangen und ihre Arbeit geben, und welche davon zu sichern sind.
 sidebar_position: 5
 type: reference
 app:
   routes: ["/onboarding/gateways"]
+translated_from: 06bddd1
 ---
 
-Everything Periscope keeps is in its state directory, `agent.state_dir`, `/var/lib/periscope` by default. The directory is created with mode 0700 and its files with mode 0600. The full list of files is in the [Configuration reference](../configuration.mdx#state-directory); this page covers what matters for a gateway.
+Alles, was Periscope aufbewahrt, liegt in seinem State-Verzeichnis, `agent.state_dir`, standardmäßig `/var/lib/periscope`. Das Verzeichnis wird mit dem Modus 0700 angelegt und seine Dateien mit dem Modus 0600. Die vollständige Liste der Dateien steht in der [Konfigurationsreferenz](../configuration.mdx#state-directory); diese Seite behandelt, was für ein Gateway zählt.
 
-## Identity of the gateway
+## Identität des Gateways {#identity-of-the-gateway}
 
-| File | Holds | If it is lost |
+| Datei | Enthält | Bei Verlust |
 | --- | --- | --- |
-| `gateway_key.pem` | The box's private key. It never leaves the box. | The box can't sign in. Onboard it again with a new code. |
-| `gateway_key.next.pem` | The next key, while a rotation is under way. The box registers a new key 30 days before the current one expires, and the current one keeps working for a week after that. | Nothing, unless a rotation was under way. |
-| `gateway.json` | The gateway's IDs, the key's expiry, the endpoints it signs in at, and the answer of the platform's `gateways.me`: namespace, gateway thing and its thing type. | The agent can't sign in as the gateway. Onboard again. |
-| `tenant.json` | The organization this state belongs to. The state can connect only to the same organization again. | The pin is made again at the next onboarding. |
-| `nimbit-gateway-credential.json` | The gateway's cached data credential for the platform outputs. | A new one is requested with the next token. |
-| `nimbit-mqtt-credential.json` | The tenant credential, cached by a box that runs as a service account. | A new one is requested. |
+| `gateway_key.pem` | Der private Schlüssel der Box. Er verlässt die Box nie. | Die Box kann sich nicht anmelden. Richten Sie sie mit einem neuen Code erneut ein. |
+| `gateway_key.next.pem` | Der nächste Schlüssel, solange eine Rotation läuft. Die Box registriert einen neuen Schlüssel 30 Tage, bevor der aktuelle abläuft, und der aktuelle funktioniert danach noch eine Woche. | Nichts, außer eine Rotation lief. |
+| `gateway.json` | Die IDs des Gateways, der Ablauf des Schlüssels, die Endpunkte, an denen es sich anmeldet, und die Antwort von `gateways.me` der Plattform: Namespace, Gateway-Thing und sein Thing-Typ. | Der Agent kann sich nicht als Gateway anmelden. Richten Sie die Box erneut ein. |
+| `tenant.json` | Die Organisation, zu der dieser State gehört. Der State kann sich nur wieder mit derselben Organisation verbinden. | Die Bindung wird beim nächsten Onboarding neu erstellt. |
+| `nimbit-gateway-credential.json` | Die zwischengespeicherten Datenzugangsdaten des Gateways für die Plattform-Ausgänge. | Mit dem nächsten Token werden neue angefordert. |
+| `nimbit-mqtt-credential.json` | Die Tenant-Zugangsdaten, zwischengespeichert von einer Box, die als Servicekonto läuft. | Neue werden angefordert. |
 
-A box that signs in as a gateway holds no password. Its sign-in tokens last 5 minutes and its ingest tokens at most 10 minutes. The one secret besides the key is the cached data credential.
+Eine Box, die sich als Gateway anmeldet, hält kein Passwort. Ihre Anmelde-Tokens gelten 5 Minuten und ihre Ingest-Tokens höchstens 10 Minuten. Das einzige Geheimnis neben dem Schlüssel sind die zwischengespeicherten Datenzugangsdaten.
 
-## Work
+## Arbeit {#work}
 
-| File | Holds | If it is lost |
+| Datei | Enthält | Bei Verlust |
 | --- | --- | --- |
-| `proposals.yaml` | Thing types and things, with their status. | Discovery proposes everything again. |
-| `edits.yaml` | Renames, merges, units and scales you made in the web UI. | Discovery proposes the generated names again. |
-| `mapping.json` | Which source address feeds which thing and measure. | The next apply writes it again. |
-| `tsflux-stream/<output>/`, `spool/<output>/` | Values not yet accepted by the platform. | Those values are lost. |
-| `config.ui.toml` | Keys written by the setup screen. | The agent is not connected until you set them again. |
+| `proposals.yaml` | Thing-Typen und Things mit ihrem Status. | Die Erkennung schlägt wieder alles vor. |
+| `edits.yaml` | Umbenennungen, Zusammenführungen, Einheiten und Skalierungen, die Sie in der Web-Oberfläche gemacht haben. | Die Erkennung schlägt wieder die generierten Namen vor. |
+| `mapping.json` | Welche Quelladresse welches Thing und welchen Messwert speist. | Das nächste Anwenden schreibt sie neu. |
+| `tsflux-stream/<output>/`, `spool/<output>/` | Werte, die die Plattform noch nicht akzeptiert hat. | Diese Werte gehen verloren. |
+| `config.ui.toml` | Schlüssel, die der Einrichtungsbildschirm geschrieben hat. | Der Agent ist nicht verbunden, bis Sie sie wieder setzen. |
 
-## What to back up
+## Was zu sichern ist {#what-to-back-up}
 
-Back up the whole directory while the agent is stopped, or at least `gateway_key.pem`, `gateway.json`, `tenant.json`, `proposals.yaml`, `edits.yaml`, `mapping.json` and your `periscope.toml`. The copy contains the box's private key: store it as you would a password.
+Sichern Sie das ganze Verzeichnis, während der Agent gestoppt ist, oder mindestens `gateway_key.pem`, `gateway.json`, `tenant.json`, `proposals.yaml`, `edits.yaml`, `mapping.json` und Ihre `periscope.toml`. Die Kopie enthält den privaten Schlüssel der Box: Bewahren Sie sie auf wie ein Passwort.
 
-You don't need to back up the queues. A restored copy must run on one box only. Two boxes with the same key and the same MQTT client ID disconnect each other.
+Die Warteschlangen müssen Sie nicht sichern. Eine wiederhergestellte Kopie darf nur auf einer Box laufen. Zwei Boxen mit demselben Schlüssel und derselben MQTT-Client-ID trennen sich gegenseitig.
 
-To replace a box instead of restoring it, see [Replace a box](./replace-a-box.mdx).
+Um eine Box zu ersetzen, statt sie wiederherzustellen, siehe [Eine Box ersetzen](./replace-a-box.mdx).
 
-## Related
+## Verwandte Seiten {#related}
 
-- [Configuration reference](../configuration.mdx)
-- [Onboard a box with an onboarding code](./onboard.mdx)
+- [Konfigurationsreferenz](../configuration.mdx)
+- [Eine Box mit einem Onboarding-Code einrichten](./onboard.mdx)
