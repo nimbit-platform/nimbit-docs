@@ -1,4 +1,4 @@
-import { BookOpen, Code, FileText, type LucideIcon } from "lucide-react";
+import { BookOpen, Rocket, Code, FileText, type LucideIcon } from "lucide-react";
 
 export interface Section {
     id: string;
@@ -9,6 +9,13 @@ export interface Section {
 }
 
 export const SECTIONS: Section[] = [
+    {
+        id: "get-started",
+        label: "Get started",
+        icon: Rocket,
+        to: "/docs/get-started",
+        description: "First device to first dashboard",
+    },
     {
         id: "user",
         label: "User Manual",

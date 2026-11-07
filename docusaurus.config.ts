@@ -215,6 +215,11 @@ const config: Config = {
       },
       items: [
         {
+          label: "Get started",
+          to: "/docs/get-started",
+          position: "left",
+        },
+        {
           label: "User Manual",
           to: "/docs/user/overview",
           position: "left",

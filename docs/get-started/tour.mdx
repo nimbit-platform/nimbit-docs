@@ -1,0 +1,95 @@
+---
+id: tour
+title: Tour of IoT Breeze
+sidebar_label: Tour of IoT Breeze
+sidebar_position: 3
+description: Find your way around a tenant someone already set up.
+app:
+  tour: find-your-way
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Someone already set up your tenant and you want to know where things are. This tour takes about 10 minutes. The same tour runs in the app: open the **?** help drawer and choose **Find your way**.
+
+## Home
+
+Home shows the dashboard your admin assigned to it: usually things online, messages and alerts at a glance.
+
+<Screenshot
+  page="get-started/tour"
+  id="01-home"
+  route="/"
+  state="Home with the tenant overview dashboard and live data"
+  alt="Home with the tenant overview"
+/>
+
+## Monitoring
+
+Everything you watch day to day.
+
+| Page | What you do there |
+| --- | --- |
+| Dashboards | Open, build and share dashboards. |
+| Things | Find a device, see its live values, history and connections. |
+| Map | See where your things are and what state they are in. |
+| Incidents | Work through problems that need someone to act. |
+| Events | See what happened, when, and on which thing. |
+| Telemetry | Query and compare raw measurements. |
+| Canvas | Floor plans and diagrams with live values. |
+
+<Screenshot
+  page="get-started/tour"
+  id="02-things"
+  route="/onboarding/things"
+  state="Things list with a mix of online and offline things"
+  alt="The Things list"
+/>
+
+<Screenshot
+  page="get-started/tour"
+  id="03-map"
+  route="/geo/map"
+  state="Map with clustered things and one selected"
+  alt="Things on the map"
+/>
+
+## Knowledge: Explore and Ask Nimble
+
+If your tenant uses Contexus, **Knowledge › Explore** shows how sites, buildings, rooms and things relate. **Ask Nimble** (Ctrl/⌘+I) answers questions about your data in plain words, for example *"Which rooms were warmer than 24 °C yesterday?"*
+
+<Screenshot
+  page="get-started/tour"
+  id="04-ask-nimble"
+  route="/knowledge/chat"
+  state="Ask Nimble with one question answered, sources visible"
+  alt="Ask Nimble answering a question about room temperatures"
+/>
+
+## Settings and Administration
+
+You may not see all of these; it depends on your role.
+
+- **Onboarding:** things, thing types and interfaces.
+- **Knowledge setup:** data model, sources, data health, AI models.
+- **Automation:** Rule Designer, reports, Node-RED.
+- **Configuration:** event types, incidents, notification channels, mail templates, geofences.
+- **Administration:** files, users, groups, roles, gateways, API keys, audit log, tenant settings.
+
+## Help when you need it
+
+- **?** in the header opens help for the page you are on, with links to these docs.
+- **Search** (Ctrl/⌘+K) finds pages, things and dashboards.
+- Guided tours start from the help drawer.
+
+<Screenshot
+  page="get-started/tour"
+  id="05-help-drawer"
+  route="/onboarding/things"
+  state="Help drawer open on the Things page"
+  alt="The help drawer with page help and guided tours"
+/>
+
+## Next
+
+Ready to set something up? Continue with [First device to first dashboard](./first-device.mdx).

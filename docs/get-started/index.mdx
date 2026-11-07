@@ -1,0 +1,43 @@
+---
+id: index
+title: Get started
+sidebar_label: Overview
+sidebar_position: 1
+description: Where to start with IoT Breeze, depending on what you want to do.
+app:
+  routes: ["/"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+IoT Breeze collects data from your devices, shows it on dashboards and maps, and tells you when something needs attention. Pick the path that matches what you want to do first.
+
+| You want to… | Start here | Time |
+| --- | --- | --- |
+| Get a first device online and see its data on a dashboard | [First device to first dashboard](./first-device.mdx) | about 30 minutes |
+| Find your way around a tenant someone already set up | [Tour of IoT Breeze](./tour.mdx) | about 10 minutes |
+| Send data from your own code or gateway | Developers › Send your first reading {/* TODO: link once the developer quickstart exists */} | about 15 minutes |
+
+<Screenshot
+  page="get-started/overview"
+  id="01-home"
+  route="/"
+  state="Home of a tenant with live data: Things online, Messages, Connectivity by thing type"
+  alt="IoT Breeze Home with the tenant overview dashboard"
+/>
+
+## What you need
+
+- An IoT Breeze account and a tenant. If you don't have one, contact [info@nimbit.de](mailto:info@nimbit.de).
+- To set up devices, a role that may create thing types and things (for example the tenant admin role).
+- A device is optional: IoT Breeze can simulate one.
+
+## Words you'll meet
+
+| Term | Meaning |
+| --- | --- |
+| Tenant | Your organisation's space in IoT Breeze. Data, users and settings belong to one tenant. |
+| Thing type | The model of a kind of device: which measures it sends (temperature, pressure…) and which properties it has. |
+| Thing | One real device of a thing type, with its own ID and credentials. |
+| Interface | A reusable set of capabilities that thing types implement, so dashboards can work across types. |
+| Dashboard | A page of widgets showing live and historical data from your things. |
