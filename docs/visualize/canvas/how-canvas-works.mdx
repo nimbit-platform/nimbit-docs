@@ -16,7 +16,7 @@ flowchart LR
   X --> E[Element]
   F[Fixed thing] --> E
   E --> R[Rules: state]
-  R --> L[Colour, icon, motion]
+  R --> L[Color, icon, motion]
   E --> A[Action]
   A --> T[Thing]
 ```
@@ -28,8 +28,8 @@ flowchart LR
 | **Element** | One item on the canvas: a value, a gauge, a chart, a shape, a symbol, a button. The library holds them in sections: **Data**, **Controls**, **Draw & basic**, **Embeds** and **P&ID symbols**. |
 | **Context thing** | The thing a viewer picks in the header. Elements that read **From context** show that thing, so one canvas serves every thing that offers the canvas's interfaces. |
 | **Fixed thing** | An element that always reads the same device, whatever the viewer picks. |
-| **Binding** | The link from an element to one value: a thing, a measure or a property. Optional **Thresholds** colour it. |
-| **State** | A named condition, such as `high alarm`, that **Rules** assign when a value crosses a limit. A state carries a severity and changes colour, icon and motion. |
+| **Binding** | The link from an element to one value: a thing, a measure or a property. Optional **Thresholds** color it. |
+| **State** | A named condition, such as `high alarm`, that **Rules** assign when a value crosses a limit. A state carries a severity and changes color, icon and motion. |
 | **Action** | What happens on click: run a thing's action, open a link or another canvas, switch the context thing, or set a variable. |
 | **Kind** | **Monitoring** (values and charts) or **P&ID** (a process drawing). It only sorts the canvas list's filters. |
 | **Managed by Nimbit** | A canvas added from a template that receives template updates. You can also add a template as a copy to change freely. |

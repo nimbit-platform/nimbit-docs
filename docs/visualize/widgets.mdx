@@ -14,7 +14,7 @@ A widget is one tile on a dashboard. The **Add widget** dialog groups widgets by
 
 Three things apply to every widget:
 
-- **Title** and **Appearance** (or **Card**) settings: a title, and colours where the widget draws a card. They are not repeated in the tables below.
+- **Title** and **Appearance** (or **Card**) settings: a title, and colors where the widget draws a card. They are not repeated in the tables below.
 - **Time range**: widgets that read data over time follow the dashboard's time range unless you override it in the widget. See [Dashboards, smart dashboards and time](./dashboards.mdx).
 - **Offered on**: the picker shows only the widgets that fit the dashboard you edit. Widgets that **read a thing** need a thing in context: the dashboard's own thing, or one you choose in the widget. See [Build one dashboard for every thing of a kind](./smart-dashboard.mdx) for follow and pin. Tenant-wide widgets belong on Home and other tenant-wide dashboards.
 
@@ -81,8 +81,8 @@ Numeric rows show a chart icon on hover that opens a query for that measure. The
 | **Measure** | The measure to show. Required. |
 | **Min / Max** | The range of the dial. Required. |
 | **Shape** | Wide or narrow arc. |
-| **Thresholds** | Colour zones for value ranges. |
-| **Gradient** | Smooth colour transitions between zones. |
+| **Thresholds** | Color zones for value ranges. |
+| **Gradient** | Smooth color transitions between zones. |
 | **Icon, Compact number, Text size** | How the value is drawn. |
 
 ### Fill level
@@ -104,7 +104,7 @@ Numeric rows show a chart icon on hover that opens a query for that measure. The
 | Setting | What it does |
 | --- | --- |
 | **Measure** | The measure that holds the level. |
-| **Conditions** | Ranges with colours, for example green below 50 %, yellow below 80 %, red above. |
+| **Conditions** | Ranges with colors, for example green below 50 %, yellow below 80 %, red above. |
 | **Display** | Vertical or horizontal bar. |
 
 ### Compare
@@ -125,7 +125,7 @@ Numeric rows show a chart icon on hover that opens a query for that measure. The
 
 | Setting | What it does |
 | --- | --- |
-| **Measure** | One measure with its aggregation, icon and icon colour. |
+| **Measure** | One measure with its aggregation, icon and icon color. |
 | **Time range** | The period the value covers. |
 | **Compact number** | Shorten large values, for example 1.2 k. |
 | **Alignment, Text size** | How the value is drawn. |
@@ -136,9 +136,9 @@ Is it running, open, on?
 
 ### Stat
 
-**Shows:** A value with colours for its ranges. Shows the current value of one or more measures, optionally with a sparkline.
+**Shows:** The current value of one or more measures, colored by range, optionally with a sparkline.
 
-**Use it when:** You want a big, glanceable number that changes colour when it leaves its normal range.
+**Use it when:** You want a big, glanceable number that changes color when it leaves its normal range.
 
 **Offered on:** Reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own.
 
@@ -152,7 +152,7 @@ Is it running, open, on?
 
 | Setting | What it does |
 | --- | --- |
-| **Measures** | One or more measures. Each row has a thing, a measure, an icon and an icon colour. |
+| **Measures** | One or more measures. Each row has a thing, a measure, an icon and an icon color. |
 | **Sparkline** | A small trend behind each value: off, 24 h, 7 d or 30 d. |
 | **Display mode** | **Carousel** cycles through measures; **Stacked** shows all at once. |
 | **Orientation** | Horizontal or vertical (stacked only). |
@@ -179,7 +179,7 @@ The picker card is named **Stat**.
 | Setting | What it does |
 | --- | --- |
 | **Measures** | One or more boolean measures, each with an icon. |
-| **True / False colours** | Colour for each state. |
+| **True / False colors** | Color for each state. |
 | **True / False descriptions** | Text for each state. Can be translated. |
 | **Display mode** | **Carousel** or **Stacked**. |
 | **Orientation, Alignment** | Layout. |
@@ -248,7 +248,7 @@ Rows are sorted by name. The last update shows as relative time, for example 2 m
 
 | Setting | What it does |
 | --- | --- |
-| **Measure** | One measure with aggregation, icon and colour. |
+| **Measure** | One measure with aggregation, icon and color. |
 | **Time range** | The period to aggregate. |
 | **Compact number, Alignment** | How the value is drawn. |
 
@@ -274,9 +274,9 @@ How did it change?
 
 | Setting | What it does |
 | --- | --- |
-| **Measures** | One or more rows. Each has a thing, aggregation, chart type, line style, stacking, Y-axis group, colour and alias. |
+| **Measures** | One or more rows. Each has a thing, aggregation, chart type, line style, stacking, Y-axis group, color and alias. |
 | **Time range** | The period and the bucket size. Follows the dashboard unless you override it. |
-| **Thresholds** | Horizontal lines with colour and label. |
+| **Thresholds** | Horizontal lines with color and label. |
 | **Display** | Chart or table. |
 | **Show chart markers**, **Zoom allowed**, **Compact Y-axis labels** | Show points, allow zoom and pan, shorten large axis values. |
 | **Legend placement** | Bottom, right or hidden. |
@@ -286,7 +286,7 @@ Older dashboards may contain separate line, bar, scatter and combination widgets
 
 ### Timeline
 
-**Shows:** States over time as coloured segments, one lane per measure.
+**Shows:** States over time as colored segments, one lane per measure.
 
 **Use it when:** You want to see when something was running, idle or in error, not how large a value was.
 
@@ -296,7 +296,7 @@ Older dashboards may contain separate line, bar, scatter and combination widgets
   page="visualize/widgets"
   id="11-timeline"
   route="/dashboards/:id"
-  state="Timeline with three lanes of coloured state segments over 24 hours"
+  state="Timeline with three lanes of colored state segments over 24 hours"
   alt="The Timeline widget on a dashboard"
 />
 
@@ -305,11 +305,11 @@ Older dashboards may contain separate line, bar, scatter and combination widgets
 | **Aggregation** | How values are combined. |
 | **Merge consecutive datapoints** | Join neighbouring segments with the same state. |
 | **Time range** | The period to show. |
-| **Rules** | Map value ranges to colours and labels. |
+| **Rules** | Map value ranges to colors and labels. |
 
 ### Heatmap
 
-**Shows:** A measure by hour and day as a colour grid.
+**Shows:** A measure by hour and day as a color grid.
 
 **Use it when:** You look for daily or weekly patterns, such as when consumption peaks.
 
@@ -327,7 +327,7 @@ Older dashboards may contain separate line, bar, scatter and combination widgets
 | --- | --- |
 | **Measure** | The measure to draw. Required. |
 | **Aggregation** | For example average, minimum or maximum. |
-| **Colour** | Base colour of the intensity scale. |
+| **Color** | Base color of the intensity scale. |
 | **Step** | Group by hour, day, week or month. |
 | **Min / Max** | Optional range to clip values. |
 | **Time range** | The period to query. |
@@ -344,13 +344,13 @@ Older dashboards may contain separate line, bar, scatter and combination widgets
   page="visualize/widgets"
   id="13-doughnut"
   route="/dashboards/:id"
-  state="Doughnut with three coloured shares and a unit in the centre"
+  state="Doughnut with three colored shares and a unit in the centre"
   alt="The Doughnut widget on a dashboard"
 />
 
 | Setting | What it does |
 | --- | --- |
-| **Measures** | One or more measures, each with its own colour. |
+| **Measures** | One or more measures, each with its own color. |
 | **Display** | Pie or doughnut. |
 | **Unit of measure** | Text in the centre. |
 | **Icon** | Optional centre icon. |
@@ -408,7 +408,7 @@ What is it doing, and what can I do?
 
 ### Status
 
-**Shows:** Maps a measure's value to an icon, text and colour, for example online or offline.
+**Shows:** Maps a measure's value to an icon, text and color, for example online or offline.
 
 **Use it when:** You want a plain-language state, such as Running or Fault, instead of a raw value.
 
@@ -425,7 +425,7 @@ What is it doing, and what can I do?
 | Setting | What it does |
 | --- | --- |
 | **Measure** | One measure to evaluate. |
-| **Rules** | Conditions that map value ranges to icons, text and colours. |
+| **Rules** | Conditions that map value ranges to icons, text and colors. |
 | **Title, Alignment, Text size** | How it is drawn. |
 
 ### Action
@@ -456,7 +456,7 @@ What is it doing, and what can I do?
 
 **Use it when:** You drew a floor plan or process picture and want it next to other widgets.
 
-**Offered on:** Reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own. Not on reports.
+**Offered on:** Thing, Thing type, Smart and Multi-asset dashboards. Not on General dashboards or reports.
 
 <Screenshot
   page="visualize/widgets"
@@ -521,7 +521,7 @@ Chips filter by severity and show counts. **Open event explorer** opens the even
 | **Title** | Shown above the list. |
 | **Opens on** | Start on active incidents or on all of them. |
 | **Rows** | 5, 10 or 20 before **All incidents**. |
-| **Card** | Background and border colours. |
+| **Card** | Background and border colors. |
 
 Only members who may read incidents see it.
 
@@ -572,7 +572,7 @@ How is the tenant doing?
 | --- | --- |
 | **Counters** | Pick up to six and drag them into order. **Reset to default** brings back Things, Things online, Messages today and Events. |
 | **Time range** | Events, messages and average message rate cover the dashboard's range, or one of the widget's own. |
-| **Card** | Background and border colours. |
+| **Card** | Background and border colors. |
 
 A problem shows in the line under the figure, for example *2 offline*. A dash with *No access* means your role may not read that figure.
 
@@ -707,7 +707,7 @@ Which things are offline?
 | --- | --- |
 | **Title** | Shown above the tiles. |
 | **Tiles by** | **Thing type** or **Group**. A thing in several groups counts in each. |
-| **Card** | Background and border colours. |
+| **Card** | Background and border colors. |
 
 Tiles with things offline come first. With up to 100 things, a thing type tile shows each thing as a small square. The state refreshes every minute.
 
@@ -733,7 +733,7 @@ Tiles with things offline come first. With up to 100 things, a thing type tile s
 | **Rows** | 5, 10 or 20 things, problems first, or **All** (searchable, loads as you scroll). |
 | **Thing types, Groups, Connection** | Show only matching things. Empty means every thing. |
 | **Map tab** | Adds a map next to the list. |
-| **Card** | Background and border colours. |
+| **Card** | Background and border colors. |
 
 Each row shows the thing, its status, last message and messages in 24 hours. **Open all things** leads to the full list. Lists added earlier stay in the **All** form until you change them.
 
@@ -786,7 +786,7 @@ Structure and explain the dashboard
 | Setting | What it does |
 | --- | --- |
 | **Content** | A rich text editor: bold, italic, underline, lists, links, headings. Markdown shortcuts work. |
-| **Appearance** | Background colour, border colour and transparency. |
+| **Appearance** | Background color, border color and transparency. |
 
 Type `@` to mention a thing and its properties. The values are resolved when the dashboard is shown.
 
@@ -811,7 +811,7 @@ Type `@` to mention a thing and its properties. The values are resolved when the
 | **Image source** | Upload a file or enter a URL. External URLs must be public. |
 | **Size** | **Cover** fills the widget and may crop. **Contain** shows the whole image. |
 | **Alignment** | Which part stays visible when cropped. |
-| **Appearance** | Background colour, border colour and transparency. |
+| **Appearance** | Background color, border color and transparency. |
 
 ### File List
 
@@ -856,7 +856,7 @@ At least one file, one search label or upload must be set.
 | Setting | What it does |
 | --- | --- |
 | **URL** | The full address, for example `https://example.com`. Required. |
-| **Appearance** | Border colour. |
+| **Appearance** | Border color. |
 
 The target site must allow embedding. Some sites block it with `X-Frame-Options` or a content security policy.
 
@@ -864,7 +864,7 @@ The target site must allow embedding. Some sites block it with `X-Frame-Options`
 
 **Shows:** A frame that groups widgets or leaves space on the grid.
 
-**Use it when:** You want a coloured divider, a visual group, or empty space.
+**Use it when:** You want a colored divider, a visual group, or empty space.
 
 **Offered on:** Any dashboard.
 
@@ -878,9 +878,9 @@ The target site must allow embedding. Some sites block it with `X-Frame-Options`
 
 | Setting | What it does |
 | --- | --- |
-| **Appearance** | Background colour, border colour and transparency. |
+| **Appearance** | Background color, border color and transparency. |
 
-Set it transparent to keep the space free without drawing anything. Use a background colour to make a coloured divider.
+Set it transparent to keep the space free without drawing anything. Use a background color to make a colored divider.
 
 ### Section header
 
@@ -930,7 +930,7 @@ Title, description and link text can be translated. Make it narrower to head one
 | **Links** | Up to twelve, dragged into order. Pick built-in links (Documentation, Things, Rules, Dashboards, Events, API keys, Users and groups, Contact support) or add a custom link. |
 | **Custom link** | A title, an optional description, and a target: an app page (`/…`), a web address (`https://…`) or an email address (`mailto:…`). |
 | **Reset to default** | Brings back the default set. |
-| **Card** | Background and border colours. |
+| **Card** | Background and border colors. |
 
 ### Recently viewed
 
@@ -952,7 +952,7 @@ Title, description and link text can be translated. Make it narrower to head one
 | --- | --- |
 | **Title** | Shown above the list. |
 | **Show** | 5 or 10 entries. |
-| **Card** | Background and border colours. |
+| **Card** | Background and border colors. |
 
 The list is yours: everyone sees what they opened themselves. It keeps your last 20 and follows you across devices.
 
@@ -976,7 +976,7 @@ The list is yours: everyone sees what they opened themselves. It keeps your last
 | --- | --- |
 | **Title** | Shown above the list. |
 | **Show finished journeys** | Off hides the ones you finished. |
-| **Card** | Background and border colours. |
+| **Card** | Background and border colors. |
 
 Each viewer sees the journeys their role is offered, with their own progress.
 
@@ -1000,7 +1000,7 @@ Each viewer sees the journeys their role is offered, with their own progress.
 | --- | --- |
 | **Title** | Shown above the steps. |
 | **Show done steps** | Off lists only the open steps. |
-| **Card** | Background and border colours. |
+| **Card** | Background and border colors. |
 
 A step counts as done once the tenant has what it builds, however it was made. While Home shows this widget, the Getting started card is left out.
 
@@ -1024,7 +1024,7 @@ A step counts as done once the tenant has what it builds, however it was made. W
 | --- | --- |
 | **Title** | Shown above the list. |
 | **Entries** | 3, 5 or 10 announcements. |
-| **Card** | Background and border colours. |
+| **Card** | Background and border colors. |
 
 What you mark as read is yours. The announcements are the same in every tenant.
 
@@ -1046,7 +1046,7 @@ What you mark as read is yours. The announcements are the same in every tenant.
 
 | Setting | What it does |
 | --- | --- |
-| **Appearance** | Border colour. |
+| **Appearance** | Border color. |
 
 To draw geofences and use the full map, see [Show things on a map](./map.mdx).
 

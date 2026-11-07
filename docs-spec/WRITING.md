@@ -149,7 +149,7 @@ Complete. If something can't be confirmed from code, leave it out and add a `{/*
 - No marketing words: seamless, powerful, easily, simply, just, robust, leverage, unlock, effortless.
 - No filler intros ("In this guide we will…"). Start with the outcome.
 - Numbers, limits and defaults only when confirmed in code. Unknowns: leave out, add `{/* TODO(product): question */}`.
-- Spell it "organization" (the UI does). "IoT Breeze" for the app, "NimBit" for the company and platform.
+- American spelling, as the UI uses: "organization", "color". "IoT Breeze" for the app, "NimBit" for the company and platform. Ingestion is tsflux, the query engine is nbq, the platform backend is OCB.
 - MDX 3: no HTML comments; use `{/* */}`. Escape `<` and `{` in prose, or use backticks.
 - Links: relative file links (`../watch/work-an-incident.mdx`). Every link must resolve; the build fails on broken links.
 

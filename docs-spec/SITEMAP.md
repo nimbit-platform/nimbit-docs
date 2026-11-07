@@ -95,7 +95,7 @@ apps/periscope/README.md and apps/periscope/docs/ (served in the agent at /ui/do
 | canvas/how-canvas-works.mdx | concept | How a canvas works | dashboards/canvas/*, components/Canvas |
 | canvas/draw-a-floor-plan.mdx | how-to | Draw a floor plan with live values | dashboards/canvas/* |
 | canvas/bind-live-values.mdx | how-to | Bind live values to shapes | dashboards/canvas/* |
-| canvas/states-and-colours.mdx | how-to | Show state with colour and visibility | dashboards/canvas/* |
+| canvas/states-and-colors.mdx | how-to | Show state with color and visibility | dashboards/canvas/* |
 | canvas/actions.mdx | how-to | Add click actions | dashboards/canvas/* |
 | canvas/embed-a-canvas.mdx | how-to | Put a canvas on a dashboard | dashboards/canvas/*, widgets |
 | canvas/editor-reference.mdx | reference | Canvas editor reference | components/Canvas |

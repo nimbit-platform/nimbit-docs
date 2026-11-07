@@ -230,6 +230,7 @@ const config: Config = {
           items: [
             { label: "Blog", to: "/blog" },
             { label: "Changelog", to: "/docs/changelog" },
+            { label: "Downloads", to: "/docs/downloads" },
           ],
         },
         {
