@@ -937,5 +937,20 @@
   },
   "blog.older": {
     "message": "Älterer Beitrag"
+  },
+  "doc.meta.updated": {
+    "message": "Aktualisiert {date}"
+  },
+  "doc.app.eyebrow": {
+    "message": "In IoT Breeze"
+  },
+  "doc.app.text": {
+    "message": "Diese Seite beschreibt den Bildschirm unter"
+  },
+  "doc.app.open": {
+    "message": "In der App öffnen"
+  },
+  "doc.untranslated.chip": {
+    "message": "Englisch"
   }
 }
