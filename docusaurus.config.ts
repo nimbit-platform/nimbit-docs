@@ -63,7 +63,7 @@ const config: Config = {
     ],
   ],
 
-  clientModules: [require.resolve("./src/clientModules/appUrl.ts"), require.resolve("./src/clientModules/embed.ts")],
+  clientModules: [require.resolve("./src/clientModules/appUrl.ts"), require.resolve("./src/clientModules/embed.ts"), require.resolve("./src/clientModules/d3Transition.ts")],
   // Embed mode (IoT Breeze's help panel) is decided before the page paints; see src/lib/embed.ts.
   headTags: [{ tagName: "script", attributes: {}, innerHTML: EMBED_HEAD_SCRIPT }],
 
