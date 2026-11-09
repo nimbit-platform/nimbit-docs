@@ -8,7 +8,7 @@ const config: Config = {
   tagline: "Learn how NimBit builds its IoT solution.",
   favicon: "img/favicon.ico",
 
-  url: "https://cparsinnovationlab.bitbucket.io",
+  url: process.env.DOCUSAURUS_URL ?? "https://cparsinnovationlab.bitbucket.io",
   baseUrl: process.env.DOCUSAURUS_BASE_URL ?? "/nimbit/",
 
   organizationName: "Nimbit GmbH",
