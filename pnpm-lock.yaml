@@ -99,6 +99,9 @@ importers:
       autoprefixer:
         specifier: ^10.6.2
         version: 10.6.2(postcss@8.5.32)
+      js-yaml:
+        specifier: ^4.3.0
+        version: 4.3.0
       postcss:
         specifier: ^8.5.32
         version: 8.5.32
@@ -4044,10 +4047,6 @@ packages:
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
-
-  js-yaml@4.1.0:
-    resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
-    hasBin: true
 
   js-yaml@4.3.0:
     resolution: {integrity: sha512-1td788aAnnZ5qs7V2QIRl1owjtYpbKt749Y3xauqQgwIIGF/xXWz1wMTEBx5O3LK3lXLVuqXPdPxj2BoFHaW9Q==}
@@ -8260,7 +8259,7 @@ snapshots:
       github-slugger: 1.5.0
       globby: 11.1.0
       jiti: 1.21.7
-      js-yaml: 4.1.0
+      js-yaml: 4.3.0
       lodash: 4.17.21
       micromatch: 4.0.8
       p-queue: 6.6.2
@@ -11243,10 +11242,6 @@ snapshots:
       '@sideway/pinpoint': 2.0.0
 
   js-tokens@4.0.0: {}
-
-  js-yaml@4.1.0:
-    dependencies:
-      argparse: 2.0.1
 
   js-yaml@4.3.0:
     dependencies:

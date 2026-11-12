@@ -16,7 +16,8 @@
     "screenshots": "node scripts/screenshots/capture.mjs",
     "screenshots:list": "node scripts/screenshots/inventory.mjs",
     "i18n:status": "node scripts/i18n/status.mjs",
-    "i18n:label": "node scripts/i18n/ui-label.mjs"
+    "i18n:label": "node scripts/i18n/ui-label.mjs",
+    "check:app": "node scripts/check-app.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
@@ -51,6 +52,7 @@
     "@tailwindcss/postcss": "^4.3.5",
     "@types/react": "19.3.0",
     "autoprefixer": "^10.6.2",
+    "js-yaml": "^4.3.0",
     "postcss": "^8.5.32",
     "tailwindcss": "4",
     "typescript": "~5.9.3"
