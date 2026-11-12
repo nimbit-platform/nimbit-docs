@@ -138,6 +138,9 @@ const config: Config = {
       searchParameters: {},
       searchPagePath: "search",
       insights: false,
+      // Ask AI answers from the index in the search box. It needs an Algolia AI assistant; the build
+      // turns it on when ALGOLIA_ASSISTANT_ID is set.
+      ...(process.env.ALGOLIA_ASSISTANT_ID ? { askAi: process.env.ALGOLIA_ASSISTANT_ID } : {}),
     },
     docs: {
       sidebar: {

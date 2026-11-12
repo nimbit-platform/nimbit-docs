@@ -1093,5 +1093,20 @@
   },
   "tours.more": {
     "message": "Weitere Touren"
+  },
+  "doc.footer.copy": {
+    "message": "Seite als Markdown kopieren"
+  },
+  "doc.footer.copied": {
+    "message": "Kopiert"
+  },
+  "doc.footer.copyFailed": {
+    "message": "Kopieren fehlgeschlagen"
+  },
+  "doc.footer.openIn": {
+    "message": "In {name} öffnen"
+  },
+  "doc.footer.prompt": {
+    "message": "Lies {url}, damit ich dir Fragen dazu stellen kann."
   }
 }

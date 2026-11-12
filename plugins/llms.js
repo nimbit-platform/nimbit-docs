@@ -1,11 +1,13 @@
 // @ts-check
 /**
  * After the build, write a Markdown copy of every docs page next to its HTML
- * (docs/watch/work-an-incident.mdx -> build/docs/watch/work-an-incident.md)
- * and an llms.txt index at the site root, ordered like the sidebars.
+ * (docs/watch/work-an-incident.mdx -> build/docs/watch/work-an-incident.md), in the build's
+ * language (the German build reads i18n/de), plus at the locale's root:
+ *   llms.txt       an index of every page, ordered like the sidebars;
+ *   llms-full.txt  every page in that order, in one file, for handing the whole manual to an assistant.
  *
- * Tools and AI assistants read these instead of scraping HTML. The page footer
- * links to the copy ("View as Markdown").
+ * Tools and AI assistants read these instead of scraping HTML. The page actions link to the copy
+ * ("View as Markdown") and hand it to an assistant ("Open in Claude").
  */
 const fs = require("fs");
 const path = require("path");
@@ -66,9 +68,13 @@ module.exports = function llmsPlugin(context) {
   return {
     name: "llms-txt",
     async postBuild({ outDir, siteConfig }) {
-      const docsDir = path.join(context.siteDir, "docs");
+      const { currentLocale, defaultLocale } = context.i18n;
+      const docsDir =
+        currentLocale === defaultLocale
+          ? path.join(context.siteDir, "docs")
+          : path.join(context.siteDir, "i18n", currentLocale, "docusaurus-plugin-content-docs", "current");
       const base = `${siteConfig.url}${siteConfig.baseUrl}docs/`;
-      /** @type {{ rel: string, title: string, description: string, position: number }[]} */
+      /** @type {{ rel: string, title: string, description: string, position: number, md: string }[]} */
       const pages = [];
 
       for (const file of walk(docsDir)) {
@@ -80,7 +86,7 @@ module.exports = function llmsPlugin(context) {
         const target = path.join(outDir, "docs", `${rel}.md`);
         fs.mkdirSync(path.dirname(target), { recursive: true });
         fs.writeFileSync(target, md);
-        pages.push({ rel, title, description: data.description || "", position: Number(data.sidebar_position) || 999 });
+        pages.push({ rel, title, description: data.description || "", position: Number(data.sidebar_position) || 999, md });
       }
 
       const lines = [
@@ -90,6 +96,8 @@ module.exports = function llmsPlugin(context) {
         "",
         "Every page below is plain Markdown.",
       ];
+      if (currentLocale !== defaultLocale) lines.push(`The pages are in the "${currentLocale}" translation.`);
+      const full = [lines[0], "", lines[2], ""];
       for (const [folder, heading] of GROUPS) {
         const inGroup = pages
           .filter((p) => (folder === "" ? !p.rel.includes("/") : p.rel.startsWith(`${folder}/`)))
@@ -98,9 +106,12 @@ module.exports = function llmsPlugin(context) {
         lines.push("", `## ${heading}`, "");
         for (const p of inGroup) {
           lines.push(`- [${p.title}](${base}${p.rel}.md)${p.description ? `: ${p.description}` : ""}`);
+          // Each page keeps its own "# Title"; a rule and its URL mark where it starts.
+          full.push("---", "", `Source: ${base}${p.rel}.md`, "", p.md);
         }
       }
       fs.writeFileSync(path.join(outDir, "llms.txt"), `${lines.join("\n")}\n`);
+      fs.writeFileSync(path.join(outDir, "llms-full.txt"), `${full.join("\n")}\n`);
     },
   };
 };

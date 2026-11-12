@@ -39,6 +39,7 @@ The docs hold no OpenAPI specs. Each service serves its own Scalar reference on 
 
 IoT Breeze shows these docs in its help panel. Two things serve it, and both are a contract with the app:
 - `plugins/app-routes.js` writes `app-routes.json` at each locale's root from every page's `app.routes` (and `app.tour`) front matter. Keep `app.routes` accurate when a page covers an app screen. When several pages cover one route, the app opens the first; set `app.primary: true` (or a list of routes) on the page it should open.
+- `pnpm check:app --repo <nimbit> --ref origin/development` checks `app.routes`, `app.primary` and `app.tour` against the app's screens and tours. A scheduled session runs it with the rest of `docs-spec/docs-sync.md` on weekday evenings.
 - `?embed=1` (`src/lib/embed.ts`, `src/theme/Root.tsx`, `html[data-embed]` in `custom.css`) hides the site chrome and posts `{ type: "nimbit-docs:page", permalink, title, locale }` to the app on every page.
 
 ### Source Code (`src/`)
@@ -47,6 +48,10 @@ IoT Breeze shows these docs in its help panel. Two things serve it, and both are
 - `src/components/` — Reusable React components: `HomepageFeatures/` (feature cards), `ProcessFlow.js` (user workflow visualization)
 - `src/css/custom.css` — Global theme styling (primary color: `#3dc1d3`), navbar/sidebar icons, dark mode adjustments
 - `src/types/images.d.ts` — TypeScript module declarations for image imports
+
+### AI-readable output
+
+`plugins/llms.js` writes, per locale, a Markdown copy of every page (`<page>.md`), `llms.txt` (index) and `llms-full.txt` (all pages). The page actions (`src/theme/DocItem/Footer`) link the copy, copy it, and open it in Claude or ChatGPT. Algolia Ask AI turns on when the build has `ALGOLIA_ASSISTANT_ID`.
 
 ### Internationalization
 
