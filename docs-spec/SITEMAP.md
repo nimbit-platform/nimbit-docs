@@ -149,6 +149,15 @@ apps/periscope/README.md and apps/periscope/docs/ (served in the agent at /ui/do
 | types-and-traits.mdx | reference | Types and traits | knowledge/data-model |
 | connector-types.mdx | reference | Connector types | knowledge/sources |
 
+## share/ — "Share with partners": How do I give customers and partners data about my products?
+
+| File | Type | Title | Sources |
+| --- | --- | --- | --- |
+| index.mdx | landing | Share with partners | new (nimbit docs/aas.md, passport.md, aas-edc.md) |
+| asset-administration-shell.mdx | how-to | Publish things as Asset Administration Shells | new (nimbit docs/aas.md) |
+| product-links.mdx | how-to | Create product links and QR codes | new (nimbit docs/passport.md) |
+| dataspace-offers.mdx | how-to | Offer things in your dataspace connector | new (nimbit docs/aas-edc.md) |
+
 ## administer/ — "Administer": Who can do what?
 
 | File | Type | Title | Sources |
