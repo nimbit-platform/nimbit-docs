@@ -6,7 +6,7 @@ type: how-to
 sidebar_position: 3
 app:
   routes: ["/monitor/thing-details/:id", "/onboarding/things/:id", "/onboarding/thing-types/:id"]
-translated_from: acae0d6
+translated_from: 1cf75b0
 ---
 
 Ein Produktlink ist eine Webadresse, die auf ein Produkt gedruckt wird, meist als QR-Code. Er öffnet eine öffentliche Seite mit den Feldern und Dokumenten, die Sie für dieses Thing oder diesen Thing-Typ veröffentlichen, und sonst nichts.
@@ -46,6 +46,14 @@ Der QR-Code und **Etikett drucken** erscheinen, sobald der Link aktiv ist.
 1. Wählen Sie **Etikett drucken**.
 2. Wählen Sie eine **Etikettengröße**: **Klein**, **Mittel** oder **Groß**. Geben Sie optional eine **Beschriftung** ein.
 3. Wählen Sie **Drucken**. Drucken Sie in Originalgröße (100 %) oder speichern Sie als PDF. Das Etikett zeigt den QR-Code und den Link als Text.
+
+| Größe | Etikett | QR-Code | Beschriftung |
+| --- | --- | --- | --- |
+| **Klein** | 40 × 32 mm | 20 mm | 1 Zeile |
+| **Mittel** | 62 × 50 mm | 32 mm | 2 Zeilen |
+| **Groß** | 90 × 72 mm | 48 mm | 3 Zeilen |
+
+Die Größe des QR-Codes schließt den leeren Rand um ihn ein. **Klein** ist darauf geprüft, sich bei 203 und 300 dpi gedruckt scannen zu lassen, den üblichen Auflösungen von Thermo-Etikettendruckern.
 
 Etiketten gibt es nur für einen aktiven Link.
 
