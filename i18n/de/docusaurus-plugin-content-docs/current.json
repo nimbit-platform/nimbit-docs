@@ -47,6 +47,10 @@
     "message": "Knowledge und KI",
     "description": "The label for category 'Knowledge and AI' in sidebar 'docsSidebar'"
   },
+  "sidebar.docsSidebar.category.Share with partners": {
+    "message": "Mit Partnern teilen",
+    "description": "The label for category 'Share with partners' in sidebar 'docsSidebar'"
+  },
   "sidebar.docsSidebar.category.Administer": {
     "message": "Verwalten",
     "description": "The label for category 'Administer' in sidebar 'docsSidebar'"

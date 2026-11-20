@@ -15,6 +15,7 @@ const DOC_SECTIONS = [
   { dir: "watch", label: "Watch and respond" },
   { dir: "automate", label: "Automate" },
   { dir: "knowledge", label: "Knowledge and AI" },
+  { dir: "share", label: "Share with partners" },
   { dir: "administer", label: "Administer" },
   { dir: "troubleshooting", label: "Troubleshooting" },
 ] as const;

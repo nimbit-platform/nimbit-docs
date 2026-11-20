@@ -1108,5 +1108,50 @@
   },
   "doc.footer.prompt": {
     "message": "Lies {url}, damit ich dir Fragen dazu stellen kann."
+  },
+  "home.standards.label": {
+    "message": "Standards"
+  },
+  "home.standards.title": {
+    "message": "Teilen in Formaten, die Ihre Partner lesen."
+  },
+  "home.standards.text": {
+    "message": "Womit IoT Breeze heute kompatibel ist, und wo Sie es einrichten."
+  },
+  "home.standards.aas.title": {
+    "message": "Verwaltungsschale (AAS)"
+  },
+  "home.standards.aas.compatible": {
+    "message": "Kompatibel mit den Lese-Profilen von IDTA Part 2 v3.2 (AAS-API), dem Metamodell aus Part 1 v3 und AASX-Paketen (Part 5)."
+  },
+  "home.standards.aas.checked": {
+    "message": "Geprüft gegen die von der IDTA veröffentlichten Schemas und Testwerkzeuge; nicht zertifiziert."
+  },
+  "home.standards.templates.title": {
+    "message": "IDTA-Submodell-Vorlagen"
+  },
+  "home.standards.templates.nameplate": {
+    "message": "Digitales Typenschild (IDTA 02006-3-0)"
+  },
+  "home.standards.templates.technicalData": {
+    "message": "Technische Daten (IDTA 02003)"
+  },
+  "home.standards.templates.handover": {
+    "message": "Übergabedokumentation (IDTA 02004-2-0, mit Dokumentklassen nach VDI 2770 Blatt 1:2020)"
+  },
+  "home.standards.templates.timeSeries": {
+    "message": "Zeitreihen (IDTA 02008-1-1)"
+  },
+  "home.standards.templates.carbon": {
+    "message": "CO2-Fußabdruck (IDTA 02023-1-0-3)"
+  },
+  "home.standards.templates.hierarchy": {
+    "message": "Hierarchische Strukturen (IDTA 02011) für Aggregate"
+  },
+  "home.standards.dataspace.title": {
+    "message": "Dataspaces"
+  },
+  "home.standards.dataspace.text": {
+    "message": "Bietet Ihre Verwaltungsschalen über Ihren eigenen Connector auf Basis der Eclipse Dataspace Components (EDC) an; getestet mit der sovity EDC Community Edition."
   }
 }

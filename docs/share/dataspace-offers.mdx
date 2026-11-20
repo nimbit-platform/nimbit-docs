@@ -1,0 +1,73 @@
+---
+title: Offer things in your dataspace connector
+sidebar_label: Dataspace offers (EDC)
+description: Connect your own EDC connector, choose the things to offer, and let IoT Breeze keep their Asset Administration Shells in step as offers for your partners.
+type: how-to
+sidebar_position: 4
+app:
+  routes: ["/tenant-settings"]
+---
+
+If your company takes part in a dataspace, you already have a connector, usually one built on Eclipse Dataspace Components (EDC). IoT Breeze publishes the Asset Administration Shells of the things you choose as offers in that connector and keeps them in step. Your partners negotiate a contract in their connector and fetch the shell through yours.
+
+IoT Breeze does not run, configure or monitor your connector, its dataspace identity (DIDs, BPNs, certificates) or your dataspace membership. It names your partners in the connector's policy. **Enforcing that policy, and checking who a partner really is, is your connector's job.**
+
+## Before you start
+
+- You have your own connector. IoT Breeze is tested with sovity EDC Community Edition. Tractus-X EDC is supported in what IoT Breeze writes, but not yet tested. No dataspace certification (such as Catena-X or Manufacturing-X) is claimed. Check partner enforcement on your own connector before relying on it.
+- Your platform operator has set up dataspace offers for the installation: the address your connector uses to reach the AAS API, and, for a connector on a private network address, permission to call it. Otherwise the sync fails with a message saying so.
+- The things to offer are exposed as Asset Administration Shells; see [Publish things as Asset Administration Shells](./asset-administration-shell.mdx). Their thing type has the `dataspace-offer` interface from the `aas-essentials` pack.
+- Seeing the connector needs the **Tenant** read permission. Saving, syncing or removing it needs **Tenant** update and **Aas** update. Offering a thing needs **Aas** update and the **Thing** update permission on it. **Admin** has all of them.
+
+## Steps
+
+1. **Turn the feature on.** Open **Administration › Tenant Settings › Features**, switch on **Asset Administration Shell** and **Dataspace offers**, and save. The **Dataspace connector** card appears at the bottom of the tab once the feature is saved.
+2. **Create the callback key.** Your connector uses it to fetch the offered shells. Under **Administration › API keys**, create a service account for the dataspace and give it no group, share or ownership of things. Create a key for it with only the `aas:read` scope. See [Create an API key](../administer/api-key.mdx). Personal keys are refused.
+3. **Save the connection.** On the **Dataspace connector** card, fill in:
+
+   | Field | Value |
+   | --- | --- |
+   | **Management API URL** | Your connector's management API, ending before `/v3`, for example `https://connector.example.com/api/management`. Only `https`, unless your operator allows the address. |
+   | **Connector distribution** | **sovity EDC Community Edition** or **Tractus-X EDC**. |
+   | **Partners** | The participant IDs (or BPNs) of the partners who may get the offers, one per line. Empty admits nobody. |
+   | **Management API key** | The key of your connector's management API. |
+   | **Callback key** | The key from step 2. |
+
+   Select **Save connector**. Both keys are required the first time. Afterwards they show **Set**; leave a field empty to keep the stored key. Saving checks the callback key and refuses it if it belongs to another tenant, is a personal key, has any scope besides `aas:read`, or its account can already see something. Both keys are stored encrypted and never shown again.
+4. **Offer things.** Open each thing. On **Overview**, under **Dataspace**, switch on **Offer to dataspace**. Each thing is offered by itself: a thing type default never offers one. A thing that is not exposed as an AAS is not offered, even with the switch on.
+
+## Check that it worked
+
+The card shows **Last sync** with **Up to date**, **Partly failed** or **Failed**, how many things are offered, and under **Offers** the state of each thing: **Offered**, **Error**, or **Withdrawn, still held by a contract agreement**. On the thing, **Dataspace** says **Offered in the connector**.
+
+A change reaches the connector within about a minute and a half. A full sync also runs every 15 minutes. Select **Sync now** to start one at once.
+
+What a partner gets: one catalog entry per offered thing, and after a contract that thing's shell with its submodels, as JSON.
+
+An offer you withdraw while a partner still holds a contract agreement for it leaves the catalog at once. The connector keeps the asset until the agreement ends, and IoT Breeze removes it then.
+
+## Renew the callback key
+
+The callback key expires like any key, after 90 days by default. Before then, create a new key for the **same** service account and save the connection with it. The next sync gives it to your connector. The old key keeps reading the offered things until you revoke it, and the card warns you of that. Revoke it once running transfers have ended.
+
+## Move to another connector or remove it
+
+- **Another connector**: a new **Management API URL** needs a new management key and a callback key of a **new** service account. IoT Breeze first withdraws everything from the old connector. If something is left there, saving stops and says what, and you can move anyway. Then revoke the old callback key: the old connector still holds it.
+- **Remove**: **Remove connector** withdraws every offer first. If the connector cannot be reached, or agreements still hold assets, you can remove the connection anyway. What is left stays in the connector until its operator removes it.
+
+## Who sees what
+
+- The callback key reads exactly the offered things, through a group IoT Breeze manages. It can also see the names and fields of thing types as they appear with an offered thing.
+- Your connector's operator can read the callback key from the connector, and with it the offered shells: what your partners get anyway.
+- Partners see one catalog entry per offered thing and, after a contract, its shell. Who counts as a partner is decided by your connector.
+
+## Limits
+
+- One connector and one policy per tenant: every offered thing goes to the same partners.
+- One asset per thing, with the whole shell. No offers per submodel, and no registry or Digital Twin Registry entries.
+- Partners get no time series values: the latest values are empty, and the link to the time series route does not work through the connector.
+- Documents appear as metadata only: their links point at a route partners cannot call through the connector.
+
+## Related
+
+- [Publish things as Asset Administration Shells](./asset-administration-shell.mdx) · [Create an API key](../administer/api-key.mdx) · [Tenant settings](../administer/tenant-settings.mdx)

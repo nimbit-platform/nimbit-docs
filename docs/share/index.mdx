@@ -1,0 +1,20 @@
+---
+title: Share with partners
+sidebar_position: 1
+description: Publish selected things as Asset Administration Shells, as public product links with QR codes, or as offers in your own dataspace connector.
+type: landing
+---
+
+How do I give customers and partners data about my products without giving them access to IoT Breeze? Choose the things to share, publish them as Asset Administration Shells (AAS), and pass them on in one of three ways. All three are off until a tenant admin turns them on, and nothing is shared until you choose it on each thing.
+
+```mermaid
+flowchart LR
+  T[Thing] -->|Expose as AAS| A[AAS API and AASX]
+  A -->|Product link| P[Public page and QR code]
+  A -->|Offer to dataspace| D[Your connector, your partners]
+```
+
+## Do
+- [Publish things as Asset Administration Shells](./asset-administration-shell.mdx): serve nameplate, technical data, documents, carbon footprint and time series through the read-only AAS API, and export AASX packages.
+- [Create product links and QR codes](./product-links.mdx): a public page per thing or thing type with the fields and documents you choose, and labels to print.
+- [Offer things in your dataspace connector](./dataspace-offers.mdx): publish shells as offers in your own EDC connector and keep them in step.

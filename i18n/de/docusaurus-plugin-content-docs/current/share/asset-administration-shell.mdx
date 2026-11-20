@@ -1,0 +1,90 @@
+---
+title: Things als Verwaltungsschalen veröffentlichen
+sidebar_label: Verwaltungsschale (AAS)
+description: Die schreibgeschützte AAS-API einschalten, Things freigeben, Typenschild, technische Daten, CO2-Fußabdruck und Dokumente füllen und mit einem API-Schlüssel lesen.
+type: how-to
+sidebar_position: 2
+app:
+  routes: ["/monitor/thing-details/:id", "/onboarding/things/:id"]
+translated_from: b82e1f6
+---
+
+Stellen Sie ausgewählte Things als Verwaltungsschalen (Asset Administration Shell, AAS) bereit: über eine schreibgeschützte API in der Struktur von IDTA Part 2 und als AASX-Pakete, die Sie als Dateien weitergeben. Bereitgestellt werden nur Things, die Sie einzeln freigeben, und nur für Aufrufer, die sie in IoT Breeze lesen dürfen.
+
+Die API ist kompatibel mit den Lese-Profilen von IDTA Part 2 v3.2, die sie unter `/description` auflistet. Sie wird gegen die von der IDTA veröffentlichten Schemas und Testwerkzeuge geprüft. Sie ist nicht zertifiziert.
+
+## Was eine Verwaltungsschale enthält {#what-a-shell-contains}
+
+| Submodell | IDTA-Vorlage | Veröffentlicht für | Wann |
+| --- | --- | --- | --- |
+| Nameplate | 02006-3-0 Digital Nameplate | Geräte-Things | Immer |
+| TechnicalData | 02003 Technical Data | Geräte-Things | Immer |
+| HandoverDocumentation | 02004-2-0 (VDI 2770) | Geräte- und Aggregat-Things | Das Thing hat Dokumente mit einer VDI-2770-Klasse |
+| TimeSeries | 02008-1-1 Time Series Data | Geräte- und Aggregat-Things | Das Thing hat Messwerte |
+| CarbonFootprint | 02023 Carbon Footprint 1.0.3 | Jedes freigegebene Thing | Seine Werte sind gesetzt und vollständig |
+| HierarchicalStructures | 02011 | Aggregat-Things | Immer; listet die Mitglieder, die selbst freigegeben und lesbar sind |
+
+## Voraussetzungen {#before-you-start}
+
+- Um ein Thing freizugeben, brauchen Sie die Berechtigung, **Aas** zu ändern. **Administrator** und **System Admin** haben sie. **Manager** und **Viewer** können Verwaltungsschalen lesen, aber keine Things freigeben.
+- Ein Tenant-Admin schaltet die Funktion ein (Schritt 1).
+- Dokumenten eine VDI-2770-Klasse zu geben braucht das Knowledge-Modul und die Berechtigung, **Knowledge** zu ändern.
+
+## Schritte {#steps}
+
+1. **Funktion einschalten.** Öffnen Sie **Administration › Mandanteneinstellungen › Funktionen**, schalten Sie **Verwaltungsschale** ein und speichern Sie. Ein Standard-Herstellername, eine Kontakt-E-Mail und eine Kontakt-URL können das Typenschild überall dort füllen, wo ein Thing keinen eigenen Wert hat. Die App zeigt diese Felder noch nicht. Der Nimbit-Support legt sie für Ihren Tenant fest. Alles Weitere können Sie vorbereiten, solange die Funktion aus ist. Bereitgestellt wird erst, wenn sie an ist.
+2. **Thing-Typ vorbereiten.** Installieren Sie das Paket `aas-essentials` unter **Administration › Mandanteneinstellungen › Pakete**. Es wird nicht automatisch installiert. Fügen Sie dem Thing-Typ das Interface `aas-exposure` hinzu, und nach Bedarf `aas-digital-nameplate`, `aas-technical-data` und `aas-carbon-footprint`. Ein Aggregat-Typ kann keine Interfaces anhängen: Deklarieren Sie `aasEnabled` und die Eigenschaften des CO2-Fußabdrucks direkt an ihm.
+3. **Thing freigeben.** Öffnen Sie das Thing. Schalten Sie im Tab **Übersicht** unter **Verwaltungsschale** den Schalter **Als Verwaltungsschale freigeben** ein. Ein Standardwert am Thing-Typ gibt nie ein Thing frei: Jedes Thing wird einzeln freigegeben, von jemandem mit der Berechtigung, **Aas** zu ändern.
+4. **Typenschild und technische Daten füllen.** Setzen Sie die Werte am Thing oder als Anfangswerte am Typ. Veröffentlicht werden nur Elemente mit Wert. Fehlt ein Element, das die Vorlage verlangt, etwa `OrderCodeOfManufacturer` oder die Adressteile `Street`, `Zipcode`, `CityTown` und `NationalCode`, wird das Submodell ohne es veröffentlicht. Ein Werkzeug, das gegen die Vorlage prüft, meldet dann die Lücke. Der Herstellername kommt vom Thing, sonst vom Standard des Tenants, sonst vom Namen des Tenants.
+5. **CO2-Fußabdruck ergänzen.** Mit `aas-carbon-footprint` am Typ setzen Sie die Werte als Anfangswerte des Typs (ein Fußabdruck für den Produkttyp) oder an jedem Thing. Pflicht sind Berechnungsmethode, CO2-Äquivalent, Bezugseinheit, Menge, Lebenszyklusphase und Veröffentlichungsdatum. Methode, Einheit und Phase nehmen nur die Werte der Listen der IDTA-Vorlage an, etwa `ISO 14067`, `kg` und `A1-A3`. Fehlt ein Pflichtwert oder ist er ungültig, wird das ganze Submodell CarbonFootprint zurückgehalten, bis Sie es vervollständigen.
+6. **Übergabedokumente ergänzen.** Ein Dokument wird nur mit einer VDI-2770-Klasse veröffentlicht, etwa `02-01` (technische Spezifikation) oder `03-01` (Betriebsanleitung). Die App kann die Klasse eines Dokuments noch nicht setzen. Dokumente erhalten ihre Klasse über die API oder vom Nimbit-Support. Solange ein Dokument keine hat, wird es nicht in der Verwaltungsschale veröffentlicht. Es zählen nur die zwölf Klassen der VDI 2770 Blatt 1:2020. Dokumente ohne Klasse, mit einem anderen Klassifikationssystem und Dateien, die nur im Ordner des Things liegen, werden nicht veröffentlicht. Das Submodell nennt, wie viele ausgelassen wurden, nicht welche.
+7. **Ihrer Integration Zugriff geben.** Erstellen Sie einen API-Schlüssel mit dem Scope `aas:read`, wie in [Einen API-Schlüssel erstellen](../administer/api-key.mdx) beschrieben. Fügen Sie `telemetry:read` hinzu, wenn er Zeitreihenwerte braucht. Ein Schlüssel nur mit `aas:read` liest die AAS-API und sonst nichts in IoT Breeze.
+
+## Verwaltungsschalen mit einem API-Schlüssel lesen {#read-shells-with-an-api-key}
+
+Die Basis-URL ist `https://<host>/ocb/aas/v3`, auf dem Host, auf dem Sie IoT Breeze öffnen. Senden Sie den Schlüssel als Bearer, oder tauschen Sie ihn zuerst gegen ein Token mit `resource=nimbit:ocb` (siehe [Austausch des API-Schlüssels](../api/authentication.mdx#api-key-exchange)).
+
+Ids von Verwaltungsschalen und Submodellen sind in Pfaden base64url-kodiert:
+
+```bash
+# Which profiles the server serves
+curl -H "Authorization: Bearer <api-key>" "https://<host>/ocb/aas/v3/description"
+
+# All shells you may read
+curl -H "Authorization: Bearer <api-key>" "https://<host>/ocb/aas/v3/shells"
+
+# One submodel, by its base64url-encoded id
+curl -H "Authorization: Bearer <api-key>" "https://<host>/ocb/aas/v3/submodels/<base64url-submodel-id>"
+```
+
+Listen sind seitenweise. Fahren Sie mit dem `cursor` aus `paging_metadata` fort. Eine Seite kann kurz oder sogar leer sein und trotzdem einen Cursor haben.
+
+## Ein AASX-Paket exportieren {#export-an-aasx-package}
+
+`GET /ocb/aas/v3/serialization?format=aasx` liefert ein AASX-Paket (`application/aas+zip`). Ohne `format=aasx` erhalten Sie dieselbe Umgebung als JSON. Was exportiert wird, nennen Sie mit `aasIds` und `submodelIds`, je höchstens 100 Ids.
+
+- Dokumente bis 5 MiB je Datei und 25 MiB je Paket werden eingebettet. Ein größeres behält stattdessen einen Link auf die API.
+- Ein Server erstellt höchstens 4 Exporte gleichzeitig, und höchstens 2 je Tenant. Eine weitere Anfrage erhält `429` mit `Retry-After: 10`. Versuchen Sie es dann erneut.
+- Ein Export ohne Ids umfasst höchstens 500 Verwaltungsschalen. Darüber antwortet er mit `400` und verlangt Filter.
+
+## Registry und Discovery {#registry-and-discovery}
+
+Für Integratoren, die Verwaltungsschalen über eine Registry finden, liefert dieselbe Basis-URL die schreibgeschützten Routen von AAS Registry, Submodel Registry und Discovery aus IDTA Part 2 v3.2: `/shell-descriptors`, `/submodel-descriptors`, `POST /lookup/shellsByAssetLink` und `/lookup/shells/{aasId}`. Deskriptoren werden aus den Verwaltungsschalen gebildet, die Sie lesen dürfen: Ein Thing erscheint in der Registry genau dann, wenn es im Repository erscheint. Registrieren oder ändern lässt sich nichts.
+
+## Wer was sieht {#who-sees-what}
+
+- Verwaltungsschalen sind nie öffentlich. Jede Anfrage braucht einen angemeldeten Benutzer oder einen API-Schlüssel.
+- Ein Aufrufer sieht nur freigegebene Things, die er in IoT Breeze ohnehin lesen darf. Andere antworten mit `404`. Zugangsdaten von Gateways werden abgelehnt.
+- Private Eigenschaften und Messwerte werden nie veröffentlicht, ebenso wenig Werte, die eine private Eigenschaft über einen Proxy liest. Ein berechneter Messwert, der einen privaten Messwert liest oder Mitglieder eines Aggregats, die der Aufrufer nicht sehen darf, wird zurückgehalten und unter `WithheldMeasures` genannt.
+- Die Organisation oder Standortgruppe, zu der ein Thing gehört, wird nie veröffentlicht.
+
+## Grenzen {#limits}
+
+- Die API ist schreibgeschützt.
+- Eine seitenweise Anfrage liest höchstens 2000 freigegebene Things, um eine Seite zu füllen.
+- HandoverDocumentation listet höchstens 200 klassifizierte Dokumente je Thing und meldet dann, dass gekürzt wurde.
+- Eine Zeitreihenanfrage liefert höchstens 10.080 Intervalle und 200.000 Werte.
+
+## Verwandte Seiten {#related}
+
+- [Produktlinks und QR-Codes erstellen](./product-links.mdx) · [Things im eigenen Dataspace-Connector anbieten](./dataspace-offers.mdx) · [API-Schlüssel](../api/api-keys.mdx)
