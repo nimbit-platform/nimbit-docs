@@ -1,0 +1,77 @@
+---
+title: Produktlinks und QR-Codes erstellen
+sidebar_label: Produktlinks und QR-Codes
+description: Einem Thing oder Thing-Typ eine öffentliche Seite mit den Feldern und Dokumenten Ihrer Wahl geben, sie in der Vorschau prüfen, öffentlich machen und den QR-Code drucken.
+type: how-to
+sidebar_position: 3
+app:
+  routes: ["/monitor/thing-details/:id", "/onboarding/things/:id", "/onboarding/thing-types/:id"]
+translated_from: acae0d6
+---
+
+Ein Produktlink ist eine Webadresse, die auf ein Produkt gedruckt wird, meist als QR-Code. Er öffnet eine öffentliche Seite mit den Feldern und Dokumenten, die Sie für dieses Thing oder diesen Thing-Typ veröffentlichen, und sonst nichts.
+
+:::warning Ein Produktlink ist nicht geheim
+Er steht auf dem Produkt: Wer das Produkt sieht, kann ihn öffnen. Veröffentlichen Sie nur, was öffentlich sein soll.
+:::
+
+## Voraussetzungen {#before-you-start}
+
+- Ein Tenant-Admin hat unter **Administration › Mandanteneinstellungen › Funktionen** **Verwaltungsschale** und **Produktlinks** eingeschaltet. Produktlinks bleiben aus, solange die Funktion Verwaltungsschale aus ist.
+- Für den Link eines Things ist das Thing als Verwaltungsschale freigegeben, siehe [Things als Verwaltungsschalen veröffentlichen](./asset-administration-shell.mdx). Sonst zeigt der Link nichts an, und der Tab sagt das.
+- Links, veröffentlichte Felder und die Vorschau zu sehen braucht die Berechtigung, **Passport** zu lesen: **Administrator**, **System Admin** und **Manager** haben sie. Links anzulegen und zu ändern und zu veröffentlichen braucht die Berechtigung, **Passport** zu ändern: **Administrator** und **System Admin**.
+- API-Schlüssel können Produktlinks nicht verwalten.
+
+## Einen Link anlegen und festlegen, was er zeigt {#create-a-link-and-choose-what-it-shows}
+
+1. Öffnen Sie das Thing, oder den Thing-Typ unter **Einstellungen › Onboarding › Thing Typen**, und wählen Sie den Tab **Produktlink**.
+2. Wählen Sie **Produktlink erstellen**. Der Link beginnt als **Noch nicht öffentlich**: Er zeigt niemandem etwas, bis Sie ihn aktivieren.
+3. Veröffentlichen Sie unter **Felder** Felder am Thing-Typ. Wählen Sie bei einem Feld **Veröffentlichen** und unter **Wert** entweder **Wert des Typs** oder **Wert des jeweiligen Things**. Der eigene Link eines Thing-Typs zeigt nur Felder mit dem Wert des Typs.
+4. An einem einzelnen Thing sind die Felder die an seinem Typ veröffentlichten. Um eines von der Seite dieses Things fernzuhalten, schalten Sie **Auf diesem Thing anzeigen** aus. Das Feld zeigt dann **Auf diesem Thing ausgeblendet**.
+5. Wählen Sie unter **Dokumente** für jedes Dokument, das erscheinen soll, **Veröffentlichen**. Besucher können es herunterladen.
+
+Manche Felder lassen sich nie veröffentlichen, und der Tab kennzeichnet sie:
+- **Privat: kann nicht veröffentlicht werden**: ein am Typ als privat deklariertes Feld, oder eines, dessen Wert ein privates Feld über einen Proxy liest.
+- **Vom Gerät gemeldet: kann nicht veröffentlicht werden**: ein Wert, den das Gerät meldet.
+
+## Vorschau und Aktivierung {#preview-and-activate}
+
+1. Prüfen Sie die **Vorschau** im Tab, oder wählen Sie **Seitenvorschau öffnen**, um die ganze Seite zu sehen. Ein Banner sagt, ob die Seite öffentlich ist. Dokumente sind in der Vorschau aufgeführt, lassen sich dort aber nicht öffnen.
+2. Wählen Sie **Aktivieren** und bestätigen Sie **Diesen Produktlink öffentlich machen?**. Ab jetzt sehen alle, die den Link haben oder den Code scannen, die Seite aus der Vorschau.
+
+Der QR-Code und **Etikett drucken** erscheinen, sobald der Link aktiv ist.
+
+## Ein Etikett drucken {#print-a-label}
+
+1. Wählen Sie **Etikett drucken**.
+2. Wählen Sie eine **Etikettengröße**: **Klein**, **Mittel** oder **Groß**. Geben Sie optional eine **Beschriftung** ein.
+3. Wählen Sie **Drucken**. Drucken Sie in Originalgröße (100 %) oder speichern Sie als PDF. Das Etikett zeigt den QR-Code und den Link als Text.
+
+Etiketten gibt es nur für einen aktiven Link.
+
+## Aussetzen, fortsetzen oder stilllegen {#suspend-resume-or-retire}
+
+| Aktion | Wirkung |
+| --- | --- |
+| **Aussetzen** | Die Seite zeigt nichts an, bis Sie **Fortsetzen** wählen. Gedruckte Codes behalten ihre Adresse. |
+| **Stilllegen** | Endgültig. Der Link zeigt nichts an, kann nie wieder verwendet werden, und seine gedruckten Codes funktionieren nicht mehr. **Neuen Link erstellen** legt einen Link mit neuer Adresse an, Sie drucken also neue Codes. |
+
+Nachdem Sie einen Link stillgelegt haben, zeigt der Tab ihn weiter als **Stillgelegt**, damit Sie sehen, warum gedruckte Codes nicht mehr funktionieren.
+
+## Was Besucher sehen {#what-visitors-see}
+
+Besucher sehen die veröffentlichten Felder (Bezeichnung, Wert und Einheit), die veröffentlichten Dokumente und wann die Seite zuletzt aktualisiert wurde. Sie sehen nie den Namen oder die Id des Things oder Typs, nicht veröffentlichte oder private Felder, Dateipfade oder sonst etwas aus Ihrem Tenant.
+
+Jeder verborgene Zustand erhält dieselbe Seite „nicht gefunden“: ein unbekannter, noch nicht öffentlicher, ausgesetzter oder stillgelegter Link, eine ausgeschaltete Funktion, ein nicht mehr freigegebenes Thing oder nichts veröffentlicht. Besucher können sie nicht unterscheiden. Die Seiten sind für Suchmaschinen als nicht zu indexieren markiert, und personenbezogene Daten von Besuchern werden nicht erfasst.
+
+## Grenzen {#limits}
+
+- **Überlastung**: Kommen zu viele Anfragen, sehen Besucher „Gerade gibt es zu viele Anfragen“ und können es gleich noch einmal versuchen.
+- **Änderungen**: Veröffentlichen, Ausblenden, Aussetzen und Stilllegen wirken sofort. Ein geänderter Wert eines veröffentlichten Felds erscheint innerhalb von etwa einer Minute.
+- **Dokumente**: bis 50 MB je Dokument. PDF, PNG, JPEG und WebP öffnen sich im Browser. Andere Typen werden heruntergeladen.
+- **Eine Link-Adresse je Installation.**
+- **Logs**: IoT Breeze protokolliert nur die ersten 6 Zeichen des Tokens eines Links.
+
+## Verwandte Seiten {#related}
+
+- [Things als Verwaltungsschalen veröffentlichen](./asset-administration-shell.mdx) · [Rollen und Berechtigungen](../administer/roles.mdx)
