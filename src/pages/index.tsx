@@ -185,6 +185,45 @@ const areas: { title: string; to: string; links: { label: string; to: string }[]
   },
 ];
 
+const standards: { title: string; to: string; lines: string[] }[] = [
+  {
+    title: translate({ id: "home.standards.aas.title", message: "Asset Administration Shell" }),
+    to: "/docs/share/asset-administration-shell",
+    lines: [
+      translate({
+        id: "home.standards.aas.compatible",
+        message: "Compatible with the read profiles of IDTA Part 2 v3.2 (AAS API), the Part 1 v3 metamodel and AASX packages (Part 5).",
+      }),
+      translate({ id: "home.standards.aas.checked", message: "Checked against IDTA's published schemas and test tooling; not certified." }),
+    ],
+  },
+  {
+    title: translate({ id: "home.standards.templates.title", message: "IDTA submodel templates" }),
+    to: "/docs/share/asset-administration-shell#what-a-shell-contains",
+    lines: [
+      translate({ id: "home.standards.templates.nameplate", message: "Digital Nameplate (IDTA 02006-3-0)" }),
+      translate({ id: "home.standards.templates.technicalData", message: "Technical Data (IDTA 02003)" }),
+      translate({
+        id: "home.standards.templates.handover",
+        message: "Handover Documentation (IDTA 02004-2-0, with VDI 2770 Blatt 1:2020 document classes)",
+      }),
+      translate({ id: "home.standards.templates.timeSeries", message: "Time Series (IDTA 02008-1-1)" }),
+      translate({ id: "home.standards.templates.carbon", message: "Carbon Footprint (IDTA 02023-1-0-3)" }),
+      translate({ id: "home.standards.templates.hierarchy", message: "Hierarchical Structures (IDTA 02011) for aggregates" }),
+    ],
+  },
+  {
+    title: translate({ id: "home.standards.dataspace.title", message: "Dataspaces" }),
+    to: "/docs/share/dataspace-offers",
+    lines: [
+      translate({
+        id: "home.standards.dataspace.text",
+        message: "Offers your shells through your own Eclipse Dataspace Components (EDC) connector; tested with sovity EDC Community Edition.",
+      }),
+    ],
+  },
+];
+
 const curl = (
   <>
     <span className="text-[var(--docs-color-text-100)]">$</span> curl -X POST "&lt;structured-url&gt;" \{"\n"}
@@ -419,12 +458,39 @@ export default function Home(): React.JSX.Element {
             </div>
           </section>
 
-          {/* [ 04 ] Blog and [ 05 ] Changelog */}
+          {/* [ 04 ] Standards */}
+          <section className="flex flex-wrap gap-x-20 gap-y-8 pb-24">
+            <div className="flex flex-[1_1_300px] flex-col gap-3.5">
+              <SectionLabel n="04">
+                <Translate id="home.standards.label">Standards</Translate>
+              </SectionLabel>
+              <h2 className={h2}>
+                <Translate id="home.standards.title">Share in formats your partners read.</Translate>
+              </h2>
+              <p className="m-0 max-w-[36ch] text-[15px] leading-[22px] text-[var(--docs-color-muted)]">
+                <Translate id="home.standards.text">What IoT Breeze is compatible with today, and where to set it up.</Translate>
+              </p>
+            </div>
+            <div className="grid min-w-0 flex-[2_1_600px] grid-cols-1 overflow-hidden rounded-[10px] border border-solid border-[var(--docs-color-border)] bg-[var(--docs-color-border)] [gap:1px] lg:grid-cols-3">
+              {standards.map((s) => (
+                <Link key={s.to} to={s.to} className={`group flex flex-col gap-2 bg-[var(--docs-color-background)] p-[18px] ${plainLink}`}>
+                  <span className="nb-eyebrow mb-1 text-[var(--docs-color-text-100)] group-hover:text-[var(--ifm-color-primary)]">{s.title}</span>
+                  {s.lines.map((l) => (
+                    <span key={l} className="text-sm leading-5 text-[var(--docs-color-muted)]">
+                      {l}
+                    </span>
+                  ))}
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          {/* [ 05 ] Blog and [ 06 ] Changelog */}
           <section className="flex flex-wrap gap-12 pb-24">
             <div className="flex min-w-0 flex-[2_1_620px] flex-col gap-5">
               <div className="flex items-end justify-between gap-4 border-0 border-b border-dashed border-[var(--nb-dash)] pb-4">
                 <div className="flex flex-col gap-2.5">
-                  <SectionLabel n="04">
+                  <SectionLabel n="05">
                     <Translate id="home.blog.label">From the blog</Translate>
                   </SectionLabel>
                   <h2 className="m-0 text-[26px]! font-semibold! tracking-[-0.02em]">
@@ -454,7 +520,7 @@ export default function Home(): React.JSX.Element {
             <div className="flex min-w-0 flex-[1_1_300px] flex-col gap-5">
               <div className="flex items-end justify-between gap-4 border-0 border-b border-dashed border-[var(--nb-dash)] pb-4">
                 <div className="flex flex-col gap-2.5">
-                  <SectionLabel n="05">Changelog</SectionLabel>
+                  <SectionLabel n="06">Changelog</SectionLabel>
                   <h2 className="m-0 text-[26px]! font-semibold! tracking-[-0.02em]">
                     <Translate id="home.changelog.title">What shipped.</Translate>
                   </h2>
