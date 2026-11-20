@@ -1,0 +1,90 @@
+---
+title: Kanaltypen
+sidebar_position: 11
+description: Die Felder, Routing-Filter, das Zustellverhalten und das Nachrichtenformat jedes Benachrichtigungskanaltyps.
+type: reference
+app:
+  routes: ["/manage/notification-channels"]
+  tour: find-your-way-alerts
+translated_from: 679f3a4
+---
+
+Felder, Routing-Filter, Zustellstatus und Nachrichtenformat jedes Benachrichtigungskanals.
+
+## Kanalfelder {#channel-fields}
+
+| Feld | Gilt für | Bedeutung |
+| --- | --- | --- |
+| **Name** | Alle | Bis zu 255 Zeichen |
+| **Kanaltyp** | Alle | **Slack**, **Microsoft Teams**, **Webhook** oder **ntfy**. Nach dem Anlegen fest. |
+| **Aktiv** | Alle | Ein deaktivierter Kanal empfängt nichts |
+| **Slack-Webhook-URL** | Slack | URL des eingehenden Webhooks des Slack-Kanals |
+| **Teams-Workflow-Webhook-URL** | Microsoft Teams | URL eines Teams-Workflows, der eine Webhook-Anfrage annimmt |
+| **Webhook-URL** | Webhook | Wohin IoT Breeze eine `POST`-Anfrage sendet |
+| **HMAC-Geheimnis (optional)** | Webhook | Signiert jede Anfrage, damit der Empfänger sie prüfen kann |
+| **ntfy-Topic** | ntfy | Das Topic, an das veröffentlicht wird |
+| **ntfy-Server-URL** | ntfy | Optional. Standard `https://ntfy.sh` |
+| **Auth-Token (optional)** | ntfy | Optionales Bearer-Token für Ihren Server |
+
+Nach dem Speichern sind URLs und Geheimnisse verborgen. Lassen Sie beim Bearbeiten ein Feld leer, um den gespeicherten Wert zu behalten, oder geben Sie einen neuen ein, um ihn zu ersetzen. E-Mail- und Expo-Push-Kanäle sind nicht verfügbar.
+
+## Routing {#routing}
+
+Jede Nachricht erreicht einen Kanal auf einem von drei Wegen: über das **Automatische Routing** des Kanals, über eine Aktion **Benachrichtigungskanal** an einem [Event-Typ](./event-types.mdx) oder über eine Automatisierung an einer [Vorfallsrichtlinie](./incident-fields.mdx#policy-automations).
+
+| Einstellung | Bedeutung |
+| --- | --- |
+| **Automatisches Routing** | An: Jedes neue Event, das die Filter passiert, wird gesendet, mit oder ohne Aktionen an seinem Event-Typ. Aus: Die Liste zeigt **Nur Aktion**. |
+| **Mindestschweregrad** | **Information**, **Warnung**, **Fehler** oder **Kritisch**, oder keiner. Nur dieser Schweregrad und höher wird gesendet. |
+| **Ereignistypen** | Nur diese Event-Typen. Leer heißt alle. Eine Vorfallsnachricht wird mit dem Event-Typ des Events abgeglichen, das den Vorfall geöffnet hat. |
+
+Die Filter gelten für jede Nachricht an den Kanal, auch für Nachrichten aus Aktionen und Automatisierungen. Das automatische Routing sendet weder Events, die eine Episode beenden, noch Vorfallsbenachrichtigungen.
+
+Die Liste fasst die Filter unter **Automatisches Routing** zusammen, zum Beispiel `≥ Warning · Door opened`.
+
+## Zustellprotokoll {#delivery-log}
+
+Öffnen Sie das **Zustellprotokoll** in der Zeile eines Kanals, um seine Zustellungen zu sehen.
+
+| Status | Bedeutung |
+| --- | --- |
+| **Ausstehend** | In der Warteschlange oder wird erneut versucht |
+| **Gesendet** | Vom Empfänger angenommen |
+| **Fehlgeschlagen** | Nach 5 Versuchen nicht zugestellt. **Fehler** zeigt die letzte Antwort. **Versuche** zeigt die Anzahl. |
+| **Unterdrückt** | Der Kanal war deaktiviert, als die Nachricht fällig war |
+
+**Erneut versuchen** bei einer fehlgeschlagenen Zustellung stellt sie mit neuen Versuchen wieder in die Warteschlange. **Test senden** sendet eine Testbenachrichtigung über den Kanal und erzeugt eine Zustellung. Beides braucht die Berechtigung, Benachrichtigungskanäle auszuführen. Eine Anfrage an den Empfänger läuft nach 10 Sekunden in eine Zeitüberschreitung. Weiterleitungen gelten als Fehler.
+
+## Was jeder Kanal empfängt {#what-each-channel-receives}
+
+| Kanal | Nachricht |
+| --- | --- |
+| **Slack** | Eine Textnachricht: der Titel fett, dann der Text |
+| **Microsoft Teams** | Eine Adaptive Card mit Titel, Text und einem Link zu IoT Breeze |
+| **ntfy** | Der Text als Text. Titel und ein Link zu IoT Breeze reisen als Header mit. Die Priorität folgt dem Schweregrad: **Information** 2, **Warnung** 3, **Fehler** 4, **Kritisch** 5. |
+| **Webhook** | JSON, siehe unten |
+
+### Webhook-Body {#webhook-body}
+
+Event-Nachrichten:
+
+| Feld | Bedeutung |
+| --- | --- |
+| `id` | Zustellschlüssel der Nachricht |
+| `tenantId` | Ihr Tenant |
+| `type` | Name des Event-Typs |
+| `severity` | `INFO`, `WARNING`, `ERROR` oder `CRITICAL` |
+| `title`, `body` | Text der Nachricht |
+| `context` | Zusätzliche Fakten, etwa die Event-ID |
+| `occurredAt` | Zeit, ISO 8601 |
+| `deepLink` | Link zum Event in IoT Breeze |
+
+Vorfallsnachrichten tragen statt `context` die Felder `kind: "incident"`, `transition`, `incident` und `link` sowie ein `type` wie `incident.opened`.
+
+Jede Anfrage hat die Header `content-type: application/json` und `user-agent: IotBreeze-NotificationChannel/1.0`. Mit einem HMAC-Geheimnis trägt sie zusätzlich `x-iotbreeze-signature: sha256=<hex>`, den HMAC-SHA256 des rohen Request-Body. Siehe [Webhook-Payloads](../api/webhooks.mdx).
+
+## Verwandte Seiten {#related}
+
+- [Alarme an Teams, Slack oder einen Webhook senden](./alert-channels.mdx)
+- [Events, Vorfälle und Benachrichtigungen](./events-incidents-notifications.mdx)
+- [Event-Typen](./event-types.mdx)

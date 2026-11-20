@@ -1,0 +1,117 @@
+---
+title: Connector types
+description: The connector types for loading outside data into the knowledge graph, their fields, defaults, credential types and write behaviors.
+type: reference
+app:
+  routes: ["/knowledge/connectors", "/knowledge/credentials", "/knowledge/mappings"]
+  tour: setup-knowledge
+---
+
+Every field of the connector types under **Settings › Knowledge setup › Sources**. To set one up, see [Bring in an outside data source](./outside-source.mdx).
+
+## All connectors
+
+| Field | Rule |
+| --- | --- |
+| **Name** | Letters, numbers, dashes, underscores. Fixed after creation. |
+| **Type** | Fixed after creation. It defines the schema. |
+| **Staging source** | Lowercase letters, numbers, dashes, for example `sap-pm`. |
+| **Flush max records** | Emit a batch once this many records accumulate. Under **Advanced › Delivery**; blank uses the default. |
+| **Flush max wait (ms)** | Emit a partial batch after this long. Under **Advanced › Delivery**; blank uses the default. |
+| State | **Running**, **Retrying**, **Failed**, **Completed**, **Stopped**. **Failing since** shows when reads keep failing. |
+
+## File
+
+| Field | Meaning |
+| --- | --- |
+| **JSONL path** | A newline-delimited JSON file inside the server's connector-files folder (default `/data/staging/connector-files`). A path outside it is rejected. File connectors can be turned off on a server. |
+
+## HTTP/REST
+
+| Field | Meaning |
+| --- | --- |
+| **URL** | The endpoint, https. Its own query string is kept. |
+| **Method** | GET or POST. A **Request body** (a JSON object) is sent with POST. |
+| **Headers** | One `Name: value` per line. Put secrets in a credential. |
+| **Query parameters** | One `name=value` per line. |
+| **Shared credential** | Signs every request, sent only to its allowed hosts. Empty for a public API. |
+| **Records path** | Dotted path to the record array, for example `data.items`. Blank when the response is the array. |
+| **Paging**, **Page parameter**, **Page size parameter**, **Page size**, **First page**, **Paging parameters in** | How pages are requested. For POST, parameters go in the query string or the JSON body. |
+| **Next link path**, **Cursor path** | Where the body holds the next page's URL or cursor. |
+| **Page limit** | A read stops after this many pages and keeps its watermark. Default 1000. |
+| **Change field**, **Watermark parameter** | The records' last-changed timestamp, and the parameter that sends the highest value already read, for example `updated_since`. Blank reads everything each time. |
+| **Poll interval (ms)** | Time between reads. |
+
+**Try it** fetches the first page and shows the records, fields and paging detected. **Use what was detected** copies them into the form.
+
+## OData
+
+| Field | Meaning |
+| --- | --- |
+| **Service URL** | The service root, before the entity set. Add `?sap-client=<client>` if your system needs it. |
+| **Entity set** | The set to read. **Read service** lists them from `$metadata`. |
+| **Fields (`$select`)** | Comma-separated. Blank reads every field. |
+| **Filter (`$filter`)** | An OData filter. |
+| **Read changes by** | A last-changed field such as `LastChangeDateTime`. Blank reads the whole set each time. |
+| **Paging order** | Comma-separated fields. Blank orders pages by the entity key. |
+| **Page size (`$top`)** | Blank: 500 records per page, at most 5000. |
+| **Time between reads (ms)** | Blank: every 5 minutes with a change field, hourly without. Minimum 30 s with a change field, 5 minutes without. |
+| **User** and **Password**, or **OAuth client ID**, **OAuth client secret**, **OAuth token URL**, **Scope** | Sign-in. Dynamics 365 needs the scope `<org URL>/.default`; SAP needs none. |
+| **Shared credential** | Replaces the connector's own secret. |
+
+## MQTT
+
+| Field | Meaning |
+| --- | --- |
+| **Broker URL** | Endpoint with scheme and port. |
+| **Topic** | A topic filter. `+` and `#` wildcards are supported. |
+| **Client id** | Stable session identifier. Generated if blank. |
+| **Username**, **Password**, **Shared credential** | Sign-in. |
+
+## NATS
+
+| Field | Meaning |
+| --- | --- |
+| **Server URL** | JetStream server URL. |
+| **Stream**, **Subject filter**, **Durable consumer** | What to consume. |
+| **Username**, **Password**, **Shared credential** | Sign-in. |
+
+## Database
+
+| Field | Meaning |
+| --- | --- |
+| **Driver** | PostgreSQL only. An empty list, or a missing driver, reports "driver not available". |
+| **Connection string (DSN)** | Stored encrypted, never returned. |
+| **Shared credential** | Fills user and password into the DSN, which then names only host, port and database. |
+| **Query** | A base `SELECT`. The driver appends the cursor predicate. |
+| **Cursor column** | A monotonic column tracked between polls to fetch only new rows. |
+| **Poll interval (ms)** | Delay between polls when idle. |
+
+## Credentials
+
+| Type | Holds |
+| --- | --- |
+| **User and password** | Basic sign-in. |
+| **Bearer token** | A token. |
+| **API key** | A key sent in a header or a query parameter. |
+| **OAuth 2 client credentials** | Client ID, secret and **Token URL**. |
+
+A credential has a **Name** (fixed after creation) and **Allowed hosts**, one per line, where `*.example.com` covers subdomains. **Rotate** restarts every connector that uses it. A credential in use cannot be deleted. **Move to a shared credential** moves a connector's own secret into one. Only tenant admins create, rotate or delete credentials.
+
+## Uploads
+
+| Rule | Value |
+| --- | --- |
+| Extensions | `.csv`, `.json`, `.jsonl`, `.ndjson`, `.parquet` |
+| Size | Up to 64 MB |
+| JSON | One object per row |
+
+## Mapping options
+
+| Option | Values |
+| --- | --- |
+| **Write behavior** | **Create** (fails if the record exists), **Upsert** and **Replace** (overwrite the whole record), **Merge** (updates only mapped fields). |
+| **Transform trigger** | **Manual**, **On new batch**, **Scheduled**. |
+| Field binding | **Source field**, **Constant**, **ƒx transform**. |
+| Relation match | By **alias**, by a **Match field**, or by an identifier of the target type. An **Optional** relation that matches nothing lands the row without the link, which then appears in Link review. |
+| **Built-in** mapping | Ships with the platform. Saving an edit makes your own copy. Deleting the copy restores the built-in. |

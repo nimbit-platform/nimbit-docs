@@ -1,0 +1,83 @@
+---
+title: Einen Vorfall bearbeiten
+sidebar_position: 5
+description: Einen Vorfall übernehmen, von offen bis geschlossen führen und einen von Hand melden, wenn keine Richtlinie das Problem erfasst hat.
+type: how-to
+app:
+  routes: ["/monitor/incidents", "/monitor/incidents/:id"]
+translated_from: b6ed908
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Führen Sie einen Vorfall von offen bis geschlossen: quittieren, zuweisen, die Behebung festhalten und lösen. Was ein Vorfall ist, lesen Sie unter [Events, Vorfälle und Benachrichtigungen](./events-incidents-notifications.mdx).
+
+## Bevor Sie anfangen {#before-you-start}
+
+- Sie brauchen die Berechtigung, Vorfälle zu sehen. Zum Quittieren, Zuweisen oder Bearbeiten brauchen Sie die Berechtigung Ändern. Zum Lösen, Schließen oder Wiederöffnen brauchen Sie Ändern und Ausführen. Eine fehlende Schaltfläche heißt, Ihrer Rolle fehlt die Berechtigung.
+- Ein Administrator muss mindestens einen Lösungsgrund angelegt haben, sonst kann niemand lösen. Siehe [Vorfallszustände und -felder](./incident-fields.mdx#resolution-reasons).
+
+## Einen Vorfall übernehmen {#pick-up-an-incident}
+
+1. Öffnen Sie **Überwachung › Vorfälle**. Der Menüeintrag zeigt, wie viele offene Vorfälle niemand quittiert hat.
+2. Bleiben Sie im Tab **Aktiv** oder öffnen Sie **Nicht quittiert**. Jeder Tab zeigt seine Anzahl.
+3. Um die Liste einzugrenzen, suchen Sie nach Titel oder Vorfallsnummer wie `INC-1042`, oder nutzen Sie die Filter **Schweregrad**, **Status**, **Richtlinie**, **Zugewiesen an** und **Thing**. **Mir zugewiesen** und **Beobachtet** zeigen Ihre.
+4. Wählen Sie den Vorfall.
+
+Um mehrere auf einmal zu bearbeiten, haken Sie die Zeilen an und nutzen **Quittieren** oder **Zuweisen** in der Leiste. Vorfälle, die die Aktion nicht annehmen können, werden übersprungen, und eine Meldung nennt die Anzahl.
+
+<Screenshot
+  page="watch/work-an-incident"
+  id="01-incident-detail"
+  route="/monitor/incidents/:id"
+  state="Incident detail: header with title, severity, status and Acknowledge, Assign, Resolve buttons; Events section with an episode; Activity thread with a comment; side panels Details, Watchers, Links"
+  alt="Eine Vorfallsseite mit Workflow-Schaltflächen, Events und Aktivität"
+/>
+
+## Quittieren und zuweisen {#acknowledge-and-assign}
+
+1. Wählen Sie **Quittieren**, um zu zeigen, dass Sie ihn gesehen haben.
+2. Wählen Sie **Zuweisen** oder **Mir zuweisen**, um ihn einer Person zu geben. Wird ein quittierter Vorfall zugewiesen, geht er in Bearbeitung.
+3. Prüfen Sie unter **Events**, was ihn ausgelöst hat. **Episoden** gruppiert die Öffnen- und Schließen-Events eines Alarms. **Alle Events** listet jedes einzeln.
+4. Schreiben Sie in **Kommentar hinzufügen**, was Sie herausfinden. Strg+Enter sendet.
+5. Wählen Sie unter **Verknüpfungen** die Option **Verknüpfung hinzufügen**, um ein Thing, ein Dokument, einen Arbeitsauftrag, einen Bericht, ein Dashboard oder eine externe Seite anzuhängen.
+
+Die zugewiesene Person und die Beobachter erhalten bei jeder Änderung eine In-App-Benachrichtigung und eine E-Mail. Wählen Sie **Beobachten** im Menü **⋯**, um einem Vorfall zu folgen, oder **Diesen Vorfall stummschalten**, um Benachrichtigungen für sich zu stoppen.
+
+## Lösen und schließen {#resolve-and-close}
+
+1. Wählen Sie **Lösen**.
+2. Wählen Sie einen Grund und füllen Sie jedes benutzerdefinierte Feld aus, das mit **Beim Lösen erforderlich** markiert ist.
+3. Wählen Sie **Vorfall lösen**. Sind noch Alarme aktiv, warnt der Dialog Sie. Ein passendes neues Event kann den Vorfall wieder öffnen.
+4. Ist der Vorfall gelöst, wählen Sie **Schließen**, um ihn zu beenden.
+
+Eine Richtlinie kann einen Vorfall für Sie lösen, zum Beispiel wenn jeder Alarm beendet ist. **Details** zeigt, wie: **Alle Episoden beendet**, **Manuell gelöst**, **Durch eine Automatisierung gelöst** oder **Durch Zeitüberschreitung gelöst**.
+
+Zum Wiederöffnen wählen Sie **Wieder öffnen** bei einem gelösten oder geschlossenen Vorfall. Das geht, bis das Zeitfenster zum Wiederöffnen der Richtlinie abläuft. Danach melden Sie einen neuen Vorfall.
+
+## Ein Problem von Hand melden {#report-a-problem-by-hand}
+
+1. Wählen Sie **Neuer Vorfall** oder öffnen Sie **⋯ › Problem melden** auf einer Thing-Seite.
+2. Geben Sie einen **Titel** ein und wählen Sie einen **Schweregrad**.
+3. Wählen Sie das **Thing**. Bei manchen Rollen ist es Pflicht. Ist es optional, lassen Sie es für einen Standort, einen Prozess oder etwas Unmodelliertes leer und benennen Sie es unter **Betrifft (optional)**.
+4. Fügen Sie optional eine **Beschreibung**, eine Person unter **Zugewiesen an** und benutzerdefinierte Felder hinzu.
+5. Wählen Sie optional **Events verknüpfen**, um Events dieses Things aus den letzten 24 Stunden anzuhängen. Ein Event kann nur zu einem Vorfall gehören.
+6. Wählen Sie **Vorfall anlegen**.
+
+Ein manueller Vorfall funktioniert wie jeder andere: zuweisen, kommentieren, lösen.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Der Status des Vorfalls lautet **Gelöst** oder **Geschlossen**, und **Aktivität** zeigt jeden Schritt mit der Person, die ihn ausgeführt hat. Unter **Überwachung › Vorfälle** sinkt die Zahl bei **Aktiv** um eins.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Keine Schaltfläche Lösen**: Sie brauchen Ändern und Ausführen, und der Vorfall muss noch offen, quittiert oder in Bearbeitung sein.
+- **Die Liste der Lösungsgründe ist leer**: Ein Administrator muss zuerst Gründe anlegen.
+- **Wieder öffnen fehlt**: Das Zeitfenster zum Wiederöffnen der Richtlinie ist abgelaufen. Melden Sie einen neuen Vorfall.
+- **Sie können ein Event nicht entfernen**: Das Event, das den Vorfall geöffnet hat, lässt sich nicht entfernen. Events, die Sie versehentlich hinzugefügt haben, können Sie entfernen.
+
+## Verwandte Seiten {#related}
+
+- [Events, Vorfälle und Benachrichtigungen](./events-incidents-notifications.mdx)
+- [Vorfallszustände und -felder](./incident-fields.mdx) · [Eine Vorfallsrichtlinie einrichten](./incident-policy.mdx)

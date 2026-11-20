@@ -1,0 +1,139 @@
+---
+title: "Quickstart: from a simulated device to an alert"
+sidebar_label: Quickstart
+sidebar_position: 2
+description: Model a room sensor, simulate it, chart it on a dashboard and raise an event when it gets too warm. About 15 minutes, no hardware.
+type: tutorial
+app:
+  routes: ["/onboarding/thing-types", "/onboarding/things", "/dashboards", "/automation/rule-designer"]
+  tour: getting-started
+---
+
+import TourLink from "@site/src/components/TourLink";
+import Screenshot from "@site/src/components/Screenshot";
+
+In about 15 minutes you will have a simulated room sensor sending temperatures, a dashboard with a line chart of them, and a rule that records an event when the temperature goes above 28 °C. You need no hardware.
+
+<TourLink id="getting-started-thing-type" />
+
+:::info What you need
+- An IoT Breeze account and tenant. No tenant yet? Contact [info@nimbit.de](mailto:info@nimbit.de).
+- A role that may create thing types, things, dashboards, event types and rules, for example the tenant admin role.
+- A desktop browser. The rule canvas does not open on a phone.
+:::
+
+## 1. Create a thing type and publish it
+
+A thing type describes a kind of device: the values it sends. Devices only use the published version of it.
+
+1. Open **Settings › Onboarding › Thing Types** and select **Create Thing Type**.
+2. Enter the **Display name** `Room sensor`. **Name** fills in as `room_sensor`. Leave **Connector** on **Nimbit**.
+3. Save. The thing type page opens.
+4. On the **Schema** tab, select **Add measure**. Enter the **Display name** `Temperature`, the **Name** `temperature`, **Type** **Numeric**, **Unit of Measure** `°C`, **Min value** `15` and **Max value** `35`. Save the measure.
+5. Select **Publish** in the header and confirm.
+
+The header changes from a draft to **Published · v1**, and the **Schema** tab lists `temperature`.
+
+<Screenshot
+  page="get-started/quickstart"
+  id="01-thing-type-schema"
+  route="/onboarding/thing-types/:id"
+  state="Schema tab of Room sensor with the temperature measure, draft state, Publish button visible in the header"
+  alt="Schema tab of the Room sensor thing type with a temperature measure and the Publish button"
+/>
+
+## 2. Create a thing
+
+A thing is one device of that type.
+
+1. Open **Settings › Onboarding › Things** and select **Create thing**.
+2. Enter the **Name** `Meeting room 1`.
+3. Next to **Thing Alternate ID**, select **Generate**.
+4. Choose **Thing type** `Room sensor`. **Organization** and **Group** are filled in with your tenant's default organization. If they are empty, choose one of each.
+5. Save.
+
+The thing page opens. It has no readings yet.
+
+## 3. Simulate the device
+
+1. On the thing page, select **More actions** in the header, then **Simulate device…**.
+2. Keep **Run for** at 15 minutes and **Every** at 10 seconds.
+3. For `temperature`, set **Shape** to **Random**. The range comes from the measure: 15 to 35.
+4. Select **Start simulation**.
+
+A **Simulating** banner appears at the top of the thing page. Within seconds, **Live values** on the **Overview** show a temperature.
+
+<Screenshot
+  page="get-started/quickstart"
+  id="02-simulate"
+  route="/onboarding/things/:id"
+  state="Simulate tab of the Send data dialog: Run for 15 min, Every 10 s, temperature on Random, min 15, max 35"
+  alt="The Simulate form for the Meeting room 1 thing"
+/>
+
+## 4. Build a dashboard with a line chart
+
+1. Open **Monitoring › Dashboards** and select **New dashboard**.
+2. Answer **What should this dashboard show?** with **For one thing**. Search for `Meeting room 1`, select it and select **Continue**.
+3. Enter the **Dashboard name** `Meeting room 1` and select **Save**. The empty dashboard opens.
+4. Select **Add widget**. In the group **Charts**, choose **Chart**, then the layout **Line**.
+5. Keep **Follow the dashboard**, pick the measure `temperature` and select **Add to dashboard**.
+6. Select **Save**.
+
+The dashboard shows a line that grows with every simulated reading.
+
+<Screenshot
+  page="get-started/quickstart"
+  id="03-dashboard"
+  route="/dashboards/:id"
+  state="Dashboard Meeting room 1 with one line chart of temperature, several minutes of simulated data"
+  alt="A dashboard with a line chart of simulated temperature"
+/>
+
+## 5. Create a rule that raises an event
+
+A rule can only raise an event of an event type you choose, so create the type first.
+
+1. Open **Settings › Configuration › Event Types** and select **Create Event Type**.
+2. Enter the **Name** `Room too warm`, choose a **Group** you belong to, and leave **Display type** on **Default**. Save.
+3. Open **Settings › Automation › Rule Designer** and select **Create rule**. Enter the **Name** `Room too warm` and save.
+4. Select the rule name to open it. On the **Start** node, choose **Thing type** and select `Room sensor`.
+5. Select **+** and add a **Condition**. On the **Simple** tab, set **Measure** `temperature`, **Operator** **Greater than** and the value `28`.
+6. Select **+** and add a **Toggle** trigger with **Direction** **In**. The rule fires when the room becomes too warm, not on every reading above 28.
+7. Select **+** and add an **Event** action. Enter a **Name**, the **Title** `Room too warm`, the **Event Type** `Room too warm` and **Severity** **Warning**.
+8. Check that the validity icon next to the rule name is green. Select **Publish**, then **Activate**.
+
+The rule is **Active** in the list.
+
+<Screenshot
+  page="get-started/quickstart"
+  id="04-rule"
+  route="/automation/rule-designer/:id"
+  state="Finished rule Room too warm: Start (Room sensor), Condition temperature greater than 28, Toggle In, Event action; rule Active"
+  alt="The finished rule with Start, Condition, Toggle and Event nodes"
+/>
+
+## 6. See the event
+
+Open **Monitoring › Events**. The simulator sends random values between 15 and 35, so a reading above 28 usually arrives within a minute. A **Warning** event titled `Room too warm` appears for `Meeting room 1`. Select it to see the values that triggered it.
+
+<Screenshot
+  page="get-started/quickstart"
+  id="05-event"
+  route="/monitor/events"
+  state="Events list with a Warning event titled Room too warm for Meeting room 1"
+  alt="The Events list with the Room too warm event"
+/>
+
+If nothing appears after five minutes, check that the simulation is still running (the banner says **Simulating**) and that the rule is **Active**. If the 15 minutes ran out, select **Start simulation** again.
+
+## What you built
+
+You modeled a device as a thing type, registered one thing, fed it simulated data, charted it and added a rule that records an event. Real devices follow the same path: only the data source changes.
+
+## Next
+
+- [Connect a real device](./real-hardware.mdx) to the same thing.
+- [Alert when a value crosses a limit](../automate/threshold-alert.mdx) by email instead of an event.
+- [Send alerts to Teams, Slack or a webhook](../watch/alert-channels.mdx).
+- [Key concepts](./key-concepts.mdx) names every part you used.

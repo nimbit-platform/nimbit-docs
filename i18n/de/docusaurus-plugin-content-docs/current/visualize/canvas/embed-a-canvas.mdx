@@ -1,0 +1,54 @@
+---
+title: Ein Canvas auf ein Dashboard legen
+sidebar_label: Canvas auf einem Dashboard
+description: Ein vorhandenes Canvas mit dem Canvas-Widget neben anderen Widgets zeigen oder ein Canvas in ein anderes einbetten.
+type: how-to
+sidebar_position: 6
+app:
+  routes: ["/dashboards/:id", "/canvas/:id"]
+translated_from: 70da89f
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Zeigen Sie ein Canvas in einem Dashboard, damit die Zeichnung neben Diagrammen und Kennzahlen steht. Sie fügen das Widget **Canvas** hinzu. Die Zeichnung selbst bleibt auf der Canvas-Seite.
+
+## Bevor Sie beginnen {#before-you-start}
+- Ein vorhandenes Canvas, siehe [Einen Grundriss zeichnen](./draw-a-floor-plan.mdx).
+- Eine Rolle, die das Dashboard bearbeiten und das Canvas lesen darf. Eine Rolle, die Canvases nur lesen darf, sieht sie eingebettet in Dashboards.
+- Ein Dashboard, das kein Bericht und kein Allgemeines Dashboard ist. Dort wird das Canvas-Widget nicht angeboten.
+
+## Schritte {#steps}
+
+1. Öffnen Sie das Dashboard und wählen Sie **Bearbeiten**.
+2. Wählen Sie **Widget hinzufügen** und öffnen Sie die Gruppe **Thing-Details**.
+3. Wählen Sie **Canvas**.
+4. Wählen Sie unter **Canvas** das Canvas, das eingebettet werden soll. Pflichtfeld.
+5. Ein Canvas auf Basis von Interfaces braucht auf einem Multi-Asset-Dashboard ein Thing: Wählen Sie eines im Feld **Thing**. {/* TODO(product): The wizard shows Thing only on Multi-asset dashboards for a canvas built on interfaces; confirm what a Smart dashboard does with a canvas on interfaces. */}
+6. Optional: Setzen Sie Farben unter **Darstellung**.
+7. Wählen Sie **Zum Dashboard hinzufügen**, ordnen Sie das Widget an, ändern Sie seine Größe und wählen Sie **Speichern** für das Dashboard.
+
+<Screenshot
+  page="visualize/canvas/embed-a-canvas"
+  id="01-canvas-widget"
+  route="/dashboards/:id"
+  state="Dashboard in edit mode with a Canvas widget showing a small plant drawing next to two chart widgets"
+  alt="Ein Canvas-Widget auf einem Dashboard neben zwei Diagrammen"
+/>
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Das Widget zeigt das Canvas mit Live-Werten. Auf einem Smart-Dashboard, das einem Thing folgt, übernimmt das Canvas das Thing des Dashboards. Wählen Sie den Link des Widgets zur ganzen Seite, um das Canvas auf seiner eigenen Seite zu sehen.
+
+## Ein Canvas in ein anderes einbetten {#nest-one-canvas-in-another}
+
+Im Canvas-Editor enthält der Abschnitt **Einbettungen** der Bibliothek das **Canvas**. Es zeigt ein anderes Canvas, nur lesbar und an seinen Rahmen angepasst, mit dem Namen und **Öffnen**. Sein Kontext-Thing kommt vom Canvas, in dem es liegt, oder ist ein festes Thing. Ein Canvas bettet sich nie selbst ein, und die Verschachtelung endet nach drei Ebenen. Ist es auf dem Bildschirm zu klein, zeigt es einen Platzhalter mit **Öffnen**.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Dieses Canvas existiert nicht oder ist für Sie nicht sichtbar**: Es wurde gelöscht, oder Ihre Rolle darf es nicht lesen.
+- **Sie können nicht aus dem Widget bedienen**: Schaltflächen, Schalter und Sollwerte in einer Einbettung bitten Sie, das Canvas zu öffnen. Wählen Sie **Canvas zum Bedienen öffnen**.
+- **Keine Karte Canvas in der Auswahl**: Das Dashboard ist ein Bericht oder ein Allgemeines Dashboard.
+
+## Verwandte Seiten {#related}
+- [Wie ein Canvas funktioniert](./how-canvas-works.mdx) · [Widget-Galerie](../widgets.mdx#canvas)

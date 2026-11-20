@@ -1,0 +1,133 @@
+---
+title: Install Periscope and stream your first source
+sidebar_label: Install and stream your first source
+description: Install Periscope on an edge box, connect it as a gateway with an onboarding code, discover a source, apply it and see values in IoT Breeze.
+type: tutorial
+sidebar_position: 2
+app:
+  routes: ["/onboarding/gateways"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+In about 30 minutes you will have Periscope running on an edge box, connected to IoT Breeze as a gateway, with one source discovered, confirmed and streaming values.
+
+:::info What you need
+- A Linux box next to your equipment that can reach the platform's URL over HTTPS, and the source you want to read (a PLC, an OPC UA server or a broker). To try it without a plant, run a simulator: `periscope sim`, see the [Command-line reference](./commands.mdx#sim).
+- The **Gateway** permission in IoT Breeze (the built-in **Admin** role has it).
+- Docker, or the ability to install a systemd service.
+- The Periscope package (container image or binary). Request it from NimBit support at [info@nimbit.de](mailto:info@nimbit.de); you receive the image name and version to use.
+:::
+
+## 1. Add the gateway in IoT Breeze
+
+Do this first: you need the onboarding code in step 3. Follow [Add a gateway](../add-a-gateway.mdx) up to the point where IoT Breeze shows the code, and copy it. It is shown once and starts with `ONB-`. Its default lifetime is 24 hours.
+
+## 2. Install Periscope
+
+Periscope is one static binary for Linux that also runs as a container. Write a minimal configuration first, so the agent has something to read. Save it as `/etc/periscope/periscope.toml`:
+
+```toml
+[agent]
+name = "werk-altena-01"            # names this agent; the gateway's namespace prefixes thing IDs
+
+[ocb]
+url     = "https://nimbit.example.com"
+gateway = true
+mode    = "confirm"
+mount   = "lenneform/werk-altena"
+levels  = ["site", "area", "line"]
+
+[[inputs.opcua]]
+alias    = "press-shop"
+endpoint = "opc.tcp://192.168.10.20:4840"
+include  = ["Machines/**"]
+
+[[outputs.tsflux_stream]]
+```
+
+Replace `url` with your platform's address. For another kind of source, use the matching page, such as [Read a Siemens S7 PLC](./s7.mdx). An input's own `mount` and, for a gateway, its namespace are part of every thing's identity. `mount` under `[ocb]` is where the things sit in your hierarchy. Choose them before the first apply.
+
+Start the agent as a container:
+
+```sh
+docker run -d --name periscope --restart unless-stopped \
+  -v /etc/periscope:/etc/periscope:ro \
+  -v periscope-state:/var/lib/periscope \
+  -p 8400:8400 <periscope-image>:<version>
+```
+
+Replace `<periscope-image>:<version>` with the image and version NimBit support gave you. To run it as a systemd service instead, see the [Command-line reference](./commands.mdx#run-as-a-systemd-service).
+
+Check the installation and the file:
+
+```sh
+docker exec periscope periscope version
+docker exec periscope periscope validate -config /etc/periscope/periscope.toml -offline
+```
+
+`validate` ends with `configuration is valid`. The agent keeps its state in `/var/lib/periscope`. Keep that directory on a volume and back it up. This page is for a first trial. For a production box, use [Deploy Periscope](./deploy/index.mdx): requirements, running as a service, upgrades and replacing a box.
+
+## 3. Connect the box with the onboarding code
+
+Run the enroll command on the box:
+
+```sh
+docker exec periscope periscope enroll -code ONB-XXXX-XXXX-XXXX-XXXX
+```
+
+The box creates its own key pair, redeems the code and keeps the gateway's IDs. It prints the gateway's namespace and gateway thing. The code is now spent, and the box holds no password. The box's setup screen accepts the code too, as [Add a gateway](../add-a-gateway.mdx) describes.
+
+The agent reloads its file on its own; to be sure, run `docker restart periscope`. The agent first asks the platform for the gateway's record and, until it answers, discovers nothing. In IoT Breeze, the gateway shows **Online** within about 5 minutes, when its first health message arrives.
+
+<Screenshot
+  page="gateways/install"
+  id="01-gateway-online"
+  route="/onboarding/gateways"
+  state="Gateway list with the new gateway Online"
+  alt="The gateways list with the new gateway Online"
+/>
+
+## 4. Discover the source
+
+Run a discovery:
+
+```sh
+docker exec periscope periscope discover
+```
+
+Periscope reads the source without writing to it and lists what it proposes:
+
+```text
+INPUT       NODES  THINGS  ERROR
+press-shop  412    18      -
+
+KIND       NAME          TYPE          STATUS    NOTE
+thingType  PressType     9 measures    proposed  -
+thing      Press1        PressType     proposed  -
+```
+
+`ERROR` is empty when the input could read its source. If it shows an error, see the end of the page for your source.
+
+## 5. Confirm and apply
+
+Open `http://<box>:8400/ui/proposals`, rename any generated names, and select **Confirm all proposed**, then **Apply now**. The statuses change to `applied`. Details are in [Approve what Periscope discovers](./approve-discoveries.mdx).
+
+In IoT Breeze, open the gateway's **Things** tab. The things Periscope created are listed there.
+
+## 6. See the values
+
+Open one of the things from the gateway's **Things** tab. Its latest values appear within a minute or two. Then open the gateway's **Health** tab: the **Traffic** card shows **Messages per minute** and **Things active** above zero, and **Discards per minute** at 0.
+
+To check from the box as well, see [Verify that data arrived](./verify.mdx).
+
+## What you built
+
+Periscope runs on your box as a gateway of your organization. It discovered a source, you approved the model it proposed, and it now streams the values. IoT Breeze shows the gateway's health and traffic.
+
+## Next
+
+- [Approve what Periscope discovers](./approve-discoveries.mdx), and connect more sources: [OPC UA](./opc-ua.mdx), [Modbus](./modbus.mdx), [S7](./s7.mdx), [Sparkplug B and MQTT](./sparkplug-and-mqtt.mdx), [HTTP](./http.mdx)
+- [Transform values before they leave the edge](./processors.mdx)
+- [Deploy Periscope](./deploy/index.mdx): requirements, running as a service, upgrades and replacing a box
+- [Check gateway health and traffic](../fleet-health.mdx)

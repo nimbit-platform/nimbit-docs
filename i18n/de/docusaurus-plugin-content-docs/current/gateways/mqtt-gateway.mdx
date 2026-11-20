@@ -1,0 +1,155 @@
+---
+title: Daten vieler Geräte über ein MQTT-Gateway senden
+sidebar_label: Ein MQTT-Gateway für viele Geräte
+description: Ein MQTT-Geräte-Gateway hinzufügen, seine Konfigurationsdatei herunterladen, seine Things zuordnen und pro Thing oder als Batch veröffentlichen.
+type: how-to
+sidebar_position: 4
+app:
+  routes: ["/onboarding/gateways", "/onboarding/gateways/:id"]
+translated_from: 06bddd1
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import Screenshot from "@site/src/components/Screenshot";
+
+Verbinden Sie ein Gerät, das MQTT spricht, etwa einen eWON Flexy, mit einem Satz Zugangsdaten für das Gateway und senden Sie darüber Daten für mehrere Things. Wie Zugehörigkeit und Scope funktionieren, steht unter [Wie Gateways funktionieren](./how-gateways-work.mdx). Für einen Flexy lesen Sie weiter unter [eWON Flexy anbinden](./ewon-flexy.mdx).
+
+## Voraussetzungen {#before-you-start}
+
+- Sie brauchen die Berechtigung **Gateway** (die eingebaute Rolle **Administrator** hat sie).
+- Das Gerät kann sich mit MQTT 3.1.1, Benutzername und Passwort und einer Client-ID Ihrer Wahl verbinden. Der Broker akzeptiert QoS 0 und 1, nicht 2.
+- Jedes Gerät hinter dem Gateway ist ein Thing Ihrer Organisation, oder Sie können es jetzt [registrieren](../model/register-thing.mdx). Sein Thing-Typ hat die Messwerte, die Sie senden werden.
+
+## Das Gateway hinzufügen {#add-the-gateway}
+
+1. Öffnen Sie **Einstellungen › Onboarding › Gateways** und wählen Sie **Gateway hinzufügen**.
+2. Wählen Sie unter **Typ** die Option **MQTT-Gerät**.
+3. Geben Sie einen **Namen** ein. Lassen Sie **Namespace** leer oder geben Sie einen ein.
+4. Wählen Sie unter **Format der Konfigurationsdatei** die Option **Umgebungsdatei (.env)**, **JSON (.json)** oder **eWON-Flexy-BASIC-Parameter (.bas)**. Die Zugangsdaten sind in jedem Format gleich.
+5. Wählen Sie **Gateway hinzufügen**.
+
+IoT Breeze zeigt **MQTT-Zugangsdaten für** den Namen des Gateways. Kopieren Sie jetzt das **Passwort** oder wählen Sie **Konfiguration herunterladen**. Das Passwort wird nur einmal angezeigt; eine Datei, die Sie später herunterladen, enthält stattdessen einen Platzhalter.
+
+<Screenshot
+  page="gateways/mqtt-gateway"
+  id="01-mqtt-credential"
+  route="/onboarding/gateways"
+  state="Add gateway drawer after creating an MQTT device gateway, with the connection rows and the Download config button"
+  alt="Das Ergebnis der MQTT-Zugangsdaten mit Host, Port, Benutzername, Passwort und Topics"
+/>
+
+Das Ergebnis listet diese Zeilen. Kopieren Sie sie vom Bildschirm, statt sie von Hand zu bauen.
+
+| Zeile | Verwendung |
+| --- | --- |
+| **Host**, **Port**, **TLS** | Der Broker. **An (mqtts)** heißt, der Listener verlangt TLS. |
+| **Benutzername**, **Passwort** | Die Zugangsdaten. |
+| **Client-ID-Präfix** | `<tenant>:gateway:<gateway id>`. Verwenden Sie es als Client-ID oder hängen Sie `:<suffix>` an. Der Broker lehnt jede andere Client-ID ab. Zwei Verbindungen mit derselben Client-ID verdrängen sich gegenseitig. |
+| **Topic-Präfix** | Jedes Topic, auf dem Sie veröffentlichen, beginnt damit. |
+| **Telemetrie-Topic** | Veröffentlichen Sie hier die Daten eines Things. |
+| **Batch-Topic** | Veröffentlichen Sie hier ein Array mit Daten mehrerer Things. |
+| **Status-Topic** | Veröffentlichen Sie hier den eigenen Zustand des Gateways. |
+
+## Things dem Gateway zuordnen {#put-things-on-the-gateway}
+
+Ein Gateway kann nur für Things senden, die ihm gehören, und seine Nachrichten legen nie Things an.
+
+1. Legen Sie die Things in IoT Breeze an, falls sie nicht existieren.
+2. Öffnen Sie das Gateway, wählen Sie den Tab **Things** und dann **Things zuordnen**. Suchen Sie die Things und wählen Sie **Zuordnen**. Oder öffnen Sie ein Thing, bearbeiten Sie es und wählen Sie unter **Gateway** das Gateway.
+
+Einzelheiten, Limits und was passiert, wenn Sie ein Thing verschieben, stehen unter [Die Things hinter einem Gateway verwalten](./things-behind-a-gateway.mdx).
+
+## Daten veröffentlichen {#publish-data}
+
+Verbinden Sie sich mit den Zugangsdaten und veröffentlichen Sie JSON. Beide Wege verwenden dieselben Nachrichtenfelder; siehe [Nachrichtenformat](../connect/message-format.mdx).
+
+<Tabs groupId="gateway-publish">
+<TabItem value="thing" label="Ein Thing pro Nachricht" default>
+
+Veröffentlichen Sie auf dem **Telemetrie-Topic** und ersetzen Sie `<thing>` durch die ID oder Alternate-ID des Things:
+
+```text
+tenant/<tenant>/gateway/<gateway id>/device/<thing>/telemetry
+```
+
+```json
+{
+  "thingType": "pump",
+  "time": "2026-11-06T10:15:00Z",
+  "data": { "pressure": 4.18, "running": true }
+}
+```
+
+Das Topic nennt das Thing. `tenant` und `id` sind in der Nachricht optional. Wenn Sie sie senden, müssen sie zum Topic passen, sonst wird die Nachricht als `identity_mismatch` verworfen. Eine Topic-Ebene darf weder `/`, `.`, `+`, `#` noch Leerzeichen enthalten. Ein Thing, dessen Alternate-ID eines davon enthält, braucht daher den Batch.
+
+</TabItem>
+<TabItem value="batch" label="Ein Batch für mehrere Things">
+
+Veröffentlichen Sie auf dem **Batch-Topic** ein JSON-Array mit einem Element pro Thing. Jedes Element nennt sein Thing mit `id`, seiner ID oder Alternate-ID:
+
+```text
+tenant/<tenant>/gateway/<gateway id>/telemetry
+```
+
+```json
+[
+  { "id": "pump-1", "thingType": "pump", "time": "2026-11-06T10:15:00Z", "data": { "pressure": 4.18 } },
+  { "id": "tank-3", "thingType": "tank", "data": { "level": 0.62 } }
+]
+```
+
+Lassen Sie ein Gerät weg, das Sie nicht erreichen, statt seine letzten Werte erneut zu senden. Jedes gespeicherte Element hält sein eigenes Thing online, ein erneut gesendeter Wert würde also ein totes Gerät online halten.
+
+</TabItem>
+</Tabs>
+
+`thingType` ist der Name oder die ID des Thing-Typs und muss der Typ des Things sein. Lassen Sie `time` weg, um die Ankunftszeit zu verwenden.
+
+Veröffentlichen Sie alle 5 Minuten den eigenen Zustand des Gateways auf dem **Status-Topic**:
+
+```json
+{
+  "thingType": "mqtt_gateway",
+  "time": "2026-11-06T10:15:00Z",
+  "data": { "uptime_s": 5400, "buffer_used_pct": 0, "buffer_oldest_s": 0, "errors_per_min": 0, "clock_offset_ms": 0 }
+}
+```
+
+Das Gateway wird mit der ersten Nachricht **Online** und nach drei ausgebliebenen **Offline** (15 Minuten).
+
+## Batch-Limits und Prüfungen {#batch-limits-and-checks}
+
+| Regel | Was passiert |
+| --- | --- |
+| Über 1 MiB | Die ganze Veröffentlichung wird verworfen. Einmal gezählt als `too_large`. |
+| Mehr als 500 Elemente | Die ganze Veröffentlichung wird verworfen. Einmal gezählt als `too_many`. 500 ist die Vorgabe; Ihr Betreiber kann eine andere Zahl festlegen. |
+| Kein JSON-Array und kein Objekt | Die ganze Veröffentlichung wird verworfen. Einmal gezählt als `invalid`. |
+| Leeres Array | Wird ignoriert. |
+| Ein Objekt statt eines Arrays | Ein Batch mit einem Element. Es braucht ebenfalls `id`. |
+| Element ohne `id` | Das Element wird verworfen, gezählt als `id_missing`. |
+| Element mit einem anderen `tenant` als dem des Topics | Das Element wird verworfen, gezählt als `identity_mismatch`. |
+| Element, das keine Nachricht ist, kein `thingType` hat oder weder `data` mit einem Wert noch `geo` enthält | Das Element wird verworfen, gezählt als `invalid`. |
+| Element für ein Thing eines anderen Gateways oder keines | Das Element wird verworfen, gezählt als `not_member`. |
+| Element für ein Thing oder einen Thing-Typ, der nicht existiert | Das Element wird verworfen, gezählt als `unknown_thing`. Es wird nichts angelegt. |
+| Element, dessen `thingType` nicht der Typ des Things ist | Das Element wird verworfen, gezählt als `invalid`. |
+
+Ein fehlerhaftes Element stoppt die anderen nie. Die Elemente, die die Prüfung bestehen, werden gespeichert, jedes mit seiner eigenen `time` oder ohne sie mit der Ankunftszeit. Die Gründe werden pro Gateway gezählt und im Tab **Zustand** angezeigt; siehe [Zustand und Datenverkehr von Gateways prüfen](./fleet-health.mdx).
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Öffnen Sie das Gateway. Der Tab **Zustand** zeigt **Online**, und die Karte **Datenverkehr** zeigt **Nachrichten pro Minute** und **Aktive Things**, ein bis zwei Minuten nach den ersten Daten. Öffnen Sie eines der Things: Seine neuesten Werte sind da.
+
+## Wenn es nicht klappt {#if-it-doesnt-work}
+
+- **Der Broker lehnt die Verbindung ab**: Prüfen Sie die Client-ID gegen das **Client-ID-Präfix** und ob Sie das Passwort vollständig kopiert haben. Verloren? Wählen Sie im Zeilenmenü **Neue Zugangsdaten**; die alten Zugangsdaten funktionieren für neue Verbindungen sofort nicht mehr.
+- **Eine Veröffentlichung wird bestätigt, aber nichts wird gespeichert**: Das Topic liegt außerhalb des **Topic-Präfix** des Gateways. Der Broker bestätigt eine QoS-1-Veröffentlichung, die er danach verwirft.
+- **Der Datenverkehr zeigt Verworfenes**: **Verworfen pro Minute** nennt die Gründe. Ordnen Sie sie der Tabelle oben zu. Die häufigsten sind `not_member` (ordnen Sie das Thing zu) und `unknown_thing` (legen Sie das Thing an oder korrigieren Sie den Namen seines Thing-Typs).
+- **Das Gateway bleibt Offline, obwohl Daten ankommen**: Nur seine eigene Zustandsmeldung setzt es auf online. Veröffentlichen Sie auf dem **Status-Topic**.
+
+## Verwandte Seiten {#related}
+
+- [Wie Gateways funktionieren](./how-gateways-work.mdx) · [Gateway-Referenz](./gateway-reference.mdx)
+- [eWON Flexy anbinden](./ewon-flexy.mdx) · [Die Things hinter einem Gateway verwalten](./things-behind-a-gateway.mdx)
+- [Zustand und Datenverkehr von Gateways prüfen](./fleet-health.mdx)
+- [MQTT-Topics und Client-ID](../connect/mqtt-topics.mdx)

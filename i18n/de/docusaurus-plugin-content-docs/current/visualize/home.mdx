@@ -1,0 +1,50 @@
+---
+title: Ein Dashboard auf Home zeigen
+sidebar_label: Dashboard auf Home
+description: Ein Dashboard ohne Thing auf Home zeigen, für alle oder nur für Sie.
+type: how-to
+sidebar_position: 5
+app:
+  routes: ["/dashboards/:id"]
+translated_from: 1579ffe
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Home ist die Seite, auf der Benutzer landen. Ein Smart-Dashboard, das kein Thing braucht, etwa mit Kennzahlen des Tenants oder angehefteten Widgets, kann dorthin. Hintergrund zu den Dashboard-Arten finden Sie unter [Dashboards, Smart-Dashboards und Zeit](./dashboards.mdx).
+
+## Bevor Sie beginnen {#before-you-start}
+- Ein Smart-Dashboard ohne Interfaces. Verlangt es Interfaces, braucht es ein Thing, und die Schaltfläche wird nicht angeboten. Legen Sie eines an wie in [Ein Dashboard für alle Things einer Art bauen](./smart-dashboard.mdx) und lassen Sie die Interfaces leer.
+- Für **Für alle** muss das Dashboard ein **Tenant-Dashboard** sein. Andere Mitglieder können ein privates Dashboard nicht öffnen.
+- Widgets für den ganzen Tenant: siehe **Überblick** und **Verbindung** in der [Widget-Galerie](./widgets.mdx).
+
+## Schritte {#steps}
+
+1. Öffnen Sie das Dashboard.
+2. Wählen Sie in der Bearbeitungsleiste **Auf der Startseite zeigen**.
+3. Setzen Sie den Haken bei **Für alle**, um es auf die Startseite aller zu legen, oder bei **Nur für mich** für Ihre eigene.
+
+Jeder Haken wird sofort gespeichert. Sie müssen nichts weiter speichern.
+
+<Screenshot
+  page="visualize/home"
+  id="01-show-on-home"
+  route="/dashboards/:id"
+  state="Dashboard header with the Show on Home menu open, showing the checkboxes For everyone and Just for me"
+  alt="Das Menü Auf der Startseite zeigen mit Für alle und Nur für mich"
+/>
+
+Um es von Home zu nehmen, entfernen Sie den Haken.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Die Schaltfläche zeigt **Für alle auf der Startseite** oder **Auf meiner Startseite**. Öffnen Sie **Home**: Das Dashboard erscheint dort.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Keine Schaltfläche Auf der Startseite zeigen**: Das Dashboard verlangt Interfaces, oder Ihre Rolle darf es nicht bearbeiten.
+- **Kein Haken bei Für alle**: Das Dashboard ist ein **Benutzer-Dashboard**. Ändern Sie es in den **Dashboard Einstellungen** zu einem **Tenant-Dashboard**.
+- **Die Karte Erste Schritte ist verschwunden**: Home blendet sie aus, solange ein Widget **Einrichtung** auf der Seite liegt.
+
+## Verwandte Seiten {#related}
+- [Widget-Galerie](./widgets.mdx) · [Ein Dashboard teilen oder einbetten](./share.mdx)

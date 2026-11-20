@@ -1,0 +1,126 @@
+---
+title: Glossary
+description: The terms used in IoT Breeze and the NimBit platform, in alphabetical order, each with a link to the page that explains it.
+sidebar_position: 6
+type: reference
+---
+
+Terms in IoT Breeze and the NimBit platform, A to Z. How they fit together is in [Key concepts](../get-started/key-concepts.mdx).
+
+## A
+
+**Action.** A step that sends or does something: a notification, an email, a webhook, an event, or a command to a device. Rules, event types and things each offer a different list. See [Action types](../automate/action-types.mdx).
+
+**API key.** A secret that lets a script or integration call the platform without a person signing in. It acts as one member or service account and has scopes and an expiry. See [API keys](../api/api-keys.mdx).
+
+**Ask Nimble.** The assistant that answers questions in plain words from the knowledge graph, live readings and documents, and shows its sources. See [How Ask Nimble answers](../knowledge/ask-nimble-answers.mdx).
+
+**Auto Schema Evolution.** A thing type setting. A measure that a device sends and the schema does not know is added to the thing type instead of dropped. See [Drafts, publishing and versions](../model/drafts-and-versions.mdx).
+
+## C
+
+**Canvas.** A drawing, such as a floor plan, with shapes bound to live values. See [How a canvas works](../visualize/canvas/how-canvas-works.mdx).
+
+**Channel.** See notification channel.
+
+**Client ID.** The identifier an MQTT device presents when it connects, in the form `<tenantId>:<deviceId>`. See [MQTT topics and client ID](../connect/mqtt-topics.mdx).
+
+**Connection info.** The drawer on a thing's **Connections** tab that lists the gateway URL, username, client ID, topics and REST URLs. See [Create and rotate device credentials](../connect/credentials.mdx).
+
+## D
+
+**Dashboard.** A page of widgets, each answering one question about your things. See [Dashboards, smart dashboards and time](../visualize/dashboards.mdx).
+
+**Device key.** The signing key behind a thing's basic and JWT credentials. Rotating it cuts off older credentials. See [Create and rotate device credentials](../connect/credentials.mdx).
+
+**Draft.** The next, unpublished version of a thing type or interface. Devices ignore it until you publish it. See [Drafts, publishing and versions](../model/drafts-and-versions.mdx).
+
+## E
+
+**Episode.** The events of one alarm or outage: the event that opens it and the event that closes it. See [Event types](../watch/event-types.mdx).
+
+**Event.** A record that something happened, with a time, a severity and usually a thing. You cannot edit it. See [Events, incidents and notifications](../watch/events-incidents-notifications.mdx).
+
+**Event type.** A named kind of event. It holds the actions that run when an event of that kind occurs. See [Event types](../watch/event-types.mdx).
+
+## G
+
+**Gateway.** One box on site that speaks for many devices with a single credential. It may send only for the things assigned to it. See [How gateways work](../gateways/how-gateways-work.mdx).
+
+**Geofence.** A drawn area on the map. Events are raised when a thing enters or leaves it. See [Draw a geofence](../watch/geofence.mdx).
+
+**Group.** A node in a tree that holds users and records. A user reaches a thing only through a group. See [Users, groups and roles](../administer/access.mdx).
+
+## I
+
+**Incident.** A problem that needs a person. It collects related events and moves from open to closed. See [Work an incident](../watch/work-an-incident.mdx).
+
+**Incident policy.** The rule that decides which events open an incident and how they group into one. See [Set up an incident policy](../watch/incident-policy.mdx).
+
+**Interface.** A named, versioned set of fields that several thing types can share, so one dashboard fits all of them. See [Thing types, things and interfaces](../model/things-and-types.mdx).
+
+## K
+
+**Knowledge graph.** An optional map of your things, places and other records, with how they relate. See [The knowledge graph](../knowledge/knowledge-graph.mdx).
+
+## M
+
+**Mail template.** The subject and body of an email, with a header and footer block, for one context such as events. See [Mail templates and placeholders](../watch/mail-templates.mdx).
+
+**Measure.** A value a device sends over time, such as `temperature`, with a type, unit and expected range. See [Measure and property types](../model/measure-types.mdx).
+
+## N
+
+**nbq.** The query engine. It reads stored data back for charts, dashboards and the Query API. See [API overview](../api/index.mdx).
+
+**Notification channel.** A destination for alert messages: Slack, Microsoft Teams, a webhook or ntfy. See [Channel types](../watch/channel-types.mdx).
+
+## O
+
+**OCB.** The platform service behind the `/ocb` API. It manages things, thing types, rules, dashboards, users and the rest of the tenant. See [API overview](../api/index.mdx).
+
+**Organization.** A group of type Organization, the top of a customer, company or site. Each thing records one. See [Users, groups and roles](../administer/access.mdx).
+
+## P
+
+**Periscope.** The NimBit edge agent. It runs next to your equipment, discovers OPC UA, Sparkplug B, MQTT, Modbus, S7 and HTTP sources and streams their values into IoT Breeze. See [Periscope](../gateways/periscope/index.mdx).
+
+**Policy.** See incident policy.
+
+**Property.** A fixed fact about a device, such as a serial number. With **Timeseries relevant** on, it is added to every telemetry message. See [Measure and property types](../model/measure-types.mdx).
+
+**Publish.** Turn a draft into the live version of a thing type or interface. The version it replaces is archived. See [Drafts, publishing and versions](../model/drafts-and-versions.mdx).
+
+## R
+
+**Report.** A document of widgets that IoT Breeze renders to PDF on a schedule and sends to subscribers. See [Email a weekly PDF report](../automate/weekly-report.mdx).
+
+**Role.** A named set of permissions. It says what a person may do, a group says with which things. See [Roles and permissions](../administer/roles.mdx).
+
+**Rule.** A chain of Start, Condition, Trigger and Actions that watches incoming data. See [Rules, actions and reports](../automate/rules-actions-reports.mdx).
+
+## S
+
+**Service account.** A non-human member of a tenant that owns API keys outliving any one person. See [Create an API key](../administer/api-key.mdx).
+
+**Severity.** The weight of an event: Information, Warning, Error or Critical. See [Event types](../watch/event-types.mdx).
+
+**Smart dashboard.** A dashboard built on interfaces instead of one device. It serves every thing whose type implements them. See [Build one dashboard for every thing of a kind](../visualize/smart-dashboard.mdx).
+
+## T
+
+**Tenant.** Your company's space in IoT Breeze. Data, users, settings and features belong to one tenant. See [Tenant settings](../administer/tenant-settings.mdx).
+
+**Thing.** One device or asset, with a thing type, an ID, an organization, groups and its own credentials. See [Register a thing](../model/register-thing.mdx).
+
+**Thing Alternate ID.** An ID you choose for a thing, usable instead of its internal ID in HTTP messages. It cannot change after creation. See [Message format](../connect/message-format.mdx).
+
+**Thing type.** The model of a kind of device: its measures, properties and settings. See [Thing types, things and interfaces](../model/things-and-types.mdx).
+
+**Trigger.** The node of a rule that decides how a met condition becomes firing: every match, once per change, or once per period. See [Rules, actions and reports](../automate/rules-actions-reports.mdx).
+
+**tsflux.** The ingestion service. It accepts MQTT and HTTP data, checks it against the thing type and stores it. See [How devices connect](../connect/how-devices-connect.mdx).
+
+## W
+
+**Widget.** One tile of a dashboard. It reads one thing, or the whole tenant. See [Widget gallery](../visualize/widgets.mdx).

@@ -1,14 +1,14 @@
 {
   "title": {
-    "message": "Blog",
+    "message": "NimBit Blog",
     "description": "The title for the blog used in SEO"
   },
   "description": {
-    "message": "Blog",
+    "message": "Neuigkeiten, Anleitungen und Einblicke vom Team hinter der NimBit-IoT-Plattform.",
     "description": "The description for the blog used in SEO"
   },
   "sidebar.title": {
-    "message": "Recent posts",
+    "message": "Neueste Beiträge",
     "description": "The label for the left sidebar"
   }
 }

@@ -2,105 +2,64 @@ import React from "react";
 import Link from "@docusaurus/Link";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import { useThemeConfig } from "@docusaurus/theme-common";
-import { ArrowRight } from "lucide-react";
+import Translate from "@docusaurus/Translate";
 
-const DEMO_URL =
-    "https://outlook.office365.com/book/NimBitGmbHErstgesprchIhreDigitaleTransformation@cpars.de/";
+type Column = { title: string; items: { label: string; to?: string; href?: string }[] };
 
+const link =
+  "text-sm text-[var(--ifm-font-color-base)]! no-underline transition-colors hover:text-[var(--ifm-color-primary)]! hover:no-underline";
+
+/** The design's footer: logo and a contact line, mono-labelled link columns, a mono copyright bar. */
 export default function Footer(): React.JSX.Element | null {
-    const { footer } = useThemeConfig();
-    if (!footer) return null;
+  const { footer } = useThemeConfig();
+  const logoSrc = useBaseUrl("/img/nimbit.svg");
+  if (!footer) return null;
+  const { links, copyright } = footer;
 
-    const { links, copyright } = footer;
-    const logoSrc = useBaseUrl("/img/nimbit.svg");
-
-    return (
-        <footer className="border-t border-[var(--docs-color-border)] bg-background">
-            <div className="mx-auto max-w-7xl px-6 py-12 lg:py-16">
-                <div className="flex flex-col gap-12 lg:flex-row lg:gap-8">
-                    {/* Brand + CTA */}
-                    <div className="flex-1 max-w-xs">
-                        <img
-                            src={logoSrc}
-                            alt="NimBit"
-                            className="h-8 dark:brightness-0 dark:invert"
-                        />
-                        <p className="mt-4 text-sm leading-relaxed text-[var(--docs-color-text-100)]">
-                            Build and manage your IoT solutions with the NimBit
-                            platform.
-                        </p>
-                        <a
-                            href={DEMO_URL}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="mt-5 inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white! no-underline transition-colors hover:bg-[var(--ifm-color-primary-dark)] hover:text-white hover:no-underline"
-                        >
-                            Book a Demo
-                            <ArrowRight className="h-3.5 w-3.5" />
-                        </a>
-                    </div>
-
-                    {/* Link columns */}
-                    <div className="grid flex-1 grid-cols-2 gap-8 sm:grid-cols-3">
-                        {(
-                            links as {
-                                title: string;
-                                items: {
-                                    label: string;
-                                    to?: string;
-                                    href?: string;
-                                }[];
-                            }[]
-                        ).map((column) => (
-                            <div key={column.title}>
-                                <h3 className="text-sm font-semibold text-[var(--docs-color-text)]">
-                                    {column.title}
-                                </h3>
-                                <ul className="mt-3 list-none space-y-2 pl-0">
-                                    {column.items.map((item) => (
-                                        <li key={item.label}>
-                                            {item.to ? (
-                                                <Link
-                                                    to={item.to}
-                                                    className="text-sm text-[var(--docs-color-text-100)] no-underline transition-colors hover:text-[var(--ifm-color-primary)] hover:no-underline"
-                                                >
-                                                    {item.label}
-                                                </Link>
-                                            ) : (
-                                                <a
-                                                    href={item.href}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="text-sm text-[var(--docs-color-text-100)] no-underline transition-colors hover:text-[var(--ifm-color-primary)] hover:no-underline"
-                                                >
-                                                    {item.label}
-                                                </a>
-                                            )}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Bottom bar */}
-                <div className="mt-12 border-t border-[var(--docs-color-border)] pt-6 flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
-                    <p className="text-xs text-[var(--docs-color-text-100)] m-0">
-                        {copyright}
-                    </p>
-                    <div className="flex items-center gap-4">
-                        <a
-                            href="https://nimbit.de"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-xs text-[var(--docs-color-text-100)] no-underline hover:text-[var(--ifm-color-primary)] hover:no-underline"
-                        >
-                            nimbit.de
-                        </a>
-                    </div>
-                </div>
+  return (
+    <footer className="border-0 border-t border-solid border-[var(--docs-color-border)] bg-[var(--nb-sunk)]">
+      <div className="mx-auto flex max-w-[1360px] flex-wrap justify-between gap-10 px-6 py-10 lg:px-10">
+        <div className="flex flex-col gap-3.5">
+          <img src={logoSrc} alt="NimBit" className="h-7 w-fit dark:brightness-0 dark:invert" />
+          <p className="m-0 text-sm text-[var(--docs-color-muted)]">
+            <Translate
+              id="footer.contact"
+              values={{
+                email: (
+                  <a href="mailto:info@nimbit.de" className="text-[var(--ifm-color-primary)]!">
+                    info@nimbit.de
+                  </a>
+                ),
+              }}
+            >
+              {"Missing a page? Write to {email}."}
+            </Translate>
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-x-14 gap-y-8">
+          {(links as Column[]).map((column) => (
+            <div key={column.title} className="flex flex-col gap-2">
+              <span className="nb-eyebrow mb-1">{column.title}</span>
+              {column.items.map((item) =>
+                item.to ? (
+                  <Link key={item.label} to={item.to} className={link}>
+                    {item.label}
+                  </Link>
+                ) : (
+                  <a key={item.label} href={item.href} target="_blank" rel="noopener noreferrer" className={link}>
+                    {item.label}
+                  </a>
+                ),
+              )}
             </div>
-        </footer>
-    );
+          ))}
+        </div>
+      </div>
+      <div className="border-0 border-t border-solid border-[var(--docs-color-border)]">
+        <div className="mx-auto max-w-[1360px] px-6 py-4 lg:px-10">
+          <p className="m-0 font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--docs-color-text-100)]">{copyright}</p>
+        </div>
+      </div>
+    </footer>
+  );
 }

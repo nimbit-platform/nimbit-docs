@@ -1,0 +1,61 @@
+---
+title: Voraussetzungen für eine Edge-Box
+sidebar_label: Voraussetzungen
+description: Betriebssystem, Architekturen, Speicherplatz, ausgehende Netzwerkverbindungen, Proxys und Uhr, die eine Box braucht, um Periscope als Gateway zu betreiben.
+sidebar_position: 1
+type: reference
+app:
+  routes: ["/onboarding/gateways"]
+translated_from: 06bddd1
+---
+
+Was eine Box braucht, bevor Sie Periscope darauf installieren. Nichts muss die Box erreichen außer den Personen, die ihre Web-Oberfläche öffnen.
+
+## System {#system}
+
+| Punkt | Voraussetzung |
+| --- | --- |
+| Betriebssystem | Linux. Periscope ist ein statisches Binary ohne weitere Abhängigkeiten. Andere Betriebssysteme werden nicht unterstützt. |
+| Architekturen | Das Binary wird für `linux/amd64`, `linux/arm64` und 32-Bit-ARM (ARMv7) gebaut. `uname -m` gibt `x86_64`, `aarch64` oder `armv7l` aus. |
+| Container | Ein Image auf Basis von Alpine Linux, das mit der Benutzer-ID 1001 läuft und einen Health-Check hat. Siehe [Periscope in einem Container betreiben](./run-in-a-container.mdx). {/* TODO(product): which architectures does the published image support (amd64 only, or arm64 too)? */} |
+| CPU und Arbeitsspeicher | {/* TODO(product): minimum and tested CPU and RAM for a box with N sources and M values per second. */} |
+| Persistenter Speicher | Das [State-Verzeichnis](./state-and-backup.mdx), standardmäßig `/var/lib/periscope`. Es muss Neustarts überstehen: Es enthält die Identität der Box. |
+
+## Speicherplatz für Warteschlangen {#disk-for-queues}
+
+Solange die Plattform nicht erreichbar ist, hält jeder Plattform-Ausgang Werte auf der Platte und sendet sie, wenn die Verbindung zurückkehrt. Ohne genug freien Speicherplatz werden die ältesten Werte verworfen und gezählt.
+
+| Ausgang | Warteschlange | Bytes pro Wert |
+| --- | --- | --- |
+| `tsflux_stream` | `state_dir/tsflux-stream/<output>/` | etwa 9 |
+| `tsflux`, `nimbit_mqtt` | `state_dir/spool/<output>/` | etwa 15 |
+
+Die Standardgrenze beträgt 256 MiB pro Ausgang. Beim Start senkt der Ausgang sie auf die Hälfte seines Anteils am freien Platz. Um einen Ausfall einer bestimmten Dauer zu überbrücken, planen Sie die Ausfalldauer in Sekunden mal Werte pro Sekunde mal Bytes pro Wert ein und lassen Sie doppelt so viel frei. Die Tabelle der Ausfalldauern steht in der [Ausgänge-Referenz](../outputs.mdx).
+
+## Netzwerk {#network}
+
+Periscope öffnet jede Verbindung selbst, die Firewall braucht also nur Regeln für ausgehenden Verkehr. Die Adresse der Plattform ist `[ocb] url`.
+
+| Ziel | Port und Protokoll | Verwendet für | Nötig |
+| --- | --- | --- | --- |
+| Der Host der Plattform | 443, HTTPS | Onboarding und Anmeldung am Identitätsverzeichnis, das Plattform-Backend (Anwenden, der Datensatz des Gateways, Zugangsdaten), der HTTP-Ausgang `tsflux` und `periscope verify` | Immer |
+| Der Host der Plattform | 8301, HTTP/2 mit TLS (gRPC) | Der Ausgang `tsflux_stream` | Mit diesem Ausgang |
+| Der MQTT-Broker | 8883 (`mqtts://`) oder 1883 (`mqtt://`) | Der Ausgang `nimbit_mqtt`. Die Broker-Adresse kommt von der Plattform, außer Sie setzen `broker`. | Mit diesem Ausgang |
+| Ihre Quellen | Ihre eigenen Ports | OPC-UA-, Modbus-, S7-, MQTT- und HTTP-Quellen, wie auf der Seite der jeweiligen Quelle | Immer |
+
+Ein Port in `[ocb] url` ersetzt 443. Wird die Token-API des Identitätsverzeichnisses nicht über den Host der Plattform geroutet, nennt `[auth] url` eine andere Adresse. Klartext-`http://`, `mqtt://` und `h2c://` zu einem Host, der nicht Loopback ist, werden abgelehnt, außer die Einstellung `allow_insecure` ist `true`.
+
+Die Web-Oberfläche und die HTTP-API lauschen auf `127.0.0.1:8400`, im Container-Image auf `0.0.0.0:8400`. Nur Personen, die die Oberfläche öffnen, müssen diesen Port erreichen. Bevor Sie ihn für das Netzwerk öffnen, setzen Sie `server.token` oder `[server.auth]`.
+
+### Proxys {#proxies}
+
+Die HTTPS-Anfragen beachten `HTTPS_PROXY` und `NO_PROXY` in der Umgebung des Agents. {/* TODO(product): do the gRPC stream (port 8301) and MQTT connections go through an HTTP proxy? Tested setup? */} Wo HTTP/2 nicht durchgängig durchkommt, verwenden Sie den Ausgang `tsflux` statt `tsflux_stream`.
+
+## Uhr {#clock}
+
+Halten Sie die Uhr der Box richtig. Anmelde-Assertions und Tokens tragen Zeiten, und die Zustandsmeldung von Periscope meldet `clock_offset_ms`, die Uhr der Plattform minus die der Box, nur mit dem Ausgang `tsflux` gemessen. Quellwerte werden in UTC gesendet. Eine Box ohne gepufferte Uhr braucht beim Start eine Zeitsynchronisation. {/* TODO(product): how much clock skew does the platform tolerate before sign-in fails? */}
+
+## Verwandte Seiten {#related}
+
+- [Periscope in einem Container betreiben](./run-in-a-container.mdx) · [Periscope als Dienst betreiben](./run-as-a-service.mdx)
+- [Ausgänge-Referenz](../outputs.mdx)

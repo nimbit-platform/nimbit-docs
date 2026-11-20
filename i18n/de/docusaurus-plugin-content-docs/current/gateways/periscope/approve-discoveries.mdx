@@ -1,0 +1,64 @@
+---
+title: Periscope-Erkennungen freigeben
+description: Die vorgeschlagenen Thing-Typen und Things von Periscope auf dem Bildschirm „Proposals“ prüfen, umbenennen, zusammenführen, Einheiten setzen, bestätigen und anwenden.
+type: how-to
+sidebar_position: 9
+app:
+  routes: ["/onboarding/gateways"]
+translated_from: 4c9fc6e
+---
+
+Im Modus `confirm` wartet Periscope auf eine Person, bevor es etwas in IoT Breeze anlegt. Prüfen Sie seine Vorschläge in der Web-Oberfläche des Agents, korrigieren Sie die Namen und bestätigen Sie. Die Stufen erklärt [Wie Periscope funktioniert](./how-periscope-works.mdx).
+
+## Voraussetzungen {#before-you-start}
+
+- Periscope hat mindestens eine Erkennung ausgeführt. Siehe [Periscope installieren und die erste Quelle streamen](./install.mdx).
+- Sie können sich in der Web-Oberfläche des Agents als Periscope-Admin anmelden, also als Tenant-Admin oder als Inhaber von `server.token`. Ein Betrachter sieht die Seite ohne die Bedienelemente.
+- Der Agent läuft mit `mode = "confirm"`, der Vorgabe. Im Modus `zero-touch` wird alles Vorgeschlagene sofort angewendet, und Sie ändern danach.
+
+## Schritte {#steps}
+
+1. Öffnen Sie `http://<listen>/ui/proposals` und melden Sie sich an. Die Seite zeigt Zahlen je Status, was die letzte Erkennung geändert hat oder nicht mehr fand, eine Hierarchievorschau, Thing-Typen und Things.
+2. Prüfen Sie die **hierarchy preview**. Sie zeigt den Baum, den „Anwenden“ anlegt, jeder Knoten markiert mit `new` oder `existing`. Ein Tippfehler im Mount erscheint als zweiter `new`-Zweig neben dem bestehenden. Korrigieren Sie eine falsche Ebene dort, wo der Pfad herkommt: `mount` und `levels` unter `[ocb]` oder die Struktur der Quelle, und starten Sie die Erkennung erneut. Ein Thing umzubenennen verschiebt es nicht.
+3. Benennen Sie generierte Thing-Typ-Namen wie `Oven1_49b35a` in echte um. Geben Sie den neuen Namen ein und wählen Sie **Rename**. Thing-Typ-Namen bestehen aus Buchstaben, Ziffern und `_` und beginnen mit einem Buchstaben. Thing-Namen müssen in Ihrer Organisation eindeutig sein.
+4. Hat die Erkennung zwei Typen für eine Maschinenart erzeugt, wählen Sie beim vorgeschlagenen Typ **Merge into**. Seine Things wechseln zum Ziel, das die ihm fehlenden Messwerte erhält.
+5. Legen Sie im Zuordnungseditor unter einem vorgeschlagenen Thing-Typ eine Zeile pro Messwert fest. Eine Zelle wird gespeichert, wenn Sie sie verlassen:
+
+   | Spalte | Was Sie ändern können |
+   | --- | --- |
+   | **Measure** | Der Name des Messwerts, Kleinbuchstaben `a-z`, `0-9` und `_`. |
+   | **Display name** | Was Dashboards zeigen. |
+   | **Unit** | Die technische Einheit. Wird nur gesendet, wo die Plattform noch keine Einheit hat. |
+   | **Scale** | Ein Faktor für numerische Werte. Gilt nur für den Stream. |
+   | **Enabled** | Abwählen, um den Messwert nicht mehr zu streamen. Er bleibt im Thing-Typ. |
+
+6. Wählen Sie **Reject** bei allem, was nicht auf die Plattform gelangen soll, etwa Testvariablen oder Diagnosewerte. Ein abgelehntes Element bleibt auch nach der nächsten Erkennung abgelehnt.
+7. Wählen Sie **Confirm all proposed** und dann **Apply now**. Ein Thing wird erst nach seinem Typ angewendet, bestätigen Sie also beide.
+
+Um vorher zu sehen, was „Anwenden“ senden würde, schalten Sie den Probelauf ein oder führen Sie `periscope apply -dry-run` aus.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Die Status wechseln von `proposed` über `confirmed` zu `applied`. Ein fehlgeschlagenes Element bleibt mit seinem Grund `confirmed`, und das nächste „Anwenden“ versucht es erneut.
+
+| Status | Bedeutung |
+| --- | --- |
+| `proposed` | Von der Erkennung gefunden, wartet auf eine Person. |
+| `confirmed` | Eine Person hat es bestätigt. Das nächste „Anwenden“ legt es an. |
+| `applied` | Es existiert in IoT Breeze, und der Stream ordnet seine Werte zu. |
+| `rejected` | Es geht nie an die Plattform. |
+
+Die neuen Thing-Typen und Things finden Sie unter **Einstellungen › Onboarding**. Ist der Agent ein Gateway, stehen sie im Tab **Things** des Gateways. Eine Änderung von Ihnen wird in `edits.yaml` gespeichert, die nächste Erkennung macht sie also nicht rückgängig.
+
+## Wenn es nicht klappt {#if-it-doesnt-work}
+
+- **Änderungen werden mit „the agent is busy applying or planning“ abgelehnt**: Ein Anwenden läuft. Versuchen Sie es in ein paar Sekunden erneut.
+- **Ein Umbenennen wird abgelehnt**: Ein angewendeter Thing-Typ und ein angewendetes Thing behalten ihre Namen. Benennen Sie sie in IoT Breeze um. Einen angewendeten Messwert können Sie weiterhin umbenennen: Der neue Messwert wird neben den alten gelegt, und nichts wird gelöscht.
+- **Ein Zusammenführen wird abgelehnt**: Nur ein Thing-Typ, der nicht angewendet ist, lässt sich zusammenführen.
+- **Anwenden schlägt je Element mit `403` fehl**: Im Servicekonto-Modus fehlt dem Konto die Rolle `modeler`. Im Gateway-Modus prüfen Sie den **Bereich** des Gateways: Die Einstellung **Gesperrt**, ein erschöpftes **Thing-Limit**, ein Thing-Typ außerhalb der **Erlaubten Thing-Typen** oder eine Alternate-ID außerhalb des Namespace lehnen das Anlegen ab. Siehe [Zustand und Datenverkehr von Gateways prüfen](../fleet-health.mdx).
+- **Jedes Thing schlägt mit `400 Root group not found` fehl**: Das Servicekonto hat keinen Lesezugriff auf die Stammgruppe der Organisation.
+
+## Verwandte Seiten {#related}
+
+- [Wie Periscope funktioniert](./how-periscope-works.mdx) · [Gateway-Referenz](../gateway-reference.mdx)
+- [Prüfen, ob Daten angekommen sind](./verify.mdx)

@@ -1,0 +1,50 @@
+---
+title: Ihren Tenant mit Ihrer Marke gestalten
+description: Laden Sie Ihre Logos und das Favicon hoch, legen Sie die Standarddarstellung hell oder dunkel fest und bearbeiten Sie die Themefarben für alle im Tenant.
+type: how-to
+sidebar_position: 6
+app:
+  routes: ["/tenant-settings"]
+  primary: true
+translated_from: 3041c36
+---
+
+Lassen Sie IoT Breeze wie Ihre Organisation aussehen: Logos, Favicon, Titelbild und Themefarben gelten für alle im Tenant.
+
+## Bevor Sie beginnen {#before-you-start}
+
+- Sie müssen den Tenant aktualisieren dürfen. Das darf nur die Rolle **Administrator**.
+- Halten Sie Ihre Bilder bereit. Das Favicon ist eine `.ico`-Datei mit 48 × 48 Pixeln. Logos sind PNG oder SVG. Das Titelbild ist PNG, SVG, JPEG oder WebP. Jedes Bild darf bis zu 5 MB groß sein, außer dem Favicon.
+
+## Bilder hochladen {#upload-images}
+
+1. Öffnen Sie **Administration › Mandanteneinstellungen** und bleiben Sie auf **Allgemein**.
+2. Laden Sie unter **Branding-Bilder** ein **Favicon**, ein **Standardlogo**, ein **Logo für den hellen Modus**, ein **Logo für den dunklen Modus** und ein **Titelbild** hoch. Alle sind optional.
+3. Wählen Sie **Speichern**.
+
+Das **Standardlogo** wird überall verwendet, wo kein Logo für einen Modus gesetzt ist. Setzen Sie die Logos für hell und dunkel, wenn Ihr Logo nicht auf beiden Hintergründen funktioniert.
+
+## Farben festlegen {#set-the-colors}
+
+1. Öffnen Sie den Tab **Theme**.
+2. Wählen Sie unter **Standarddarstellung des Tenants** die Option **Hell** oder **Dunkel**. Personen, die ihre eigene Darstellung gewählt haben, behalten sie.
+3. Wählen Sie im Theme-Editor die Vorschau eines Farbmodus und ändern Sie seine Farben, sein Layout und seine Schatten. Bearbeiten Sie hell und dunkel getrennt.
+4. Wählen Sie **Speichern**.
+
+Änderungen auf **Allgemein**, **Funktionen**, **Theme** und **Email** werden gemeinsam gespeichert. Ein Badge zeigt **Ungespeicherte Änderungen**, bis Sie speichern.
+
+## Prüfen, ob es funktioniert hat {#check-that-it-worked}
+
+Laden Sie die App neu. Der Browsertab zeigt Ihr Favicon. Wechseln Sie mit dem Theme-Schalter im Kopfbereich zwischen hell und dunkel, um die Farben beider Modi zu sehen.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Ein Bild wird abgelehnt**: Prüfen Sie Format und Größe oben. Das Favicon muss genau 48 × 48 Pixel groß und eine `.ico`-Datei sein.
+- **Bei einer Person haben sich die Farben nicht geändert**: Sie hat in ihren Einstellungen eine eigene Darstellung gewählt.
+- **Sie möchten die Originale zurück**: **Zurücksetzen** setzt Themefarben, Branding-Bilder und E-Mail-Einstellungen zurück. Es fragt nach einer Bestätigung und lässt sich nicht rückgängig machen.
+
+{/* TODO(product): Where do the Cover image and the logos appear (sign-in page, header, emails, reports)? */}
+
+## Verwandte Seiten {#related}
+
+- [Tenant-Einstellungen](./tenant-settings.mdx)

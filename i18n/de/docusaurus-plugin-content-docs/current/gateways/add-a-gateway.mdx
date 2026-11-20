@@ -1,0 +1,78 @@
+---
+title: Gateway hinzufügen
+description: Ein Gateway in IoT Breeze anlegen, festlegen, was es anlegen darf, und eine Periscope-Box mit einem einmaligen Code registrieren.
+type: how-to
+sidebar_position: 3
+app:
+  routes: ["/onboarding/gateways"]
+  primary: true
+translated_from: 3041c36
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Legen Sie einen Gateway-Eintrag an, holen Sie sich einen einmaligen Onboarding-Code und verbinden Sie damit eine Periscope-Box. Hintergrund zu Namespace und Scope finden Sie unter [Wie Gateways funktionieren](./how-gateways-work.mdx).
+
+## Voraussetzungen {#before-you-start}
+
+- Sie brauchen eine Rolle mit der Berechtigung **Gateway**. Die eingebaute Rolle **Administrator** hat sie. Dem Gateway können Sie nur Rollen geben, deren Berechtigungen Sie selbst haben, und Sie brauchen die Berechtigung, Rollen zu lesen.
+- Ihr Plattformbetreiber hat API-Schlüssel eingeschaltet. Sonst zeigt die Seite **Gateways sind nicht aktiviert**.
+- Auf der Box läuft Periscope. Wenn noch nicht, folgen Sie [Periscope installieren und die erste Quelle streamen](./periscope/install.mdx) ab Schritt 2.
+- Für ein MQTT-Gerät folgen Sie stattdessen [Daten vieler Geräte über ein MQTT-Gateway senden](./mqtt-gateway.mdx).
+
+## Schritte {#steps}
+
+1. Öffnen Sie **Einstellungen › Onboarding › Gateways** und wählen Sie **Gateway hinzufügen**.
+2. Wählen Sie unter **Typ** die Option **Periscope**.
+3. Geben Sie einen **Namen** ein, zum Beispiel `Hall 3 line controller`. Er darf bis zu 100 Zeichen lang sein.
+4. **Namespace** folgt dem Namen, bis Sie einen eigenen eingeben. Lassen Sie ihn leer, um den abgeleiteten zu verwenden; IoT Breeze hängt ein Suffix an, wenn ihn schon ein anderes Gateway hat. Ein Namespace, den Sie eingeben, hat 1 bis 64 Zeichen aus `a-z`, `0-9`, `_` und `-`. Die Alternate-IDs der Things des Gateways beginnen damit. Das Wort `gateway` ist reserviert. Ein Namespace, der dem eines anderen Gateways entspricht, damit beginnt oder ihn erweitert, wird abgelehnt.
+5. Behalten Sie unter **Rollen** die Vorgabe `modeler` bei oder wählen Sie andere. Das Gateway handelt mit diesen Rollen, beschränkt auf das, was ein Gateway darf.
+6. Wählen Sie unter **Code gültig für**, wie lange der Code funktioniert: 1 Stunde, 6 Stunden, 24 Stunden, 3 Tage oder 7 Tage. Vorgabe sind 24 Stunden.
+7. Wählen Sie **Gateway hinzufügen**.
+8. Kopieren Sie den **Onboarding-Code** oder den **Befehl zum Ausführen auf dem Gateway**. IoT Breeze zeigt sie nur einmal an. Wählen Sie **Fertig**.
+
+9. Registrieren Sie die Box auf der Box mit dem Code:
+
+   ```sh
+   periscope enroll -code ONB-XXXX-XXXX-XXXX-XXXX
+   ```
+
+   Oder öffnen Sie die Einrichtungsseite der Box unter `http://<box>:<port>/ui/setup`, wählen Sie unter **Sign in with** die Option **an onboarding code** und fügen Sie den Code ein. Die Einrichtungsseite setzt auch `ocb.gateway = true`. Haben Sie den Befehl verwendet, setzen Sie `gateway = true` unter `[ocb]` selbst, wie in der [Konfigurationsreferenz](./periscope/configuration.mdx#ocb), und starten Sie `periscope serve`.
+
+<Screenshot
+  page="gateways/add-a-gateway"
+  id="01-onboarding-code"
+  route="/onboarding/gateways"
+  state="Add gateway drawer after creating a Periscope gateway, showing the onboarding code and the enroll command"
+  alt="Das Ergebnis von „Gateway hinzufügen“: der Onboarding-Code und der Befehl, der auf dem Gateway auszuführen ist"
+/>
+
+## Festlegen, was das Gateway anlegen darf {#set-what-the-gateway-may-create}
+
+Öffnen Sie das Gateway und wählen Sie den Tab **Bereich**. Alles hier ist optional.
+
+1. **Thing-Limit**: wie viele Things es neben seinem eigenen Gateway-Thing haben darf. Lassen Sie das Feld leer, damit nur die Limits Ihrer Organisation gelten.
+2. **Erlaubte Thing-Typen**: die Thing-Typen, von denen es Things anlegen darf. Leer erlaubt jeden.
+3. **Anlegen von Things**: **Offen** erlaubt ihm, Things innerhalb seines Namespace anzulegen. **Gesperrt** verbietet es: Daten für ein unbekanntes Thing werden verworfen und gezählt.
+4. Wählen Sie **Bereich speichern**.
+
+Der **Namespace** steht fest, sobald das Gateway Things hat oder seine Periscope-Box registriert ist. Das Thing-Limit und die erlaubten Thing-Typen gelten auch, wenn Sie Things selbst zuordnen; siehe [Die Things hinter einem Gateway verwalten](./things-behind-a-gateway.mdx).
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Die Zeile des Gateways zeigt **Wartet auf Onboarding**, bis sich die Box registriert. Nach dem Start von `periscope serve` wird der Status innerhalb von etwa 5 Minuten **Online**, wenn die erste Zustandsmeldung eintrifft. Der Tab **Things** listet die Things, die die Box anlegt.
+
+## Wenn es nicht klappt {#if-it-doesnt-work}
+
+- **Der Code wird abgelehnt oder ist abgelaufen**: Ein Code funktioniert einmal und nur bis zu seinem Ablauf. Wählen Sie im Zeilenmenü des Gateways **Neuer Onboarding-Code**. Der frühere Code verliert sofort seine Gültigkeit.
+- **Der Status bleibt „Wartet auf Onboarding“**: Die Box hat den Code nicht eingelöst. Führen Sie `periscope enroll -code …` aus oder fügen Sie den Code in die Einrichtungsseite ein, und prüfen Sie, ob die Box die URL der Plattform erreicht.
+- **Der Status ist nach der Registrierung „Offline“**: Die Box ist registriert, sendet aber keine Zustandsmeldungen. Prüfen Sie, dass `serve` mit `gateway = true` läuft und ein Ausgang konfiguriert ist. Ein Gateway ohne Ausgang sendet keinen Zustand.
+- **Der Namespace wird abgelehnt**: Ein anderes Gateway hat einen Namespace, der ihm entspricht, damit beginnt oder ihn erweitert. Wählen Sie einen anderen.
+- **IoT Breeze meldet, dass der Tenant schon so viele Gateways hat, wie er haben darf**: Ein Tenant hat höchstens 1000 Periscope-Gateways. Löschen Sie eines, das Sie nicht verwenden.
+- **Der Status lautet „Unvollständig, bitte löschen“**: Das Identitätsverzeichnis kennt das Gateway nicht mehr. Löschen Sie es und fügen Sie es erneut hinzu.
+
+## Verwandte Seiten {#related}
+
+- [Wie Gateways funktionieren](./how-gateways-work.mdx) · [Gateway-Referenz](./gateway-reference.mdx)
+- [Zustand und Datenverkehr von Gateways prüfen](./fleet-health.mdx) · [Gateway widerrufen, ersetzen oder entfernen](./revoke-and-replace.mdx)
+- [Periscope-Erkennungen freigeben](./periscope/approve-discoveries.mdx)

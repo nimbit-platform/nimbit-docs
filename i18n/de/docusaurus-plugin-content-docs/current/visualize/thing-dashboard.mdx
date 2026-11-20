@@ -1,0 +1,92 @@
+---
+title: Ein Dashboard für ein Thing bauen
+sidebar_label: Dashboard für ein Thing
+description: Ein Dashboard für ein einzelnes Thing anlegen, Widgets hinzufügen und anordnen und es speichern.
+type: how-to
+sidebar_position: 3
+app:
+  routes: ["/dashboards", "/dashboards/:id"]
+  primary: true
+  tour: build-dashboards
+translated_from: 3041c36
+---
+
+import TourLink from "@site/src/components/TourLink";
+import Screenshot from "@site/src/components/Screenshot";
+
+Legen Sie ein Dashboard an, das ein Thing zeigt, füllen Sie es mit Widgets und speichern Sie es. Das dauert etwa zehn Minuten. Wie Dashboards ihr Thing und ihre Zeit wählen, lesen Sie unter [Dashboards, Smart-Dashboards und Zeit](./dashboards.mdx).
+
+<TourLink id="build-dashboards-thing-based" />
+
+## Bevor Sie beginnen {#before-you-start}
+- Eine Rolle, die Dashboards anlegen und bearbeiten darf. Fehlt auf der Seite Dashboards **Neues Dashboard**, darf Ihre Rolle sie vielleicht nur lesen.
+- Ein Thing, das Daten gesendet hat, damit die Widgets etwas zeigen. Noch keine Daten? Nehmen Sie Testdaten, beschrieben unter [Ein Dashboard für alle Things einer Art bauen](./smart-dashboard.mdx#try-it-with-mock-data).
+
+## Das Dashboard anlegen {#create-the-dashboard}
+
+1. Öffnen Sie **Überwachung › Dashboards** und wählen Sie **Neues Dashboard**.
+2. Wählen Sie unter **Was soll dieses Dashboard zeigen?** die Option **Für ein Thing**. Suchen Sie das Thing, wählen Sie es aus und wählen Sie **Weiter**. Sein Thing-Typ wird zum Interface und das Thing zur Zuweisung.
+3. Geben Sie im Formular einen **Dashboard Name** ein, zum Beispiel `Hall 2 machines`. Fügen Sie bei Bedarf eine **Beschreibung** hinzu.
+4. Legen Sie fest, wer es sehen darf: **Tenant-Dashboard** oder **Benutzer-Dashboard**. Siehe [Ein Dashboard teilen oder einbetten](./share.mdx).
+5. Wählen Sie **Speichern**. Das Dashboard öffnet sich.
+
+<Screenshot
+  page="visualize/thing-dashboard"
+  id="01-new-dashboard-dialog"
+  route="/dashboards"
+  state="New dashboard dialog open on the question What should this dashboard show, both options visible"
+  alt="Der Dialog Neues Dashboard mit den Optionen Aus Interfaces und Für ein Thing"
+/>
+
+## Widgets hinzufügen {#add-widgets}
+
+1. Wählen Sie **Widget hinzufügen**. Ein neues Dashboard zeigt **Noch keine Widgets erstellt**.
+2. Wählen Sie einen Widget-Typ. Die Gruppen sind nach der Frage benannt, die sie beantworten, etwa **Werte** (*Was liest es gerade?*) oder **Diagramme** (*Wie hat es sich verändert?*). Die Suche findet ein Widget nach Name oder Beschreibung.
+3. Wählen Sie, woher seine Daten kommen. Lassen Sie auf einem Dashboard für ein Thing **Dem Dashboard folgen** aktiv.
+4. Richten Sie es ein. Die Vorschau aktualisiert sich, während Sie Einstellungen ändern. **Hilfe** oben erklärt die Einstellungen.
+5. Wählen Sie **Zum Dashboard hinzufügen**.
+
+Jeder Widget-Typ steht in der [Widget-Galerie](./widgets.mdx).
+
+<Screenshot
+  page="visualize/thing-dashboard"
+  id="02-widget-setup"
+  route="/dashboards/:id"
+  state="Widget setup screen for a Line chart with one measure selected, live preview on the left and settings on the right"
+  alt="Die Widget-Einrichtung mit Live-Vorschau und Einstellungen"
+/>
+
+## Anordnen und speichern {#arrange-and-save}
+
+1. Wählen Sie **Bearbeiten**. Ziehen Sie ein Widget, um es zu verschieben, und ziehen Sie an seinem Rand, um die Größe zu ändern.
+2. Öffnen Sie das Menü eines Widgets, um es zu ändern oder zu entfernen.
+3. Nutzen Sie **Rückgängig** und **Wiederholen** für den Entwurf. **Anordnen** räumt das Raster auf: **Zeilen füllen** schließt Lücken, **Größen beibehalten** packt neu, ohne die Größe zu ändern, **Aufräumen (ändert Widget-Größen)** richtet alles aus.
+4. Um ein Widget eines anderen Dashboards desselben Typs wiederzuverwenden, wählen Sie **Widget importieren**.
+5. Wählen Sie **Speichern**.
+
+Haben Sie beim Bearbeiten den Zeitraum geändert, fragt **Speichern**: **Diesen Zeitraum ebenfalls speichern?** Wählen Sie **Mit Zeitraum speichern**, um ihn als Standard zu behalten.
+
+<Screenshot
+  page="visualize/thing-dashboard"
+  id="03-edit-mode"
+  route="/dashboards/:id"
+  state="Dashboard in edit mode with three widgets, Undo available, Discard and Save buttons in the header"
+  alt="Ein Dashboard im Bearbeitungsmodus mit Verwerfen und Speichern im Kopfbereich"
+/>
+
+:::warning Nicht gespeicherte Änderungen
+Änderungen sind ein Entwurf, bis Sie speichern. **Verwerfen** wirft alles seit dem letzten Speichern weg und lässt sich nicht rückgängig machen. Verlassen Sie die Seite mit ungespeicherten Änderungen, warnt die App, dass alle Änderungen verloren gehen.
+:::
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Die Schaltfläche zeigt wieder **Bearbeiten**, und die Widgets zeigen Live-Werte. Öffnen Sie das Thing und seinen Tab **Dashboard**: Das neue Dashboard steht dort, und der Stern markiert das Standard-Dashboard.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Ein Widget ist leer**: Das Thing hat diese Telemetrie noch nicht gesendet, oder der Zeitraum ist zu kurz. Erweitern Sie den Zeitraum oben. Siehe [Ein Dashboard ist leer](../troubleshooting/empty-dashboard.mdx).
+- **Keine Schaltfläche Widget hinzufügen**: Sie sind nicht im Bearbeitungsmodus, oder Ihre Rolle darf dieses Dashboard nicht bearbeiten.
+- **Die Schaltfläche zeigt Speichern, obwohl Sie nichts geändert haben**: Sie haben den Zeitraum oder eine Entwurfseinstellung geändert. Wählen Sie **Verwerfen**, um neu anzufangen.
+
+## Verwandte Seiten {#related}
+- [Dashboards, Smart-Dashboards und Zeit](./dashboards.mdx) · [Widget-Galerie](./widgets.mdx) · [Ein Dashboard auf Home zeigen](./home.mdx)

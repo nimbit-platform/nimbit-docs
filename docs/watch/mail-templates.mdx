@@ -1,0 +1,93 @@
+---
+title: Mail templates and placeholders
+sidebar_position: 12
+description: The parts of a mail template, its contexts and placeholders, the header and footer blocks, and how a template is assigned.
+type: reference
+app:
+  routes: ["/manage/mail-templates", "/manage/mail-templates/new", "/manage/mail-templates/:id", "/manage/mail-templates/assignment"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+The parts and settings of **Settings › Configuration › Mail templates**. The entry shows only if your role may read mail templates.
+
+<Screenshot
+  page="watch/mail-templates"
+  id="01-templates-list"
+  route="/manage/mail-templates"
+  state="Templates tab with a System template (lock chip) for each context and one custom Event template marked Active; columns Template, Context, Blocks, Languages, Updated, Status"
+  alt="The Mail templates list"
+/>
+
+## Tabs
+
+| Tab | Holds |
+| --- | --- |
+| **Templates** | The emails: subject and body, with a header and a footer block around them |
+| **Header blocks** | Reusable blocks above the body |
+| **Footer blocks** | Reusable blocks below the body |
+| **Assignment** | Which template is used for each context |
+
+## Contexts
+
+A context says what an email is for, and decides which data the email can show.
+
+| Context | Used for |
+| --- | --- |
+| **Event** | Event notification emails |
+| **Invitation** | User invitation emails |
+| **Report** | Report emails |
+
+Sign-in code and password-reset emails are not sent from here. {/* TODO(product): The template form also knows a Tenant context. What is it used for, and can a template choose it? */}
+
+## Template settings
+
+| Setting | Meaning |
+| --- | --- |
+| **Name** | The template's name |
+| **Subject** | The subject line. It accepts placeholders. |
+| **Context** | See above. For alerts choose **Event**. |
+| Body | HTML, edited in the editor. **Format code** tidies it. |
+| **Email structure** | The header block and the footer block. **Go to header template** and **Go to footer template** open them. |
+| **Default Translations** | Text per language, as a key and a text. Marked as translatable, each language gets its own version. |
+| **Dynamic Variables** | The list of placeholders the context offers. Select one to insert it. |
+| **Send test mail** | Sends the template to an address you enter |
+| **Open preview in new window** | Shows the preview larger |
+
+Templates marked **System** are managed by NimBit and can't be edited or deleted. Copy one to make your own.
+
+## Placeholders
+
+Write a placeholder as the variable name in double curly brackets, for example `{{tenant.name}}`. IoT Breeze fills in the values when it sends the mail. Values are inserted as they are, not escaped for HTML.
+
+| Placeholder | Value |
+| --- | --- |
+| `{{tenant.name}}` | The tenant's name, or `NimBit` if the tenant has none |
+| `{{tenant.logo}}` | The tenant's logo, or a default logo |
+| Keys under **Default Translations** | The text for the mail's language. Text set for one mail overrides the default. |
+| Context variables | Listed under **Dynamic Variables** for the template's context |
+
+In an **Email** action on an event type, `{{event}}` is the event, so `{{event.title}}` is its title. {/* TODO(product): Which variables does each context offer (Event, Invitation, Report)? The list comes from the tenant's context data in the database, not from code. */}
+
+## Blocks
+
+| Rule | Detail |
+| --- | --- |
+| Shared | Editing a block updates every template that links to it. |
+| Usage | A block shows how many templates it is linked in, for example **Linked in 3 templates**. |
+| Delete | Not while a template uses the block. Remove it from those templates first. |
+| Defaults | The default header and footer can't be changed or deleted. |
+
+Create a block with **New block** and **Save block**.
+
+## Assignment
+
+On the **Assignment** tab, choose a template for each context, then save the row or select **Save All**. **Remove** returns a context to the default.
+
+A template shows **Active** in the list when it is assigned and **Unassigned** when it is not. The assignment applies to emails the platform sends for a context. An **Email** action that uses a template sends the template you pick in the action, whatever is assigned.
+
+## Related
+
+- [Event types](./event-types.mdx)
+- [Channel types](./channel-types.mdx)
+- [Events, incidents and notifications](./events-incidents-notifications.mdx)

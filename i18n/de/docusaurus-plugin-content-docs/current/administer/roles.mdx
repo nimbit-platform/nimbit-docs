@@ -1,0 +1,129 @@
+---
+title: Rollen und Berechtigungen
+description: Was die vier Systemrollen Administrator, Manager, Modellierer und Viewer je Ressourcentyp dürfen und wie benutzerdefinierte Rollen funktionieren.
+type: reference
+sidebar_position: 9
+app:
+  routes: ["/administration/roles"]
+translated_from: b6ed908
+---
+
+Die Berechtigungen der vier Systemrollen in jedem Tenant, je Ressourcentyp. Rollen legen fest, welche Art von Aktion erlaubt ist. [Gruppen](./access.mdx) legen fest, auf welchen Things.
+
+## Die Tabellen lesen {#reading-the-tables}
+
+| Buchstabe | Aktion | Spalte der Matrix |
+| --- | --- | --- |
+| `c` | Erstellen | **Erstellen** |
+| `r` | Lesen | **Gelesen** |
+| `u` | Aktualisieren | **Aktualisieren** |
+| `d` | Löschen | **Löschen** |
+| `x` | Ausführen | **Ausführen** |
+
+Ein Strich bedeutet, dass die Rolle auf diese Ressource keine Berechtigung hat. Die Ressourcennamen sind so geschrieben, wie die Berechtigungsmatrix unter **Administration › Rollen** sie zeigt. Systemrollen lassen sich nicht ändern. Ein Benutzer mit mehreren Rollen hat alle ihre Berechtigungen zusammen.
+
+## Things und Modelle {#things-and-models}
+
+| Ressource | Administrator | Manager | Modellierer | Viewer |
+| --- | --- | --- | --- | --- |
+| Thing | `crudx` | `crudx` | `crudx` | `r` |
+| Thing-Typ | `crudx` | `crudx` | `crudx` | `r` |
+| Interface | `crudx` | `crudx` | `crudx` | `r` |
+| Etikett | `crudx` | `crudx` | `crudx` | `r` |
+| Suche | `crudx` | `crudx` | `r` | `r` |
+| Ressourcenhierarchie | `crudx` | `crudx` | `crudx` | `r` |
+| Geräteauthentifizierung | `crudx` | `r` | `crudx` | `r` |
+| Abonnement | `crudx` | `crudx` | `crudx` | `r` |
+
+## Dashboards, Daten und Dateien {#dashboards-data-and-files}
+
+| Ressource | Administrator | Manager | Modellierer | Viewer |
+| --- | --- | --- | --- | --- |
+| Dashboard | `crudx` | `crudx` | `crudx` | `r` |
+| Abfrage | `crudx` | `crudx` | `crudx` | `crud` |
+| Canvas | `crudx` | `crudx` | `crudx` | `r` |
+| Bericht | `crudx` | `r` | `crudx` | `r` |
+| Datei | `crudx` | `crudx` | `crud` | `r` |
+| Datenlöschung | `crud` | – | – | – |
+
+## Events, Regeln und Automatisierung {#events-rules-and-automation}
+
+| Ressource | Administrator | Manager | Modellierer | Viewer |
+| --- | --- | --- | --- | --- |
+| Event | `crudx` | `crudx` | `crudx` | `r` |
+| Event Typ | `crudx` | `crudx` | `crudx` | `r` |
+| Regel | `crudx` | `crudx` | – | – |
+| Aktion | `crudx` | `crudx` | `crudx` | `rx` |
+| Aktionsprotokoll | `crudx` | `crudx` | `crudx` | – |
+| Benachrichtigung | `crudx` | `crudx` | `ru` | `r` |
+| Ziel | `crudx` | `crudx` | – | – |
+| Arbeit | `crudx` | `crudx` | – | – |
+| Geofence | `crudx` | `crudx` | `crudx` | `r` |
+| Zeitplan | `crudx` | – | – | – |
+| Aufgabenzeitplan | `crudx` | – | – | – |
+| Mail-Vorlage | `crudx` | `crudx` | – | – |
+| Mail-Vorlagenblock | `crudx` | `crudx` | – | – |
+| Vorfall | `crudx` | `crux` | – | `cr` |
+| Vorfallsrichtlinie | `crudx` | `r` | – | – |
+| VNC-Server | `crudx` | `crudx` | `crudx` | `rx` |
+| Knowledge | `crudx` | `crudx` | `crudx` | `rx` |
+| Kontext | `crudx` | – | – | – |
+
+## Personen, Zugriff und Tenant {#people-access-and-tenant}
+
+| Ressource | Administrator | Manager | Modellierer | Viewer |
+| --- | --- | --- | --- | --- |
+| Benutzer | `rudx` | `rud` | `r` | `r` |
+| Einladung | `crudx` | – | – | – |
+| Gruppe | `crudx` | `crudx` | `r` | `r` |
+| Organisation | `crudx` | `crudx` | `r` | `r` |
+| Rolle | `crudx` | `r` | `r` | `r` |
+| Tenant | `rudx` | `r` | `r` | `r` |
+| Theme | `crudx` | – | – | – |
+| API-Client | `crudx` | – | – | – |
+| ApiKey | `crud` | – | `c` | – |
+| ServiceAccount | `crud` | – | – | – |
+| Gateway | `crud` | – | – | – |
+| Prüfprotokoll | `r` | – | – | – |
+
+Die Berechtigungsliste enthält außerdem Property Set, Zeitfolgen, Widget, Konto und Regelversion. Keine Systemrolle hat Berechtigungen darauf.
+
+## Was die Buchstaben bei manchen Ressourcen bedeuten {#what-the-letters-mean-for-some-resources}
+
+| Ressource | Bedeutung |
+| --- | --- |
+| Aktion | `x` führt eine Aktion aus, etwa einen Befehl an ein Thing. |
+| VNC-Server | `x` öffnet eine VNC-Verbindung. |
+| Knowledge | `r` liest den Knowledge-Graphen und seine Dokumente. `c`, `u` und `d` erstellen, ändern und löschen Datensätze und die Knowledge-Einrichtung. `x` fragt Nimble und nutzt die MCP-Tools. |
+| Vorfall | `c` erstellt einen Vorfall von Hand. `x` löst Vorfälle auf und führt sie zusammen. Nur Administrator darf löschen. |
+| Vorfallsrichtlinie | Dieselben Buchstaben, für die Richtlinien und Automatisierungen, die Vorfälle eröffnen, und für Vorfallsstatus, Lösungsgründe und eigene Felder. |
+| ApiKey | `c` erstellt einen Schlüssel, `r` listet die Schlüssel des Tenants, `u` ändert einen Schlüssel oder die Schlüsselrichtlinie, `d` widerruft einen Schlüssel. Das `c` des Modellierers gilt für persönliche Schlüssel. |
+| Gateway | `r` listet Gateways und ihre Schlüssel, `c` erstellt eines, `u` stellt einen Onboarding-Code aus oder widerruft einen Schlüssel, `d` entfernt eines. |
+
+## Hinweise zu den Systemrollen {#notes-on-the-system-roles}
+
+| Rolle | Hinweis |
+| --- | --- |
+| **Administrator** | Einzige Rolle mit Einladung, Theme, ApiKey, ServiceAccount, Gateway, Datenlöschung und Prüfprotokoll. Hat keine Erstellen-Berechtigung für Benutzer und Tenant; Personen kommen über Einladungen dazu. |
+| **Manager** | Liest Berichte, kann sie aber nicht erstellen oder ändern. Bearbeitet Vorfälle und liest Vorfallsrichtlinien. |
+| **Modellierer** | Hat keine Berechtigung für Regel, Ziel, Arbeit oder Vorfall. |
+| **Viewer** | Dashboards sind schreibgeschützt: Ein Viewer kann sie nicht erstellen oder ändern. Darf Vorfälle erstellen, Aktionen ausführen, VNC-Verbindungen öffnen und Nimble fragen. Behält `crud` auf Abfrage. |
+
+Ältere Installationen zeigen möglicherweise auch Rollen aus einer früheren Benutzerverwaltung, etwa **System Admin**, **Invitation** oder **Theme Designer**. Sie erscheinen als benutzerdefinierte Rollen.
+
+## Benutzerdefinierte Rollen {#custom-roles}
+
+| Regel | Detail |
+| --- | --- |
+| Typ | Wird in der Spalte **Typ** als **Benutzerdefiniert** angezeigt. Systemrollen zeigen **System**. |
+| Vergabe | Sie können nur Berechtigungen ankreuzen, die Sie selbst haben. Die anderen sind gesperrt. |
+| Ändern oder löschen | Nur ein Mitglied, das alle Berechtigungen der Rolle hat, kann sie ändern oder löschen. |
+| Löschen | Benutzer, die die Rolle hatten, verlieren ihre Berechtigungen. |
+
+{/* TODO(product): The Viewer role keeps crud on Query (QueryConfig). Is that intended now that Viewer dashboards are read-only? */}
+
+## Verwandte Seiten {#related}
+
+- [Benutzer, Gruppen und Rollen](./access.mdx)
+- [Einen Kollegen einladen](./invite.mdx)
+- [Einem Team Zugriff auf seine Things geben](./team-access.mdx)

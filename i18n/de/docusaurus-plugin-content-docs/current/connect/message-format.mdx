@@ -1,0 +1,82 @@
+---
+title: Nachrichtenformat
+description: Jedes Feld der JSON-Nachricht, die Geräte über MQTT und HTTP senden, mit den Regeln, die tsflux darauf anwendet.
+sidebar_position: 5
+type: reference
+app:
+  routes: ["/onboarding/things/:id"]
+translated_from: f26536e
+---
+
+Die JSON-Nachricht, die MQTT und die HTTP-JSON-Endpoints akzeptieren. Für InfluxDB Line Protocol siehe [InfluxDB Line Protocol schreiben](./line-protocol.mdx).
+
+## Felder {#fields}
+
+| Feld | Typ | Pflicht | Bedeutung |
+| --- | --- | --- | --- |
+| `thingType` | string | Ja | Name oder ID des Thing-Typs des Things. Es muss der Typ sein, mit dem das Thing angelegt wurde. |
+| `data` | object | Ja, außer `geo` ist gesetzt | Messwerte nach Messwertname. Werte sind Zahlen, Booleans oder Strings. Mindestens ein Wert darf nicht `null` sein. Namen werden in Kleinbuchstaben gespeichert. |
+| `geo` | object | Nein | Standort. Siehe [geo](#geo). |
+| `time` | string oder number | Nein | Wann die Werte gemessen wurden. Ohne sie gilt der Zeitpunkt des Eintreffens. Siehe [time](#time). |
+| `tags` | object | Nein | Zusätzliche Labels, die an den Zeilen dieser Nachricht gespeichert werden. Siehe [tags](#tags). |
+| `tenant` | string | HTTP: ja. MQTT: nein | Tenant-ID oder -Name. Über MQTT muss er zum Topic passen, wenn Sie ihn senden. |
+| `id` | string | HTTP: ja. MQTT: nein | Das Thing. Über MQTT muss es zum Topic passen, wenn Sie es senden. Siehe [Das Thing identifizieren](#identifying-the-thing). |
+| `evolveSchema` | boolean | Nein | `false` entfernt Werte für Messwerte, die nicht im Thing-Typ stehen, auch wenn beim Thing-Typ **Auto-Schemas Entwicklung** eingeschaltet ist. Weggelassen oder `true`: Die Einstellung des Thing-Typs entscheidet. |
+| `values` | object | Nein | Älterer Name für `data`. Wenn vorhanden, ersetzt er `data`. |
+
+Eine Nachricht braucht `data` mit mindestens einem Wert ungleich `null` oder `geo` mit `latitude` und `longitude`, die nicht beide `0` sind.
+
+## geo {#geo}
+
+| Feld | Typ | Pflicht | Bedeutung |
+| --- | --- | --- | --- |
+| `latitude` | number | Ja | Grad. |
+| `longitude` | number | Ja | Grad. |
+| `altitude` | number | Nein | Höhe. |
+| `heading` | number | Nein | Fahrtrichtung. |
+| `speed` | number | Nein | Geschwindigkeit. |
+
+Ein `geo`-Objekt, bei dem `latitude` und `longitude` beide fehlen oder `0` sind, gilt als kein Standort.
+
+## time {#time}
+
+Ein ISO-8601- / RFC-3339-String mit Zeitzone, zum Beispiel `2026-11-07T09:30:00Z`. Eine Zahl wird als Unix-Epoch gelesen: Sekunden, Millisekunden, Mikrosekunden oder Nanosekunden, je nach Größe. Ein String, der eine solche Zahl enthält, wird genauso gelesen.
+
+## tags {#tags}
+
+| Regel | Detail |
+| --- | --- |
+| Tag-Name | Beginnt mit einem Buchstaben oder einer Ziffer. Danach Buchstaben, Ziffern, `_` und `-`. |
+| Tag-Wert | Buchstaben, Ziffern, `_`, `-`, `.`, `/` und Leerzeichen. Nicht leer. |
+| Ungültiger Tag | Wird aus der Nachricht entfernt. Der Rest der Nachricht wird gespeichert. |
+
+{/* TODO(product): `time`, `tag_id` and `measure` are reserved names in the data model, but the ingest path does not reject them. Is a measure or tag with one of these names refused, renamed or stored? */}
+
+## Das Thing identifizieren {#identifying-the-thing}
+
+| Wo | Regel |
+| --- | --- |
+| MQTT | Das Topic nennt Tenant und Thing. Verwenden Sie die IDs aus den **Verbindungsinformationen**. |
+| HTTP | `id` akzeptiert die ID des Things oder seine **Alternative Thing -ID**. `tenant` akzeptiert die Tenant-ID oder den Namen. Beide müssen zu den Zugangsdaten gehören. |
+
+Eine Nachricht für einen anderen Tenant oder ein anderes Gerät als das der Zugangsdaten wird abgelehnt.
+
+## Beispiel {#example}
+
+```json
+{
+  "thingType": "room_sensor",
+  "data": { "temperature": 22.5, "humidity": 61.3 },
+  "time": "2026-11-07T09:30:00Z",
+  "geo": { "latitude": 52.52, "longitude": 13.405 },
+  "tags": { "location": "warehouse-A" }
+}
+```
+
+## Grenzen {#limits}
+
+| Grenze | Wert |
+| --- | --- |
+| Request-Body über HTTP | 10 MiB. Größere antworten mit `413`. |
+| MQTT-Payload | 4 MiB. |
+| Batch | Nur HTTP: ein JSON-Array von Nachrichten in einem Request. |

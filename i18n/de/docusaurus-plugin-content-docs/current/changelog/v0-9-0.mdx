@@ -1,0 +1,52 @@
+---
+title: "0.9.0"
+description: "Veröffentlicht am 10. Februar 2026: neue Seitenleiste, überarbeitete Dashboard-Menüs und viele Korrekturen bei Dashboards, Regeln und Anmeldung."
+type: reference
+date: 2026-02-10
+sidebar_position: 9
+translated_from: 70da89f
+---
+
+Veröffentlicht am 10. Februar 2026. Dieses Release gibt IoT Breeze eine neue Seitenleiste und neue Oberflächenkomponenten und behebt viele Probleme bei Dashboards, Widgets und Anmeldung.
+
+## Verbessert {#improved}
+
+**Navigation und Design**
+- Die Seitenleiste hat ein neues Design.
+- Der Dark Mode funktioniert jetzt auf der Seite der Tenant-Einstellungen.
+- Die Suche zeigt neben dem Eingabefeld einen Ladeindikator.
+- Viele fehlende Übersetzungen wurden in Dashboards, Berichten, Canvas und Mail-Vorlagen ergänzt.
+
+**Dashboards**
+- Das Dashboard-Menü auf den Seiten von Things und Thing-Typen ist überarbeitet.
+- Das Dashboard-Formular ist aktualisiert.
+- Die Graph-Seite hat eine schwebende Werkzeugleiste.
+- Die Zeitraum-Einstellungen auf der Berichtsseite verwenden einen Kalender.
+- Berichtsformulare lassen sich in der Größe ändern.
+
+**Events**
+- Die Event-Seite ist bei zusammengehörigen Events schneller und zeigt, wer ein Event zuletzt geändert hat.
+
+**Automatisierung**
+- Der Schalter aktiv/Entwurf im Regel-Designer hat ein neues Aussehen.
+
+**Geofences**
+- Breiten- und Längengrad sind im Geofence-Formular numerische Eingaben.
+
+**Geräte**
+- Heartbeats werden jetzt von der Plattform aufgezeichnet und in ihrer Datenbank gespeichert.
+
+## Behoben {#fixed}
+
+- Dashboards: An Things definierte Aktionen erscheinen jetzt auf Dashboards, und fehlende Widget-Aktionen werden angezeigt.
+- Dashboards: Ein 403-Fehler auf Dashboards ist behoben.
+- Dashboards: Beim Anlegen eines Widgets werden nur noch die Things des Dashboards angeboten, nicht alle Things.
+- Dashboards: Eine Endlosschleife bei Dashboards mit mehreren Assets ist behoben, und das Aufheben der Zuweisung eines Dashboards auf der Hierarchieseite funktioniert.
+- Widgets: Das Status-Widget speichert korrekt, wenn eine Farbe gesetzt ist.
+- Thing-Typen: Sie können einen Messwert aktualisieren und Telemetrie bearbeiten, solange ein Entwurf existiert.
+- Konnektivität: Der Verbindungsstatus ist korrigiert.
+- Regeln: Die Schaltfläche **Ersetzen** im Regel-Designer und das Empfängerformular sind korrigiert.
+- Geofences: Das Löschen eines Geofence aktualisiert die Liste, und die Navigation auf der Geofence-Seite funktioniert.
+- Canvas: Das Hinzufügen oder Löschen eines Canvas aktualisiert die Liste.
+- Anmeldung: Der Login-Ablauf, der Wechsel zwischen Passwort und Einmalcode, ausgeblendete Eingabewerte auf der Login-Seite und die Weiterleitung nach dem Abmelden sind korrigiert.
+- Dialoge: Die Bildlaufleiste im Dialog zum Aufheben der Dashboard-Zuweisung ist entfernt.

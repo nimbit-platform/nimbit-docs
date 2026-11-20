@@ -1,0 +1,87 @@
+---
+title: Eine Siemens-S7-SPS lesen
+description: Eine TIA-Portal-Variablentabelle exportieren, einen S7-Eingang für eine S7-300-, -400-, -1200- oder -1500-CPU hinzufügen und prüfen, was Periscope vorschlägt.
+type: how-to
+sidebar_position: 6
+app:
+  routes: ["/onboarding/gateways"]
+translated_from: 4c9fc6e
+---
+
+Periscope liest pro Tabelle `[[inputs.s7]]` eine Siemens-CPU über S7comm auf Port 102. S7 hat keinen Adressraum, daher liest die Erkennung eine Tag-Datei, deren Tag-Namen die Zuordnung enthalten, und der Stream fragt diese Tags ab. Die Stufen erklärt [Wie Periscope funktioniert](./how-periscope-works.mdx).
+
+## Voraussetzungen {#before-you-start}
+
+- Periscope ist installiert und verbunden. Siehe [Periscope installieren und die erste Quelle streamen](./install.mdx).
+- IP-Adresse, Rack und Slot der CPU. S7-1200 und S7-1500: Rack 0, Slot 1. Die meisten S7-300: Rack 0, Slot 2. Eine S7-400 folgt ihrer Hardwarekonfiguration.
+- Erlauben Sie bei einer S7-1200 oder S7-1500 PUT/GET: Setzen Sie in den Eigenschaften der CPU unter **Protection & Security › Connection mechanisms** das Häkchen bei **Permit access with PUT/GET communication from remote partner**.
+- Nicht optimierte Datenbausteine für die Tags, die Sie lesen: Entfernen Sie in den Attributen des Bausteins das Häkchen bei **Optimized block access** und kompilieren Sie neu. Tags in optimierten Bausteinen haben keine absolute Adresse und werden übersprungen.
+
+## Schritte {#steps}
+
+1. Exportieren Sie in TIA Portal die Variablentabelle: **PLC tags › Export**. Öffnen Sie die XLSX-Datei und speichern Sie das Blatt **PLC Tags** als UTF-8-CSV. Englische und deutsche Spaltennamen funktionieren.
+2. Benennen Sie die Tags, die Sie in IoT Breeze wollen, `<thingType>/<thing>/<measure>`, optional gefolgt von `:<decimals>`, zum Beispiel `weimar/anlage_001/frequency:2`. Anders benannte Tags werden mit einer Warnung übersprungen, Sie können also eine vollständige Tabelle unverändert verwenden.
+3. Fügen Sie den Eingang zu `periscope.toml` hinzu:
+
+   ```toml
+   [[inputs.s7]]
+   alias    = "plc_weimar"
+   tags     = "/etc/periscope/plc-weimar.csv"
+   server   = "192.168.10.30"          # host[:port], default port 102
+   rack     = 0
+   slot     = 1                        # S7-300: 2
+   interval = "1s"
+   ```
+
+   Wenn Sie bereits `inputs.s7comm` von Telegraf betreiben, verweisen Sie mit `tags` stattdessen auf dessen Konfigurationsdatei oder importieren Sie zuerst dessen Adressliste. Siehe [Kommandozeilen-Referenz](./commands.mdx).
+
+4. Um manche Tags häufiger zu lesen als andere, fügen Sie einen Abfragezyklus hinzu. Das `interval` des Eingangs liest alle Tags, die kein Zyklus nennt:
+
+   ```toml
+   [[inputs.s7.cycles]]
+   name     = "fast"
+   interval = "100ms"
+   names    = ["weimar/*/frequency"]
+   ```
+
+5. Prüfen und erkennen. Die Erkennung liest die Tag-Datei und kontaktiert die SPS nie:
+
+   ```sh
+   periscope validate -config /etc/periscope/periscope.toml
+   periscope discover -config /etc/periscope/periscope.toml
+   ```
+
+6. Prüfen und bestätigen Sie die Vorschläge. Siehe [Periscope-Erkennungen freigeben](./approve-discoveries.mdx).
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Das erste Namenssegment wird zum Thing-Typ, das zweite zum Thing und das dritte zum Messwert. Der Kommentar wird zur Beschreibung des Messwerts und `:<decimals>` zu seiner Genauigkeit:
+
+```text
+INPUT       NODES  THINGS  ERROR
+plc_weimar  6      2       -
+
+KIND       NAME        TYPE        STATUS    NOTE
+thingType  weimar      3 measures  proposed  -
+thing      anlage_001  weimar      proposed  -
+thing      anlage_002  weimar      proposed  -
+```
+
+Things liegen standardmäßig unter `<mount>/<thingType>/<thing>` (`path_from = "type"`). Mit `path_from = "thing"` liegen sie unter `<mount>/<thing>`.
+
+Nach dem Anwenden liest der Stream alle Tags in so wenigen Anfragen, wie die PDU-Größe der SPS zulässt, in jedem `interval`. Ein Wert wird bei jeder Abfrage gesendet, ob er sich geändert hat oder nicht. Um nur Änderungen zu senden, fügen Sie ein Deadband hinzu. Siehe [Werte transformieren, bevor sie die Edge verlassen](./processors.mdx).
+
+## Wenn es nicht klappt {#if-it-doesnt-work}
+
+- **`tag "…" skipped: not <thingType>/<thing>/<measure>`**: Der Tag liegt außerhalb der Namenskonvention. Bei Tags, die Sie nicht wollen, ist das zu erwarten, sonst benennen Sie ihn um.
+- **`data type "LReal" is not readable over s7comm`**: Typen wie `LReal`, `LInt`, `WString` und UDTs haben keine S7comm-Form. Kopieren Sie den Wert in der SPS in einen lesbaren Typ, etwa `Real` oder `DInt`.
+- **Ein Tag wird übersprungen, weil er keine logische Adresse hat**: Der Datenbaustein verwendet optimierten Zugriff. Schalten Sie ihn aus und kompilieren Sie neu.
+- **Die Verbindung wird abgelehnt oder sofort geschlossen**: PUT/GET ist nicht erlaubt, Rack oder Slot sind falsch, oder eine Firewall blockiert Port 102. Prüfen Sie mit `nc -vz <cpu> 102`.
+- **`input.<name>.item_errors` wächst**: Ein Datenbaustein fehlt oder ist kürzer, als die Tag-Liste sagt. Der Bildschirm **Logs** auf Debug-Ebene nennt Bereich und Offset.
+- **Keine Werte und kein Fehler**: Die Vorschläge sind noch nicht angewendet, oder die Tag-Datei hat sich geändert und die Erkennung ist nicht erneut gelaufen. Änderungen an der Tag-Datei wirken bei der nächsten Erkennung.
+
+Mehr unter [Periscope-Probleme beheben](./troubleshooting.mdx).
+
+## Verwandte Seiten {#related}
+
+- [Wie Periscope funktioniert](./how-periscope-works.mdx) · [Konfigurationsreferenz](./configuration.mdx)

@@ -1,0 +1,1080 @@
+---
+title: "Widget gallery"
+description: "Every widget you can add to a dashboard, grouped as the picker groups them: what it shows, when to use it, and its settings."
+sidebar_position: 9
+type: reference
+app:
+  routes: ["/dashboards/:id"]
+  tour: build-dashboards
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+A widget is one tile on a dashboard. The **Add widget** dialog groups widgets by the question they answer; this page follows the same groups. Select **Edit**, then **Add widget**, set it up while the live preview updates, then select **Add to dashboard** and save the dashboard. **Help** in the setup explains the settings in the app. For the whole flow, see [Build a dashboard for one thing](./thing-dashboard.mdx).
+
+Three things apply to every widget:
+
+- **Title** and **Appearance** (or **Card**) settings: a title, and colors where the widget draws a card. They are not repeated in the tables below.
+- **Time range**: widgets that read data over time follow the dashboard's time range unless you override it in the widget. See [Dashboards, smart dashboards and time](./dashboards.mdx).
+- **Offered on**: the picker shows only the widgets that fit the dashboard you edit. Widgets that **read a thing** need a thing in context: the dashboard's own thing, or one you choose in the widget. See [Build one dashboard for every thing of a kind](./smart-dashboard.mdx) for follow and pin. Tenant-wide widgets belong on Home and other tenant-wide dashboards.
+
+## Which widget for which question
+
+| Question | Group | Widgets |
+| --- | --- | --- |
+| What does it read right now? | [Values](#values) | Snapshot, Gauge, Fill level, Compare |
+| Is it running, open, on? | [State](#state) | Stat, Boolean, Property, Property List, Aggregated State |
+| How did it change? | [Charts](#charts) | Chart, Timeline, Heatmap, Doughnut, Pivot table, Custom |
+| What is it doing, and what can I do? | [Thing details](#thing-details) | Status, Action, Canvas |
+| What happened, and what fired? | [Events and rules](#events-and-rules) | Events, Incidents, event statistics |
+| How is the tenant doing? | [Overview](#overview) | Counter strip, Counter, Health score |
+| Is data coming in? | [Messages](#messages) | Messages statistics |
+| Which things are offline? | [Connectivity](#connectivity) | Connectivity statistics, Thing map, Thing List & Map |
+| Where is the data kept, and who reaches it? | [Data and access](#data-and-access) | Data stores, API keys and storage statistics |
+| How do I structure and explain the dashboard? | [Layout and content](#layout-and-content) | Section header, Text, Image, File List, Container, Iframe, Map and others |
+
+## Values
+
+What does it read right now?
+
+### Snapshot
+
+**Shows:** The latest values of a thing's measures in a searchable table: measure name, last value with unit, and time.
+
+**Use it when:** You want every current reading of a thing in one place.
+
+**Offered on:** Reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own.
+
+<Screenshot
+  page="visualize/widgets"
+  id="01-snapshot"
+  route="/dashboards/:id"
+  state="Snapshot table with eight measures, their values with units and times"
+  alt="The Snapshot widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Thing / measures** | Which thing to read, on a dashboard that does not follow one. |
+| **Search** | Filter the rows by measure name (when viewing). |
+
+Numeric rows show a chart icon on hover that opens a query for that measure. The widget supports full screen for long lists.
+
+### Gauge
+
+**Shows:** One measure on a dial, with its range.
+
+**Use it when:** You care where a value sits between a minimum and a maximum, such as pressure or load.
+
+**Offered on:** Reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own.
+
+<Screenshot
+  page="visualize/widgets"
+  id="02-gauge"
+  route="/dashboards/:id"
+  state="Gauge showing 21.4 °C on a 0 to 40 dial with green, yellow and red zones"
+  alt="The Gauge widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Measure** | The measure to show. Required. |
+| **Min / Max** | The range of the dial. Required. |
+| **Shape** | Wide or narrow arc. |
+| **Thresholds** | Color zones for value ranges. |
+| **Gradient** | Smooth color transitions between zones. |
+| **Icon, Compact number, Text size** | How the value is drawn. |
+
+### Fill level
+
+**Shows:** How full a tank or silo is, as a filling bar.
+
+**Use it when:** The measure is a level and the useful reading is how full, not the number.
+
+**Offered on:** Reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own.
+
+<Screenshot
+  page="visualize/widgets"
+  id="03-fill-level"
+  route="/dashboards/:id"
+  state="Vertical fill bar at 72 % in yellow"
+  alt="The Fill level widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Measure** | The measure that holds the level. |
+| **Conditions** | Ranges with colors, for example green below 50 %, yellow below 80 %, red above. |
+| **Display** | Vertical or horizontal bar. |
+
+### Compare
+
+**Shows:** Two values side by side, with the difference.
+
+**Use it when:** You compare a value with an earlier one, or you need one KPI such as an average, total or peak over a period.
+
+**Offered on:** Reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own.
+
+<Screenshot
+  page="visualize/widgets"
+  id="04-compare"
+  route="/dashboards/:id"
+  state="Compare widget with two values and the difference between them"
+  alt="The Compare widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Measure** | One measure with its aggregation, icon and icon color. |
+| **Time range** | The period the value covers. |
+| **Compact number** | Shorten large values, for example 1.2 k. |
+| **Alignment, Text size** | How the value is drawn. |
+
+## State
+
+Is it running, open, on?
+
+### Stat
+
+**Shows:** The current value of one or more measures, colored by range, optionally with a sparkline.
+
+**Use it when:** You want a big, glanceable number that changes color when it leaves its normal range.
+
+**Offered on:** Reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own.
+
+<Screenshot
+  page="visualize/widgets"
+  id="05-stat"
+  route="/dashboards/:id"
+  state="Stat widget with a temperature value and a 24 h sparkline"
+  alt="The Stat widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Measures** | One or more measures. Each row has a thing, a measure, an icon and an icon color. |
+| **Sparkline** | A small trend behind each value: off, 24 h, 7 d or 30 d. |
+| **Display mode** | **Carousel** cycles through measures; **Stacked** shows all at once. |
+| **Orientation** | Horizontal or vertical (stacked only). |
+| **Compact number, Alignment, Text size** | How the value is drawn. |
+
+The picker card is named **Stat**.
+
+### Boolean
+
+**Shows:** A yes-or-no measure as a switch or lamp.
+
+**Use it when:** The measure is on or off, open or closed, and you want to read that without interpreting a number.
+
+**Offered on:** Reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own.
+
+<Screenshot
+  page="visualize/widgets"
+  id="06-boolean"
+  route="/dashboards/:id"
+  state="Boolean widget with two lamps, one green and one grey"
+  alt="The Boolean widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Measures** | One or more boolean measures, each with an icon. |
+| **True / False colors** | Color for each state. |
+| **True / False descriptions** | Text for each state. Can be translated. |
+| **Display mode** | **Carousel** or **Stacked**. |
+| **Orientation, Alignment** | Layout. |
+
+### Property
+
+**Shows:** One property of a thing and its value, such as a firmware version or serial number.
+
+**Use it when:** You show fixed facts or slowly changing metadata, not readings.
+
+**Offered on:** Reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own.
+
+<Screenshot
+  page="visualize/widgets"
+  id="07-property"
+  route="/dashboards/:id"
+  state="Property widget showing a firmware version"
+  alt="The Property widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Property** | The property to show. The list comes from the thing type. |
+| **Title** | Optional, replaces the default title. |
+
+The time of the last update shows below the value.
+
+### Property List
+
+**Shows:** Several properties of a thing and their values, in a searchable, sortable table.
+
+**Use it when:** You want a thing's identity and metadata on a dashboard, such as serial number, location and firmware.
+
+**Offered on:** Reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own.
+
+<Screenshot
+  page="visualize/widgets"
+  id="08-property-list"
+  route="/dashboards/:id"
+  state="Property list with five properties and their last update times"
+  alt="The Property List widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Thing** | Which thing to read, on a dashboard that does not follow one. |
+| **Search** | Filter by property name (when viewing). |
+
+Rows are sorted by name. The last update shows as relative time, for example 2 minutes ago.
+
+### Aggregated State
+
+**Shows:** One measure aggregated over a time range, shown with an icon.
+
+**Use it when:** You need one figure for a period, such as the average temperature of the last hour or the energy used today.
+
+**Offered on:** Reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own.
+
+<Screenshot
+  page="visualize/widgets"
+  id="09-aggregated-state"
+  route="/dashboards/:id"
+  state="Aggregated State widget with an average value and an icon"
+  alt="The Aggregated State widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Measure** | One measure with aggregation, icon and color. |
+| **Time range** | The period to aggregate. |
+| **Compact number, Alignment** | How the value is drawn. |
+
+## Charts
+
+How did it change?
+
+### Chart
+
+**Shows:** Measures over time. Pick a layout: **Line**, **Area**, **Bar**, **Scatter** or **Combination** (bars and lines on one chart). You can change the layout later in the widget's settings.
+
+**Use it when:** You look at trends, compare measures, or check a value against a limit.
+
+**Offered on:** Reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own.
+
+<Screenshot
+  page="visualize/widgets"
+  id="10-chart"
+  route="/dashboards/:id"
+  state="Line chart with two temperature measures over the last 24 hours and one threshold line"
+  alt="The Chart widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Measures** | One or more rows. Each has a thing, aggregation, chart type, line style, stacking, Y-axis group, color and alias. |
+| **Time range** | The period and the bucket size. Follows the dashboard unless you override it. |
+| **Thresholds** | Horizontal lines with color and label. |
+| **Display** | Chart or table. |
+| **Show chart markers**, **Zoom allowed**, **Compact Y-axis labels** | Show points, allow zoom and pan, shorten large axis values. |
+| **Legend placement** | Bottom, right or hidden. |
+| **Y-Axis min value**, **Y-Axis max value** | The range of the Y axis. |
+
+Older dashboards may contain separate line, bar, scatter and combination widgets. They keep working; new ones are layouts of this widget.
+
+### Timeline
+
+**Shows:** States over time as colored segments, one lane per measure.
+
+**Use it when:** You want to see when something was running, idle or in error, not how large a value was.
+
+**Offered on:** Reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own.
+
+<Screenshot
+  page="visualize/widgets"
+  id="11-timeline"
+  route="/dashboards/:id"
+  state="Timeline with three lanes of colored state segments over 24 hours"
+  alt="The Timeline widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Aggregation** | How values are combined. |
+| **Merge consecutive datapoints** | Join neighbouring segments with the same state. |
+| **Time range** | The period to show. |
+| **Rules** | Map value ranges to colors and labels. |
+
+### Heatmap
+
+**Shows:** A measure by hour and day as a color grid.
+
+**Use it when:** You look for daily or weekly patterns, such as when consumption peaks.
+
+**Offered on:** Reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own.
+
+<Screenshot
+  page="visualize/widgets"
+  id="12-heatmap"
+  route="/dashboards/:id"
+  state="Heatmap of hours by days with a blue intensity scale"
+  alt="The Heatmap widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Measure** | The measure to draw. Required. |
+| **Aggregation** | For example average, minimum or maximum. |
+| **Color** | Base color of the intensity scale. |
+| **Step** | Group by hour, day, week or month. |
+| **Min / Max** | Optional range to clip values. |
+| **Time range** | The period to query. |
+
+### Doughnut
+
+**Shows:** Shares of a whole, as a doughnut or pie.
+
+**Use it when:** You show how several measures contribute to a total.
+
+**Offered on:** Reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own.
+
+<Screenshot
+  page="visualize/widgets"
+  id="13-doughnut"
+  route="/dashboards/:id"
+  state="Doughnut with three colored shares and a unit in the center"
+  alt="The Doughnut widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Measures** | One or more measures, each with its own color. |
+| **Display** | Pie or doughnut. |
+| **Unit of measure** | Text in the center. |
+| **Icon** | Optional centre icon. |
+
+### Pivot table
+
+**Shows:** Values by period in a table you can group by rows and columns.
+
+**Use it when:** You need numbers rather than a picture, grouped and summed the way a report would.
+
+**Offered on:** Reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own.
+
+<Screenshot
+  page="visualize/widgets"
+  id="14-pivot-table"
+  route="/dashboards/:id"
+  state="Pivot table with days as rows and two measures as columns"
+  alt="The Pivot table widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Measures** | One or more measures with aggregation and optional alias. |
+| **Time range** | The period and the bucket size. |
+| **Gap fill** | Fill gaps in the time series. |
+| **Pivot configuration** | Row groups, column groups, values and calculated columns. |
+| **Date Alias**, **Date format** | Label and format of the date column. |
+
+### Custom
+
+**Shows:** Any chart, from a chart definition. You query data from things and write JavaScript that builds the ECharts options.
+
+**Use it when:** No other chart fits and someone on your team can write JavaScript.
+
+**Offered on:** Reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own.
+
+<Screenshot
+  page="visualize/widgets"
+  id="15-custom"
+  route="/dashboards/:id"
+  state="Custom chart showing a stacked bar chart built from two series"
+  alt="The Custom widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Series** | The data to query. |
+| **Chart definition** | JavaScript that returns the ECharts options. |
+
+Use another chart widget if one fits.
+
+## Thing details
+
+What is it doing, and what can I do?
+
+### Status
+
+**Shows:** Maps a measure's value to an icon, text and color, for example online or offline.
+
+**Use it when:** You want a plain-language state, such as Running or Fault, instead of a raw value.
+
+**Offered on:** Reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own.
+
+<Screenshot
+  page="visualize/widgets"
+  id="16-status"
+  route="/dashboards/:id"
+  state="Status widget with a green check icon and the text Running"
+  alt="The Status widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Measure** | One measure to evaluate. |
+| **Rules** | Conditions that map value ranges to icons, text and colors. |
+| **Title, Alignment, Text size** | How it is drawn. |
+
+### Action
+
+**Shows:** A button that sends a command to a thing.
+
+**Use it when:** People need to act on the thing from the dashboard, for example restart or open a valve.
+
+**Offered on:** Reads a thing. On a Smart dashboard it follows the selected thing or is pinned to a thing of its own.
+
+<Screenshot
+  page="visualize/widgets"
+  id="17-action"
+  route="/dashboards/:id"
+  state="Action button with a restart icon"
+  alt="The Action widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Action** | The action to trigger. Required. |
+| **Icon** | The button's icon. |
+| **Target thing** | On a dashboard that does not follow one, the thing that receives the command. |
+
+### Canvas
+
+**Shows:** Embeds an existing canvas, a drawing of the plant with live values, into the dashboard.
+
+**Use it when:** You drew a floor plan or process picture and want it next to other widgets.
+
+**Offered on:** Thing, Thing type, Smart and Multi-asset dashboards. Not on General dashboards or reports.
+
+<Screenshot
+  page="visualize/widgets"
+  id="18-canvas"
+  route="/dashboards/:id"
+  state="Canvas widget showing a plant drawing with three live values"
+  alt="The Canvas widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Canvas** | Which canvas to embed. Required. |
+| **Thing** | On a Multi-asset dashboard, which thing gives the context to a canvas built on interfaces. |
+
+To operate the canvas, open it on its own page. See [Canvas](./canvas/index.mdx).
+
+## Events and rules
+
+What happened, and what fired?
+
+### Events
+
+**Shows:** The events of the dashboard: on a tenant-wide dashboard every event of the tenant, otherwise the events of its things. One row per event, newest first.
+
+**Use it when:** You want the recent history of what fired, with severity and type.
+
+**Offered on:** Any dashboard. The picker lists it under **Thing details** on a dashboard about a thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="19-events"
+  route="/dashboards/:id"
+  state="Events list with severity chips and five rows"
+  alt="The Events widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Event types** | One or more types to show. Empty means all. |
+| **Time range** | Follows the dashboard unless you override it. |
+
+Chips filter by severity and show counts. **Open event explorer** opens the events page with the same filter.
+
+### Incidents
+
+**Shows:** The problems someone is working on, newest activity first, with severity, number, who opened them and status.
+
+**Use it when:** You want people to see what needs attention now.
+
+**Offered on:** Any dashboard except reports. The picker lists it under **Thing details** on a dashboard about a thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="20-incidents"
+  route="/dashboards/:id"
+  state="Incidents list with three active incidents"
+  alt="The Incidents widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Title** | Shown above the list. |
+| **Opens on** | Start on active incidents or on all of them. |
+| **Rows** | 5, 10 or 20 before **All incidents**. |
+| **Card** | Background and border colors. |
+
+Only members who may read incidents see it.
+
+### Event statistics
+
+**Shows:** Four ready-made figures about the tenant's events, each one card in the picker: **Events by severity**, **Events by thing type**, **Rule activity** and **Geofence events**.
+
+**Use it when:** You report on how many events there are, which thing types raise them, how often rules fire, or how often things cross geofences.
+
+**Offered on:** General, Home and other Smart dashboards. Not on a dashboard about one thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="21-event-statistics"
+  route="/dashboards/:id"
+  state="Events by severity chart over seven days"
+  alt="The Event statistics widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Statistic** | Which figure to show. |
+| **Time range** | Uses the dashboard's range unless you override it. |
+
+See [Statistics](#statistics) for what the cards share.
+
+## Overview
+
+How is the tenant doing?
+
+### Counter strip
+
+**Shows:** Up to six tenant figures in one bar: things, things online, messages today, events and what the tenant stores. Each counter opens the list it counts.
+
+**Use it when:** You build a Home dashboard and want the tenant's vital numbers on top.
+
+**Offered on:** General, Home and other Smart dashboards. Not on a dashboard about one thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="22-counter-strip"
+  route="/dashboards/:id"
+  state="Counter strip with four tenant figures"
+  alt="The Counter strip widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Counters** | Pick up to six and drag them into order. **Reset to default** brings back Things, Things online, Messages today and Events. |
+| **Time range** | Events, messages and average message rate cover the dashboard's range, or one of the widget's own. |
+| **Card** | Background and border colors. |
+
+A problem shows in the line under the figure, for example *2 offline*. A dash with *No access* means your role may not read that figure.
+
+### Counter
+
+**Shows:** The count of one resource type.
+
+**Use it when:** You want one number, such as how many rules or users the tenant has.
+
+**Offered on:** Thing, Thing type, Smart, Multi-asset and Report dashboards. General dashboards use the counter strip; counters placed there earlier keep working. The picker lists it under **Tenant figures** on dashboards about a thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="23-counter"
+  route="/dashboards/:id"
+  state="Counter widget showing the number of things"
+  alt="The Counter widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Resource** | What to count: **Thing**, **Thing Type**, **Group**, **User**, **Dashboard**, **File**, **Event Type**, **Rule**, **Canvas**, **Report** or **Geofence**. |
+| **Icon** | Optional icon. |
+
+### Health score
+
+**Shows:** One score from 0 to 100 built from connectivity, fresh data and rule success, over the last 24 hours.
+
+**Use it when:** You want a single figure that says whether the tenant is healthy.
+
+**Offered on:** General, Home and other Smart dashboards. Not on a dashboard about one thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="24-health-score"
+  route="/dashboards/:id"
+  state="Health score card showing 94"
+  alt="The Health score widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Time range** | Fixed: the last 24 hours. |
+
+It always covers the whole tenant.
+
+## Messages
+
+Is data coming in?
+
+### Messages
+
+**Shows:** A family of eight statistics about the data your things send. Choosing the card lists the layouts below.
+
+**Use it when:** You check that data arrives, how much, and from which things.
+
+**Offered on:** General, Home and other Smart dashboards. Not on a dashboard about one thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="25-messages"
+  route="/dashboards/:id"
+  state="Messages per day chart with a dashed average line"
+  alt="The Messages widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Statistic** | Which layout to show. |
+| **Time range** | Uses the dashboard's range unless you override it. |
+
+| Layout | Shows |
+| --- | --- |
+| **Count** | Messages in the time range. |
+| **Messages per day** | Messages per day, with the average dashed. |
+| **Message rate** | Messages per minute over time. |
+| **Messages by thing type** | Which thing types send the most. |
+| **Top things by messages** | The things that send the most. |
+| **Activity by hour** | When in the day messages arrive. |
+| **Data volume** | How much data arrived. |
+| **Message size** | The average size of a message. |
+
+## Connectivity
+
+Which things are offline?
+
+### Connectivity statistics
+
+**Shows:** A family of four statistics about which things are connected. Choosing the card lists the layouts below.
+
+**Use it when:** You check how many things are online and which went silent.
+
+**Offered on:** General, Home and other Smart dashboards. Not on a dashboard about one thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="26-connectivity-statistics"
+  route="/dashboards/:id"
+  state="Things online card with online, offline and never seen counts"
+  alt="The Connectivity statistics widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Statistic** | Which layout to show. |
+| **Time range** | Uses the dashboard's range unless you override it. |
+
+| Layout | Shows |
+| --- | --- |
+| **Things online** | Online, offline and never seen. |
+| **Connectivity by thing type** | Connectivity per thing type. |
+| **Recently offline** | The things that went silent last. |
+| **Active things** | Things that sent data in the time range. |
+
+### Thing map
+
+**Shows:** Every thing by connection state, as one tile per thing type or group with how many are online and a bar of connected, offline and never connected things.
+
+**Use it when:** You want to see at a glance which kinds of things have problems.
+
+**Offered on:** General, Home and other Smart dashboards. Not on a dashboard about one thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="27-thing-map"
+  route="/dashboards/:id"
+  state="Thing map with four tiles, one with offline things"
+  alt="The Thing map widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Title** | Shown above the tiles. |
+| **Tiles by** | **Thing type** or **Group**. A thing in several groups counts in each. |
+| **Card** | Background and border colors. |
+
+Tiles with things offline come first. With up to 100 things, a thing type tile shows each thing as a small square. The state refreshes every minute.
+
+### Thing List & Map
+
+**Shows:** Your things with their status, problems first, with an optional map.
+
+**Use it when:** You want a worklist of things, starting with the ones that need attention.
+
+**Offered on:** General, Home and other Smart dashboards. Not on a dashboard about one thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="28-thing-list-map"
+  route="/dashboards/:id"
+  state="Thing list with ten rows, offline things first, and a Map tab"
+  alt="The Thing List & Map widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Title** | Shown above the list. |
+| **Rows** | 5, 10 or 20 things, problems first, or **All** (searchable, loads as you scroll). |
+| **Thing types, Groups, Connection** | Show only matching things. Empty means every thing. |
+| **Map tab** | Adds a map next to the list. |
+| **Card** | Background and border colors. |
+
+Each row shows the thing, its status, last message and messages in 24 hours. **Open all things** leads to the full list. Lists added earlier stay in the **All** form until you change them.
+
+## Data and access
+
+Where is the data kept, and who reaches it?
+
+### Data and access statistics
+
+**Shows:** Four ready-made figures about storage and API keys: **Data in the system** (what the tenant stores and what arrives each day), **Raw data and aggregates** (by size), **Data stores** (each store with its retention, oldest data and size) and **API keys** (working keys, their use, and those about to expire).
+
+**Use it when:** You watch storage growth, or want to know whether API keys are used or about to expire.
+
+**Offered on:** General, Home and other Smart dashboards. Not on a dashboard about one thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="29-data-and-access-statistics"
+  route="/dashboards/:id"
+  state="Data stores table with retention, oldest data and size"
+  alt="The Data and access statistics widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Statistic** | Which figure to show. |
+
+These figures always cover the whole tenant. **API keys** needs a role that may read the tenant's API keys.
+
+## Layout and content
+
+Structure and explain the dashboard
+
+### Text
+
+**Shows:** Formatted text and links, for instructions, descriptions or labels.
+
+**Use it when:** You explain a dashboard or add a label or a link.
+
+**Offered on:** Any dashboard.
+
+<Screenshot
+  page="visualize/widgets"
+  id="30-text"
+  route="/dashboards/:id"
+  state="Text widget with a heading, a list and a link"
+  alt="The Text widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Content** | A rich text editor: bold, italic, underline, lists, links, headings. Markdown shortcuts work. |
+| **Appearance** | Background color, border color and transparency. |
+
+Type `@` to mention a thing and its properties. The values are resolved when the dashboard is shown.
+
+### Image
+
+**Shows:** A picture from your files or an external address.
+
+**Use it when:** You show a logo, a photo or a plan.
+
+**Offered on:** Any dashboard.
+
+<Screenshot
+  page="visualize/widgets"
+  id="31-image"
+  route="/dashboards/:id"
+  state="Image widget showing a site photo"
+  alt="The Image widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Image source** | Upload a file or enter a URL. External URLs must be public. |
+| **Size** | **Cover** fills the widget and may crop. **Contain** shows the whole image. |
+| **Alignment** | Which part stays visible when cropped. |
+| **Appearance** | Background color, border color and transparency. |
+
+### File List
+
+**Shows:** Files to download, picked from the file explorer or uploaded by viewers.
+
+**Use it when:** People need manuals, certificates or reports next to the data.
+
+**Offered on:** Any dashboard.
+
+<Screenshot
+  page="visualize/widgets"
+  id="32-file-list"
+  route="/dashboards/:id"
+  state="File list with three PDF files"
+  alt="The File List widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Search labels** | Show files that carry these labels. |
+| **Allow upload** | Let viewers upload files into the widget. |
+| **Files** | Pick specific files. |
+
+At least one file, one search label or upload must be set.
+
+### Iframe
+
+**Shows:** Another web page, embedded.
+
+**Use it when:** You want a page from another system on the dashboard.
+
+**Offered on:** Any dashboard.
+
+<Screenshot
+  page="visualize/widgets"
+  id="33-iframe"
+  route="/dashboards/:id"
+  state="Iframe widget showing an embedded web page"
+  alt="The Iframe widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **URL** | The full address, for example `https://example.com`. Required. |
+| **Appearance** | Border color. |
+
+The target site must allow embedding. Some sites block it with `X-Frame-Options` or a content security policy.
+
+### Container
+
+**Shows:** A frame that groups widgets or leaves space on the grid.
+
+**Use it when:** You want a colored divider, a visual group, or empty space.
+
+**Offered on:** Any dashboard.
+
+<Screenshot
+  page="visualize/widgets"
+  id="34-container"
+  route="/dashboards/:id"
+  state="Container with a light background behind two widgets"
+  alt="The Container widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Appearance** | Background color, border color and transparency. |
+
+Set it transparent to keep the space free without drawing anything. Use a background color to make a colored divider.
+
+### Section header
+
+**Shows:** Names a group of widgets, with an optional description and link, above a thin divider. It has no card.
+
+**Use it when:** A dashboard has several topics and needs headings.
+
+**Offered on:** Any dashboard.
+
+<Screenshot
+  page="visualize/widgets"
+  id="35-section-header"
+  route="/dashboards/:id"
+  state="Section header with title, description and a link on the right"
+  alt="The Section header widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Title** | Required. |
+| **Description** | One line under the title. |
+| **Link text, Link target** | A link on the right. The target is an app page starting with `/` or a web address starting with `https://`. |
+| **Space above** | S, M or L. |
+| **Divider** | The thin line under the header. |
+
+Title, description and link text can be translated. Make it narrower to head one column.
+
+### Quick links
+
+**Shows:** Pages and sites people need most, as a two-column grid of links with a title and one line each.
+
+**Use it when:** You build a Home dashboard that sends people to the pages they use.
+
+**Offered on:** Any dashboard except reports.
+
+<Screenshot
+  page="visualize/widgets"
+  id="36-quick-links"
+  route="/dashboards/:id"
+  state="Quick links with six links in two columns"
+  alt="The Quick links widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Title** | Shown above the links. |
+| **Links** | Up to twelve, dragged into order. Pick built-in links (Documentation, Things, Rules, Dashboards, Events, API keys, Users and groups, Contact support) or add a custom link. |
+| **Custom link** | A title, an optional description, and a target: an app page (`/…`), a web address (`https://…`) or an email address (`mailto:…`). |
+| **Reset to default** | Brings back the default set. |
+| **Card** | Background and border colors. |
+
+### Recently viewed
+
+**Shows:** What you opened last in this tenant: things, thing types, dashboards, rules and groups.
+
+**Use it when:** People return to the same few things every day.
+
+**Offered on:** Any dashboard except reports.
+
+<Screenshot
+  page="visualize/widgets"
+  id="37-recently-viewed"
+  route="/dashboards/:id"
+  state="Recently viewed list with five entries"
+  alt="The Recently viewed widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Title** | Shown above the list. |
+| **Show** | 5 or 10 entries. |
+| **Card** | Background and border colors. |
+
+The list is yours: everyone sees what they opened themselves. It keeps your last 20 and follows you across devices.
+
+### Journeys
+
+**Shows:** The guided walkthroughs you can take, with time and progress. **Start**, **Continue** or **Replay** opens the next chapter.
+
+**Use it when:** You want new users to find the guided tours.
+
+**Offered on:** Any dashboard except reports.
+
+<Screenshot
+  page="visualize/widgets"
+  id="38-journeys"
+  route="/dashboards/:id"
+  state="Journeys list with progress per journey"
+  alt="The Journeys widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Title** | Shown above the list. |
+| **Show finished journeys** | Off hides the ones you finished. |
+| **Card** | Background and border colors. |
+
+Each viewer sees the journeys their role is offered, with their own progress.
+
+### Setup journey
+
+**Shows:** A tenant's first steps, ticked off from its data: create a thing type, add a thing, get data arriving, create a rule, build your own dashboard, invite a teammate.
+
+**Use it when:** A tenant is new and the first steps should stay visible on Home.
+
+**Offered on:** General, Home and other Smart dashboards. Not on a dashboard about one thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="39-setup-journey"
+  route="/dashboards/:id"
+  state="Setup journey with three done and three open steps"
+  alt="The Setup journey widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Title** | Shown above the steps. |
+| **Show done steps** | Off lists only the open steps. |
+| **Card** | Background and border colors. |
+
+A step counts as done once the tenant has what it builds, however it was made. While Home shows this widget, the Getting started card is left out.
+
+### What's new
+
+**Shows:** The product's newest announcements. New entries carry a **New** badge; **Mark as read** clears them for you.
+
+**Use it when:** You want people to see product news on Home.
+
+**Offered on:** General, Home and other Smart dashboards. Not on a dashboard about one thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="40-what-s-new"
+  route="/dashboards/:id"
+  state="What's new list with a New badge on the first entry"
+  alt="The What's new widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Title** | Shown above the list. |
+| **Entries** | 3, 5 or 10 announcements. |
+| **Card** | Background and border colors. |
+
+What you mark as read is yours. The announcements are the same in every tenant.
+
+### Map
+
+**Shows:** A map with things and geofences. Things with latitude and longitude are plotted as markers.
+
+**Use it when:** You want locations next to the other widgets.
+
+**Offered on:** Any dashboard. The picker lists it under **Thing details** on a dashboard about a thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="41-map"
+  route="/dashboards/:id"
+  state="Map widget with six markers"
+  alt="The Map widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **Appearance** | Border color. |
+
+To draw geofences and use the full map, see [Show things on a map](./map.mdx).
+
+### VNC Console
+
+**Shows:** A remote screen over VNC.
+
+**Use it when:** You operate a machine's own screen from the dashboard.
+
+**Offered on:** Any dashboard. Only offered if VNC is enabled for your deployment.
+
+<Screenshot
+  page="visualize/widgets"
+  id="42-vnc-console"
+  route="/dashboards/:id"
+  state="VNC Console showing a remote desktop with the toolbar"
+  alt="The VNC Console widget on a dashboard"
+/>
+
+| Setting | What it does |
+| --- | --- |
+| **VNC Server** | The server to show. Required. |
+| **Quality Override** | **Server Default**, **Low**, **Balanced** or **High**. |
+| **Auto-connect on load** | Connect when the dashboard opens. |
+| **Show toolbar** | Show the connection toolbar. |
+
+Whether you can type into the screen is set on the VNC server, not on the widget. Manage VNC servers under **Settings › Configuration › VNC Servers**.
+
+## Statistics
+
+The statistics cards (event statistics, **Health score**, **Messages**, connectivity statistics and data and access statistics) are one widget type, **Statistic**, with a preset per card. They need no data setup: pick the card and it works. Message figures come from platform metrics, which arrive in batches and can be up to 5 minutes behind. A viewer whose role cannot query metrics sees a note instead of the figures.

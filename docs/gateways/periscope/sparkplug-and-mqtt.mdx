@@ -1,0 +1,137 @@
+---
+title: Subscribe to Sparkplug B or an MQTT broker
+sidebar_label: Sparkplug B and MQTT
+description: Add a Sparkplug B or MQTT and Unified Namespace input to Periscope, and check the things it proposes from births and topics.
+type: how-to
+sidebar_position: 7
+app:
+  routes: ["/onboarding/gateways"]
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Periscope can join an MQTT broker in two ways. As a Sparkplug B host application it learns the plant from the edge nodes' birth certificates. As a Unified Namespace reader it turns every topic of a tree such as `enterprise/site/area/line/machine/tag` into a measure. For the stages, read [How Periscope works](./how-periscope-works.mdx).
+
+## Before you start
+
+- Periscope is installed and connected. See [Install Periscope and stream your first source](./install.mdx).
+- The broker URL: `tcp://host:1883`, `ssl://host:8883` or `ws://host:port`. If the broker needs a user, get one for Periscope with read access. For TLS, get the CA certificate.
+- For Sparkplug B: the group IDs to listen to, and permission to subscribe to `spBv1.0/<group>/#`. Periscope also publishes `NCMD` to ask an edge node for a rebirth, so it needs that permission too.
+- For a Unified Namespace: your topic filter, such as `lenneform/#`, and the root, the topic prefix above your plant that shouldn't become path elements, such as `lenneform/werk-altena`. Retained messages help: discovery reads what is retained plus whatever arrives within `crawl_wait` (5 seconds).
+
+## Steps
+
+<Tabs groupId="mqtt-kind">
+<TabItem value="sparkplug" label="Sparkplug B" default>
+
+1. Add the input to `periscope.toml`:
+
+   ```toml
+   [[inputs.sparkplug]]
+   alias      = "sparkplug"
+   broker     = "tcp://mosquitto.plant.local:1883"
+   username   = "periscope"
+   password   = "${PERISCOPE_SPARKPLUG_PASSWORD}"
+   groups     = ["altena"]
+   edge_nodes = ["altena/edge-*"]       # globs on group/edge
+   birth_wait = "10s"                   # how long discovery collects births
+   ```
+
+2. To act as the host application that edge nodes wait for, so they store and forward while the host is offline, add a `host_id`. Periscope then publishes `spBv1.0/STATE/<host_id>` retained, with a will:
+
+   ```toml
+   [[inputs.sparkplug]]
+   alias   = "sparkplug-host"
+   broker  = "ssl://broker.plant.local:8883"
+   host_id = "periscope"
+   qos     = 1
+   ```
+
+   Give each Sparkplug input its own `alias`: it forms the client ID `periscope-<alias>`.
+
+3. Run `periscope discover -config /etc/periscope/periscope.toml`.
+
+Periscope maps births like this:
+
+| Sparkplug | Becomes |
+| --- | --- |
+| Group | A path element |
+| Edge node (`NBIRTH`) | A thing with its own metrics |
+| Device (`DBIRTH`) | A thing below its edge node |
+| Metric | A measure: `Process/Temperature` becomes `process_temperature` |
+| Template instance | A thing whose type is the template |
+| `engUnit`, `engLow`, `engHigh`, `Documentation` | The measure's unit, range and description |
+
+Devices that publish the same metrics share a thing type, named after the first device. Rename it before you confirm.
+
+</TabItem>
+<TabItem value="mqtt" label="MQTT / Unified Namespace">
+
+1. Add the input to `periscope.toml`:
+
+   ```toml
+   [[inputs.mqtt]]
+   alias  = "uns"
+   broker = "tcp://mosquitto.plant.local:1883"
+   topics = ["lenneform/#"]
+   root   = "lenneform/werk-altena"     # removed from the placement path
+   ```
+
+2. If payloads aren't a bare value or `{"value": …}`, say where the parts are. Timestamps without an offset need `timezone`:
+
+   ```toml
+   [[inputs.mqtt]]
+   alias            = "line-3"
+   broker           = "ssl://broker.plant.local:8883"
+   username         = "periscope"
+   password         = "${PERISCOPE_MQTT_PASSWORD}"
+   topics           = ["factory/line-3/#"]
+   root             = "factory"
+   value_path       = "data.v"
+   unit_path        = "data.unit"
+   timestamp_path   = "data.ts"
+   timestamp_format = "unix_ms"
+   timezone         = "Europe/Berlin"
+   ```
+
+3. If the machine is higher in the topic than the tag's parent, set `thing_level` to the number of segments after `root` that make the machine. The rest become the measure name:
+
+   ```toml
+   thing_level = 3    # acme/<hall>/<line>/<machine>/… the machine is the thing
+   ```
+
+4. Run `periscope discover -config /etc/periscope/periscope.toml`.
+
+With `root = "lenneform/werk-altena"`, the topic `lenneform/werk-altena/halle-2/linie-3/bandsaege/temperature` is the measure `temperature` of the thing `bandsaege`, placed at `halle-2/linie-3`. An object payload such as `{"pressure": 160.5, "oil_temp": 48}` makes the topic the thing and each field a measure. A retained `<topic>/$meta` object fills in names, units and ranges a payload lacks.
+
+</TabItem>
+</Tabs>
+
+Review and confirm the proposals. See [Approve what Periscope discovers](./approve-discoveries.mdx).
+
+## Check that it worked
+
+`periscope discover` prints your input with a node and thing count and an empty `ERROR` column, then the proposals:
+
+```text
+INPUT      NODES  THINGS  ERROR
+sparkplug  15     3       -
+```
+
+To try either input without a broker of your own, run `periscope sim sparkplug` or `periscope sim uns`.
+
+## If it doesn't work
+
+- **Discovery finds nothing**: for Sparkplug, no edge node published a birth while Periscope listened, or `groups` or `edge_nodes` excludes it. Restart the edge node or make it answer `Node Control/Rebirth`. For a Unified Namespace, nothing is retained or `crawl_wait` is too short. Raise it, and check the filter with an MQTT client.
+- **`not authorized`**: the broker user or ACL. Allow subscribe on the filter.
+- **`dropped_no_birth` or `dropped_unknown_metric` grows**: data arrives for a node or metric whose birth Periscope hasn't seen. Allow Periscope to publish `NCMD`, or restart the edge node after changing its metrics.
+- **Values are an hour off, or verify reports them in the future**: the payload has local time without an offset. Set `timezone`.
+- **A tag belongs to the wrong thing**: the machine isn't the topic's parent. Set `thing_level`.
+- **`topics_ignored` grows**: more topics than `max_topics` (20,000). Narrow `topics`.
+
+Don't read `spBv1.0/#` as a Unified Namespace. The default `exclude` keeps Sparkplug topics out. More in [Troubleshoot Periscope](./troubleshooting.mdx).
+
+## Related
+
+- [How Periscope works](./how-periscope-works.mdx) · [Configuration reference](./configuration.mdx)

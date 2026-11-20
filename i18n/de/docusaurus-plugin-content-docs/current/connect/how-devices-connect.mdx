@@ -1,0 +1,75 @@
+---
+title: Wie Geräte sich verbinden
+description: Wie sich ein Gerät oder Gateway ausweist, welche Wege zum MQTT-Broker es gibt und was mit einer Nachricht zwischen Gerät und Dashboards passiert.
+sidebar_position: 2
+type: concept
+app:
+  routes: ["/onboarding/things/:id"]
+translated_from: f26536e
+---
+
+Daten kommen hauptsächlich über MQTT in IoT Breeze an. Wer sich verbindet, weist sich mit Zugangsdaten aus, und die Zugangsdaten bestimmen, für welche Things gesendet werden darf: Die Zugangsdaten eines Geräts gelten für sein eigenes Thing, die Zugangsdaten eines Gateways für die Things, die dem Gateway zugeordnet sind. Jede Nachricht wird vor dem Speichern gegen den Thing-Typ des Things geprüft.
+
+```mermaid
+flowchart LR
+  D[Device] -- MQTT --> B[Broker]
+  G[Gateway] -- MQTT --> B
+  D -- HTTP --> I[tsflux ingest API]
+  B -- credential check --> A[Platform auth]
+  B --> T[tsflux]
+  I --> T
+  T --> S[Stored readings]
+```
+
+## Die Bestandteile {#the-parts}
+
+| Bestandteil | Aufgabe |
+| --- | --- |
+| Thing | Ein Gerät oder Asset mit ID, Thing-Typ und Zugangsdaten. |
+| Thing-Typ | Legt fest, welche Messwerte akzeptiert werden. Eine Nachricht nennt ihn in `thingType`. |
+| Zugangsdaten | Weisen nach, wer sich verbindet: Benutzername und Passwort (Basic) oder ein JWT-Token. Die Zugangsdaten eines Geräts werden mit dem **Geräteschlüssel** des Things signiert und gelten für dieses Thing. Die Zugangsdaten eines Gateways gelten für die Things, die dem Gateway zugeordnet sind. |
+| Gateway | Eine Box, die für viele Things sendet, etwa ein eWON Flexy oder ein Periscope-Agent. Siehe [Wie Gateways funktionieren](../gateways/how-gateways-work.mdx). |
+| Broker | Der MQTT-Endpoint. Er lässt die Plattform die Zugangsdaten prüfen und beschränkt das Gerät dann auf seine eigenen Topics. |
+| tsflux | Der Ingestion-Dienst. Er liest MQTT-Nachrichten und stellt die HTTP-Endpoints bereit. Er prüft, löst auf und speichert jede Nachricht. |
+
+## Wie sie zusammenarbeiten {#how-they-work-together}
+
+Dieselben Zugangsdaten funktionieren mit beiden Protokollen. Über MQTT werden sie einmal geprüft, beim Verbinden des Clients, und der Broker beschränkt das Gerät danach auf seine eigenen Topics. Über HTTP werden sie bei jedem Request geprüft.
+
+tsflux schlägt dann das Thing und seinen Thing-Typ nach. Eine Nachricht wird gespeichert, wenn das Thing existiert, der Thing-Typ passt und nach den Prüfungen mindestens ein Wert oder ein Standort übrig bleibt. Ein Messwert, der nicht im veröffentlichten Thing-Typ steht, wird verworfen, es sei denn, beim Thing-Typ ist **Auto-Schemas Entwicklung** eingeschaltet. Dann wird der Messwert dem Thing-Typ hinzugefügt und sofort eine neue Version veröffentlicht. Siehe [Entwürfe, Veröffentlichen und Versionen](../model/drafts-and-versions.mdx).
+
+## Drei Wege zum Broker {#three-ways-onto-the-broker}
+
+| Wer sich verbindet | Zugangsdaten | Veröffentlicht auf | Sendet für |
+| --- | --- | --- | --- |
+| Ein Gerät | Seine eigenen Gerätezugangsdaten | `tenant/<tenantId>/device/<deviceId>/telemetry` | Sein eigenes Thing. |
+| Ein MQTT-Gateway | Die Zugangsdaten des Gateways, die Sie beim Hinzufügen des Gateways ausstellen | `tenant/<tenantId>/gateway/<gatewayId>/device/<thing>/telemetry`, oder ein JSON-Array für mehrere Things auf `tenant/<tenantId>/gateway/<gatewayId>/telemetry` | Things, die dem Gateway zugeordnet sind. |
+| Periscope | Gateway-Zugangsdaten, die es nach dem Onboarding mit einem Code selbst anfordert | Dieselben Gateway-Topics oder HTTP- und Stream-Ingest | Things, die dem Gateway zugeordnet sind und die es auch anlegen kann. |
+
+Die Nachricht eines Gateways für ein Thing, das ihm nicht zugeordnet ist, wird verworfen und am Gateway gezählt. Die genauen Topics und Client-IDs stehen unter [MQTT-Topics und Client-ID](./mqtt-topics.mdx).
+
+## Das passende Protokoll wählen {#choosing-between-protocols}
+
+| Sie möchten | Verwenden |
+| --- | --- |
+| Eine dauerhafte Verbindung, wenig Overhead, Befehle zurück an das Gerät | [MQTT](./mqtt.mdx) |
+| Aus einem Skript, von einem Server oder einem Gerät senden, das nur HTTP spricht, mit einer Antwort pro Request | [HTTP](./http.mdx) |
+| Einen InfluxDB-Client, Telegraf oder einen vorhandenen Line-Protocol-Writer weiterverwenden | [Line Protocol](./line-protocol.mdx) |
+| Ohne Hardware testen | [Ein Gerät simulieren](./simulate.mdx) |
+| Viele Geräte hinter einer Box, die MQTT spricht | [Ein MQTT-Gateway](../gateways/mqtt-gateway.mdx) |
+| SPSen, OPC-UA-Server oder Modbus-Geräte vor Ort | [Periscope](../gateways/periscope/index.mdx) als Gateway |
+
+Befehle laufen nur über MQTT und nur zu einem Gerät, das in diesem Moment verbunden ist.
+
+## Grenzen {#limits}
+
+| Grenze | Wert |
+| --- | --- |
+| MQTT-Versionen und QoS | 3.1.1, QoS 0 und 1. |
+| HTTP-Body | 10 MiB. |
+| Woher Port und TLS-Einstellung kommen | Von Ihrem Deployment. Die **Gateway-URL** unter **Verbindungsinformationen** zeigt sie. |
+
+## Verwandte Seiten {#related}
+
+- [MQTT-Topics und Client-ID](./mqtt-topics.mdx) · [Ingest-Endpoints und Statuscodes](./ingest-endpoints.mdx)
+- [Thing-Typen, Things und Interfaces](../model/things-and-types.mdx)

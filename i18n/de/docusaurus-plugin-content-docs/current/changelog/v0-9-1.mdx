@@ -1,0 +1,31 @@
+---
+title: "0.9.1"
+description: "Veröffentlicht am 12. Februar 2026: Korrekturen bei der Anmeldung, eine Wartungsseite und eine Änderung am Request für Test-Mail senden."
+type: reference
+date: 2026-02-12
+sidebar_position: 8
+translated_from: 70da89f
+---
+
+Veröffentlicht am 12. Februar 2026. Dieses Release behebt den Anmeldeablauf und mehrere Darstellungsprobleme bei Dashboards und fügt eine Wartungsseite hinzu.
+
+## Neu {#new}
+
+- Eine Wartungsseite.
+
+## Verbessert {#improved}
+
+- Navigation: Die Seitenleiste hat ein neues Farbschema.
+
+## Behoben {#fixed}
+
+- Anmeldung: Der Login-Ablauf ist korrigiert.
+- Events: Beim Anlegen eines Events wird jetzt geprüft, dass sein Event-Typ der Root-Gruppe zugewiesen ist.
+- Widgets: Die Höhe des Carousel-Widgets und das Padding des Gauge-Widgets (Linie und Kreis) sind korrigiert.
+- Dashboards: Die doppelte Bildlaufleiste ist entfernt.
+- Gruppen und Things: Die fehlenden Schaltflächen zum Bearbeiten sind wieder da.
+
+## Inkompatible Änderungen {#breaking-changes}
+
+- Der Request „Test-Mail senden“ in der OCB-API verwendet jetzt `POST` statt `GET`, und der separate Endpoint zum Senden von Mails entfällt. Wenn Sie diese Endpoints aufrufen, stellen Sie Ihren Client für „Test-Mail senden“ auf `POST` um.
+{/* TODO(product): confirm the exact endpoint paths affected so customers can find them */}

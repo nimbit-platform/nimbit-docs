@@ -1,0 +1,106 @@
+---
+title: Fehler und Limits
+description: Fehlerformate, Statuscodes, Retry-Regeln sowie Raten- und Größenlimits der APIs tsflux, nbq und OCB.
+type: reference
+sidebar_position: 5
+translated_from: e16cae7
+---
+
+Jede API hat ihr eigenes Fehlerformat. Diese Seite listet sie auf, dazu die Statuscodes, die Sie bekommen können, und die Limits, die der Code durchsetzt.
+
+## Fehlerformate {#error-formats}
+
+| API | Body |
+| --- | --- |
+| tsflux | `{"code": 400, "message": "..."}`. Abgelehnte Zugangsdaten sind `{"error": "Unauthorized"}`. |
+| nbq | `{"code": <number>, "message": "...", "data": {}}`. Abgelehnte Zugangsdaten sind `{"error": "Unauthorized"}`. |
+| OCB | Vertragsfehler: `{"defined": true, "code": "...", "status": 400, "message": "...", "data": {}}`. Andere Fehler: `{"message": "...", "msgCode": "...", "type": "ocb"}`. |
+| Schlüsselaustausch | `{"error": "...", "error_description": "..."}` (RFC 6749). |
+
+## tsflux {#tsflux}
+
+Alle Schreib-Endpoints antworten gleich: `/api/v1/message/structured`, `/api/v1/message/async-structured`, `/api/v1/write/json`, `/api/v1/{tenant}/{thingType}/device/{id}/telemetry`, `/api/v1/write/line-protocol` sowie die InfluxDB-kompatiblen `/write` und `/api/v2/write` im Host-Root.
+
+| Status | Bedeutung | Was zu tun ist |
+| --- | --- | --- |
+| `200` | Alle Nachrichten gespeichert. Body: `{"message": "success", "processed": <n>, "elapsed_ms": <n>}`. | |
+| `204` | Alle Zeilen gespeichert, bei `/write` und `/api/v2/write`. | |
+| `207` | Einige Nachrichten gespeichert. Body: `{"message": "partially stored", "processed": <n>, "failed": [{"index": 0, "status": 422, "error": "..."}]}`. | Senden Sie nur die aufgeführten `index`-Werte erneut, deren `status` `503` ist. |
+| `400` | Der Request ist ungültig: ungültiges JSON, leerer Body, fehlender `thingType`, weder `data` noch `geo`, ein `tenant` oder eine `id`, die nicht zu den Zugangsdaten passt. | Korrigieren Sie den Request. Kein Retry. |
+| `401` | Zugangsdaten fehlen, sind falsch oder abgelaufen. | Prüfen Sie [Authentifizierung](./authentication.mdx). |
+| `413` | Body größer als 10 MiB. | Teilen Sie den Batch auf. |
+| `422` | Die Pipeline lehnt die Nachricht ab und lehnt sie erneut ab. | Korrigieren Sie die Nachricht. Kein Retry. |
+| `429` | Zu viele Schreib-Requests gleichzeitig. Trägt `Retry-After: 1`. | Wiederholen Sie nach der Wartezeit. |
+| `503` | tsflux konnte die Nachricht jetzt nicht annehmen oder den Tenant nicht nachschlagen. Trägt `Retry-After: 1`. | Wiederholen. Ein Retry kann eine Nachricht doppelt speichern. |
+
+Bei den InfluxDB-kompatiblen Endpoints antwortet ein teilweise gespeicherter Batch nie mit `207`. Ein Batch mit Fehlern, bei denen sich ein erneutes Senden lohnt, antwortet mit `503` (senden Sie den ganzen Batch erneut, gespeicherte Zeilen werden erneut gespeichert). Ein Batch mit nur dauerhaften Fehlern antwortet mit `400` und `partial write`.
+
+## nbq {#nbq}
+
+Lesen Sie immer zuerst den HTTP-Status. Der `code` wird über Status hinweg geteilt.
+
+| Status | `code` | Bedeutung |
+| --- | --- | --- |
+| `400` | 1 | Ungültiger Request, Filter oder ungültige Aggregation. |
+| `401` | | Fehlendes oder ungültiges Token, oder der API-Schlüssel wurde widerrufen. |
+| `403` | 2 | Dem Token fehlt die Berechtigung der Route. |
+| `403` | 7, 8 | Der Zugriff auf das Thing oder die Daten wird durch Eigentümerschaft oder Rolle verweigert. |
+| `404` | 2, 14 | Nicht gefunden (14: Event). |
+| `409` | 2 | Konflikt. |
+| `422` | 4 | Ein Abfragelimit ist überschritten, zum Beispiel mehr Zeilen als das Ergebnislimit. |
+| `422` | 5, 6 | Keine Datenquelle kann die Abfrage bedienen, oder einer Quelle fehlt die Aggregation oder Fähigkeit. `data` nennt den Grund pro Quelle. |
+| `422` | 9 | Der Messwert existiert nicht. |
+| `499` | 11 | Der Client hat die Verbindung zuerst geschlossen. |
+| `500` | 3 | Interner Fehler. Die Meldung ist allgemein gehalten. |
+| `503` | 10, 12 | Die Abfrage hat das Zeitlimit überschritten, oder die Speichereinstellungen des Tenants sind noch nicht bekannt. Trägt `Retry-After: 2`. Wiederholen. |
+
+## OCB {#ocb}
+
+| Status | Bedeutung |
+| --- | --- |
+| `401` | Token fehlt, ist ungültig oder abgelaufen. Ein abgelehnter API-Schlüssel antwortet mit `{"error": "invalid_token", "error_description": "..."}` und `WWW-Authenticate: Bearer error="invalid_token"`. |
+| `403` | Dem Token fehlt eine Berechtigung. `API_KEY_NOT_ALLOWED` bedeutet, dass die Route für angemeldete Personen gedacht ist und Schlüssel-Tokens ablehnt. |
+| `429` | Zu viele Schlüsselaustausche. Body: `{"error": "rate_limited", ...}`; `Retry-After`, wenn bekannt. |
+| `503` | Der API-Schlüssel konnte nicht geprüft werden, weil das Identity Directory nicht verfügbar war. |
+
+Wenn Sie eine Webhook-Aktion über die API auslösen, meldet OCB die Antwort des Ziels: `422`, wenn nichts gesendet wurde, weil URL, Vorlage oder Autorisierung falsch sind, `502`, wenn das Ziel ablehnte oder nicht erreichbar war, `504`, wenn es das Zeitlimit überschritt.
+
+{/* TODO(product): List the stable `msgCode` values clients may depend on, or say they are not part of the contract. */}
+
+## Fehler beim API-Schlüssel-Austausch {#api-key-exchange-errors}
+
+`POST /v1/token`.
+
+| Status | `error` | Bedeutung |
+| --- | --- | --- |
+| `400` | `invalid_request`, `unsupported_grant_type` | Fehlerhafter Form-Body, oder `grant_type` ist nicht `client_credentials`. |
+| `400` | `invalid_scope` | Die Scopes des Schlüssels (oder die angeforderten) umfassen mehrere Apps. Fordern Sie die Scopes einer App an. |
+| `400` | `invalid_target` | Der Schlüssel hält keinen Scope der in `resource` genannten App, oder ein genannter Scope gehört zu einer anderen App. |
+| `401` | `invalid_client` | Der Schlüssel ist fehlerhaft, unbekannt, widerrufen, abgelaufen, inaktiv, wird von einer nicht erlaubten Adresse genutzt, oder sein Besitzer ist kein nutzbares Mitglied mehr. Eine Antwort für alle, mit Absicht. |
+| `404` | | API-Schlüssel sind in diesem Deployment nicht aktiviert. |
+| `429` | `rate_limited` | Zu viele Austausche. Siehe unten. |
+| `503` | `temporarily_unavailable` | Das Directory kann gerade keine Tokens signieren. |
+
+## Limits {#limits}
+
+| Limit | Wert | Bei Überschreitung |
+| --- | --- | --- |
+| tsflux-Request-Body | 10 MiB | `413` |
+| Gleichzeitige tsflux-Schreib-Requests | standardmäßig 1.024 pro Instanz; pro Deployment einstellbar | `429` |
+| nbq-Request-Body | 4 MiB | Request wird abgelehnt |
+| nbq-Zeilen pro Abfrage | standardmäßig 50.000; pro Deployment einstellbar | `422`, Code 4 |
+| OCB-Request-Body | 1 MiB; 16 MiB beim Anlegen oder Ändern eines Canvas | Request wird abgelehnt |
+| Body beim Schlüsselaustausch | 16 KiB | Request wird abgelehnt |
+| Versuche beim Schlüsselaustausch | 6.000 pro Client-Adresse und UTC-Stunde für vorhandene Key-IDs; 60.000 pro Adresse und Stunde für nicht vorhandene IDs | `429` |
+| Schlüsselaustausche pro Schlüssel | 1.200 pro UTC-Stunde, gezählt nachdem das Geheimnis passte | `429` |
+| Access-Token aus einem Schlüssel | 5 Minuten, oder weniger, wenn der Schlüssel früher abläuft | Erneut tauschen |
+| Zustellung über Webhook-Kanal | 10 s Timeout, 5 Versuche | **Fehlgeschlagen** im Zustellprotokoll |
+| Webhook-Aktion | 30 s Timeout, bis zu 3 Retries | Lauf wird als fehlgeschlagen vermerkt |
+
+Die Referenz-Edge-Konfiguration (Traefik) begrenzt außerdem Requests an `/tsflux`, `/nbq` und IoT Breeze auf durchschnittlich 100 pro Sekunde und Client-Adresse, mit einem Burst von 200. Für `/ocb` gilt dort kein solches Limit.
+
+{/* TODO(product): Do production deployments use the same edge rate limits as the repository's Traefik configuration? What does a rate-limited client receive and does it carry `Retry-After`? */}
+
+## Verwandte Seiten {#related}
+
+- [Authentifizierung](./authentication.mdx) · [API-Schlüssel](./api-keys.mdx) · [Webhook-Payloads](./webhooks.mdx)

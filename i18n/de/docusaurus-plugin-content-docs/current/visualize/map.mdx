@@ -1,0 +1,80 @@
+---
+title: Things auf einer Karte zeigen
+description: Things auf der Karte finden, filtern und die Routen mobiler Things abspielen.
+type: how-to
+sidebar_position: 8
+app:
+  routes: ["/geo/map"]
+  primary: true
+  tour: find-your-way-watch
+translated_from: 3041c36
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Auf der Karte sehen Sie jedes Thing, das eine Position gemeldet hat, können sie filtern und nachvollziehen, wohin sich mobile Things bewegt haben. Wie Sie Bereiche zeichnen, die Events auslösen, lesen Sie unter [Einen Geofence zeichnen](../watch/geofence.mdx).
+
+## Bevor Sie beginnen {#before-you-start}
+- Things mit einer Position. Ein Thing, das Breiten- und Längengrad in seinen Daten meldet, setzt sie selbst. Bei anderen tragen Sie auf der Seite des Things mit **Standort festlegen** einen Standort ein. Ohne Position zeigt die Karte **Noch keine Position für ein Thing gemeldet.**
+- Um stattdessen eine Karte auf einem Dashboard zu zeigen, nehmen Sie das Widget **Karte** oder **Thing-Liste & Karte** aus der [Widget-Galerie](./widgets.mdx).
+
+## Things finden {#find-things}
+
+1. Öffnen Sie **Überwachung › Karte**. Der Modus ist **Erkunden**. Die Kopfzeile des Panels lautet **Things auf der Karte** mit einer Anzahl wie `12 von 15 mit einer Position`.
+2. Geben Sie im Suchfeld einen Namen oder eine ID ein. Es zeigt die ersten Treffer. Verfeinern Sie die Suche, um mehr zu sehen.
+3. Schränken Sie die Karte mit Filtern ein. **Zurücksetzen** löscht sie.
+4. Wählen Sie einen Marker, um Name, Verbindung und letzte Position des Things zu sehen. **Thing öffnen** führt zu seiner Seite.
+5. Wählen Sie **An Things anpassen**, um auf die angezeigten Things zu zoomen.
+
+| Filter | Optionen |
+| --- | --- |
+| **Thing-Typ** | Ein oder mehrere Thing-Typen |
+| **Things** | Einzelne Things |
+| **Tags** | Things mit diesen Tags |
+| **Verbindung** | **Online**, **Offline**, **Veraltet · seit über 30 Min. keine Position** |
+| **Letzte Position** | **Beliebiger Zeitpunkt**, **Innerhalb von 15 Min.**, **Innerhalb von 1 Std.**, **Innerhalb von 24 Std.**, **Älter als 24 Std.** |
+| **Bewegung** | **Beliebig**, **In Bewegung**, **Geparkt** |
+| **Geofence** | **Überall** oder **Innerhalb** eines gewählten Geofences |
+
+Mit **Farbe nach** färben Sie Marker nach **Status** oder **Thing-Typ**. Eckige oder pfeilförmige Marker sind mobile Things. Nahe Marker werden zu Gruppen zusammengefasst. Zoomen Sie hinein, um sie aufzulösen.
+
+<Screenshot
+  page="visualize/map"
+  id="01-map-explore"
+  route="/geo/map"
+  state="Explore mode with 15 things around one city, some clustered; side panel open showing Things on map count and filters; legend visible"
+  alt="Die Karte im Modus Erkunden mit dem Filterpanel"
+/>
+
+## Eine Route abspielen {#replay-a-route}
+
+1. Wechseln Sie zu **Routen**.
+2. Wählen Sie im Panel mobile Things aus, höchstens 10.
+3. Wählen Sie ein **Zeitfenster**: **24 Std.**, **7 Tage** oder **30 Tage**.
+4. Wählen Sie **Routen anzeigen**. Die Karte zeichnet jede Route, und das Panel zeigt die Strecke, zum Beispiel `42 km gesamt`.
+5. Wählen Sie **Abspielen**. Ändern Sie die **Wiedergabegeschwindigkeit** und verdünnen Sie mit **Punktabstand** eine dichte Spur.
+
+**Stopps & Standzeit** listet Orte, an denen das Thing geblieben ist. **Mindest-Standzeit** blendet kurze Stopps aus, **Zurückgelegte Strecke hervorheben** markiert, wie weit die Wiedergabe ist, und **An Routen anpassen** zoomt auf die Spuren.
+
+<Screenshot
+  page="visualize/map"
+  id="02-map-routes"
+  route="/geo/map?mode=routes"
+  state="Routes mode with two mobile things selected, 7 days window, routes drawn, Stops and dwell list with three stops"
+  alt="Der Modus Routen mit zwei Routen und der Liste der Stopps"
+/>
+
+Der Modus steht in der Adresse (`?mode=routes`), Sie können ihn also als Lesezeichen speichern. Die Modi **Geofences** und **Ereignisse** behandelt [Einen Geofence zeichnen](../watch/geofence.mdx).
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Für die gefilterten Things erscheinen Marker, und die Anzahl stimmt mit dem Panel überein. Unter **Routen** werden für jedes gewählte Thing Route und Strecke angezeigt.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Ein Thing fehlt**: Es hat keine Position. Legen Sie auf seiner Seite eine fest oder senden Sie Breiten- und Längengrad.
+- **Weniger Things als erwartet**: Ein Filter ist aktiv. Wählen Sie **Zurücksetzen**.
+- **Keine Route gezeichnet**: Das Thing hat im Zeitfenster keine Positionen gesendet. Wählen Sie ein längeres Fenster.
+
+## Verwandte Seiten {#related}
+- [Einen Geofence zeichnen](../watch/geofence.mdx) · [Den Zustand eines Things prüfen](../watch/thing-health.mdx)

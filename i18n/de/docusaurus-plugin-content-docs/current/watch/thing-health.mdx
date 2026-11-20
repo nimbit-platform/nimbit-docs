@@ -1,0 +1,69 @@
+---
+title: Den Zustand eines Things prüfen
+sidebar_position: 3
+description: Sehen, ob ein Thing verbunden ist, wann es zuletzt gemeldet hat, wie seine neuesten Werte lauten und was mit ihm passiert ist.
+type: how-to
+app:
+  routes: ["/monitor/thing-details", "/monitor/thing-details/:id"]
+  primary: true
+  tour: find-your-way-watch
+translated_from: 3041c36
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Finden Sie ein Thing, sehen Sie, ob es verbunden ist und meldet, und lesen Sie seine jüngsten Events und Vorfälle.
+
+## Bevor Sie anfangen {#before-you-start}
+
+- Sie müssen das Thing sehen können: Es gehört zu einer Ihrer Gruppen, oder Ihre Rolle sieht alle Things.
+- Um Things anzulegen oder zu ändern, nutzen Sie stattdessen **Einstellungen › Onboarding › Things**. **Überwachung › Things** ist nur lesbar.
+
+## Das Thing finden {#find-the-thing}
+
+1. Öffnen Sie **Überwachung › Things**.
+2. Suchen Sie im Suchfeld nach dem Namen, oder wählen Sie **Filter**, um nach **Name**, **Gruppe**, **Thing-Typ** oder **Tags** einzugrenzen.
+3. Lesen Sie den **Gerätestatus**: **Verbunden**, **Getrennt** oder **Unbekannt**, mit der Zeit seit der letzten Änderung. Ein Chip **Simuliert** heißt, die Werte stammen aus einer Simulation, nicht vom Gerät.
+4. Wählen Sie den Namen des Things.
+
+Die URL enthält Ihre Suche und Filter, sodass Sie eine gefilterte Liste als Lesezeichen speichern oder einem Kollegen schicken können.
+
+## Die Thing-Seite lesen {#read-the-thing-page}
+
+<Screenshot
+  page="watch/thing-health"
+  id="01-thing-overview"
+  route="/monitor/thing-details/:id"
+  state="Overview tab of a connected thing with three measures reporting, Live values and Trend visible, header with Connected chip and last signal"
+  alt="Eine Thing-Seite mit Kopfbereich, Kennzahlenleiste und Tab Übersicht"
+/>
+
+1. Lesen Sie im Kopfbereich den Chip **Verbindung** und das **letzte Signal**, zum Beispiel `letztes Signal vor 4 Min.`. Fahren Sie mit der Maus darüber für die genaue Zeit. Ein Thing, das nie gemeldet hat, zeigt **Noch kein Signal**.
+2. Lesen Sie die Kennzahlen unter dem Kopfbereich: **Verbindung**, **Telemetrien** (zum Beispiel `3 von 4 melden Werte`), **Ereignisse · 30 Tage** (mit der Zahl der Fehler und Warnungen), **Offene Vorfälle** (zu diesem Thing) und **Letzte Aktion**. Wählen Sie eine Kennzahl, um zu ihrem Tab zu springen.
+3. Lesen Sie im Tab **Übersicht** die **Live-Werte**: den neuesten Messwert jeder Telemetrie mit dem Bereich der letzten 24 Stunden. Mit **Angeheftet** zeigen Sie nur die am Thing-Typ angehefteten Telemetrien.
+4. Lesen Sie den **Verlauf** der letzten Messwerte. Er zeigt höchstens 4 Telemetrien und höchstens 2 verschiedene Einheiten.
+5. Öffnen Sie den Tab **Events**. **Events** listet, was mit dem Thing passiert ist. **Vorfälle** listet die Vorfälle dazu. **In Vorfällen öffnen** führt zur vollständigen Liste.
+
+:::info Letztes Signal ist nicht dasselbe wie Verbunden
+**Verbunden** kommt aus dem Verbindungszustand des Things. **Letztes Signal** ist die Zeit des neuesten Messwerts. Ein Thing kann verbunden sein und dennoch ein altes letztes Signal haben, wenn es nur bei einer Änderung sendet.
+:::
+
+Um eine Telemetrie über längere Zeit darzustellen, öffnen Sie den Tab **Schema**, wählen die Telemetrie und wählen **In Explore öffnen**. Siehe [Telemetrie über die Zeit untersuchen](./explore-telemetry.mdx).
+
+Um ein Problem von Hand zu melden, öffnen Sie **⋯ › Problem melden**. Siehe [Einen Vorfall bearbeiten](./work-an-incident.mdx).
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Sie können sagen, ob das Thing verbunden ist, wann es zuletzt gemeldet hat und ob es offene Vorfälle hat.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Die Liste ist leer**: **Bevor Sie ein Thing erstellen können, müssen Sie einen Thing Typ erstellen** heißt, Ihr Tenant hat noch keine Thing-Typen. **Erstellen Sie zuerst ein Thing** heißt, es gibt Thing-Typen, aber keine Things.
+- **Live-Werte zeigt Noch keine Daten**: Das Thing hat nie gemeldet. Öffnen Sie **⋯** und wählen Sie **Daten senden** für eine Nachricht oder **Gerät simulieren…** für einen Lauf. Siehe [Ein Gerät simulieren](../connect/simulate.mdx). Für echte Hardware öffnen Sie den Tab **Verbindungen**.
+- **Ein Tab fehlt oder ist ausgegraut**: Manche Tabs erscheinen nur für Rollen, die sie nutzen dürfen, und ein Tab ohne Inhalt bleibt ausgegraut.
+
+## Verwandte Seiten {#related}
+
+- [Events, Vorfälle und Benachrichtigungen](./events-incidents-notifications.mdx)
+- [Event-Typen](./event-types.mdx)
+- [Einen Geofence zeichnen](./geofence.mdx)

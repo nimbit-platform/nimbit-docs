@@ -1,0 +1,57 @@
+---
+title: Prüfprotokoll
+description: Was das Prüfprotokoll aufzeichnet, seine Spalten und Filter und was der Änderungsdialog zeigt.
+type: reference
+sidebar_position: 11
+app:
+  routes: ["/manage/audit-log"]
+translated_from: b6ed908
+---
+
+Das Prüfprotokoll zeichnet auf, wer Things, Thing-Typen, Gruppen und Benutzer erstellt, geändert oder gelöscht hat. Es ist schreibgeschützt und listet die neuesten Einträge zuerst. Sie öffnen es unter **Administration › Prüfprotokoll**. Nur die Rolle **Administrator** darf es lesen.
+
+## Spalten {#columns}
+
+| Spalte | Zeigt |
+| --- | --- |
+| **Zeit** | Wann die Änderung stattfand. |
+| **Ressource** | Die Art des Datensatzes. |
+| **Referenz** | Name oder ID des Datensatzes. |
+| **Aktion** | **Erstellt**, **Aktualisiert** oder **Gelöscht**. |
+| **Was geändert wurde** | Die Felder, die sich in dieser Speicherung geändert haben. |
+| **Ausgeführt von** | Eine Person, ein **API-Schlüssel** oder das System. |
+
+## Filter {#filters}
+
+| Filter | Werte |
+| --- | --- |
+| **Ressource** | Eines oder mehrere von Things, Thing Typen, Gruppen, Benutzer. |
+| **Aktion** | Eines oder mehrere von erstellt, aktualisiert, gelöscht. |
+| **Ausgeführt von** | Eine Person. |
+| Zeitraum | Letzte 24 Stunden, 7, 30 oder 90 Tage, letztes Jahr oder gesamter Zeitraum. |
+| **Nach Referenz-ID suchen** | Der Verlauf eines einzelnen Datensatzes. |
+
+**Filter zurücksetzen** setzt sie zurück. Die Filter stehen in der Seitenadresse, deshalb öffnet ein Link die gefilterte Liste ab ihrer ersten Seite.
+
+## Änderungsdialog {#change-dialog}
+
+Wählen Sie einen Eintrag, um seine Änderung zu sehen.
+
+| Element | Zeigt |
+| --- | --- |
+| **Feld** | Jedes Feld, das sich geändert hat. |
+| **Zuletzt erfasster Wert** | Der Wert aus dem vorherigen Eintrag für diesen Datensatz. |
+| **Neuer Wert** | Der Wert nach dieser Änderung. |
+| **Öffnen** | Den Datensatz, falls er noch existiert. |
+| **Rohdaten der Änderung anzeigen (JSON)**, **JSON kopieren** | Die gespeicherte Änderung. |
+
+Der zuletzt erfasste Wert stammt aus früheren Einträgen. Sind ältere Änderungen nicht geladen, kann ein Wert fehlen. Ein Feld, das auf leer gesetzt wurde, wird nicht erfasst.
+
+Die Detailseite jedes Things hat außerdem einen Tab **Prüfprotokoll** mit den Änderungen an genau diesem Thing. Er braucht dieselbe Berechtigung.
+
+{/* TODO(product): How long are audit log entries kept? */}
+
+## Verwandte Seiten {#related}
+
+- [Rollen und Berechtigungen](./roles.mdx)
+- [Daten löschen](./delete-data.mdx)

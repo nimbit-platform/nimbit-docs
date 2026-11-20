@@ -1,0 +1,55 @@
+---
+title: Zustand durch Farbe, Icon und Bewegung zeigen
+sidebar_label: Zustände und Farben
+description: Regeln hinzufügen, damit ein Element Farbe, Icon und Bewegung ändert, wenn sein Wert eine Grenze überschreitet.
+type: how-to
+sidebar_position: 4
+app:
+  routes: ["/canvas/:id"]
+  tour: canvas-data
+translated_from: 70da89f
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Setzen Sie Regeln auf ein gebundenes Element, damit Störungen auffallen: Ein Tank wird rot, ein Pumpen-Icon dreht sich, ein Alarm blinkt. Regeln bestimmen einen benannten Zustand, und der Zustand bestimmt, wie das Element aussieht.
+
+## Bevor Sie beginnen {#before-you-start}
+- Eine Rolle, die Canvases aktualisieren darf.
+- Ein Element, das schon an einen Wert gebunden ist. Ohne Bindung bittet der Tab **Zustände**, zuerst einen Live-Wert hinzuzufügen. Siehe [Elemente an Live-Werte binden](./bind-live-values.mdx).
+
+## Schritte {#steps}
+
+1. Öffnen Sie das Canvas, wählen Sie **Canvas Bearbeiten** und wählen Sie das Element.
+2. Öffnen Sie den Tab **Zustände**. **Zustand aus** zeigt den aktuellen Wert.
+3. Fügen Sie eine Regel hinzu. Wählen Sie unter **Wenn** den Operator und den Wert, zum Beispiel größer als eine Grenze.
+4. Benennen Sie unter **Zustand** den Zustand, zum Beispiel `high alarm`.
+5. Wählen Sie einen **Schweregrad**: **Automatisch**, **Normal**, **Info**, **Warnung**, **Alarm** oder **Störung**. **Automatisch** leitet ihn vom Zustandsnamen ab (fault, alarm, warning), jeder andere Name ist Normal.
+6. Optional: Wählen Sie eine **Farbe**. Ohne sie übernimmt eine Warnung, ein Alarm oder eine Störung die Farbe ihres Schweregrads, und ruhige Zustände behalten das Aussehen des Elements. Für Icon-Elemente können Sie auch ein **Icon** und eine **Bewegung** wählen: **Blinken**, **Uhr**, **Drehen** oder **Keine Bewegung**.
+7. Fügen Sie mit **Sonst wenn** weitere Regeln hinzu und mit **Sonst** eine Rückfallregel. Regeln laufen von oben nach unten, und der erste Treffer setzt den Zustand. Mit **Nach oben** und **Nach unten** ordnen Sie sie.
+8. Wählen Sie bei einem Textelement **Gilt für**: **Ganzen Text** oder **Nur diesen Wert**.
+9. Wählen Sie **Vorschau** und dann **Speichern**.
+
+<Screenshot
+  page="visualize/canvas/states-and-colors"
+  id="01-states-tab"
+  route="/canvas/:id"
+  state="Inspector States tab for a Value element with two rules: greater than 80 named high alarm with severity Alarm, and Otherwise named normal"
+  alt="Der Tab Zustände mit zwei Regeln für ein Wert-Element"
+/>
+
+Bei einem Element **Zustandsverlauf** heißen die Regeln stattdessen **Zustände**: Jede hat einen Operator (**Gleich**, **Unter**, **Zwischen** oder **Ab**) und eine Farbe. Werte, die zu keinem Zustand passen, bleiben leer. Sind keine Zustände definiert, erhält jeder verschiedene Wert eine eigene Farbe.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+In der **Vorschau** zeigt das Element Farbe, Icon und Bewegung des passenden Zustands. Ist ein Wert im Alarm, listet ihn ein Chip in der Kopfzeile des Canvas, und der Chip springt zum nächsten Alarm.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Das Element behält sein normales Aussehen**: Die passende Regel hat den Schweregrad Normal und keine Farbe. Wählen Sie eine Farbe oder erhöhen Sie den Schweregrad.
+- **Eine Regel trifft nie zu**: Eine frühere Regel trifft zuerst zu. Ordnen Sie die Regeln neu.
+- **Das Element wird Veraltet**: Der Wert wird nicht mehr aktualisiert. Setzen Sie **Daten als veraltet betrachten nach** im Tab **Daten**.
+- **Zu viele verschiedene Werte zum Einfärben**: Ein Verlauf über eine Text-Telemetrie hat keine Zustände. Definieren Sie Zustände im Inspektor.
+
+## Verwandte Seiten {#related}
+- [Elemente an Live-Werte binden](./bind-live-values.mdx) · [Referenz des Canvas-Editors](./editor-reference.mdx)

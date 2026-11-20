@@ -1,0 +1,101 @@
+---
+title: eWON Flexy anbinden
+description: Die Tags eines eWON Flexy über ein MQTT-Geräte-Gateway an IoT Breeze senden, mit der Konfigurationsdatei aus IoT Breeze und einem BASIC-Programm auf dem Gerät.
+type: how-to
+sidebar_position: 5
+app:
+  routes: ["/onboarding/gateways", "/onboarding/gateways/:id"]
+translated_from: 06bddd1
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Binden Sie einen eWON Flexy so an, dass ein Satz MQTT-Zugangsdaten auf dem Gerät die Daten jeder SPS und jedes Zählers dahinter sendet. Ein Flexy kann Periscope nicht ausführen, daher spricht er mit einem BASIC-Programm MQTT mit der Plattform. Das Modell erklärt [Wie Gateways funktionieren](./how-gateways-work.mdx).
+
+:::warning Noch nicht auf Hardware getestet
+Die Topics, die Regel für die Client-ID, die Payload und die Limits unten sind aus der Plattform abgelesen. Die Flexy-Seite wurde noch auf keinem Gerät ausgeführt. Punkte, die Sie auf Ihrem Gerät prüfen müssen, sind mit **Nicht verifiziert** markiert.
+:::
+
+## Voraussetzungen {#before-you-start}
+
+- Sie brauchen die Berechtigung **Gateway** (die eingebaute Rolle **Administrator** hat sie).
+- Ein Flexy mit Netzwerkverbindung zum MQTT-Broker der Plattform. Soweit bekannt, kann das Gerät nicht mehrere MQTT-Sitzungen halten, daher tragen die Gateway-Zugangsdaten alle seine Geräte.
+- Die Things für Ihre SPSen und Zähler existieren in IoT Breeze, mit ihren Thing-Typen und Messwerten. Siehe [Ein Thing registrieren](../model/register-thing.mdx).
+- Das BASIC-Programm. Es ist noch kein öffentlicher Download; siehe [Downloads](../downloads.mdx).
+
+## Schritte {#steps}
+
+1. Fügen Sie in IoT Breeze ein Gateway vom Typ **MQTT-Gerät** hinzu und setzen Sie **Format der Konfigurationsdatei** auf **eWON-Flexy-BASIC-Parameter (.bas)**. Folgen Sie [Das Gateway hinzufügen](./mqtt-gateway.mdx#add-the-gateway).
+2. Wählen Sie **Konfiguration herunterladen**, bevor Sie die Seitenleiste schließen. Das Passwort steht nur jetzt in der Datei. Eine Datei, die Sie später herunterladen, enthält einen Platzhalter.
+3. Übertragen Sie die Werte auf das Gerät, so wie das Programm sie erwartet. Die Datei ist eine Liste von BASIC-Kommentarzeilen, das Laden führt also nichts aus. Der Aufbau der Datei ist vorläufig, bis er mit dem Programm abgeglichen ist.
+
+   | Parameter in der Datei | Bedeutung |
+   | --- | --- |
+   | `NIMBIT_MQTT_HOST`, `NIMBIT_MQTT_PORT` | Der Broker. |
+   | `NIMBIT_MQTT_TLS` | `1`, wenn der Broker TLS verlangt, `0`, wenn nicht. |
+   | `NIMBIT_MQTT_USERNAME`, `NIMBIT_MQTT_PASSWORD` | Die Gateway-Zugangsdaten. |
+   | `NIMBIT_MQTT_CLIENT_ID` | Das **Client-ID-Präfix**, `<tenant>:gateway:<gateway id>`. Sie können `:<suffix>` anhängen. |
+   | `NIMBIT_MQTT_TOPIC_PREFIX` | Das Präfix jedes Topics. |
+   | `NIMBIT_MQTT_TELEMETRY_TOPIC` | Die Daten eines Things. Ersetzen Sie `<thing>` durch die ID oder Alternate-ID des Things. |
+   | `NIMBIT_MQTT_BATCH_TOPIC` | Ein Array für mehrere Things. |
+   | `NIMBIT_MQTT_STATUS_TOPIC` | Der eigene Zustand des Gateways. |
+   | `NIMBIT_MQTT_GATEWAY_ID`, `NIMBIT_MQTT_TENANT` | Die IDs in den Topics. |
+
+4. Laden Sie das Programm auf das Gerät. Es soll sich mit MQTT 3.1.1 verbinden, mit QoS 1 und ohne Retain veröffentlichen und sich bei einem Verbindungsabbruch mit Back-off neu verbinden. Zeitgesteuert liest es die Tags, gruppiert sie nach Gerät und veröffentlicht sie. Alle 5 Minuten sendet es den Zustand des Gateways auf das Status-Topic. **Nicht verifiziert**: wie sich die BASIC-Befehle auf Ihrer Firmware verhalten.
+5. Veröffentlichen Sie auf einem von zwei Wegen. Beide sind mit ihren Prüfungen beschrieben unter [Daten vieler Geräte über ein MQTT-Gateway senden](./mqtt-gateway.mdx#publish-data).
+   - **Eine Nachricht pro Gerät** an `tenant/<tenant>/gateway/<gateway id>/device/<thing>/telemetry`.
+   - **Ein Batch pro Zyklus**: ein JSON-Array an `tenant/<tenant>/gateway/<gateway id>/telemetry`, ein Element pro Gerät, jedes mit `id`.
+6. Ordnen Sie in IoT Breeze die Things der Geräte dem Gateway zu: Öffnen Sie das Gateway, wählen Sie den Tab **Things** und dann **Things zuordnen**. Siehe [Die Things hinter einem Gateway verwalten](./things-behind-a-gateway.mdx).
+
+<Screenshot
+  page="gateways/ewon-flexy"
+  id="01-flexy-gateway-online"
+  route="/onboarding/gateways/:id"
+  state="Health tab of an MQTT device gateway named after a Flexy, online, with the Traffic card showing messages per minute"
+  alt="Ein Flexy-Gateway, online, mit seinem Datenverkehr"
+/>
+
+Geräte-IDs und Messwertnamen dürfen auf dem Topic pro Gerät weder `/`, `.`, `+`, `#` noch Leerzeichen enthalten. Ein Tag-Name wie `MB_10.2.0.15_U6_Temp` kann daher nicht unverändert eine Geräte-ID sein. Wählen Sie für das Thing eine Alternate-ID ohne Punkt oder senden Sie einen Batch und nennen Sie das Thing in `id`.
+
+Ist die Uhr des Geräts nicht zuverlässig, lassen Sie `time` weg. Die Plattform verwendet dann die Ankunftszeit.
+
+Ein Gerät, das das Programm nicht erreicht, muss im Batch fehlen. Senden Sie seine letzten Werte nicht erneut.
+
+## Die Plattformseite ohne das Gerät ausprobieren {#try-the-platform-side-without-the-unit}
+
+NimBit hat ein Node-Skript, `flexy-sim.mjs`, das wie ein Flexy veröffentlicht. Es braucht Node 22 und das Paket `mqtt`. `--dry-run` gibt die Topics und Payloads aus und braucht beides nicht.
+
+```sh
+export FLEXY_TENANT=<tenant>
+export FLEXY_USERNAME=<username>
+export FLEXY_PASSWORD=<password>
+node flexy-sim.mjs --broker <mqtt or mqtts>://<host>:<port> --gateway-id <gateway id> \
+  --mode batch --status --count 1
+```
+
+Das Skript leitet Geräte-IDs und Thing-Typ-Namen aus seinen Optionen ab, setzen Sie also `--devices`, `--device-prefix` und `--thing-type` passend zu Ihren Things. `--foreign <thing id>` fügt ein Element für ein Thing eines anderen Gateways hinzu, `--unknown` eines für ein Thing, das nicht existiert. Beide müssen als Verworfenes erscheinen, `not_member` und `unknown_thing`, während die Things des eigenen Gateways gespeichert werden.
+
+{/* TODO(product): Is flexy-sim.mjs available to customers, and where is it downloaded from? It lives in the platform repository under tools/gateways/ewon-flexy/simulator. */}
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Öffnen Sie das Gateway. Der Tab **Zustand** zeigt **Online** nach der ersten Zustandsmeldung, und **Nachrichten pro Minute** und **Aktive Things** liegen über null, solange Geräte senden. Öffnen Sie eines der Things: Seine neuesten Werte sind da.
+
+## Wenn es nicht klappt {#if-it-doesnt-work}
+
+- **Der Broker lehnt die Verbindung ab**: Prüfen Sie die Client-ID gegen das **Client-ID-Präfix** und das Passwort. **Nicht verifiziert**: ob das Gerät eine Client-ID von etwa 40 Zeichen mit Doppelpunkten akzeptiert, außerdem einen Benutzernamen von etwa 40 und ein Passwort von etwa 200 Zeichen.
+- **Keine Verbindung über TLS**: **Nicht verifiziert**: ob sich das Gerät mit einem TLS-Broker verbindet, dessen Zertifikat von einer öffentlichen Stelle stammt, ohne eine CA, die Sie hochladen, und welche TLS-Versionen es unterstützt. Entscheiden Sie anhand der Zeile **TLS** aus IoT Breeze.
+- **Eine Veröffentlichung wird bestätigt, aber nichts wird gespeichert**: Das Topic liegt außerhalb des **Topic-Präfix**. **Nicht verifiziert**: das längste Topic und die größte Payload, die das `PUBLISH` des Geräts annimmt.
+- **Das Gateway ist Offline, obwohl Daten ankommen**: Nur die Zustandsmeldung setzt es auf online. Prüfen Sie das Status-Topic und den 5-Minuten-Timer.
+- **Verworfenes**: Lesen Sie den Grund auf der Karte **Datenverkehr**. `not_member` heißt, das Thing ist nicht zugeordnet, `unknown_thing`, dass das Thing oder sein Thing-Typ nicht existiert.
+
+**Auf Hardware nicht verifiziert**: wie das Gerät puffert, solange die Verbindung unterbrochen ist, und was ein erneutes Senden bewirkt; was ein Tag einer getrennten SPS liest; ob das BASIC-Programm einen Code über HTTPS einlösen kann, statt das Passwort zu halten.
+
+{/* TODO(product): The BASIC program (script/nimbit.bas) is not in the repository yet. Confirm how it is distributed, the firmware version it was tested on, and the final layout of the .bas parameter file. */}
+
+## Verwandte Seiten {#related}
+
+- [Daten vieler Geräte über ein MQTT-Gateway senden](./mqtt-gateway.mdx)
+- [Die Things hinter einem Gateway verwalten](./things-behind-a-gateway.mdx)
+- [Gateway-Referenz](./gateway-reference.mdx)
+- [MQTT-Topics und Client-ID](../connect/mqtt-topics.mdx)

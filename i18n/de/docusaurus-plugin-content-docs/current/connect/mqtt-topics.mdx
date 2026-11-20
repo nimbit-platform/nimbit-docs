@@ -1,0 +1,102 @@
+---
+title: MQTT-Topics und Client-ID
+description: Broker-Adresse, Zugangsdaten, Client-IDs, Topics, QoS und Berechtigungen für Geräte und Gateways, die sich über MQTT verbinden.
+sidebar_position: 4
+type: reference
+app:
+  routes: ["/onboarding/things/:id"]
+translated_from: f26536e
+---
+
+Alles, was ein Gerät oder ein Gateway wissen muss, um sich mit dem IoT-Breeze-MQTT-Broker zu verbinden. Wie Sie eine Nachricht senden: [Daten über MQTT senden](./mqtt.mdx). Wie ein Gateway sendet: [Daten vieler Geräte über ein MQTT-Gateway senden](../gateways/mqtt-gateway.mdx).
+
+## Broker {#broker}
+
+| Eintrag | Wert |
+| --- | --- |
+| Adresse | **Gateway-URL** unter **Verbindungsinformationen**, zum Beispiel `mqtt://<host>:1883`. |
+| Port und TLS | Standard der Plattform ist Port `1883` ohne TLS. Ihr Deployment kann einen anderen Port oder TLS setzen: `mqtts://` in der **Gateway-URL** bedeutet TLS. |
+| MQTT-Version | 3.1.1. |
+| QoS | 0 und 1. Der Broker nimmt kein QoS 2 an. |
+| Max. Payload | 4 MiB. |
+
+Um Ihre Werte zu finden, öffnen Sie das Thing (**Einstellungen › Onboarding › Things**), gehen Sie zu **Verbindungen** und wählen Sie **Verbindungsinformationen**. Die Seitenleiste heißt **Geräteverbindung**.
+
+## Zugangsdaten {#credentials}
+
+| Einstellung | Wert |
+| --- | --- |
+| Benutzername | **Benutzername** aus den **Verbindungsinformationen**. Er ist die base64url-Kodierung von `<tenantId>/<deviceId>` und für jeden Zugangsdatentyp derselbe. |
+| Passwort | Das Basic-**Passwort** oder das JWT-**Token**. Ein Passwort aus drei durch Punkte getrennten Teilen wird als Token behandelt. |
+
+Eine JWT-Sitzung endet, wenn das Token abläuft. Eine Basic-Sitzung läuft nicht ab. Das Rotieren eines Schlüssels sperrt neue Anmeldungen mit den alten Zugangsdaten, beendet aber keine offenen Verbindungen.
+
+## Client-ID {#client-id}
+
+| Regel | Detail |
+| --- | --- |
+| Erforderliche Form | `<tenantId>:<deviceId>`, wie die **Client-ID** sie zeigt. |
+| Mit Suffix | `<tenantId>:<deviceId>:<suffix>` wird ebenfalls akzeptiert. |
+| Leer | Wird abgelehnt. Senden Sie immer eine Client-ID. |
+| Alles andere | Wird mit `MQTT client id not allowed` abgelehnt. |
+
+Zwei Verbindungen mit derselben Client-ID ersetzen sich gegenseitig. Verwenden Sie einen Suffix, wenn ein Gerät mehrere Clients betreibt.
+
+## Topics {#topics}
+
+| Richtung | Topic | Bedeutung |
+| --- | --- | --- |
+| Publish | `tenant/<tenantId>/device/<deviceId>/telemetry` | Das Gerät sendet [Nachrichten](./message-format.mdx). |
+| Subscribe | `iot/tenant/<tenantId>/device/<deviceId>/cmd/#` | Befehle für das Gerät. |
+| Subscribe | `iot/tenant/<tenantId>/device/<deviceId>/error` | Abgelehnte Nachrichten, mit Grund. |
+
+`<deviceId>` ist die interne ID des Things, wie die **Verbindungsinformationen** sie zeigen, nicht die **Alternative Thing -ID** auf der Seite des Things.
+
+Ein Gerät darf nur in sein eigenes Telemetrie-Topic veröffentlichen und nur seine eigenen Topics `cmd` und `error` abonnieren. Alles andere wird abgelehnt.
+
+## Gateways {#gateways}
+
+Ein Gateway verbindet sich mit eigenen Zugangsdaten und sendet für die Things, die ihm zugeordnet sind. Seine Werte stammen aus den Verbindungsinformationen des Gateways, nicht aus denen eines Things.
+
+| Eintrag | Wert |
+| --- | --- |
+| Benutzername | Die base64url-Kodierung von `<tenantId>/gateway:<gatewayId>`. |
+| Passwort | Das Passwort des Gateways oder ein Gateway-Token. Ein Gateway-Token gilt höchstens zehn Minuten. |
+| Client-ID | `<tenantId>:gateway:<gatewayId>`, optional mit `:<suffix>`. Gerätezugangsdaten können diese Form nicht annehmen. |
+| Sitzung | Endet nach höchstens zehn Minuten. Das Gateway verbindet sich mit denselben Zugangsdaten neu. So wird ein widerrufenes Gateway ausgesperrt. |
+
+| Richtung | Topic | Bedeutung |
+| --- | --- | --- |
+| Publish | `tenant/<tenantId>/gateway/<gatewayId>/device/<thing>/telemetry` | Eine [Nachricht](./message-format.mdx) für ein Thing. `<thing>` ist die ID oder Alternate-ID des Things. |
+| Publish | `tenant/<tenantId>/gateway/<gatewayId>/telemetry` | Ein Gateway-Batch: ein JSON-Array von Nachrichten, die ihr Thing jeweils in `id` nennen. |
+| Subscribe | `iot/tenant/<tenantId>/gateway/<gatewayId>/device/+/cmd/#` | Erlaubt, für Befehle an Things hinter dem Gateway. |
+| Subscribe | `iot/tenant/<tenantId>/gateway/<gatewayId>/device/+/error` | Erlaubt, für Hinweise auf abgelehnte Nachrichten. |
+
+Gateway-Zugangsdaten können nicht auf dem eigenen Topic `tenant/<tenantId>/device/<deviceId>/telemetry` eines Things veröffentlichen. Der Broker bestätigt eine solche Veröffentlichung mit QoS 1, verwirft sie aber. Eine Nachricht für ein Thing, das nicht dem Gateway zugeordnet ist, wird verworfen und am Gateway gezählt; siehe [Zustand und Datenverkehr von Gateways prüfen](../gateways/fleet-health.mdx).
+
+{/* TODO(product): Commands via a gateway are planned (edge gateways plan D12) but nothing publishes on the gateway cmd topics yet. Document sending commands to things behind a gateway once it lands. */}
+
+## Zustellung {#delivery}
+
+| Topic | Verhalten |
+| --- | --- |
+| Telemetry | Wird mit QoS 0 oder 1 angenommen. |
+| `cmd/#` | Wird mit QoS 0 zugestellt, auch bei einem QoS-1-Abonnement. Ein Befehl wird für ein Gerät, das offline ist, nicht in eine Warteschlange gestellt. |
+| `error` | Ein Hinweis für jede Nachricht, die nach der Annahme abgelehnt wurde, etwa bei einem unbekannten Thing-Typ. Best Effort. |
+
+Eine Nachricht mit ungültigem JSON, fehlendem `thingType`, ohne Inhalt oder mit einem `tenant` oder einer `id`, die nicht zum Topic passt, wird auf Broker-Seite ohne Hinweis im Topic `error` verworfen.
+
+{/* TODO(product): The MQTT ingest drops malformed messages and logs them, without publishing to the error topic. Should devices be told? */}
+
+## Fehlerhinweis {#error-notice}
+
+Ein Hinweis im Topic `error` ist ein JSON-Objekt:
+
+| Feld | Bedeutung |
+| --- | --- |
+| `tenant`, `thing`, `thingType` | Was die Nachricht genannt hat. |
+| `stage` | Der Verarbeitungsschritt, der sie abgelehnt hat. |
+| `error` | Der Grund. |
+| `source` | Woher die Nachricht kam. |
+| `time` | Wann sie abgelehnt wurde. |
+| `message` | Die Nachricht, wie tsflux sie vorliegen hatte. |

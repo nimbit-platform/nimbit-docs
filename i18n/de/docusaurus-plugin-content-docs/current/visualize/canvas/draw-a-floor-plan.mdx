@@ -1,0 +1,57 @@
+---
+title: Einen Grundriss zeichnen
+sidebar_label: Grundriss zeichnen
+description: Ein Canvas aus einem Planbild anlegen, Live-Elemente darauf platzieren, anordnen und speichern.
+type: how-to
+sidebar_position: 2
+app:
+  routes: ["/canvas", "/canvas/:id"]
+  primary: true
+  tour: canvas-build
+translated_from: 3041c36
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Starten Sie ein Canvas mit einem Grundriss oder einem Maschinenfoto und platzieren Sie Elemente darauf. Die Werte kommen in [Elemente an Live-Werte binden](./bind-live-values.mdx). Die Ideen dahinter erklärt [Wie ein Canvas funktioniert](./how-canvas-works.mdx).
+
+## Bevor Sie beginnen {#before-you-start}
+- Eine Rolle, die Canvases anlegen und aktualisieren darf. **Canvas** erscheint nur für solche Rollen im Menü.
+- Ein Planbild: PNG, JPG, SVG oder WebP, bis zu 20 MB. Exportieren Sie ein PDF zuerst als Bild.
+- Die Interfaces, die Ihre Things umsetzen, wenn Sie ein Canvas für viele Things möchten.
+
+## Schritte {#steps}
+
+1. Öffnen Sie **Überwachung › Canvas** und wählen Sie **Neuen Canvas erstellen**.
+2. Geben Sie einen Namen ein.
+3. Wählen Sie die Interfaces, die das Canvas liest. Mit Interfaces wählen Betrachter ein Kontext-Thing, und ein Canvas bedient jedes passende Thing. Ohne sie ist jedes Element an ein festes Thing gebunden.
+4. Wählen Sie unter **Ausgangspunkt** die Option **Aus Bild** und legen Sie das Canvas an. Der Editor öffnet sich.
+5. Legen Sie unter **Bild hinzufügen** Ihren Plan ab oder suchen Sie ihn. Lassen Sie **Als Hintergrund verwenden** aktiv, wenn der Plan hinter allem gesperrt sein soll.
+6. Öffnen Sie links die Bibliothek **Elemente**. Klicken Sie ein Element an, um es hinzuzufügen, oder ziehen Sie es an eine Stelle im Plan. **Elemente und Symbole suchen** oder die Taste <kbd>A</kbd> findet eines nach Namen. Für Werte beginnen Sie im Abschnitt **Daten** mit **Wert**, **Gauge** oder **Füllstand**.
+7. Zeichnen Sie mit der Werkzeugleiste um den Plan herum: Formen, Zonen und Text. Drücken Sie <kbd>C</kbd>, um Anlagen mit Rohrleitungen zu verbinden. **Einrasten** und **Raster** richten Elemente aus. Fahren Sie über ein Werkzeug, um seine Taste zu sehen.
+8. Ordnen Sie an. Ziehen Sie zum Verschieben und klicken Sie mit Umschalt, um mehrere auszuwählen. Die Leiste über einer Auswahl richtet aus, verteilt, gruppiert, dupliziert und sperrt. Ein Rechtsklick bietet **In den Vordergrund**, **In den Hintergrund** und mehr. <kbd>Strg</kbd>+<kbd>Z</kbd> macht rückgängig.
+9. Öffnen Sie **Ebenen**, um Elemente umzubenennen, auszublenden und zu sperren und um solche zu finden, die hinter anderen liegen. Elemente, die auf dem Bild liegen, hängen darunter und bewegen und skalieren sich mit ihm.
+10. Wählen Sie **Vorschau**, um das Canvas so zu sehen, wie Betrachter es sehen, in beiden Themes.
+11. Wählen Sie **Speichern**. **Speichern und beenden** verlässt außerdem den Editor.
+
+<Screenshot
+  page="visualize/canvas/draw-a-floor-plan"
+  id="01-editor-overview"
+  route="/canvas/:id"
+  state="Canvas editor with a floor plan image as background, the Elements library open on the left, three Value elements placed on the plan, Layers and the Inspector on the right"
+  alt="Der Canvas-Editor mit Grundriss, Elementbibliothek, Ebenen und Inspektor"
+/>
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Der Status neben den Schaltflächen lautet **Gespeichert**. Öffnen Sie das Canvas aus der Liste: Der Plan erscheint mit Ihren Elementen an ihrem Platz. Noch nicht gebundene Elemente zeigen einen Platzhalter, bis Sie sie binden.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Das Bild wird abgelehnt**: Es ist kein PNG, JPG, SVG oder WebP, oder es ist größer als 20 MB. Exportieren Sie es kleiner neu.
+- **Jemand anderes hat in der Zwischenzeit gespeichert**: Die App meldet **Jemand anderes hat dieses Canvas gespeichert**. Neu laden verwirft Ihre ungespeicherten Änderungen. **Als Kopie speichern** behält Ihre Arbeit.
+- **Das Canvas ist zu groß zum Speichern**: Entfernen Sie Elemente oder teilen Sie es auf mehrere Canvases auf.
+- **Sie haben das Bild ersetzt und Elemente sitzen falsch**: Das neue Bild wird auf die alte Größe skaliert, und die Elemente bleiben an ihrem Platz. Weicht das Seitenverhältnis ab, warnt Sie die App. Prüfen Sie Elemente nahe den Rändern.
+
+## Verwandte Seiten {#related}
+- [Elemente an Live-Werte binden](./bind-live-values.mdx) · [Referenz des Canvas-Editors](./editor-reference.mdx)

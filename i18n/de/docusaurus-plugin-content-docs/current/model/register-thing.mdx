@@ -1,0 +1,71 @@
+---
+title: Ein Thing registrieren
+sidebar_position: 5
+description: Fügen Sie in IoT Breeze ein echtes Gerät oder eine Anlage hinzu und ordnen Sie es einem Thing-Typ, einer Organisation und Gruppen zu.
+type: how-to
+app:
+  routes: ["/onboarding/things", "/onboarding/things/:id"]
+  primary: true
+translated_from: 3041c36
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Registrieren Sie ein echtes Gerät oder eine Anlage, etwa einen Sensor in einem Raum, damit IoT Breeze seine Daten annehmen und den richtigen Personen zeigen kann. Hintergrund: [Thing-Typen, Things und Interfaces](./things-and-types.mdx).
+
+## Bevor Sie beginnen {#before-you-start}
+
+- Ein [Thing-Typ](./create-thing-type.mdx) existiert und sein Schema ist veröffentlicht. Gibt es keinen, bietet die Seite **Erstellen Sie zuerst den Thing Typ** an.
+- Ihre Rolle darf Things anlegen.
+- Sie wissen, welche Organisation und Gruppen das Thing sehen sollen. Mitglieder der gewählten Gruppen können es sehen.
+
+## Schritte {#steps}
+
+1. Öffnen Sie **Einstellungen › Onboarding › Things** und wählen Sie **Thing erstellen**.
+2. Füllen Sie das Formular aus:
+
+   | Feld | Was Sie eingeben |
+   | --- | --- |
+   | **Name** | Ein Name für das Thing, zum Beispiel `Meeting room 1`. Pflicht, bis zu 128 Zeichen. |
+   | **Alternative Thing -ID** | Die ID, die Ihr Gerät verwendet. Pflicht, bis zu 128 ASCII-Zeichen, im gesamten System eindeutig und **lässt sich später nicht ändern**. Geben Sie eine eigene ein, etwa eine Seriennummer, oder wählen Sie **Generieren**. |
+   | **Beschreibung** | Optional. |
+   | **Thing Typ** | Der Typ, von dem dieses Thing eine Instanz ist. Pflicht. Lässt sich später nicht ändern. |
+   | **Übergeordnet** | Optional. Ein anderes Thing, zu dem dieses gehört. |
+   | **Organisation** | Pflicht. |
+   | **Gruppe** | Pflicht. Wählen Sie eine oder mehrere. |
+   | **Tags** | Optionale Such-Tags. |
+
+3. Ist der Konnektor des Thing-Typs Azure IoT Hub, erscheint ein Feld **Authentifizierungsart**: Wählen Sie **SAS-Token** oder **X.509 Certificate**. Es lässt sich später nicht ändern.
+4. Wählen Sie **Speichern**. Die Seite des Things öffnet sich.
+
+{/* TODO(product): What does Authentication type offer for the AWS IoT Core and SAP connectors? ThingForm.tsx lists options only for AZURE (SAS Token, X.509 Certificate) and SAP (X.509 Certificate), and falls back to X.509 for any other connector. */}
+
+<Screenshot
+  page="model/register-thing"
+  id="01-create-thing"
+  route="/onboarding/things"
+  state="Create new thing drawer filled in: name, generated alternate ID, thing type, organization and one group selected"
+  alt="Das Formular zum Anlegen eines Things"
+/>
+
+:::tip Wählen Sie eine ID, die in MQTT sicher ist
+Verwenden Sie Buchstaben, Ziffern, `-` und `_`. Die ID wird Teil der MQTT-Client-ID und der MQTT-Topics, in denen `:` eine besondere Bedeutung hat. Eine generierte ID ist immer sicher. Siehe [MQTT-Topics und Client-ID](../connect/mqtt-topics.mdx).
+:::
+
+Legen Sie als Nächstes auf dem Tab **Verbindungen** des Things Zugangsdaten an: [Gerätezugangsdaten anlegen und rotieren](../connect/credentials.mdx). Um Daten zu sehen, bevor die Hardware bereit ist, [simulieren Sie ein Gerät](../connect/simulate.mdx).
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Das Thing erscheint unter **Things** im Tab **Alle**. Sein **Gerätestatus** ist **Unbekannt**, bis es seine erste Nachricht sendet, dann **Verbunden**. Die Seite des Things zeigt die Messwerte und Eigenschaften des Things auf dem Tab **Schema**, übernommen von seinem Thing-Typ.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Die ID wird als vergeben abgelehnt**: Eine Alternative Thing -ID ist im gesamten System eindeutig, nicht nur in Ihrem Tenant. Wählen Sie eine andere oder wählen Sie **Generieren**.
+- **Die ID wird als ungültig abgelehnt**: Sie enthält Zeichen außerhalb von ASCII oder ist länger als 128 Zeichen.
+- **Speichern ist deaktiviert**: **Name**, **Alternative Thing -ID**, **Thing Typ**, **Organisation** und mindestens eine **Gruppe** sind Pflicht.
+- **Die benötigte Gruppe wird nicht aufgelistet**: Gruppen verwaltet ein Tenant-Admin. Siehe [Benutzer, Gruppen und Rollen](../administer/access.mdx).
+
+## Siehe auch {#related}
+
+- [Thing-Typen, Things und Interfaces](./things-and-types.mdx) · [Einen Thing-Typ anlegen](./create-thing-type.mdx)
+- [Daten über MQTT senden](../connect/mqtt.mdx) · [Daten über HTTP senden](../connect/http.mdx)

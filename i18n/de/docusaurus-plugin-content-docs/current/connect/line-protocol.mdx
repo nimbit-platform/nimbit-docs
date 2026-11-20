@@ -1,0 +1,117 @@
+---
+title: InfluxDB Line Protocol schreiben
+description: InfluxDB Line Protocol mit curl, Python requests oder Node.js fetch an tsflux senden oder einen vorhandenen InfluxDB-Client darauf richten.
+sidebar_position: 9
+type: how-to
+app:
+  routes: ["/onboarding/things/:id"]
+translated_from: f26536e
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Schreiben Sie Messwerte für ein Thing im InfluxDB Line Protocol, aus eigenem Code oder aus einem Tool, das bereits in InfluxDB schreibt. Hintergrund: [Wie Geräte sich verbinden](./how-devices-connect.mdx).
+
+## Bevor Sie beginnen {#before-you-start}
+
+- Ein Thing mit einem veröffentlichten Thing-Typ. Siehe [Ein Thing registrieren](../model/register-thing.mdx).
+- Zugangsdaten für das Thing. Siehe [Gerätezugangsdaten anlegen und rotieren](./credentials.mdx).
+- Ein HTTP-Client: `curl`, Python mit `requests` oder Node.js 18 oder neuer.
+
+## Schritte {#steps}
+
+### 1. Die Verbindungsdaten kopieren {#1-copy-the-connection-details}
+
+Öffnen Sie das Thing (**Einstellungen › Onboarding › Things**), gehen Sie zu **Verbindungen** und wählen Sie **Verbindungsinformationen**. Kopieren Sie diese Werte:
+
+| Platzhalter | Quelle unter **Verbindungsinformationen** |
+| --- | --- |
+| `<line-protocol-url>` | Die URL unter **REST** › **Line-Protokoll**, die auf `/api/v1/write/line-protocol` endet. Host und TLS sind die Ihres Deployments. |
+| `<token>` | Das JWT-**Token**. Bei Basic-Zugangsdaten verwenden Sie stattdessen **Benutzername** und **Passwort**. |
+| `<deviceId>` | Die ID des Things, der letzte Teil der **Client-ID**. Die **Alternative Thing -ID** funktioniert ebenfalls. |
+
+Für ein Tool, das InfluxDB erwartet, verwenden Sie stattdessen **InfluxDB v2-kompatibles Schreiben** oder **InfluxDB v1-kompatibles Schreiben**. Sie nehmen dieselben Zeilen an und antworten mit `204`.
+
+### 2. Eine Zeile senden {#2-send-one-line}
+
+Das Measurement ist der Thing-Typ. Der Tag `id` ist das Thing. Die Fields sind die Messwerte.
+
+```text
+room_sensor,id=<deviceId> temperature=22.5,humidity=61.3
+```
+
+<Tabs groupId="http-client">
+<TabItem value="curl" label="curl" default>
+
+```bash
+curl -X POST "<line-protocol-url>" \
+  -H "Authorization: Bearer <token>" \
+  --data-binary 'room_sensor,id=<deviceId> temperature=22.5,humidity=61.3'
+```
+
+Bei Basic-Zugangsdaten ersetzen Sie den Header `Authorization` durch `-u "<username>:<password>"`.
+
+</TabItem>
+<TabItem value="python" label="Python (requests)">
+
+```python
+import requests
+
+response = requests.post(
+    "<line-protocol-url>",
+    headers={"Authorization": "Bearer <token>"},  # basic: auth=("<username>", "<password>")
+    data="room_sensor,id=<deviceId> temperature=22.5,humidity=61.3",
+    timeout=10,
+)
+print(response.status_code, response.json())
+```
+
+</TabItem>
+<TabItem value="node" label="Node.js (fetch)">
+
+Speichern Sie die Datei als `send.mjs` und führen Sie `node send.mjs` aus.
+
+```js
+const response = await fetch("<line-protocol-url>", {
+  method: "POST",
+  headers: { Authorization: "Bearer <token>" },
+  body: "room_sensor,id=<deviceId> temperature=22.5,humidity=61.3",
+});
+console.log(response.status, await response.json());
+```
+
+</TabItem>
+</Tabs>
+
+Die Feldtypen folgen dem Line Protocol: `22.5` ist eine Zahl, `42i` eine Ganzzahl, `true` ein Boolean, `"on"` ein String. Feldnamen werden in Kleinbuchstaben gespeichert.
+
+### 3. Zeitstempel und mehrere Zeilen ergänzen {#3-add-a-timestamp-and-several-lines}
+
+Schreiben Sie eine Zeile pro Messung des Geräts, getrennt durch Zeilenumbrüche. Ein Zeitstempel steht am Ende. Ohne Zeitstempel gilt der Zeitpunkt des Eintreffens. Die Standardeinheit ist Nanosekunden; setzen Sie `precision` auf `ns`, `us`, `ms` oder `s`, um sie zu ändern.
+
+```bash
+curl -X POST "<line-protocol-url>?precision=s" \
+  -H "Authorization: Bearer <token>" \
+  --data-binary $'room_sensor,id=<deviceId>,location=warehouse-A temperature=22.5 1794043800\nroom_sensor,id=<deviceId>,location=warehouse-A temperature=22.7 1794043860'
+```
+
+Andere Tags als `id`, `tenant` und `thingtype` werden zu [Tags](./message-format.mdx#tags) der Nachricht. Zeilen, die mit `#` beginnen, werden übersprungen. Tags und Fields stehen im [Nachrichtenformat](./message-format.mdx).
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+`/api/v1/write/line-protocol` antwortet mit `200` und einem Body wie `{"message": "success", "processed": 2, "elapsed_ms": 3}`. Die InfluxDB-kompatiblen Endpoints antworten mit `204` ohne Body.
+
+Öffnen Sie das Thing in IoT Breeze. Die **Übersicht** zeigt nach wenigen Sekunden **Letztes Signal** und **Live-Werte**.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **401**: Die Zugangsdaten fehlen, sind falsch oder abgelaufen. Prüfen Sie den Header `Authorization` und **Läuft ab am** des Tokens.
+- **400 `tag 'id' is required`**: Fügen Sie `id=<deviceId>` als Tag hinzu. `device_id` und `deviceid` funktionieren ebenfalls.
+- **400 `line 2: ...`**: Die Zahl zählt die Zeilen ab 1. Prüfen Sie die Syntax dieser Zeile und ob sie mindestens ein Field hat.
+- **Eine Zeile wird als anderes Gerät abgelehnt**: Der Tag `id` muss das Gerät sein, zu dem die Zugangsdaten gehören.
+
+## Verwandte Seiten {#related}
+
+- [Ingest-Endpoints und Statuscodes](./ingest-endpoints.mdx) · [Nachrichtenformat](./message-format.mdx)
+- [Daten über HTTP senden](./http.mdx) · [Daten über MQTT senden](./mqtt.mdx)

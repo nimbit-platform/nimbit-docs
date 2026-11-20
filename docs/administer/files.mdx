@@ -1,0 +1,60 @@
+---
+title: Store and share files
+description: Upload, organize, tag and share files in your tenant, and control whether Ask Nimble may cite them.
+type: how-to
+sidebar_position: 7
+app:
+  routes: ["/files"]
+---
+
+Keep documents and images in one place, then show them on dashboards, reports and things, or share a file with a time-limited link.
+
+## Before you start
+
+- You need to create, update or delete files. **Admin**, **Manager** and **Modeler** can. **Viewer** sees files only where a dashboard, report or thing shows them.
+
+## Upload and organize
+
+1. Open **Administration › Files**. Switch between **List view** and **Grid view**, and use **Search files** to find a file by name.
+2. Select **Upload**, or drag files into the explorer. The dialog shows the **Max file size**.
+3. To make a folder, select **New Folder**. Inside a folder, select **New Subfolder**.
+4. To move or copy, choose **Cut** or **Copy** on a file or folder, open the target folder and select **Paste into folder**. **Rename** works the same way.
+
+The folders **Things** and **Thing types** hold one folder per thing or thing type. You cannot create, rename, move or delete them here; put files inside them. The `_internal_` folder holds files that other pages of the app use.
+
+## Tag a file
+
+Select **Tag** on a file and add tags. Tags help you find and filter files.
+
+## Share a link
+
+1. Select **Share link** on a file.
+2. Under **Expires in**, choose how many hours or days the link is valid.
+3. Select **Generate link**, then **Copy link**.
+
+Anyone with the link can open the file until it expires.
+
+## Let Ask Nimble cite a file
+
+Open the file's details and set **Search index** to **Answers can cite this file** or **Not used when answering questions**. Files in a record's own folder are on by default. Without permission to change files, the setting is read-only.
+
+## Delete files
+
+1. Select **Delete** on a file or folder and confirm. Deleting cannot be undone.
+2. If a dashboard's file list widget shows the folder, **Folder used by widgets** lists the dashboards first. After the deletion those widgets show fewer files or none.
+3. Deleting from `_internal_` asks a second time (**Delete anyway**), because other pages may break.
+
+## Check that it worked
+
+The file appears in the folder with its **Size**, **Type**, **Modified** and **Tags**. A shared link opens the file in a private browser window.
+
+## If it doesn't work
+
+- **You cannot create a folder in Things or Thing types**: those folders belong to their thing. Open the thing's folder and create the folder there.
+- **The upload is refused**: the file exceeds the **Max file size** shown in the upload dialog.
+- **A dashboard shows no files**: its file list widget points to a folder you changed or deleted.
+- **A preview is missing**: **Preview** is not available for every file type. Use **Download**.
+
+## Related
+
+- [Roles and permissions](./roles.mdx)

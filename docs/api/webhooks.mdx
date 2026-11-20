@@ -1,0 +1,196 @@
+---
+title: Webhook payloads
+description: The request IoT Breeze sends for webhook channels and webhook actions, its headers and body, and how to verify the HMAC signature.
+type: reference
+sidebar_position: 4
+app:
+  routes: ["/manage/notification-channels", "/onboarding/things/:id"]
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+IoT Breeze sends HTTP requests to your system from two places: a **Webhook** notification channel, which signs its requests, and a **Webhook** action, which does not.
+
+## Webhook channel
+
+Delivered for events, in-app notifications and incidents that the channel receives. To set one up, see [Send alerts to Teams, Slack or a webhook](../watch/alert-channels.mdx).
+
+### Request
+
+| Part | Value |
+| --- | --- |
+| Method | `POST` (the IoT Breeze form always uses `POST`) |
+| `Content-Type` | `application/json` |
+| `User-Agent` | `IotBreeze-NotificationChannel/1.0` |
+| `X-IotBreeze-Signature` | `sha256=<hex>`. Only when the channel has an **HMAC secret**. See [Verify the signature](#verify-the-signature). |
+| Timeout | 10 seconds |
+| Redirects | Not followed. A redirect counts as a failure. |
+| Success | Any `2xx` status. |
+
+A failed delivery is tried up to 5 times, then shown as **Failed** in the delivery log. The body of every retry is identical, so `id` is stable.
+
+{/* TODO(product): What is the delay between delivery attempts? */}
+
+### Body for events and notifications
+
+| Field | Type | Meaning |
+| --- | --- | --- |
+| `id` | string | Delivery key. `event:<eventId>` for events; the notification id for in-app notifications. |
+| `tenantId` | string | The tenant. |
+| `type` | string | Event type name, or `notification.created`, `action.notify_channel`, `channel.test` (the **Send test** message). |
+| `severity` | string | `INFO`, `WARNING`, `ERROR` or `CRITICAL`. |
+| `title` | string | Short title. |
+| `body` | string | Text. For events, the JSON text of the event payload, or the title if there is none. |
+| `context` | object | Depends on the source, see below. |
+| `occurredAt` | string | ISO 8601, UTC. |
+| `deepLink` | string | Link to the item in IoT Breeze. Omitted when none can be built. |
+
+| Source | `context` |
+| --- | --- |
+| Event | `eventId`, `eventTypeId`, `resource` |
+| In-app notification | `resourceType`, `resourceId`, `recipientCount`, `source` (`notification.created`) |
+| Action that notifies a channel | `actionId`, `eventId`, `resource`, `referenceId` |
+| Test message | `test: true` |
+
+```json
+{
+  "id": "event:0192f8a0-1c2d-7e3f-8a4b-5c6d7e8f9a0b",
+  "tenantId": "acme",
+  "type": "Door opened",
+  "severity": "WARNING",
+  "title": "Door opened",
+  "body": "{\"door\":\"cold-room-1\"}",
+  "context": { "eventId": "0192f8a0-1c2d-7e3f-8a4b-5c6d7e8f9a0b", "eventTypeId": "...", "resource": "Thing" },
+  "occurredAt": "2026-11-07T09:30:00.000Z",
+  "deepLink": "https://<host>/monitor/events/0192f8a0-1c2d-7e3f-8a4b-5c6d7e8f9a0b"
+}
+```
+
+### Body for incidents
+
+Sent when an incident automation notifies the channel.
+
+| Field | Type | Meaning |
+| --- | --- | --- |
+| `id`, `tenantId`, `title`, `body`, `occurredAt`, `deepLink` | | As above. |
+| `type` | string | `incident.<transition>` unless the action sets its own type. |
+| `kind` | string | Always `incident`. |
+| `severity` | string | `INFO`, `WARNING`, `ERROR` or `CRITICAL`. |
+| `transition` | string | What happened: `opened`, `escalated`, `acknowledged`, `assigned`, `reopened`, `resolved`, `closed`, `unacknowledged_for` or `timeout`. |
+| `link` | string or null | The incident page in IoT Breeze. |
+| `incident` | object | See below. |
+
+`incident` holds: `id`, `number`, `ref` (`INC-<number>`), `title`, `severity`, `status` (`id`, `name`, `category`: `open`, `acknowledged`, `in_progress`, `resolved` or `closed`), `subject` (`resource`, `id`, `thingType`, each nullable), `policy` (`id`, `name`), `openedAt`, `resolvedAt` (null while open), `assigneeId`, `triggerEventTypeId` and `link`.
+
+## Webhook action
+
+Called when a rule, an incident automation or a user fires the action. See [Call another system from a rule](../automate/webhook-from-rule.mdx).
+
+| Part | Value |
+| --- | --- |
+| Method | `GET`, `POST`, `PUT`, `PATCH` or `DELETE`, as configured |
+| URL, headers, body | Your configuration, with `{{placeholder}}` values filled from the payload |
+| Body | If you set **Body**, it is sent as written, as text, with no `Content-Type` unless you add one under **Headers**. Without it, the payload is sent as JSON with `Content-Type: application/json`. No body for `GET`. |
+| Signature | None. Use an authorization method instead. |
+| Timeout | 30 seconds |
+| Retries | Up to 3 more attempts after 1, 2 and 4 seconds. Not for `4xx` answers. |
+
+| Authorization | Sent as |
+| --- | --- |
+| None | No credentials |
+| Basic | `Authorization: Basic <base64 of username:password>` |
+| Bearer | `Authorization: Bearer <token>` |
+| Query | `<name>=<value>` appended to the URL, URL-encoded |
+| OAuth 2.0 | `Authorization: Bearer <access token>`, or your token template. Grants: `client_credentials`, `password`, `refresh_token`, JWT bearer. The token is reused until 5 seconds before it expires. |
+
+### Payload by source
+
+| Fired by | Payload fields |
+| --- | --- |
+| A rule | `data` (the message that fired the rule, with rule evaluation fields) and `referenceId` (the thing id) |
+| A user or the API | The payload of the request, plus `value` when a control sets one |
+| An incident automation | `id`, `incident_id`, `automation_id`, `transition_id`, `transition`, `title`, `severity`, `message`, `referenceId`, `link` and `incident` (as above) |
+
+Use fields in placeholders, for example `{{data.temperature}}` or `{{incident.title}}`. For incidents, values are escaped as JSON string content.
+
+{/* TODO(product): List the fields of `data.ruleEvaluation` that a rule adds to the payload. */}
+
+## Verify the signature
+
+The signature is the hex HMAC-SHA256 of the raw request body, keyed with the channel's **HMAC secret**, in the header `X-IotBreeze-Signature` as `sha256=<hex>`. Compute it over the bytes you received, before you parse the JSON. Compare in constant time.
+
+The signature covers the body only. It has no timestamp, so a captured request can be replayed. Use `id` to drop duplicates.
+
+<Tabs groupId="verify-lang">
+<TabItem value="node" label="Node.js" default>
+
+```js
+import crypto from "node:crypto";
+import express from "express";
+
+const SECRET = process.env.HMAC_SECRET;
+const app = express();
+
+app.post("/hook", express.raw({ type: "application/json" }), (req, res) => {
+  const header = req.get("x-iotbreeze-signature") ?? "";
+  const expected =
+    "sha256=" + crypto.createHmac("sha256", SECRET).update(req.body).digest("hex");
+  const ok =
+    header.length === expected.length &&
+    crypto.timingSafeEqual(Buffer.from(header), Buffer.from(expected));
+  if (!ok) return res.sendStatus(401);
+
+  const event = JSON.parse(req.body.toString("utf8"));
+  console.log(event.id, event.severity, event.title);
+  res.sendStatus(204);
+});
+
+app.listen(3000);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import hashlib
+import hmac
+import json
+import os
+
+from flask import Flask, abort, request
+
+SECRET = os.environ["HMAC_SECRET"].encode()
+app = Flask(__name__)
+
+
+@app.post("/hook")
+def hook():
+    body = request.get_data()  # raw bytes, before any parsing
+    header = request.headers.get("X-IotBreeze-Signature", "")
+    expected = "sha256=" + hmac.new(SECRET, body, hashlib.sha256).hexdigest()
+    if not hmac.compare_digest(header, expected):
+        abort(401)
+
+    event = json.loads(body)
+    print(event["id"], event["severity"], event["title"])
+    return "", 204
+```
+
+</TabItem>
+<TabItem value="shell" label="Shell">
+
+Check a body you saved to `body.json`:
+
+```bash
+openssl dgst -sha256 -hmac "$HMAC_SECRET" < body.json
+```
+
+The hex value must equal the part of the header after `sha256=`. Use the exact bytes: reformatted JSON gives a different signature.
+
+</TabItem>
+</Tabs>
+
+## Related
+
+- [Send alerts to Teams, Slack or a webhook](../watch/alert-channels.mdx) · [Channel types](../watch/channel-types.mdx) · [Action types](../automate/action-types.mdx)

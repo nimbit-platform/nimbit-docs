@@ -1,0 +1,55 @@
+---
+title: Elemente an Live-Werte binden
+description: Ein Canvas-Element mit der Telemetrie oder Eigenschaft eines Things verbinden, Kontext oder fest wählen und Schwellenwerte setzen.
+type: how-to
+sidebar_position: 3
+app:
+  routes: ["/canvas/:id"]
+  tour: canvas-data
+translated_from: 70da89f
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Geben Sie einem Element seinen Wert: Wählen Sie das Thing, eine Telemetrie oder Eigenschaft und färben Sie es bei Bedarf nach Schwellenwerten ein. Wie sich Kontext-Thing und festes Thing unterscheiden, lesen Sie unter [Wie ein Canvas funktioniert](./how-canvas-works.mdx).
+
+## Bevor Sie beginnen {#before-you-start}
+- Eine Rolle, die Canvases aktualisieren darf.
+- Ein Canvas mit mindestens einem Element, zum Beispiel aus [Einen Grundriss zeichnen](./draw-a-floor-plan.mdx). Fügen Sie auf einem leeren Canvas zuerst aus der Bibliothek einen **Wert** hinzu.
+- Things, die Daten senden, oder Testdaten zum Entwerfen.
+
+## Schritte {#steps}
+
+1. Öffnen Sie das Canvas und wählen Sie **Canvas Bearbeiten**.
+2. Wählen Sie ein Element, auf dem Canvas oder unter **Ebenen**. Der **Inspektor** rechts zeigt seine Tabs: **Daten**, **Darstellung**, **Zustände** und **Aktion**. Ein Element ohne Live-Daten meldet **Dieses Element zeigt keine Live-Daten.**
+3. Wählen Sie im Tab **Daten** die Quelle:
+   - **Aus dem Kontext** liest das Thing, das der Betrachter gewählt hat. Ein Canvas bedient dann jedes passende Thing.
+   - **Festes Thing** liest immer dasselbe Gerät.
+4. Suchen Sie unter **Wert binden** Things, Telemetrien und Eigenschaften, wählen Sie eine aus und fahren Sie fort.
+5. Optional: Wählen Sie unter **Schwellenwerte** **Hinzufügen**, dann einen Operator (**Gleich**, **Größer als**, **Größer oder gleich**, **Kleiner als**, **Kleiner oder gleich** oder **Bereich**), einen Wert, einen **Hintergrund** und eine **Textfarbe**. Ohne Schwellenwerte nutzt der Wert den Standardstil.
+6. Optional: Setzen Sie **Daten als veraltet betrachten nach**, um den Standard des Canvas für dieses Element zu überschreiben.
+7. Wählen Sie **Vorschau** zum Prüfen und dann **Speichern**.
+
+<Screenshot
+  page="visualize/canvas/bind-live-values"
+  id="01-bind-value"
+  route="/canvas/:id"
+  state="Editor with a Value element selected, Data tab open, Source set to From context, the Bind value dialog showing a measure and its current value"
+  alt="Der Tab Daten und der Dialog Wert binden für ein Wert-Element"
+/>
+
+Textelemente können mehrere Werte im Text zeigen. Wählen Sie im Text **Wert einfügen**, wählen Sie den Wert und bearbeiten Sie seine Schwellenwerte, indem Sie sein Token anklicken. Dasselbe Element kann so mehr als einen Wert binden.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Wählen Sie **Vorschau** und dann in der Kopfzeile ein Thing: Das Element zeigt seinen aktuellen Wert mit den angewendeten Schwellenwerten. Wählen Sie ein anderes Thing, und der Wert folgt, bei Elementen auf **Aus dem Kontext**.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Von diesem Thing nicht bereitgestellt**: Das angezeigte Thing hat diese Telemetrie nicht. Wählen Sie ein anderes Thing oder prüfen Sie die Interfaces in den **Canvas-Einstellungen**.
+- **Kein Kontext-Thing ausgewählt**: Das Element liest **Aus dem Kontext**, aber im Canvas ist kein Thing gewählt. Wählen Sie eines in der Kopfzeile.
+- **Thing nicht gefunden** oder **Fehlerhaft**: Das gebundene Thing wurde gelöscht, oder Sie dürfen es nicht sehen. Binden Sie das Element neu.
+- **Veraltet**: Innerhalb der Veraltet-Grenze kam kein Update. Prüfen Sie das Gerät oder erhöhen Sie **Daten als veraltet betrachten nach**.
+
+## Verwandte Seiten {#related}
+- [Zustand durch Farbe, Icon und Bewegung zeigen](./states-and-colors.mdx) · [Referenz des Canvas-Editors](./editor-reference.mdx)

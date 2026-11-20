@@ -1,0 +1,140 @@
+---
+title: Daten über HTTP senden
+description: JSON-Telemetrie für ein Thing mit curl, Python requests oder Node.js fetch an die tsflux-Ingest-API senden.
+sidebar_position: 8
+type: how-to
+app:
+  routes: ["/onboarding/things/:id"]
+translated_from: f26536e
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Senden Sie eine JSON-Nachricht für ein Thing an die tsflux-Ingest-API und sehen Sie die Werte in IoT Breeze. Hintergrund: [Wie Geräte sich verbinden](./how-devices-connect.mdx).
+
+## Bevor Sie beginnen {#before-you-start}
+
+- Ein Thing mit einem veröffentlichten Thing-Typ. Siehe [Ein Thing registrieren](../model/register-thing.mdx).
+- Zugangsdaten für das Thing. Siehe [Gerätezugangsdaten anlegen und rotieren](./credentials.mdx).
+- Ein HTTP-Client: `curl`, Python mit `requests` oder Node.js 18 oder neuer.
+
+## Schritte {#steps}
+
+### 1. Die Verbindungsdaten kopieren {#1-copy-the-connection-details}
+
+Öffnen Sie das Thing (**Einstellungen › Onboarding › Things**), gehen Sie zu **Verbindungen** und wählen Sie **Verbindungsinformationen**. Kopieren Sie diese Werte:
+
+| Platzhalter | Quelle unter **Verbindungsinformationen** |
+| --- | --- |
+| `<structured-url>` | Die URL unter **REST** › **Strukturiertes JSON**, die auf `/api/v1/message/structured` endet. Host und TLS sind die Ihres Deployments. |
+| `<token>` | Das JWT-**Token**. Bei Basic-Zugangsdaten verwenden Sie stattdessen **Benutzername** und **Passwort**. |
+| `<tenantId>`, `<deviceId>` | Beide stehen in der **Client-ID** (`<tenantId>:<deviceId>`) und im Topic **Telemetrie**. |
+
+### 2. Eine Nachricht senden {#2-send-one-message}
+
+<Tabs groupId="http-client">
+<TabItem value="curl" label="curl" default>
+
+```bash
+curl -X POST "<structured-url>" \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "tenant": "<tenantId>",
+    "id": "<deviceId>",
+    "thingType": "room_sensor",
+    "data": { "temperature": 22.5, "humidity": 61.3 }
+  }'
+```
+
+Bei Basic-Zugangsdaten ersetzen Sie den Header `Authorization` durch `-u "<username>:<password>"`.
+
+</TabItem>
+<TabItem value="python" label="Python (requests)">
+
+```python
+import requests
+
+response = requests.post(
+    "<structured-url>",
+    headers={"Authorization": "Bearer <token>"},  # basic: auth=("<username>", "<password>")
+    json={
+        "tenant": "<tenantId>",
+        "id": "<deviceId>",
+        "thingType": "room_sensor",
+        "data": {"temperature": 22.5, "humidity": 61.3},
+    },
+    timeout=10,
+)
+print(response.status_code, response.json())
+```
+
+</TabItem>
+<TabItem value="node" label="Node.js (fetch)">
+
+Speichern Sie die Datei als `send.mjs` und führen Sie `node send.mjs` aus.
+
+```js
+const response = await fetch("<structured-url>", {
+  method: "POST",
+  headers: {
+    Authorization: "Bearer <token>",
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    tenant: "<tenantId>",
+    id: "<deviceId>",
+    thingType: "room_sensor",
+    data: { temperature: 22.5, humidity: 61.3 },
+  }),
+});
+console.log(response.status, await response.json());
+```
+
+</TabItem>
+</Tabs>
+
+`tenant`, `id` und `thingType` sind über HTTP Pflicht. Die Zugangsdaten bestimmen, für welchen Tenant und welches Gerät Sie schreiben dürfen.
+
+### 3. Zeitstempel, Standort und Tags ergänzen {#3-add-a-timestamp-location-and-tags}
+
+Erweitern Sie die Nachricht oder senden Sie mehrere auf einmal als JSON-Array. Alle Felder stehen im [Nachrichtenformat](./message-format.mdx).
+
+```json
+[
+  {
+    "tenant": "<tenantId>",
+    "id": "<deviceId>",
+    "thingType": "room_sensor",
+    "data": { "temperature": 22.5 },
+    "time": "2026-11-07T09:30:00Z",
+    "geo": { "latitude": 52.52, "longitude": 13.405 },
+    "tags": { "location": "warehouse-A" }
+  }
+]
+```
+
+Ohne `time` gilt der Zeitpunkt des Eintreffens.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Die Antwort ist `200` mit einem Body wie diesem:
+
+```json
+{ "message": "success", "processed": 1, "elapsed_ms": 4 }
+```
+
+Öffnen Sie das Thing in IoT Breeze. Die **Übersicht** zeigt nach wenigen Sekunden **Letztes Signal** und **Live-Werte**.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **401**: Die Zugangsdaten fehlen, sind falsch oder abgelaufen. Prüfen Sie den Header `Authorization` und **Läuft ab am** des Tokens.
+- **400**: Der Body nennt den Grund. Häufige Ursachen sind ein fehlendes `tenant`, `id` oder `thingType`, fehlende `data`, ein unbekanntes Thing oder ein unbekannter Thing-Typ oder eine `id`, die zu einem anderen Gerät gehört.
+- **207**: Einige Nachrichten eines Batches wurden gespeichert. Jeder Eintrag in `failed` hat einen `index`, einen `status` und einen `error`. Senden Sie nur die Einträge mit Status `503` erneut.
+- **429 oder 503**: Warten Sie die Anzahl Sekunden aus `Retry-After` ab und senden Sie dann erneut.
+
+## Verwandte Seiten {#related}
+
+- [Ingest-Endpoints und Statuscodes](./ingest-endpoints.mdx) · [Nachrichtenformat](./message-format.mdx)
+- [InfluxDB Line Protocol schreiben](./line-protocol.mdx) · [Daten über MQTT senden](./mqtt.mdx)

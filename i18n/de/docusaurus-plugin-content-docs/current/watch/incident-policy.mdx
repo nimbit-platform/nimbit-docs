@@ -1,0 +1,82 @@
+---
+title: Eine Vorfallsrichtlinie einrichten
+sidebar_position: 6
+description: Die mitgelieferten Vorfallsrichtlinien einschalten, eigene schreiben und eine Aktion einmal ausführen, wenn ein Vorfall sich öffnet oder unquittiert bleibt.
+type: how-to
+app:
+  routes: ["/manage/incident-policies", "/manage/incident-policies/new", "/manage/incident-policies/:id", "/manage/incident-policies/:id/automations", "/manage/incident-settings"]
+translated_from: 810b8a2
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Legen Sie fest, welche Events Vorfälle öffnen, wie sie zu einem Vorfall gruppiert werden und wer informiert wird, wenn er sich ändert. Ohne Richtlinie öffnen Events nie Vorfälle. Die Idee dahinter lesen Sie unter [Events, Vorfälle und Benachrichtigungen](./events-incidents-notifications.mdx).
+
+## Bevor Sie anfangen {#before-you-start}
+
+- Sie brauchen die Berechtigung, Vorfallsrichtlinien zu schreiben. Mit nur Leseberechtigung zeigt die Seite **Sie können diese Konfiguration ansehen, aber nicht ändern.**
+- Für Automatisierungen brauchen Sie zusätzlich die Berechtigung, Aktionen auszuführen.
+- Die Einstellungen der einzelnen Felder stehen unter [Vorfallszustände und -felder](./incident-fields.mdx).
+
+## Die mitgelieferten Richtlinien einschalten {#turn-on-the-shipped-policies}
+
+1. Öffnen Sie **Einstellungen › Konfiguration › Vorfälle**. Der Tab **Vorfallsrichtlinien** listet Ihre Richtlinien.
+2. Wählen Sie **Standardrichtlinien importieren** und dann **Importieren**. IoT Breeze legt **Rule alarms per thing**, **Connectivity outages** und **Geofence dwell** an, außer denen, die Sie schon haben. Zweimal importieren legt nichts Neues an.
+3. Die neuen Richtlinien sind ausgeschaltet. Schalten Sie die gewünschten mit dem Schalter **Aktiv** in der Liste ein.
+
+## Eine eigene Richtlinie schreiben {#write-your-own-policy}
+
+Dieses Beispiel öffnet für Türalarme einen Vorfall pro Thing und löst ihn zehn Minuten nach dem Ende des letzten Alarms.
+
+1. Wählen Sie **Neue Richtlinie**.
+2. Geben Sie unter **Name und Priorität** den **Name** `Door alarms` und eine **Priorität** ein. Richtlinien mit niedrigeren Zahlen werden zuerst geprüft, und ein Event schließt sich der ersten aktiven Richtlinie an, die passt.
+3. Geben Sie unter **Welche Events** in **Namen der Event Typen** `Door *` ein und setzen Sie **Mindestschweregrad** auf **Warnung**. Ein Event passt, wenn jede Klausel zutrifft, die Sie ausfüllen. Leere Klauseln werden ignoriert.
+4. Wählen Sie unter **In einen Vorfall gruppieren nach** die Option **Thing**.
+5. Setzen Sie unter **Zeitverhalten und Lösung** **Öffnen nach** auf `0` und **Ruhefenster** auf 10 Minuten. Setzen Sie **Gelöst, wenn** auf **Jede Episode beendet (Alarm aus)** und **Schließen nach der Lösung** auf 1 Tag.
+6. Prüfen Sie die Zeile **Kurz gefasst** unter dem Editor. Sie fasst die Richtlinie in einem Satz zusammen.
+7. Speichern Sie und schalten Sie die Richtlinie dann ein.
+
+<Screenshot
+  page="watch/incident-policy"
+  id="01-policy-editor"
+  route="/manage/incident-policies/:id"
+  state="Policy editor for Rule alarms per thing: Which events with Raised by Rule engine, Group by Thing selected, Timing section with Quiet window 10 minutes and Close after 1 day, In short summary visible"
+  alt="Der Richtlinien-Editor mit der Zusammenfassung Kurz gefasst"
+/>
+
+## Eine Automatisierung hinzufügen {#add-an-automation}
+
+Eine Automatisierung führt eine vorhandene Aktion einmal aus, wenn ein Vorfall der Richtlinie den Zustand wechselt. So informieren Sie Personen einmal, auch wenn der Alarm flattert.
+
+1. Öffnen Sie die Richtlinie und wählen Sie **Automatisierungen bearbeiten**. Speichern Sie eine neue Richtlinie zuerst.
+2. Wählen Sie **Automatisierung hinzufügen**.
+3. Wählen Sie unter **Wenn der Vorfall** die Option **Geöffnet**.
+4. Wählen Sie unter **Aktion ausführen** die Aktion, zum Beispiel eine, die an einen [Benachrichtigungskanal](./alert-channels.mdx) postet.
+5. Wählen Sie **Automatisierung speichern**.
+
+Zum Eskalieren fügen Sie eine zweite Automatisierung mit **Nicht quittiert seit** hinzu, setzen die **Wartezeit** auf 15 Minuten und wählen eine lautere Aktion, etwa eine Nachricht an einen anderen Kanal.
+
+Eine Automatisierung überspringt eine ausgeschaltete Aktion, und jede Aktion, die Sie an einem Event-Typ anlegen, startet ausgeschaltet. Schalten Sie zuerst im Tab **Aktionen** des Event-Typs **Aktiv** ein. {/* TODO(product): How does someone create an action for an incident automation that does not also run on every event of an event type? The pickers only offer existing actions, and the event type page is the only place found where a Notification channel or Email action can be added. An action on an event type runs on every event of that type. */}
+
+## Die Status und Gründe ergänzen, die Ihr Team braucht {#add-the-statuses-and-reasons-your-team-needs}
+
+1. Öffnen Sie den Tab **Vorfallseinstellungen**.
+2. Wählen Sie unter **Lösungsgründe** die Option **Lösungsgrund hinzufügen**. Personen können keinen Vorfall lösen, solange keiner existiert.
+3. Benennen Sie optional Status mit **Status hinzufügen** um oder bearbeiten Sie einen, und ergänzen Sie **Benutzerdefinierte Felder**.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Die Richtlinie steht mit eingeschaltetem **Aktiv** in der Liste. Trifft ein passendes Event ein, zeigt **Letzter Treffer** die Zeit, und unter **Überwachung › Vorfälle** erscheint ein neuer Vorfall mit dem Namen der Richtlinie unter **Richtlinie**.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Nichts öffnet sich**: Die Richtlinie ist inaktiv, oder eine andere aktive Richtlinie mit niedrigerer Prioritätszahl hat zuerst gepasst. Prüfen Sie **Priorität** und **Aktiv**.
+- **Der Vorfall öffnet sich spät**: **Öffnen nach** hält ihn zurück, bis der Alarm so lange an war. Die mitgelieferte Richtlinie **Connectivity outages** wartet 5 Minuten.
+- **Zu viele Vorfälle**: Gruppieren Sie nach etwas Breiterem, etwa **Thing**, und setzen Sie ein **Ruhefenster**.
+- **Die Aktion läuft nie**: Die Aktion ist ausgeschaltet, oder Ihnen fehlt die Berechtigung, Aktionen auszuführen.
+
+## Verwandte Seiten {#related}
+
+- [Einen Vorfall bearbeiten](./work-an-incident.mdx)
+- [Vorfallszustände und -felder](./incident-fields.mdx)
+- [Event-Typen](./event-types.mdx)

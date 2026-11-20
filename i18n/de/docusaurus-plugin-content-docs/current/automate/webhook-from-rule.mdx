@@ -1,0 +1,60 @@
+---
+title: Aus einer Regel ein anderes System aufrufen
+sidebar_position: 5
+description: Fügen Sie einer Regel eine Webhook-Aktion hinzu, damit IoT Breeze eine HTTP-Anfrage sendet, wenn ihre Bedingung zutrifft.
+type: how-to
+app:
+  routes: ["/automation/rule-designer/:id"]
+translated_from: 679f3a4
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Fügen Sie einer Regel eine Aktion **Webhook** hinzu, damit IoT Breeze jedes Mal, wenn die Regel feuert, eine von Ihnen definierte HTTP-Anfrage sendet. Um stattdessen die eigene Alarmnachricht von IoT Breeze an Teams, Slack oder einen Webhook-Empfänger zu senden, nutzen Sie einen [Benachrichtigungskanal](../watch/alert-channels.mdx).
+
+## Bevor Sie beginnen {#before-you-start}
+
+- Eine Regel mit einem Knoten **Start**, **Bedingung** und **Auslöser**, zum Beispiel die aus [Alarmieren, wenn ein Wert eine Grenze überschreitet](./threshold-alert.mdx).
+- URL, Methode und Anmeldedaten des empfangenden Systems.
+
+## Schritte {#steps}
+
+1. Öffnen Sie **Einstellungen › Automatisierung › Regel-Designer** und öffnen Sie die Regel. Wählen Sie das Schlosssymbol im Kopfbereich, um in den Bearbeitungsmodus zu wechseln.
+2. Wählen Sie **+** unterhalb des Knotens **Auslöser** und wählen Sie **Webhook**. Eine Regel kann nach einem Auslöser mehrere Aktionen haben.
+3. Wählen Sie unter **Anfrage** die **Method** und geben Sie die **URL** ein.
+4. Geben Sie bei `POST`, `PUT` oder `PATCH` den **Inhalt** ein. Diese Methoden verlangen einen. `GET` sendet keinen Inhalt.
+
+   ```json
+   {"source": "iot-breeze", "rule": "Room too warm"}
+   ```
+5. Fügen Sie unter **Headers** die Header hinzu, die der Empfänger braucht. Fügen Sie `Content-Type` mit dem Wert `application/json` hinzu, wenn der Inhalt JSON ist.
+6. Wählen Sie unter **Autorisierung**, wie sich der Aufruf anmeldet: **Keine**, **Bearer** (ein Token), **Basic** (Benutzername und Passwort), **Abfrage** (ein Schlüssel und Wert, die an die URL angehängt werden) oder **OAuth2**.
+7. Senden Sie die Anfrage unter **Überblick** zum Test und prüfen Sie, ob der Empfänger sie erhalten hat.
+8. Prüfen Sie das Gültigkeitssymbol und wählen Sie dann das Häkchen in der schwebenden Leiste. Dort steht **Entwurf anwenden**, sobald die Regel eine veröffentlichte Version hat. Wählen Sie **Aktivieren**, wenn die Regel noch nicht aktiv ist.
+
+<Screenshot
+  page="automate/webhook-from-rule"
+  id="01-webhook-request"
+  route="/automation/rule-designer/:id"
+  state="Webhook node panel on the Request step: method POST, URL filled in, JSON body, one header"
+  alt="Der Schritt „Anfrage“ einer Webhook-Aktion in einer Regel"
+/>
+
+{/* TODO(product): Which placeholder names can a Webhook action's URL, headers and body use when a rule fires it? The executor renders the action config with Mustache against the trigger payload, which for a rule is `{ data, referenceId }`, but the payload fields are not documented in the app. */}
+
+## Prüfen, ob es funktioniert hat {#check-that-it-worked}
+
+Lassen Sie die Regel feuern, zum Beispiel mit **Gerät simulieren…** an einem Thing im Geltungsbereich. Der Empfänger protokolliert eine Anfrage. Ist der Auslöser **Umschalten** mit der Richtung **In**, protokolliert er eine pro Übergang in die Bedingung, nicht eine pro Messwert.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Der Empfänger erhält nie eine Anfrage**: Die Regel ist nicht **Aktiv**, oder ihr Auslöser hat nicht gefeuert. Siehe [Eine Regel feuert nicht](../troubleshooting/rule-not-firing.mdx).
+- **Der Empfänger antwortet mit 401 oder 403**: Die Einstellungen unter **Autorisierung** passen nicht zu dem, was er erwartet. Testen Sie unter **Überblick** erneut, nachdem Sie sie korrigiert haben.
+- **Der Aufruf scheitert mit einem Gateway-Fehler**: IoT Breeze zeichnet jeden fehlgeschlagenen Aktionslauf als Event auf. Öffnen Sie **Überwachung › Events**, um es zu sehen. Ein `405` bedeutet, dass die **Method** falsch ist, und ein Timeout, dass der Empfänger nicht rechtzeitig geantwortet hat.
+- **Sie sehen bei jedem Messwert eine Anfrage**: Der Auslöser steht auf **Standard**. Verwenden Sie **Umschalten** mit **In**, oder **Schlafen**.
+
+## Verwandte Seiten {#related}
+
+- [Aktionstypen](./action-types.mdx)
+- [Regeln, Aktionen und Berichte](./rules-actions-reports.mdx)
+- [Webhook-Payloads](../api/webhooks.mdx): die Payload eines Benachrichtigungskanals vom Typ Webhook, die eine andere ist

@@ -1,0 +1,59 @@
+---
+title: Draw a geofence
+sidebar_position: 8
+description: Draw an area on the map so IoT Breeze records an event when a thing enters or leaves it.
+type: how-to
+app:
+  routes: ["/geo/map"]
+  tour: find-your-way-watch
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Draw a circle, rectangle or polygon on the map. While the geofence is active, IoT Breeze records an event each time one of its things enters or leaves it.
+
+## Before you start
+
+- You need permission to write geofences to see the **Geofences** entry under **Settings › Configuration**.
+- The things must report a position. A thing that sends latitude and longitude sets this by itself. For other things, use **Set location** on the thing page.
+
+## Steps
+
+1. Open **Settings › Configuration › Geofences**, or open **Monitoring › Map** and switch to **Geofences**. Both open the same screen.
+2. Select **Create geofence**.
+3. Enter a **Name**, for example `Hamburg depot`, and optionally a **Description**.
+4. Pick a **Shape**: **Circle**, **Rectangle** or **Polygon**, then draw it on the map.
+   - Circle: click the center, then click to set the radius, or set the **Radius** with the slider or the number field. The radius runs from 10 m to 50,000 m.
+   - Rectangle: click one corner, then the opposite corner.
+   - Polygon: click to add points, then click the first point to close it.
+5. Set **Status** to **Active**. Entry and exit events are only generated while the geofence is active.
+6. Under **Applies to**, choose **Tags** or **Thing type**.
+   - **Tags**: pick the tags. The geofence applies to things with those tags, across thing types.
+   - **Thing type**: pick one thing type. To limit it to some things, choose them under **Things**.
+7. Check the counts of things and thing types the geofence covers, then select **Save**.
+
+<Screenshot
+  page="watch/geofence"
+  id="01-geofence-editor"
+  route="/geo/map?mode=fences"
+  state="Geofences mode with the editor panel open: a circle drawn on the map, Applies to Tags with one tag, Status Active, Save visible"
+  alt="The geofence editor with a circle drawn on the map"
+/>
+
+To change a shape, delete it on the map and draw a new one. Drag a shape to move it. Use **⋯ › Edit** or **⋯ › Delete** on a list entry. Deleting can't be undone.
+
+## Check that it worked
+
+The list header shows your count, for example `3 active · 5 total`, and the geofence lists the number of things inside it right now. When a matching thing crosses the border, a **Geofence** event appears under **Monitoring › Events**.
+
+## If it doesn't work
+
+- **The geofence won't save**: the form marks what is missing. A name, a drawn shape, and at least one tag or a thing type are required.
+- **No events appear**: the geofence is **Inactive**, or the things don't match **Applies to**, or they have no position yet.
+- **You want a person to follow up**: events alone don't open incidents. Turn on the shipped **Geofence dwell** policy. See [Set up an incident policy](./incident-policy.mdx).
+
+## Related
+
+- [Events, incidents and notifications](./events-incidents-notifications.mdx)
+- [Event types](./event-types.mdx)
+- [Show things on a map](../visualize/map.mdx)

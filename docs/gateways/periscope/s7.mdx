@@ -1,0 +1,86 @@
+---
+title: Read a Siemens S7 PLC
+description: Export a TIA Portal tag table, add an S7 input for an S7-300, 400, 1200 or 1500 CPU, and check what Periscope proposes.
+type: how-to
+sidebar_position: 6
+app:
+  routes: ["/onboarding/gateways"]
+---
+
+Periscope reads one Siemens CPU per `[[inputs.s7]]` table over S7comm on port 102. S7 has no address space, so discovery reads a tag file whose tag names carry the mapping, and the stream polls those tags. For the stages, read [How Periscope works](./how-periscope-works.mdx).
+
+## Before you start
+
+- Periscope is installed and connected. See [Install Periscope and stream your first source](./install.mdx).
+- The CPU's IP address, rack and slot. S7-1200 and S7-1500: rack 0, slot 1. Most S7-300: rack 0, slot 2. An S7-400 follows its hardware configuration.
+- On an S7-1200 or S7-1500, permit PUT/GET: in the CPU's properties under **Protection & Security › Connection mechanisms**, tick **Permit access with PUT/GET communication from remote partner**.
+- Non-optimized data blocks for the tags you read: in the block's attributes, untick **Optimized block access** and recompile. Tags in optimized blocks have no absolute address and are skipped.
+
+## Steps
+
+1. In TIA Portal, export the tag table: **PLC tags › Export**. Open the XLSX and save the **PLC Tags** sheet as UTF-8 CSV. English and German column names both work.
+2. Name the tags you want in IoT Breeze `<thingType>/<thing>/<measure>`, optionally followed by `:<decimals>`, for example `weimar/anlage_001/frequency:2`. Tags named otherwise are skipped with a warning, so you can use a full table as it is.
+3. Add the input to `periscope.toml`:
+
+   ```toml
+   [[inputs.s7]]
+   alias    = "plc_weimar"
+   tags     = "/etc/periscope/plc-weimar.csv"
+   server   = "192.168.10.30"          # host[:port], default port 102
+   rack     = 0
+   slot     = 1                        # S7-300: 2
+   interval = "1s"
+   ```
+
+   If you already run Telegraf's `inputs.s7comm`, point `tags` at that configuration file instead, or import its address list first. See [Command-line reference](./commands.mdx).
+
+4. To read some tags more often than others, add a poll cycle. The input's `interval` reads every tag no cycle names:
+
+   ```toml
+   [[inputs.s7.cycles]]
+   name     = "fast"
+   interval = "100ms"
+   names    = ["weimar/*/frequency"]
+   ```
+
+5. Validate and discover. Discovery reads the tag file and never contacts the PLC:
+
+   ```sh
+   periscope validate -config /etc/periscope/periscope.toml
+   periscope discover -config /etc/periscope/periscope.toml
+   ```
+
+6. Review and confirm the proposals. See [Approve what Periscope discovers](./approve-discoveries.mdx).
+
+## Check that it worked
+
+The first name segment becomes the thing type, the second the thing and the third the measure. The comment becomes the measure's description, and `:<decimals>` its precision:
+
+```text
+INPUT       NODES  THINGS  ERROR
+plc_weimar  6      2       -
+
+KIND       NAME        TYPE        STATUS    NOTE
+thingType  weimar      3 measures  proposed  -
+thing      anlage_001  weimar      proposed  -
+thing      anlage_002  weimar      proposed  -
+```
+
+Things sit at `<mount>/<thingType>/<thing>` by default (`path_from = "type"`). With `path_from = "thing"` they sit at `<mount>/<thing>`.
+
+Once applied, the stream reads all tags in as few requests as the PLC's PDU size allows, every `interval`. A value is sent on every poll whether or not it changed. To send changes only, add a deadband. See [Transform values before they leave the edge](./processors.mdx).
+
+## If it doesn't work
+
+- **`tag "…" skipped: not <thingType>/<thing>/<measure>`**: the tag is outside the naming convention. Expected for tags you don't want, otherwise rename it.
+- **`data type "LReal" is not readable over s7comm`**: types such as `LReal`, `LInt`, `WString` and UDTs have no S7comm form. Copy the value into a readable type in the PLC, such as `Real` or `DInt`.
+- **A tag is skipped for having no logical address**: the data block uses optimized access. Switch it off and recompile.
+- **The connection is refused or closed at once**: PUT/GET isn't permitted, rack or slot is wrong, or a firewall blocks port 102. Check with `nc -vz <cpu> 102`.
+- **`input.<name>.item_errors` grows**: a data block is missing or shorter than the tag list says. The **Logs** screen at debug level names the area and offset.
+- **No values and no error**: the proposals aren't applied yet, or the tag file changed and discovery hasn't run again. Tag file changes take effect at the next discovery.
+
+More in [Troubleshoot Periscope](./troubleshooting.mdx).
+
+## Related
+
+- [How Periscope works](./how-periscope-works.mdx) · [Configuration reference](./configuration.mdx)

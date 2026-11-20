@@ -1,0 +1,105 @@
+---
+title: Errors and limits
+description: Error formats, status codes, retry rules, and the rate and size limits of the tsflux, nbq and OCB APIs.
+type: reference
+sidebar_position: 5
+---
+
+Each API has its own error format. This page lists them, the status codes you can get, and the limits the code enforces.
+
+## Error formats
+
+| API | Body |
+| --- | --- |
+| tsflux | `{"code": 400, "message": "..."}`. A refused credential is `{"error": "Unauthorized"}`. |
+| nbq | `{"code": <number>, "message": "...", "data": {}}`. A refused credential is `{"error": "Unauthorized"}`. |
+| OCB | Contract errors: `{"defined": true, "code": "...", "status": 400, "message": "...", "data": {}}`. Other errors: `{"message": "...", "msgCode": "...", "type": "ocb"}`. |
+| Key exchange | `{"error": "...", "error_description": "..."}` (RFC 6749). |
+
+## tsflux
+
+All write endpoints answer the same way: `/api/v1/message/structured`, `/api/v1/message/async-structured`, `/api/v1/write/json`, `/api/v1/{tenant}/{thingType}/device/{id}/telemetry`, `/api/v1/write/line-protocol`, and the InfluxDB-compatible `/write` and `/api/v2/write` at the host root.
+
+| Status | Meaning | What to do |
+| --- | --- | --- |
+| `200` | All messages stored. Body: `{"message": "success", "processed": <n>, "elapsed_ms": <n>}`. | |
+| `204` | All lines stored, on `/write` and `/api/v2/write`. | |
+| `207` | Some messages stored. Body: `{"message": "partially stored", "processed": <n>, "failed": [{"index": 0, "status": 422, "error": "..."}]}`. | Resend only the listed `index` values whose `status` is `503`. |
+| `400` | The request is invalid: bad JSON, empty body, missing `thingType`, no `data` or `geo`, a `tenant` or `id` that does not match the credential. | Fix the request. Do not retry. |
+| `401` | Credentials missing, wrong or expired. | Check [Authentication](./authentication.mdx). |
+| `413` | Body larger than 10 MiB. | Split the batch. |
+| `422` | The pipeline refuses the message and will refuse it again. | Fix the message. Do not retry. |
+| `429` | Too many write requests in flight. Carries `Retry-After: 1`. | Retry after the delay. |
+| `503` | tsflux could not take the message now, or could not look up the tenant. Carries `Retry-After: 1`. | Retry. A retry can store a message twice. |
+
+On the InfluxDB-compatible endpoints a partly stored batch never answers `207`. A batch with failures worth resending answers `503` (resend the whole batch, stored lines are stored again). A batch with only permanent failures answers `400` with `partial write`.
+
+## nbq
+
+Always read the HTTP status first. The `code` is shared across statuses.
+
+| Status | `code` | Meaning |
+| --- | --- | --- |
+| `400` | 1 | Invalid request, filter or aggregation. |
+| `401` | | Missing or invalid token, or the API key was revoked. |
+| `403` | 2 | The token lacks the permission of the route. |
+| `403` | 7, 8 | Access to the thing or data is denied by ownership or role. |
+| `404` | 2, 14 | Not found (14: event). |
+| `409` | 2 | Conflict. |
+| `422` | 4 | A query limit is exceeded, for example more rows than the result limit. |
+| `422` | 5, 6 | No data source can serve the query, or a source lacks the aggregation or capability. `data` lists the reason per source. |
+| `422` | 9 | The measure does not exist. |
+| `499` | 11 | The client closed the connection first. |
+| `500` | 3 | Internal error. The message is generic. |
+| `503` | 10, 12 | The query timed out, or the tenant's storage settings are not known yet. Carries `Retry-After: 2`. Retry. |
+
+## OCB
+
+| Status | Meaning |
+| --- | --- |
+| `401` | Token missing, invalid or expired. A refused API key answers `{"error": "invalid_token", "error_description": "..."}` with `WWW-Authenticate: Bearer error="invalid_token"`. |
+| `403` | The token lacks a permission. `API_KEY_NOT_ALLOWED` means the route is meant for a signed-in person and refuses key tokens. |
+| `429` | Too many key exchanges. Body: `{"error": "rate_limited", ...}`; `Retry-After` when known. |
+| `503` | The API key could not be checked because the identity directory was unavailable. |
+
+When you fire a webhook action through the API, OCB reports the target's answer: `422` when nothing was sent because the URL, template or authorization is wrong, `502` when the target refused or was unreachable, `504` when it timed out.
+
+{/* TODO(product): List the stable `msgCode` values clients may depend on, or say they are not part of the contract. */}
+
+## API key exchange errors
+
+`POST /v1/token`.
+
+| Status | `error` | Meaning |
+| --- | --- | --- |
+| `400` | `invalid_request`, `unsupported_grant_type` | Malformed form body, or `grant_type` is not `client_credentials`. |
+| `400` | `invalid_scope` | The key's scopes (or the ones asked for) span several apps. Ask for one app's scopes. |
+| `400` | `invalid_target` | The key holds no scope of the app named in `resource`, or a named scope belongs to another app. |
+| `401` | `invalid_client` | The key is malformed, unknown, revoked, expired, idle, used from a disallowed address, or its owner is no longer a usable member. One answer for all, by design. |
+| `404` | | API keys are not enabled in this deployment. |
+| `429` | `rate_limited` | Too many exchanges. See below. |
+| `503` | `temporarily_unavailable` | The directory cannot sign tokens now. |
+
+## Limits
+
+| Limit | Value | When exceeded |
+| --- | --- | --- |
+| tsflux request body | 10 MiB | `413` |
+| tsflux write requests in flight | 1,024 per instance by default; set per deployment | `429` |
+| nbq request body | 4 MiB | Request refused |
+| nbq rows per query | 50,000 by default; set per deployment | `422`, code 4 |
+| OCB request body | 1 MiB; 16 MiB for creating or updating a canvas | Request refused |
+| Key exchange body | 16 KiB | Request refused |
+| Key exchange attempts | 6,000 per client address and UTC hour for existing key ids; 60,000 per address and hour for ids that do not exist | `429` |
+| Key exchanges per key | 1,200 per UTC hour, counted after the secret matched | `429` |
+| Access token from a key | 5 minutes, or less if the key expires sooner | Exchange again |
+| Webhook channel delivery | 10 s timeout, 5 attempts | **Failed** in the delivery log |
+| Webhook action | 30 s timeout, up to 3 retries | Run recorded as failed |
+
+The reference edge configuration (Traefik) also limits requests to `/tsflux`, `/nbq` and IoT Breeze to an average of 100 per second per client address, with a burst of 200. `/ocb` has no such limit there.
+
+{/* TODO(product): Do production deployments use the same edge rate limits as the repository's Traefik configuration? What does a rate-limited client receive and does it carry `Retry-After`? */}
+
+## Related
+
+- [Authentication](./authentication.mdx) · [API keys](./api-keys.mdx) · [Webhook payloads](./webhooks.mdx)

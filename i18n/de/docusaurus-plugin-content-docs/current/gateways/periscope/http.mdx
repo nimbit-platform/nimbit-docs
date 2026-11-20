@@ -1,0 +1,108 @@
+---
+title: Eine HTTP-Quelle abfragen
+description: Eine JSON-HTTP-API mit Periscope abfragen, angeben, wo Things und Werte in der Antwort liegen, und prüfen, was es vorschlägt.
+type: how-to
+sidebar_position: 8
+app:
+  routes: ["/onboarding/gateways"]
+translated_from: 4c9fc6e
+---
+
+Periscope fragt JSON-HTTP-APIs ab, etwa einen Wetterdienst, einen Wechselrichter, eine Gebäudeleittechnik oder die REST-Schnittstelle eines Geräts, und macht aus ihren Werten Things und Messwerte. Sie geben an, wo in der Antwort das Thing liegt, und es schlägt für jeden dort gefundenen Wert einen Messwert vor. Die Stufen erklärt [Wie Periscope funktioniert](./how-periscope-works.mdx).
+
+## Voraussetzungen {#before-you-start}
+
+- Periscope ist installiert und verbunden. Siehe [Periscope installieren und die erste Quelle streamen](./install.mdx).
+- Von der API: die URL, die JSON liefert, mit Query-Parametern, und die Methode (`GET` oder `POST` mit Body).
+- Zugangsdaten, falls nötig: ein Bearer-Token, Benutzer und Passwort oder ein API-Key-Header. Legen Sie sie in die Umgebung des Agents und verweisen Sie mit `${NAME}` darauf. Schreiben Sie sie nicht in die Datei.
+- Die Form der Antwort. Rufen Sie sie einmal mit `curl` ab und achten Sie darauf, wo die Werte liegen, ob es ein Objekt oder eine Liste ist, welches Feld ein Listenelement benennt und welches Feld die Zeit enthält.
+- Die Aktualisierungsrate und das Kontingent der API. Fragen Sie nicht schneller ab, als sie sich aktualisiert.
+- Ausgehendes HTTPS von der Box zum Host der API, über den Proxy in `HTTPS_PROXY`, falls der Standort einen braucht.
+
+## Schritte {#steps}
+
+1. Fügen Sie einen Eingang für ein einzelnes Objekt hinzu, hier das aktuelle Wetter an einem Ort:
+
+   ```toml
+   [[inputs.http]]
+   alias          = "weather"
+   urls           = ["https://api.open-meteo.com/v1/forecast?latitude=50.98&longitude=11.33&current=temperature_2m,relative_humidity_2m,wind_speed_10m"]
+   interval       = "15m"
+   root           = "current"
+   thing          = "weimar"
+   thing_type     = "weather"
+   timestamp_path = "time"
+   units_path     = "current_units"
+   exclude        = ["interval"]
+   ```
+
+2. Benennen Sie für eine Liste, in der jedes Element ein Thing ist, die Liste und das Feld, das ein Element identifiziert:
+
+   ```toml
+   [[inputs.http]]
+   alias            = "stations"
+   urls             = ["https://api.example.com/v2/stations/latest"]
+   bearer_token     = "${STATIONS_TOKEN}"
+   interval         = "5m"
+   timeout          = "20s"
+   root             = "data"
+   items            = "stations"
+   thing_path       = "id"
+   thing_type       = "station"
+   timestamp_path   = "observed"
+   timestamp_format = "unix_ms"
+   include          = ["temp", "humidity", "wind.*"]
+   ```
+
+3. Prüfen und erkennen:
+
+   ```sh
+   periscope validate -config /etc/periscope/periscope.toml
+   periscope discover -config /etc/periscope/periscope.toml
+   ```
+
+4. Prüfen und bestätigen Sie die Vorschläge. Siehe [Periscope-Erkennungen freigeben](./approve-discoveries.mdx).
+
+| Schlüssel | Bedeutung |
+| --- | --- |
+| `urls` | Die Anfragen. Mehrere URLs brauchen `thing_path`. |
+| `interval`, `timeout` | Abfrageperiode, mit einer ersten Abfrage beim Start, und die Grenze einer Anfrage. |
+| `bearer_token`, `username` und `password`, `headers` | Zugangsdaten und zusätzliche Header. |
+| `root` | Wo die Werte liegen: ein gjson-Pfad wie `current` oder `data.items`. |
+| `thing` oder `items` mit `thing_path` | Ein festes Thing oder ein Thing pro Array-Element, benannt durch eines seiner Felder. |
+| `thing_type` | Der Thing-Typ. Vorgabe: der Alias. |
+| `timestamp_path`, `timestamp_format` | Die Zeit der Werte. Ohne sie die Abfragezeit. |
+| `units_path` | Ein Objekt, das die Einheiten unter denselben Schlüsseln enthält. |
+| `include`, `exclude` | Welche Werte behalten werden, per gepunktetem Pfad wie `wind.*`. |
+| `mapping` | Ein Bloblang-Mapping, das die Antwort zuerst umformt. |
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Die Erkennung schlägt einen Thing-Typ pro Eingang vor, ein Thing pro Objekt und einen Messwert pro Zahl, Boolean oder String, benannt nach seinem Pfad (`wind.speed` wird zu `wind_speed`), mit der Einheit aus `units_path`:
+
+```text
+KIND       NAME     TYPE        STATUS    NOTE
+thingType  weather  3 measures  proposed  -
+thing      weimar   weather     proposed  -
+```
+
+Die Adresse eines Werts in Zuordnung und Metriken lautet `<thing>/<dotted.path>`, zum Beispiel `weimar/temperature_2m`.
+
+## Wenn es nicht klappt {#if-it-doesnt-work}
+
+- **`HTTP 401` oder `HTTP 403`**: Zugangsdaten fehlen oder sind falsch. Prüfen Sie, ob die Variable `${NAME}` für den Agent gesetzt ist, und den Scope des Tokens.
+- **`HTTP 429`**: Sie fragen schneller ab, als das Kontingent der API erlaubt. Erhöhen Sie `interval`. Das Back-off bremst in der Zwischenzeit.
+- **`timeout`**: Die API oder der Proxy antwortet nicht innerhalb von `timeout`. Prüfen Sie den ausgehenden Verkehr und `HTTPS_PROXY` oder erhöhen Sie `timeout`.
+- **`root "…" is not in the response`**: Der Pfad passt nicht, oder die API hat einen Fehler gesendet. Rufen Sie die URL mit `curl` ab und vergleichen Sie.
+- **`the response (below root) is an array`**: Setzen Sie `thing_path`, und `items`, wenn die Liste unterhalb von `root` liegt.
+- **`response body over max_body`**: Die Antwort ist größer als 4 MiB. Fordern Sie von der API weniger an oder erhöhen Sie `max_body`.
+- **`redirect to another host refused`**: Tragen Sie die endgültige URL in `urls` ein.
+- **Viele Messwerte wie `levels_0` bis `levels_31`**: Arrays werden zu indizierten Messwerten. Verwenden Sie `include` und senken Sie `max_array`.
+- **Jeder Wert wiederholt sich mit derselben Zeit**: Sie fragen schneller ab, als die API sich aktualisiert. Erhöhen Sie `interval`.
+
+Mehr unter [Periscope-Probleme beheben](./troubleshooting.mdx).
+
+## Verwandte Seiten {#related}
+
+- [Wie Periscope funktioniert](./how-periscope-works.mdx) · [Konfigurationsreferenz](./configuration.mdx)
+- [Werte transformieren, bevor sie die Edge verlassen](./processors.mdx)

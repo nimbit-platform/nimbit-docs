@@ -1,0 +1,134 @@
+---
+title: "Periscope installieren und die erste Quelle streamen"
+sidebar_label: Installieren und erste Quelle streamen
+description: Periscope auf einer Edge-Box installieren, per Onboarding-Code als Gateway verbinden, eine Quelle erkennen, anwenden und Werte in IoT Breeze sehen.
+type: tutorial
+sidebar_position: 2
+app:
+  routes: ["/onboarding/gateways"]
+translated_from: 06bddd1
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+In etwa 30 Minuten haben Sie Periscope auf einer Edge-Box laufen, als Gateway mit IoT Breeze verbunden, mit einer Quelle, die erkannt, bestätigt wurde und Werte streamt.
+
+:::info Was Sie brauchen
+- Eine Linux-Box neben Ihrer Anlage, die die URL der Plattform über HTTPS erreicht, und die Quelle, die Sie lesen wollen (eine SPS, ein OPC-UA-Server oder ein Broker). Um es ohne Anlage auszuprobieren, starten Sie einen Simulator: `periscope sim`, siehe [Kommandozeilen-Referenz](./commands.mdx#sim).
+- Die Berechtigung **Gateway** in IoT Breeze (die eingebaute Rolle **Administrator** hat sie).
+- Docker oder die Möglichkeit, einen systemd-Dienst zu installieren.
+- Das Periscope-Paket (Container-Image oder Binary). Fordern Sie es beim NimBit-Support unter [info@nimbit.de](mailto:info@nimbit.de) an; Sie erhalten den Image-Namen und die zu verwendende Version.
+:::
+
+## 1. Das Gateway in IoT Breeze hinzufügen {#1-add-the-gateway-in-iot-breeze}
+
+Tun Sie das zuerst: Den Onboarding-Code brauchen Sie in Schritt 3. Folgen Sie [Gateway hinzufügen](../add-a-gateway.mdx), bis IoT Breeze den Code zeigt, und kopieren Sie ihn. Er wird nur einmal angezeigt und beginnt mit `ONB-`. Seine Standardgültigkeit beträgt 24 Stunden.
+
+## 2. Periscope installieren {#2-install-periscope}
+
+Periscope ist ein statisches Linux-Binary, das auch als Container läuft. Schreiben Sie zuerst eine minimale Konfiguration, damit der Agent etwas zu lesen hat. Speichern Sie sie als `/etc/periscope/periscope.toml`:
+
+```toml
+[agent]
+name = "werk-altena-01"            # names this agent; the gateway's namespace prefixes thing IDs
+
+[ocb]
+url     = "https://nimbit.example.com"
+gateway = true
+mode    = "confirm"
+mount   = "lenneform/werk-altena"
+levels  = ["site", "area", "line"]
+
+[[inputs.opcua]]
+alias    = "press-shop"
+endpoint = "opc.tcp://192.168.10.20:4840"
+include  = ["Machines/**"]
+
+[[outputs.tsflux_stream]]
+```
+
+Ersetzen Sie `url` durch die Adresse Ihrer Plattform. Für eine andere Art von Quelle nehmen Sie die passende Seite, zum Beispiel [Eine Siemens-S7-SPS lesen](./s7.mdx). Der eigene `mount` eines Eingangs und, bei einem Gateway, sein Namespace sind Teil der Identität jedes Things. Der `mount` unter `[ocb]` legt fest, wo die Things in Ihrer Hierarchie liegen. Wählen Sie sie vor dem ersten Anwenden.
+
+Starten Sie den Agent als Container:
+
+```sh
+docker run -d --name periscope --restart unless-stopped \
+  -v /etc/periscope:/etc/periscope:ro \
+  -v periscope-state:/var/lib/periscope \
+  -p 8400:8400 <periscope-image>:<version>
+```
+
+Ersetzen Sie `<periscope-image>:<version>` durch das Image und die Version, die Ihnen der NimBit-Support genannt hat. Um ihn stattdessen als systemd-Dienst zu betreiben, siehe [Kommandozeilen-Referenz](./commands.mdx#run-as-a-systemd-service).
+
+Prüfen Sie die Installation und die Datei:
+
+```sh
+docker exec periscope periscope version
+docker exec periscope periscope validate -config /etc/periscope/periscope.toml -offline
+```
+
+`validate` endet mit `configuration is valid`. Der Agent legt seinen Zustand in `/var/lib/periscope` ab. Halten Sie dieses Verzeichnis auf einem Volume und sichern Sie es. Diese Seite ist für einen ersten Versuch. Für eine Box im Produktivbetrieb nutzen Sie [Periscope bereitstellen](./deploy/index.mdx): Voraussetzungen, Betrieb als Dienst, Upgrades und Austausch einer Box.
+
+## 3. Die Box mit dem Onboarding-Code verbinden {#3-connect-the-box-with-the-onboarding-code}
+
+Führen Sie den Befehl `enroll` auf der Box aus:
+
+```sh
+docker exec periscope periscope enroll -code ONB-XXXX-XXXX-XXXX-XXXX
+```
+
+Die Box erzeugt ihr eigenes Schlüsselpaar, löst den Code ein und behält die IDs des Gateways. Sie gibt den Namespace des Gateways und das Gateway-Thing aus. Der Code ist nun verbraucht, und die Box hält kein Passwort. Die Einrichtungsseite der Box nimmt den Code ebenfalls an, wie [Gateway hinzufügen](../add-a-gateway.mdx) beschreibt.
+
+Der Agent lädt seine Datei selbstständig neu; um sicherzugehen, führen Sie `docker restart periscope` aus. Der Agent fragt zuerst die Plattform nach dem Datensatz des Gateways und erkennt, bis sie antwortet, nichts. In IoT Breeze zeigt das Gateway innerhalb von etwa 5 Minuten **Online**, wenn seine erste Zustandsmeldung eintrifft.
+
+<Screenshot
+  page="gateways/install"
+  id="01-gateway-online"
+  route="/onboarding/gateways"
+  state="Gateway list with the new gateway Online"
+  alt="Die Gateway-Liste mit dem neuen Gateway im Status Online"
+/>
+
+## 4. Die Quelle erkennen {#4-discover-the-source}
+
+Starten Sie eine Erkennung:
+
+```sh
+docker exec periscope periscope discover
+```
+
+Periscope liest die Quelle, ohne in sie zu schreiben, und listet seine Vorschläge:
+
+```text
+INPUT       NODES  THINGS  ERROR
+press-shop  412    18      -
+
+KIND       NAME          TYPE          STATUS    NOTE
+thingType  PressType     9 measures    proposed  -
+thing      Press1        PressType     proposed  -
+```
+
+`ERROR` ist leer, wenn der Eingang seine Quelle lesen konnte. Zeigt er einen Fehler, sehen Sie am Ende der Seite Ihrer Quelle nach.
+
+## 5. Bestätigen und anwenden {#5-confirm-and-apply}
+
+Öffnen Sie `http://<box>:8400/ui/proposals`, benennen Sie generierte Namen um und wählen Sie **Confirm all proposed** und dann **Apply now**. Die Status wechseln zu `applied`. Einzelheiten stehen unter [Periscope-Erkennungen freigeben](./approve-discoveries.mdx).
+
+Öffnen Sie in IoT Breeze den Tab **Things** des Gateways. Die Things, die Periscope angelegt hat, sind dort aufgelistet.
+
+## 6. Die Werte sehen {#6-see-the-values}
+
+Öffnen Sie eines der Things aus dem Tab **Things** des Gateways. Seine neuesten Werte erscheinen innerhalb von ein bis zwei Minuten. Öffnen Sie dann den Tab **Zustand** des Gateways: Die Karte **Datenverkehr** zeigt **Nachrichten pro Minute** und **Aktive Things** über null und **Verworfen pro Minute** bei 0.
+
+Um auch von der Box aus zu prüfen, siehe [Prüfen, ob Daten angekommen sind](./verify.mdx).
+
+## Was Sie gebaut haben {#what-you-built}
+
+Periscope läuft auf Ihrer Box als Gateway Ihrer Organisation. Es hat eine Quelle erkannt, Sie haben das vorgeschlagene Modell freigegeben, und nun streamt es die Werte. IoT Breeze zeigt Zustand und Datenverkehr des Gateways.
+
+## Weiter {#next}
+
+- [Periscope-Erkennungen freigeben](./approve-discoveries.mdx) und weitere Quellen verbinden: [OPC UA](./opc-ua.mdx), [Modbus](./modbus.mdx), [S7](./s7.mdx), [Sparkplug B und MQTT](./sparkplug-and-mqtt.mdx), [HTTP](./http.mdx)
+- [Werte transformieren, bevor sie die Edge verlassen](./processors.mdx)
+- [Periscope bereitstellen](./deploy/index.mdx): Voraussetzungen, Betrieb als Dienst, Upgrades und Austausch einer Box
+- [Zustand und Datenverkehr von Gateways prüfen](../fleet-health.mdx)

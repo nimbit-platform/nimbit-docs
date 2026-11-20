@@ -1,0 +1,69 @@
+---
+title: Das KI-Modell wählen
+description: Registrieren Sie die Sprachmodelle, die Ask Nimble nutzen darf, legen Sie eines für einen Chat fest und bestimmen Sie die Ausweichreihenfolge.
+type: how-to
+app:
+  routes: ["/knowledge/models"]
+  tour: setup-knowledge
+translated_from: b6ed908
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Registrieren Sie die Sprachmodelle, die Ihr Tenant nutzen darf, legen Sie eines für einen Chat fest und bestimmen Sie, welche Modelle eine Frage wiederholen, die das übliche Modell nicht beantworten konnte. Wie ein Modell verwendet wird, steht unter [Wie Ask Nimble antwortet](./ask-nimble-answers.mdx).
+
+## Bevor Sie beginnen {#before-you-start}
+
+- Die Seite lesen braucht Zugriff auf die Knowledge-Einrichtung. Modelle ändern braucht die Rolle Admin oder Modeler. **Testen** ist Plattform-Administratoren vorbehalten.
+- Sie brauchen die Modell-ID des Anbieters und einen API-Schlüssel. Das Modell muss Tool Calling unterstützen.
+- Zählungen, Listen und Nachschlagen funktionieren ohne registriertes Modell. Ohne eines nutzen andere Fragen das Modell, das die Plattform oder der Server bereitstellt.
+
+## Ein Modell registrieren {#register-a-model}
+
+1. Öffnen Sie **Einstellungen › Knowledge-Einrichtung › KI-Modelle**. Die Seite heißt **Modelle & Schlüssel**. Wählen Sie **Modell registrieren**.
+2. Geben Sie einen **Name** ein. Sie verwenden ihn im Chat und in der Ausweichreihenfolge. Er lässt sich nicht ändern.
+3. Wählen Sie den **Anbieter**: **Anthropic**, **OpenAI**, **Gemini** oder **OpenAI-kompatibel**.
+4. Geben Sie die **Modell-ID des Anbieters** und den **API-Schlüssel** ein. Bei OpenAI-kompatiblen Endpunkten auch die **Basis-URL**. Sie muss https sein. Private, Loopback- und Metadaten-Adressen werden abgelehnt.
+5. Prüfen Sie unter **Fähigkeiten**, was das Modell unterstützt: **Strenges JSON-Schema**, **Erzwungene Werkzeugwahl**. Lassen Sie das strenge Schema bei Gemini-kompatiblen Endpunkten aus.
+6. Speichern Sie und wählen Sie dann **Testen**.
+
+<Screenshot
+  page="knowledge/ai-model"
+  id="01-models"
+  route="/knowledge/models"
+  state="Models and keys page with two registered models, one marked Managed by the platform"
+  alt="Die Liste der registrierten Modelle"
+/>
+
+Der API-Schlüssel ist nur schreibbar: Er wird verschlüsselt und nie wieder angezeigt. Lassen Sie das Feld beim Bearbeiten leer, um ihn zu behalten. Ein Modell mit der Markierung **Von der Plattform verwaltet** ist für Sie registriert. Beim Löschen eines Modells wird sein Schlüssel vernichtet; daran angeheftete Chats fallen auf den Standard zurück.
+
+## Ein Modell an einen Chat anheften {#pin-a-model-to-a-chat}
+
+Öffnen Sie in Ask Nimble das Modellmenü in der Fußzeile des Fragefelds. Wählen Sie unter **Modell** ein registriertes Modell. Standard ist **Automatisch (Standard)**. Ein angeheftetes Modell antwortet allein: Es wird kein Ausweichen versucht.
+
+## Die Ausweichreihenfolge festlegen {#set-the-fallback-order}
+
+Findet das übliche Modell nichts, versuchen die Modelle in der **Ausweichreihenfolge** die Frage nacheinander erneut. Das erste, das antwortet, gewinnt.
+
+1. Fügen Sie unter **Ausweichreihenfolge** ein registriertes Modell hinzu.
+2. Ordnen Sie sie mit **Nach vorne** und **Nach hinten**.
+3. Speichern Sie.
+
+:::warning Jedes Ausweichen kostet einen vollen Extraversuch
+Erlaubt sind höchstens vier Ausweichschritte. Eine längere Kette vervielfacht die Kosten einer Frage. Ohne Ausweichen bekommt eine Frage, die das übliche Modell nicht beantworten kann, die Antwort „Ich weiß es nicht“.
+:::
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Das Modell zeigt nach **Testen** **Erreichbar**. In Ask Nimble nennt **Details** unter einer Antwort das Modell, das geantwortet hat.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Modell hat nicht geantwortet** beim Test: Prüfen Sie Modell-ID, Schlüssel und Basis-URL.
+- **Das Testen eines Modells ist Plattform-Administratoren vorbehalten**: Bitten Sie einen, es zu testen.
+- **Ein Ausweichschritt tut nichts**: Sein Modell wurde gelöscht. Entfernen Sie es aus der Reihenfolge.
+- **Für diese Frage ist ein KI-Modell nötig** im Chat: Es ist kein Modell verfügbar. Registrieren Sie eines.
+
+## Siehe auch {#related}
+
+- [Wie Ask Nimble antwortet](./ask-nimble-answers.mdx) · [Eine Frage zu Ihren Daten stellen](./ask.mdx)

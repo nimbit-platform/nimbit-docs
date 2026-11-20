@@ -1,0 +1,58 @@
+---
+title: Einen Kollegen einladen
+description: Laden Sie Personen mit einer Rolle und Zugriff auf Gruppen in Ihren Tenant ein und senden Sie eine Einladung erneut, erneuern oder ziehen Sie sie zurück.
+type: how-to
+sidebar_position: 3
+app:
+  routes: ["/administration/users", "/administration/users/:id"]
+translated_from: b6ed908
+---
+
+Laden Sie eine oder mehrere Personen per E-Mail ein und legen Sie sofort fest, was sie tun und sehen dürfen. Wie Rollen und Gruppen zusammenwirken, lesen Sie unter [Benutzer, Gruppen und Rollen](./access.mdx).
+
+## Bevor Sie beginnen {#before-you-start}
+
+- Sie brauchen die Rolle **Administrator**. **Manager** kann Benutzer ändern und entfernen, aber nicht einladen.
+- Sie können nur Rollen vergeben, deren Berechtigungen Sie selbst haben. Eine Rolle, die Sie nicht vergeben dürfen, ist in der Auswahl gesperrt.
+- Legen Sie die [Gruppen](./team-access.mdx) an, in denen die Person sein soll, falls es sie noch nicht gibt.
+
+## Schritte {#steps}
+
+1. Öffnen Sie **Administration › Benutzer** und wählen Sie **Benutzer einladen**.
+2. Geben Sie unter **E-Mails** eine oder mehrere Adressen ein. Sie können bis zu 50 auf einmal einladen.
+3. Wählen Sie unter **Rollen** mindestens eine Rolle.
+4. Fügen Sie unter **Gruppen** die Gruppen hinzu, die die Personen sehen sollen. **Gelesen** ist immer aktiv. Schalten Sie **Aktualisieren** und **Ausführen** ein, wenn sie in dieser Gruppe Dinge ändern oder Aktionen ausführen dürfen.
+5. Optional: Geben Sie unter **Things** auf dieselbe Weise Zugriff auf einzelne Things.
+6. Wählen Sie **Einladung senden**.
+
+IoT Breeze erstellt pro Adresse eine Einladung mit eigenem Link und sendet sie per E-Mail.
+
+:::warning Links mit Bedacht weitergeben
+Jeder mit einem Link kann die Einladung öffnen, bis sie abläuft. Ist ein Link bei der falschen Person gelandet, wählen Sie **Erneut senden**: Der alte Link funktioniert dann nicht mehr.
+:::
+
+## Prüfen, ob es funktioniert hat {#check-that-it-worked}
+
+Die Liste zeigt jede Adresse mit dem Status **Ausstehend**. Nimmt die Person an, verschwindet der Status und die Person erscheint als aktiver Benutzer. Öffnen Sie den Benutzer, um seine Tabs **Rollen** und **Gruppen** zu sehen.
+
+## Eine Einladung ändern oder zurückziehen {#change-or-withdraw-an-invitation}
+
+| Status | Aktion in der Statusspalte |
+| --- | --- |
+| **Ausstehend** oder **Abgelaufen** | **Erneut senden** sendet einen neuen Link. Der vorherige Link funktioniert nicht mehr. |
+| **Abgelehnt** | **Erneut einladen** sendet eine neue Einladung. **Verwerfen** entfernt sie aus der Liste. |
+| Jede offene Einladung | Wählen Sie sie aus und löschen Sie sie, um sie zu widerrufen. |
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Der Dialog sagt, es wurde keine E-Mail gesendet**: Ihre Installation versendet keine E-Mails. Kopieren Sie jeden Link aus dem Dialog und geben Sie ihn selbst weiter.
+- **Der Dialog sagt, es gibt noch keinen Link**: Für den Tenant ist keine Webadresse registriert. Senden Sie die Einladung erneut, sobald es eine gibt.
+- **Die Person hat kein Konto und kann sich über den Link nicht registrieren**: Auf manchen Plattformen können nur Personen mit bestehendem Konto Einladungslinks nutzen.
+- **Eine Rolle ist gesperrt**: Sie enthält Berechtigungen, die Ihnen fehlen. Bitten Sie einen Administrator, die Person einzuladen, oder wählen Sie eine andere Rolle.
+
+{/* TODO(product): How long is an invitation valid before it shows Expired? */}
+
+## Verwandte Seiten {#related}
+
+- [Benutzer, Gruppen und Rollen](./access.mdx) · [Rollen und Berechtigungen](./roles.mdx)
+- [Einem Team Zugriff auf seine Things geben](./team-access.mdx)

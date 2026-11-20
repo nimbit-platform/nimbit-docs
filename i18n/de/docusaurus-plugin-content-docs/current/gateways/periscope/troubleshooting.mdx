@@ -1,0 +1,100 @@
+---
+title: Periscope-Probleme beheben
+description: Die Fehler finden und beheben, die Periscope in seinem Log, auf seiner Übersicht und in der Befehlsausgabe zeigt, gruppiert danach, wo sie erscheinen.
+type: how-to
+sidebar_position: 15
+app:
+  routes: ["/onboarding/gateways"]
+translated_from: 06bddd1
+---
+
+Finden Sie die Ursache eines Fehlers, den Periscope meldet, und beheben Sie ihn. Fehler einzelner Anlagenprotokolle stehen am Ende der jeweiligen Quellenseite, zum Beispiel [Einen OPC-UA-Server verbinden](./opc-ua.mdx). Der Agent liefert außerdem eine längere Liste unter `http://<listen>/ui/docs`.
+
+## Voraussetzungen {#before-you-start}
+
+- Sie können die Web-Oberfläche des Agents öffnen und Befehle auf der Box ausführen. In einem Container verwenden Sie `docker exec periscope periscope <command>`.
+- Sehen Sie zuerst an drei Stellen nach:
+  1. Der Bildschirm **Overview**: welcher Eingang oder Ausgang nicht `streaming` oder `ok` ist, und der letzte Fehler jedes einzelnen.
+  2. Der Bildschirm **Logs**, gefiltert auf die Ebene `warn` und die betreffende Quelle.
+  3. `periscope validate`, das Konfiguration und Anmeldung in einem Zug prüft.
+
+## Schritte {#steps}
+
+Suchen Sie Ihr Symptom in der passenden Gruppe.
+
+### Die Konfiguration wird abgelehnt {#the-configuration-is-rejected}
+
+- **`unknown keys: …`**: ein Tippfehler im Schlüssel oder ein Schlüssel eines anderen Plugins. Unbekannte Schlüssel werden nie ignoriert. Prüfen Sie den Schlüssel in der [Konfigurationsreferenz](./configuration.mdx).
+- **`deadband "…" comes after heartbeat "…"`**: Verschieben Sie `[[processors.heartbeat]]` ans Ende.
+- **Ein `mount` wird abgelehnt**: Er hat leere Elemente, ein führendes oder abschließendes `/`, `.` oder `..` oder Leerzeichen. Schreiben Sie ihn als `a/b/c`.
+- **`password=unset`, obwohl es in der Umgebung steht**: `${NAME}` liest die eigene Umgebung des Agents. Verwenden Sie `EnvironmentFile=` oder `--env-file`.
+- **`agent.health_interval` wird abgelehnt**: Es muss von `1m` bis `5m` reichen. Ein längeres Intervall ließe ein gesundes Gateway zwischen den Meldungen auf Offline gehen.
+- **`require_input = false` bei einem `heartbeat`-Prozessor wird abgelehnt**: Ein Gateway kann den letzten Wert einer toten Quelle nicht erneut senden. Entfernen Sie den Schlüssel.
+- **`ocb: set exactly one credential`**: Behalten Sie bei `[ocb] url` genau eines von `gateway = true`, `email` oder `token`.
+- **Overview zeigt `periscope.toml rejected: …; running the config from 10:42`**: Der Agent hat seine letzte gute Konfiguration behalten. Beheben Sie, was der Fehler nennt, und speichern Sie erneut.
+- **Overview zeigt `restart required: …`**: Ein Schlüssel wurde geändert, den ein laufender Agent nicht ändern kann. Starten Sie den Agent neu oder setzen Sie den Schlüssel zurück.
+
+### Der Agent kann sich nicht anmelden oder ist nicht verbunden {#the-agent-cant-sign-in-or-isnt-connected}
+
+- **Banner `Not connected to Nimbit` bei einem Gateway**: `[ocb] gateway = true` ist gesetzt, aber die Box ist nicht eingerichtet, daher fehlt `state_dir/gateway.json`. Führen Sie `periscope enroll -code ONB-…` mit einem neuen Code aus.
+- **Der Onboarding-Code wird abgelehnt**: Er ist unbekannt, benutzt oder abgelaufen. Ein Code funktioniert einmal. Stellen Sie in IoT Breeze einen neuen aus: **Neuer Onboarding-Code**. War das Identitätsverzeichnis oder die Plattform nicht erreichbar, wurde der Code nicht verbraucht. Hat die Plattform geantwortet, nachdem sie ihn akzeptiert hatte, ist der Code verbraucht, stellen Sie also einen weiteren aus.
+- **Der Zustand der Box gehört zu einer anderen Organisation**: Verwenden Sie ein für diese Organisation angelegtes State-Verzeichnis oder starten Sie mit einem leeren.
+- **`Wrong or expired setup code`**: Nehmen Sie den beim letzten Start ausgegebenen Code aus `docker logs periscope`. Bindestriche, Leerzeichen und Groß-/Kleinschreibung spielen keine Rolle.
+- **`the platform cannot be reached`**: Es gibt keine Route von der Box zur URL. Prüfen Sie DNS, Firewall, einen Proxy und `[ocb] url`. Führen Sie auf der Box `curl -sv <[auth] url>/.well-known/jwks.json` und `curl -sv https://nimbit.example.com/ocb/health` aus. Hinter einem Firmenproxy setzen Sie `HTTPS_PROXY` in der Umgebung des Agents. `[ocb] url` ist die Basis-URL der Plattform, nicht die des Backends, außer bei `path_prefix = ""`. Erkennung und Streaming laufen währenddessen weiter: Die Ausgänge halten Werte innerhalb von `buffer_bytes` auf der Platte.
+- **Servicekonto: `has no active tenant` oder `belongs to tenant …`**: Das Konto muss Mitglied der Organisation dieses Agents sein und keiner anderen. Verwenden Sie ein Konto dieser Organisation oder ein leeres State-Verzeichnis.
+- **Servicekonto: `not enrolled`**: Führen Sie `periscope enroll -password-stdin` aus. Hat die Plattform die Sitzung widerrufen, registrieren Sie erneut. Ein laufendes `serve` übernimmt es ohne Neustart.
+
+### Das Gateway wird angehalten oder seine Zugangsdaten werden abgelehnt {#the-gateway-is-held-or-its-credential-is-refused}
+
+Das gilt für eine Box mit `[ocb] gateway = true`. Die Seite der Plattform steht in der [Gateway-Referenz](../gateway-reference.mdx).
+
+- **`the gateway's namespace is not known yet (gateways.me has not answered)`**: Der Agent fragt die Plattform nach dem Datensatz seines Gateways und erkennt und wendet nichts an, bis sie antwortet, damit kein Thing das falsche Präfix bekommt. `discover` und `apply` schlagen mit dieser Meldung fehl, und `serve` fragt jede Minute erneut. Prüfen Sie, dass `[ocb] url` gesetzt ist und die Box die Plattform erreicht. In einem Container führen Sie `docker exec periscope periscope validate` aus.
+- **`OCB has no record of this gateway yet; asked again before the next discovery`**: Die Plattform kennt die Route, aber nicht das Gateway. Prüfen Sie unter **Einstellungen › Onboarding › Gateways**, dass das Gateway existiert und diese Box mit seinem Code eingerichtet wurde. Der Agent fragt vor jeder Erkennung erneut, höchstens einmal pro Minute.
+- **`the platform has no /rest/v2/gateways/me (an older OCB)`**: Die Plattform ist älter als der Datensatz des Gateways. Der Agent behält `agent.name` als Präfix und sendet seinen Zustand an `gateway-<gateway id>`. Aktualisieren Sie die Plattform und starten Sie den Agent neu.
+- **`403 GATEWAY_SCOPE_REQUIRED`**: Die Box hat die Tenant-Zugangsdaten angefordert, und die Plattform stellt einem Gateway nur seine eigenen aus. Aktualisieren Sie Periscope. Siehe [Eine Box aktualisieren](./deploy/upgrade.mdx).
+- **`403 GATEWAY_TOKEN_REQUIRED`**: Die Anfrage hat die Gateway-Zugangsdaten mit einem Token angefordert, das keinem Gateway gehört. Prüfen Sie, dass `periscope validate` das Gateway als Zugangsart zeigt und die Box als dieses Gateway eingerichtet wurde.
+- **`403 GATEWAY_CREDENTIAL_REVOKED`**: Die Datenzugangsdaten des Gateways sind widerrufen. Richten Sie die Box mit einem neuen Code erneut ein. Siehe [Ein Gateway widerrufen, ersetzen oder entfernen](../revoke-and-replace.mdx).
+- **Der Broker lehnt die Verbindung oder ein Topic ab**: Mit den Gateway-Zugangsdaten akzeptiert der Broker nur Topics, die die ID des Gateways enthalten. Ein eigenes `topic` muss mit `tenant/{tenant}/gateway/{gateway}/` beginnen. Siehe [Ausgänge-Referenz](./outputs.mdx#the-gateway-credential).
+- **Das Gateway ist Offline, obwohl der Agent läuft**: Der Agent sendet seine Zustandsmeldung über den ersten Plattform-Ausgang. Prüfen Sie, dass einer konfiguriert und auf der **Overview** `ok` ist und dass `agent.health_interval` höchstens `5m` beträgt.
+
+### Anwenden schlägt fehl {#apply-fails}
+
+Ein fehlgeschlagenes Element bleibt mit seinem Grund `confirmed`, und das nächste Anwenden versucht es erneut. Lehnt die Plattform das Anlegen durch ein Gateway ab, nennt sie einen Code, den die Liste unten erklärt.
+
+- **`Root group not found` (400)**: Dem Servicekonto fehlt der Lesezugriff auf die Stammgruppe der Organisation. Thing-Typen sind bereits angelegt.
+- **`403` bei jedem Element**: Die Rolle des Kontos darf keine Thing-Typen oder Things anlegen. Geben Sie ihm die Rolle `modeler`. Bei einem Gateway nennt der Grund der Plattform die Ursache. Siehe [Zustand und Datenverkehr von Gateways prüfen](../fleet-health.mdx).
+- **`GATEWAY_LOCKED`, `The gateway is locked: it may create no thing`**: Das **Anlegen von Things** des Gateways ist **Gesperrt**. Setzen Sie es im Tab **Bereich** des Gateways auf **Offen**. Das nächste Anwenden legt die Things an. Ein gesperrtes Gateway bekommt auch ein gelöschtes Thing nicht zurück, wenn es erneut dafür sendet.
+- **`GATEWAY_SCOPE_NAMESPACE`**: Die Alternate-ID des Things liegt außerhalb des Namespace des Gateways, dem sie entsprechen oder mit `<namespace>-` beginnen muss. Die Box hat mit einem anderen Präfix erkannt, zum Beispiel mit `agent.name` auf einer Plattform ohne `gateways.me`. Aktualisieren Sie die Plattform und erkennen Sie erneut.
+- **`GATEWAY_SCOPE_THING_TYPE`, `GATEWAY_SCOPE_LIMIT` (409)**: Der Thing-Typ gehört nicht zu den **Erlaubten Thing-Typen** des Gateways, oder das Gateway hat so viele Things wie sein **Thing-Limit**. Ändern Sie den Bereich oder bestätigen Sie weniger Things.
+- **`ALTERNATE_ID_RESERVED` (403)**: Alternate-IDs, die in beliebiger Schreibweise mit `gateway-` beginnen, gehören den Gateway-Things der Plattform. Das passiert, wenn `agent.name` oder eine Quelladresse jede ID so beginnen lässt, etwa `agent.name = "gateway-1"` auf einer Box ohne Namespace. Benennen Sie `agent.name` um, erkennen Sie erneut und entfernen Sie die abgelehnten Vorschläge. Die neuen Namen legen neue Things an.
+- **`the names "Oven1" and "Oven1 (hall-3)" are both held by other things`**: Thing-Namen sind in der Organisation eindeutig. Bei einem Gateway fragt die Plattform zuerst nach `<name> (<namespace>)`. Benennen Sie den Vorschlag um und wenden Sie erneut an.
+- **`a thing named "…" already exists`**: Thing-Namen sind in der Organisation eindeutig. Benennen Sie den Vorschlag um und wenden Sie erneut an.
+- **`the agent is busy applying or planning`**: Versuchen Sie es gleich noch einmal.
+- **Things `skipped`**: Ihr Thing-Typ ist nicht angewendet. Bestätigen Sie auch den Typ.
+
+### Werte kommen nicht an {#values-dont-arrive}
+
+Beginnen Sie mit `periscope verify -since 5m`. Seine Spalte `PROBLEM` nennt das Thing und was fehlt. Siehe [Prüfen, ob Daten angekommen sind](./verify.mdx).
+
+- **`unmapped` wächst auf der Overview**: Werte von Adressen, die nicht angewendet sind. Bestätigen Sie die Vorschläge. Der Bildschirm **Mapping** listet die nicht zugeordneten Adressen.
+- **`queued_values` wächst**: Der Ingest der Plattform ist nicht erreichbar. Der Rückstau wird gesendet, sobald er wieder da ist.
+- **Alles wird zurückgehalten und `dry_run_values` wächst**: Der Probelauf ist eingeschaltet. Schalten Sie ihn auf dem Bildschirm **Dry run** aus.
+- **`tsflux refused part of a batch … thing not found`**: Die Plattform speichert Werte nur für Things und Messwerte, die sie kennt, und lehnt den Rest endgültig ab. Das Thing ist noch nicht angewendet, ein Prozessor schreibt einen Messwert, den der Thing-Typ nicht hat, oder der Typ eines Werts weicht vom Messwert ab. Wenden Sie an, fügen Sie den Messwert hinzu oder verwenden Sie einen `convert`-Prozessor.
+- **Ein Wert liegt in der Zukunft, oder aus einer Quelle in Ortszeit kommt nichts an**: Die Quelle sendet Ortszeit ohne Offset. Für MQTT setzen Sie `timezone`.
+- **Bei einem Gateway kommen Daten an, aber das Gateway ist Offline**: Die Zustandsmeldung läuft über einen Ausgang mit Live-Pfad. Ein Gateway ohne Ausgang `tsflux_stream`, `tsflux` oder `nimbit_mqtt` sendet keinen Zustand, und eine wiedergegebene Warteschlange zählt nie. Siehe [Ausgänge-Referenz](./outputs.mdx#the-gateway-credential).
+- **Im Tab „Zustand“ des Gateways erscheinen Verworfene**: Lesen Sie den Grund. Siehe [Gateway-Referenz](../gateway-reference.mdx).
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+`periscope validate` endet mit `configuration is valid`. Die **Overview** zeigt jeden Eingang als `streaming` und jeden Ausgang als `ok`, und `periscope verify` endet mit Exit 0.
+
+## Wenn es nicht klappt {#if-it-doesnt-work}
+
+- **Der Browser warnt vor dem Zertifikat**: `[server.tls]` ohne Dateien verwendet das selbstsignierte Zertifikat des Agents. Vergleichen Sie den Fingerabdruck auf der Anmeldeseite mit dem des Browsers und vertrauen Sie ihm dann, oder konfigurieren Sie ein Zertifikat.
+- **Die Oberfläche funktioniert auf `localhost`, aber nicht hinter einem Reverse Proxy**: Veröffentlichen Sie sie unter `/ui` auf dem Host des Proxys, übergeben Sie `X-Forwarded-Proto: https` und tragen Sie den Proxy in `server.trusted_proxies` ein.
+- **Immer noch festgefahren**: Laden Sie auf dem Bildschirm **Logs** das Log der letzten Stunde herunter, führen Sie `periscope validate` und `periscope apply -dry-run` aus und senden Sie beides mit der Ausgabe von `periscope version` an Ihren NimBit-Kontakt.
+
+## Verwandte Seiten {#related}
+
+- [Konfigurationsreferenz](./configuration.mdx) · [Kommandozeilen-Referenz](./commands.mdx)
+- [Wie Periscope funktioniert](./how-periscope-works.mdx)

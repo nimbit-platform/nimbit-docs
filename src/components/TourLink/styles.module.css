@@ -1,0 +1,39 @@
+.tour {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0 16px;
+  padding: 8px 14px 8px 12px;
+  border: 1px solid var(--docs-color-border);
+  border-radius: 8px;
+  background: var(--docs-color-primary-tint);
+  color: var(--docs-color-text) !important;
+  text-decoration: none !important;
+}
+
+.tour:hover {
+  border-color: var(--docs-color-primary);
+}
+
+.tour > svg {
+  flex: none;
+  color: var(--docs-color-primary);
+}
+
+.tour > span {
+  display: flex;
+  flex-direction: column;
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--docs-color-text-100);
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 600;
+}

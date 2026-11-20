@@ -1,0 +1,79 @@
+---
+title: Alarme an Teams, Slack oder einen Webhook senden
+sidebar_label: Alarme an Teams, Slack oder einen Webhook
+sidebar_position: 7
+description: Warnungen und Fehler Ihrer Things in einen Chat-Kanal oder ein anderes System posten.
+type: how-to
+app:
+  routes: ["/manage/notification-channels"]
+  primary: true
+translated_from: 3041c36
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import Screenshot from "@site/src/components/Screenshot";
+
+Posten Sie Warnungen und Fehler Ihrer Things in einen Microsoft-Teams- oder Slack-Kanal, an einen Webhook oder an ntfy. Wie das mit Events und Vorfällen zusammenhängt, lesen Sie unter [Events, Vorfälle und Benachrichtigungen](./events-incidents-notifications.mdx).
+
+## Bevor Sie anfangen {#before-you-start}
+
+- Sie brauchen eine Rolle, die Benachrichtigungskanäle anlegen darf, und für einen Test eine, die sie ausführen darf. Der Eintrag **Benachrichtigungskanäle** erscheint unter **Einstellungen › Konfiguration**, wenn Sie Zugriff haben.
+- Besorgen Sie die Adresse, an die IoT Breeze postet:
+
+<Tabs groupId="channel">
+<TabItem value="teams" label="Microsoft Teams" default>
+
+Legen Sie in Teams einen Workflow an, der eine empfangene Webhook-Anfrage in einen Kanal postet, zum Beispiel aus der Vorlage *Post to a channel when a webhook request is received*, und kopieren Sie seine URL. IoT Breeze sendet eine Adaptive-Card-Nachricht.
+
+</TabItem>
+<TabItem value="slack" label="Slack">
+
+Fügen Sie in Slack dem Kanal einen eingehenden Webhook hinzu und kopieren Sie seine URL.
+
+</TabItem>
+<TabItem value="webhook" label="Webhook">
+
+Halten Sie die URL des empfangenden Systems bereit. Wählen Sie optional ein Geheimnis, damit der Empfänger prüfen kann, dass eine Anfrage von IoT Breeze kam.
+
+</TabItem>
+<TabItem value="ntfy" label="ntfy">
+
+Wählen Sie ein ntfy-Topic. Nutzen Sie nicht den öffentlichen ntfy-Server, halten Sie die URL Ihres Servers und das Token bereit.
+
+</TabItem>
+</Tabs>
+
+## Schritte {#steps}
+
+1. Öffnen Sie **Einstellungen › Konfiguration › Benachrichtigungskanäle** und wählen Sie **Kanal erstellen**.
+2. Geben Sie einen **Name** ein, zum Beispiel `Plant 1 alerts`, und wählen Sie den **Kanaltyp**. Den Typ können Sie später nicht ändern.
+3. Füllen Sie das Feld des Typs aus: **Teams-Workflow-Webhook-URL**, **Slack-Webhook-URL**, **Webhook-URL** (und **HMAC-Geheimnis (optional)**) oder **ntfy-Topic**.
+4. Schalten Sie **Automatisches Routing** ein und setzen Sie **Mindestschweregrad** auf **Warnung**. Lassen Sie **Ereignistypen** leer, um alle zu senden, oder wählen Sie die, die dieser Kanal bekommen soll.
+5. Lassen Sie **Aktiv** an und speichern Sie.
+6. Wählen Sie in der Liste beim neuen Kanal **Test senden** und prüfen Sie, dass die Nachricht ankommt. Testen können Sie nur einen gespeicherten Kanal.
+
+<Screenshot
+  page="watch/alert-channels"
+  id="01-create-channel"
+  route="/manage/notification-channels"
+  state="Create channel drawer, type Microsoft Teams, Automatic routing on, Minimum severity Warning"
+  alt="Der Drawer Kanal erstellen, eingerichtet für Microsoft Teams"
+/>
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Die Zeile des Kanals zeigt sein Routing, zum Beispiel `≥ Warning`. Öffnen Sie das **Zustellprotokoll** des Kanals. Die Testnachricht steht dort mit dem Status **Gesendet**. Nach der nächsten Warnung erscheint eine neue Zustellung.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Der Test kommt nie an**: Das **Zustellprotokoll** zeigt den Grund. **Ausstehend** heißt, IoT Breeze versucht es noch. Eine Zustellung schlägt nach 5 Versuchen fehl. Möglicherweise ist der Teams-Workflow ausgeschaltet, oder die URL wurde beim Kopieren abgeschnitten.
+- **Das Zustellprotokoll zeigt Fehlgeschlagen**: **Fehler** zeigt die Antwort des Empfängers, zum Beispiel `Teams responded 410`. Öffnen Sie **Kanal bearbeiten**, geben Sie die neue URL ein und speichern Sie. Wählen Sie dann bei der Zustellung **Erneut versuchen**.
+- **Manche Events kommen nie an**: Prüfen Sie ihren Schweregrad gegen den **Mindestschweregrad** und ihren Typ gegen die **Ereignistypen**. Events, die einen Zustand beenden, etwa ein Thing, das wieder online ist, werden nicht geroutet. Vorfallsbenachrichtigungen ebenso wenig. Wie Sie einmal pro Vorfall posten, lesen Sie unter [Eine Vorfallsrichtlinie einrichten](./incident-policy.mdx).
+- **Die Zeile zeigt Nur Aktion**: **Automatisches Routing** ist aus. Der Kanal bekommt nur Nachrichten von Aktionen und Automatisierungen, die ihn nennen.
+
+## Verwandte Seiten {#related}
+
+- [Events, Vorfälle und Benachrichtigungen](./events-incidents-notifications.mdx)
+- [Kanaltypen](./channel-types.mdx)
+- [Alarmieren, wenn ein Wert eine Grenze überschreitet](../automate/threshold-alert.mdx)

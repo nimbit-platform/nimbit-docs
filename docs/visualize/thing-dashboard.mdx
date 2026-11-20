@@ -1,0 +1,91 @@
+---
+title: Build a dashboard for one thing
+sidebar_label: Dashboard for one thing
+description: Create a dashboard for a single thing, add and arrange widgets, and save it.
+type: how-to
+sidebar_position: 3
+app:
+  routes: ["/dashboards", "/dashboards/:id"]
+  primary: true
+  tour: build-dashboards
+---
+
+import TourLink from "@site/src/components/TourLink";
+import Screenshot from "@site/src/components/Screenshot";
+
+Create a dashboard that shows one thing, fill it with widgets and save it. It takes about ten minutes. For how dashboards pick their thing and time, see [Dashboards, smart dashboards and time](./dashboards.mdx).
+
+<TourLink id="build-dashboards-thing-based" />
+
+## Before you start
+- A role that may create and edit dashboards. If **New dashboard** is missing on the Dashboards page, your role may only read them.
+- A thing that has sent data, so the widgets have something to show. No data yet? Use mock data, described in [Build one dashboard for every thing of a kind](./smart-dashboard.mdx#try-it-with-mock-data).
+
+## Create the dashboard
+
+1. Open **Monitoring › Dashboards** and select **New dashboard**.
+2. Under **What should this dashboard show?** choose **For one thing**. Search for the thing, pick it and select **Continue**. Its thing type becomes the interface and the thing the assignment.
+3. In the form, enter a **Dashboard name** such as `Hall 2 machines`. Add a **Description** if you like.
+4. Choose who can see it: **Tenant dashboard** or **User dashboard**. See [Share or embed a dashboard](./share.mdx).
+5. Select **Save**. The dashboard opens.
+
+<Screenshot
+  page="visualize/thing-dashboard"
+  id="01-new-dashboard-dialog"
+  route="/dashboards"
+  state="New dashboard dialog open on the question What should this dashboard show, both options visible"
+  alt="The New dashboard dialog with the options From interfaces and For one thing"
+/>
+
+## Add widgets
+
+1. Select **Add widget**. A new dashboard shows **No widgets created yet**.
+2. Pick a widget type. Groups are named by the question they answer, such as **Values** (*What does it read right now?*) or **Charts** (*How did it change?*). Search finds a widget by name or description.
+3. Choose where its data comes from. On a dashboard for one thing, keep **Follow the dashboard**.
+4. Set it up. The preview updates as you change settings. **Help** at the top explains the settings.
+5. Select **Add to dashboard**.
+
+Every widget type is in the [widget gallery](./widgets.mdx).
+
+<Screenshot
+  page="visualize/thing-dashboard"
+  id="02-widget-setup"
+  route="/dashboards/:id"
+  state="Widget setup screen for a Line chart with one measure selected, live preview on the left and settings on the right"
+  alt="The widget setup screen with a live preview and settings"
+/>
+
+## Arrange and save
+
+1. Select **Edit**. Drag a widget to move it and drag its edge to resize it.
+2. Open a widget's menu to change or remove it.
+3. Use **Undo** and **Redo** on the draft. **Arrange** tidies the grid: **Fill rows** closes gaps, **Keep sizes** repacks without resizing, **Tidy up (resizes widgets)** lines everything up.
+4. To reuse a widget from another dashboard of the same type, select **Import Widget**.
+5. Select **Save**.
+
+If you changed the time range while editing, **Save** asks **Save this time range too?** Choose **Save with range** to keep it as the default.
+
+<Screenshot
+  page="visualize/thing-dashboard"
+  id="03-edit-mode"
+  route="/dashboards/:id"
+  state="Dashboard in edit mode with three widgets, Undo available, Discard and Save buttons in the header"
+  alt="A dashboard in edit mode with Discard and Save in the header"
+/>
+
+:::warning Unsaved changes
+Changes are a draft until you save. **Discard** throws away everything since the last save and cannot be undone. If you leave with unsaved changes, the app warns you that all changes will be lost.
+:::
+
+## Check that it worked
+
+The toggle button reads **Edit** again and the widgets show live values. Open the thing and its **Dashboard** tab: the new dashboard is listed there, and the star marks the default.
+
+## If it doesn't work
+
+- **A widget is empty**: the thing has not sent that measure yet, or the time range is too short. Widen the range at the top. See [A dashboard is empty](../troubleshooting/empty-dashboard.mdx).
+- **No Add widget button**: you are not in edit mode, or your role may not edit this dashboard.
+- **The toggle button says Save but you changed nothing**: you changed the time range or a draft setting. Select **Discard** to start over.
+
+## Related
+- [Dashboards, smart dashboards and time](./dashboards.mdx) · [Widget gallery](./widgets.mdx) · [Put a dashboard on Home](./home.mdx)

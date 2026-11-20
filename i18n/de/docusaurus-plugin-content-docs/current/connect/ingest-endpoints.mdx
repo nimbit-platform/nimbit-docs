@@ -1,0 +1,92 @@
+---
+title: Ingest-Endpoints und Statuscodes
+description: Die HTTP-Endpoints von tsflux, die Gerätedaten annehmen, mit Authentifizierung, Query-Parametern, Response-Bodys und Statuscodes.
+sidebar_position: 10
+type: reference
+app:
+  routes: ["/onboarding/things/:id"]
+translated_from: 679f3a4
+---
+
+Die HTTP-Endpoints, die Gerätedaten annehmen. Wie Sie sie aufrufen: [Daten über HTTP senden](./http.mdx) und [InfluxDB Line Protocol schreiben](./line-protocol.mdx).
+
+## Base-URL {#base-url}
+
+Alle Endpoints nehmen `POST`. Die **Verbindungsinformationen** listen unter **REST** die vollständige URL jedes Endpoints.
+
+| Mount | Endpoints |
+| --- | --- |
+| `<rest-base>`, die auf `/tsflux` endet | Die Endpoints `/api/v1/...`. |
+| `<host>`, derselbe Host ohne `/tsflux` | `/write` und `/api/v2/write`. |
+
+Host und TLS hängen von Ihrem Deployment ab: Kopieren Sie die URLs aus den **Verbindungsinformationen**, statt sie zusammenzusetzen.
+
+## Authentifizierung {#authentication}
+
+Senden Sie die Zugangsdaten des Things im Header `Authorization`.
+
+| Zugangsdaten | Header |
+| --- | --- |
+| JWT-Token | `Authorization: Bearer <token>` |
+| Basic | `Authorization: Basic <base64 of username:password>` |
+
+Die Zugangsdaten legen Tenant und Gerät fest. Eine Nachricht für einen anderen Tenant oder ein anderes Gerät wird abgelehnt. Zugangsdaten legen Sie an unter [Gerätezugangsdaten anlegen und rotieren](./credentials.mdx).
+
+## Endpoints {#endpoints}
+
+| Endpoint | Body | Erfolgsantwort |
+| --- | --- | --- |
+| `/api/v1/message/structured` (**Strukturiertes JSON**) | Eine [Nachricht](./message-format.mdx) oder ein Array von Nachrichten. | `200` JSON |
+| `/api/v1/message/async-structured` (**Asynchrones strukturiertes JSON**) | Wie oben. | `200` JSON |
+| `/api/v1/write/json` | Wie oben. | `200` JSON |
+| `/api/v1/<tenant>/<thingType>/device/<id>/telemetry` | Eine Nachricht oder ein Array. Der Pfad überschreibt `tenant`, `thingType` und `id`. | `200` JSON |
+| `/api/v1/write/line-protocol` (**Line-Protokoll**) | InfluxDB Line Protocol. | `200` JSON |
+| `/api/v2/write` (**InfluxDB v2-kompatibles Schreiben**) | InfluxDB Line Protocol. | `204` |
+| `/write` (**InfluxDB v1-kompatibles Schreiben**) | InfluxDB Line Protocol. | `204` |
+
+Die beiden `message`-Endpoints verhalten sich genau wie `/api/v1/write/json`: Beide warten auf das Ergebnis. Nur `/api/v1/message/structured` und `/api/v1/message/async-structured` stehen in den **Verbindungsinformationen**.
+
+## Query-Parameter und Header {#query-parameters-and-headers}
+
+Nur für Line-Protocol-Endpoints.
+
+| Name | Wo | Bedeutung |
+| --- | --- | --- |
+| `precision` | Query | Einheit des Zeitstempels: `ns` (Standard), `us`, `ms` oder `s`. Jeder andere Wert antwortet mit `400`. |
+| `bucket`, `db` | Query | Tenant, wenn der Request keinen Tenant in den Zugangsdaten trägt. `bucket` hat Vorrang vor `db`. |
+| `X-Tenant` | Header | Tenant, nach derselben Regel. Er hat Vorrang vor `bucket`. |
+
+Mit Zugangsdaten kommt der Tenant immer aus den Zugangsdaten.
+
+## Response-Bodys {#response-bodies}
+
+| Status | Body |
+| --- | --- |
+| `200` | `{"message": "success", "processed": <n>, "elapsed_ms": <ms>}` |
+| `207` | `{"message": "partially stored", "processed": <n>, "failed": [{"index": <i>, "status": <code>, "error": "<reason>"}]}` |
+| Fehler | `{"code": <status>, "message": "<reason>"}` |
+| `401` | `{"error": "Unauthorized"}` |
+
+`index` zählt die Nachrichten ab `0`. Ein fehlgeschlagener Eintrag hat den Status `422` (wird wieder abgelehnt) oder `503` (erneutes Senden lohnt sich).
+
+## Statuscodes {#status-codes}
+
+| Code | Bedeutung | Retry |
+| --- | --- | --- |
+| `200` | Jede Nachricht wurde gespeichert. Eine Nachricht kann einen Moment brauchen, bis sie in Diagrammen erscheint. | Nein |
+| `204` | InfluxDB-kompatible Endpoints: Jede Zeile wurde gespeichert. | Nein |
+| `207` | Einige Nachrichten wurden gespeichert. Senden Sie nur die Einträge mit Status `503` erneut. | Fehlgeschlagene `503`-Einträge |
+| `400` | Der Request ist ungültig, oder keine Nachricht hat die Prüfungen bestanden: ungültiges JSON, leerer Body, fehlendes `tenant`, `id` oder `thingType`, keine Daten, unbekanntes Thing oder unbekannter Thing-Typ, Zugangsdaten passen nicht, ungültige `precision`. | Nein |
+| `401` | Die Zugangsdaten fehlen, sind falsch oder abgelaufen. | Nein |
+| `413` | Der Body ist größer als 10 MiB. | Nein |
+| `422` | tsflux hat die Nachricht abgelehnt, nachdem es den Request angenommen hatte, und lehnt sie erneut ab, zum Beispiel weil nichts Gültiges übrig blieb. | Nein |
+| `429` | Es werden zu viele Requests bearbeitet. Wird mit `Retry-After` gesendet. | Ja |
+| `503` | Ausgelastet, oder eine Abfrage hat nicht geantwortet. Wird mit `Retry-After: 1` gesendet. | Ja |
+
+Ein wiederholter Request nach `503` kann eine Nachricht doppelt speichern.
+
+Bei `/write` und `/api/v2/write` antwortet ein nur teilweise gespeicherter Batch mit `503`, wenn eine fehlgeschlagene Zeile ein erneutes Senden wert ist, sonst mit `400` und `partial write`. Der Body folgt der InfluxDB-Version: `{"error": "..."}` für v1, `{"code": "...", "message": "..."}` für v2. Influx-Clients lesen den Statuscode, nicht den Body.
+
+## Abgelehnte Nachrichten {#refused-messages}
+
+Eine Nachricht, die nach Annahme des Requests abgelehnt wird, wird auch im `error`-Topic des Geräts veröffentlicht. Siehe [MQTT-Topics und Client-ID](./mqtt-topics.mdx#error-notice).

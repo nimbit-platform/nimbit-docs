@@ -1,0 +1,67 @@
+---
+title: Eine Box aktualisieren
+description: Periscope-Boxen, die schon Gateways sind, in der richtigen Reihenfolge aktualisieren und was sich auf jeder Box und auf der Plattform ändert.
+sidebar_position: 6
+type: how-to
+app:
+  routes: ["/onboarding/gateways"]
+translated_from: 439fe04
+---
+
+Aktualisieren Sie eingerichtete Boxen auf eine Periscope-Version, die den Namespace des Gateways und die eigenen Datenzugangsdaten des Gateways verwendet. Die Reihenfolge zählt: erst die Boxen, dann der Tenant-Schlüssel.
+
+## Voraussetzungen {#before-you-start}
+
+- Die Plattform läuft mit einem Release, das Gateways, `gateways.me` und die Gateway-Zugangsdaten hat. Eine Box auf einer älteren Plattform arbeitet weiter mit den Tenant-Zugangsdaten, warnt einmal und fordert beim nächsten Start erneut die Gateway-Zugangsdaten an.
+- Sie können das Image oder Binary der Box ändern und den Tenant-Schlüssel in IoT Breeze rotieren.
+- Beginnen Sie mit einer Box. Aktualisieren Sie die anderen, wenn sie **Online** ist und ihre Things Werte erhalten.
+
+## Schritte {#steps}
+
+1. Sichern Sie das [State-Verzeichnis](./state-and-backup.mdx) der Box.
+2. Ersetzen Sie die Software und behalten Sie den State.
+   - Container: Ziehen Sie das neue Image, entfernen Sie den Container und starten Sie ihn mit demselben Volume erneut, wie in [Periscope in einem Container betreiben](./run-in-a-container.mdx). Der State bleibt im Volume.
+   - Dienst: Ersetzen Sie `/usr/local/bin/periscope` und führen Sie `sudo systemctl restart periscope` aus.
+3. Prüfen Sie die Version und die Datei:
+
+   ```sh
+   periscope version
+   periscope validate -config /etc/periscope/periscope.toml -offline
+   ```
+
+4. Aktualisieren Sie jede andere Box genauso.
+5. Wenn alle Boxen die neue Version betreiben, rotieren Sie den Tenant-Schlüssel, beide Slots. {/* TODO(product): where in IoT Breeze does a tenant admin rotate the tenant key, and who may? */} Tenant-Zugangsdaten, die eine Box vor dem Update zwischengespeichert hat, funktionieren dann nicht mehr.
+6. Betreiben Sie auch MQTT-Geräte-Gateways, stellen Sie ihnen neue Zugangsdaten aus. Die Rotation beendet die Zugangsdaten jedes MQTT-Gateways.
+
+## Was sich auf einer Box ändert {#what-changes-on-a-box}
+
+| Änderung | Wirkung |
+| --- | --- |
+| Der Namespace ersetzt `agent.name` in Alternate-IDs | Beim ersten Start fragt die Box `gateways.me`. Ihre nächste Erkennung schlägt ihre Things unter dem Namespace erneut vor. Im Modus `zero-touch` werden sie sofort angelegt, im Modus `confirm` warten sie auf Sie. Die alten Things bleiben mit einem Grund. Nichts wird umbenannt oder gelöscht. |
+| Die Gateway-Zugangsdaten | Die Ausgänge fordern die eigenen Zugangsdaten des Gateways an. Die MQTT-Client-ID wird `<tenant>:gateway:<gateway id>:<suffix>`, und die Topics beginnen mit `tenant/<tenant>/gateway/<gateway id>/`. |
+| Ingest-Tokens | HTTP- und Stream-Ingest verwenden ein Token von höchstens 10 Minuten. Ein widerrufenes Gateway stoppt innerhalb einer Token-Lebensdauer. |
+| Zustandsintervall | `agent.health_interval` beträgt höchstens `5m`. Ein längerer Wert wird abgelehnt. |
+
+Eine Box mit der alten Version, die keine zwischengespeicherten Zugangsdaten hat, etwa eine neue Box oder eine mit zurückgesetztem State, bekommt gar keine Zugangsdaten: Die Plattform gibt dem Token eines Gateways keine Tenant-Zugangsdaten mehr, und die alte Version fordert keine Gateway-Zugangsdaten an. Darum aktualisieren Sie zuerst die Boxen. Siehe [Ausgänge-Referenz](../outputs.mdx#the-gateway-credential).
+
+Entspricht `agent.name` schon dem Namespace des Gateways, ändern sich die Alternate-IDs nicht, und kein Thing wird doppelt vorgeschlagen.
+
+## Die alten Things aufräumen {#clean-up-the-old-things}
+
+Nach der ersten Erkennung unter dem Namespace bleiben die alten Things mit den Daten, die sie schon halten. Ordnen Sie sie in IoT Breeze neu zu oder löschen Sie sie. Neue Werte gehen an die Things unter dem Namespace. Ein neues Thing, dessen Name von einem alten belegt ist, wird als `<name> (<namespace>)` angelegt.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Das Gateway ist **Online**, seine Karte **Datenverkehr** zeigt **Nachrichten pro Minute** über null und **Verworfen pro Minute** bei 0, und `periscope verify -since 5m` endet mit 0. Siehe [Prüfen, ob Daten angekommen sind](../verify.mdx).
+
+## Wenn es nicht klappt {#if-it-doesnt-work}
+
+- **Der Agent protokolliert, dass der Namespace noch nicht bekannt ist**: Die Plattform hat `gateways.me` nicht beantwortet. Die Box erkennt nichts, bis sie es tut.
+- **`agent.health_interval` wird abgelehnt**: Setzen Sie es auf `5m` oder weniger.
+- **Der Broker lehnt die Verbindung oder Topics ab**: Ein eigenes `topic` in `nimbit_mqtt` muss mit `tenant/{tenant}/gateway/{gateway}/` beginnen oder entfernt werden. Siehe [Periscope-Probleme beheben](../troubleshooting.mdx).
+- **Die Plattform antwortet `403 GATEWAY_SCOPE_REQUIRED`**: Eine alte Version hat für ein Gateway die Tenant-Zugangsdaten angefordert. Aktualisieren Sie die Box.
+
+## Verwandte Seiten {#related}
+
+- [Eine Box von einem Servicekonto auf ein Gateway umstellen](./move-to-a-gateway.mdx) · [Eine Box ersetzen](./replace-a-box.mdx)
+- [Gateway-Referenz](../../gateway-reference.mdx)

@@ -1,0 +1,114 @@
+---
+title: Messwert- und Eigenschaftstypen
+sidebar_position: 8
+description: Jeder Datentyp, jedes Feld, jede Option und Validierungsregel der Formulare für Messwerte und Eigenschaften in Thing-Typen und Interfaces.
+type: reference
+app:
+  routes: ["/onboarding/thing-types/:id", "/onboarding/interfaces/:id"]
+translated_from: 153e54b
+---
+
+Die Formulare für Messwerte und Eigenschaften sind auf dem Tab **Schema** eines Thing-Typs und auf dem Tab **Schema** eines Interfaces gleich, außer wo vermerkt. Die Formulare öffnen sich über **Telemetrie hinzufügen**, **Eigenschaft erstellen** oder die Bearbeiten-Schaltfläche einer Zeile.
+
+## Datentypen {#data-types}
+
+| Typ | Verwendet für | Festgelegt in |
+| --- | --- | --- |
+| `numeric` | Zahlen. Der Standard für einen Messwert. | Messwert-Formular, **Typ** |
+| `string` | Text. Der Standard für eine Eigenschaft. | Messwert-Formular, **Typ** |
+| `boolean` | Wahr oder falsch. | Messwert-Formular, **Typ** |
+| `datetime` | Ein Datum mit Uhrzeit. Von der Plattform akzeptiert, aber in der Liste **Typ** nicht angeboten. | Nur API |
+
+Das Eigenschaften-Formular hat keine Typauswahl: Eine Eigenschaft, die Sie in IoT Breeze anlegen, ist ein `string`. Wird der Typ eines Messwerts geändert, werden **Dezimalstellen**, **Mindestwert** und **Maximaler Wert** geleert, wo sie nicht mehr zutreffen.
+
+## Felder von Messwerten {#measure-fields}
+
+| Feld | Gilt für | Bedeutung |
+| --- | --- | --- |
+| **Anzeigename** | Alle | In Diagrammen und Tabellen angezeigter Name. Bis zu 128 Zeichen. Kann übersetzt werden. |
+| **Name** | Alle | Technischer Name. Das Gerät sendet Daten darunter. Lässt sich nach dem Speichern nicht ändern. Siehe [Namen](#names). |
+| **Typ** | Alle | `numeric`, `string` oder `boolean`. |
+| **Beschreibung** | Alle | Optional. Kann übersetzt werden. |
+| **Aliase** | Nur Interfaces | Andere Namen, unter denen das Feld bekannt ist, zum Beispiel `temp`. Bei Thing-Typen nicht verfügbar. |
+| **Maßeinheit** | `numeric`, `string` | Eine Einheit wie `°C`. Wählen Sie eine der [vorgeschlagenen Einheiten](#suggested-units) oder tippen Sie Ihre eigene. Bei `boolean` ausgeblendet. |
+| **Dezimalstellen** | `numeric` | Wie viele Nachkommastellen angezeigt werden. |
+| **Ausreißer ignorieren** | `numeric` | Verwirft Werte außerhalb von Minimum und Maximum, statt sie zu speichern. Erfordert **Mindestwert** und **Maximaler Wert**. |
+| **Mindestwert**, **Maximaler Wert** | `numeric` | Der erwartete Bereich. |
+| **Minimale Länge**, **Maximale Länge** | `string` | Dieselben beiden Eingaben, als Textlänge. |
+| **Versatz** | `numeric` | Wird vor dem Speichern auf jeden Wert angewendet. Standard `0`. |
+| **Faktor** | `numeric` | Wird vor dem Speichern auf jeden Wert angewendet. Standard `1`. Mit **Versatz** und **Faktor** rechnen Sie Einheiten um. |
+| **In der Übersicht anzeigen** | Nur Thing-Typen | Heftet den Messwert an die Spitze der Live-Werte in der Übersicht jedes Things dieses Typs. Ist nichts angeheftet, wechselt die Übersicht durch alle Messwerte. Ein Schalter in der Liste der Messwerte, sofort gespeichert. |
+
+Ein `boolean`-Messwert hat nur **Anzeigename**, **Name**, **Beschreibung** (und **Aliase** bei einem Interface).
+
+## Felder von Eigenschaften {#property-fields}
+
+| Feld | Bedeutung |
+| --- | --- |
+| **Anzeigename** | In Tabellen und auf Seiten angezeigter Name. Bis zu 128 Zeichen. Kann übersetzt werden. |
+| **Name** | Technischer Name. Lässt sich nach dem Speichern nicht ändern. Siehe [Namen](#names). |
+| **Initialwert** | Der Wert, den ein Thing beim Anlegen erhält. |
+| **Beschreibung** | Optional. Kann übersetzt werden. |
+| **Aliase** | Nur Interfaces. Andere Namen, unter denen das Feld bekannt ist. |
+| **Zum Verknüpfen verwendet** | Wie Datensätze aus anderen Systemen die Geräte mit dieser Eigenschaft finden. **Nicht verwendet** (Standard); **Kennung**, eine Nummer, unter der andere Systeme das Gerät kennen, etwa eine Serien- oder Equipmentnummer, sodass ein Datensatz mit demselben Wert mit dem Gerät verknüpft wird; **Referenz**, die etwas benennt, das auch andere Datensätze benennen, etwa einen Hersteller, und daher Verknüpfungen vorschlägt, aber nie allein verknüpft. |
+| **Privat** | Blendet die Eigenschaft in Dashboards aus. Sie lässt sich weiterhin als Tag oder in anderen Prozessen verwenden. |
+| **Zeitreihenrelevant** | Fügt den Wert der Eigenschaft jeder Telemetrienachricht des Things hinzu, sodass Sie danach filtern und gruppieren können. Die Eigenschaft wird mit einem Badge **Zeitreihen-Tag** angezeigt. |
+| **Hat Vorrang** | Ein in IoT Breeze gesetzter Wert hat Vorrang vor einem vom Gerät gesendeten Wert. Nur sichtbar, solange **Zeitreihenrelevant** an ist. |
+
+{/* TODO(product): How are Aliases used when a device sends data or a dashboard binds a field: do telemetry under an alias name resolve to the field, or are they used only for matching during field mapping and interface suggestions? */}
+
+## Namen {#names}
+
+| Wo | Regel |
+| --- | --- |
+| **Name** von Messwert oder Eigenschaft | 1 bis 128 Zeichen. Kleinbuchstaben `a-z`, Ziffern, `_` und `-`. Darf nicht mit einer Ziffer oder `-` beginnen und nicht mit `_` enden. IoT Breeze füllt ihn aus dem Anzeigenamen aus: `Outside Temp` wird zu `outside_temp`, und Umlaute werden umgeschrieben (`ä` wird zu `ae`). |
+| **Name** eines Thing-Typs | Buchstaben, Ziffern und `_`. Darf nicht mit einer Ziffer oder `_` beginnen und nicht mit `_` enden. Im Tenant eindeutig. |
+
+Das Interface-Formular verlangt nur, dass der **Name** eines Interfaces nicht leer ist.
+
+## Validierung {#validation}
+
+| Regel | Gilt für |
+| --- | --- |
+| **Mindestwert** und **Maximaler Wert** sind beide Pflicht, wenn **Ausreißer ignorieren** an ist. | `numeric` |
+| **Maximaler Wert** muss größer als **Mindestwert** sein. | `numeric`, `string` |
+| Eine numerische Grenze ist höchstens 28 Zeichen lang. | `numeric` |
+| **Minimale Länge** muss größer als 0 sein. | `string` |
+| **Minimale Länge** und **Maximale Länge** sind höchstens 10000, und **Maximale Länge** muss größer als 0 sein. | `string` |
+
+## Vorgeschlagene Einheiten {#suggested-units}
+
+Die Liste **Maßeinheit** ist eine Vorschlagsliste, keine Positivliste. Jeder Text, den Sie tippen, wird wie eingegeben gespeichert, unter **Eigene Einheit**.
+
+| Gruppe | Einheiten |
+| --- | --- |
+| Temperatur | `°C`, `°F`, `K` |
+| Feuchte & Verhältnis | `%`, `%RH`, `ppm`, `ppb`, `pH` |
+| Druck | `bar`, `mbar`, `Pa`, `kPa`, `hPa`, `psi` |
+| Durchfluss | `l/min`, `l/h`, `m³/h`, `m³/min`, `gpm` |
+| Volumen | `l`, `ml`, `m³`, `gal` |
+| Masse & Gewicht | `kg`, `g`, `mg`, `t`, `lb` |
+| Elektrisch | `V`, `mV`, `kV`, `A`, `mA`, `Ω`, `Hz` |
+| Leistung | `W`, `kW`, `MW`, `VA`, `kVA`, `var` |
+| Energie | `Wh`, `kWh`, `MWh`, `J`, `kJ` |
+| Länge & Füllstand | `mm`, `cm`, `m`, `km`, `in`, `ft`, `mi` |
+| Geschwindigkeit & Drehzahl | `m/s`, `km/h`, `mph`, `rpm` |
+| Zeit | `ms`, `s`, `min`, `h`, `d` |
+| Konzentration | `µg/m³`, `mg/m³`, `mg/l`, `g/l` |
+| Schall & Licht | `dB`, `dB(A)`, `lx`, `lm`, `cd` |
+| Winkel | `°`, `rad` |
+| Daten | `B`, `kB`, `MB`, `GB`, `TB`, `bit/s`, `kbit/s`, `Mbit/s` |
+
+## Außerhalb der Formulare festgelegt {#set-outside-the-forms}
+
+Diese Werte gibt es an einem Messwert in der Plattform, aber sie haben kein Feld im Schema-Editor.
+
+| Wert | Bedeutung |
+| --- | --- |
+| `aggregationState` | `aggregated` oder `nonAggregated`. |
+| `thresholds` | Eine Liste aus `min`, `max`, `name`, `color` und einem optionalen `severity`: `INFO`, `WARNING`, `ERROR` oder `CRITICAL`. |
+
+## Siehe auch {#related}
+
+- [Einen Thing-Typ anlegen](./create-thing-type.mdx) · [Entwürfe, Veröffentlichen und Versionen](./drafts-and-versions.mdx)
+- [Thing-Typen, Things und Interfaces](./things-and-types.mdx)

@@ -1,0 +1,36 @@
+---
+title: "Gateways and edge"
+description: "Bring in machines and field networks with gateways: one credential for a box that speaks for many devices, and Periscope, the edge agent."
+sidebar_position: 1
+type: landing
+app:
+  routes: ["/onboarding/gateways"]
+---
+
+This section answers one question: how do I bring in machines and field networks? A gateway is one thing that speaks for many devices. Periscope is the edge agent that runs next to your equipment, discovers its sources and streams their values to IoT Breeze.
+
+```mermaid
+flowchart LR
+  P[PLCs and servers] --> A[Periscope]
+  D[MQTT devices] --> G[MQTT gateway]
+  A --> I[tsflux ingest]
+  G --> I
+  I --> T[Things]
+```
+
+## Understand
+- [How gateways work](./how-gateways-work.mdx): what a gateway may send for, and how IoT Breeze knows it is alive.
+- [How Periscope works](./periscope/how-periscope-works.mdx): discovery, mapping and streaming on the edge box.
+
+## Do
+- [Add a gateway](./add-a-gateway.mdx): create a Periscope gateway and enroll the box with a code.
+- [Send data for many devices through one MQTT gateway](./mqtt-gateway.mdx): one credential for a device that speaks MQTT, per thing or as a batch.
+- [Connect an eWON Flexy](./ewon-flexy.mdx): the config file, the BASIC program and a test without the unit.
+- [Manage the things behind a gateway](./things-behind-a-gateway.mdx): assign, move and delete things, and set what a gateway may have.
+- [Check gateway health and traffic](./fleet-health.mdx): find offline gateways and discarded messages.
+- [Revoke, replace or remove a gateway](./revoke-and-replace.mdx): cut off a key, move a gateway to new hardware, delete it.
+- [Install Periscope and stream your first source](./periscope/install.mdx): from download to values in IoT Breeze.
+
+## Look up
+- [Gateway reference](./gateway-reference.mdx): fields, statuses, limits, measures and discard reasons.
+- [Periscope](./periscope/index.mdx): inputs, outputs, configuration and commands for the edge agent.

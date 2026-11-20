@@ -1,0 +1,59 @@
+---
+title: Share or embed a dashboard
+sidebar_label: Share or embed
+description: Decide who can see a dashboard, send a link that keeps the time range, or embed the dashboard in another page.
+type: how-to
+sidebar_position: 6
+app:
+  routes: ["/dashboards", "/dashboards/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Choose who sees a dashboard, send someone a link to it, or put it into another web page.
+
+## Before you start
+- A role that may edit the dashboard.
+- Recipients with an account in the tenant and a role that may read dashboards. Reading, creating and editing dashboards are separate permissions.
+
+## Decide who sees it
+
+1. Open the dashboard and select the gear (**Dashboard settings**). On narrow screens, use **More › Dashboard settings**.
+2. Choose **Tenant dashboard** or **User dashboard**. A tenant dashboard is visible to the tenant's members. A user dashboard is yours alone: other members cannot open it.
+3. Select **Save**.
+
+## Send a link
+
+Copy the address of the open dashboard. The time range is part of the link, so others see what you see. On a Smart dashboard, pick the thing first.
+
+## Embed it in another page
+
+1. Open the dashboard and select **More › Embedd**. The label is spelled that way in the app.
+2. In **Embeddable url**, select the copy button.
+3. Paste the address where the dashboard should appear, for example in an iframe on an intranet page.
+
+<Screenshot
+  page="visualize/share"
+  id="01-embeddable-url"
+  route="/dashboards/:id"
+  state="Embeddable url dialog open with the dashboard name, the info note and the URL with a copy button"
+  alt="The Embeddable url dialog with a copy button"
+/>
+
+The embedded address has the form `<your IoT Breeze address>/bare/dashboard/<dashboardId>`. It shows the dashboard without the app's menus. For a dashboard on a thing type, the address also carries the thing as `?thingId=<thingId>`.
+
+Other options on the **More** menu: **Fullscreen** opens the dashboard without distractions, and **Duplicate dashboard** gives a copy you can change freely.
+
+## Check that it worked
+
+Open the link or the embedding page in a private window. After sign-in, the dashboard shows. If it does not, see below.
+
+## If it doesn't work
+
+- **The embed asks for sign-in**: the embedded page is not public. Viewers must be signed in to the tenant.
+- **The viewer sees nothing or an error**: the dashboard is a **User dashboard**, or the viewer's role may not read dashboards.
+- **The page refuses to embed it**: the page that hosts the iframe may block the frame. {/* TODO(product): Which origins may embed IoT Breeze (frame-ancestors / CSP), and are the embed query parameters displayHeader and widgetId supported for users? */}
+- **No Embedd entry**: the **More** menu shows only what your role may do.
+
+## Related
+- [Dashboards, smart dashboards and time](./dashboards.mdx) · [Put a dashboard on Home](./home.mdx)

@@ -1,0 +1,94 @@
+---
+title: E-Mail-Vorlagen und Platzhalter
+sidebar_position: 12
+description: Die Teile einer E-Mail-Vorlage, ihre Kontexte und Platzhalter, die Kopf- und Fußblöcke und wie eine Vorlage zugewiesen wird.
+type: reference
+app:
+  routes: ["/manage/mail-templates", "/manage/mail-templates/new", "/manage/mail-templates/:id", "/manage/mail-templates/assignment"]
+translated_from: 810b8a2
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Die Teile und Einstellungen unter **Einstellungen › Konfiguration › Mail-Vorlagen**. Der Eintrag erscheint nur, wenn Ihre Rolle E-Mail-Vorlagen lesen darf.
+
+<Screenshot
+  page="watch/mail-templates"
+  id="01-templates-list"
+  route="/manage/mail-templates"
+  state="Templates tab with a System template (lock chip) for each context and one custom Event template marked Active; columns Template, Context, Blocks, Languages, Updated, Status"
+  alt="Die Liste der E-Mail-Vorlagen"
+/>
+
+## Tabs {#tabs}
+
+| Tab | Enthält |
+| --- | --- |
+| **Vorlagen** | Die E-Mails: Betreff und Text, mit einem Kopf- und einem Fußblock darum |
+| **Kopfzeilen-Blöcke** | Wiederverwendbare Blöcke über dem Text |
+| **Fußzeilen-Blöcke** | Wiederverwendbare Blöcke unter dem Text |
+| **Zuweisung** | Welche Vorlage für welchen Kontext verwendet wird |
+
+## Kontexte {#contexts}
+
+Ein Kontext sagt, wofür eine E-Mail gedacht ist, und bestimmt, welche Daten die E-Mail zeigen kann.
+
+| Kontext | Verwendet für |
+| --- | --- |
+| **Ereignis** | E-Mails zu Event-Benachrichtigungen |
+| **Einladung** | E-Mails zur Einladung von Benutzern |
+| **Bericht** | E-Mails zu Berichten |
+
+E-Mails mit Anmeldecode und zum Zurücksetzen des Passworts werden nicht von hier gesendet. {/* TODO(product): The template form also knows a Tenant context. What is it used for, and can a template choose it? */}
+
+## Vorlageneinstellungen {#template-settings}
+
+| Einstellung | Bedeutung |
+| --- | --- |
+| **Name** | Der Name der Vorlage |
+| **Betreff** | Die Betreffzeile. Sie akzeptiert Platzhalter. |
+| **Kontext** | Siehe oben. Für Alarme wählen Sie **Ereignis**. |
+| Textkörper | HTML, im Editor bearbeitet. **Code formatieren** räumt es auf. |
+| **E-Mail-Struktur** | Der Kopfblock und der Fußblock. **Zur Kopfbereichvorlage** und **Zur Fußbereichvorlage** öffnen sie. |
+| **Standard-Übersetzungen** | Text pro Sprache, als Schlüssel und Text. Als übersetzbar markiert, bekommt jede Sprache eine eigene Version. |
+| **Dynamische Variablen** | Die Liste der Platzhalter, die der Kontext bietet. Wählen Sie einen, um ihn einzufügen. |
+| **Test-Mail senden** | Sendet die Vorlage an eine Adresse, die Sie eingeben |
+| **Vorschau in neuem Fenster öffnen** | Zeigt die Vorschau größer |
+
+Vorlagen mit der Markierung **System** werden von NimBit verwaltet und lassen sich nicht bearbeiten oder löschen. Kopieren Sie eine, um Ihre eigene zu machen.
+
+## Platzhalter {#placeholders}
+
+Schreiben Sie einen Platzhalter als Variablennamen in doppelten geschweiften Klammern, zum Beispiel `{{tenant.name}}`. IoT Breeze füllt die Werte beim Senden der E-Mail ein. Werte werden unverändert eingefügt, nicht für HTML maskiert.
+
+| Platzhalter | Wert |
+| --- | --- |
+| `{{tenant.name}}` | Der Name des Tenants, oder `NimBit`, wenn der Tenant keinen hat |
+| `{{tenant.logo}}` | Das Logo des Tenants oder ein Standardlogo |
+| Schlüssel unter **Standard-Übersetzungen** | Der Text für die Sprache der E-Mail. Für eine E-Mail gesetzter Text überschreibt den Standard. |
+| Kontextvariablen | Aufgeführt unter **Dynamische Variablen** für den Kontext der Vorlage |
+
+In einer **E-Mail**-Aktion an einem Event-Typ ist `{{event}}` das Event, `{{event.title}}` also sein Titel. {/* TODO(product): Which variables does each context offer (Event, Invitation, Report)? The list comes from the tenant's context data in the database, not from code. */}
+
+## Blöcke {#blocks}
+
+| Regel | Detail |
+| --- | --- |
+| Gemeinsam genutzt | Das Bearbeiten eines Blocks aktualisiert jede Vorlage, die ihn verwendet. |
+| Verwendung | Ein Block zeigt, in wie vielen Vorlagen er verknüpft ist, zum Beispiel **In 3 Vorlagen verwendet**. |
+| Löschen | Nicht, solange eine Vorlage den Block verwendet. Entfernen Sie ihn zuerst aus diesen Vorlagen. |
+| Standards | Der Standard-Kopf- und -Fußblock lassen sich nicht ändern oder löschen. |
+
+Legen Sie einen Block mit **Neuer Block** und **Block speichern** an.
+
+## Zuweisung {#assignment}
+
+Wählen Sie im Tab **Zuweisung** für jeden Kontext eine Vorlage und speichern Sie dann die Zeile oder wählen Sie **Alles speichern**. **Entfernen** setzt einen Kontext auf den Standard zurück.
+
+Eine Vorlage zeigt in der Liste **Aktiv**, wenn sie zugewiesen ist, und **Nicht zugewiesen**, wenn nicht. Die Zuweisung gilt für E-Mails, die die Plattform für einen Kontext sendet. Eine **E-Mail**-Aktion, die eine Vorlage nutzt, sendet die Vorlage, die Sie in der Aktion wählen, egal was zugewiesen ist.
+
+## Verwandte Seiten {#related}
+
+- [Event-Typen](./event-types.mdx)
+- [Kanaltypen](./channel-types.mdx)
+- [Events, Vorfälle und Benachrichtigungen](./events-incidents-notifications.mdx)

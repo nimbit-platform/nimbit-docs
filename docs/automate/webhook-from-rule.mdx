@@ -1,0 +1,59 @@
+---
+title: Call another system from a rule
+sidebar_position: 5
+description: Add a Webhook action to a rule so IoT Breeze sends an HTTP request when its condition holds.
+type: how-to
+app:
+  routes: ["/automation/rule-designer/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Add a **Webhook** action to a rule so IoT Breeze sends an HTTP request that you define whenever the rule fires. To post IoT Breeze's own alert message to Teams, Slack or a webhook receiver instead, use a [notification channel](../watch/alert-channels.mdx).
+
+## Before you start
+
+- A rule with a **Start**, **Condition** and **Trigger** node, for example the one in [Alert when a value crosses a limit](./threshold-alert.mdx).
+- The URL, method and sign-in details of the receiving system.
+
+## Steps
+
+1. Open **Settings › Automation › Rule Designer** and open the rule. Select the lock icon in the header to enter edit mode.
+2. Select **+** below the **Trigger** node and choose **Webhook**. A rule can have several actions after one trigger.
+3. On **Request**, choose the **Method** and enter the **URL**.
+4. For `POST`, `PUT` or `PATCH`, enter the **Body**. These methods require one. `GET` sends no body.
+
+   ```json
+   {"source": "iot-breeze", "rule": "Room too warm"}
+   ```
+5. Under **Headers**, add the headers the receiver needs. Add `Content-Type` with the value `application/json` when the body is JSON.
+6. On **Authorization**, choose how the call signs in: **None**, **Bearer** (a token), **Basic** (username and password), **Query** (a key and value added to the URL), or **OAuth2**.
+7. On **Overview**, send the request to try it, and check the receiver got it.
+8. Check the validity icon, then select the check mark in the floating bar. It reads **Apply draft** once the rule has a published version. Select **Activate** if the rule is not active yet.
+
+<Screenshot
+  page="automate/webhook-from-rule"
+  id="01-webhook-request"
+  route="/automation/rule-designer/:id"
+  state="Webhook node panel on the Request step: method POST, URL filled in, JSON body, one header"
+  alt="The Request step of a Webhook action in a rule"
+/>
+
+{/* TODO(product): Which placeholder names can a Webhook action's URL, headers and body use when a rule fires it? The executor renders the action config with Mustache against the trigger payload, which for a rule is `{ data, referenceId }`, but the payload fields are not documented in the app. */}
+
+## Check that it worked
+
+Make the rule fire, for example with **Simulate device…** on a thing in scope. The receiver logs one request. If the trigger is **Toggle** with direction **In**, it logs one per transition into the condition, not one per reading.
+
+## If it doesn't work
+
+- **The receiver never gets a request**: the rule is not **Active**, or its trigger did not fire. See [A rule doesn't fire](../troubleshooting/rule-not-firing.mdx).
+- **The receiver answers 401 or 403**: the **Authorization** settings do not match what it expects. Use **Overview** to test again after you correct them.
+- **The call fails with a gateway error**: IoT Breeze records each failed action run as an event. Open **Monitoring › Events** to see it. A `405` means the **Method** is wrong, and a timeout means the receiver did not answer in time.
+- **You see a request for every reading**: the trigger is **Default**. Use **Toggle** with **In**, or **Sleep**.
+
+## Related
+
+- [Action types](./action-types.mdx)
+- [Rules, actions and reports](./rules-actions-reports.mdx)
+- [Webhook payloads](../api/webhooks.mdx): the payload of a notification channel of type Webhook, which is different

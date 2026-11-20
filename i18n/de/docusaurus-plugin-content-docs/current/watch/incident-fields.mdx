@@ -1,0 +1,147 @@
+---
+title: Vorfallszustände und -felder
+sidebar_position: 10
+description: Der Vorfalls-Workflow, seine Schaltflächen, die nötigen Berechtigungen und jede Einstellung einer Vorfallsrichtlinie und der Vorfallseinstellungen.
+type: reference
+app:
+  routes: ["/monitor/incidents", "/monitor/incidents/:id", "/manage/incident-policies/:id", "/manage/incident-settings"]
+translated_from: 70da89f
+---
+
+Vorfallszustände, Workflow-Schaltflächen, Richtlinieneinstellungen und mandantenweite Vorfallseinstellungen.
+
+## Workflow {#workflow}
+
+Ein Vorfall durchläuft fünf feste Kategorien: **Offen** → **Quittiert** → **In Bearbeitung** → **Gelöst** → **Geschlossen**.
+
+| Schaltfläche | Verfügbar, wenn | Bewirkt |
+| --- | --- | --- |
+| **Quittieren** | Offen | Markiert, dass Sie ihn gesehen haben |
+| **Zuweisen** | Offen, quittiert, in Bearbeitung | Gibt ihn einer Person. Wird ein quittierter Vorfall zugewiesen, geht er in Bearbeitung. |
+| **Lösen** | Offen, quittiert, in Bearbeitung | Hält die Behebung mit einem Lösungsgrund fest |
+| **Schließen** | Gelöst | Beendet ihn |
+| **Wieder öffnen** | Gelöst oder geschlossen | Öffnet ihn erneut, bis das Zeitfenster zum Wiederöffnen abläuft |
+
+### Berechtigungen {#permissions}
+
+| Sie können | Brauchen |
+| --- | --- |
+| Vorfälle sehen | Lesen bei Vorfällen |
+| Melden, kommentieren, beobachten | Anlegen bei Vorfällen |
+| Quittieren, zuweisen, bearbeiten, verknüpfen, Events entfernen | Ändern bei Vorfällen |
+| Lösen, schließen, wieder öffnen | Ändern und Ausführen bei Vorfällen |
+| Richtlinien, Automatisierungen und Vorfallseinstellungen sehen | Lesen bei Vorfallsrichtlinien |
+| Diese ändern | Anlegen, Ändern oder Löschen bei Vorfallsrichtlinien |
+
+### Wie ein Vorfall gelöst wurde {#how-an-incident-was-resolved}
+
+| In den Details angezeigt | Bedeutung |
+| --- | --- |
+| **Alle Episoden beendet** | Jeder Alarm ist beendet |
+| **Manuell gelöst** | Eine Person hat ihn gelöst |
+| **Durch eine Automatisierung gelöst** | Eine Automatisierung hat ihn gelöst |
+| **Durch Zeitüberschreitung gelöst** | Die Zeitüberschreitung der Richtlinie ist abgelaufen |
+
+## Richtlinie: welche Events {#policy-which-events}
+
+Ein Event passt, wenn jede ausgefüllte Klausel zutrifft.
+
+| Klausel | Bedeutung |
+| --- | --- |
+| **Namen der Event Typen** | Muster auf dem Namen des Event-Typs. Ganzer Name, beliebige Schreibweise, `*` steht für beliebige Zeichen, zum Beispiel `Door *`. |
+| **Bestimmte Event Typen** | Event-Typen Ihres Tenants |
+| **Mindestschweregrad** | **Beliebiger Schweregrad** oder ein Schweregrad und höher |
+| **Thing Typen** | Nur Events zu Things dieser Typen |
+| **Ausgelöst von** | **Regel-Engine**, **Geofence**, **Konnektivität**, **API**, eine Aktion oder **Reparatur**. Ist nichts angehakt, gilt jede Quelle. |
+| **Alarm kommt / Alarm geht / einzelne Events** | Ein kommender Alarm ist **Offen**, ein gehender ist **Beendet**, alles andere ist ein **Punkt** |
+| **Payload-Bedingungen** | Bis zu 20 Bedingungen auf den Event-Daten. Ein Pfad mit Punkten wie `sensor.name`, ein Operator und ein Wert. Jede Bedingung muss zutreffen. |
+
+Payload-Operatoren: ist gleich, ist ungleich, ist größer als, ist mindestens, ist kleiner als, ist höchstens, enthält, ist einer von, existiert.
+
+## Richtlinie: in einen Vorfall gruppieren nach {#policy-group-into-one-incident-by}
+
+| Option | Ein Vorfall pro |
+| --- | --- |
+| **Thing** | Thing, für alle seine Events |
+| **Thing und Regel** | Regel oder Zaun an einem Thing |
+| **Hierarchieebene** | Standort, Halle oder Linie. Wählen Sie die Ebene. |
+| **Thing Typ** | Thing-Typ, über die ganze Flotte |
+| **Event Typ** | Event-Typ, tenantweit |
+| **Payload-Feld** | Wert eines Felds in den Event-Daten, zum Beispiel `batch_id`. Geben Sie den Pfad mit Punkten ein. |
+
+## Richtlinie: Zeitverhalten und Lösung {#policy-timing-and-resolution}
+
+| Einstellung | Bedeutung |
+| --- | --- |
+| **Name** | Bis zu 255 Zeichen, eindeutig |
+| **Priorität** | Eine ganze Zahl von 0 bis 10000. Niedrigere Zahlen werden zuerst geprüft. |
+| **Öffnen nach** | Nur öffnen, wenn der Alarm nach dieser Zeit noch an ist. `0` öffnet sofort. |
+| **Ruhefenster** | So lange kein neues Event, bevor der Vorfall sich lösen kann |
+| **Gelöst, wenn** | **Jede Episode beendet (Alarm aus)**, **Ein passendes Event**, **Nur durch eine Person oder eine Automatisierung** oder **Eine Zeitüberschreitung** |
+| **Lösendes Event** | Für **Ein passendes Event**: Klauseln, die das Event bestimmen, das ihn löst |
+| **Lösen nach** | Für **Eine Zeitüberschreitung**: wie lange nach dem Öffnen er sich löst |
+| **Schließen nach der Lösung** | Ein passendes Event in dieser Zeit öffnet den Vorfall erneut. `0` schließt sofort. |
+| **Schweregrad** | **Höchster seiner Events, steigt nur** oder **Schweregrad des Events, das ihn geöffnet hat** |
+| **Titelvorlage** | Bis zu 500 Zeichen. Fügen Sie **Event-Titel**, **Thing Name** oder **Event Typ** ein. |
+
+Sie können Zeiten in Sekunden, Minuten, Stunden oder Tagen eingeben. **Öffnen nach**, **Ruhefenster** und **Lösen nach** nehmen höchstens 30 Tage. **Schließen nach der Lösung** nimmt höchstens ein Jahr.
+
+## Mitgelieferte Richtlinien {#shipped-policies}
+
+Sie kommen ausgeschaltet an.
+
+| Richtlinie | Priorität | Events | Gruppiert nach | Öffnet | Ruhe | Schließt |
+| --- | --- | --- | --- | --- | --- | --- |
+| **Rule alarms per thing** | 100 | Regel-Engine | Thing | Sofort | 10 Min. | 1 Tag nach dem Lösen |
+| **Connectivity outages** | 110 | Konnektivität, offen und beendet | Thing | Nach 5 Min. offline | 5 Min. | 1 Tag nach dem Lösen |
+| **Geofence dwell** | 120 | Geofence | Thing und Regel | Nach 30 Min. | Keine | 1 Tag nach dem Lösen |
+
+Alle drei lösen sich, wenn jede Episode beendet ist.
+
+## Richtlinien-Automatisierungen {#policy-automations}
+
+| Übergang | Läuft, wenn der Vorfall | Braucht **Wartezeit** |
+| --- | --- | --- |
+| **Geöffnet** | geöffnet wird | Nein |
+| **Eskaliert** | eskaliert wird (Schweregrad steigt) | Nein |
+| **Quittiert** | quittiert wird | Nein |
+| **Nicht quittiert seit** | für die Wartezeit nicht quittiert bleibt | Ja |
+| **Gelöst** | gelöst wird | Nein |
+| **Wieder geöffnet** | wieder geöffnet wird | Nein |
+| **Zeitüberschreitung nach** | nach der Wartezeit noch offen ist | Ja |
+
+**Reihenfolge** (0 bis 10000) legt die Abfolge mehrerer Automatisierungen an einem Übergang fest. Eine Automatisierung führt eine vorhandene Aktion aus, die eingeschaltet ist.
+
+## Vorfallseinstellungen {#incident-settings}
+
+### Status {#statuses}
+
+Ihre eigenen Namen über den fünf Kategorien. Automatisierungen und automatisches Lösen folgen der Kategorie.
+
+| Regel | Detail |
+| --- | --- |
+| Standard | Jede Kategorie behält genau einen aktiven Standard. |
+| Name | Bis zu 100 Zeichen. Wählen Sie eine Farbe. |
+| Löschen | Nicht, solange Vorfälle den Status verwenden. |
+| Kategorie | Lässt sich nicht ändern, solange Vorfälle den Status verwenden. |
+
+### Lösungsgründe {#resolution-reasons}
+
+Die Gründe, aus denen eine Person beim Lösen wählt. Mindestens einer muss existieren, bevor jemand lösen kann. Ein Grund, der verwendet wird, lässt sich nicht löschen. Löst eine Richtlinie einen Vorfall, erfasst sie **Bedingung beendet** oder **Lösungs-Event**.
+
+### Benutzerdefinierte Felder {#custom-fields}
+
+| Eigenschaft | Detail |
+| --- | --- |
+| **Bezeichnung** | Angezeigter Name |
+| **Schlüssel** | Kleinbuchstaben, Ziffern und Unterstriche, beginnend mit einem Buchstaben. Nach dem Anlegen fest. |
+| **Typ** | **Text**, **Zahl**, **Auswahl**, **Datum** oder **Benutzer**. Nach dem Anlegen fest. Bei **Auswahl** eine Option pro Zeile: ein Wert oder ein Wert und eine Bezeichnung, getrennt durch einen senkrechten Strich. |
+| **Beim Lösen erforderlich** | Personen müssen es zum Lösen ausfüllen. Eine Änderung wirkt nur auf spätere Lösungen. |
+
+Ein Feld, das Werte enthält, lässt sich nicht löschen.
+
+## Verwandte Seiten {#related}
+
+- [Einen Vorfall bearbeiten](./work-an-incident.mdx)
+- [Eine Vorfallsrichtlinie einrichten](./incident-policy.mdx)
+- [Event-Typen](./event-types.mdx)

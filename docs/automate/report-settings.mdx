@@ -1,0 +1,108 @@
+---
+title: Report settings
+sidebar_position: 9
+description: Every field of a report, its schedule, file name values, subscriptions and generate options.
+type: reference
+app:
+  routes: ["/reports", "/reports/:id"]
+---
+
+Fields of a report in **Settings › Automation › Reports**, and how its schedule and delivery work.
+
+## Report
+
+| Field | Meaning |
+| --- | --- |
+| **Name** | Required. Unique in the tenant. |
+| **Description** | Optional. |
+| **File name** | Required. The name of the generated PDF. Press `@` to insert a value from the next table. |
+| **Folder** | Required. Where the PDF is saved. You find it in the file explorer. |
+| **Things** | Required. At least one thing. |
+| **Users**, **Groups** | Who can open the report. If you select none, everyone in the tenant can. |
+| **Tags** | Optional labels to find the report in the list. They change nothing else. |
+
+### File name values
+
+Values are replaced when the PDF is created, in the tenant's time zone and language.
+
+| Value | Result |
+| --- | --- |
+| `{{date}}` | `YYYY-MM-DD` |
+| `{{year}}`, `{{month}}`, `{{day}}` | `YYYY`, `MM`, `DD` |
+| `{{month_long}}`, `{{month_short}}` | The month's full or short name |
+| `{{date_time}}` | Date and time without colons, for example `2026-06-15_22-34-56` |
+| `{{timestamp}}` | Unix time in seconds |
+| `{{tenant}}` | The tenant |
+| `{{uuid}}` | A unique ID |
+
+## Schedule
+
+| Field | Meaning |
+| --- | --- |
+| **Start date**, **Start time** | When the first report is generated. Defaults to the moment you open the form. |
+| **Timeframe** | The period each report covers, as a range relative to the run time. Defaults to **Last 7 days**. You can also set the time zone the range is resolved in. |
+| **Repeat every** | A number and a unit: **Hour**, **Day**, **Week**, **Month** or **Year**. Defaults to 1 **Day**. |
+
+A scheduled run resolves the **Timeframe** at the moment it fires. The schedule runs only while the report is published. The list's schedule icon shows the last run and the next run.
+
+## Publish
+
+| State | Meaning |
+| --- | --- |
+| Not published | No schedule runs. New and copied reports start here. |
+| Published | The schedule runs from the start date and time. The header button reads **Unpublish**. |
+
+Publishing is refused when **Start date**, **Start time** or **Repeat every** is missing: "This report cannot be published as the timeframe is not fully defined."
+
+## Subscriptions
+
+Open **Subscriptions** in the editor header. Each subscriber receives every generated report.
+
+| Option | Meaning |
+| --- | --- |
+| **Add user** | Subscribe a user of the tenant. |
+| **External** | Subscribe an email address without an account. External subscribers get mail only. |
+| **Send mail** | Email the PDF. Needs a mail server for the tenant. The mail has an unsubscribe link. |
+| **Send notification** | Send an in-app notification, titled "Report `<name>` generated". |
+
+Without a mail server the app warns: "No Mailserver configured. Subscriptions will not be send as Email."
+
+## Generate
+
+**Generate** in the editor header opens a popover with a time range.
+
+| Option | Meaning |
+| --- | --- |
+| Time range | A relative or absolute range. Defaults to the report's **Timeframe**. |
+| **Timeshift** | Moves the range into the past, for example `-6h` or `-3d`. Applies to relative ranges only. |
+| **Download** | Opens the browser's print dialog for the report. Choose **Save as PDF**. Nothing is stored or sent. |
+| **Generate and send** | Creates the PDF, saves it in the **Folder** and sends it to the subscribers. The button is disabled for 30 seconds afterwards. The PDF appears in about 30 seconds. |
+
+## Editor
+
+| Control | Meaning |
+| --- | --- |
+| Pencil | Enters or leaves edit mode. Leaving saves. The header shows **Saved** or **Unsaved changes**. |
+| **Add page** | Adds a page. Deleting a page that has widgets deletes the widgets. |
+| **Canvas size** | **A4 Portrait**, **A4 Landscape** or **Custom**. |
+| **Move to front**, **Move to back** | Order of overlapping widgets, in a widget's menu. |
+| **Preview** | Opens the report in a new tab. |
+| Gear | Opens the report settings: the fields above. |
+
+## Report list
+
+| Column | Meaning |
+| --- | --- |
+| **Name** | Opens the editor. |
+| **Status** | Published or not. |
+| **Published at** | When it was last published. |
+| **Schedule** | Last and next run. |
+| **Groups**, **Users**, **Things** | Who sees it and what it covers. |
+| **Tags** | Your labels. |
+
+Each row has **Copy Report** and **Preview**. A copy is never published. To delete reports, tick them and use the delete action in the toolbar. A **Delete report** dialog asks you to confirm.
+
+## Related
+
+- [Email a weekly PDF report](./weekly-report.mdx)
+- [Rules, actions and reports](./rules-actions-reports.mdx)

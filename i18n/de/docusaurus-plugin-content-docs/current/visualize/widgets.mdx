@@ -1,0 +1,1081 @@
+---
+title: "Widget-Galerie"
+description: "Jedes Widget, das Sie einem Dashboard hinzufügen können, gruppiert wie in der Auswahl: was es zeigt, wann Sie es nutzen und welche Einstellungen es hat."
+sidebar_position: 9
+type: reference
+app:
+  routes: ["/dashboards/:id"]
+  tour: build-dashboards
+translated_from: 679f3a4
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Ein Widget ist eine Kachel auf einem Dashboard. Der Dialog **Widget hinzufügen** gruppiert Widgets nach der Frage, die sie beantworten. Diese Seite folgt denselben Gruppen. Wählen Sie **Bearbeiten** und dann **Widget hinzufügen**, richten Sie es bei laufender Live-Vorschau ein, wählen Sie **Zum Dashboard hinzufügen** und speichern Sie das Dashboard. **Hilfe** in der Einrichtung erklärt die Einstellungen in der App. Den ganzen Ablauf beschreibt [Ein Dashboard für ein Thing bauen](./thing-dashboard.mdx).
+
+Drei Dinge gelten für jedes Widget:
+
+- **Titel** und **Darstellung** (oder **Karte**): ein Titel und Farben, wo das Widget eine Karte zeichnet. Sie werden in den Tabellen unten nicht wiederholt.
+- **Zeitraum**: Widgets, die Daten über die Zeit lesen, folgen dem Zeitraum des Dashboards, sofern Sie ihn im Widget nicht überschreiben. Siehe [Dashboards, Smart-Dashboards und Zeit](./dashboards.mdx).
+- **Verfügbar auf**: Die Auswahl zeigt nur Widgets, die zum bearbeiteten Dashboard passen. Widgets, die **ein Thing lesen**, brauchen ein Thing im Kontext: das eigene Thing des Dashboards oder eines, das Sie im Widget wählen. Folgen und Anheften beschreibt [Ein Dashboard für alle Things einer Art bauen](./smart-dashboard.mdx). Widgets für den ganzen Tenant gehören auf Home und andere Dashboards für den ganzen Tenant.
+
+## Welches Widget für welche Frage {#which-widget-for-which-question}
+
+| Frage | Gruppe | Widgets |
+| --- | --- | --- |
+| Was liest es gerade? | [Werte](#values) | Momentaufnahme, Gauge, Füllstand, Vergleichen |
+| Läuft es, ist es offen, an? | [Zustand](#state) | Messwert, Boolean, Eigenschaft, Liste der Eigenschaften, Aggregierter Zustand |
+| Wie hat es sich verändert? | [Diagramme](#charts) | Diagramm, Zeitachse, Heatmap, Donut, Pivot-Tabelle, Benutzerdefiniert |
+| Was tut es, und was kann ich tun? | [Thing-Details](#thing-details) | Status, Aktion, Canvas |
+| Was ist passiert, und was hat ausgelöst? | [Events und Regeln](#events-and-rules) | Events, Vorfälle, Event-Statistiken |
+| Wie geht es dem Tenant? | [Überblick](#overview) | Zählerleiste, Zähler, Health-Score |
+| Kommen Daten an? | [Nachrichten](#messages) | Nachrichten-Statistiken |
+| Welche Things sind offline? | [Verbindung](#connectivity) | Verbindungsstatistiken, Thing-Karte, Thing-Liste & Karte |
+| Wo liegen die Daten, und wer erreicht sie? | [Daten und Zugriff](#data-and-access) | Datenspeicher, Statistiken zu API-Schlüsseln und Speicher |
+| Wie gliedere und erkläre ich das Dashboard? | [Layout und Inhalt](#layout-and-content) | Abschnittsüberschrift, Text, Bild, Dateiliste, Container, Iframe, Karte und weitere |
+
+## Werte {#values}
+
+Was liest es gerade?
+
+### Momentaufnahme {#snapshot}
+
+**Zeigt:** Die letzten Werte der Telemetrien eines Things in einer durchsuchbaren Tabelle: Telemetriename, letzter Wert mit Einheit und Zeit.
+
+**Nutzen, wenn:** Sie jeden aktuellen Messwert eines Things an einer Stelle sehen möchten.
+
+**Verfügbar auf:** Liest ein Thing. Auf einem Smart-Dashboard folgt es dem gewählten Thing oder ist an ein eigenes Thing angeheftet.
+
+<Screenshot
+  page="visualize/widgets"
+  id="01-snapshot"
+  route="/dashboards/:id"
+  state="Snapshot table with eight measures, their values with units and times"
+  alt="Das Widget Momentaufnahme auf einem Dashboard"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Thing / Telemetrien** | Welches Thing gelesen wird, auf einem Dashboard, das keinem folgt. |
+| **Suche** | Filtert die Zeilen nach Telemetriename (in der Ansicht). |
+
+Numerische Zeilen zeigen beim Überfahren ein Diagramm-Icon, das eine Abfrage für diese Telemetrie öffnet. Das Widget unterstützt den Vollbildmodus für lange Listen.
+
+### Gauge {#gauge}
+
+**Zeigt:** Eine Telemetrie auf einer Skala, mit ihrem Bereich.
+
+**Nutzen, wenn:** Es darauf ankommt, wo ein Wert zwischen Minimum und Maximum liegt, etwa bei Druck oder Last.
+
+**Verfügbar auf:** Liest ein Thing. Auf einem Smart-Dashboard folgt es dem gewählten Thing oder ist an ein eigenes Thing angeheftet.
+
+<Screenshot
+  page="visualize/widgets"
+  id="02-gauge"
+  route="/dashboards/:id"
+  state="Gauge showing 21.4 °C on a 0 to 40 dial with green, yellow and red zones"
+  alt="Das Widget Gauge auf einem Dashboard"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Telemetrie** | Die Telemetrie, die gezeigt wird. Pflichtfeld. |
+| **Min / Max** | Der Bereich der Skala. Pflichtfeld. |
+| **Shape** | Breiter oder schmaler Bogen. |
+| **Schwellenwerte** | Farbzonen für Wertebereiche. |
+| **Gradient** | Weiche Farbübergänge zwischen Zonen. |
+| **Icon**, **Kompakte Zahl**, **Schriftgröße** | Wie der Wert gezeichnet wird. |
+
+### Füllstand {#fill-level}
+
+**Zeigt:** Wie voll ein Tank oder Silo ist, als Füllbalken.
+
+**Nutzen, wenn:** Die Telemetrie ein Füllstand ist und wichtig ist, wie voll es ist, nicht die Zahl.
+
+**Verfügbar auf:** Liest ein Thing. Auf einem Smart-Dashboard folgt es dem gewählten Thing oder ist an ein eigenes Thing angeheftet.
+
+<Screenshot
+  page="visualize/widgets"
+  id="03-fill-level"
+  route="/dashboards/:id"
+  state="Vertical fill bar at 72 % in yellow"
+  alt="Das Widget Füllstand auf einem Dashboard"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Telemetrie** | Die Telemetrie, die den Füllstand enthält. |
+| **Bedingungen** | Bereiche mit Farben, zum Beispiel grün unter 50 %, gelb unter 80 %, darüber rot. |
+| **Darstellung** | Senkrechter oder waagerechter Balken. |
+
+### Vergleichen {#compare}
+
+**Zeigt:** Zwei Werte nebeneinander, mit der Differenz.
+
+**Nutzen, wenn:** Sie einen Wert mit einem früheren vergleichen oder eine Kennzahl wie Durchschnitt, Summe oder Spitze über einen Zeitraum brauchen.
+
+**Verfügbar auf:** Liest ein Thing. Auf einem Smart-Dashboard folgt es dem gewählten Thing oder ist an ein eigenes Thing angeheftet.
+
+<Screenshot
+  page="visualize/widgets"
+  id="04-compare"
+  route="/dashboards/:id"
+  state="Compare widget with two values and the difference between them"
+  alt="Das Widget Vergleichen auf einem Dashboard"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Telemetrie** | Eine Telemetrie mit Aggregation, Icon und Icon-Farbe. |
+| **Zeitraum** | Der Zeitraum, den der Wert abdeckt. |
+| **Kompakte Zahl** | Große Werte kürzen, zum Beispiel 1,2 k. |
+| **Ausrichtung**, **Schriftgröße** | Wie der Wert gezeichnet wird. |
+
+## Zustand {#state}
+
+Läuft es, ist es offen, an?
+
+### Messwert {#stat}
+
+**Zeigt:** Den aktuellen Wert einer oder mehrerer Telemetrien, nach Bereich eingefärbt, wahlweise mit Sparkline.
+
+**Nutzen, wenn:** Sie eine große, auf einen Blick lesbare Zahl möchten, die die Farbe wechselt, wenn sie ihren Normalbereich verlässt.
+
+**Verfügbar auf:** Liest ein Thing. Auf einem Smart-Dashboard folgt es dem gewählten Thing oder ist an ein eigenes Thing angeheftet.
+
+<Screenshot
+  page="visualize/widgets"
+  id="05-stat"
+  route="/dashboards/:id"
+  state="Stat widget with a temperature value and a 24 h sparkline"
+  alt="Das Widget Messwert auf einem Dashboard"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Telemetrien** | Eine oder mehrere Telemetrien. Jede Zeile hat ein Thing, eine Telemetrie, ein Icon und eine Icon-Farbe. |
+| **Zeitrahmen für Sparkline** | Ein kleiner Trend hinter jedem Wert: aus, 24 h, 7 d oder 30 d. |
+| **Anzeigemodus** | **Karussell** wechselt durch die Telemetrien, **Gestapelt** zeigt alle auf einmal. |
+| **Orientierung** | Waagerecht oder senkrecht (nur gestapelt). |
+| **Kompakte Zahl**, **Ausrichtung**, **Schriftgröße** | Wie der Wert gezeichnet wird. |
+
+Die Karte in der Auswahl heißt **Messwert**.
+
+### Boolean {#boolean}
+
+**Zeigt:** Eine Ja-Nein-Telemetrie als Schalter oder Lampe.
+
+**Nutzen, wenn:** Die Telemetrie an oder aus, offen oder geschlossen ist und Sie das ablesen möchten, ohne eine Zahl zu deuten.
+
+**Verfügbar auf:** Liest ein Thing. Auf einem Smart-Dashboard folgt es dem gewählten Thing oder ist an ein eigenes Thing angeheftet.
+
+<Screenshot
+  page="visualize/widgets"
+  id="06-boolean"
+  route="/dashboards/:id"
+  state="Boolean widget with two lamps, one green and one grey"
+  alt="Das Widget Boolean auf einem Dashboard"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Telemetrien** | Eine oder mehrere boolesche Telemetrien, jede mit einem Icon. |
+| **Farbe, wenn wahr**, **Farbe, wenn falsch** | Farbe für jeden Zustand. |
+| **Beschreibung, wenn wahr**, **Beschreibung, wenn falsch** | Text für jeden Zustand. Kann übersetzt werden. |
+| **Anzeigemodus** | **Karussell** oder **Gestapelt**. |
+| **Orientierung**, **Ausrichtung** | Layout. |
+
+### Eigenschaft {#property}
+
+**Zeigt:** Eine Eigenschaft eines Things und ihren Wert, etwa eine Firmware-Version oder Seriennummer.
+
+**Nutzen, wenn:** Sie feste Fakten oder sich langsam ändernde Metadaten zeigen, keine Messwerte.
+
+**Verfügbar auf:** Liest ein Thing. Auf einem Smart-Dashboard folgt es dem gewählten Thing oder ist an ein eigenes Thing angeheftet.
+
+<Screenshot
+  page="visualize/widgets"
+  id="07-property"
+  route="/dashboards/:id"
+  state="Property widget showing a firmware version"
+  alt="Das Widget Eigenschaft mit einer Firmware-Version"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Eigenschaft** | Die Eigenschaft, die gezeigt wird. Die Liste kommt vom Thing-Typ. |
+| **Titel** | Optional, ersetzt den Standardtitel. |
+
+Die Zeit des letzten Updates steht unter dem Wert.
+
+### Liste der Eigenschaften {#property-list}
+
+**Zeigt:** Mehrere Eigenschaften eines Things und ihre Werte in einer durchsuchbaren, sortierbaren Tabelle.
+
+**Nutzen, wenn:** Sie Identität und Metadaten eines Things auf einem Dashboard zeigen möchten, etwa Seriennummer, Standort und Firmware.
+
+**Verfügbar auf:** Liest ein Thing. Auf einem Smart-Dashboard folgt es dem gewählten Thing oder ist an ein eigenes Thing angeheftet.
+
+<Screenshot
+  page="visualize/widgets"
+  id="08-property-list"
+  route="/dashboards/:id"
+  state="Property list with five properties and their last update times"
+  alt="Das Widget Liste der Eigenschaften auf einem Dashboard"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Thing** | Welches Thing gelesen wird, auf einem Dashboard, das keinem folgt. |
+| **Suche** | Filtert nach Eigenschaftsname (in der Ansicht). |
+
+Die Zeilen sind nach Namen sortiert. Das letzte Update erscheint als relative Zeit, zum Beispiel vor 2 Minuten.
+
+### Aggregierter Zustand {#aggregated-state}
+
+**Zeigt:** Eine über einen Zeitraum aggregierte Telemetrie, mit einem Icon.
+
+**Nutzen, wenn:** Sie eine Zahl für einen Zeitraum brauchen, etwa die Durchschnittstemperatur der letzten Stunde oder den Energieverbrauch von heute.
+
+**Verfügbar auf:** Liest ein Thing. Auf einem Smart-Dashboard folgt es dem gewählten Thing oder ist an ein eigenes Thing angeheftet.
+
+<Screenshot
+  page="visualize/widgets"
+  id="09-aggregated-state"
+  route="/dashboards/:id"
+  state="Aggregated State widget with an average value and an icon"
+  alt="Das Widget Aggregierter Zustand auf einem Dashboard"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Telemetrie** | Eine Telemetrie mit Aggregation, Icon und Farbe. |
+| **Zeitraum** | Der Zeitraum, der aggregiert wird. |
+| **Kompakte Zahl**, **Ausrichtung** | Wie der Wert gezeichnet wird. |
+
+## Diagramme {#charts}
+
+Wie hat es sich verändert?
+
+### Diagramm {#chart}
+
+**Zeigt:** Telemetrien über die Zeit. Wählen Sie ein Layout: **Linie**, **Fläche**, **Balken**, **Streuung** oder **Kombination** (Balken und Linien in einem Diagramm). Das Layout können Sie später in den Einstellungen des Widgets ändern.
+
+**Nutzen, wenn:** Sie Trends ansehen, Telemetrien vergleichen oder einen Wert gegen eine Grenze prüfen.
+
+**Verfügbar auf:** Liest ein Thing. Auf einem Smart-Dashboard folgt es dem gewählten Thing oder ist an ein eigenes Thing angeheftet.
+
+<Screenshot
+  page="visualize/widgets"
+  id="10-chart"
+  route="/dashboards/:id"
+  state="Line chart with two temperature measures over the last 24 hours and one threshold line"
+  alt="Das Widget Diagramm auf einem Dashboard"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Telemetrien** | Eine oder mehrere Zeilen. Jede hat ein Thing, eine Aggregation, einen Diagrammtyp, einen Linienstil, Stapelung, eine Y-Achsen-Gruppe, eine Farbe und einen Alias. |
+| **Zeitraum** | Der Zeitraum und die Bucket-Größe. Folgt dem Dashboard, sofern Sie ihn nicht überschreiben. |
+| **Schwellenwerte** | Waagerechte Linien mit Farbe und Beschriftung. |
+| **Darstellung** | Diagramm oder Tabelle. |
+| **Diagrammmarkierungen anzeigen**, **Zoom erlaubt**, **Kompakte Y-Achsen-Beschriftung** | Punkte zeigen, Zoomen und Verschieben erlauben, große Achsenwerte kürzen. |
+| **Platzierung der Legende** | Unten, rechts oder ausgeblendet. |
+| **Minimalwert der Y-Achse**, **Maximalwert der Y-Achse** | Der Bereich der Y-Achse. |
+
+Ältere Dashboards enthalten eventuell getrennte Widgets für Linie, Balken, Streuung und Kombination. Sie funktionieren weiter. Neue sind Layouts dieses Widgets.
+
+### Zeitachse {#timeline}
+
+**Zeigt:** Zustände über die Zeit als farbige Segmente, eine Spur je Telemetrie.
+
+**Nutzen, wenn:** Sie sehen möchten, wann etwas lief, stillstand oder gestört war, nicht wie groß ein Wert war.
+
+**Verfügbar auf:** Liest ein Thing. Auf einem Smart-Dashboard folgt es dem gewählten Thing oder ist an ein eigenes Thing angeheftet.
+
+<Screenshot
+  page="visualize/widgets"
+  id="11-timeline"
+  route="/dashboards/:id"
+  state="Timeline with three lanes of colored state segments over 24 hours"
+  alt="Das Widget Zeitachse auf einem Dashboard"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Aggregation** | Wie Werte zusammengefasst werden. |
+| **Aufeinanderfolgende Datenpunkte zusammenführen** | Benachbarte Segmente mit demselben Zustand verbinden. |
+| **Zeitraum** | Der Zeitraum, der gezeigt wird. |
+| **Regeln** | Ordnen Wertebereiche Farben und Beschriftungen zu. |
+
+### Heatmap {#heatmap}
+
+**Zeigt:** Eine Telemetrie nach Stunde und Tag als Farbraster.
+
+**Nutzen, wenn:** Sie tägliche oder wöchentliche Muster suchen, etwa wann der Verbrauch seine Spitze hat.
+
+**Verfügbar auf:** Liest ein Thing. Auf einem Smart-Dashboard folgt es dem gewählten Thing oder ist an ein eigenes Thing angeheftet.
+
+<Screenshot
+  page="visualize/widgets"
+  id="12-heatmap"
+  route="/dashboards/:id"
+  state="Heatmap of hours by days with a blue intensity scale"
+  alt="Das Widget Heatmap auf einem Dashboard"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Telemetrie** | Die Telemetrie, die gezeichnet wird. Pflichtfeld. |
+| **Aggregation** | Zum Beispiel Durchschnitt, Minimum oder Maximum. |
+| **Farbe** | Grundfarbe der Intensitätsskala. |
+| **Schritt** | Nach Stunde, Tag, Woche oder Monat gruppieren. |
+| **Min / Max** | Optionaler Bereich, auf den Werte begrenzt werden. |
+| **Zeitraum** | Der Zeitraum, der abgefragt wird. |
+
+### Donut {#doughnut}
+
+**Zeigt:** Anteile an einem Ganzen, als Donut oder Kreis.
+
+**Nutzen, wenn:** Sie zeigen, wie mehrere Telemetrien zu einer Summe beitragen.
+
+**Verfügbar auf:** Liest ein Thing. Auf einem Smart-Dashboard folgt es dem gewählten Thing oder ist an ein eigenes Thing angeheftet.
+
+<Screenshot
+  page="visualize/widgets"
+  id="13-doughnut"
+  route="/dashboards/:id"
+  state="Doughnut with three colored shares and a unit in the centre"
+  alt="Das Widget Donut auf einem Dashboard"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Telemetrien** | Eine oder mehrere Telemetrien, jede mit eigener Farbe. |
+| **Darstellung** | Kreis oder Donut. |
+| **Maßeinheit** | Text in der Mitte. |
+| **Icon** | Optionales Icon in der Mitte. |
+
+### Pivot-Tabelle {#pivot-table}
+
+**Zeigt:** Werte nach Zeitraum in einer Tabelle, die Sie nach Zeilen und Spalten gruppieren können.
+
+**Nutzen, wenn:** Sie Zahlen statt eines Bildes brauchen, gruppiert und summiert wie in einem Bericht.
+
+**Verfügbar auf:** Liest ein Thing. Auf einem Smart-Dashboard folgt es dem gewählten Thing oder ist an ein eigenes Thing angeheftet.
+
+<Screenshot
+  page="visualize/widgets"
+  id="14-pivot-table"
+  route="/dashboards/:id"
+  state="Pivot table with days as rows and two measures as columns"
+  alt="Das Widget Pivot-Tabelle auf einem Dashboard"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Telemetrien** | Eine oder mehrere Telemetrien mit Aggregation und optionalem Alias. |
+| **Zeitraum** | Der Zeitraum und die Bucket-Größe. |
+| **Gapfill** | Lücken in der Zeitreihe füllen. |
+| **Pivot-Konfiguration** | Zeilengruppen, Spaltengruppen, Werte und berechnete Spalten. |
+| **Datum alias**, **Datumsformat** | Beschriftung und Format der Datumsspalte. |
+
+### Benutzerdefiniert {#custom}
+
+**Zeigt:** Jedes Diagramm, aus einer Diagrammdefinition. Sie fragen Daten von Things ab und schreiben JavaScript, das die ECharts-Optionen erzeugt.
+
+**Nutzen, wenn:** Kein anderes Diagramm passt und jemand in Ihrem Team JavaScript schreiben kann.
+
+**Verfügbar auf:** Liest ein Thing. Auf einem Smart-Dashboard folgt es dem gewählten Thing oder ist an ein eigenes Thing angeheftet.
+
+<Screenshot
+  page="visualize/widgets"
+  id="15-custom"
+  route="/dashboards/:id"
+  state="Custom chart showing a stacked bar chart built from two series"
+  alt="Das Widget Benutzerdefiniert mit einem gestapelten Balkendiagramm"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Series** | Die Daten, die abgefragt werden. |
+| **Chart definition** | JavaScript, das die ECharts-Optionen zurückgibt. |
+
+Nehmen Sie ein anderes Diagramm-Widget, wenn eines passt.
+
+## Thing-Details {#thing-details}
+
+Was tut es, und was kann ich tun?
+
+### Status {#status}
+
+**Zeigt:** Ordnet den Wert einer Telemetrie einem Icon, Text und einer Farbe zu, zum Beispiel online oder offline.
+
+**Nutzen, wenn:** Sie einen verständlichen Zustand wie Läuft oder Störung statt eines Rohwerts möchten.
+
+**Verfügbar auf:** Liest ein Thing. Auf einem Smart-Dashboard folgt es dem gewählten Thing oder ist an ein eigenes Thing angeheftet.
+
+<Screenshot
+  page="visualize/widgets"
+  id="16-status"
+  route="/dashboards/:id"
+  state="Status widget with a green check icon and the text Running"
+  alt="Das Widget Status mit grünem Haken und dem Text Läuft"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Telemetrie** | Eine Telemetrie, die ausgewertet wird. |
+| **Regeln** | Bedingungen, die Wertebereiche Icons, Texten und Farben zuordnen. |
+| **Titel**, **Ausrichtung**, **Schriftgröße** | Wie es gezeichnet wird. |
+
+### Aktion {#action}
+
+**Zeigt:** Eine Schaltfläche, die einen Befehl an ein Thing sendet.
+
+**Nutzen, wenn:** Benutzer vom Dashboard aus am Thing handeln müssen, zum Beispiel neu starten oder ein Ventil öffnen.
+
+**Verfügbar auf:** Liest ein Thing. Auf einem Smart-Dashboard folgt es dem gewählten Thing oder ist an ein eigenes Thing angeheftet.
+
+<Screenshot
+  page="visualize/widgets"
+  id="17-action"
+  route="/dashboards/:id"
+  state="Action button with a restart icon"
+  alt="Das Widget Aktion mit einer Schaltfläche und Neustart-Icon"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Aktion** | Die Aktion, die ausgelöst wird. Pflichtfeld. |
+| **Icon** | Das Icon der Schaltfläche. |
+| **Ziel Thing** | Auf einem Dashboard, das keinem Thing folgt, das Thing, das den Befehl erhält. |
+
+### Canvas {#canvas}
+
+**Zeigt:** Bettet ein vorhandenes Canvas, eine Zeichnung der Anlage mit Live-Werten, in das Dashboard ein.
+
+**Nutzen, wenn:** Sie einen Grundriss oder ein Prozessbild gezeichnet haben und es neben anderen Widgets zeigen möchten.
+
+**Verfügbar auf:** Thing-, Thing-Typ-, Smart- und Multi-Asset-Dashboards. Nicht auf allgemeinen Dashboards oder Berichten.
+
+<Screenshot
+  page="visualize/widgets"
+  id="18-canvas"
+  route="/dashboards/:id"
+  state="Canvas widget showing a plant drawing with three live values"
+  alt="Das Widget Canvas mit einer Anlagenzeichnung und drei Live-Werten"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Canvas** | Welches Canvas eingebettet wird. Pflichtfeld. |
+| **Thing** | Auf einem Multi-Asset-Dashboard das Thing, das einem Canvas auf Basis von Interfaces den Kontext liefert. |
+
+Um das Canvas zu bedienen, öffnen Sie es auf seiner eigenen Seite. Siehe [Canvas](./canvas/index.mdx).
+
+## Events und Regeln {#events-and-rules}
+
+Was ist passiert, und was hat ausgelöst?
+
+### Events {#events}
+
+**Zeigt:** Die Events des Dashboards: auf einem Dashboard für den ganzen Tenant jedes Event des Tenants, sonst die Events seiner Things. Eine Zeile je Event, das neueste zuerst.
+
+**Nutzen, wenn:** Sie den jüngsten Verlauf dessen sehen möchten, was ausgelöst hat, mit Schweregrad und Typ.
+
+**Verfügbar auf:** Jedes Dashboard. Auf einem Dashboard zu einem Thing listet die Auswahl es unter **Thing-Details**.
+
+<Screenshot
+  page="visualize/widgets"
+  id="19-events"
+  route="/dashboards/:id"
+  state="Events list with severity chips and five rows"
+  alt="Das Widget Events auf einem Dashboard"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Event Typen** | Ein oder mehrere Typen, die gezeigt werden. Leer bedeutet alle. |
+| **Zeitraum** | Folgt dem Dashboard, sofern Sie ihn nicht überschreiben. |
+
+Chips filtern nach Schweregrad und zeigen Anzahlen. **Event-Explorer öffnen** öffnet die Seite Events mit demselben Filter.
+
+### Vorfälle {#incidents}
+
+**Zeigt:** Die Probleme, an denen jemand arbeitet, die neueste Aktivität zuerst, mit Schweregrad, Nummer, wer sie eröffnet hat, und Status.
+
+**Nutzen, wenn:** Benutzer sehen sollen, was jetzt Aufmerksamkeit braucht.
+
+**Verfügbar auf:** Jedes Dashboard außer Berichten. Auf einem Dashboard zu einem Thing listet die Auswahl es unter **Thing-Details**.
+
+<Screenshot
+  page="visualize/widgets"
+  id="20-incidents"
+  route="/dashboards/:id"
+  state="Incidents list with three active incidents"
+  alt="Das Widget Vorfälle mit drei aktiven Vorfällen"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Titel** | Wird über der Liste gezeigt. |
+| **Zeigt zuerst** | Mit aktiven Vorfällen oder mit allen beginnen. |
+| **Zeilen** | 5, 10 oder 20 vor **Alle Vorfälle**. |
+| **Karte** | Hintergrund- und Rahmenfarben. |
+
+Nur Mitglieder, die Vorfälle lesen dürfen, sehen es.
+
+### Event-Statistiken {#event-statistics}
+
+**Zeigt:** Vier fertige Kennzahlen zu den Events des Tenants, jede eine Karte in der Auswahl: **Ereignisse nach Schweregrad**, **Ereignisse nach Thing Typ**, **Regelaktivität** und **Geofence-Ereignisse**.
+
+**Nutzen, wenn:** Sie berichten, wie viele Events es gibt, welche Thing-Typen sie auslösen, wie oft Regeln feuern oder wie oft Things Geofences überqueren.
+
+**Verfügbar auf:** Allgemeine Dashboards, Home und andere Smart-Dashboards. Nicht auf einem Dashboard zu einem Thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="21-event-statistics"
+  route="/dashboards/:id"
+  state="Events by severity chart over seven days"
+  alt="Das Widget Event-Statistiken auf einem Dashboard"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Statistik** | Welche Kennzahl gezeigt wird. |
+| **Zeitraum** | Nutzt den Zeitraum des Dashboards, sofern Sie ihn nicht überschreiben. |
+
+Was die Karten gemeinsam haben, steht unter [Statistiken](#statistics).
+
+## Überblick {#overview}
+
+Wie geht es dem Tenant?
+
+### Zählerleiste {#counter-strip}
+
+**Zeigt:** Bis zu sechs Kennzahlen des Tenants in einer Leiste: Things, Things online, Nachrichten heute, Events und was der Tenant speichert. Jeder Zähler öffnet die Liste, die er zählt.
+
+**Nutzen, wenn:** Sie ein Home-Dashboard bauen und die wichtigsten Zahlen des Tenants oben haben möchten.
+
+**Verfügbar auf:** Allgemeine Dashboards, Home und andere Smart-Dashboards. Nicht auf einem Dashboard zu einem Thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="22-counter-strip"
+  route="/dashboards/:id"
+  state="Counter strip with four tenant figures"
+  alt="Das Widget Zählerleiste mit vier Kennzahlen des Tenants"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Zähler** | Wählen Sie bis zu sechs und ziehen Sie sie in Reihenfolge. **Auf Standard zurücksetzen** bringt Things, Things online, Nachrichten heute und Events zurück. |
+| **Zeitraum** | Events, Nachrichten und die durchschnittliche Nachrichtenrate decken den Zeitraum des Dashboards ab oder einen eigenen des Widgets. |
+| **Karte** | Hintergrund- und Rahmenfarben. |
+
+Ein Problem erscheint in der Zeile unter der Zahl, zum Beispiel *2 offline*. Ein Strich mit *Kein Zugriff* bedeutet, dass Ihre Rolle diese Zahl nicht lesen darf.
+
+### Zähler {#counter}
+
+**Zeigt:** Die Anzahl eines Ressourcentyps.
+
+**Nutzen, wenn:** Sie eine Zahl möchten, etwa wie viele Regeln oder Benutzer der Tenant hat.
+
+**Verfügbar auf:** Thing-, Thing-Typ-, Smart-, Multi-Asset- und Bericht-Dashboards. Allgemeine Dashboards nutzen die Zählerleiste, früher dort platzierte Zähler funktionieren weiter. Auf Dashboards zu einem Thing listet die Auswahl es unter **Tenant-Kennzahlen**.
+
+<Screenshot
+  page="visualize/widgets"
+  id="23-counter"
+  route="/dashboards/:id"
+  state="Counter widget showing the number of things"
+  alt="Das Widget Zähler mit der Anzahl der Things"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Ressource** | Was gezählt wird: **Thing**, **Thing Typ**, **Gruppe**, **Benutzer**, **Dashboard**, **Datei**, **Event Typ**, **Regel**, **Canvas**, **Bericht** oder **Geofence**. |
+| **Icon** | Optionales Icon. |
+
+### Health-Score {#health-score}
+
+**Zeigt:** Einen Wert von 0 bis 100 aus Verbindung, frischen Daten und Regelerfolg über die letzten 24 Stunden.
+
+**Nutzen, wenn:** Sie eine einzelne Zahl möchten, die sagt, ob der Tenant gesund ist.
+
+**Verfügbar auf:** Allgemeine Dashboards, Home und andere Smart-Dashboards. Nicht auf einem Dashboard zu einem Thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="24-health-score"
+  route="/dashboards/:id"
+  state="Health score card showing 94"
+  alt="Das Widget Health-Score mit dem Wert 94"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Zeitraum** | Fest: die letzten 24 Stunden. |
+
+Er deckt immer den ganzen Tenant ab.
+
+## Nachrichten {#messages}
+
+Kommen Daten an?
+
+### Nachrichten {#messages-1}
+
+**Zeigt:** Eine Familie aus acht Statistiken zu den Daten, die Ihre Things senden. Die Wahl der Karte listet die Layouts unten.
+
+**Nutzen, wenn:** Sie prüfen, ob Daten ankommen, wie viele und von welchen Things.
+
+**Verfügbar auf:** Allgemeine Dashboards, Home und andere Smart-Dashboards. Nicht auf einem Dashboard zu einem Thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="25-messages"
+  route="/dashboards/:id"
+  state="Messages per day chart with a dashed average line"
+  alt="Das Widget Nachrichten mit Nachrichten pro Tag"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Statistik** | Welches Layout gezeigt wird. |
+| **Zeitraum** | Nutzt den Zeitraum des Dashboards, sofern Sie ihn nicht überschreiben. |
+
+| Layout | Zeigt |
+| --- | --- |
+| **Anzahl** | Nachrichten im Zeitraum. |
+| **Nachrichten pro Tag** | Nachrichten pro Tag, mit gestricheltem Durchschnitt. |
+| **Nachrichtenrate** | Nachrichten pro Minute im Zeitverlauf. |
+| **Nachrichten nach Thing Typ** | Welche Thing-Typen am meisten senden. |
+| **Things mit den meisten Nachrichten** | Die Things, die am meisten senden. |
+| **Aktivität nach Stunde** | Wann am Tag Nachrichten ankommen. |
+| **Datenvolumen** | Wie viele Daten angekommen sind. |
+| **Nachrichtengröße** | Die durchschnittliche Größe einer Nachricht. |
+
+## Verbindung {#connectivity}
+
+Welche Things sind offline?
+
+### Verbindungsstatistiken {#connectivity-statistics}
+
+**Zeigt:** Eine Familie aus vier Statistiken dazu, welche Things verbunden sind. Die Wahl der Karte listet die Layouts unten.
+
+**Nutzen, wenn:** Sie prüfen, wie viele Things online sind und welche verstummt sind.
+
+**Verfügbar auf:** Allgemeine Dashboards, Home und andere Smart-Dashboards. Nicht auf einem Dashboard zu einem Thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="26-connectivity-statistics"
+  route="/dashboards/:id"
+  state="Things online card with online, offline and never seen counts"
+  alt="Das Widget Verbindungsstatistiken mit der Karte Things online"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Statistik** | Welches Layout gezeigt wird. |
+| **Zeitraum** | Nutzt den Zeitraum des Dashboards, sofern Sie ihn nicht überschreiben. |
+
+| Layout | Zeigt |
+| --- | --- |
+| **Things online** | Online, offline und nie gesehen. |
+| **Verbindungsstatus nach Thing Typ** | Verbindung je Thing-Typ. |
+| **Kürzlich offline** | Die Things, die zuletzt verstummt sind. |
+| **Aktive Things** | Things, die im Zeitraum Daten gesendet haben. |
+
+### Thing-Karte {#thing-map}
+
+**Zeigt:** Jedes Thing nach Verbindungszustand, als eine Kachel je Thing-Typ oder Gruppe mit der Zahl der Online-Things und einem Balken aus verbundenen, offline und nie verbundenen Things.
+
+**Nutzen, wenn:** Sie auf einen Blick sehen möchten, welche Arten von Things Probleme haben.
+
+**Verfügbar auf:** Allgemeine Dashboards, Home und andere Smart-Dashboards. Nicht auf einem Dashboard zu einem Thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="27-thing-map"
+  route="/dashboards/:id"
+  state="Thing map with four tiles, one with offline things"
+  alt="Das Widget Thing-Karte mit vier Kacheln"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Titel** | Wird über den Kacheln gezeigt. |
+| **Kacheln nach** | **Thing Typ** oder **Gruppe**. Ein Thing in mehreren Gruppen zählt in jeder. |
+| **Karte** | Hintergrund- und Rahmenfarben. |
+
+Kacheln mit Offline-Things stehen vorn. Bis zu 100 Things zeigt eine Thing-Typ-Kachel jedes Thing als kleines Quadrat. Der Zustand aktualisiert sich jede Minute.
+
+### Thing-Liste & Karte {#thing-list--map}
+
+**Zeigt:** Ihre Things mit ihrem Status, Probleme zuerst, mit optionaler Karte.
+
+**Nutzen, wenn:** Sie eine Arbeitsliste von Things möchten, beginnend mit denen, die Aufmerksamkeit brauchen.
+
+**Verfügbar auf:** Allgemeine Dashboards, Home und andere Smart-Dashboards. Nicht auf einem Dashboard zu einem Thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="28-thing-list-map"
+  route="/dashboards/:id"
+  state="Thing list with ten rows, offline things first, and a Map tab"
+  alt="Das Widget Thing-Liste & Karte mit zehn Zeilen und einem Kartenreiter"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Titel** | Wird über der Liste gezeigt. |
+| **Zeilen** | 5, 10 oder 20 Things, Probleme zuerst, oder **Alle** (durchsuchbar, lädt beim Scrollen nach). |
+| **Thing Typen**, **Gruppen**, **Verbindung** | Zeigen nur passende Things. Leer bedeutet jedes Thing. |
+| **Kartenreiter** | Fügt neben der Liste eine Karte hinzu. |
+| **Karte** | Hintergrund- und Rahmenfarben. |
+
+Jede Zeile zeigt das Thing, seinen Status, die letzte Nachricht und die Nachrichten der letzten 24 Stunden. **Alle Things öffnen** führt zur vollständigen Liste. Früher hinzugefügte Listen bleiben in der Form **Alle**, bis Sie sie ändern.
+
+## Daten und Zugriff {#data-and-access}
+
+Wo liegen die Daten, und wer erreicht sie?
+
+### Statistiken zu Daten und Zugriff {#data-and-access-statistics}
+
+**Zeigt:** Vier fertige Kennzahlen zu Speicher und API-Schlüsseln: **Daten im System** (was der Tenant speichert und was täglich hinzukommt), **Rohdaten und Aggregate** (nach Größe), **Datenspeicher** (jeder Speicher mit Aufbewahrung, ältesten Daten und Größe) und **API-Schlüssel** (gültige Schlüssel, ihre Nutzung und bald ablaufende).
+
+**Nutzen, wenn:** Sie das Speicherwachstum beobachten oder wissen möchten, ob API-Schlüssel genutzt werden oder bald ablaufen.
+
+**Verfügbar auf:** Allgemeine Dashboards, Home und andere Smart-Dashboards. Nicht auf einem Dashboard zu einem Thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="29-data-and-access-statistics"
+  route="/dashboards/:id"
+  state="Data stores table with retention, oldest data and size"
+  alt="Das Widget Statistiken zu Daten und Zugriff mit einer Tabelle der Datenspeicher"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Statistik** | Welche Kennzahl gezeigt wird. |
+
+Diese Zahlen decken immer den ganzen Tenant ab. **API-Schlüssel** braucht eine Rolle, die die API-Schlüssel des Tenants lesen darf.
+
+## Layout und Inhalt {#layout-and-content}
+
+Das Dashboard gliedern und erklären
+
+### Text {#text}
+
+**Zeigt:** Formatierten Text und Links, für Anleitungen, Beschreibungen oder Beschriftungen.
+
+**Nutzen, wenn:** Sie ein Dashboard erklären oder eine Beschriftung oder einen Link hinzufügen.
+
+**Verfügbar auf:** Jedes Dashboard.
+
+<Screenshot
+  page="visualize/widgets"
+  id="30-text"
+  route="/dashboards/:id"
+  state="Text widget with a heading, a list and a link"
+  alt="Das Widget Text mit Überschrift, Liste und Link"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Inhalt** | Ein Rich-Text-Editor: fett, kursiv, unterstrichen, Listen, Links, Überschriften. Markdown-Kürzel funktionieren. |
+| **Darstellung** | Hintergrundfarbe, Rahmenfarbe und Transparenz. |
+
+Tippen Sie `@`, um ein Thing und seine Eigenschaften zu erwähnen. Die Werte werden beim Anzeigen des Dashboards aufgelöst.
+
+### Bild {#image}
+
+**Zeigt:** Ein Bild aus Ihren Dateien oder von einer externen Adresse.
+
+**Nutzen, wenn:** Sie ein Logo, ein Foto oder einen Plan zeigen.
+
+**Verfügbar auf:** Jedes Dashboard.
+
+<Screenshot
+  page="visualize/widgets"
+  id="31-image"
+  route="/dashboards/:id"
+  state="Image widget showing a site photo"
+  alt="Das Widget Bild mit einem Standortfoto"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Image source** | Eine Datei hochladen oder eine URL eingeben. Externe URLs müssen öffentlich sein. |
+| **Größe** | **Füllen** füllt das Widget und kann beschneiden. **Einpassen** zeigt das ganze Bild. |
+| **Ausrichtung** | Welcher Teil beim Beschneiden sichtbar bleibt. |
+| **Darstellung** | Hintergrundfarbe, Rahmenfarbe und Transparenz. |
+
+### Dateiliste {#file-list}
+
+**Zeigt:** Dateien zum Herunterladen, aus dem Datei-Explorer gewählt oder von Betrachtern hochgeladen.
+
+**Nutzen, wenn:** Benutzer neben den Daten Handbücher, Zertifikate oder Berichte brauchen.
+
+**Verfügbar auf:** Jedes Dashboard.
+
+<Screenshot
+  page="visualize/widgets"
+  id="32-file-list"
+  route="/dashboards/:id"
+  state="File list with three PDF files"
+  alt="Das Widget Dateiliste mit drei PDF-Dateien"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Search labels** | Zeigt Dateien, die diese Labels tragen. |
+| **Hochladen im Widget zulassen** | Betrachter dürfen Dateien in das Widget hochladen. |
+| **Ausgewählte Dateien** | Bestimmte Dateien wählen. |
+
+Mindestens eine Datei, ein Suchlabel oder das Hochladen muss gesetzt sein.
+
+### Iframe {#iframe}
+
+**Zeigt:** Eine andere Webseite, eingebettet.
+
+**Nutzen, wenn:** Sie eine Seite eines anderen Systems auf dem Dashboard haben möchten.
+
+**Verfügbar auf:** Jedes Dashboard.
+
+<Screenshot
+  page="visualize/widgets"
+  id="33-iframe"
+  route="/dashboards/:id"
+  state="Iframe widget showing an embedded web page"
+  alt="Das Widget Iframe mit einer eingebetteten Webseite"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Iframe-URL** | Die vollständige Adresse, zum Beispiel `https://example.com`. Pflichtfeld. |
+| **Darstellung** | Rahmenfarbe. |
+
+Die Zielseite muss die Einbettung erlauben. Manche Seiten blockieren sie mit `X-Frame-Options` oder einer Content Security Policy.
+
+### Container {#container}
+
+**Zeigt:** Einen Rahmen, der Widgets gruppiert oder Platz im Raster lässt.
+
+**Nutzen, wenn:** Sie eine farbige Trennung, eine optische Gruppe oder leeren Platz möchten.
+
+**Verfügbar auf:** Jedes Dashboard.
+
+<Screenshot
+  page="visualize/widgets"
+  id="34-container"
+  route="/dashboards/:id"
+  state="Container with a light background behind two widgets"
+  alt="Das Widget Container mit hellem Hintergrund hinter zwei Widgets"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Darstellung** | Hintergrundfarbe, Rahmenfarbe und Transparenz. |
+
+Stellen Sie ihn transparent, um den Platz freizuhalten, ohne etwas zu zeichnen. Mit einer Hintergrundfarbe wird er zur farbigen Trennung.
+
+### Abschnittsüberschrift {#section-header}
+
+**Zeigt:** Benennt eine Gruppe von Widgets, mit optionaler Beschreibung und Link, über einer dünnen Trennlinie. Sie hat keine Karte.
+
+**Nutzen, wenn:** Ein Dashboard mehrere Themen hat und Überschriften braucht.
+
+**Verfügbar auf:** Jedes Dashboard.
+
+<Screenshot
+  page="visualize/widgets"
+  id="35-section-header"
+  route="/dashboards/:id"
+  state="Section header with title, description and a link on the right"
+  alt="Das Widget Abschnittsüberschrift mit Titel, Beschreibung und Link rechts"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Titel** | Pflichtfeld. |
+| **Beschreibung** | Eine Zeile unter dem Titel. |
+| **Linktext**, **Linkziel** | Ein Link rechts. Das Ziel ist eine App-Seite, die mit `/` beginnt, oder eine Webadresse, die mit `https://` beginnt. |
+| **Abstand oben** | S, M oder L. |
+| **Trennlinie** | Die dünne Linie unter der Überschrift. |
+
+Titel, Beschreibung und Linktext können übersetzt werden. Machen Sie sie schmaler, um eine Spalte zu überschreiben.
+
+### Schnellzugriffe {#quick-links}
+
+**Zeigt:** Die Seiten und Websites, die Benutzer am häufigsten brauchen, als zweispaltiges Raster aus Links mit je einem Titel und einer Zeile.
+
+**Nutzen, wenn:** Sie ein Home-Dashboard bauen, das Benutzer zu den Seiten schickt, die sie nutzen.
+
+**Verfügbar auf:** Jedes Dashboard außer Berichten.
+
+<Screenshot
+  page="visualize/widgets"
+  id="36-quick-links"
+  route="/dashboards/:id"
+  state="Quick links with six links in two columns"
+  alt="Das Widget Schnellzugriffe mit sechs Links in zwei Spalten"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Titel** | Wird über den Links gezeigt. |
+| **Links** | Bis zu zwölf, per Ziehen geordnet. Wählen Sie integrierte Links (Dokumentation, Things, Regeln, Dashboards, Events, API-Schlüssel, Benutzer und Gruppen, Support kontaktieren) oder fügen Sie einen eigenen Link hinzu. |
+| **Eigener Link** | Ein Titel, eine optionale Beschreibung und ein Ziel: eine App-Seite (`/…`), eine Webadresse (`https://…`) oder eine E-Mail-Adresse (`mailto:…`). |
+| **Auf Standard zurücksetzen** | Bringt den Standardsatz zurück. |
+| **Karte** | Hintergrund- und Rahmenfarben. |
+
+### Zuletzt angesehen {#recently-viewed}
+
+**Zeigt:** Was Sie zuletzt in diesem Tenant geöffnet haben: Things, Thing-Typen, Dashboards, Regeln und Gruppen.
+
+**Nutzen, wenn:** Benutzer täglich zu denselben wenigen Dingen zurückkehren.
+
+**Verfügbar auf:** Jedes Dashboard außer Berichten.
+
+<Screenshot
+  page="visualize/widgets"
+  id="37-recently-viewed"
+  route="/dashboards/:id"
+  state="Recently viewed list with five entries"
+  alt="Das Widget Zuletzt angesehen mit fünf Einträgen"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Titel** | Wird über der Liste gezeigt. |
+| **Anzeigen** | 5 oder 10 Einträge. |
+| **Karte** | Hintergrund- und Rahmenfarben. |
+
+Die Liste gehört Ihnen: Jeder sieht, was er selbst geöffnet hat. Sie behält Ihre letzten 20 und folgt Ihnen über Geräte hinweg.
+
+### Lernpfade {#journeys}
+
+**Zeigt:** Die geführten Touren, die Sie machen können, mit Dauer und Fortschritt. **Starten**, **Fortsetzen** oder **Wiederholen** öffnet das nächste Kapitel.
+
+**Nutzen, wenn:** Neue Benutzer die geführten Touren finden sollen.
+
+**Verfügbar auf:** Jedes Dashboard außer Berichten.
+
+<Screenshot
+  page="visualize/widgets"
+  id="38-journeys"
+  route="/dashboards/:id"
+  state="Journeys list with progress per journey"
+  alt="Das Widget Lernpfade mit Fortschritt je Lernpfad"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Titel** | Wird über der Liste gezeigt. |
+| **Abgeschlossene Lernpfade zeigen** | Aus blendet die abgeschlossenen aus. |
+| **Karte** | Hintergrund- und Rahmenfarben. |
+
+Jeder Betrachter sieht die Lernpfade, die seine Rolle angeboten bekommt, mit seinem eigenen Fortschritt.
+
+### Einrichtung {#setup-journey}
+
+**Zeigt:** Die ersten Schritte eines Tenants, anhand seiner Daten abgehakt: einen Thing-Typ anlegen, ein Thing hinzufügen, Daten empfangen, eine Regel anlegen, ein eigenes Dashboard bauen, jemanden einladen.
+
+**Nutzen, wenn:** Ein Tenant neu ist und die ersten Schritte auf Home sichtbar bleiben sollen.
+
+**Verfügbar auf:** Allgemeine Dashboards, Home und andere Smart-Dashboards. Nicht auf einem Dashboard zu einem Thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="39-setup-journey"
+  route="/dashboards/:id"
+  state="Setup journey with three done and three open steps"
+  alt="Das Widget Einrichtung mit drei erledigten und drei offenen Schritten"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Titel** | Wird über den Schritten gezeigt. |
+| **Erledigte Schritte zeigen** | Aus listet nur die offenen Schritte. |
+| **Karte** | Hintergrund- und Rahmenfarben. |
+
+Ein Schritt gilt als erledigt, sobald der Tenant hat, was er aufbaut, egal wie es entstand. Zeigt Home dieses Widget, entfällt die Karte **Erste Schritte**.
+
+### Neuigkeiten {#whats-new}
+
+**Zeigt:** Die neuesten Ankündigungen des Produkts. Neue Einträge tragen ein Badge **Neu**, **Als gelesen markieren** löscht es für Sie.
+
+**Nutzen, wenn:** Benutzer Produktneuigkeiten auf Home sehen sollen.
+
+**Verfügbar auf:** Allgemeine Dashboards, Home und andere Smart-Dashboards. Nicht auf einem Dashboard zu einem Thing.
+
+<Screenshot
+  page="visualize/widgets"
+  id="40-what-s-new"
+  route="/dashboards/:id"
+  state="What's new list with a New badge on the first entry"
+  alt="Das Widget Neuigkeiten mit einem Badge Neu am ersten Eintrag"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Titel** | Wird über der Liste gezeigt. |
+| **Einträge** | 3, 5 oder 10 Ankündigungen. |
+| **Karte** | Hintergrund- und Rahmenfarben. |
+
+Was Sie als gelesen markieren, gehört Ihnen. Die Ankündigungen sind in jedem Tenant gleich.
+
+### Karte {#map}
+
+**Zeigt:** Eine Karte mit Things und Geofences. Things mit Breiten- und Längengrad werden als Marker eingezeichnet.
+
+**Nutzen, wenn:** Sie Standorte neben den anderen Widgets haben möchten.
+
+**Verfügbar auf:** Jedes Dashboard. Auf einem Dashboard zu einem Thing listet die Auswahl es unter **Thing-Details**.
+
+<Screenshot
+  page="visualize/widgets"
+  id="41-map"
+  route="/dashboards/:id"
+  state="Map widget with six markers"
+  alt="Das Widget Karte mit sechs Markern"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **Darstellung** | Rahmenfarbe. |
+
+Wie Sie Geofences zeichnen und die ganze Karte nutzen, lesen Sie unter [Things auf einer Karte zeigen](./map.mdx).
+
+### VNC-Konsole {#vnc-console}
+
+**Zeigt:** Einen entfernten Bildschirm über VNC.
+
+**Nutzen, wenn:** Sie den eigenen Bildschirm einer Maschine vom Dashboard aus bedienen.
+
+**Verfügbar auf:** Jedes Dashboard. Wird nur angeboten, wenn VNC für Ihre Installation aktiviert ist.
+
+<Screenshot
+  page="visualize/widgets"
+  id="42-vnc-console"
+  route="/dashboards/:id"
+  state="VNC Console showing a remote desktop with the toolbar"
+  alt="Das Widget VNC-Konsole mit einem entfernten Desktop und der Symbolleiste"
+/>
+
+| Einstellung | Was sie bewirkt |
+| --- | --- |
+| **VNC-Server** | Der Server, der gezeigt wird. Pflichtfeld. |
+| **Qualität überschreiben** | **Server-Standard**, **Niedrig**, **Ausgewogen** oder **Hoch**. |
+| **Beim Laden verbinden** | Verbinden, wenn das Dashboard öffnet. |
+| **Symbolleiste anzeigen** | Die Verbindungs-Symbolleiste zeigen. |
+
+Ob Sie in den Bildschirm tippen können, legt der VNC-Server fest, nicht das Widget. VNC-Server verwalten Sie unter **Einstellungen › Konfiguration › VNC-Server**.
+
+## Statistiken {#statistics}
+
+Die Statistikkarten (Event-Statistiken, **Health-Score**, **Nachrichten**, Verbindungsstatistiken und Statistiken zu Daten und Zugriff) sind ein Widget-Typ, **Statistik**, mit einer Vorgabe je Karte. Sie brauchen keine Dateneinrichtung: Wählen Sie die Karte, und sie funktioniert. Nachrichtenzahlen stammen aus Plattformmetriken, die gebündelt eintreffen und bis zu 5 Minuten nachlaufen können. Ein Betrachter, dessen Rolle keine Metriken abfragen darf, sieht statt der Zahlen einen Hinweis.

@@ -1,0 +1,78 @@
+---
+title: Eine externe Datenquelle anbinden
+description: Laden Sie Datensätze aus einer Datenbank, einer Web-API, SAP oder einer Datei mit einem Konnektor und einem Mapping in den Knowledge Graph.
+type: how-to
+app:
+  routes: ["/knowledge/connectors", "/knowledge/mappings", "/knowledge/credentials"]
+  tour: setup-knowledge
+translated_from: 679f3a4
+---
+
+import TourLink from "@site/src/components/TourLink";
+import Screenshot from "@site/src/components/Screenshot";
+
+Laden Sie Zeilen aus einem anderen System als Datensätze Ihrer eigenen Typen in den Graphen. Ein Konnektor (oder ein Datei-Upload) legt Zeilen in einer Staging-Quelle ab, und ein Mapping macht daraus Datensätze. Die Felder jedes Konnektors stehen unter [Konnektor-Typen](./connector-types.mdx).
+
+<TourLink id="setup-starting-point" />
+
+## Bevor Sie beginnen {#before-you-start}
+
+- Sie brauchen die Berechtigung, Knowledge zu bearbeiten. Ein Mapping speichern und eine Transformation ausführen braucht die Rolle Modeler oder Admin. Zugangsdaten anlegen braucht den Tenant-Admin.
+- Der Datensatztyp muss existieren. Legen Sie ihn unter **Einstellungen › Knowledge-Einrichtung › Datenmodell** an oder installieren Sie ein Paket im Tab **Bibliothek**. Siehe [Typen und Traits](./types-and-traits.mdx).
+- Halten Sie das Geheimnis bereit, wenn eine API oder Datenbank eines braucht.
+
+## Zugangsdaten anlegen (optional) {#create-a-credential-optional}
+
+Tun Sie das, wenn mehrere Konnektoren ein Geheimnis teilen oder das Geheimnis nicht in einem Konnektor liegen soll.
+
+1. Öffnen Sie **Einstellungen › Knowledge-Einrichtung › Quellen › Zugangsdaten** und wählen Sie **Erstellen**.
+2. Geben Sie einen **Name** ein. Er lässt sich später nicht ändern.
+3. Wählen Sie **Benutzer und Passwort**, **Bearer-Token**, **API-Schlüssel** oder **OAuth-2-Client-Credentials** und geben Sie das Geheimnis ein.
+4. Listen Sie unter **Erlaubte Hosts** einen Host pro Zeile auf. Die Zugangsdaten werden nur an diese Hosts gesendet. `*.example.com` deckt Subdomains ab.
+5. Speichern Sie.
+
+Geheimnisse werden verschlüsselt gespeichert und nie wieder angezeigt. **Rotieren** ersetzt das Geheimnis für jeden Konnektor, der die Zugangsdaten verwendet, und diese Konnektoren starten neu.
+
+## Einen Konnektor anlegen {#create-a-connector}
+
+1. Öffnen Sie den Tab **Connectors** und wählen Sie **Erstellen**.
+2. Geben Sie einen **Name** ein (Buchstaben, Zahlen, Bindestriche, Unterstriche) und wählen Sie den **Typ**. Beide sind danach fest.
+3. Geben Sie die **Staging-Quelle** ein: Kleinbuchstaben, Zahlen und Bindestriche, zum Beispiel `sap-pm`.
+4. Füllen Sie die Verbindungsfelder aus. Wählen Sie bei einer Web-API **Ausprobieren**, um die erste Seite zu holen, und dann **Erkanntes übernehmen**. Wählen Sie bei OData **Dienst lesen** und dann das **Entity Set**, die **Zu lesende Felder** und das **Änderungsfeld**.
+5. Speichern Sie.
+
+<Screenshot
+  page="knowledge/outside-source"
+  id="01-connector"
+  route="/knowledge/connectors"
+  state="Create connector dialog, type OData, entity set picked after Read service"
+  alt="Das Konnektor-Formular für einen OData-Dienst"
+/>
+
+Um eine Datei einmalig zu laden, nutzen Sie stattdessen **Daten hochladen** auf dem Mapping-Bildschirm. Er akzeptiert `.csv`, `.json`, `.jsonl`, `.ndjson` und `.parquet` bis 64 MB. JSON muss ein Objekt pro Zeile enthalten.
+
+## Die Zeilen einem Typ zuordnen {#map-the-rows-to-a-type}
+
+1. Öffnen Sie den Tab **Mappings** und wählen Sie **Neues Mapping**.
+2. Wählen Sie die **Quelle** und den Ziel-**Typ**. Der Editor zeigt eine Vorschau mit Beispielzeilen, laden Sie also welche hoch, wenn die Quelle noch keine hat.
+3. Legen Sie die **Quell-ID** fest: das Feld, das jede Zeile identifiziert. Eine Zeile, die erneut kommt, aktualisiert dann ihren Datensatz.
+4. Binden Sie jedes Zielfeld an ein **Quellfeld**, eine **Konstante** oder eine **ƒx-Transform**.
+5. Um jede Zeile mit einem vorhandenen Datensatz zu verknüpfen, fügen Sie eine **Beziehung** hinzu. Sie gleicht per **Alias** ab (eine externe ID wie eine SAP-Equipmentnummer), per **Abgleichsfeld** oder per **Kennung** des Zieltyps. Markieren Sie sie als **Optional**, wenn Zeilen ohne Treffer trotzdem ankommen sollen.
+6. Wählen Sie das **Schreibverhalten**: **Erstellen** schlägt fehl, wenn der Datensatz existiert; **Upsert** und **Ersetzen** überschreiben den ganzen Datensatz; **Zusammenführen** aktualisiert nur zugeordnete Felder.
+7. Legen Sie den **Transform-Trigger** fest: **Manuell**, **Bei neuem Batch** oder **Geplant**.
+8. Wählen Sie **Mapping speichern** und führen Sie dann die Transformation aus. Sie meldet, wie viele Zeilen geschrieben wurden und wie viele zu prüfen sind.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Der Konnektor zeigt **Läuft** oder **Abgeschlossen**. Öffnen Sie nach der Transformation **Einstellungen › Knowledge-Einrichtung › Datenqualität › Datenaufnahme**, wählen Sie Ihre Quelle und prüfen Sie, dass der Batch **Verarbeitet** ist. Suchen Sie den Datensatz in **Erkunden**.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Der Konnektor zeigt Fehlgeschlagen oder Wird wiederholt**: Öffnen Sie ihn für **Schlägt seit … fehl** und den Grund. Prüfen Sie die URL, die Zugangsdaten und deren **Erlaubte Hosts**.
+- **Der Datenbank-Konnektor meldet „driver not available“**: Nur PostgreSQL wird unterstützt. Wählen Sie es unter **Treiber**.
+- **Der HTTP-Konnektor liest nur die erste Seite**: Setzen Sie die Paging-Felder. **Ausprobieren** zeigt, was erkannt wurde.
+- **Zeilen landen unter Zu prüfen**: Ein Alias wurde nicht aufgelöst, eine Quell-ID fehlt, oder die Validierung ist fehlgeschlagen. Korrigieren Sie das Mapping oder die Daten und führen Sie die Transformation erneut aus. Siehe [Befunde zur Datenqualität beheben](./data-health.mdx).
+
+## Siehe auch {#related}
+
+- [Konnektor-Typen](./connector-types.mdx) · [Der Knowledge Graph](./knowledge-graph.mdx)

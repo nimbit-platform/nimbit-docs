@@ -1,9 +1,1 @@
-{
-    "label": "Changelog",
-    "position": 99,
-    "link": {
-      "type": "generated-index",
-      "description": "Alle Änderungen und Updates."
-    }
-  }
-  
+{"label":"Changelog","position":99,"link":{"type":"doc","id":"changelog/index"}}

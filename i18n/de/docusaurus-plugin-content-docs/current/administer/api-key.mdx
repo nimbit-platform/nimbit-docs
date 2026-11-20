@@ -1,0 +1,86 @@
+---
+title: Einen API-Schlüssel erstellen
+description: Erstellen Sie einen API-Schlüssel für sich oder ein Dienstkonto, kopieren Sie ihn einmalig und ersetzen oder widerrufen Sie ihn.
+type: how-to
+sidebar_position: 5
+app:
+  routes: ["/administration/api-keys"]
+translated_from: dd3e5a5
+---
+
+Geben Sie einem Skript, einer Integration oder einem KI-Assistenten einen eigenen Schlüssel, statt ein Passwort zu teilen. Ein Schlüssel ist auf seine Scopes begrenzt, läuft ab und hat nie mehr Rechte als sein Eigentümer. Wie Sie einen Schlüssel in Anfragen verwenden, lesen Sie unter [Authentifizierung](../api/authentication.mdx).
+
+## Bevor Sie beginnen {#before-you-start}
+
+- Sie müssen API-Schlüssel erstellen dürfen. **Administrator** und **Modellierer** dürfen das; Modellierer nur für persönliche Schlüssel.
+- Für einen Schlüssel, der Ihre eigene Mitgliedschaft überdauert, erstellen Sie zuerst ein Dienstkonto (siehe unten). Nur Administrator.
+- Fehlt **Ich** unter **Handelt als**, hat Ihr Tenant persönliche Schlüssel abgeschaltet. Bitten Sie einen Administrator um einen Schlüssel für ein Dienstkonto.
+
+## Schritte {#steps}
+
+1. Öffnen Sie **Administration › API-Schlüssel** und wählen Sie **Schlüssel erstellen**.
+2. Geben Sie einen **Name** ein, zum Beispiel `SAP PM sync`.
+3. Wählen Sie unter **Handelt als** **Ich** oder ein Dienstkonto.
+4. Optional: Wählen Sie unter **Vorlage** **Nur lesen**, **KI-Assistent** oder **ERP- oder MES-Integration**.
+5. Setzen Sie unter **Scopes** Häkchen bei dem, was der Schlüssel tun darf. Mit **Sensibel** markierte Scopes gibt es nur für Dienstkonten, wo die Schlüsselrichtlinie des Tenants es erlaubt.
+6. Wählen Sie unter **Läuft ab** 30, 90 oder 365 Tage. **Nie** gibt es nur für Schlüssel von Dienstkonten, und nur, wenn die Richtlinie kein Maximum setzt.
+7. Optional: Geben Sie unter **Erlaubte Adressen** Netze in CIDR-Schreibweise ein, eines pro Zeile. Leer erlaubt jede Adresse.
+8. Wählen Sie **Schlüssel erstellen**.
+
+:::warning Kopieren Sie den Schlüssel jetzt
+**Ihr neuer Schlüssel** wird einmal angezeigt und lässt sich nicht erneut lesen. Speichern Sie ihn in einem Secret-Manager und wählen Sie dann **Ich habe den Schlüssel kopiert**.
+:::
+
+## Ein Dienstkonto erstellen {#create-a-service-account}
+
+Ein Dienstkonto ist ein Tenant-Mitglied für Integrationen. Es meldet sich nie an und handelt nur über seine Schlüssel.
+
+1. Öffnen Sie den Tab **Dienstkonten** und wählen Sie **Dienstkonto erstellen**.
+2. Geben Sie einen Namen ein und wählen Sie seine Rollen. Sie können nur Rollen wählen, die Sie selbst haben.
+3. Speichern Sie und erstellen Sie dann Schlüssel mit **Handelt als** auf diesem Konto.
+
+Ändern Sie seine Rollen, erhalten seine Schlüssel sie mit ihrem nächsten Token. Löschen Sie es, werden seine aktiven Schlüssel widerrufen.
+
+## Einen Schlüssel ersetzen oder widerrufen {#rotate-or-revoke-a-key}
+
+| Aktion | Wirkung |
+| --- | --- |
+| **Schlüssel ersetzen** | Erstellt einen neuen Schlüssel mit denselben Scopes. Sie wählen, wann der alte endet: sofort, nach 1 Stunde, nach 1 Tag oder nach 7 Tagen. Geben Sie Ihren Clients zuerst den neuen Schlüssel. |
+| **Widerrufen** | Beendet den Schlüssel. Clients, die ihn verwenden, stoppen innerhalb von fünf Minuten. Er lässt sich nicht wiederverwenden. |
+| **Bearbeiten** | Ändert den Namen und die erlaubten Netze. Scopes und Ablauf bleiben. |
+| **Verlauf** | Zeigt Änderungen und abgelehnte Nutzungen (ein Jahr aufbewahrt) und die tägliche Nutzung (90 Tage). |
+
+## Die Schlüsselrichtlinie festlegen {#set-the-key-policy}
+
+Administratoren legen die Regeln für den ganzen Tenant mit **Richtlinie bearbeiten** fest.
+
+| Einstellung | Wirkung |
+| --- | --- |
+| **Mitglieder dürfen persönliche Schlüssel erstellen** | Ist sie aus, lassen sich nur Schlüssel für Dienstkonten erstellen. |
+| **Maximale Laufzeit in Tagen** | Längster erlaubter Ablauf. Leer erlaubt Schlüssel für Dienstkonten, die nie ablaufen. Persönliche Schlüssel laufen immer innerhalb eines Jahres ab. |
+| **Schlüssel beenden, die so viele Tage ungenutzt sind** | So lange ungenutzte Schlüssel funktionieren nicht mehr. |
+| **Dienstkonten dürfen sensible Scopes haben** | Erlaubt mit **Sensibel** markierte Scopes bei Schlüsseln von Dienstkonten. |
+
+## Prüfen, ob es funktioniert hat {#check-that-it-worked}
+
+Der Schlüssel erscheint mit seinem Ablauf unter **Meine Schlüssel** (oder **Alle Schlüssel**, wenn Sie jeden Schlüssel lesen dürfen). Um ihn zu testen, setzen Sie ein Häkchen beim Scope **Read the platform** und lesen Sie die Identität, als die der Schlüssel handelt:
+
+```bash
+curl "https://<host>/ocb/rest/v2/users/me" \
+  -H "Authorization: Bearer <api-key>"
+```
+
+Eine `200`-Antwort mit einem Benutzerobjekt bedeutet, dass der Schlüssel gültig ist und OCB erreicht. Ein `401` bedeutet, dass er fehlerhaft, abgelaufen oder widerrufen ist oder keinen Scope für OCB hat; siehe [Fehler und Limits](../api/errors-and-limits.mdx#api-key-exchange-errors). Nach dem ersten Aufruf zeigt **Zuletzt verwendet** ein Datum, und **Verlauf** listet die Nutzung.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Der Schlüssel wird abgelehnt**: Öffnen Sie **Verlauf**. Ereignisse **Nutzung abgelehnt** nennen den Grund: abgelaufen, widerrufen, zu lange ungenutzt, außerhalb seiner erlaubten Adressen, oder die Richtlinie erlaubt ihn nicht mehr.
+- **Der Schlüssel zeigt Gestoppt: zu lange ungenutzt**: Die Schlüsselrichtlinie des Tenants stoppt ungenutzte Schlüssel. Erstellen Sie einen neuen Schlüssel und fragen Sie einen Administrator nach **Schlüssel beenden, die so viele Tage ungenutzt sind**.
+- **Für Läuft ab sind nur kürzere Zeiten wählbar**: Die Richtlinie setzt eine **Maximale Laufzeit in Tagen**. Administratoren ändern sie mit **Richtlinie bearbeiten**.
+- **Ein Scope ist gesperrt**: Er verlangt Berechtigungen, die Ihnen oder dem Dienstkonto fehlen, oder er ist eingestellt.
+
+## Verwandte Seiten {#related}
+
+- [Authentifizierung](../api/authentication.mdx)
+- [Rollen und Berechtigungen](./roles.mdx)
+- [Tenant-Einstellungen](./tenant-settings.mdx)

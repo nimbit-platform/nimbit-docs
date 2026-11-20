@@ -1,0 +1,140 @@
+---
+title: "Quickstart: vom simulierten Gerät zum Alarm"
+sidebar_label: Quickstart
+sidebar_position: 2
+description: Einen Raumsensor modellieren, simulieren, auf einem Dashboard darstellen und ein Event auslösen, wenn es zu warm wird. Etwa 15 Minuten, ohne Hardware.
+type: tutorial
+app:
+  routes: ["/onboarding/thing-types", "/onboarding/things", "/dashboards", "/automation/rule-designer"]
+  tour: getting-started
+translated_from: 679f3a4
+---
+
+import TourLink from "@site/src/components/TourLink";
+import Screenshot from "@site/src/components/Screenshot";
+
+In etwa 15 Minuten haben Sie einen simulierten Raumsensor, der Temperaturen sendet, ein Dashboard mit einem Liniendiagramm dieser Werte und eine Regel, die ein Event erzeugt, sobald die Temperatur über 28 °C steigt. Sie brauchen keine Hardware.
+
+<TourLink id="getting-started-thing-type" />
+
+:::info Was Sie brauchen
+- Ein IoT-Breeze-Konto und einen Tenant. Noch keinen Tenant? Schreiben Sie an [info@nimbit.de](mailto:info@nimbit.de).
+- Eine Rolle, die Thing-Typen, Things, Dashboards, Event-Typen und Regeln anlegen darf, zum Beispiel die Tenant-Admin-Rolle.
+- Einen Desktop-Browser. Der Regel-Canvas öffnet sich nicht auf dem Smartphone.
+:::
+
+## 1. Einen Thing-Typ anlegen und veröffentlichen {#1-create-a-thing-type-and-publish-it}
+
+Ein Thing-Typ beschreibt eine Art von Gerät: die Werte, die es sendet. Geräte verwenden nur seine veröffentlichte Version.
+
+1. Öffnen Sie **Einstellungen › Onboarding › Thing Typen** und wählen Sie **Thing Typ erstellen**.
+2. Geben Sie als **Anzeigename** `Room sensor` ein. **Name** wird zu `room_sensor` ausgefüllt. Lassen Sie **Konnektor** auf **Nimbit**.
+3. Speichern Sie. Die Seite des Thing-Typs öffnet sich.
+4. Wählen Sie im Tab **Schema** die Option **Telemetrie hinzufügen**. Geben Sie als **Anzeigename** `Temperature` ein, als **Name** `temperature`, als **Typ** **Numerisch**, als **Maßeinheit** `°C`, als **Mindestwert** `15` und als **Maximaler Wert** `35`. Speichern Sie den Messwert.
+5. Wählen Sie im Kopfbereich **Veröffentlichen** und bestätigen Sie.
+
+Der Kopfbereich wechselt vom Entwurf zu **Veröffentlicht · v1**, und der Tab **Schema** listet `temperature`.
+
+<Screenshot
+  page="get-started/quickstart"
+  id="01-thing-type-schema"
+  route="/onboarding/thing-types/:id"
+  state="Schema tab of Room sensor with the temperature measure, draft state, Publish button visible in the header"
+  alt="Tab Schema des Thing-Typs Room sensor mit dem Messwert temperature und der Schaltfläche Veröffentlichen"
+/>
+
+## 2. Ein Thing anlegen {#2-create-a-thing}
+
+Ein Thing ist ein einzelnes Gerät dieses Typs.
+
+1. Öffnen Sie **Einstellungen › Onboarding › Things** und wählen Sie **Thing erstellen**.
+2. Geben Sie als **Name** `Meeting room 1` ein.
+3. Wählen Sie neben **Alternative Thing -ID** die Option **Generieren**.
+4. Wählen Sie als **Thing Typ** `Room sensor`. **Organisation** und **Gruppe** sind mit der Standardorganisation Ihres Tenants vorbelegt. Sind sie leer, wählen Sie je einen Eintrag.
+5. Speichern Sie.
+
+Die Seite des Things öffnet sich. Es hat noch keine Messwerte.
+
+## 3. Das Gerät simulieren {#3-simulate-the-device}
+
+1. Wählen Sie auf der Seite des Things im Kopfbereich **Weitere Aktionen** und dann **Gerät simulieren…**.
+2. Lassen Sie **Laufzeit** auf 15 Minuten und **Alle** auf 10 Sekunden.
+3. Setzen Sie für `temperature` den **Verlauf** auf **Zufällig**. Der Bereich kommt aus dem Messwert: 15 bis 35.
+4. Wählen Sie **Simulation starten**.
+
+Oben auf der Seite des Things erscheint ein Banner **Simulation läuft**. Nach wenigen Sekunden zeigen die **Live-Werte** in der **Übersicht** eine Temperatur.
+
+<Screenshot
+  page="get-started/quickstart"
+  id="02-simulate"
+  route="/onboarding/things/:id"
+  state="Simulate tab of the Send data dialog: Run for 15 min, Every 10 s, temperature on Random, min 15, max 35"
+  alt="Das Simulationsformular für das Thing Meeting room 1"
+/>
+
+## 4. Ein Dashboard mit einem Liniendiagramm bauen {#4-build-a-dashboard-with-a-line-chart}
+
+1. Öffnen Sie **Überwachung › Dashboards** und wählen Sie **Neues Dashboard**.
+2. Beantworten Sie **Was soll dieses Dashboard zeigen?** mit **Für ein Thing**. Suchen Sie nach `Meeting room 1`, wählen Sie es aus und wählen Sie **Weiter**.
+3. Geben Sie als **Dashboard Name** `Meeting room 1` ein und wählen Sie **Speichern**. Das leere Dashboard öffnet sich.
+4. Wählen Sie **Widget hinzufügen**. Wählen Sie in der Gruppe **Diagramme** das Widget **Diagramm** und dann das Layout **Linie**.
+5. Lassen Sie **Dem Dashboard folgen** aktiv, wählen Sie den Messwert `temperature` und wählen Sie **Zum Dashboard hinzufügen**.
+6. Wählen Sie **Speichern**.
+
+Das Dashboard zeigt eine Linie, die mit jedem simulierten Messwert wächst.
+
+<Screenshot
+  page="get-started/quickstart"
+  id="03-dashboard"
+  route="/dashboards/:id"
+  state="Dashboard Meeting room 1 with one line chart of temperature, several minutes of simulated data"
+  alt="Ein Dashboard mit einem Liniendiagramm der simulierten Temperatur"
+/>
+
+## 5. Eine Regel anlegen, die ein Event auslöst {#5-create-a-rule-that-raises-an-event}
+
+Eine Regel kann nur ein Event eines Event-Typs auslösen, den Sie auswählen. Legen Sie deshalb zuerst den Typ an.
+
+1. Öffnen Sie **Einstellungen › Konfiguration › Event Typen** und wählen Sie **Event Typ erstellen**.
+2. Geben Sie als **Name** `Room too warm` ein, wählen Sie eine **Gruppe**, der Sie angehören, und lassen Sie **Anzeigetyp** auf **Standard**. Speichern Sie.
+3. Öffnen Sie **Einstellungen › Automatisierung › Regel-Designer** und wählen Sie **Regel erstellen**. Geben Sie als **Name** `Room too warm` ein und speichern Sie.
+4. Wählen Sie den Namen der Regel, um sie zu öffnen. Wählen Sie im Knoten **Start** die Option **Thing-Typ** und dann `Room sensor`.
+5. Wählen Sie **+** und fügen Sie eine **Bedingung** hinzu. Setzen Sie im Tab **Einfach** **Telemetrie** auf `temperature`, **Operator** auf **Größer als** und den Wert auf `28`.
+6. Wählen Sie **+** und fügen Sie einen Trigger **Umschalten** mit der **Richtung** **Innerhalb** hinzu. Die Regel feuert, wenn der Raum zu warm wird, nicht bei jedem Messwert über 28.
+7. Wählen Sie **+** und fügen Sie eine Aktion **Ereignis** hinzu. Geben Sie einen **Name** ein, als **Titel** `Room too warm`, als **Event Typ** `Room too warm` und als **Schweregrad** **Warnung**.
+8. Prüfen Sie, dass das Gültigkeitssymbol neben dem Regelnamen grün ist. Wählen Sie **Veröffentlichen** und dann **Aktivieren**.
+
+Die Regel steht in der Liste als **Aktiv**.
+
+<Screenshot
+  page="get-started/quickstart"
+  id="04-rule"
+  route="/automation/rule-designer/:id"
+  state="Finished rule Room too warm: Start (Room sensor), Condition temperature greater than 28, Toggle In, Event action; rule Active"
+  alt="Die fertige Regel mit den Knoten Start, Bedingung, Umschalten und Ereignis"
+/>
+
+## 6. Das Event ansehen {#6-see-the-event}
+
+Öffnen Sie **Überwachung › Events**. Der Simulator sendet Zufallswerte zwischen 15 und 35, deshalb kommt meist innerhalb einer Minute ein Wert über 28. Ein Event **Warnung** mit dem Titel `Room too warm` erscheint für `Meeting room 1`. Wählen Sie es aus, um die Werte zu sehen, die es ausgelöst haben.
+
+<Screenshot
+  page="get-started/quickstart"
+  id="05-event"
+  route="/monitor/events"
+  state="Events list with a Warning event titled Room too warm for Meeting room 1"
+  alt="Die Liste der Events mit dem Event Room too warm"
+/>
+
+Erscheint nach fünf Minuten nichts, prüfen Sie, ob die Simulation noch läuft (das Banner zeigt **Simulation läuft**) und ob die Regel **Aktiv** ist. Sind die 15 Minuten abgelaufen, wählen Sie erneut **Simulation starten**.
+
+## Was Sie gebaut haben {#what-you-built}
+
+Sie haben ein Gerät als Thing-Typ modelliert, ein Thing registriert, es mit simulierten Daten versorgt, diese in einem Diagramm dargestellt und eine Regel ergänzt, die ein Event erzeugt. Echte Geräte gehen denselben Weg: Nur die Datenquelle ändert sich.
+
+## Weiter {#next}
+
+- [Ein echtes Gerät verbinden](./real-hardware.mdx), mit demselben Thing.
+- [Alarmieren, wenn ein Wert eine Grenze überschreitet](../automate/threshold-alert.mdx), per E-Mail statt als Event.
+- [Alarme an Teams, Slack oder einen Webhook senden](../watch/alert-channels.mdx).
+- [Grundbegriffe](./key-concepts.mdx) erklärt jeden Teil, den Sie verwendet haben.

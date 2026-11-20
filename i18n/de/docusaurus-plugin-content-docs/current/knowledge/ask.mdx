@@ -1,0 +1,86 @@
+---
+title: Eine Frage zu Ihren Daten stellen
+description: Fragen Sie Nimble nach Datensätzen, Messwerten und Dokumenten, prüfen Sie die Quellen der Antwort und bewerten Sie sie.
+type: how-to
+app:
+  routes: ["/knowledge/chat"]
+  tour: explore-and-ask
+translated_from: bfc5860
+---
+
+import TourLink from "@site/src/components/TourLink";
+import Screenshot from "@site/src/components/Screenshot";
+
+Fragen Sie in einfachen Worten, lesen Sie die Antwort und prüfen Sie die Quellen darunter. Was Nimble liest und wie es eine Antwort prüft, steht unter [Wie Ask Nimble antwortet](./ask-nimble-answers.mdx).
+
+<TourLink id="explore-find-your-way" />
+
+## Bevor Sie beginnen {#before-you-start}
+
+- **Nimble fragen und Knowledge** muss für Ihren Tenant eingeschaltet sein, und Ihre Rolle braucht die Berechtigung, Knowledge zu lesen und auszuführen. Siehe [Knowledge und KI](./index.mdx).
+- Nimble findet nur, was der Graph enthält. Für Orte siehe [Standorte und Gebäude abbilden](./map-sites.mdx).
+
+## Fragen {#ask}
+
+1. Öffnen Sie Ask Nimble. Drücken Sie auf einer beliebigen Seite Strg+I (⌘+I auf dem Mac), um es neben der Seite zu öffnen, oder öffnen Sie **Knowledge › Nimble fragen** für die Vollseite. Das Tastenkürzel funktioniert nicht, während Sie in ein Textfeld tippen.
+2. Tippen Sie eine Frage in **Fragen Sie zu Ihrem Graphen …** oder wählen Sie eine der **Vorgeschlagenen Fragen**.
+3. Beobachten Sie die Schrittzeile, zum Beispiel **Liest die Hierarchie**. Öffnen Sie sie für Details.
+4. Um sich auf einen Datensatz oder Ort zu konzentrieren, wählen Sie **Kontext hinzufügen** und wählen Sie ihn aus. Nimble zeigt **Frage zu** diesem Datensatz. Bei einem Datensatz an anderer Stelle in der App tut **Dazu fragen** dasselbe.
+
+Beispiele:
+
+| Thema | Frage |
+| --- | --- |
+| Orte | „Was ist in Hall 2?“ „Wo ist Pump 7?“ |
+| Anzahlen und Status | „Wie viele Things gibt es nach Status?“ „Welche Things sind offline?“ |
+| Messwerte | „Was sind die letzten Werte von Pump 7?“ „Wie lief Pump 7 in den letzten 7 Tagen?“ |
+| Ursachen | „Warum ist Pump 7 offline?“ |
+| Verknüpfungen | „Womit ist Pump 7 verknüpft?“ |
+| Dokumente | „Welche Dokumente gibt es zu Pump 7?“ „Was steht im Handbuch zum Dichtungsintervall?“ |
+| Wartung | „Welche Wartungsaufträge sind in Hall 2 offen?“ |
+
+Ist eine Frage zu weit gefasst oder schlägt sie fehl, nennen Sie einen Ort oder einen Typ: „Welche `Pump`-Things in Hall 2 sind offline?“
+
+<Screenshot
+  page="knowledge/ask"
+  id="01-answer"
+  route="/knowledge/chat"
+  state="Answer to 'Which things in Hall 2 are offline?' with a rows table, numbered sources and the steps line"
+  alt="Eine Antwort mit einer Liste von Offline-Things und nummerierten Quellenmarkern"
+/>
+
+## Die Antwort und ihre Quellen lesen {#read-the-answer-and-its-sources}
+
+1. Lesen Sie den Text. Namen von Datensätzen sind Links, die Sie öffnen können.
+2. Schauen Sie unter den Text. Listen erscheinen als **Zeilen**, mit Sortierung und Seitenwechsel. **Alle in Explore ansehen** öffnet die ganze Liste, **CSV exportieren** speichert sie. Messwerte erscheinen als Diagramme mit einem änderbaren Zeitraum. **Was sich verändert hat** zeigt Signale, die sich in einem Zeitfenster geändert haben.
+3. Ordnen Sie jedes `[n]` einer Quelle unter der Antwort zu: **Graph** (ein Datensatz), **Live-Wert** (ein Messwert und sein Zeitpunkt) oder **Dokument** (ein Abschnitt; öffnen Sie es und wählen Sie **Auf Seite öffnen**).
+4. Öffnen Sie **So hat Nimble geantwortet** für die Schritte und **Details** für das Modell, die Anzahl der Modellaufrufe und die Run-ID.
+
+Jeder Datensatz bietet außerdem **Datensatz öffnen**, **Im Graph öffnen**, **Dazu fragen** und **Als Kontext verwenden**.
+
+## Eingrenzen, was Nimble liest {#narrow-what-nimble-reads}
+
+Über dem Fragefeld bietet die Leiste **Liest** die Schalter **Einträge**, **Messwerte** und **Dokumente**. Schalten Sie eine aus, um diese Quelle bei der nächsten Frage auszuschließen. Haben Sie Kontext hinzugefügt, legt eine Auswahl neben **Dokumente** (**Selbst**, **Geerbt**, **Teilbaum**) fest, welche Dokumente rund um diesen Datensatz gelesen werden.
+
+Um ein Modell für den Chat zu wählen, nutzen Sie das Modellmenü in der Fußzeile des Felds. Standard ist **Automatisch (Standard)**. Siehe [Das KI-Modell wählen](./ai-model.mdx).
+
+## Bewerten und nachfragen {#rate-it-and-follow-up}
+
+- Wählen Sie **Hilfreich** oder **Nicht hilfreich** (oder **Richtig** oder **Falsch**). Wählen Sie bei einer falschen Antwort **Falsche Daten**, **Falscher Ansatz**, **Unvollständig** oder **Unklar** und fügen Sie eine Notiz hinzu.
+- Wählen Sie einen Vorschlag unter **Als Nächstes fragen** oder tippen Sie eine Folgefrage. „Und letzte Woche?“ behält den Kontext.
+- **Unterhaltungen** listet frühere Chats unter **Heute**, **Gestern** und **Letzte 7 Tage**. Sie können eine suchen oder löschen. **Neuer Chat** beginnt neu.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Die Antwort nennt Quellen, die Zeile **Details** nennt das Modell (oder null Modellaufrufe bei einer Zählung), und die Fußzeile lautet **Nimble liest nur, was Sie öffnen dürfen**.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Für diese Frage ist ein KI-Modell nötig**: Nur Zählungen, Listen und Nachschlagen laufen ohne eines. Ein Tenant-Admin kann eines registrieren: siehe [Das KI-Modell wählen](./ai-model.mdx).
+- **Ich habe keine passenden Daten gefunden.** oder **Das liegt außerhalb dessen, was ich aus Ihrem Graphen beantworten kann.**: Der Graph enthält es nicht, oder es ist nicht verknüpft. Ergänzen Sie die Daten ([Eine externe Datenquelle anbinden](./outside-source.mdx)) oder prüfen Sie die [Datenqualität](./data-health.mdx).
+- **Zurückgehalten**: Eine Prüfung hat die Antwort abgelehnt, und die Meldung nennt den Grund. Fragen Sie noch einmal genauer.
+- **Die Antwort ist hier nicht angekommen**: Ihre Anmeldung ist abgelaufen, während Nimble arbeitete. Laden Sie die Unterhaltung neu. Die Antwort ist gespeichert.
+
+## Siehe auch {#related}
+
+- [Wie Ask Nimble antwortet](./ask-nimble-answers.mdx) · [Der Knowledge Graph](./knowledge-graph.mdx)

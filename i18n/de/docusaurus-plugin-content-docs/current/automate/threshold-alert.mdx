@@ -1,0 +1,59 @@
+---
+title: Alarmieren, wenn ein Wert eine Grenze überschreitet
+sidebar_position: 3
+description: Bauen Sie eine Regel, die Sie einmal benachrichtigt, wenn die Temperatur eines Things über 25 °C steigt.
+type: how-to
+app:
+  routes: ["/automation/rule-designer", "/automation/rule-designer/:id"]
+  primary: true
+translated_from: 3041c36
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Bauen Sie eine Regel, die Ihnen jedes Mal eine In-App-Benachrichtigung sendet, wenn die `temperature` eines Things über 25 °C steigt. Wie Regeln, Aktionen und Events zusammenhängen, lesen Sie unter [Regeln, Aktionen und Berichte](./rules-actions-reports.mdx).
+
+## Bevor Sie beginnen {#before-you-start}
+
+- Eine Rolle, die Regeln erstellen darf, und ein Desktop-Browser. Der Regel-Canvas öffnet sich nicht auf dem Smartphone.
+- Ein Thing-Typ mit einem numerischen Messwert `temperature` und mindestens ein Thing, das ihn sendet. Diese Seite verwendet einen Thing-Typ namens `Room sensor`. Siehe [Einen Thing-Typ anlegen](../model/create-thing-type.mdx).
+
+## Schritte {#steps}
+
+1. Öffnen Sie **Einstellungen › Automatisierung › Regel-Designer** und wählen Sie **Regel erstellen**.
+2. Geben Sie als **Name** `Room too warm` ein und speichern Sie. Der Name muss in Ihrem Tenant eindeutig sein. Die Regel erscheint in der Liste als **Inaktiv**.
+3. Wählen Sie den Namen der Regel, um sie zu öffnen. Der Canvas öffnet sich im Bearbeitungsmodus mit einem Knoten **Start**.
+4. Wählen Sie bei **Start** die Option **Thing-Typ** und dann `Room sensor`.
+5. Wählen Sie **+** und fügen Sie eine **Bedingung** hinzu. Setzen Sie im Tab **Einfach** **Telemetrie** auf `temperature`, **Operator** auf **Größer als** und das Wertfeld (beschriftet mit **Bedingung**) auf `25`.
+6. Wählen Sie **+** und fügen Sie einen Auslöser **Umschalten** hinzu. Setzen Sie **Richtung** auf **In**. Die Aktionen laufen, wenn der Raum zu warm wird, nicht bei jedem Messwert über 25.
+7. Wählen Sie **+** und fügen Sie eine Aktion **Benachrichtigung** hinzu. Geben Sie einen **Betreff** wie `Room too warm` ein, setzen Sie **Schweregrad** auf **Warnung** und schreiben Sie eine **Nachricht**. Fügen Sie unter **Benutzer und Gruppen** sich selbst hinzu.
+8. Fahren Sie mit der Maus über das Gültigkeitssymbol neben dem Regelnamen, bis dort **Der Flow ist gültig** steht.
+9. Wählen Sie das Häkchen in der schwebenden Leiste über dem Canvas. Vor der ersten Veröffentlichung lautet sein Tooltip **Veröffentlichen**.
+10. Wählen Sie **Aktivieren**. Eine Meldung bestätigt es, und die Regel ist in der Liste **Aktiv**.
+
+<Screenshot
+  page="automate/threshold-alert"
+  id="01-rule-canvas"
+  route="/automation/rule-designer/:id"
+  state="Rule Room too warm in edit mode: Start (Room sensor), Condition temperature Greater than 25, Toggle In, Notification action"
+  alt="Die fertige Regel mit vier verbundenen Knoten"
+/>
+
+## Prüfen, ob es funktioniert hat {#check-that-it-worked}
+
+Öffnen Sie ein Thing vom Typ `Room sensor` und senden Sie mit **Gerät simulieren…** eine `temperature` von `26`. Siehe [Ein Gerät simulieren](../connect/simulate.mdx). Eine Benachrichtigung geht an die Benutzer und Gruppen, die Sie gewählt haben. Senden Sie `24`, dann wieder `26`: Sie erhalten eine zweite Benachrichtigung, weil der Zustand von nicht erfüllt zu erfüllt gewechselt hat.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Nichts kommt an**: Prüfen Sie, ob die Regel **Aktiv** ist, ob das Thing den bei **Start** gewählten Typ hat und ob der Name des Messwerts genau zum Thing-Typ passt. Siehe [Eine Regel feuert nicht](../troubleshooting/rule-not-firing.mdx).
+- **Das Häkchen ist deaktiviert**: Der Flow ist ungültig. Fahren Sie mit der Maus über das Gültigkeitssymbol, um zu lesen, was fehlt, zum Beispiel ein Knoten mit leeren Pflichtfeldern.
+- **Aktivieren ist deaktiviert**: Die Regel hat noch keine veröffentlichte Version. Wählen Sie zuerst das Häkchen.
+- **Sie möchten stattdessen eine E-Mail**: Ersetzen Sie Schritt 7 durch eine Aktion **E-Mail**. Sie braucht einen Empfänger sowie Betreff und Text. E-Mails gehen über den Mailserver Ihres Tenants, falls einer eingerichtet ist, sonst über den Mailserver der Plattform.
+
+{/* TODO(product): Where can a user see that a rule evaluation failed or was skipped (condition not met, invalid expression)? The code writes rule evaluation events whose detail depends on enableDetailedRuleEvaluation and logs other errors on the server. Should the docs promise that users can see failed evaluations? */}
+
+## Verwandte Seiten {#related}
+
+- [Regelbedingungen und Funktionen](./conditions.mdx) · [Aktionstypen](./action-types.mdx)
+- [Aus einer Regel ein anderes System aufrufen](./webhook-from-rule.mdx)
+- [Events, Vorfälle und Benachrichtigungen](../watch/events-incidents-notifications.mdx)

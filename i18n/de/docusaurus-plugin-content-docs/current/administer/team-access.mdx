@@ -1,0 +1,70 @@
+---
+title: Einem Team Zugriff auf seine Things geben
+description: Legen Sie eine Gruppe an, fügen Sie Personen, Things und Thing-Typen hinzu und bestimmen Sie, was jedes Mitglied darf.
+type: how-to
+sidebar_position: 4
+app:
+  routes: ["/administration/groups", "/administration/groups/:id"]
+translated_from: b6ed908
+---
+
+Legen Sie für ein Team, einen Kunden oder einen Standort eine Gruppe an, damit ihre Mitglieder genau die Things sehen, die dazugehören. Mitglieder einer Gruppe erreichen auch alles in ihren Untergruppen, wie [Benutzer, Gruppen und Rollen](./access.mdx) erklärt.
+
+## Bevor Sie beginnen {#before-you-start}
+
+- Sie brauchen eine Rolle, die Gruppen anlegen und ändern darf. **Administrator** und **Manager** haben sie.
+- Die Personen müssen bereits Benutzer des Tenants sein. [Laden Sie sie](./invite.mdx) zuerst ein.
+- Legen Sie die übergeordnete Gruppe fest. Setzen Sie eine Kundengruppe nach oben und darunter je eine Gruppe pro Standort.
+
+## Die Gruppe anlegen {#create-the-group}
+
+1. Öffnen Sie **Administration › Gruppen** und wählen Sie **Gruppe erstellen**. Um unterhalb einer bestehenden Gruppe anzulegen, wählen Sie bei ihr **Untergruppe hinzufügen**.
+2. Geben Sie einen **Gruppenname** ein.
+3. Wählen Sie den **Gruppentyp**: **Standard**, oder **Organisation** für die Spitze eines Kunden, Unternehmens oder Standorts.
+4. Wählen Sie unter **Übergeordnet** die übergeordnete Gruppe.
+5. Optional: Fügen Sie **Tags** und eine **Beschreibung** hinzu und speichern Sie.
+
+## Personen, Things und Typen hinzufügen {#add-people-things-and-types}
+
+Wählen Sie die Gruppe, um sie zu öffnen.
+
+1. Wählen Sie im Tab **Benutzer** die Option **Nutzer hinzufügen** und wählen Sie Personen.
+2. Wählen Sie im Tab **Things** die Option **Thing hinzufügen** und wählen Sie die Things, mit denen das Team arbeitet.
+3. Um dem Team jedes Thing einer Art zu geben, fügen Sie die Art im Tab **Thing Typen** hinzu. Mitglieder sehen dann alle Things dieses Typs.
+4. Fügen Sie im Tab **Event Typen** die Event-Typen hinzu, die Mitglieder ansehen und bearbeiten dürfen.
+
+Sie können ein Thing auch beim Anlegen zu Gruppen hinzufügen.
+
+## Festlegen, was Mitglieder dürfen {#set-what-members-may-do}
+
+Jedes Mitglied hat in der Gruppe drei Schalter.
+
+| Schalter | Erlaubt |
+| --- | --- |
+| **Gelesen** | Den Inhalt der Gruppe ansehen. Immer aktiv. |
+| **Aktualisieren** | Inhalt der Gruppe ändern, anlegen und löschen. |
+| **Ausführen** | Aktionen ausführen, zum Beispiel einen Befehl an ein Thing senden. |
+
+Ändern Sie sie im Tab **Benutzer** der Gruppe oder im Tab **Gruppen** des Benutzers. Um sie für später hinzugefügte Personen vorzubelegen, wählen Sie in der Gruppe **Legen Sie Standardberechtigungen fest**. Das ändert die aktuellen Mitglieder nicht.
+
+Mitglieder mit der Markierung **Vererbt** erhalten ihren Zugriff von einer übergeordneten Gruppe. Ändern Sie ihn dort.
+
+## Prüfen, ob es funktioniert hat {#check-that-it-worked}
+
+Öffnen Sie die Gruppe: Die Anzahlen bei **Mitglieder** und **Untergruppen** entsprechen Ihrer Erwartung. Bitten Sie ein Mitglied, sich anzumelden, oder vergleichen Sie mit dem Tab **Gruppen** des Benutzers. Er sollte die Things sehen, die Sie hinzugefügt haben, und sonst nichts.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Ein Mitglied sieht nichts**: Der Rolle der Person fehlen möglicherweise Leseberechtigungen, oder die Gruppe enthält keine Things oder Thing-Typen. Beides ist nötig. Siehe [Rollen und Berechtigungen](./roles.mdx).
+- **Ein Mitglied sieht zu viel**: Es ist möglicherweise in einer übergeordneten Gruppe oder hat einen Thing-Typ, der mehr Things abdeckt als gedacht. Prüfen Sie die Markierung **Vererbt** und den Tab **Thing Typen**.
+- **Sie können eine Berechtigung nicht ändern**: Sie ist vererbt. Ändern Sie sie in der übergeordneten Gruppe.
+- **Sie können Typ oder übergeordnete Gruppe einer Gruppe nicht ändern**: Ihnen fehlt die Berechtigung, oder es gibt keine gültige übergeordnete Gruppe.
+
+:::warning
+Das Löschen einer Gruppe entzieht den Zugriff, den sie gegeben hat. Die Benutzer, Things und Typen bleiben. Prüfen Sie vorher den Tab **Benutzer**.
+:::
+
+## Verwandte Seiten {#related}
+
+- [Benutzer, Gruppen und Rollen](./access.mdx) · [Rollen und Berechtigungen](./roles.mdx)
+- [Einen Kollegen einladen](./invite.mdx)

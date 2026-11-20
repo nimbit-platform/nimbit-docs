@@ -1,0 +1,139 @@
+---
+title: Send data over HTTP
+description: Post JSON telemetry for a thing to the tsflux ingest API with curl, Python requests or Node.js fetch.
+sidebar_position: 8
+type: how-to
+app:
+  routes: ["/onboarding/things/:id"]
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Post one JSON message for a thing to the tsflux ingest API and see its values in IoT Breeze. For background, read [How devices connect](./how-devices-connect.mdx).
+
+## Before you start
+
+- A thing of a published thing type. See [Register a thing](../model/register-thing.mdx).
+- Credentials for the thing. See [Create and rotate device credentials](./credentials.mdx).
+- An HTTP client: `curl`, Python with `requests`, or Node.js 18 or later.
+
+## Steps
+
+### 1. Copy the connection details
+
+Open the thing (**Settings › Onboarding › Things**), go to **Connections** and select **Connection info**. Copy these values:
+
+| Placeholder | Source in **Connection info** |
+| --- | --- |
+| `<structured-url>` | The URL under **REST** › **Structured JSON**, ending in `/api/v1/message/structured`. Host and TLS are those of your deployment. |
+| `<token>` | The JWT **Token**. With basic credentials, use **Username** and **Password** instead. |
+| `<tenantId>`, `<deviceId>` | Both appear in **Client id** (`<tenantId>:<deviceId>`) and in the **Telemetry** topic. |
+
+### 2. Send one message
+
+<Tabs groupId="http-client">
+<TabItem value="curl" label="curl" default>
+
+```bash
+curl -X POST "<structured-url>" \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "tenant": "<tenantId>",
+    "id": "<deviceId>",
+    "thingType": "room_sensor",
+    "data": { "temperature": 22.5, "humidity": 61.3 }
+  }'
+```
+
+With basic credentials, replace the `Authorization` header with `-u "<username>:<password>"`.
+
+</TabItem>
+<TabItem value="python" label="Python (requests)">
+
+```python
+import requests
+
+response = requests.post(
+    "<structured-url>",
+    headers={"Authorization": "Bearer <token>"},  # basic: auth=("<username>", "<password>")
+    json={
+        "tenant": "<tenantId>",
+        "id": "<deviceId>",
+        "thingType": "room_sensor",
+        "data": {"temperature": 22.5, "humidity": 61.3},
+    },
+    timeout=10,
+)
+print(response.status_code, response.json())
+```
+
+</TabItem>
+<TabItem value="node" label="Node.js (fetch)">
+
+Save as `send.mjs` and run `node send.mjs`.
+
+```js
+const response = await fetch("<structured-url>", {
+  method: "POST",
+  headers: {
+    Authorization: "Bearer <token>",
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    tenant: "<tenantId>",
+    id: "<deviceId>",
+    thingType: "room_sensor",
+    data: { temperature: 22.5, humidity: 61.3 },
+  }),
+});
+console.log(response.status, await response.json());
+```
+
+</TabItem>
+</Tabs>
+
+`tenant`, `id` and `thingType` are required over HTTP. The credential decides which tenant and device you may write for.
+
+### 3. Add a timestamp, location and tags
+
+Extend the message, or send several at once as a JSON array. All fields are in [Message format](./message-format.mdx).
+
+```json
+[
+  {
+    "tenant": "<tenantId>",
+    "id": "<deviceId>",
+    "thingType": "room_sensor",
+    "data": { "temperature": 22.5 },
+    "time": "2026-11-07T09:30:00Z",
+    "geo": { "latitude": 52.52, "longitude": 13.405 },
+    "tags": { "location": "warehouse-A" }
+  }
+]
+```
+
+Without `time`, the time of arrival is used.
+
+## Check that it worked
+
+The answer is `200` with a body like this:
+
+```json
+{ "message": "success", "processed": 1, "elapsed_ms": 4 }
+```
+
+Open the thing in IoT Breeze. **Overview** shows **Last signal** and **Live values** within a few seconds.
+
+## If it doesn't work
+
+- **401**: the credential is missing, wrong or expired. Check the `Authorization` header and the **Expires at** of the token.
+- **400**: the body says why. Common causes are a missing `tenant`, `id` or `thingType`, no `data`, an unknown thing or thing type, or an `id` that belongs to another device.
+- **207**: some messages of a batch were stored. Each entry in `failed` has an `index`, a `status` and an `error`. Resend only the entries with status `503`.
+- **429 or 503**: wait for the number of seconds in `Retry-After`, then send again.
+
+## Related
+
+- [Ingest endpoints and status codes](./ingest-endpoints.mdx) · [Message format](./message-format.mdx)
+- [Write InfluxDB line protocol](./line-protocol.mdx) · [Send data over MQTT](./mqtt.mdx)

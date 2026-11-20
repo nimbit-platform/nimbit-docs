@@ -1,0 +1,166 @@
+---
+title: Command-line reference
+description: Every periscope command with its flags, defaults and exit codes.
+type: reference
+sidebar_position: 14
+app:
+  routes: ["/onboarding/gateways"]
+---
+
+`periscope` is one binary with subcommands. In a running installation, `periscope serve` does discovery, apply and streaming by itself. The other commands set up, check and troubleshoot.
+
+Every command that reads the configuration takes `-config`. Without it, the file is `$PERISCOPE_CONFIG`, else `periscope.toml` in the working directory. Logs go to standard error and results to standard output. In the container, run a command with `docker exec periscope periscope <command>`.
+
+## Commands
+
+| Command | Purpose |
+| --- | --- |
+| `periscope validate` | Check the configuration and print the resolved plan without secrets. |
+| `periscope discover` | Read the plant, write snapshots and proposals. |
+| `periscope apply` | Create what is confirmed in the platform, write the mapping. |
+| `periscope run` | Stream the mapped values. No discovery, no web UI. |
+| `periscope serve` | The agent: `run`, plus discovery, apply, the HTTP API and the web UI. |
+| `periscope verify` | Ask the platform whether every applied thing received values. |
+| `periscope enroll` | Onboard as a gateway, or store a service account's session. |
+| `periscope import telegraf-s7` | Import a Telegraf S7 address list as proposals. |
+| `periscope export telegraf` | Write the applied S7 model back as Telegraf configuration. |
+| `periscope opcua reset-pin` | Forget a pinned OPC UA server certificate. |
+| `periscope healthcheck` | Probe the agent's liveness, for a container health check. |
+| `periscope sim` | Run a test plant: `sparkplug`, `uns` or `modbus`. |
+| `periscope version` | Print the version. |
+
+## validate
+
+Checks every plugin table, where an unknown key is an error, and reads the files a plugin names. It never connects to the plant. Exit 0 when the configuration is valid.
+
+| Flag | Default | Meaning |
+| --- | --- | --- |
+| `-config` | `$PERISCOPE_CONFIG`, else `periscope.toml` | The configuration file. |
+| `-offline` | off | Don't sign in and don't read the tenant's features. |
+
+## discover
+
+Runs every input's discovery once, writes `snapshot-<input>.json`, derives proposals, replays the web UI's edits, and writes `proposals.yaml`. An input whose discovery fails keeps its previous proposals. Flag: `-config`.
+
+## apply
+
+Creates the confirmed proposals, thing types first and then their things, and rebuilds `mapping.json`. In `zero-touch` mode it also creates the proposed ones. A failed item stays `confirmed` and is retried.
+
+| Flag | Default | Meaning |
+| --- | --- | --- |
+| `-config` | `$PERISCOPE_CONFIG`, else `periscope.toml` | The configuration file. |
+| `-dry-run` | off | Print what would be created or updated. Writes nothing. |
+| `-json` | off | With `-dry-run`: print the plan as JSON. |
+
+## run and serve
+
+`run` streams with the stored mapping until stopped with Ctrl-C or SIGTERM. It writes `stats.json` every 30 seconds. `serve` is what the container image starts. It also discovers at start and every `agent.discovery_interval`, applies after every discovery and confirmation, and serves the HTTP API and web UI on `[server] listen`. It reloads when the file changes, on SIGHUP, and at `POST /api/v1/agent/reload`. Flag: `-config`.
+
+### Run as a systemd service
+
+Without a container, copy the binary to `/usr/local/bin/periscope` and install this unit as `/etc/systemd/system/periscope.service`:
+
+```ini
+[Unit]
+Description=Periscope edge connector
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/local/bin/periscope serve -config /etc/periscope/periscope.toml
+StateDirectory=periscope
+Restart=on-failure
+DynamicUser=yes
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Run `periscope enroll -config /etc/periscope/periscope.toml -code <code>` once before the first start.
+
+## verify
+
+Asks nbq, the platform's query service, whether every applied thing received values in a window that ends now. See [Verify that data arrived](./verify.mdx).
+
+| Flag | Default | Meaning |
+| --- | --- | --- |
+| `-config` | `$PERISCOPE_CONFIG`, else `periscope.toml` | The configuration file. |
+| `-since` | `5m` | The window to look for values in. |
+| `-nbq-url` | `[ocb] url` + `/nbq` | nbq's base URL, to bypass the platform's proxy. |
+
+| Exit | Meaning |
+| --- | --- |
+| 0 | Every applied thing received values, and none lies in the future. |
+| 1 | A thing received nothing, a value lies in the future, or nothing is applied. |
+| 2 | nbq couldn't be asked. Nothing was verified. |
+
+## enroll
+
+With `-code`, onboards the agent as a gateway: it generates an ES256 key pair in `agent.state_dir/gateway_key.pem` (mode 0600), redeems the one-time code with the public half, and keeps the gateway's IDs in `gateway.json`. Then set `[ocb] gateway = true`. A code works once.
+
+Without `-code`, it signs the service account (`[ocb] email`) in once and stores the session in `agent.state_dir/enrollment.json`. The password comes from the first line of stdin or from `PERISCOPE_PASSWORD`, and is never stored.
+
+| Flag | Default | Meaning |
+| --- | --- | --- |
+| `-config` | `$PERISCOPE_CONFIG`, else `periscope.toml` | The configuration file. |
+| `-code` | off | Onboard as a gateway with this code. `-` reads it from stdin. |
+| `-email` | `[ocb] email` | The service account. |
+| `-password-stdin` | off, uses `$PERISCOPE_PASSWORD` | Read the password from the first line of stdin. |
+| `-force` | off | Replace an existing enrollment and end its session at the platform. A running `serve` signs in with the new key at its next token. |
+| `-revoke` | off | End the stored service-account session and remove `enrollment.json`. |
+
+Exit 0 on success, 1 when the sign-in or the file fails, and 2 for a usage error, such as no password or `-code` combined with `-email`, `-password-stdin` or `-revoke`.
+
+## import telegraf-s7 and export telegraf
+
+`import telegraf-s7 <file>` reads the `[[inputs.s7comm]]` of a Telegraf configuration, with field names `<thingType>/<thing>/<measure>[:<decimals>]`, into an S7 source that is confirmed and applied as usual. It reads no PLC.
+
+| Flag | Default | Meaning |
+| --- | --- | --- |
+| `-config` | `$PERISCOPE_CONFIG`, else `periscope.toml` | The configuration file. |
+| `-overrides` | none | The payload sender's `config.json`. |
+| `-alias` | The plugin's `alias`, else its metric name | The source's name. |
+| `-mount` | `[ocb] mount` | Place the things under this path instead. |
+| `-path-from` | `type` | A thing's path: `type` for `<mount>/<thingType>/<thing>`, or `thing` for `<mount>/<thing>`. |
+| `-dry-run` | off | Print what would change. Writes nothing. |
+
+`export telegraf` writes the applied model of the imported sources and the `[[inputs.s7]]` inputs back as Telegraf configuration.
+
+| Flag | Default | Meaning |
+| --- | --- | --- |
+| `-config` | `$PERISCOPE_CONFIG`, else `periscope.toml` | The configuration file. |
+| `-input` | every source | The imported source or S7 input to export. |
+| `-o` | standard output | Write the configuration here, and `config.json` next to it. |
+| `-config-out` | next to `-o` | Write `config.json` here. |
+
+## opcua reset-pin
+
+`periscope opcua reset-pin <input>` removes `state_dir/opcua-<input>.pin`, the certificate an input pinned at its first connection, so the next connection pins what the server presents then. Run it after replacing a server's certificate on purpose and checking the new fingerprint, then restart `serve`. An input with `server_cert_sha256` has no pin file: change the key instead.
+
+## healthcheck
+
+Exits 0 on a 2xx answer from `/health-check/liveness` of the configured listener, and 1 otherwise, including a usage error, because Docker reserves exit code 2.
+
+| Flag | Default | Meaning |
+| --- | --- | --- |
+| `-config` | `$PERISCOPE_CONFIG`, else `periscope.toml` | The configuration file, read without `-url`. |
+| `-url` | The configured listener's liveness probe | The URL to probe. |
+| `-timeout` | `3s` | The request timeout. |
+| `-ca` | system roots | A PEM file trusted for an `https` URL. |
+| `-insecure` | off | Skip certificate verification. |
+
+## sim
+
+Test plants for a trial without hardware. They run until stopped.
+
+| Command | Serves | Flags and defaults |
+| --- | --- | --- |
+| `sim sparkplug` | One Sparkplug B edge node with devices | `-broker tcp://localhost:1883`, `-group altena`, `-edge edge-7`, `-devices 2`, `-metrics 5`, `-interval 1s` |
+| `sim uns` | A retained ISA-95 topic tree | `-broker tcp://localhost:1883`, `-root lenneform/werk-altena`, `-interval 1s` |
+| `sim modbus` | A Modbus TCP server with changing values | `-listen 127.0.0.1:5020`, `-map` (default: sample plant), `-interval 1s` |
+
+## Related
+
+- [Install Periscope and stream your first source](./install.mdx)
+- [Configuration reference](./configuration.mdx)
+- [Troubleshoot Periscope](./troubleshooting.mdx)

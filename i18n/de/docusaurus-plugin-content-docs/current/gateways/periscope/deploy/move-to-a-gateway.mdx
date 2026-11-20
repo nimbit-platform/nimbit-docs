@@ -1,0 +1,63 @@
+---
+title: Eine Box von einem Servicekonto auf ein Gateway umstellen
+sidebar_label: Auf ein Gateway umstellen
+description: Eine Periscope-Box, die sich mit einem Servicekonto anmeldet, auf ein Gateway mit eigenem Schlüssel umstellen und was mit den Things geschieht, die sie angelegt hat.
+sidebar_position: 7
+type: how-to
+app:
+  routes: ["/onboarding/gateways"]
+translated_from: 06bddd1
+---
+
+Stellen Sie eine Box, die sich als Benutzer mit E-Mail und Passwort anmeldet, auf ein Gateway um, das sich mit eigenem Schlüssel anmeldet. Die Box erscheint dann unter **Gateways** mit einem Status und sendet mit Zugangsdaten, die auf ihre eigenen Things beschränkt sind. Den Unterschied beschreibt [Wie Periscope funktioniert](../how-periscope-works.mdx#is-a-periscope-instance-a-gateway).
+
+## Voraussetzungen {#before-you-start}
+
+- Die Berechtigung **Gateway** in IoT Breeze sowie eine aktuelle Plattform und Box. Siehe [Eine Box aktualisieren](./upgrade.mdx).
+- Ein Gateway vom Typ **Periscope** mit einem Onboarding-Code. Siehe [Gateway hinzufügen](../../add-a-gateway.mdx). Der Namespace steht fest, sobald das Gateway Things hat, wählen Sie ihn also beim Hinzufügen des Gateways.
+- Ein Backup des [State-Verzeichnisses](./state-and-backup.mdx) der Box.
+
+## Schritte {#steps}
+
+1. Beenden Sie die Sitzung des Servicekontos und entfernen Sie seine Registrierung. Tun Sie das, bevor Sie die Konfiguration ändern, weil der Befehl das Konto aus der Datei liest:
+
+   ```sh
+   periscope enroll -config /etc/periscope/periscope.toml -revoke
+   ```
+
+2. Entfernen Sie in `periscope.toml` `email` und `password` (oder `token`) aus `[ocb]` und setzen Sie `gateway = true`. Entfernen Sie `PERISCOPE_PASSWORD` aus der Umgebung der Box. Eine Datei mit zwei Zugangsarten wird abgelehnt.
+
+   ```toml
+   [ocb]
+   url     = "https://nimbit.example.com"
+   gateway = true
+   ```
+
+3. Richten Sie die Box mit dem Code ein, wie in [Eine Box mit einem Onboarding-Code einrichten](./onboard.mdx). Vom Einrichtungsbildschirm aus wählt ein Admin zuerst **Disconnect**, was auch die Sitzung des Servicekontos beendet.
+4. Warten Sie, bis das Gateway **Online** zeigt. Deaktivieren Sie dann das Servicekonto in IoT Breeze, wenn es sonst niemand verwendet.
+
+## Was sich ändert {#what-changes}
+
+| Vorher | Nachher |
+| --- | --- |
+| Alternate-IDs beginnen mit `agent.name`. | Sie beginnen mit dem Namespace des Gateways. Die Box schlägt ihre Things erneut vor, und die alten bleiben mit einem Grund. |
+| Die Ausgänge senden mit den Tenant-Zugangsdaten. | Sie senden mit den Gateway-Zugangsdaten, auf den Topics des Gateways. |
+| Kein Zustand. | Eine Zustandsmeldung alle `agent.health_interval`. |
+| Die Platzierung in Contexus wird nach einem Anwenden gesendet. | Sie wird nicht gesendet. Das Token eines Gateways gilt nur für das Plattform-Backend. |
+
+Neue Things erhalten neue IDs, ihre Historie beginnt also leer. Räumen Sie die alten Things auf, wie in [Eine Box aktualisieren](./upgrade.mdx#clean-up-the-old-things) beschrieben.
+
+{/* TODO(product): Is there a supported way to keep the existing things and their history, for example choosing a namespace equal to agent.name and assigning the existing things to the gateway? Does the box then link them instead of creating duplicates? */}
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Das Gateway ist **Online**, `periscope validate` gibt das Gateway als Zugangsart aus, und der Tab **Things** des Gateways listet die Things unter dem Namespace.
+
+## Wenn es nicht klappt {#if-it-doesnt-work}
+
+- **`ocb: set exactly one credential`**: `email`, `password` oder `token` steht noch in `[ocb]`, in `periscope.toml` oder im Overlay `state_dir/config.ui.toml`.
+- **Das Onboarding wird abgelehnt, weil der State zu einer anderen Organisation gehört**: Verwenden Sie ein für diese Organisation angelegtes State-Verzeichnis.
+
+## Verwandte Seiten {#related}
+
+- [Eine Box ersetzen](./replace-a-box.mdx) · [Konfigurationsreferenz](../configuration.mdx#ocb)

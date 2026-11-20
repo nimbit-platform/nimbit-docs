@@ -1,0 +1,63 @@
+---
+title: Run actions from a canvas
+sidebar_label: Actions from a canvas
+description: Make an element run a thing's action, open a canvas or link, or switch the context thing, with confirmation.
+type: how-to
+sidebar_position: 5
+app:
+  routes: ["/canvas/:id"]
+  tour: canvas-data
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Let people act from the drawing: start a pump, open the detail canvas of a machine, switch to another thing. You set this on the **Action** tab of an element. For the picture of how actions fit, see [How a canvas works](./how-canvas-works.mdx).
+
+## Before you start
+- A role that may update canvases.
+- For a command: an action defined on the thing or thing type, active, with **Allow usage as dashboard widget** turned on. If the picker is empty, create or change the action first. The panel offers **Create action on** the thing or type.
+- Operation allowed for the canvas, see step 1.
+
+## Steps
+
+1. Select **Canvas settings** and switch on **Allow operation**. Without it, action elements show **Operation is off for this canvas** and are disabled.
+2. Select **Edit canvas** and select a **Button**, **Switch**, **Setpoint**, **Hotspot** or a P&ID symbol. Other elements have no **Action** tab.
+3. Open the **Action** tab. Under **On click**, choose a **Type**:
+   - **Run an action**: select **Select an action** and the **Target** thing.
+   - **Navigation**: open another canvas or a link.
+   - **Switch context thing**: change the thing the canvas shows.
+   - **Set a variable**: set a variable of the canvas.
+   - **None**: nothing.
+4. For **Run an action**, set the safeguards you need:
+   - **Confirmation**, including a typed confirmation for **Critical equipment**.
+   - **Enabled only when** a live value allows it. Otherwise the button is disabled and says why. It needs a value bound on the **Data** tab.
+   - **Expected result** and **Within**: the canvas waits for a value to confirm the action worked and flags it if not.
+   - **Cooldown** between two runs.
+   - **Consequence**: a note on what happens when it runs.
+   - **Value sent**: an optional value in the payload, for example a switch position. A **Setpoint** sends the value set in view mode.
+5. Select **Preview**. Commands in preview are dry runs: the dialog says **Preview: this is a dry run, nothing is sent**.
+6. Select **Save**.
+
+<Screenshot
+  page="visualize/canvas/actions"
+  id="01-action-tab"
+  route="/canvas/:id"
+  state="Inspector Action tab for a Button: type Run an action, action Start pump selected, Confirmation on, Expected result with a within time"
+  alt="The Action tab of a button with confirmation and expected result"
+/>
+
+## Check that it worked
+
+Open the canvas as a viewer who may operate the thing and select the element. A confirmation dialog names the action and the thing. After you confirm, the element shows the result: **Confirmed by** the thing with the time, or **Sent** with no result reported back when you set no expected result.
+
+## If it doesn't work
+
+- **Operation is off for this canvas**: switch on **Allow operation** in **Canvas settings**.
+- **Broken: action not found**: the thing or its type has no such action. Pick another action, or add it to the thing type.
+- **You are not allowed to operate** the thing: the action's own permissions decide. Ask your administrator for the role it names.
+- **Operation is paused while a past range is shown**: switch the header to a live range.
+- **Open the full page to operate** or **Open this canvas to operate**: you are in a side panel or an embed. Open the canvas itself.
+- **Setting variables is not supported yet**: the place that shows the canvas has no variable support. {/* TODO(product): How does an editor create a canvas variable, and where is Set a variable supported? */}
+
+## Related
+- [Canvas editor reference](./editor-reference.mdx) · [Put a canvas on a dashboard](./embed-a-canvas.mdx)

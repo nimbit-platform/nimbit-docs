@@ -1,0 +1,107 @@
+---
+title: Ein echtes Gerät verbinden
+sidebar_position: 3
+description: Zugangsdaten für das Quickstart-Thing anlegen und mit mosquitto_pub per MQTT den ersten echten Messwert senden.
+type: tutorial
+app:
+  routes: ["/onboarding/things/:id"]
+translated_from: 810b8a2
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+In etwa 10 Minuten senden Sie von der Kommandozeile eine Temperatur an das Thing `Meeting room 1`, so wie es ein echtes Gerät tut, und sehen sie ankommen. Jeder MQTT-Client verhält sich gleich; mit `mosquitto_pub` sind die Werte leicht zu erkennen.
+
+:::info Was Sie brauchen
+- Das Thing `Meeting room 1` und seinen veröffentlichten Thing-Typ aus dem [Quickstart](./quickstart.mdx).
+- `mosquitto_pub` und `mosquitto_sub` aus dem Paket der Mosquitto-Clients.
+- Eine Rolle, die Zugangsdaten für das Thing anlegen darf.
+:::
+
+## 1. Den Simulator stoppen {#1-stop-the-simulator}
+
+Läuft die Simulation aus dem Quickstart noch, öffnen Sie das Thing und wählen Sie im Banner **Simulation läuft** die Option **Stopp**. Sonst mischen sich simulierte Messwerte unter Ihre.
+
+## 2. Zugangsdaten anlegen {#2-create-credentials}
+
+1. Öffnen Sie **Einstellungen › Onboarding › Things**, wählen Sie `Meeting room 1` und öffnen Sie den Tab **Verbindungen**.
+2. Wählen Sie im Block **Nimbit** unter **Basisauthentifizierung** die Option **Primär** und dann **Anmeldedaten generieren**.
+3. Kopieren Sie **Nutzername** und **Passwort**.
+
+Basic-Zugangsdaten laufen nie ab. Das Passwort gilt nur für dieses Thing: Ein Gerät kann für kein anderes Thing veröffentlichen.
+
+<Screenshot
+  page="get-started/real-hardware"
+  id="01-credentials"
+  route="/onboarding/things/:id"
+  state="Connections tab, Nimbit block, Basic authentication with generated Username and Password"
+  alt="Für ein Thing generierte Zugangsdaten der Basisauthentifizierung"
+/>
+
+## 3. Die Verbindungsdaten kopieren {#3-copy-the-connection-details}
+
+Wählen Sie **Verbindungsinformationen**. Kopieren Sie im Drawer **Geräteverbindung**:
+
+- **Gateway-URL**: der MQTT-Broker, zum Beispiel `mqtt://host:1883`.
+- **Client-ID**: `<tenantId>:<deviceId>`.
+- **Telemetrie**: das Topic, an das Sie veröffentlichen.
+- **Fehler**: das Topic, das abgelehnte Nachrichten meldet.
+
+:::warning Kopieren, nicht zusammensetzen
+Im Drawer ist `<deviceId>` die interne ID des Things, nicht die **Alternative Thing -ID** auf der Seite des Things. Kopieren Sie **Client-ID** und Topics aus dem Drawer. Eine falsche Client-ID ist der häufigste Grund, warum eine Verbindung abgelehnt wird.
+:::
+
+## 4. Einen Messwert veröffentlichen {#4-publish-a-reading}
+
+Ersetzen Sie die Platzhalter durch die kopierten Werte. Host und Port stammen aus der **Gateway-URL**.
+
+```bash
+mosquitto_pub -h <mqtt-host> -p 1883 \
+  -i "<tenantId>:<deviceId>" \
+  -u "<username>" -P "<password>" \
+  -t "tenant/<tenantId>/device/<deviceId>/telemetry" \
+  -m '{"thingType":"room_sensor","data":{"temperature":22.5}}'
+```
+
+Beginnt die **Gateway-URL** mit `mqtts://`, verwenden Sie Port 8883 und ergänzen Sie `--cafile` oder `--capath`, damit `mosquitto_pub` dem Zertifikat des Brokers vertraut.
+
+Der Befehl endet ohne Ausgabe. Öffnen Sie das Thing: **Letztes Signal** zeigt „vor einem Moment“, und **Live-Werte** zeigt `22.5`.
+
+## 5. Die Grenze der Regel überschreiten {#5-cross-the-rules-limit}
+
+Veröffentlichen Sie einen zweiten Messwert über 28:
+
+```bash
+mosquitto_pub -h <mqtt-host> -p 1883 \
+  -i "<tenantId>:<deviceId>" \
+  -u "<username>" -P "<password>" \
+  -t "tenant/<tenantId>/device/<deviceId>/telemetry" \
+  -m '{"thingType":"room_sensor","data":{"temperature":31.5}}'
+```
+
+Das Dashboard `Meeting room 1` zeichnet beide Punkte. Haben Sie im Quickstart die Regel gebaut, zeigt **Überwachung › Events** ein neues Event `Room too warm`.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+Abonnieren Sie das Topic **Fehler** in einem zweiten Terminal. Jede endgültig abgelehnte Nachricht erscheint dort mit dem Grund. Verwenden Sie ein anderes Client-ID-Suffix als der Publisher:
+
+```bash
+mosquitto_sub -h <mqtt-host> -p 1883 \
+  -i "<tenantId>:<deviceId>:errors" \
+  -u "<username>" -P "<password>" \
+  -t "iot/tenant/<tenantId>/device/<deviceId>/error"
+```
+
+- **Die Verbindung wird abgelehnt**: Vergleichen Sie Client-ID, Benutzername und Passwort mit den **Verbindungsinformationen**. Senden Sie immer eine Client-ID.
+- **Das Thing zeigt weiterhin Noch kein Signal**: Prüfen Sie Host und Port und ob die Nachricht gültiges JSON mit `thingType` und `data` ist.
+- **Ein Messwert fehlt**: Der Messwert muss im veröffentlichten Schema des Thing-Typs stehen, und der Name in `data` muss passen.
+
+## Was Sie gebaut haben {#what-you-built}
+
+Eine Geräteidentität mit eigenen Zugangsdaten und einen Nachrichtenweg von Ihrem Terminal zu einem Diagramm und einer Regel. Ein Produktivgerät tut dasselbe aus der Firmware.
+
+## Weiter {#next}
+
+- [Daten per MQTT senden](../connect/mqtt.mdx): jedes Feld und jede Option.
+- [Daten per HTTP senden](../connect/http.mdx), wenn das Gerät kein MQTT spricht.
+- [Gerätezugangsdaten anlegen und rotieren](../connect/credentials.mdx).

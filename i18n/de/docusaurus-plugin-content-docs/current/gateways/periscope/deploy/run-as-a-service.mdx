@@ -1,0 +1,87 @@
+---
+title: Periscope als Dienst betreiben
+sidebar_label: Als Dienst betreiben
+description: Das Periscope-Binary auf einer Linux-Box installieren, unter systemd mit eigenem Benutzer und State-Verzeichnis betreiben und sein Log lesen.
+sidebar_position: 3
+type: how-to
+app:
+  routes: ["/onboarding/gateways"]
+translated_from: 06bddd1
+---
+
+Betreiben Sie Periscope als systemd-Dienst, der mit der Box startet und nach einem Fehler neu startet. Diese Seite endet mit einem laufenden Agent, der noch nicht mit IoT Breeze verbunden ist; [richten Sie ihn](./onboard.mdx) als Nächstes ein.
+
+## Voraussetzungen {#before-you-start}
+
+- Eine Linux-Box mit systemd, die die [Voraussetzungen](./requirements.mdx) erfüllt, und Root-Zugriff.
+- Das Periscope-Binary für die Architektur der Box. Fordern Sie es beim NimBit-Support unter [info@nimbit.de](mailto:info@nimbit.de) an.
+- Eine Konfigurationsdatei mit dem Namen des Agents und Ihren Quellen, zum Beispiel die aus [Periscope installieren und die erste Quelle streamen](../install.mdx).
+
+## Schritte {#steps}
+
+1. Installieren Sie das Binary und prüfen Sie es:
+
+   ```sh
+   sudo install -m 0755 periscope /usr/local/bin/periscope
+   periscope version
+   ```
+
+2. Legen Sie den Benutzer des Dienstes und sein Konfigurationsverzeichnis an:
+
+   ```sh
+   sudo useradd --system --no-create-home --shell /usr/sbin/nologin periscope
+   sudo install -d -m 0750 -o root -g periscope /etc/periscope
+   ```
+
+3. Speichern Sie die Konfiguration als `/etc/periscope/periscope.toml`. Geheimnisse, die die Datei als `${NAME}` liest, kommen nach `/etc/periscope/periscope.env`, eines pro Zeile als `NAME=value`. Beide Dateien gehören `root:periscope` mit dem Modus 0640.
+4. Speichern Sie diese Unit als `/etc/systemd/system/periscope.service`:
+
+   ```ini
+   [Unit]
+   Description=Periscope edge connector
+   After=network-online.target
+   Wants=network-online.target
+
+   [Service]
+   User=periscope
+   ExecStart=/usr/local/bin/periscope serve -config /etc/periscope/periscope.toml
+   EnvironmentFile=/etc/periscope/periscope.env
+   StateDirectory=periscope
+   Restart=on-failure
+
+   [Install]
+   WantedBy=multi-user.target
+   ```
+
+   `StateDirectory=periscope` legt `/var/lib/periscope` an, das Standard-`agent.state_dir`, im Besitz des Dienstbenutzers. Ein fester Benutzer statt `DynamicUser=yes` lässt Sie `periscope enroll` als dieser Benutzer auf demselben Verzeichnis ausführen.
+5. Starten Sie ihn:
+
+   ```sh
+   sudo systemctl daemon-reload
+   sudo systemctl enable --now periscope
+   ```
+
+6. Lesen Sie das Log:
+
+   ```sh
+   journalctl -u periscope
+   ```
+
+   Eine Box, die nicht verbunden ist, gibt ein Banner mit der Adresse ihres Einrichtungsbildschirms und einem einmaligen Einrichtungscode aus.
+
+Das Binary lauscht auf `127.0.0.1:8400`. Um die Web-Oberfläche von einem anderen Rechner zu öffnen, setzen Sie `server.listen` und davor `server.token` oder `[server.auth]`. Um sie einmal von Ihrem Laptop zu erreichen, verwenden Sie `ssh -L 8400:127.0.0.1:8400 <box>`.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+`systemctl status periscope` zeigt `active (running)`. Nach einer Änderung an `periscope.toml` lädt der Agent selbstständig neu (`agent.watch_config`). Um von Hand neu zu laden, führen Sie `sudo systemctl kill -s HUP periscope` aus.
+
+## Wenn es nicht klappt {#if-it-doesnt-work}
+
+- **Der Dienst beendet sich sofort**: Führen Sie `journalctl -u periscope -n 50` aus. Eine abgelehnte Konfiguration nennt den Schlüssel.
+- **`permission denied` bei der Konfiguration**: Die Datei ist für die Gruppe `periscope` nicht lesbar.
+- **`${NAME}` ist leer**: Die Variable fehlt in `periscope.env`. Der Dienst sieht nicht die Umgebung Ihrer Shell.
+
+## Verwandte Seiten {#related}
+
+- [Periscope in einem Container betreiben](./run-in-a-container.mdx) · [Eine Box aktualisieren](./upgrade.mdx)
+- [Kommandozeilen-Referenz](../commands.mdx#run-as-a-systemd-service)

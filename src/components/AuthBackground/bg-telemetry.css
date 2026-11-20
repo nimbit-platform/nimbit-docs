@@ -1,0 +1,157 @@
+/* Copied from apps/identity-directory/assets/css/bg-telemetry.css by scripts/sync-auth-backgrounds.mjs. Don't edit here. */
+/* The telemetry background (background_telemetry.templ): its marks and their motion. Classes are prefixed
+ * .bg-telemetry-; the shared background tokens (--bg-*) and theme colours are in auth.css and app.css.
+ *
+ * Each series scrolls left by one width (1440) per cycle, linearly, forever; its path spans two widths,
+ * so the loop has no seam. Lines draw in once on load. Lively adds a dashed readout line that sweeps
+ * on its own; static/bg-telemetry.js takes it over (data-live), follows the pointer and shows a dot and
+ * a value on each curve. */
+
+.bg-telemetry-gridline {
+  fill: none;
+  stroke: var(--bg-dot);
+  stroke-width: 1;
+}
+.bg-telemetry-grid {
+  animation: bg-telemetry-fade 1s ease both;
+}
+.auth-bg[data-detail='calm'] .bg-telemetry-grid {
+  opacity: 0.5;
+}
+
+.bg-telemetry-line {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 1.75;
+  stroke-linejoin: round;
+  animation: bg-telemetry-draw 2.4s cubic-bezier(0.22, 1, 0.36, 1) 0.2s backwards;
+}
+.bg-telemetry-back .bg-telemetry-line {
+  opacity: 0.35;
+}
+.bg-telemetry-mid .bg-telemetry-line {
+  opacity: 0.6;
+}
+.bg-telemetry-front .bg-telemetry-line {
+  stroke-width: 2.25;
+}
+.bg-telemetry-area {
+  animation: bg-telemetry-fade 2.4s ease 0.4s backwards;
+}
+.bg-telemetry-area-top {
+  stop-color: var(--primary);
+  stop-opacity: 0.16;
+}
+.bg-telemetry-area-bottom {
+  stop-color: var(--primary);
+  stop-opacity: 0;
+}
+
+/* Scrolling: durations per series (s0…s4), 1.8× slower when calm. */
+.bg-telemetry-scroll {
+  animation: bg-telemetry-scroll 60s linear infinite;
+}
+.bg-telemetry-s0 .bg-telemetry-scroll {
+  animation-duration: 70s;
+}
+.bg-telemetry-s1 .bg-telemetry-scroll {
+  animation-duration: 52s;
+}
+.bg-telemetry-s2 .bg-telemetry-scroll {
+  animation-duration: 40s;
+}
+.bg-telemetry-s3 .bg-telemetry-scroll {
+  animation-duration: 58s;
+}
+.bg-telemetry-s4 .bg-telemetry-scroll {
+  animation-duration: 84s;
+}
+.auth-bg[data-detail='calm'] .bg-telemetry-s1 .bg-telemetry-scroll {
+  animation-duration: 93.6s;
+}
+.auth-bg[data-detail='calm'] .bg-telemetry-s2 .bg-telemetry-scroll {
+  animation-duration: 72s;
+}
+.auth-bg[data-detail='calm'] .bg-telemetry-s3 .bg-telemetry-scroll {
+  animation-duration: 104.4s;
+}
+.bg-telemetry-s1 .bg-telemetry-line {
+  animation-delay: 0.32s;
+}
+.bg-telemetry-s2 .bg-telemetry-line {
+  animation-delay: 0.44s;
+}
+.bg-telemetry-s3 .bg-telemetry-line {
+  animation-delay: 0.56s;
+}
+.bg-telemetry-s4 .bg-telemetry-line {
+  animation-delay: 0.68s;
+}
+
+/* The readout line: without the script it sweeps between 8% and 92% of the width and back. */
+.bg-telemetry-scan {
+  stroke: var(--primary);
+  stroke-width: 1;
+  stroke-dasharray: 3 5;
+  opacity: 0.55;
+  transform: translateX(259.2px);
+  animation: bg-telemetry-sweep 16s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
+}
+.bg-telemetry-dot {
+  fill: var(--card);
+  stroke: var(--primary);
+  stroke-width: 2;
+}
+.bg-telemetry-back .bg-telemetry-dot {
+  opacity: 0.6;
+}
+.bg-telemetry-read {
+  font: 500 12px var(--font-mono, ui-monospace, monospace);
+  white-space: pre;
+  fill: var(--muted-foreground);
+  paint-order: stroke;
+  stroke: var(--bg-base);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+.bg-telemetry-front .bg-telemetry-read {
+  fill: var(--foreground);
+}
+/* The dots and values need the script, which places them and sets data-live. */
+.bg-telemetry:not([data-live]) .bg-telemetry-dot,
+.bg-telemetry:not([data-live]) .bg-telemetry-read {
+  display: none;
+}
+.bg-telemetry[data-live] .bg-telemetry-scan {
+  transform: none;
+  animation: none;
+}
+
+@keyframes bg-telemetry-scroll {
+  to {
+    transform: translateX(-1440px);
+  }
+}
+@keyframes bg-telemetry-draw {
+  from {
+    stroke-dasharray: 1 1;
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dasharray: 1 1;
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes bg-telemetry-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes bg-telemetry-sweep {
+  from {
+    transform: translateX(115.2px);
+  }
+  to {
+    transform: translateX(1324.8px);
+  }
+}

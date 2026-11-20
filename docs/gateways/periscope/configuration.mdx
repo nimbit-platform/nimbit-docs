@@ -1,0 +1,182 @@
+---
+title: Configuration reference
+description: Every table and key of periscope.toml, with defaults, the gateway settings, reload behavior and the state directory.
+type: reference
+sidebar_position: 12
+app:
+  routes: ["/onboarding/gateways"]
+---
+
+Periscope reads one TOML file: `-config`, else `$PERISCOPE_CONFIG`, else `periscope.toml` in the working directory. The agent serves its full documentation, including every plugin key, at `http://<listen>/ui/docs`, with search. It is built into the binary, so you can read it at the edge box without internet access.
+
+## File rules
+
+- `${NAME}` inside a string value is replaced by the environment variable `NAME`, empty when unset. Only string values are expanded, never keys. A value that holds a quote, a backslash or a line break is refused.
+- Unknown keys anywhere are errors. `periscope validate` prints the resolved plan without secrets.
+- Durations are strings in Go form: `"500ms"`, `"1s"`, `"1h"`. A bare number is refused.
+- A key that names a file must name a regular file of at most 16 MiB (tag files, register maps, imports) or 1 MiB (configurations, mappings). Relative paths resolve against the directory of the configuration file.
+- The web UI's setup screen writes to `periscope.toml` when it is writable, else to the overlay `state_dir/config.ui.toml`. `periscope.toml` wins key by key.
+
+## `[agent]`
+
+| Key | Default | Meaning |
+| --- | --- | --- |
+| `name` | required | Connector name, `A-Za-z0-9_-`, 1 to 64 characters. Prefixes every alternate ID, except on a gateway where the namespace does. Suffixes the MQTT client ID. |
+| `state_dir` | `/var/lib/periscope` | Where the agent keeps its state. Created with mode 0700, files 0600. |
+| `interval` | `1s` | Batcher flush interval: pending values are written at least this often. |
+| `max_batch` | `100` | A thing is flushed early at this many pending values. |
+| `discovery_interval` | `1h` | `serve`: how often to rediscover and apply. |
+| `log_level` | `info` | `debug`, `info`, `warn` or `error`. |
+| `log_encoding` | `json` | `json` or `console`. |
+| `dry_run` | `false` | Start dry: nothing is written to the platform and no output sends. The plan is kept in `plan.json`. |
+| `watch_config` | `true` | `serve`: reload when `periscope.toml` or the overlay changes. |
+| `health_interval` | `5m` | Gateway only: how often to send the health message, from `1m` to `5m`. A longer interval is refused: the gateway thing goes Offline after 15 minutes without a message, so it would flap. A change applies from the next message. |
+
+The alternate ID of every thing starts with `agent.name`, or with the gateway's namespace on a gateway, and may include an input's own `mount`. Changing them creates new things and never renames old ones. Choose them before the first apply.
+
+## `[ocb]`
+
+The connection to the platform. With a `url`, exactly one credential is required.
+
+| Key | Default | Meaning |
+| --- | --- | --- |
+| `url` | empty | The platform's base URL, such as `https://nimbit.example.com`. |
+| `path_prefix` | `/ocb` | Between `url` and `/rest/...`. Use `""` when `url` points at the backend directly. |
+| `gateway` | `false` | Sign in as the gateway that `periscope enroll -code` onboarded: its own key in `state_dir`, no password. See below. |
+| `email` | empty | Service-account mode: a user of your organization. |
+| `password` | empty | The service account's password, optional. Without it, `periscope enroll` stores a refresh session. A password without an `email` is refused. |
+| `token` | empty | A bearer token used as is and never refreshed. For tests. |
+| `timeout` | `30s` | Per request. |
+| `mode` | `confirm` | `confirm`: proposals wait for a person. `zero-touch`: everything proposed is applied. |
+| `mount` | empty | Path prefix for everything this agent discovers, such as `lenneform/werk-altena`. |
+| `levels` | `[]` | Names for the placement elements, such as `["site", "area", "line"]`. Lowercase `a-z`, `0-9`, `_`. |
+| `features_ttl` | `10m` | How long the organization's features are cached. |
+| `provisioner` | `ocb` when `url` is set, else `file` | See the table below. |
+| `allow_insecure` | `false` | Accept `http://` to a host that isn't loopback for `url`, `[auth] url` and `[contexus] url`. Credentials then cross in cleartext. |
+
+`gateway = true` means:
+
+- The agent signs in with its own key pair and no password. Its token lasts 5 minutes and is for the platform backend only. The key is valid for a year, and the agent registers the next one 30 days before it expires, without your help.
+- The gateway's namespace prefixes every alternate ID instead of `agent.name`: `<namespace>/<address>`, or `<namespace>/<input mount>/<address>`. `enroll` reads the namespace and keeps it in `gateway.json`. Until the platform has answered, the agent discovers and applies nothing and asks again every minute. A platform without the `gateways.me` route keeps `agent.name` as the prefix.
+- The agent sends a health message every `agent.health_interval`.
+- The platform outputs publish with the gateway's own credential, on the gateway's topics. See [Outputs reference](./outputs.mdx#the-gateway-credential).
+- A file that also sets `email`, `password` or `token` is refused: exactly one credential is allowed.
+- `require_input = false` on the `heartbeat` processor is refused.
+- Placement in Contexus is off, because the token is for the backend only.
+
+Plain HTTP is accepted only to a loopback host unless `allow_insecure = true`.
+
+### Provisioners
+
+| Provisioner | Apply does | Use it when |
+| --- | --- | --- |
+| `ocb` | Creates and extends thing types and things with names, units, `path`, levels and `sourcePath`. | The normal case: the platform holds clean names before the first value arrives. |
+| `tsflux` | Writes nothing to the platform. Marks proposals applied and writes the mapping. | Data must flow before anyone names things. The platform creates unknown things on write, without units or paths. `periscope verify` then reads every thing as nothing received until the `ocb` provisioner has run. |
+| `file` | Records into `provisioned-file.json`. | Tests and offline trials. |
+
+### Placement
+
+A thing's `path` is `mount` plus its node path, joined with `/`. The levels name those elements, starting at the mount's last element. With `mount = "lenneform/werk-altena"`, `levels = ["site", "area", "line"]` and a press at `Pressing/Line1/Press 1`, the press gets `site = werk-altena`, `area = Pressing`, `line = Line1`. Each level becomes a thing type property that is also a series tag.
+
+A mount is path elements joined with `/`: no empty element, no `.` or `..`, no space around an element, no control character. An input can set its own `mount`.
+
+## `[auth]`
+
+The platform's identity directory, used for the service account and the web UI's sign-in.
+
+| Key | Default | Meaning |
+| --- | --- | --- |
+| `url` | `ocb.url` when `ocb.path_prefix` is not empty | Where the directory's token API answers. |
+
+The platform's proxy routes the token API over `https://` only. For a plain-HTTP platform, set `[auth] url` to the directory's own address, such as `http://identity-directory:8300`.
+
+## `[contexus]`
+
+After applying, Periscope can post the placement of the applied things to Contexus.
+
+| Key | Default | Meaning |
+| --- | --- | --- |
+| `url` | `ocb.url` + `/contexus` when `path_prefix` is set | Base URL without `/v1`. Empty: nothing is posted. |
+| `source` | `periscope` | Base name of the two staging sources: `<source>-assets` and `<source>-things`. |
+| `timeout` | `30s` | Per request. |
+| `enabled` | unset | Unset follows the organization's Contexus feature. `false` never posts. `true` always posts. |
+
+A Contexus failure never fails an apply.
+
+## `[server]`
+
+| Key | Default | Meaning |
+| --- | --- | --- |
+| `listen` | `127.0.0.1:8400`, or `PERISCOPE_LISTEN` | Probes, `/version`, the discovery and `/api/v1` API and the web UI. The image sets `0.0.0.0:8400`. Off loopback without `token` or `[server.auth]`, reads are open to the network and the agent warns. |
+| `internal_listen` | `127.0.0.1:<listen port + 1>` | `/metrics` and `/debug/*`. |
+| `token` | empty | Bearer token for `/snapshot`, `/proposals` and `/api/v1/*`. Without it, reads are open and writes refused. |
+| `trusted_proxies` | `[]` | Reverse proxies whose `X-Forwarded-For` names the client. |
+| `ui` | `true` | Serve the web UI under `/ui`. |
+
+`[server.tls]` switches HTTPS on, even empty. Without `cert_file` and `key_file` it generates a self-signed certificate in `state_dir`. Keys: `cert_file`, `key_file`, `hsts`. The pair is reloaded without a restart.
+
+`[server.auth]` lets people sign in to the UI with their platform account. Tenant admins change things, and everyone else in the organization reads.
+
+| Key | Default | Meaning |
+| --- | --- | --- |
+| `url` | `[auth] url` | The identity directory's base URL. |
+| `cell` | required | The platform cell's name, used to check tokens. Ask your platform administrator. |
+| `admin_roles` | `["admin"]` | Roles that may change things. Compared exactly. |
+| `session_ttl` | `12h` | A session ends this long after sign-in. |
+| `issuer` | The cell's | The token's `iss`. |
+| `basic_cache` | `5m` | How long a script's basic login is remembered. |
+| `allow_insecure` | `false` | Accept `http://` to a host that isn't loopback. |
+
+## Plugins
+
+Each plugin instance is a table in an array: `[[inputs.<name>]]`, `[[processors.<name>]]` or `[[outputs.<name>]]`. Every table accepts `alias`, the instance name: 1 to 64 characters from `A-Za-z0-9_.-`, starting with a letter or digit. Every input also accepts `mount`. Processors run in file order. Renaming an input's alias after an apply detaches its mapping.
+
+| Plugin | Page |
+| --- | --- |
+| `inputs.opcua` | [Connect an OPC UA server](./opc-ua.mdx) |
+| `inputs.modbus` | [Read Modbus registers](./modbus.mdx) |
+| `inputs.s7` | [Read a Siemens S7 PLC](./s7.mdx) |
+| `inputs.sparkplug`, `inputs.mqtt` | [Subscribe to Sparkplug B or an MQTT broker](./sparkplug-and-mqtt.mdx) |
+| `inputs.http` | [Poll an HTTP source](./http.mdx) |
+| `processors.*` | [Transform values before they leave the edge](./processors.mdx) |
+| `outputs.*` | [Outputs reference](./outputs.mdx) |
+
+## Reloading
+
+`serve` takes a changed configuration without a restart. Three triggers share one path: SIGHUP, the file watch (`agent.watch_config`), and `POST /api/v1/agent/reload` or the **Reload** button on the UI's **Config** page.
+
+A reload is validated first. A configuration that doesn't load never stops the agent: it keeps running on the last good one, logs the error and shows it on the **Overview**. Only the plugin instances whose settings changed restart. An output that restarts loses nothing, because its queue is closed and the new instance sends what it holds. A change under `[ocb]`, `gateway` included, restarts every output, which then asks for the credential that fits.
+
+These keys apply only at the next start, and the **Overview** shows `restart required` until the file matches the running value:
+
+`agent.name`, `agent.state_dir`, `agent.log_level`, `agent.log_encoding`, `server.listen`, `server.internal_listen`, `server.token`, `server.ui`, `server.trusted_proxies`, `[server.auth]` and the paths in `[server.tls]`.
+
+## State directory
+
+Everything the agent keeps is in `agent.state_dir`. Back it up: it holds the agent's identity towards the platform.
+
+| File | Holds | Safe to delete |
+| --- | --- | --- |
+| `snapshot-<input>.json` | The last discovery of each input. | Yes. |
+| `proposals.yaml` | Thing types and things with their status. | Only to start over. |
+| `edits.yaml` | Renames, merges, units and scales made in the UI. | To go back to the discovered names. |
+| `mapping.json` | Address to thing, thing type and measure. | The next apply rebuilds it. |
+| `apply-log.jsonl` | One line per applied, skipped or failed item. | It is an audit trail. |
+| `gateway_key.pem`, `gateway.json` | A gateway's key and its IDs, namespace, gateway thing and endpoints. | Only with a new onboarding code. |
+| `gateway_key.next.pem` | The next key while a rotation registers it. | Not while a rotation is under way. |
+| `tenant.json` | The organization this state is pinned to. | Only to connect to another organization. |
+| `nimbit-gateway-credential.json` | A gateway's cached data credential. | Yes. A new one is requested. |
+| `nimbit-mqtt-credential.json` | The cached tenant credential of a service-account box. | Yes. A new one is requested. |
+| `setup-code.json` | The hash of the setup screen's one-time code. | Yes. |
+| `enrollment.json` | The service account's session. | `periscope enroll -revoke` ends it. |
+| `config.ui.toml` | The overlay written by the setup screen. | The agent is then disconnected at the next reload. |
+| `tsflux-stream/<output>/` | The stream output's disk queue. | Loses values not sent yet. |
+| `spool/<output>/` | The disk spool of `tsflux` and `nimbit_mqtt`. | Loses values not sent yet. |
+| `opcua-<input>.crt`, `.key`, `.pin` | The OPC UA client certificate and the pinned server certificate. | Only if the server should trust a new one. |
+| `ui.db` | The UI's sessions and audit log. | Ends every session. |
+
+## Related
+
+- [Command-line reference](./commands.mdx) · [Outputs reference](./outputs.mdx)
+- [What Periscope keeps on the box](./deploy/state-and-backup.mdx) · [Deploy Periscope](./deploy/index.mdx)
+- [How Periscope works](./how-periscope-works.mdx)

@@ -1,0 +1,52 @@
+---
+title: "Als Nächstes"
+description: Änderungen, die nach 0.12.5 zusammengeführt wurden und noch nicht veröffentlicht sind. Inhalt und Version können sich ändern.
+type: reference
+sidebar_position: 1
+translated_from: 70da89f
+---
+
+{/* TODO(product): confirm what ships in the next release and its version */}
+
+:::warning Noch nicht veröffentlicht
+Diese Seite listet Änderungen, die seit 0.12.5 (17. August 2026) zusammengeführt wurden. Sie sind noch nicht veröffentlicht, und was wann erscheint, kann sich ändern.
+:::
+
+## Neu {#new}
+
+**Dashboards**
+- Widgets: eine neue Widget-Auswahl und Widget-Einrichtung, neue Widgets und Standard-Dashboards.
+- Widgets: einen Wert nach Schwellenwerten einfärben, mit Hilfetext in der Widget-Einrichtung.
+- Vorfälle-Widget: zeigt aktive oder alle Vorfälle auf einem Dashboard.
+- Smart Dashboards: Ein Widget, das seine eigenen Things zeigt, kann eine Spalte **Thing** hinzufügen.
+- Startseite: Tenant-Dashboards (Erste Schritte, Tenant-Zustand, Tenant-Metriken) lassen sich von der Seite „Packs“ hinzufügen.
+
+**Things und Interfaces**
+- Die Seite des Thing-Typs wurde neu aufgebaut, mit Kopfbereich, Kennzahlenleiste und einer Übersicht in Abschnitten.
+- Die Tabs des Thing-Typs sind neu gestaltet: Things, Schema, Statistik, Rollups, Aktionen, Dashboards, Versionen und Dokumente.
+- Im Tab **Aktionen** können Sie eine Aktion auslösen und ihren Zustand an/aus sehen.
+- Die Seite des Things sowie die Listen- und Detailseiten der Interfaces folgen dem neuen Stil des Thing-Typs.
+
+**Anmeldung**
+- IoT Breeze leitet Sie auf die NimBit-Anmeldeseite, und Einladungen werden dort angenommen.
+
+## Verbessert {#improved}
+
+- Jede Listenseite verwendet jetzt dasselbe Listenraster.
+- Die App-Oberfläche ist neu gestaltet: Die Seitenleiste sitzt auf einem Rahmen, und Inhalte erscheinen als Karten.
+- Thing-Typen: Das Filtern nach Interface ist von Tabs in einen durchsuchbaren Filter in der Werkzeugleiste gewandert.
+- Smartphones: Der Kopfbereich des Thing-Typs ist aufgeräumter, und **Veröffentlichen** wandert ins Menü.
+- Konnektivitäts-Events sind jetzt standardmäßig eingeschaltet.
+- Änderungen an Passkeys erfordern eine frische Anmeldung.
+
+## Behoben {#fixed}
+
+- Thing-Typen: Gezogene Messwertzeilen bleiben innerhalb der Tabelle.
+- Die Beschriftung **ID kopieren** ist übersetzt.
+- Anmeldung: Die Meldung „Anmeldung fehlgeschlagen“ erscheint jetzt in der Anmeldekarte.
+
+## Inkompatible Änderungen {#breaking-changes}
+
+- Die Query-API (NBQ) lehnt jetzt eine Aggregation ab, die nicht zum Datentyp des Messwerts passt, und liefert Status 400. Wenn sich ein Client auf einen solchen Request verlassen hat, ändern Sie die Aggregation oder den Messwert.
+- Hosts für Remote-VNC-Server müssen private Adressen sein. Prüfen Sie Ihre VNC-Verbindungen.
+- Selbst gehostete Installationen: Das Präfix `DIP_` der Umgebungsvariablen des Telemetrie-Ingest-Dienstes ist jetzt `TSFLUX_`. Benennen Sie Ihre Einstellungen vor dem Upgrade um.

@@ -1,0 +1,97 @@
+---
+title: Ein Dashboard für alle Things einer Art bauen
+sidebar_label: Dashboard für alle Things
+description: Ein Smart-Dashboard auf Interfaces bauen, Widgets folgen lassen oder anheften, es Things zuweisen und mit Testdaten ausprobieren.
+type: how-to
+sidebar_position: 4
+app:
+  routes: ["/dashboards/:id", "/onboarding/things/:id", "/onboarding/thing-types/:id"]
+  tour: build-dashboards
+translated_from: a4ace78
+---
+
+import TourLink from "@site/src/components/TourLink";
+import Screenshot from "@site/src/components/Screenshot";
+
+Bauen Sie ein Smart-Dashboard einmal, und es funktioniert für jedes Thing, dessen Typ die gewählten Interfaces umsetzt, heutige wie künftige. Wie es sein Thing wählt, lesen Sie unter [Dashboards, Smart-Dashboards und Zeit](./dashboards.mdx).
+
+<TourLink id="build-dashboards-interface-based" />
+
+## Bevor Sie beginnen {#before-you-start}
+- Eine Rolle, die Dashboards anlegen und bearbeiten darf.
+- Mindestens ein Interface, das Ihre Thing-Typen umsetzen. Die Vorschau des Formulars zählt die passenden Things.
+
+## Das Dashboard bauen {#build-the-dashboard}
+
+1. Öffnen Sie **Überwachung › Dashboards** und wählen Sie **Neues Dashboard**.
+2. Wählen Sie **Aus Interfaces**.
+3. Geben Sie einen **Dashboard Name** ein, wählen Sie ein oder mehrere Interfaces (ein Thing-Typ geht auch) und wählen Sie **Speichern**.
+4. Wählen Sie **Widget hinzufügen**, nehmen Sie zum Beispiel **Diagramm** und dann **Linie**.
+5. Lassen Sie **Dem Dashboard folgen** aktiv. Wählen Sie eine Telemetrie und wählen Sie **Zum Dashboard hinzufügen**.
+6. Wählen Sie **Speichern**.
+
+Wählen Sie oben im Dashboard ein anderes Thing. Das Widget folgt.
+
+<Screenshot
+  page="visualize/smart-dashboard"
+  id="01-dashboard-form"
+  route="/dashboards"
+  state="Smart dashboard form with name Air handler overview, one interface selected, the compatibility preview showing matching things, Tenant dashboard selected"
+  alt="Das Formular für das Smart-Dashboard mit Name, Interface und Sichtbarkeit"
+/>
+
+## Ein Widget an ein Thing anheften {#pin-a-widget-to-one-thing}
+
+Ein angeheftetes Widget zeigt sein eigenes Thing, egal was oben gewählt ist. Nutzen Sie es für einen festen Bezug wie die Außentemperatur.
+
+1. Wählen Sie **Bearbeiten** und dann **Widget hinzufügen**.
+2. Wählen Sie **Eigene Things** statt **Dem Dashboard folgen**.
+3. Wählen Sie in jeder Zeile das Thing und seine Telemetrie und dann **Zum Dashboard hinzufügen**.
+
+Für ein Dashboard nur aus angehefteten Widgets lassen Sie in Schritt 3 des ersten Teils die Interfaces leer. Ein Dashboard ohne Interfaces braucht kein Thing und kann deshalb auf [Home](./home.mdx).
+
+## Das Dashboard zuweisen {#assign-the-dashboard}
+
+Die Zuweisung bestimmt, wo das Dashboard angeboten wird.
+
+| Wo | Wie | Wirkung |
+| --- | --- | --- |
+| Ein Thing | Öffnen Sie das Thing, seinen Tab **Dashboard**, **Dashboards zuweisen**. | Nur an diesem Thing angeheftet. |
+| Ein Thing-Typ | Öffnen Sie den Thing-Typ, seinen Tab **Dashboards**, **Dashboards verwalten**. | Wird an jedem Thing des Typs angeboten, jetzt und später. |
+| Das Dashboard | Im Bearbeitungsmodus **Zugewiesen an**, dann **Thing-Typen** oder **Things**, dann **Zuweisen**. | Dasselbe, von dieser Seite aus. Es werden nur passende Things und Typen aufgelistet. |
+| Eine Knowledge-Ebene | Der Tab **Visualisierungen** der Ebene. | Standorte, Gebäude und andere Ebenen zeigen es dort. Siehe [Erkunden](../knowledge/map-sites.mdx). |
+
+Im Tab **Dashboard** eines Things markiert der Stern das Standard-Dashboard, das zuerst öffnet. Ziehen Sie Zeilen, um die übrigen zu ordnen. Ein Thing bietet auch die Dashboards seines Thing-Typs an, gekennzeichnet als vom Typ stammend. Bearbeiten Sie diese am Typ.
+
+Verlangt ein Dashboard ein Interface, erhält jeder Thing-Typ mit diesem Interface das Dashboard automatisch. Um es zu entfernen, lösen Sie das Interface vom Typ oder ändern Sie die Interfaces des Dashboards.
+
+## Ein Start-Dashboard erzeugen {#generate-a-starting-dashboard}
+
+Ein Interface kann ein Smart-Dashboard mit Widgets für seine Telemetrien erzeugen: Liniendiagramme, Gauges, Zustandskacheln und Eigenschaftszeilen. Öffnen Sie **Dashboard generieren** im Menü der Interface-Seite oder im Tab **Interfaces** eines Thing-Typs. Der Dialog **Smart-Dashboard generieren** zeigt vorab, was er anlegt.
+
+## Mit Testdaten ausprobieren {#try-it-with-mock-data}
+
+Entwerfen Sie, bevor ein Gerät Daten sendet. Öffnen Sie oben im Dashboard das Menü der Datenquelle.
+
+| Quelle | Was sie tut |
+| --- | --- |
+| **Gerät** | Live-Werte eines Things, zu dem das Dashboard passt. Der Standard. |
+| **Testdaten** | Erfundene Werte. Wählen Sie ein Muster (**Zufällig**, **Gleichmäßig**, **Welle**, **Rampe**, **Stufen**, **Ausreißer**) und ein Intervall. Angeheftete Widgets zeigen weiterhin echte Daten. |
+| **Datei** | Eine CSV-, Parquet- oder JSON-Datei, abgebildet auf die Telemetrien des Dashboards. |
+
+So spielen Sie eine Datei ab: Wählen Sie **Datei**, legen Sie eine ab oder wählen Sie sie unter **Dateien** (oder **Beispieldatei einer Lüftungsanlage ausprobieren**), ordnen Sie die **Zeitspalte** und je eine Spalte pro Telemetrie zu (**Gerätespalte** leitet mehrere Geräte), benennen Sie die Zuordnung und wählen Sie **Speichern und verwenden**. Zeilen, die nicht passen, werden übersprungen und gezählt. Wählen Sie die Zahl, um den Grund zu sehen.
+
+Ein Banner und eine Markierung **TESTDATEN** erinnern daran, dass nichts gemessen wurde. Wählen Sie **Testdaten ausschalten**, um zurückzukehren. Testdaten und Dateien werden in Ihrem Browser gelesen. Nichts wird an ein Gerät gesendet oder in seinen Verlauf geschrieben.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Wählen Sie in der Thing-Auswahl zwei verschiedene Things: Folgende Widgets wechseln, angeheftete bleiben. Öffnen Sie ein Thing des zugewiesenen Typs: Sein Tab **Dashboard** listet das Dashboard.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Ein Widget ist leer**: Das gewählte Thing setzt nur einen Teil der Interfaces um. Es zeigt seine Abdeckung, etwa **2 von 3 Schnittstellen**. Wählen Sie ein anderes Thing oder probieren Sie Testdaten.
+- **Das Dashboard erscheint an keinem Thing**: Es ist nicht zugewiesen, oder dem Typ des Things fehlt das Interface. Weisen Sie es wie oben zu.
+- **Eine Datei zeigt nach dem Neuladen keine Daten**: Dateien werden nicht behalten. Wählen Sie sie erneut oder setzen Sie den Haken bei **Eine Kopie in Dateien speichern**.
+
+## Verwandte Seiten {#related}
+- [Dashboards, Smart-Dashboards und Zeit](./dashboards.mdx) · [Widget-Galerie](./widgets.mdx)

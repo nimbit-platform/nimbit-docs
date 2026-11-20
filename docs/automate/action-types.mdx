@@ -1,0 +1,134 @@
+---
+title: Action types
+sidebar_position: 8
+description: Every action type you can add to a rule, an event type, or a thing or thing type, with its fields.
+type: reference
+app:
+  routes: ["/automation/rule-designer/:id", "/manage/event-types/:id", "/onboarding/thing-types/:id", "/onboarding/things/:id"]
+---
+
+Each place that runs actions offers a different list. The list per place comes first, then the fields of each type.
+
+## Which place offers which type
+
+| Place | Action types | Runs |
+| --- | --- | --- |
+| **Rule**, **Actions** node | **Notification**, **Notification channel**, **Email**, **Webhook**, **Event**, **Update Measures** | When the rule's trigger fires |
+| **Event type**, **Actions** tab | **Notification**, **Notification channel**, **Email**, **Webhook** | When an event of that type is created, except events that close an episode. A new action starts switched off: turn on **Active**. |
+| **Thing type** or **thing**, **Actions** tab | **Webhook**, **Azure C2D**, **MQTT** | When a person, a dashboard or the API fires it |
+
+**Update Measures** is available only when the rule's **Start** node uses **Thing type**. Severity is one of **Information**, **Warning**, **Error** or **Critical**.
+
+## Notification
+
+An in-app notification to users and groups. Used in rules and on event types.
+
+| Field | Meaning |
+| --- | --- |
+| **Subject** | Required. |
+| **Severity** | Required. |
+| **Message** | Required. |
+| **Users and groups** | At least one user or group. |
+
+## Notification channel
+
+A message to one or more [notification channels](../watch/alert-channels.mdx) such as Slack, Teams, a webhook receiver or ntfy. Used in rules and on event types.
+
+| Field | Meaning |
+| --- | --- |
+| **Notification channel** | Required. Pick one or more. A channel that is turned off is marked in the list. |
+| **Subject**, **Message**, **Severity** | Optional. |
+
+## Email
+
+An email to users, groups or external addresses. Used in rules and on event types. Email goes through the tenant's mail server if one is set up, and otherwise through the platform mail server.
+
+| Field | Meaning |
+| --- | --- |
+| Format | **Plain** or **Mail template**. |
+| **Subject**, **Body** | Required for **Plain**. |
+| **Mail template** | Required for **Mail template**. See [Mail templates and placeholders](../watch/mail-templates.mdx). |
+| **From**, **CC**, **BCC** | Optional. |
+| Recipients | At least one user, group or external address. |
+
+**Subject** and **Body** accept placeholders in double curly braces. Placeholders do not apply when you choose a mail template.
+
+{/* TODO(product): Which placeholder names are available in a rule's Email, Notification and Webhook actions (for example the measure value that met the condition)? The executors render them from the trigger payload, which for a rule fire is `{ data, referenceId }`, but the fields are not documented in the app. */}
+
+## Webhook
+
+An HTTP request to another system. Used in rules and on event types, and as a thing action.
+
+| Field | Meaning |
+| --- | --- |
+| **Method** | `GET`, `POST`, `PUT`, `PATCH` or `DELETE`. |
+| **URL** | The address to call. |
+| **Body** | Required for `POST`, `PUT` and `PATCH`. |
+| **Headers** | Key and value pairs. Keys must be unique, and a key needs a value. |
+| **Authorization type** | See the next table. |
+
+| Authorization type | Fields |
+| --- | --- |
+| **None** | none |
+| **Bearer** | **Token** |
+| **Basic** | **Username**, **Password** |
+| **Query** | **Query parameter key**, **Query parameter value**, added to the URL |
+| **OAuth2** | **Token endpoint**, **Grant type**, optional **Scope**, and fields that depend on the grant type |
+
+OAuth2 grant types: **Client credentials** (**Client id**, **Client Secret**), **Password** (**Username**, **Password**), **Refresh token** (**Refresh token**) and **JWT (JSON Web Token)** (**JWT assertion**).
+
+## Event
+
+Creates an event. Rules only.
+
+| Field | Meaning |
+| --- | --- |
+| **Title** | Required. The title of the event. |
+| **Event type** | Required. The event appears under **Monitoring › Events** and runs that event type's actions. |
+| **Severity** | Required. |
+
+## Update Measures
+
+Writes values to measures of the thing type. Rules only, and only with a **Start** node set to **Thing type**. You enter a JSON object that maps measure names to values. The measures must exist on the thing type.
+
+## MQTT
+
+A command published to one device. Thing actions only. Works for devices connected with the provider **Nimbit**.
+
+| Field | Meaning |
+| --- | --- |
+| **Name** | Shown in lists and on dashboards. |
+| **Sub-topic** | Optional. Appended to `iot/tenant/<tenant>/device/<device>/cmd/`. At most 128 characters, 8 levels and 64 characters per level. Letters, digits, `_` and `-`, separated by `/`. Placeholders allowed. |
+| **Payload format** | **JSON** or **Text**. With **JSON**, the result after substitution must be valid JSON, and a payload is required. |
+| **Payload** | The message, up to 64 KiB. |
+
+Placeholders are plain values in double curly braces: `{{thing.id}}`, `{{thing.name}}`, `{{thing.alternateId}}`, `{{messageId}}`, and measures of the thing type from **Insert Placeholder**. Sections, partials and delimiter changes are rejected. The command is delivered at most once, only to a connected device. See [Send a command to a device](./device-command.mdx).
+
+## Azure C2D
+
+A cloud-to-device message, sent on the `/devicebound` topic. Thing actions only. For things registered with the Azure provider type.
+
+| Field | Meaning |
+| --- | --- |
+| **Name**, **Description** | Name is shown in lists. |
+| **This is a toggle action (ON/OFF)** | Makes an on/off action. |
+| **Payload** | The message. With a toggle action it is labeled **On Payload**. Placeholders are replaced when the command is sent. |
+| **Off Payload** | The message for off. Toggle actions only. |
+
+On a thing page a toggle action shows **Turn on** or **Turn off** and the state from the thing's latest reading of the measure. Only Azure C2D offers this option. MQTT has no toggle.
+
+## Fields on every thing action
+
+| Field | Meaning |
+| --- | --- |
+| **Allow usage as dashboard widget** | Lets an **Action** widget fire it. Anyone who can open the dashboard can fire the action. |
+| **Active** | A switch on the thing type's action list. An inactive action cannot be fired. Webhook actions are created inactive. MQTT and Azure C2D actions are created active. |
+| **Inherited** | On a thing, marks an action defined on its thing type. Change it there. |
+
+Open **Log** on the **Actions** tab to see every run, with **When**, status and where it came from.
+
+## Related
+
+- [Rules, actions and reports](./rules-actions-reports.mdx)
+- [Call another system from a rule](./webhook-from-rule.mdx)
+- [Send a command to a device](./device-command.mdx)

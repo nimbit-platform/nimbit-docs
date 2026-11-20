@@ -1,0 +1,101 @@
+---
+title: Ein Gerät zeigt kein Signal
+description: Herausfinden, warum ein Thing „Noch kein Signal“ meldet oder nicht mehr sendet, von Zugangsdaten und Topics bis zu verworfenen Messwerten und Gateways.
+sidebar_position: 2
+type: how-to
+app:
+  routes: ["/monitor/thing-details/:id", "/onboarding/things/:id"]
+translated_from: c8e4e12
+---
+
+Finden Sie heraus, warum Daten eines Geräts nicht an seinem Thing ankommen. Wie eine Nachricht reist, steht unter [Wie Geräte sich verbinden](../connect/how-devices-connect.mdx).
+
+## Symptome {#symptoms}
+
+- Der Kopfbereich des Things meldet **Noch kein Signal**, oder **Letztes Signal** ist älter, als es sein sollte.
+- **Live-Werte** meldet **Noch keine Daten**, oder **Telemetrien** zeigt `3 von 4 melden Werte`.
+- Das Gerät meldet Erfolg, aber nichts erscheint.
+
+## In dieser Reihenfolge prüfen {#check-in-this-order}
+
+### 1. Eine Testnachricht aus IoT Breeze senden {#1-send-a-test-message-from-iot-breeze}
+
+Öffnen Sie das Thing (**Einstellungen › Onboarding › Things**), wählen Sie **Weitere Aktionen › Daten senden** und senden Sie eine Nachricht. Siehe [Ein Gerät simulieren](../connect/simulate.mdx).
+
+- **Sie erscheint in der Übersicht**: Das Thing, sein Thing-Typ und die Plattform funktionieren. Das Problem liegt auf der Geräteseite. Weiter mit den Prüfungen 2 bis 5.
+- **Sie erscheint nicht**: Das Problem liegt im Thing-Typ oder im Thing. Gehen Sie zu den Prüfungen 6 und 7.
+
+### 2. Zugangsdaten und Client-ID {#2-credentials-and-client-id}
+
+Öffnen Sie das Thing, gehen Sie zu **Verbindungen**, wählen Sie **Verbindungsinformationen** und vergleichen Sie jeden Wert mit dem, was das Gerät verwendet.
+
+| Protokoll | Symptom | Lösung |
+| --- | --- | --- |
+| MQTT | Die Verbindung wird abgelehnt | Die Client-ID muss `<tenantId>:<deviceId>` sein, optional gefolgt von `:<suffix>`, und nie leer. Der Benutzername ist der aus den **Verbindungsinformationen**. Das Passwort ist das Basic-Passwort oder das JWT-Token. |
+| MQTT | Das Gerät verbindet sich ständig neu | Zwei Clients mit derselben Client-ID ersetzen sich gegenseitig. Fügen Sie bei einem einen Suffix hinzu. |
+| HTTP | `401` | Die Zugangsdaten sind falsch, fehlen oder sind abgelaufen. Prüfen Sie **Läuft ab am** eines Tokens. |
+
+Wenn jemand den **Geräteschlüssel** rotiert hat, werden alle älteren Zugangsdaten abgelehnt. Eine offene MQTT-Verbindung übersteht eine Rotation, bis sie sich neu verbindet. Legen Sie neue Zugangsdaten an: [Gerätezugangsdaten anlegen und rotieren](../connect/credentials.mdx).
+
+### 3. Port und TLS {#3-port-and-tls}
+
+Die **Gateway-URL** in den **Verbindungsinformationen** nennt Schema, Host und Port Ihres Deployments. `mqtts://` bedeutet, dass der Client TLS verwenden muss. Ein Client mit falschem Schema oder Port verbindet sich nicht. Auch die REST-URLs unter **REST** tragen das Schema Ihres Deployments.
+
+### 4. Topic und IDs {#4-topic-and-ids}
+
+Das Gerät darf nur in das Topic **Telemetrie** veröffentlichen, `tenant/<tenantId>/device/<deviceId>/telemetry`. Jedes andere Topic wird abgelehnt. `<deviceId>` ist die interne ID aus den **Verbindungsinformationen**, nicht die **Alternative Thing -ID**.
+
+Über HTTP sind `tenant`, `id` und `thingType` Pflicht. `id` akzeptiert die ID des Things oder seine **Alternative Thing -ID**, und beide müssen zu den Zugangsdaten gehören.
+
+### 5. Abgelehnte oder verworfene Nachrichten {#5-messages-that-are-refused-or-dropped}
+
+Abonnieren Sie das Topic **Fehler**, bevor Sie veröffentlichen. Den Befehl finden Sie unter [Daten über MQTT senden](../connect/mqtt.mdx#check-that-it-worked). Eine Nachricht, die der Broker angenommen und danach abgelehnt hat, zum Beispiel wegen eines unbekannten Thing-Typs, kommt dort mit `stage` und `error` an.
+
+Manche Nachrichten erreichen dieses Topic nie. Ungültiges JSON, ein fehlender `thingType`, weder `data` noch `geo` oder ein `tenant` oder eine `id`, die nicht zum Topic passt, werden ohne Hinweis verworfen. Prüfen Sie die Payload gegen das [Nachrichtenformat](../connect/message-format.mdx).
+
+Über HTTP sagt der Statuscode, was passiert ist:
+
+| Status | Vorgehen |
+| --- | --- |
+| `400` | Lesen Sie den Body. Er nennt das Problem: ungültiges JSON, unbekanntes Thing oder unbekannter Thing-Typ, Zugangsdaten passen nicht. |
+| `401` | Siehe Prüfung 2. |
+| `207` | Senden Sie nur die Einträge mit Status `503` erneut. |
+| `422` | Die Nachricht wurde abgelehnt und wird es wieder. Korrigieren Sie sie. |
+| `429`, `503` | Warten Sie auf `Retry-After`, dann erneut versuchen. |
+
+Alle Codes: [Ingest-Endpoints und Statuscodes](../connect/ingest-endpoints.mdx).
+
+### 6. Name des Thing-Typs {#6-thing-type-name}
+
+`thingType` muss der Name oder die ID des Typs sein, mit dem das Thing angelegt wurde. Der Typ eines Things lässt sich nicht ändern. Vergleichen Sie ihn mit dem **Thing-Typ**, der am Thing steht.
+
+### 7. Messwerte, die der Thing-Typ nicht kennt {#7-measures-the-thing-type-does-not-know}
+
+Ein Messwert, der nicht in der **veröffentlichten** Version des Thing-Typs steht, wird verworfen. Bleibt sonst nichts in der Nachricht übrig, wird die ganze Nachricht abgelehnt. Öffnen Sie den Thing-Typ, Tab **Schema**:
+
+- Der Messwert existiert nur in einem Entwurf: Veröffentlichen Sie ihn. Siehe [Entwürfe, Veröffentlichen und Versionen](../model/drafts-and-versions.mdx).
+- Der Name weicht ab: Namen werden in Kleinbuchstaben gespeichert. Lassen Sie das Gerät den Namen aus dem Schema senden.
+- Sie möchten, dass neue Messwerte automatisch hinzugefügt werden: Schalten Sie beim Thing-Typ **Auto-Schemas Entwicklung** ein.
+- Der Thing-Typ hat eine Transformations-Pipeline: Ein Schritt kann den Wert entfernen oder umbenennen. Siehe [Eingehende Daten bereinigen](../model/clean-up-data.mdx).
+
+### 8. Zeitstempel {#8-timestamps}
+
+Ohne `time` gilt der Zeitpunkt des Eintreffens. Bei einer falschen Gerätezeit werden Werte gespeichert, aber zu einem Zeitpunkt außerhalb des Bereichs, den Sie ansehen, und **Letztes Signal** kann eine unerwartete Zeit zeigen. Beim Line Protocol braucht ein Zeitstempel in Sekunden `precision=s`; Standard sind Nanosekunden, und die Daten landen im Jahr 1970. Siehe [Nachrichtenformat](../connect/message-format.mdx#time).
+
+### 9. Geräte hinter einem Gateway {#9-devices-behind-a-gateway}
+
+Ein Gerät hinter einem Gateway verbindet sich nicht selbst. Prüfen Sie zuerst das Gateway, dann, ob das Gerät als Thing bekannt ist. Siehe [Gateways und Edge](../gateways/index.mdx).
+
+## Immer noch nicht gelöst? {#still-stuck}
+
+Schreiben Sie an info@nimbit.de mit:
+
+- Ihrem Tenant-Namen, dem Namen des Things und seiner **Client-ID** aus den **Verbindungsinformationen**.
+- Dem Protokoll (MQTT, HTTP, Line Protocol, Gateway) und der Uhrzeit eines fehlgeschlagenen Versuchs mit Zeitzone.
+- Dem HTTP-Status und Body oder dem Text aus dem Topic **Fehler**.
+- Der gesendeten Payload, ohne Geheimnisse. Senden Sie nie Passwörter oder Tokens.
+
+## Verwandte Seiten {#related}
+
+- [Daten über MQTT senden](../connect/mqtt.mdx) · [Daten über HTTP senden](../connect/http.mdx)
+- [MQTT-Topics und Client-ID](../connect/mqtt-topics.mdx) · [Thing-Typen, Things und Interfaces](../model/things-and-types.mdx)

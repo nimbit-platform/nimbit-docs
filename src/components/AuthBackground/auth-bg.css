@@ -1,0 +1,65 @@
+/* The sign-in page's background tokens and frame, from apps/identity-directory/assets/css/auth.css.
+ * Everything derives from --primary, as on the sign-in page. In the docs the background fills its
+ * section (the homepage hero) instead of the viewport. */
+
+:root {
+  --success: rgb(46 124 3);
+  --bg-base: rgb(242 245 246);
+  --bg-line: color-mix(in oklab, var(--primary) 30%, transparent);
+  --bg-node: color-mix(in oklab, var(--primary) 55%, transparent);
+  --bg-glow: color-mix(in oklab, var(--primary) 12%, transparent);
+  --bg-dot: color-mix(in oklab, var(--primary) 18%, transparent);
+  --bg-spark: rgb(224 168 0);
+  --bg-tile: rgb(255 255 255);
+  --bg-tile-edge: rgb(9 9 11 / 0.08);
+  --bg-tile-shadow: rgb(9 9 11 / 0.06);
+  --bg-road: rgb(118 118 128 / 0.14);
+}
+
+html[data-theme="dark"] {
+  --success: rgb(82 196 26);
+  --bg-base: rgb(7 17 20);
+  --bg-line: color-mix(in oklab, var(--primary) 26%, transparent);
+  --bg-node: color-mix(in oklab, var(--primary) 60%, transparent);
+  --bg-glow: color-mix(in oklab, var(--primary) 16%, transparent);
+  --bg-dot: color-mix(in oklab, var(--primary) 16%, transparent);
+  --bg-spark: rgb(251 191 9);
+  --bg-tile: rgb(18 25 28);
+  --bg-tile-edge: rgb(255 255 255 / 0.09);
+  --bg-tile-shadow: rgb(0 0 0 / 0.4);
+  --bg-road: rgb(118 118 128 / 0.2);
+}
+
+.auth-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(70% 60% at 10% 6%, var(--bg-glow), transparent 70%),
+    radial-gradient(60% 55% at 92% 96%, var(--bg-glow), transparent 70%),
+    var(--bg-base);
+}
+
+.auth-bg > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Calm: quieter marks, the middle (behind the hero text) faded almost away. */
+.auth-bg[data-detail="calm"] > svg {
+  opacity: 0.8;
+  mask-image: radial-gradient(ellipse 58% 72% at 50% 50%, rgb(0 0 0 / 0.12) 30%, #000 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-bg *,
+  .auth-bg *::before,
+  .auth-bg *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "label": "Connect devices",
+  "position": 1,
+  "link": { "type": "doc", "id": "connect/index" }
+}

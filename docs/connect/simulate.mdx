@@ -1,0 +1,86 @@
+---
+title: Simulate a device
+description: Send one test message or run a simulated device from the thing page, without any hardware.
+sidebar_position: 7
+type: how-to
+app:
+  routes: ["/onboarding/things/:id"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Fill charts and test dashboards or rules before the real device is online. IoT Breeze sends the data for the thing, as a device would. To connect real hardware, use [Send data over MQTT](./mqtt.mdx) or [Send data over HTTP](./http.mdx).
+
+## Before you start
+
+- A thing of a published thing type. See [Register a thing](../model/register-thing.mdx).
+- The permission to send data to devices. Without it, the buttons are not shown.
+
+## Steps
+
+### Send one message
+
+1. Open the thing (**Settings › Onboarding › Things**).
+2. Select **More actions**, then **Send data**. The **Send once** tab opens. On a thing that never reported, **Overview** also offers **Send a test message**.
+3. Each measure of the thing type is a row with **Measure** and **Value**. Untick measures you do not want to send, or use **Include all measures**.
+4. Under **Timestamp**, choose **Now** or **Pick a time…**.
+5. Select **Send message**.
+
+To add location or tags, edit the message as JSON. Delete a measure to leave it out.
+
+<Screenshot
+  page="connect/simulate"
+  id="01-send-once"
+  route="/onboarding/things/:id"
+  state="Send data dialog on the Send once tab with two measures filled in and the Timestamp set to Now"
+  alt="The Send once form"
+/>
+
+### Run a simulation
+
+1. Select **More actions**, then **Simulate device…**. The **Simulate** tab opens.
+2. Choose **Run for**: 15 minutes, 30 minutes, 1 hour or 4 hours.
+3. Choose **Every**: how often a message is sent, from 1 second to 5 minutes. The default is 10 seconds.
+4. For each measure, choose a **Shape** and the **Min** and **Max**. **Preview** draws the result. Pick at least one measure.
+5. Select **Start simulation**.
+
+| Measure type | Shapes |
+| --- | --- |
+| Numeric | **Random**, **Smooth**, **Wave**, **Ramp**, **Steps**, **Spikes**, **Constant**, **Off** |
+| Boolean | **Mostly true (95%)**, **Toggle every 5 min**, **Random**, **Always true**, **Always false**, **Off** |
+| Text | **Constant**, **Off** |
+
+**Off** leaves the measure out.
+
+<Screenshot
+  page="connect/simulate"
+  id="02-simulate"
+  route="/onboarding/things/:id"
+  state="Send data dialog on the Simulate tab: Run for 15 min, Every 10 s, a temperature measure on Wave with min 18 and max 26 and a preview"
+  alt="The Simulate form"
+/>
+
+### Control a running simulation
+
+The simulation runs on IoT Breeze and keeps running when you leave the page. A banner on the thing page shows **Simulating**, the interval, the time left and the messages sent.
+
+| Button | Effect |
+| --- | --- |
+| **+15 min** | Runs 15 minutes longer. |
+| **Edit…** | Opens the form. **Restart simulation** applies changes. |
+| **Stop** | Ends the simulation. |
+
+## Check that it worked
+
+The values appear in **Live values** on the thing's **Overview** within a second. **Last signal** shows the current time.
+
+## If it doesn't work
+
+- **The buttons are missing**: you lack the permission to send data to devices.
+- **The banner says Simulation stopped: the data could not be sent**: select **Dismiss**, then check that the thing type is published and start again.
+- **Simulated values are in a real device's history**: charts do not tell them apart. Remove them in **Administration › Tenant Settings › Data** with **Simulated data**, after stopping running simulations. Readings your devices sent are not touched.
+
+## Related
+
+- [How devices connect](./how-devices-connect.mdx)
+- [Message format](./message-format.mdx)

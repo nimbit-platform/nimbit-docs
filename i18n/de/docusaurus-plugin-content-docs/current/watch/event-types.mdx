@@ -1,0 +1,108 @@
+---
+title: Event-Typen
+sidebar_position: 9
+description: Woher Events kommen, wie sie eingeordnet werden und welche Eigenschaften, Anzeigetypen und Aktionen ein Event-Typ hat.
+type: reference
+app:
+  routes: ["/monitor/events", "/monitor/events/:id", "/manage/event-types", "/manage/event-types/:id"]
+  tour: find-your-way-alerts
+translated_from: a4ace78
+---
+
+import TourLink from "@site/src/components/TourLink";
+
+Ein Event-Typ benennt eine Art von Event und enthält die Aktionen, die laufen, wenn eines auftritt. Quellen, Schweregrade, Episodenzustände, Eigenschaften und Aktionen stehen unten.
+
+<TourLink id="find-your-way-alerts" />
+
+## Event-Quellen {#event-sources}
+
+Jedes Event hat eine Quelle. Sie steht in den Event-Details und wird in der Klausel **Ausgelöst von** einer Vorfallsrichtlinie verwendet.
+
+| Quelle | Ausgelöst durch |
+| --- | --- |
+| **Regel-Engine** | Eine von Ihnen gebaute Regel traf auf Gerätedaten zu |
+| **Konnektivität** | Ein Thing ging offline oder kam zurück |
+| **Geofence** | Ein Thing betrat oder verließ einen Geofence |
+| **API** | Ein anderes System sandte ein Event an IoT Breeze |
+| **Manuell** | Eine Person erfasste das Event |
+| **Automatisierung** | Eine **Ereignis**-Aktion hat es ausgesendet |
+| **Reparatur** | Die Plattform hat einen Zustand selbst korrigiert, zum Beispiel den Online- oder Offline-Zustand eines Things, nachdem ihre Konnektivitätsprüfung ihn als falsch erkannt hatte |
+
+Auch Änderungen an Datensätzen sind Events: Ein Thing, Thing-Typ, eine Gruppe oder ein Benutzer wurde angelegt, geändert oder gelöscht. Ihre Event-Typen tragen den Namen des Datensatztyps.
+
+## Schweregrad {#severity}
+
+| Schweregrad | Rang |
+| --- | --- |
+| **Information** | Niedrigster |
+| **Warnung** | Über Information |
+| **Fehler** | Über Warnung |
+| **Kritisch** | Höchster |
+
+Ein **Mindestschweregrad** an einem Kanal oder einer Richtlinie meint diesen Schweregrad und alles darüber.
+
+## Episodenzustand {#episode-state}
+
+| Zustand | Bedeutung |
+| --- | --- |
+| **Offen** | Etwas hat begonnen und noch nicht geendet: ein Thing offline, eine Regelbedingung erfüllt, ein Thing innerhalb eines Zauns |
+| **Beendet** | Das passende Ende-Event ist eingetroffen |
+| **Punkt** | Ein einzelner Fakt, den nichts beendet |
+
+Die Events einer Episode teilen sich eine Korrelation. Events, die eine Episode beenden, führen keine Aktionen des Event-Typs aus und werden nicht an Benachrichtigungskanäle geroutet.
+
+## Eigenschaften eines Event-Typs {#event-type-properties}
+
+| Eigenschaft | Bedeutung |
+| --- | --- |
+| **Name** | Der Name, der in Listen steht und von Regeln, Kanälen und Richtlinien verwendet wird |
+| **Typ** | **System**: wird mit IoT Breeze ausgeliefert (Datensatzänderungen, Konnektivität, Geofence-Übergänge, fehlgeschlagene Aktionen). Sie können ihn lesen, aber nicht bearbeiten oder löschen. **Benutzer**: Ihrer. |
+| **Gruppen** | Gruppen, die Events dieses Typs sehen dürfen. Ein Mitglied sieht ein Event nur, wenn es zu einer von ihnen gehört und den Datensatz sehen kann, um den es geht. Der Service-Benutzer des Tenants sieht alle. |
+| **Anzeigetyp** | Wie ein Event dieses Typs aussieht, wenn es geöffnet wird |
+| **Search tags** | Tags, um den Typ zu finden |
+| **Beschreibung** | Freier Text, kann übersetzt werden |
+| **Icon** | Optional |
+| **Beispiel payload** | Nur lesbar. Die Form der Daten, die Events dieses Typs tragen. |
+
+### Anzeigetypen {#display-types}
+
+| Anzeigetyp | Zeigt |
+| --- | --- |
+| **Standard** | Die Details und die Payload |
+| **Regelauswertung** | Die Regel, ihre Bedingungen und die Werte, die sie ausgelöst haben |
+| **Geofence** | Den Zaun, Ein- und Austrittspunkte und die Zeit innerhalb |
+
+## Aktionen an einem Event-Typ {#actions-on-an-event-type}
+
+Eine Aktion läuft jedes Mal, wenn ein Event des Typs ausgesendet wird, außer bei Events, die eine Episode beenden.
+
+| Aktionstyp | Was sie tut |
+| --- | --- |
+| **Benachrichtigung** | Sendet eine In-App-Benachrichtigung an Benutzer oder Gruppen, unter der Glocke im Kopfbereich |
+| **Benachrichtigungskanal** | Sendet eine Nachricht an einen [Benachrichtigungskanal](./channel-types.mdx) |
+| **E-Mail** | Sendet eine E-Mail an Empfänger oder Gruppen, als reiner Text oder mit einer [E-Mail-Vorlage](./mail-templates.mdx) |
+| **Webhook** | Sendet eine HTTP-Anfrage an einen externen Endpunkt |
+
+Die Aktionstabelle zeigt **Typ**, **Name**, **Benutzer**, **Gruppen**, **Geändert** und einen Schalter **Aktiv**. Eine ausgeschaltete Aktion läuft nicht. Eine neue Aktion startet ausgeschaltet, schalten Sie **Aktiv** also nach dem Anlegen ein. Schlägt eine Aktion fehl, wird der Fehler als eigenes Event erfasst.
+
+Azure-Cloud-to-Device- und MQTT-Nachrichtenaktionen gehören zu Thing-Typen. Siehe [Aktionstypen](../automate/action-types.mdx).
+
+## Filter der Event-Liste {#event-list-filters}
+
+**Überwachung › Events** zeigt standardmäßig die letzten 30 Tage.
+
+| Filter | Optionen |
+| --- | --- |
+| **Titel** | Text im Event-Titel |
+| **Event Typ** | Ein oder mehrere Event-Typen |
+| **Zeitraum** | **Letzte 24 Stunden**, **Letzte 7 Tage**, **Letzte 30 Tage**, **Letzte 90 Tage**, **Letztes Jahr** |
+| **Ressourcentyp** | Worum es im Event geht, zum Beispiel Thing, Thing-Typ, Gruppe, Benutzer |
+| **Schweregrad** | Ein oder mehrere Schweregrade |
+| **Nur offene Episoden** | Nur Alarme und Ausfälle, die noch andauern |
+
+## Verwandte Seiten {#related}
+
+- [Events, Vorfälle und Benachrichtigungen](./events-incidents-notifications.mdx)
+- [Eine Vorfallsrichtlinie einrichten](./incident-policy.mdx)
+- [Kanaltypen](./channel-types.mdx)

@@ -1,0 +1,96 @@
+---
+title: Eine Regel löst nicht aus
+description: Herausfinden, warum eine Regel still bleibt, von inaktiven Regeln und fehlenden Auslösern über Umschalt-Zustand und Bedingungen bis zu abgeschalteten Aktionen.
+sidebar_position: 4
+type: how-to
+app:
+  routes: ["/automation/rule-designer", "/automation/rule-designer/:id", "/monitor/events"]
+  primary: ["/monitor/events"]
+translated_from: 3041c36
+---
+
+Finden Sie heraus, warum eine Regel nicht tut, was Sie erwarten, wenn Daten eintreffen. Wie Regeln, Auslöser und Aktionen zusammenspielen, steht unter [Regeln, Aktionen und Berichte](../automate/rules-actions-reports.mdx).
+
+## Symptome {#symptoms}
+
+- Ein Wert überschreitet Ihr Limit, und es folgt keine Benachrichtigung, kein Event, keine E-Mail und kein Webhook.
+- Die Regel hat einmal ausgelöst und nie wieder.
+- Die Regel löst aus, aber eine ihrer Aktionen tut nichts.
+
+## In dieser Reihenfolge prüfen {#check-in-this-order}
+
+### 1. Die Regel ist aktiv und die Änderung veröffentlicht {#1-the-rule-is-active-and-the-change-is-published}
+
+Öffnen Sie **Einstellungen › Automatisierung › Regel-Designer**. Die Liste zeigt **Aktiv** oder **Inaktiv**.
+
+- **Inaktiv**: Öffnen Sie die Regel und wählen Sie **Aktivieren**. Ist **Aktivieren** deaktiviert, hat die Regel noch keine veröffentlichte Version. Wählen Sie zuerst das Häkchen in der schwebenden Leiste.
+- Sie haben eine aktive Regel bearbeitet, aber das alte Verhalten bleibt: Änderungen sind ein Entwurf, bis Sie das Häkchen wählen, das **Entwurf anwenden** heißt, sobald eine Version existiert. Von einer Regel ist jeweils eine Version aktiv.
+
+### 2. Der Flow ist gültig und vollständig {#2-the-flow-is-valid-and-complete}
+
+Zeigen Sie mit der Maus auf das Gültigkeitssymbol neben dem Regelnamen. Es muss **Der Flow ist gültig** zeigen, sonst nennt es, was fehlt.
+
+Eine Regel ist eine Kette aus **Start**, **Bedingung**, **Auslöser** und **Aktionen**. Aktionen laufen erst nach einem Auslöser. Ein Flow ohne **Auslöser** oder mit einer **Bedingung**, die mit keinem verbunden ist, ist ungültig, und das Häkchen bleibt deaktiviert.
+
+### 3. Die Daten liegen im Geltungsbereich {#3-the-data-is-in-scope}
+
+Prüfen Sie bei **Start** den Thing-Typ oder die Tags, die Sie gewählt haben. Das Thing, das Daten gesendet hat, muss von diesem Thing-Typ sein. Prüfen Sie dann, ob seine Nachricht den Messwert trägt, den die Bedingung liest. Eine Nachricht ohne den Messwert trifft nie eine Zeile. Siehe [Ein Gerät zeigt kein Signal](./no-signal.mdx), wenn keine Daten ankommen.
+
+### 4. Der Auslöser lässt sie auslösen {#4-the-trigger-lets-it-fire}
+
+Der Auslöser macht aus „Bedingung erfüllt“ ein „Auslösen“. Prüfen Sie, welchen Sie gewählt haben.
+
+| Auslöser | Löst aus | Typische Überraschung |
+| --- | --- | --- |
+| **Standard** | Bei jedem Treffer | Eher zu viele Läufe als zu wenige. |
+| **Umschalten**, **Innerhalb** | Einmal, wenn die Bedingung von nicht erfüllt zu erfüllt wechselt | Die Bedingung ist schon erfüllt, seit bevor Sie die Regel aktiviert oder geändert haben, oder sie ist seit dem letzten Messwert noch erfüllt. Sie löst erst wieder nach einem Messwert aus, der sie nicht erfüllt. |
+| **Umschalten**, **Außerhalb** | Einmal, wenn die Bedingung von erfüllt zu nicht erfüllt wechselt | Es passiert nichts, solange die Bedingung erfüllt bleibt. |
+| **Umschalten**, **Immer** | Bei jedem Wechsel in beide Richtungen | |
+| **Schlafen** | Höchstens einmal pro Zeitraum | Treffer innerhalb des Zeitraums werden übersprungen. |
+
+Bei den anderen Auslöser-Typen, etwa dem Halten über eine Dauer, lesen Sie die Einstellungen am Knoten **Auslöser**.
+
+Um ein **Umschalten** zu testen, senden Sie einen Wert, der die Bedingung nicht erfüllt, dann einen, der sie erfüllt. Siehe [Ein Gerät simulieren](../connect/simulate.mdx).
+
+### 5. Die Bedingung trifft zu {#5-the-condition-matches}
+
+Öffnen Sie den Knoten **Bedingung**.
+
+- **Erweitert** ist gewählt. Nur der gewählte Tab wird ausgewertet, die Zeilen unter **Einfach** werden also ignoriert.
+- **Steigend** und **Fallend** antworten mit false, bis der gespeicherte Verlauf das ganze **Fenster** abdeckt. Ein neues Thing oder ein Fenster, das länger als sein Verlauf ist, löst nicht aus.
+- Mit **Und** verbundene Zeilen müssen alle zutreffen. Ein Messwert eines anderen Typs, zum Beispiel ein String, der mit **Größer als** verglichen wird, trifft nie.
+- In einem Ausdruck liefert das Lesen eines fehlenden Felds `0`, `""` oder `false`. Sichern Sie es mit dem passenden `Has`-Aufruf ab.
+- Fensterfunktionen lesen nur numerische Samples.
+
+**Testen** im Tab **Erweitert** prüft den Ausdruck gegen eine Beispiel-Payload, ohne Verlauf. Operatoren und Funktionen: [Regelbedingungen und Funktionen](../automate/conditions.mdx).
+
+### 6. Die Aktionen sind an und vollständig {#6-the-actions-are-on-and-complete}
+
+Die Regel löst aus, aber nichts erreicht Sie:
+
+- Aktion **Ereignis**: Die Regel hat ein Event erzeugt. Öffnen Sie **Überwachung › Events** und suchen Sie es. Möglicherweise sehen Sie es nicht, wenn die **Gruppen** des Event-Typs keine Ihrer Gruppen enthalten. Prüfen Sie dann den Tab **Aktionen** dieses Event-Typs unter **Einstellungen › Konfiguration › Event Typen**. Eine dort hinzugefügte Aktion wird mit ausgeschaltetem Schalter **Aktiv** angelegt. Eine ausgeschaltete Aktion läuft nicht.
+- **Benachrichtigung**: **Benutzer und Gruppen** muss Sie oder eine Gruppe enthalten, der Sie angehören.
+- **Webhook**: Ein fehlgeschlagener Aufruf wird als Event aufgezeichnet. Ein `405` bedeutet, dass die **Method** falsch ist, `401` oder `403` die **Autorisierung**, und ein Timeout, dass der Empfänger nicht rechtzeitig geantwortet hat. Siehe [Ein anderes System aus einer Regel aufrufen](../automate/webhook-from-rule.mdx).
+- **Benachrichtigungskanal**: Prüfen Sie, ob der Kanal aktiviert ist und seine Filter die Nachricht durchlassen. Siehe [Eine Alarm-E-Mail kommt nie an](./email-not-arriving.mdx).
+
+Ein Event, das eine Episode beendet, etwa ein Thing, das wieder online ist, führt keine Aktionen des Event-Typs aus.
+
+### 7. Wo eine Auswertung erscheint {#7-where-an-evaluation-shows}
+
+{/* TODO(product): Where can a user see that a rule evaluation failed or was skipped (condition not met, invalid expression)? The code writes rule evaluation events whose detail depends on enableDetailedRuleEvaluation and logs other errors on the server. Should the docs promise that users can see failed evaluations? */}
+
+Eine Regel, die mit einer Aktion **Ereignis** auslöst, hinterlässt ein Event mit dem Anzeigetyp **Regelauswertung**. Es zeigt die Regel, ihre Bedingungen und die Werte, die sie ausgelöst haben. Fehlgeschlagene Aktionsläufe sind ebenfalls Events.
+
+## Immer noch nicht gelöst? {#still-stuck}
+
+Schreiben Sie an info@nimbit.de mit:
+
+- Ihrem Tenant-Namen, dem Namen der Regel und ob sie **Aktiv** ist.
+- Dem Thing, das sie hätte auslösen sollen, und der Zeit des Messwerts, mit Zeitzone.
+- Dem gesendeten Messwert, zum Beispiel `temperature` mit `26`.
+- Einem Screenshot der Knoten **Bedingung** und **Auslöser**.
+
+## Verwandte Seiten {#related}
+
+- [Alarmieren, wenn ein Wert ein Limit überschreitet](../automate/threshold-alert.mdx) · [Aktionstypen](../automate/action-types.mdx)
+- [Event-Typen](../watch/event-types.mdx)

@@ -1,0 +1,62 @@
+---
+title: Move a box from a service account to a gateway
+sidebar_label: Move to a gateway
+description: Switch a Periscope box that signs in with a service account to a gateway with its own key, and what happens to the things it created.
+sidebar_position: 7
+type: how-to
+app:
+  routes: ["/onboarding/gateways"]
+---
+
+Switch a box that signs in as a user with email and password to a gateway that signs in with its own key. The box then shows up in **Gateways** with a status, and sends with a credential that is limited to its own things. For the difference, see [How Periscope works](../how-periscope-works.mdx#is-a-periscope-instance-a-gateway).
+
+## Before you start
+
+- The **Gateway** permission in IoT Breeze, and an up-to-date platform and box. See [Upgrade a box](./upgrade.mdx).
+- A gateway of type **Periscope** with an onboarding code. See [Add a gateway](../../add-a-gateway.mdx). The namespace is fixed once the gateway has things, so choose it when you add the gateway.
+- A backup of the box's [state directory](./state-and-backup.mdx).
+
+## Steps
+
+1. End the service account's session and remove its enrollment. Do this before you change the configuration, because the command reads the account from the file:
+
+   ```sh
+   periscope enroll -config /etc/periscope/periscope.toml -revoke
+   ```
+
+2. In `periscope.toml`, remove `email` and `password` (or `token`) from `[ocb]`, and set `gateway = true`. Remove `PERISCOPE_PASSWORD` from the box's environment. A file with two credentials is refused.
+
+   ```toml
+   [ocb]
+   url     = "https://nimbit.example.com"
+   gateway = true
+   ```
+
+3. Onboard the box with the code, as in [Onboard a box with an onboarding code](./onboard.mdx). From the setup screen, an admin first selects **Disconnect**, which also ends the service account's session.
+4. Wait for the gateway to show **Online**. Then disable the service account in IoT Breeze if nothing else uses it.
+
+## What changes
+
+| Before | After |
+| --- | --- |
+| Alternate IDs start with `agent.name`. | They start with the gateway's namespace. The box proposes its things again, and the old ones stay with a reason. |
+| The outputs send with the tenant credential. | They send with the gateway credential, on the gateway's topics. |
+| No health. | A health message every `agent.health_interval`. |
+| Placement in Contexus is posted after an apply. | It is not. A gateway's token is for the platform backend only. |
+
+New things get new IDs, so their history starts empty. Clean up the old things as described in [Upgrade a box](./upgrade.mdx#clean-up-the-old-things).
+
+{/* TODO(product): Is there a supported way to keep the existing things and their history, for example choosing a namespace equal to agent.name and assigning the existing things to the gateway? Does the box then link them instead of creating duplicates? */}
+
+## Check that it worked
+
+The gateway is **Online**, `periscope validate` prints the gateway as the credential, and the gateway's **Things** tab lists the things under the namespace.
+
+## If it doesn't work
+
+- **`ocb: set exactly one credential`**: `email`, `password` or `token` is still in `[ocb]`, in `periscope.toml` or in the overlay `state_dir/config.ui.toml`.
+- **The onboarding is refused because the state belongs to another organization**: use a state directory made for this organization.
+
+## Related
+
+- [Replace a box](./replace-a-box.mdx) · [Configuration reference](../configuration.mdx#ocb)

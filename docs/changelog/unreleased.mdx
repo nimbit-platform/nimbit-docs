@@ -1,0 +1,51 @@
+---
+title: "Coming next"
+description: Changes merged after 0.12.5 that are not yet released. Contents and version may change.
+type: reference
+sidebar_position: 1
+---
+
+{/* TODO(product): confirm what ships in the next release and its version */}
+
+:::warning Not yet released
+This page lists changes merged since 0.12.5 (17 August 2026). They are not released yet, and what ships or when can change.
+:::
+
+## New
+
+**Dashboards**
+- Widgets: a new widget picker and widget setup, new widgets, and default dashboards.
+- Widgets: color a value by thresholds, with help text in the widget setup.
+- Incidents widget: shows active or all incidents on a dashboard.
+- Smart dashboards: a widget set to show its own things can add a **Thing** column.
+- Home: tenant dashboards (Getting started, Tenant health, Tenant metrics) can be added from the Packs page.
+
+**Things and interfaces**
+- The thing type page is rebuilt with a header, a figures strip and an overview in sections.
+- Thing type tabs are redesigned: Things, Schema, Statistics, Rollups, Actions, Dashboards, Versions and Documents.
+- On the **Actions** tab you can fire an action and see its on/off state.
+- The thing page and the interface list and detail pages follow the new thing type style.
+
+**Sign-in**
+- IoT Breeze sends you to the NimBit sign-in page, and invitations are accepted there.
+
+## Improved
+
+- Every list page now uses the same list grid.
+- The app shell is redesigned: the sidebar sits on a frame and content appears as cards.
+- Thing types: interface filtering moved from tabs into a searchable filter in the toolbar.
+- Phones: the thing type header is tidier and **Publish** moves into the menu.
+- Connectivity events are now on by default.
+- Passkey changes require a fresh sign-in.
+
+## Fixed
+
+- Thing types: dragged measure rows stay inside the table.
+- The **Copy ID** label is translated.
+- Sign-in: a "sign-in failed" message now shows in the sign-in card.
+
+## Breaking changes
+
+- The Query API (NBQ) now refuses an aggregation that does not fit the measure's data type and returns status 400. If a client relied on such a request, change the aggregation or the measure.
+- Remote VNC server hosts must be private addresses. Check your VNC connections.
+- Self-hosted installations: the environment variable prefix `DIP_` of the telemetry ingest service is now `TSFLUX_`. Rename your settings before you upgrade.

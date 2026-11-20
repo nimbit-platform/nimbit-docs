@@ -1,0 +1,41 @@
+---
+title: Node-RED
+sidebar_position: 10
+description: "Node-RED ist eine unterstützte Option für eigene Flows. Wann Sie es statt Regel-Designer oder Periscope nutzen und wie Sie es öffnen."
+type: reference
+app:
+  routes: ["/automation/rule-designer"]
+translated_from: 679f3a4
+---
+
+Node-RED ist ein externer Flow-Editor, den ein Administrator mit IoT Breeze verbinden kann. Er wird unterstützt und ist eine Option für Flows, die die eingebauten Werkzeuge nicht ausdrücken können. Für die meiste Arbeit nutzen Sie die eingebauten Werkzeuge:
+
+- Automatisierung auf Ihren Daten: [Regel-Designer](./rules-actions-reports.mdx). Regeln sind versioniert, werden in IoT Breeze aufgelistet und brauchen keinen Code.
+- Maschinen und Feldnetzwerke vor Ort auslesen: [Periscope](../gateways/periscope/index.mdx), der NimBit-Edge-Agent.
+
+## Verfügbarkeit {#availability}
+
+| Punkt | Detail |
+| --- | --- |
+| Menüeintrag | **Einstellungen › Automatisierung › Node Red** |
+| Sichtbar, wenn | Für IoT Breeze eine Node-RED-Adresse konfiguriert ist und Ihre Rolle Regeln aktualisieren darf. |
+| Öffnet sich | In einem neuen Browsertab, unter der konfigurierten Adresse. |
+| Anmeldung | Node-RED hat eine eigene Anmeldeseite. Melden Sie sich mit Ihrem IoT-Breeze-Konto an. |
+
+Fehlt **Node Red** im Menü, ist die Adresse nicht konfiguriert oder Ihrer Rolle fehlt die Berechtigung. Fragen Sie Ihren Administrator.
+
+## Verhältnis zum Regel-Designer {#relation-to-rule-designer}
+
+| Punkt | Regel-Designer | Node-RED |
+| --- | --- | --- |
+| In IoT Breeze eingebaut | Ja | Nein, eine eigene Anwendung |
+| Versionen und Entwurf | Ja | Nein |
+| Flows in IoT Breeze aufgelistet | Ja, unter **Einstellungen › Automatisierung › Regel-Designer** | Nein |
+| Braucht Code | Nein | Hängt vom Flow ab |
+
+Flows, die Sie in Node-RED bauen, werden von IoT Breeze nicht versioniert und erscheinen nicht in der Liste des **Regel-Designers**.
+
+## Verwandte Seiten {#related}
+
+- [Regeln, Aktionen und Berichte](./rules-actions-reports.mdx)
+- [Regelbedingungen und Funktionen](./conditions.mdx)

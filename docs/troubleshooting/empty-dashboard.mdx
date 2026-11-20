@@ -1,0 +1,83 @@
+---
+title: A dashboard is empty
+description: Find out why widgets show no values or a thing is missing, from time range and thing picker to permissions and widget settings.
+sidebar_position: 3
+type: how-to
+app:
+  routes: ["/dashboards", "/dashboards/:id"]
+---
+
+Find out why a dashboard or one of its widgets shows nothing. How a dashboard chooses its thing and time is in [Dashboards, smart dashboards and time](../visualize/dashboards.mdx).
+
+## Symptoms
+
+- Every widget is blank, or shows a dash or **No data**.
+- One widget is empty and the others are fine.
+- The thing you expect is not in the thing picker.
+
+## Check in this order
+
+### 1. Time range and data source
+
+Look at the time bar at the top of the dashboard.
+
+- The range is too short for a device that reports rarely. Choose **Last 24 hours** or wider.
+- **Time travel** is on and shows an earlier moment. Select **Live**.
+- The update mode is **Manual**. Select the refresh button.
+- A banner and a **MOCK** mark mean the data source is **Mock data** or **File**. Open the data source menu and choose **Device**. Files are not kept after a reload.
+- The bar reads *N widgets keep their own*. Those widgets ignore the bar. Open the widget's settings and check its own range.
+
+### 2. The thing the widget reads
+
+On a Smart dashboard, a widget either follows the picked thing or is pinned to its own.
+
+- Open the thing picker and choose a thing that has sent data.
+- A thing that implements only some of the interfaces shows coverage such as **2 of 3 interfaces**. Widgets on the missing interface stay empty.
+- A pinned widget shows a pin and a thing name in its header. If that thing is not the one you look at, the widget will not change when you pick another.
+
+### 3. Does the thing have data in that range?
+
+Open the thing (**Monitoring › Things**). **Live values** shows the latest reading of each measure, and **last signal** its time. For a longer window, select the measure on the **Schema** tab and **Open in Explore**. See [Explore telemetry over time](../watch/explore-telemetry.mdx).
+
+If there is no reading at all, the dashboard is not the problem. Go to [A device shows no signal](./no-signal.mdx).
+
+### 4. The measure behind the widget
+
+Open the widget's settings and compare its measure with the thing type's **Schema** tab.
+
+- The measure was removed or renamed in a newer published version of the thing type. Pick it again.
+- The measure exists only in a draft. A measure the platform does not know receives no data until the draft is published. See [Drafts, publishing and versions](../model/drafts-and-versions.mdx).
+- The widget reads a property. A property is a fixed fact, not a reading, so it has no history. Only a property with **Timeseries relevant** on is added to the telemetry of the thing. See [Measure and property types](../model/measure-types.mdx).
+- The widget aggregates a measure over a range, and no reading falls inside it.
+
+### 5. Permissions and groups
+
+You see a thing only if a group you belong to contains it with **Read**, or its thing type, or you were given the thing, or you created it. A role without permission to read dashboards shows no dashboards at all.
+
+- The picker lacks a thing you know exists: ask an administrator to check your group memberships. See [Users, groups and roles](../administer/access.mdx).
+- A dashboard is missing from a thing's **Dashboard** tab: it is not assigned to the thing or its thing type, or it requires an interface the thing type does not implement. See [Build one dashboard for every thing of a kind](../visualize/smart-dashboard.mdx#assign-the-dashboard).
+- Everyone but you sees data: compare your role and groups with theirs.
+
+### 6. Widget settings
+
+Select **Edit** and open the empty widget. The preview updates as you change settings, and **Help** at the top explains each one.
+
+- A required field, such as the measure or thing, is not set.
+- A filter, for example on **Event types**, **Thing types**, **Groups** or **Connection**, matches nothing. An empty filter means all.
+- Mock data or a file is mapped to other measures than the widget uses.
+
+Every widget and its settings: [Widget gallery](../visualize/widgets.mdx).
+
+## Still stuck?
+
+Write to info@nimbit.de with:
+
+- Your tenant name, the dashboard's name and the link to it. The link carries the time range.
+- The widget type and the thing it reads, by name.
+- The time of the last reading you expect, with its time zone.
+- A screenshot of the widget's settings and of the thing's **Live values**.
+
+## Related
+
+- [Build a dashboard for one thing](../visualize/thing-dashboard.mdx) · [Widget gallery](../visualize/widgets.mdx)
+- [A device shows no signal](./no-signal.mdx)

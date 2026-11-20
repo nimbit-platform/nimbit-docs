@@ -1,0 +1,63 @@
+---
+title: Delete data
+description: Delete recorded readings of a tenant, thing type or things, or delete a thing together with all its data.
+type: how-to
+sidebar_position: 8
+app:
+  routes: ["/tenant-settings", "/onboarding/things/:id"]
+---
+
+Remove recorded readings, for example simulator test data before go-live, or take a retired device out together with its history. A deletion runs as a job and cannot be undone once it has removed rows.
+
+## Before you start
+
+- You need the **Data deletion** permission. Only **Admin** has it. Without it, the **Data** tab says **Deleting data needs permission**.
+- To delete a thing, you also need to delete things. **Admin**, **Manager** and **Modeler** can.
+- If simulations are running on the scope, stop them first. Readings they send after the deletion starts would stay.
+- Backups are not touched, and data already forwarded to other systems is not deleted.
+
+## Delete readings
+
+1. Open **Administration › Tenant Settings › Data**.
+2. Under **Which data**, choose **All data**, **Simulated data** or **Data with a tag**. For a tag, enter the **Tag** and its **Value**.
+3. Under **Of which things**, choose **A thing type** or **Selected things**. **The whole tenant** is offered only for simulated data or a tag.
+4. Set the **Time range**: **All time**, **Last 7 days**, **Last 30 days** or a custom range.
+5. Check **What will be deleted**, including the estimate.
+6. Enter a **Reason** of at least 3 characters. It is kept in the audit log.
+7. Under **Start**, choose **In 10 minutes (cancellable)** or **Immediately**.
+8. Type the phrase shown under **Type … to confirm**, then select **Schedule deletion**.
+
+Optional in step 3: tick **Also delete the things themselves**. The things go with every reading they recorded.
+
+## Delete a thing with its data
+
+1. Open the thing and select **Delete thing**.
+2. Tick **Also delete all recorded data of this thing**. Without it, only the thing goes and its data stays in storage until its retention ends.
+3. Enter a **Reason**, choose when to **Start**, and type the thing's ID to confirm.
+4. Select **Delete thing and data**.
+
+The option appears only if you have the **Data deletion** permission.
+
+## Cancel or follow a deletion
+
+Open **Administration › Tenant Settings › Schedules**. The job is listed there. With the delayed start you can cancel it for 10 minutes. An immediate deletion can be stopped, but rows already deleted stay deleted.
+
+:::warning Deleting data cannot be undone
+Check the scope and time range in **What will be deleted** before you confirm. Charts, exports, reports and rule history lose the data. Charts that read rollups switch to raw data for the affected time until the rollups have resynced.
+:::
+
+## Check that it worked
+
+The job shows **Completed** with the number of rows deleted. Open a dashboard of the thing or thing type for the same range: the chart is empty.
+
+## If it doesn't work
+
+- **You cannot confirm**: simulations are still running on the scope, or the reason is shorter than 3 characters, or the typed phrase differs.
+- **The job is Failed**: a data store could not be reached. Use **Retry from the last checkpoint** once it is back.
+- **Disk usage did not drop**: space is reclaimed later by the retention sweep.
+- **Nothing in this selection to delete**: no data matches the tag and range.
+
+## Related
+
+- [Tenant settings](./tenant-settings.mdx)
+- [Audit log](./audit-log.mdx)

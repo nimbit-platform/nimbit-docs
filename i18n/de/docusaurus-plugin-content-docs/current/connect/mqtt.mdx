@@ -1,0 +1,138 @@
+---
+title: Daten über MQTT senden
+description: Telemetrie für ein Thing mit mosquitto_pub, Python oder Node.js an den IoT-Breeze-MQTT-Broker senden.
+sidebar_position: 3
+type: how-to
+app:
+  routes: ["/onboarding/things/:id"]
+translated_from: f26536e
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Veröffentlichen Sie eine JSON-Nachricht für ein Thing beim MQTT-Broker und sehen Sie die Werte in IoT Breeze. Das gilt für ein Gerät, das seine eigenen Daten sendet. Eine Box, die für viele Geräte sendet, verbindet sich stattdessen als Gateway: siehe [Daten vieler Geräte über ein MQTT-Gateway senden](../gateways/mqtt-gateway.mdx). Hintergrund: [Wie Geräte sich verbinden](./how-devices-connect.mdx).
+
+## Bevor Sie beginnen {#before-you-start}
+
+- Ein Thing mit einem veröffentlichten Thing-Typ. Siehe [Ein Thing registrieren](../model/register-thing.mdx).
+- Zugangsdaten für das Thing. Siehe [Gerätezugangsdaten anlegen und rotieren](./credentials.mdx).
+- Ein MQTT-3.1.1-Client: `mosquitto_pub`, Python mit `paho-mqtt` 2.x oder Node.js mit `mqtt` 5.x.
+
+## Schritte {#steps}
+
+### 1. Die Verbindungsdaten kopieren {#1-copy-the-connection-details}
+
+Öffnen Sie das Thing (**Einstellungen › Onboarding › Things**), gehen Sie zu **Verbindungen** und wählen Sie **Verbindungsinformationen**. Kopieren Sie diese Werte:
+
+| Platzhalter | Quelle unter **Verbindungsinformationen** |
+| --- | --- |
+| `<gateway-url>` | **Gateway-URL**, zum Beispiel `mqtt://mqtt.example.com:1883`. Host, Port und TLS sind die Ihres Deployments. |
+| `<mqtt-host>`, `<port>` | Host und Port aus der **Gateway-URL**. |
+| `<client-id>` | **Client-ID**, `<tenantId>:<deviceId>`. |
+| `<username>` | **Benutzername**. |
+| `<password-or-token>` | Das Basic-**Passwort** oder das JWT-**Token**. |
+| `<telemetry-topic>` | **Telemetrie**, `tenant/<tenantId>/device/<deviceId>/telemetry`. |
+
+### 2. Eine Nachricht senden {#2-send-one-message}
+
+<Tabs groupId="mqtt-client">
+<TabItem value="mosquitto" label="mosquitto_pub" default>
+
+```bash
+mosquitto_pub -V mqttv311 -h <mqtt-host> -p <port> -q 1 \
+  -i "<client-id>" \
+  -u "<username>" -P "<password-or-token>" \
+  -t "<telemetry-topic>" \
+  -m '{"thingType":"room_sensor","data":{"temperature":22.5,"humidity":61.3}}'
+```
+
+Für `mqtts://` fügen Sie `--capath /etc/ssl/certs` hinzu.
+
+</TabItem>
+<TabItem value="python" label="Python (paho-mqtt)">
+
+```python
+import json
+import paho.mqtt.client as mqtt
+
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id="<client-id>")
+client.username_pw_set("<username>", "<password-or-token>")
+# For mqtts://, call client.tls_set() here.
+client.connect("<mqtt-host>", <port>)
+client.loop_start()
+
+message = {"thingType": "room_sensor", "data": {"temperature": 22.5, "humidity": 61.3}}
+info = client.publish("<telemetry-topic>", json.dumps(message), qos=1)
+info.wait_for_publish(timeout=10)
+print("published" if info.is_published() else "not published")
+
+client.loop_stop()
+client.disconnect()
+```
+
+</TabItem>
+<TabItem value="node" label="Node.js (mqtt.js)">
+
+Speichern Sie die Datei als `send.mjs` und führen Sie `node send.mjs` aus.
+
+```js
+import mqtt from "mqtt";
+
+const client = await mqtt.connectAsync("<gateway-url>", {
+  clientId: "<client-id>",
+  username: "<username>",
+  password: "<password-or-token>",
+  protocolVersion: 4,
+});
+
+const message = { thingType: "room_sensor", data: { temperature: 22.5, humidity: 61.3 } };
+await client.publishAsync("<telemetry-topic>", JSON.stringify(message), { qos: 1 });
+console.log("published");
+await client.endAsync();
+```
+
+</TabItem>
+</Tabs>
+
+`thingType` ist der Name oder die ID des Thing-Typs des Things.
+
+### 3. Zeitstempel, Standort und Tags ergänzen {#3-add-a-timestamp-location-and-tags}
+
+Erweitern Sie die Nachricht. Alle Felder stehen im [Nachrichtenformat](./message-format.mdx).
+
+```json
+{
+  "thingType": "room_sensor",
+  "data": { "temperature": 22.5 },
+  "time": "2026-11-07T09:30:00Z",
+  "geo": { "latitude": 52.52, "longitude": 13.405 },
+  "tags": { "location": "warehouse-A" }
+}
+```
+
+Ohne `time` gilt der Zeitpunkt des Eintreffens.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Öffnen Sie das Thing in IoT Breeze. Die **Übersicht** zeigt nach wenigen Sekunden **Letztes Signal** und **Live-Werte**. **Noch kein Signal** bedeutet, dass nichts angekommen ist.
+
+Um Ablehnungen zu sehen, abonnieren Sie das Topic **Fehler**, bevor Sie veröffentlichen:
+
+```bash
+mosquitto_sub -V mqttv311 -h <mqtt-host> -p <port> -i "<client-id>:watch" \
+  -u "<username>" -P "<password-or-token>" \
+  -t "iot/tenant/<tenantId>/device/<deviceId>/error" -v
+```
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Die Verbindung wird abgelehnt**: Die Client-ID ist falsch oder leer, oder die Zugangsdaten sind falsch oder abgelaufen. Die Client-ID muss `<tenantId>:<deviceId>` sein oder damit plus `:` beginnen.
+- **Die Verbindung steht, aber nichts erscheint**: Das Topic muss genau dem Wert **Telemetrie** entsprechen. Ein Gerät kann in kein anderes Topic veröffentlichen.
+- **Eine Nachricht im error-Topic**: Das Feld `error` nennt den Grund. Meist ist es ein unbekannter `thingType` oder ein Thing-Typ, der nicht zum Thing passt.
+- **Die Nachricht verschwindet ohne Hinweis**: ungültiges JSON, fehlender `thingType`, weder `data` noch `geo` oder ein `tenant` oder eine `id`, die nicht zum Topic passt. Prüfen Sie die Payload gegen das [Nachrichtenformat](./message-format.mdx).
+
+## Verwandte Seiten {#related}
+
+- [MQTT-Topics und Client-ID](./mqtt-topics.mdx) · [Nachrichtenformat](./message-format.mdx)
+- [Daten über HTTP senden](./http.mdx)

@@ -1,0 +1,37 @@
+---
+title: Gateways und Edge
+description: Maschinen und Feldnetze mit Gateways anbinden – ein Satz Zugangsdaten für eine Box, die für viele Geräte spricht – und Periscope, der Edge-Agent.
+sidebar_position: 1
+type: landing
+app:
+  routes: ["/onboarding/gateways"]
+translated_from: 06bddd1
+---
+
+Dieser Bereich beantwortet eine Frage: Wie binde ich Maschinen und Feldnetze an? Ein Gateway ist ein Thing, das für viele Geräte spricht. Periscope ist der Edge-Agent, der neben Ihren Anlagen läuft, deren Quellen erkennt und ihre Werte an IoT Breeze streamt.
+
+```mermaid
+flowchart LR
+  P[SPSen und Server] --> A[Periscope]
+  D[MQTT-Geräte] --> G[MQTT-Gateway]
+  A --> I[tsflux ingest]
+  G --> I
+  I --> T[Things]
+```
+
+## Verstehen {#understand}
+- [Wie Gateways funktionieren](./how-gateways-work.mdx): wofür ein Gateway senden darf und woran IoT Breeze erkennt, dass es lebt.
+- [Wie Periscope funktioniert](./periscope/how-periscope-works.mdx): Erkennung, Zuordnung und Streaming auf der Edge-Box.
+
+## Umsetzen {#do}
+- [Gateway hinzufügen](./add-a-gateway.mdx): ein Periscope-Gateway anlegen und die Box mit einem Code registrieren.
+- [Daten vieler Geräte über ein MQTT-Gateway senden](./mqtt-gateway.mdx): ein Satz Zugangsdaten für ein Gerät, das MQTT spricht, pro Thing oder als Batch.
+- [eWON Flexy anbinden](./ewon-flexy.mdx): die Konfigurationsdatei, das BASIC-Programm und ein Test ohne das Gerät.
+- [Die Things hinter einem Gateway verwalten](./things-behind-a-gateway.mdx): Things zuordnen, verschieben und löschen und festlegen, was ein Gateway haben darf.
+- [Zustand und Datenverkehr von Gateways prüfen](./fleet-health.mdx): Offline-Gateways und verworfene Nachrichten finden.
+- [Gateway widerrufen, ersetzen oder entfernen](./revoke-and-replace.mdx): einen Schlüssel sperren, ein Gateway auf neue Hardware umziehen, es löschen.
+- [Periscope installieren und die erste Quelle streamen](./periscope/install.mdx): vom Download bis zu Werten in IoT Breeze.
+
+## Nachschlagen {#look-up}
+- [Gateway-Referenz](./gateway-reference.mdx): Felder, Status, Limits, Messwerte und Verwerfungsgründe.
+- [Periscope](./periscope/index.mdx): Eingänge, Ausgänge, Konfiguration und Befehle des Edge-Agents.

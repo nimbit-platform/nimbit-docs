@@ -1,0 +1,75 @@
+---
+title: Clean up incoming data
+sidebar_position: 7
+description: Convert units, check the shape or add calculated values to every message of a thing type before it is stored.
+type: how-to
+app:
+  routes: ["/onboarding/thing-types/:id", "/onboarding/thing-types/:id/graph"]
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Run every incoming message of a thing type through a small graph of steps, the **transformation pipeline**, before it is stored. The example converts a temperature from Fahrenheit to Celsius.
+
+## Before you start
+
+- A [thing type](./create-thing-type.mdx) with a published measure `temperature`.
+- A desktop browser. The pipeline editor isn't available on a phone.
+- Your role can edit thing types.
+
+## Steps
+
+1. Open **Settings › Onboarding › Thing Types** and select the thing type. On **Overview**, the **Pipeline** card shows **Transformation** as **Active** or **Inactive**. Select **Open editor**, or use **More actions › Open pipeline editor**. The editor opens as **Transformation rule (Version 1)** with a **Request** node connected to a **Response** node.
+2. Drag an **Expression** node from the **Components** panel onto the canvas. Connect **Request** to it, and it to **Response**: drag from the handle on the right of a node to the handle on the left of the next.
+3. Select **Edit Expression** on the node and add a row. Set **Key** to `data.temperature` and **Expression** to `(data.temperature - 32) * 5 / 9`.
+4. Open the **Simulator** from the left sidebar. It fills a test message with random values for your measures. Set `data.temperature` to `212` and select **Run**. The result shows `data.temperature` as `100`, and the rest of the message unchanged.
+5. Select **Save**. It is disabled while the graph is invalid or unchanged. Hover the status icon in the header for the reason.
+6. Select **Activate**.
+
+<Screenshot
+  page="model/clean-up-data"
+  id="01-editor"
+  route="/onboarding/thing-types/:id/graph"
+  state="Pipeline editor with Request, one Expression node and Response connected, the simulator open with a successful result, Save and Activate in the header"
+  alt="The pipeline editor with a three-node pipeline"
+/>
+
+{/* TODO(product): Confirm in the running editor that an Expression node keeps the rest of the message when the key is a path such as data.temperature (its Passthrough setting), and which left-sidebar entries and canvas controls exist besides the Simulator. The deployed engine takes the pipeline's output as the whole message that is stored. */}
+
+## Choose what each step does
+
+What reaches **Response** is what gets stored, so keep the message shape: `data` holds the measures, `geo` the location, `tags` the properties marked **Timeseries relevant**. A field the thing type's schema doesn't know is dropped, so a new calculated value needs its own measure.
+
+| To… | Add a… |
+| --- | --- |
+| Check messages against a JSON Schema | **Request** node: select **Configure**, then **Import** a sample payload to start. |
+| Calculate or overwrite values | **Expression** node: one **Key** and **Expression** per output field. |
+| Turn values into labels, for example a status code | **Decision Table** node: **Edit Table**. Rows are checked from top to bottom. |
+| Send messages down different branches | **Switch** node: one condition per output handle. |
+| Do what the others can't | **Function** node: **Edit Function**, in JavaScript. |
+
+Expressions use the ZEN language of the open-source [GoRules](https://docs.gorules.io/) editor, which also documents decision tables and functions.
+
+## Change a pipeline that is live
+
+A pipeline has versions, and only one is **Active**. **Versions** opens the list, where you create a **New version** from the current graph or **Switch version**. **Deactivate** stops the pipeline, and data is stored as the device sent it.
+
+When you edit the active version, your changes stay a draft until you apply them. A floating toolbar offers **Apply draft**, **Reset draft** (confirm **Discard**) and a switch between **Draft** and **Show difference between draft and active graph**. **Apply draft** is off while the graph is invalid.
+
+## Check that it worked
+
+On the thing type's **Overview**, the **Pipeline** card shows **Transformation** as **Active**. Send a message, or **Send data** from a thing's page, and look at the stored value in the thing's **Overview** or in [Explore telemetry](../watch/explore-telemetry.mdx): `100`, not `212`.
+
+## If it doesn't work
+
+- **A message never shows up**: a message that fails in the pipeline, by a schema check, an expression or function error, or a timeout, isn't stored. The sender of an HTTP message gets an error. Run the same message in the **Simulator** to see the node that failed.
+- **A calculated value is missing**: the schema doesn't have a measure with that name. Add the measure and publish.
+- **Activate is disabled**: you have unsaved changes, so select **Save** first, or the graph is invalid. A valid graph has a **Request** node, a **Response** node and a path between them.
+- **A message is refused after a slow step**: a transformation has a time limit, and a message that runs past it is refused.
+
+{/* TODO(product): The earlier docs say a Function node fails after 5 seconds. The ingest service (tsflux) defaults to 250 ms for one whole transformation, including waiting for a free slot, and reads it from the zen eval_timeout setting. What limit applies to production tenants, and what does the sender see? */}
+
+## Related
+
+- [Create a thing type](./create-thing-type.mdx) · [Measure and property types](./measure-types.mdx)
+- [Message format](../connect/message-format.mdx)

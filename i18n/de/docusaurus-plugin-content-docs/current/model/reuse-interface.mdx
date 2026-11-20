@@ -1,0 +1,91 @@
+---
+title: Ein Interface für mehrere Thing-Typen wiederverwenden
+sidebar_position: 6
+description: Teilen Sie eine Menge von Feldern zwischen Thing-Typen, ordnen Sie Felder mit anderen Namen zu und lassen Sie Thing-Typen auf der gewählten Version.
+type: how-to
+app:
+  routes: ["/onboarding/interfaces", "/onboarding/interfaces/:id", "/onboarding/thing-types/:id"]
+translated_from: 679f3a4
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Legen Sie Felder einmal als Interface fest, hängen Sie es an mehrere Thing-Typen an und ordnen Sie die Felder zu, deren Namen abweichen. Ein [Smart-Dashboard](../visualize/smart-dashboard.mdx) deckt dann jedes Thing dieser Typen ab. Was Interfaces sind, lesen Sie unter [Thing-Typen, Things und Interfaces](./things-and-types.mdx).
+
+## Bevor Sie beginnen {#before-you-start}
+
+- Ihre Rolle darf Thing-Typen und Interfaces bearbeiten.
+- Sie haben einen Thing-Typ, dessen Felder Sie teilen möchten, oder ein veröffentlichtes Interface zum Anhängen. Die Plattform liefert eines mit, [Temperature Sensing](./shipped-interfaces.mdx).
+
+## Ihre Felder als Interface veröffentlichen {#publish-your-fields-as-an-interface}
+
+Überspringen Sie das, wenn das Interface schon existiert.
+
+**Aus Feldern, die Sie schon an einem Thing-Typ haben**
+
+1. Öffnen Sie **Einstellungen › Onboarding › Thing Typen**, wählen Sie den Thing-Typ und öffnen Sie **Schema › Interfaces**.
+2. Wählen Sie **In Schnittstelle verschieben** und haken Sie die veröffentlichten eigenen Felder an, die verschoben werden sollen.
+3. Wählen Sie **Neue Schnittstelle**, um es aus der Auswahl zu erstellen, als **Experimentell** mit veröffentlichter v1. Oder wählen Sie **Vorhandene Schnittstelle**, um die Auswahl als nächste Version eines Ihrer Interfaces zu veröffentlichen.
+4. Bestätigen Sie. Der Thing-Typ fixiert die neue Version, sein Schema ändert sich also nicht.
+
+**Von Grund auf**
+
+1. Öffnen Sie **Einstellungen › Onboarding › Interfaces**, wählen Sie **Neues Interface**, geben Sie **Anzeigename**, **Name** und **Beschreibung** ein und speichern Sie.
+2. Wählen Sie auf der Interface-Seite **Schema bearbeiten** und dann in den Bereichen **Telemetrien** und **Eigenschaften** **Telemetrie hinzufügen** oder **Eigenschaft erstellen**.
+3. Wählen Sie im Kopfbereich **v1 veröffentlichen**, beschreiben Sie die Änderung im **Änderungsprotokoll** und bestätigen Sie.
+
+## An einen weiteren Thing-Typ anhängen {#attach-it-to-another-thing-type}
+
+1. Öffnen Sie den zweiten Thing-Typ und seinen Bereich **Schema › Interfaces**.
+2. Wählen Sie **Interface anhängen**, wählen Sie das Interface unter **Anhängbare Interfaces** und wählen Sie **Anhängen**. Hat der Typ dafür eine Karte **Vorgeschlagen**, wählen Sie **Anwenden**.
+3. Hat der Thing-Typ schon eigene Felder mit denselben Namen, heißt die Schaltfläche **Anhängen & übernehmen**. Die Definition des Interfaces ersetzt dann diese eigenen Felder. Das Interface selbst ändert sich nicht.
+
+Das Interface erscheint unter **Angehängte Interfaces** mit der Beschriftung **Fixiert v1**. Seine Felder sind am Thing-Typ schreibgeschützt.
+
+<Screenshot
+  page="model/reuse-interface"
+  id="01-attach-interface"
+  route="/onboarding/thing-types/:id"
+  state="Thing type Schema tab, Interfaces pane, the Attach interface dialog open with Temperature Sensing selected"
+  alt="Ein Interface an einen Thing-Typ anhängen"
+/>
+
+## Felder mit anderen Namen zuordnen {#map-fields-that-have-other-names}
+
+Sendet ein Gerät `temp_c`, wo das Interface `temperature` sagt, benennen Sie nichts am Gerät um.
+
+1. Öffnen Sie im angehängten Interface **Feld-Mapping**.
+2. Öffnen Sie in der Zeile des Interface-Felds **Feld dieses Typs** (**temperature bedienen von**) und wählen Sie das eigene Feld des Thing-Typs.
+3. Prüfen Sie die Zeile **1 aus einem anderen Feld bedient**.
+
+Wählen Sie **Mapping entfernen**, um es rückgängig zu machen, oder **Nur zugeordnete**, um nur die zugeordneten Zeilen zu listen.
+
+:::warning Gleicher Name, anderer Wert
+Hat der Thing-Typ auch ein eigenes Feld mit dem Namen des Interface-Felds, gewinnt das Mapping, und der Wert des eigenen Felds wird nie gelesen. Die Zeile warnt Sie.
+:::
+
+## Einen Thing-Typ auf eine neuere Version heben {#move-a-thing-type-to-a-newer-version}
+
+Thing-Typen behalten die Version, die sie fixiert haben, eine neue Interface-Version ändert also nichts, bis Sie aktualisieren.
+
+1. Suchen Sie im Bereich **Interfaces** des Thing-Typs neben dem Interface nach **v2 verfügbar**.
+2. Wählen Sie **Vergleichen**, um die Unterschiede zu sehen.
+3. Wählen Sie **Auf v2 aktualisieren**. Die Aktualisierung wird auf Namenskollisionen geprüft und gilt sofort, wie eine Schema-Änderung.
+
+Um ein Interface von einem Thing-Typ zu entfernen, wählen Sie **Entfernen**. Der Dialog nennt, wie viele Thing-Typen und Things betroffen sind.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+An jedem Thing-Typ zeigt das Interface **Aktuell**. Wählen Sie **Dashboard generieren**, um ein Smart-Dashboard mit einem Widget pro Feld zu erstellen. Es listet jedes aktuelle und künftige Thing, dessen Typ das Interface implementiert. Auf der Interface-Seite listet **Implementiert von** die Thing-Typen.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Das Anhängen wird wegen einer Namenskollision abgelehnt**: Ein Feldname des Interfaces wird am Thing-Typ schon verwendet, zum Beispiel von einem anderen angehängten Interface. Benennen Sie das kollidierende Feld um.
+- **Das Interface steht nicht unter Anhängbare Interfaces**: Es hat keine veröffentlichte Version oder ist schon angehängt.
+- **Ein Dashboard-Widget ist für einen Thing-Typ leer**: Sein Feld ist nicht zugeordnet. Fügen Sie das Mapping hinzu.
+- **Löschen ist am Interface deaktiviert**: Thing-Typen implementieren es noch. Lösen Sie es von jedem, wie unter **Implementiert von** gelistet.
+
+## Siehe auch {#related}
+
+- [Entwürfe, Veröffentlichen und Versionen](./drafts-and-versions.mdx) · [Mitgelieferte Interfaces](./shipped-interfaces.mdx)
+- [Ein Dashboard für alle Things einer Art bauen](../visualize/smart-dashboard.mdx)

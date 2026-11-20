@@ -1,0 +1,197 @@
+---
+title: Webhook-Payloads
+description: Der Request, den IoT Breeze für Webhook-Kanäle und Webhook-Aktionen sendet, mit Headern und Body, und wie Sie die HMAC-Signatur prüfen.
+type: reference
+sidebar_position: 4
+app:
+  routes: ["/manage/notification-channels", "/onboarding/things/:id"]
+translated_from: 1579ffe
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+IoT Breeze sendet HTTP-Requests an Ihr System von zwei Stellen aus: von einem Benachrichtigungskanal **Webhook**, der seine Requests signiert, und von einer Aktion **Webhook**, die das nicht tut.
+
+## Webhook-Kanal {#webhook-channel}
+
+Zugestellt werden Events, In-App-Benachrichtigungen und Vorfälle, die der Kanal erhält. Wie Sie einen einrichten, steht unter [Alarme an Teams, Slack oder einen Webhook senden](../watch/alert-channels.mdx).
+
+### Request {#request}
+
+| Teil | Wert |
+| --- | --- |
+| Methode | `POST` (das Formular in IoT Breeze verwendet immer `POST`) |
+| `Content-Type` | `application/json` |
+| `User-Agent` | `IotBreeze-NotificationChannel/1.0` |
+| `X-IotBreeze-Signature` | `sha256=<hex>`. Nur, wenn der Kanal ein **HMAC-Geheimnis** hat. Siehe [Die Signatur prüfen](#verify-the-signature). |
+| Timeout | 10 Sekunden |
+| Redirects | Werden nicht verfolgt. Ein Redirect zählt als Fehler. |
+| Erfolg | Jeder `2xx`-Status. |
+
+Eine fehlgeschlagene Zustellung wird bis zu 5-mal versucht und dann im Zustellprotokoll als **Fehlgeschlagen** angezeigt. Der Body jedes Retrys ist identisch, deshalb bleibt `id` stabil.
+
+{/* TODO(product): What is the delay between delivery attempts? */}
+
+### Body für Events und Benachrichtigungen {#body-for-events-and-notifications}
+
+| Feld | Typ | Bedeutung |
+| --- | --- | --- |
+| `id` | string | Zustellschlüssel. `event:<eventId>` bei Events; die Benachrichtigungs-ID bei In-App-Benachrichtigungen. |
+| `tenantId` | string | Der Tenant. |
+| `type` | string | Name des Event-Typs oder `notification.created`, `action.notify_channel`, `channel.test` (die Nachricht von **Test senden**). |
+| `severity` | string | `INFO`, `WARNING`, `ERROR` oder `CRITICAL`. |
+| `title` | string | Kurzer Titel. |
+| `body` | string | Text. Bei Events der JSON-Text der Event-Payload oder, falls keine vorhanden ist, der Titel. |
+| `context` | object | Hängt von der Quelle ab, siehe unten. |
+| `occurredAt` | string | ISO 8601, UTC. |
+| `deepLink` | string | Link auf den Eintrag in IoT Breeze. Entfällt, wenn sich keiner bilden lässt. |
+
+| Quelle | `context` |
+| --- | --- |
+| Event | `eventId`, `eventTypeId`, `resource` |
+| In-App-Benachrichtigung | `resourceType`, `resourceId`, `recipientCount`, `source` (`notification.created`) |
+| Aktion, die einen Kanal benachrichtigt | `actionId`, `eventId`, `resource`, `referenceId` |
+| Testnachricht | `test: true` |
+
+```json
+{
+  "id": "event:0192f8a0-1c2d-7e3f-8a4b-5c6d7e8f9a0b",
+  "tenantId": "acme",
+  "type": "Door opened",
+  "severity": "WARNING",
+  "title": "Door opened",
+  "body": "{\"door\":\"cold-room-1\"}",
+  "context": { "eventId": "0192f8a0-1c2d-7e3f-8a4b-5c6d7e8f9a0b", "eventTypeId": "...", "resource": "Thing" },
+  "occurredAt": "2026-11-07T09:30:00.000Z",
+  "deepLink": "https://<host>/monitor/events/0192f8a0-1c2d-7e3f-8a4b-5c6d7e8f9a0b"
+}
+```
+
+### Body für Vorfälle {#body-for-incidents}
+
+Wird gesendet, wenn eine Vorfalls-Automatisierung den Kanal benachrichtigt.
+
+| Feld | Typ | Bedeutung |
+| --- | --- | --- |
+| `id`, `tenantId`, `title`, `body`, `occurredAt`, `deepLink` | | Wie oben. |
+| `type` | string | `incident.<transition>`, außer die Aktion setzt einen eigenen Typ. |
+| `kind` | string | Immer `incident`. |
+| `severity` | string | `INFO`, `WARNING`, `ERROR` oder `CRITICAL`. |
+| `transition` | string | Was passiert ist: `opened`, `escalated`, `acknowledged`, `assigned`, `reopened`, `resolved`, `closed`, `unacknowledged_for` oder `timeout`. |
+| `link` | string oder null | Die Vorfallseite in IoT Breeze. |
+| `incident` | object | Siehe unten. |
+
+`incident` enthält: `id`, `number`, `ref` (`INC-<number>`), `title`, `severity`, `status` (`id`, `name`, `category`: `open`, `acknowledged`, `in_progress`, `resolved` oder `closed`), `subject` (`resource`, `id`, `thingType`, jeweils nullable), `policy` (`id`, `name`), `openedAt`, `resolvedAt` (null, solange offen), `assigneeId`, `triggerEventTypeId` und `link`.
+
+## Webhook-Aktion {#webhook-action}
+
+Wird aufgerufen, wenn eine Regel, eine Vorfalls-Automatisierung oder ein Benutzer die Aktion auslöst. Siehe [Ein anderes System aus einer Regel aufrufen](../automate/webhook-from-rule.mdx).
+
+| Teil | Wert |
+| --- | --- |
+| Methode | `GET`, `POST`, `PUT`, `PATCH` oder `DELETE`, wie konfiguriert |
+| URL, Header, Body | Ihre Konfiguration, mit `{{placeholder}}`-Werten, die aus der Payload gefüllt werden |
+| Body | Wenn Sie **Inhalt** setzen, wird er wie geschrieben als Text gesendet, ohne `Content-Type`, außer Sie fügen einen unter **Headers** hinzu. Ohne ihn wird die Payload als JSON mit `Content-Type: application/json` gesendet. Kein Body bei `GET`. |
+| Signatur | Keine. Verwenden Sie stattdessen eine Autorisierungsmethode. |
+| Timeout | 30 Sekunden |
+| Retries | Bis zu 3 weitere Versuche nach 1, 2 und 4 Sekunden. Nicht bei `4xx`-Antworten. |
+
+| Autorisierung | Gesendet als |
+| --- | --- |
+| Keine | Keine Zugangsdaten |
+| Basic | `Authorization: Basic <base64 of username:password>` |
+| Bearer | `Authorization: Bearer <token>` |
+| Query | `<name>=<value>`, URL-kodiert an die URL angehängt |
+| OAuth 2.0 | `Authorization: Bearer <access token>` oder Ihre Token-Vorlage. Grants: `client_credentials`, `password`, `refresh_token`, JWT Bearer. Das Token wird wiederverwendet, bis 5 Sekunden vor seinem Ablauf. |
+
+### Payload nach Quelle {#payload-by-source}
+
+| Ausgelöst durch | Payload-Felder |
+| --- | --- |
+| Eine Regel | `data` (die Nachricht, die die Regel ausgelöst hat, mit Feldern der Regelauswertung) und `referenceId` (die Thing-ID) |
+| Ein Benutzer oder die API | Die Payload des Requests, plus `value`, wenn ein Steuerelement einen Wert setzt |
+| Eine Vorfalls-Automatisierung | `id`, `incident_id`, `automation_id`, `transition_id`, `transition`, `title`, `severity`, `message`, `referenceId`, `link` und `incident` (wie oben) |
+
+Verwenden Sie Felder in Platzhaltern, zum Beispiel `{{data.temperature}}` oder `{{incident.title}}`. Bei Vorfällen werden Werte als Inhalt eines JSON-Strings escaped.
+
+{/* TODO(product): List the fields of `data.ruleEvaluation` that a rule adds to the payload. */}
+
+## Die Signatur prüfen {#verify-the-signature}
+
+Die Signatur ist der Hex-HMAC-SHA256 des rohen Request-Bodys, mit dem **HMAC-Geheimnis** des Kanals als Schlüssel, im Header `X-IotBreeze-Signature` als `sha256=<hex>`. Berechnen Sie sie über die empfangenen Bytes, bevor Sie das JSON parsen. Vergleichen Sie in konstanter Zeit.
+
+Die Signatur deckt nur den Body ab. Sie hat keinen Zeitstempel, deshalb kann ein abgefangener Request erneut abgespielt werden. Verwenden Sie `id`, um Duplikate zu verwerfen.
+
+<Tabs groupId="verify-lang">
+<TabItem value="node" label="Node.js" default>
+
+```js
+import crypto from "node:crypto";
+import express from "express";
+
+const SECRET = process.env.HMAC_SECRET;
+const app = express();
+
+app.post("/hook", express.raw({ type: "application/json" }), (req, res) => {
+  const header = req.get("x-iotbreeze-signature") ?? "";
+  const expected =
+    "sha256=" + crypto.createHmac("sha256", SECRET).update(req.body).digest("hex");
+  const ok =
+    header.length === expected.length &&
+    crypto.timingSafeEqual(Buffer.from(header), Buffer.from(expected));
+  if (!ok) return res.sendStatus(401);
+
+  const event = JSON.parse(req.body.toString("utf8"));
+  console.log(event.id, event.severity, event.title);
+  res.sendStatus(204);
+});
+
+app.listen(3000);
+```
+
+</TabItem>
+<TabItem value="python" label="Python">
+
+```python
+import hashlib
+import hmac
+import json
+import os
+
+from flask import Flask, abort, request
+
+SECRET = os.environ["HMAC_SECRET"].encode()
+app = Flask(__name__)
+
+
+@app.post("/hook")
+def hook():
+    body = request.get_data()  # raw bytes, before any parsing
+    header = request.headers.get("X-IotBreeze-Signature", "")
+    expected = "sha256=" + hmac.new(SECRET, body, hashlib.sha256).hexdigest()
+    if not hmac.compare_digest(header, expected):
+        abort(401)
+
+    event = json.loads(body)
+    print(event["id"], event["severity"], event["title"])
+    return "", 204
+```
+
+</TabItem>
+<TabItem value="shell" label="Shell">
+
+Prüfen Sie einen Body, den Sie in `body.json` gespeichert haben:
+
+```bash
+openssl dgst -sha256 -hmac "$HMAC_SECRET" < body.json
+```
+
+Der Hex-Wert muss dem Teil des Headers nach `sha256=` entsprechen. Verwenden Sie genau dieselben Bytes: Umformatiertes JSON ergibt eine andere Signatur.
+
+</TabItem>
+</Tabs>
+
+## Verwandte Seiten {#related}
+
+- [Alarme an Teams, Slack oder einen Webhook senden](../watch/alert-channels.mdx) · [Kanaltypen](../watch/channel-types.mdx) · [Aktionstypen](../automate/action-types.mdx)

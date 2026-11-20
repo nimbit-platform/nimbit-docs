@@ -1,0 +1,69 @@
+---
+title: Einen Befehl an ein Gerät senden
+sidebar_position: 4
+description: Definieren Sie einen MQTT-Befehl an einem Thing-Typ und lösen Sie ihn von einer Thing-Seite oder einem Dashboard aus.
+type: how-to
+app:
+  routes: ["/onboarding/thing-types/:id", "/onboarding/things/:id"]
+translated_from: 1579ffe
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Definieren Sie einen Befehl wie **Restart pump** einmal an einem Thing-Typ und lösen Sie ihn dann aus der App für ein einzelnes Thing aus. Befehle sind Thing-Aktionen, die von den Aktionen einer Regel getrennt sind. Siehe [Regeln, Aktionen und Berichte](./rules-actions-reports.mdx).
+
+## Bevor Sie beginnen {#before-you-start}
+
+- Eine Rolle, die Aktionen erstellen darf, und die Berechtigung, Aktionen auf dem Thing auszuführen, das Sie steuern wollen.
+- Ein Thing, das über MQTT mit dem Konnektor **Nimbit** verbunden ist. Es muss online sein und sein Befehls-Topic abonniert haben: Ein Befehl wird nur an ein verbundenes Gerät zugestellt und nicht zwischengespeichert.
+- Wissen, was Ihr Gerät erwartet: das Topic unterhalb von `cmd/` und das Payload-Format.
+
+## Den Befehl anlegen {#create-the-command}
+
+1. Öffnen Sie **Einstellungen › Onboarding › Thing Typen**, öffnen Sie den Thing-Typ und gehen Sie zu seinem Tab **Aktionen**.
+2. Wählen Sie **Aktion erstellen** und dann **MQTT**.
+3. Geben Sie einen **Name** ein, zum Beispiel `Restart pump`.
+4. Geben Sie unter **Unterthema** die Ebene ein, auf der das Gerät lauscht, zum Beispiel `restart`. Lassen Sie es leer, um auf der bloßen Ebene `cmd` zu veröffentlichen. Verwenden Sie Buchstaben, Ziffern, `_` oder `-`, getrennt durch `/`.
+5. Setzen Sie **Payload-Format** auf **JSON** oder **Text** und geben Sie die **Payload** ein:
+
+   ```json
+   {"command": "restart", "requestedFor": "{{thing.name}}"}
+   ```
+
+   Mit **Platzhalter einfügen** fügen Sie Werte des Things ein. Nur einfache Platzhalter funktionieren, keine Sections oder Partials. Bei **JSON** muss das Ergebnis nach dem Einsetzen gültiges JSON sein.
+6. Optional: Wählen Sie **Verwendung als Dashboard-Widget zulassen**, damit ein Dashboard ihn auslösen kann. Jeder, der dieses Dashboard öffnen kann, kann den Befehl dann auslösen.
+7. Speichern Sie. Die Aktion ist aktiv und steht in der Liste, und jedes Thing dieses Typs zeigt sie als **Geerbt**.
+
+<Screenshot
+  page="automate/device-command"
+  id="01-create-mqtt-action"
+  route="/onboarding/thing-types/:id"
+  state="Create action drawer, type MQTT, name Restart pump, sub-topic restart, format JSON, payload filled in"
+  alt="Die Schublade „Aktion erstellen“ für einen MQTT-Befehl"
+/>
+
+## Ihn an einem Thing auslösen {#fire-it-at-a-thing}
+
+1. Öffnen Sie **Einstellungen › Onboarding › Things** und öffnen Sie das Thing.
+2. Gehen Sie zu **Aktionen** und wählen Sie neben `Restart pump` **Auslösen**.
+
+Auf der Seite eines Thing-Typs fragt **Auslösen**, an welches **Thing** der Befehl gehen soll.
+
+Um ihn von einem Dashboard auszulösen, fügen Sie ein Widget **Aktion** hinzu und wählen Sie den Befehl. Siehe [Widget-Galerie](../visualize/widgets.mdx).
+
+## Prüfen, ob es funktioniert hat {#check-that-it-worked}
+
+Eine Meldung lautet `Befehl zugestellt auf iot/tenant/<tenant>/device/<device>/cmd/restart`. Wechseln Sie von **Aktionen** zu **Protokoll** (der Schalter über der Liste): Der Lauf steht dort mit **Wann**, seinem Status und seiner Herkunft.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Das Gerät ist nicht verbunden, daher wurde der Befehl nicht zugestellt**: Keine Gerätesitzung hat das Topic abonniert. Bringen Sie das Gerät online und lösen Sie erneut aus. Der Befehl wird nicht zwischengespeichert.
+- **Die Schaltfläche Auslösen ist deaktiviert**: Ihre Rolle darf auf diesem Thing keine Aktionen ausführen, oder die Aktion ist inaktiv. Schalten Sie **Aktiv** in der Aktionsliste des Thing-Typs ein.
+- **Das Topic dieser Aktion ist ungültig**: Ein Unterthema darf höchstens 128 Zeichen und höchstens 8 Ebenen haben, und jede Ebene höchstens 64 Zeichen.
+- **Die Payload-Vorlage dieser Aktion ergibt keine gültige Nachricht**: Bei **JSON** muss die Payload nach dem Ersetzen der Platzhalter gültiges JSON sein. Die Nachricht ist auf 64 KiB begrenzt.
+
+## Verwandte Seiten {#related}
+
+- [Aktionstypen](./action-types.mdx)
+- [Regeln, Aktionen und Berichte](./rules-actions-reports.mdx)
+- [Ein Thing registrieren](../model/register-thing.mdx)

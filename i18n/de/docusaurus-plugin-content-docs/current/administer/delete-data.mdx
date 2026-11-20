@@ -1,0 +1,64 @@
+---
+title: Daten löschen
+description: Löschen Sie aufgezeichnete Messwerte eines Tenants, Thing-Typs oder von Things, oder löschen Sie ein Thing samt allen seinen Daten.
+type: how-to
+sidebar_position: 8
+app:
+  routes: ["/tenant-settings", "/onboarding/things/:id"]
+translated_from: b6ed908
+---
+
+Entfernen Sie aufgezeichnete Messwerte, zum Beispiel Testdaten des Simulators vor dem Go-live, oder nehmen Sie ein ausgemustertes Gerät samt seinem Verlauf heraus. Eine Löschung läuft als Auftrag und lässt sich nicht rückgängig machen, sobald sie Zeilen entfernt hat.
+
+## Bevor Sie beginnen {#before-you-start}
+
+- Sie brauchen die Berechtigung „Datenlöschung“. Nur **Administrator** hat sie. Ohne sie steht im Tab **Daten**: **Zum Löschen von Daten fehlt die Berechtigung**.
+- Um ein Thing zu löschen, müssen Sie außerdem Things löschen dürfen. **Administrator**, **Manager** und **Modellierer** dürfen das.
+- Laufen im Bereich Simulationen, stoppen Sie sie zuerst. Messwerte, die sie nach dem Start der Löschung senden, würden bleiben.
+- Backups bleiben unberührt, und bereits an andere Systeme weitergeleitete Daten werden nicht gelöscht.
+
+## Messwerte löschen {#delete-readings}
+
+1. Öffnen Sie **Administration › Mandanteneinstellungen › Daten**.
+2. Wählen Sie unter **Welche Daten** die Option **Alle Daten**, **Simulierte Daten** oder **Daten mit einem Tag**. Geben Sie bei einem Tag den **Tag** und seinen **Wert** ein.
+3. Wählen Sie unter **Von welchen Things** die Option **Ein Thing-Typ** oder **Ausgewählte Things**. **Der ganze Tenant** gibt es nur für simulierte Daten oder einen Tag.
+4. Legen Sie den **Zeitraum** fest: **Gesamter Zeitraum**, **Letzte 7 Tage**, **Letzte 30 Tage** oder einen eigenen Bereich.
+5. Prüfen Sie **Was gelöscht wird**, einschließlich der Schätzung.
+6. Geben Sie einen **Grund** mit mindestens 3 Zeichen ein. Er wird im Prüfprotokoll gespeichert.
+7. Wählen Sie unter **Start** die Option **In 10 Minuten (abbrechbar)** oder **Sofort**.
+8. Geben Sie den Ausdruck ein, der unter **Zur Bestätigung … eingeben** steht, und wählen Sie **Löschung planen**.
+
+Optional in Schritt 3: Setzen Sie ein Häkchen bei **Auch die Things selbst löschen**. Die Things werden mit jedem Messwert gelöscht, den sie aufgezeichnet haben.
+
+## Ein Thing mit seinen Daten löschen {#delete-a-thing-with-its-data}
+
+1. Öffnen Sie das Thing und wählen Sie **Thing löschen**.
+2. Setzen Sie ein Häkchen bei **Auch alle aufgezeichneten Daten dieses Things löschen**. Ohne es wird nur das Thing gelöscht, und seine Daten bleiben gespeichert, bis ihre Aufbewahrungsfrist endet.
+3. Geben Sie einen **Grund** ein, wählen Sie unter **Start**, wann die Löschung beginnt, und geben Sie zur Bestätigung die ID des Things ein.
+4. Wählen Sie **Thing und Daten löschen**.
+
+Die Option erscheint nur, wenn Sie die Berechtigung „Datenlöschung“ haben.
+
+## Eine Löschung abbrechen oder verfolgen {#cancel-or-follow-a-deletion}
+
+Öffnen Sie **Administration › Mandanteneinstellungen › Zeitpläne**. Der Auftrag steht dort in der Liste. Bei verzögertem Start können Sie ihn 10 Minuten lang abbrechen. Eine sofortige Löschung lässt sich stoppen, aber bereits gelöschte Zeilen bleiben gelöscht.
+
+:::warning Das Löschen von Daten lässt sich nicht rückgängig machen
+Prüfen Sie Umfang und Zeitraum unter **Was gelöscht wird**, bevor Sie bestätigen. Diagramme, Exporte, Berichte und die Regelhistorie verlieren die Daten. Diagramme, die Rollups lesen, wechseln für den betroffenen Zeitraum auf Rohdaten, bis die Rollups neu synchronisiert sind.
+:::
+
+## Prüfen, ob es funktioniert hat {#check-that-it-worked}
+
+Der Auftrag zeigt **Abgeschlossen** mit der Anzahl gelöschter Zeilen. Öffnen Sie ein Dashboard des Things oder Thing-Typs für denselben Zeitraum: Das Diagramm ist leer.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Sie können nicht bestätigen**: Im Bereich laufen noch Simulationen, der Grund hat weniger als 3 Zeichen, oder der eingegebene Ausdruck weicht ab.
+- **Der Auftrag ist Fehlgeschlagen**: Ein Datenspeicher war nicht erreichbar. Wählen Sie **Ab dem letzten Checkpoint wiederholen**, sobald er wieder da ist.
+- **Der Speicherverbrauch ist nicht gesunken**: Speicherplatz wird später durch die Aufbewahrungsbereinigung freigegeben.
+- **In dieser Auswahl gibt es nichts zu löschen**: Keine Daten passen zu Tag und Zeitraum.
+
+## Verwandte Seiten {#related}
+
+- [Tenant-Einstellungen](./tenant-settings.mdx)
+- [Prüfprotokoll](./audit-log.mdx)

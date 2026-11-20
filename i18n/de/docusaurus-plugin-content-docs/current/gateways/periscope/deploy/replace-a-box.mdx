@@ -1,0 +1,60 @@
+---
+title: Eine Box ersetzen
+description: Das Periscope eines Gateways auf neue Hardware setzen oder eine Box erneut einrichten, ohne Namespace oder Things des Gateways zu ändern.
+sidebar_position: 8
+type: how-to
+app:
+  routes: ["/onboarding/gateways"]
+translated_from: 06bddd1
+---
+
+Ersetzen Sie die Hardware hinter einem Gateway oder geben Sie einer Box einen neuen Schlüssel, und behalten Sie Namespace, Gateway-Thing und Things des Gateways. Sie ersetzen die Box, nicht das Gateway: Ein neues Gateway hat einen neuen Namespace und neue Things.
+
+## Voraussetzungen {#before-you-start}
+
+- Die Berechtigung **Gateway** in IoT Breeze.
+- Die `periscope.toml` der alten Box und, falls vorhanden, `edits.yaml`, `proposals.yaml` und `mapping.json` aus ihrem [State-Verzeichnis](./state-and-backup.mdx). Ohne die letzten drei schlägt die neue Box wieder alles vor und wartet im Modus `confirm` auf Ihre Bestätigung.
+- Ging die alte Box verloren oder wurde sie kompromittiert, widerrufen Sie zuerst ihren Schlüssel. Siehe [Ein Gateway widerrufen, ersetzen oder entfernen](../../revoke-and-replace.mdx).
+
+## Schritte {#steps}
+
+1. Öffnen Sie in IoT Breeze **Einstellungen › Onboarding › Gateways**, öffnen Sie das Zeilenmenü des Gateways und wählen Sie **Neuer Onboarding-Code**. Kopieren Sie den Code. Ein früherer Code funktioniert sofort nicht mehr.
+2. Installieren Sie Periscope auf der neuen Box, [in einem Container](./run-in-a-container.mdx) oder [als Dienst](./run-as-a-service.mdx), mit der alten `periscope.toml` und den Dateien, die Sie im State-Verzeichnis behalten haben.
+3. Richten Sie die neue Box mit dem neuen Code ein. Ihr State-Verzeichnis hat kein Gateway, Sie brauchen also kein `-force`:
+
+   ```sh
+   periscope enroll -config /etc/periscope/periscope.toml -code ONB-XXXX-XXXX-XXXX-XXXX
+   ```
+
+4. Starten Sie den Agent mit `gateway = true`.
+5. Schalten Sie die alte Box aus. Hat sich die neue Box eingerichtet, verwirft die Plattform den alten Schlüssel, und die alte Box scheitert bei ihrer nächsten Anmeldung. Ein Token, das sie schon hält, funktioniert noch kurze Zeit: Wie schnell jeder Schritt wirkt, steht in [Ein Gateway widerrufen, ersetzen oder entfernen](../../revoke-and-replace.mdx). Betreiben Sie nicht beide: Sie würden unter derselben Client-ID senden und sich gegenseitig trennen.
+
+## Dieselbe Box erneut einrichten {#onboard-the-same-box-again}
+
+Bleiben die Box und ihr State, Sie wollen aber einen neuen Schlüssel, führen Sie den Befehl mit `-force` aus:
+
+```sh
+periscope enroll -config /etc/periscope/periscope.toml -code ONB-XXXX-XXXX-XXXX-XXXX -force
+```
+
+Ohne `-force` lehnt der Befehl ab, weil die Box schon ein Gateway ist. Die Plattform verwirft dann den alten Schlüssel. Ein laufender Agent meldet sich bei seiner nächsten Anmeldung ohne Neustart mit dem neuen Schlüssel an. Wählen Sie im Einrichtungsbildschirm zuerst **Disconnect**.
+
+## Was gleich bleibt {#what-stays-the-same}
+
+Namespace, Gateway-Thing und Things behalten ihre IDs, die neue Box leitet also dieselben Alternate-IDs ab und verknüpft die vorhandenen Things, statt sie doppelt anzulegen. Werte, die auf der alten Box in der Warteschlange lagen und nicht gesendet wurden, gehen mit ihr verloren.
+
+{/* TODO(product): Can a backed-up gateway_key.pem be restored on new hardware instead of onboarding with a new code, and is that supported? */}
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Das Gateway ist wieder **Online**, und `periscope verify -since 5m` endet mit 0. Siehe [Prüfen, ob Daten angekommen sind](../verify.mdx).
+
+## Wenn es nicht klappt {#if-it-doesnt-work}
+
+- **Der Code wird abgelehnt**: Er ist unbekannt, benutzt oder abgelaufen. Stellen Sie mit **Neuer Onboarding-Code** einen weiteren aus.
+- **Der State gehört zu einer anderen Organisation**: Das neue State-Verzeichnis hat eine `tenant.json` einer anderen Organisation. Beginnen Sie mit einem leeren Verzeichnis.
+- **Das Gateway bleibt Offline**: Siehe [Eine Box mit einem Onboarding-Code einrichten](./onboard.mdx#if-it-doesnt-work).
+
+## Verwandte Seiten {#related}
+
+- [Ein Gateway widerrufen, ersetzen oder entfernen](../../revoke-and-replace.mdx) · [Eine Box aktualisieren](./upgrade.mdx)

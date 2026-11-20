@@ -1,0 +1,118 @@
+---
+title: Konnektor-Typen
+description: Die Konnektor-Typen, mit denen externe Daten in den Knowledge Graph geladen werden, mit Feldern, Standardwerten, Zugangsdaten-Typen und Schreibverhalten.
+type: reference
+app:
+  routes: ["/knowledge/connectors", "/knowledge/credentials", "/knowledge/mappings"]
+  tour: setup-knowledge
+translated_from: 679f3a4
+---
+
+Jedes Feld der Konnektor-Typen unter **Einstellungen › Knowledge-Einrichtung › Quellen**. Zum Einrichten siehe [Eine externe Datenquelle anbinden](./outside-source.mdx).
+
+## Alle Konnektoren {#all-connectors}
+
+| Feld | Regel |
+| --- | --- |
+| **Name** | Buchstaben, Zahlen, Bindestriche, Unterstriche. Nach dem Anlegen fest. |
+| **Typ** | Nach dem Anlegen fest. Er bestimmt das Schema. |
+| **Staging-Quelle** | Kleinbuchstaben, Zahlen, Bindestriche, zum Beispiel `sap-pm`. |
+| **Flush max. Datensätze** | Einen Batch ausgeben, sobald sich so viele Datensätze angesammelt haben. Unter **Erweitert › Zustellung**; leer nutzt den Standard. |
+| **Flush max. Wartezeit (ms)** | Einen Teil-Batch nach dieser Zeit ausgeben. Unter **Erweitert › Zustellung**; leer nutzt den Standard. |
+| Status | **Läuft**, **Wird wiederholt**, **Fehlgeschlagen**, **Abgeschlossen**, **Gestoppt**. **Schlägt seit … fehl** zeigt, seit wann das Lesen immer wieder scheitert. |
+
+## Datei {#file}
+
+| Feld | Bedeutung |
+| --- | --- |
+| **JSONL-Pfad** | Eine JSON-Datei mit einem Objekt pro Zeile im Konnektor-Dateiordner des Servers (Standard `/data/staging/connector-files`). Ein Pfad außerhalb wird abgelehnt. Datei-Konnektoren lassen sich auf einem Server abschalten. |
+
+## HTTP/REST {#httprest}
+
+| Feld | Bedeutung |
+| --- | --- |
+| **URL** | Der Endpunkt, https. Seine eigene Query-Zeichenfolge bleibt erhalten. |
+| **Methode** | GET oder POST. Ein **Request-Body** (ein JSON-Objekt) wird mit POST gesendet. |
+| **Header** | Ein `Name: value` pro Zeile. Legen Sie Geheimnisse in Zugangsdaten ab. |
+| **Query-Parameter** | Ein `name=value` pro Zeile. |
+| **Geteilte Zugangsdaten** | Signieren jede Anfrage und werden nur an die erlaubten Hosts gesendet. Leer bei einer öffentlichen API. |
+| **Pfad zu den Datensätzen** | Gepunkteter Pfad zum Datensatz-Array, zum Beispiel `data.items`. Leer, wenn die Antwort das Array ist. |
+| **Paging**, **Seiten-Parameter**, **Parameter für die Seitengröße**, **Seitengröße**, **Erste Seite**, **Paging-Parameter in** | Wie Seiten angefordert werden. Bei POST stehen die Parameter in der Query-Zeichenfolge oder im JSON-Body. |
+| **Pfad zum Next-Link**, **Pfad zum Cursor** | Wo der Body die URL oder den Cursor der nächsten Seite enthält. |
+| **Seitenlimit** | Ein Lauf stoppt nach so vielen Seiten und behält seine Watermark. Standard 1000. |
+| **Änderungsfeld**, **Watermark-Parameter** | Der Zeitstempel der letzten Änderung der Datensätze und der Parameter, der den höchsten bereits gelesenen Wert sendet, zum Beispiel `updated_since`. Leer liest jedes Mal alles. |
+| **Abfrageintervall (ms)** | Zeit zwischen Läufen. |
+
+**Ausprobieren** holt die erste Seite und zeigt die erkannten Datensätze, Felder und das Paging. **Erkanntes übernehmen** kopiert sie in das Formular.
+
+## OData {#odata}
+
+| Feld | Bedeutung |
+| --- | --- |
+| **Dienst-URL** | Die Dienstwurzel, vor dem Entity Set. Fügen Sie `?sap-client=<client>` hinzu, wenn Ihr System es braucht. |
+| **Entity Set** | Das Set, das gelesen wird. **Dienst lesen** listet sie aus `$metadata` auf. |
+| **Felder ($select)** | Kommagetrennt. Leer liest jedes Feld. |
+| **Filter ($filter)** | Ein OData-Filter. |
+| **Änderungen lesen über** | Ein Feld der letzten Änderung wie `LastChangeDateTime`. Leer liest jedes Mal das ganze Set. |
+| **Sortierung beim Blättern** | Kommagetrennte Felder. Leer sortiert Seiten nach dem Entity-Schlüssel. |
+| **Seitengröße ($top)** | Leer: 500 Datensätze pro Seite, höchstens 5000. |
+| **Zeit zwischen Läufen (ms)** | Leer: alle 5 Minuten mit Änderungsfeld, stündlich ohne. Minimum 30 s mit Änderungsfeld, 5 Minuten ohne. |
+| **Benutzer** und **Passwort**, oder **OAuth-Client-ID**, **OAuth-Client-Secret**, **OAuth-Token-URL**, **Scope** | Anmeldung. Dynamics 365 braucht den Scope `<org URL>/.default`; SAP braucht keinen. |
+| **Geteilte Zugangsdaten** | Ersetzen das eigene Geheimnis des Konnektors. |
+
+## MQTT {#mqtt}
+
+| Feld | Bedeutung |
+| --- | --- |
+| **Broker-URL** | Endpunkt mit Schema und Port. |
+| **Topic** | Ein Topic-Filter. Die Platzhalter `+` und `#` werden unterstützt. |
+| **Client-ID** | Stabile Sitzungskennung. Wird erzeugt, wenn leer. |
+| **Benutzername**, **Passwort**, **Geteilte Zugangsdaten** | Anmeldung. |
+
+## NATS {#nats}
+
+| Feld | Bedeutung |
+| --- | --- |
+| **Server-URL** | URL des JetStream-Servers. |
+| **Stream**, **Subject-Filter**, **Durable Consumer** | Was konsumiert wird. |
+| **Benutzername**, **Passwort**, **Geteilte Zugangsdaten** | Anmeldung. |
+
+## Datenbank {#database}
+
+| Feld | Bedeutung |
+| --- | --- |
+| **Treiber** | Nur PostgreSQL. Eine leere Liste oder ein fehlender Treiber meldet „driver not available“. |
+| **Verbindungszeichenfolge (DSN)** | Verschlüsselt gespeichert, nie zurückgegeben. |
+| **Geteilte Zugangsdaten** | Tragen Benutzer und Passwort in den DSN ein, der dann nur noch Host, Port und Datenbank nennt. |
+| **Abfrage** | Ein einfaches `SELECT`. Der Treiber hängt die Cursor-Bedingung an. |
+| **Cursor-Spalte** | Eine monotone Spalte, die zwischen den Abfragen verfolgt wird, um nur neue Zeilen zu holen. |
+| **Abfrageintervall (ms)** | Pause zwischen Abfragen im Leerlauf. |
+
+## Zugangsdaten {#credentials}
+
+| Typ | Enthält |
+| --- | --- |
+| **Benutzer und Passwort** | Einfache Anmeldung. |
+| **Bearer-Token** | Ein Token. |
+| **API-Schlüssel** | Ein Schlüssel, der in einem Header oder Query-Parameter gesendet wird. |
+| **OAuth-2-Client-Credentials** | Client-ID, Secret und **Token-URL**. |
+
+Zugangsdaten haben einen **Name** (nach dem Anlegen fest) und **Erlaubte Hosts**, einen pro Zeile, wobei `*.example.com` Subdomains abdeckt. **Rotieren** startet jeden Konnektor neu, der sie verwendet. Verwendete Zugangsdaten lassen sich nicht löschen. **In geteilte Zugangsdaten verschieben** verschiebt das eigene Geheimnis eines Konnektors dorthin. Nur Tenant-Admins legen Zugangsdaten an, rotieren oder löschen sie.
+
+## Uploads {#uploads}
+
+| Regel | Wert |
+| --- | --- |
+| Endungen | `.csv`, `.json`, `.jsonl`, `.ndjson`, `.parquet` |
+| Größe | Bis 64 MB |
+| JSON | Ein Objekt pro Zeile |
+
+## Mapping-Optionen {#mapping-options}
+
+| Option | Werte |
+| --- | --- |
+| **Schreibverhalten** | **Erstellen** (schlägt fehl, wenn der Datensatz existiert), **Upsert** und **Ersetzen** (überschreiben den ganzen Datensatz), **Zusammenführen** (aktualisiert nur zugeordnete Felder). |
+| **Transform-Trigger** | **Manuell**, **Bei neuem Batch**, **Geplant**. |
+| Feldbindung | **Quellfeld**, **Konstante**, **ƒx-Transform**. |
+| Beziehungszuordnung | Per **Alias**, per **Abgleichsfeld** oder per **Kennung** des Zieltyps. Eine Beziehung mit **Optional**, die nichts findet, legt die Zeile ohne Verknüpfung an, die dann unter **Verknüpfungen prüfen** erscheint. |
+| Mapping **Integriert** | Wird mit der Plattform ausgeliefert. Das Speichern einer Änderung erzeugt Ihre eigene Kopie. Löschen der Kopie stellt das integrierte wieder her. |

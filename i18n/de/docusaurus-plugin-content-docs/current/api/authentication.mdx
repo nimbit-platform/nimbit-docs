@@ -1,0 +1,119 @@
+---
+title: Authentifizierung
+description: Alle Zugangsdaten, die jede NimBit-API akzeptiert, mit den exakten Headern, und wie Gerätezugangsdaten und API-Schlüssel ausgestellt werden.
+type: reference
+sidebar_position: 3
+app:
+  routes: ["/onboarding/things/:id", "/administration/api-keys"]
+translated_from: dd3e5a5
+---
+
+Die Base-URL, die Zugangsdaten, die tsflux, nbq und OCB akzeptieren, und die exakten Header, die Sie senden.
+
+## Base-URL {#base-url}
+
+Verwenden Sie den Host, auf dem Sie IoT Breeze öffnen, mit dem Pfadpräfix der API: `https://<host>/nbq/api/v1/...`. Alle drei APIs teilen sich den Host. Der Tenant ist nicht Teil der URL: Er kommt aus den Zugangsdaten. Die eine Ausnahme ist die Geräte-Telemetrie-Route von tsflux, die den Tenant auch in ihrem Pfad trägt.
+
+{/* TODO(product): Does every tenant get its own host (primary and additional domains are registered per tenant), or do tenants of a shared cell share one host? Say which hostname an integrator should use. */}
+
+## Welche Zugangsdaten wo funktionieren {#which-credential-works-where}
+
+| Zugangsdaten | tsflux (`/tsflux`) | nbq (`/nbq`) | OCB (`/ocb`) |
+| --- | --- | --- | --- |
+| Basic-Zugangsdaten eines Geräts oder Tenants | Ja | Nein | Nein |
+| JWT eines Geräts oder Tenants | Ja | Nein | Nein |
+| API-Schlüssel (`nbk_...`) als Bearer | Nein | Ja | Ja |
+| Access-Token aus dem Schlüsselaustausch | Nein | Ja (Audience `nimbit:nbq`) | Ja (Audience `nimbit:ocb`) |
+| Benutzer-Access-Token | Nein | Ja | Ja |
+
+{/* TODO(product): nbq takes an API key as bearer only when the deployment sets its directory address (`SECURITY_API_KEYS_DIRECTORY_URL`). Is that on in every cell? Until confirmed, use the explicit exchange below for nbq. */}
+
+## Header {#headers}
+
+| Zugangsdaten | Header |
+| --- | --- |
+| Basic-Zugangsdaten | `Authorization: Basic <base64 of username:password>` |
+| JWT, API-Schlüssel, Access-Token | `Authorization: Bearer <token>` |
+| nbq-WebSocket (`/api/v1/ws`) | `Authorization: Bearer <token>` oder das Subprotocol `nbq.auth.bearer.<token>` in `Sec-WebSocket-Protocol` |
+
+Der Tenant kommt immer aus den Zugangsdaten, nie aus einem Header.
+
+## Geräte- und Tenant-Zugangsdaten (tsflux) {#device-and-tenant-credentials-tsflux}
+
+tsflux akzeptiert Basic-Zugangsdaten und HS256-JWTs. Beide werden aus einem Tenant-Schlüssel abgeleitet und tragen einen Scope.
+
+| Scope | Gültig für | Benutzernamen-Identität |
+| --- | --- | --- |
+| `device` | Ein Thing | `<tenantId>/<deviceId>` |
+| `tenant` | Jedes Thing des Tenants | `<tenantId>/*` |
+
+- **Basic-Benutzername**: die Identität, base64url-kodiert ohne Padding. **Passwort**: ein undurchsichtiger String, den Sie aus IoT Breeze kopieren. Bauen Sie ihn nicht von Hand.
+- **JWT-Claims**: `version` (`v1`), `tenant_id`, `device_id`, `key_id`, `key_type` (`primary` oder `secondary`), `signed_by` (`device` oder `tenant`), `scope`, `exp` und optional `nonce`. Ein Token ohne `exp` oder nach `exp` wird abgelehnt.
+- Geräte-Zugangsdaten mit Scope `device` dürfen nur Daten für ihr eigenes Thing senden. `tenant` und `id` einer Nachricht müssen zu den Zugangsdaten passen, sonst wird die Nachricht abgelehnt.
+- Alle Zugangsdaten stammen aus einem primären oder sekundären Tenant-Schlüssel. Das Rotieren eines Schlüssels sperrt neue Anmeldungen mit davon abgeleiteten Zugangsdaten. tsflux cacht ein geprüftes Bearer-Token bis zu einer Minute.
+
+### Zugangsdaten erhalten {#get-credentials}
+
+Öffnen Sie in IoT Breeze ein Thing und verwenden Sie den Tab **Verbindungen**; siehe [Daten über MQTT senden](../connect/mqtt.mdx). Basic-Zugangsdaten laufen nicht ab. Die JWT-Gültigkeit in IoT Breeze beträgt 30 Tage bis 7 Jahre.
+
+Über die API stellt OCB sie aus. Alle Routen nehmen `keyType` (`primary` oder `secondary`, Standard `primary`).
+
+| Route (unter `/ocb/rest/v2`) | Body | Liefert |
+| --- | --- | --- |
+| `POST /thing-auth/nimbit/device/token` | `deviceId`, optional `expiresIn` | `token`, `username`, `expiresAt`, `scope` |
+| `POST /thing-auth/nimbit/device/basic-auth` | `deviceId`, optional `nonce` | `username`, `password`, `scope` |
+| `POST /tenant-auth/nimbit/token` | optional `expiresIn` | `token`, `username`, `expiresAt`, `scope` |
+| `POST /tenant-auth/nimbit/basic-auth` | keiner | `username`, `password`, `scope` |
+| `POST /tenant-auth/nimbit/rotate-key` | `primary` und/oder `secondary` (boolean) | Den neuen Schlüssel. Alle Zugangsdaten, die von einem rotierten Schlüssel abgeleitet sind, werden nicht mehr akzeptiert. |
+
+{/* TODO(product): Which permission or API key scope do the credential routes need, and is a key token allowed on them? */}
+
+```bash
+curl -X POST "https://<host>/tsflux/api/v1/message/structured" \
+  -u "<username>:<password>" \
+  -H "Content-Type: application/json" \
+  -d '{"tenant":"<tenantId>","thingType":"<thingType>","id":"<deviceId>","data":{"temperature":22.5}}'
+```
+
+## API-Schlüssel-Austausch {#api-key-exchange}
+
+Sie können den Schlüssel selbst als Bearer an OCB senden und, wo aktiviert, an nbq. Um ein Token explizit zu holen, zum Beispiel für nbq:
+
+```bash
+curl -X POST "https://<host>/v1/token" \
+  -d "grant_type=client_credentials" \
+  -d "client_secret=<api-key>" \
+  -d "resource=nimbit:nbq"
+```
+
+| Feld | Bedeutung |
+| --- | --- |
+| `grant_type` | `client_credentials`. |
+| `client_secret` | Der API-Schlüssel. Alternativ senden Sie ihn als Passwort von HTTP Basic. |
+| `resource` | Die App, für die das Token gilt: `nimbit:ocb`, `nimbit:nbq`, `nimbit:contexus` oder `nimbit:mcp`. |
+| `scope` | Optional. Durch Leerzeichen getrennte Teilmenge der Scopes des Schlüssels, alle aus einer App. |
+
+Die Antwort ist `{"access_token": "...", "token_type": "Bearer", "expires_in": 300, "scope": "..."}`. Es gibt kein Refresh-Token: Tauschen Sie erneut, bevor `expires_in` abläuft. Ein Schlüssel, dessen Scopes mehrere Apps umfassen, braucht `resource` oder `scope`, sonst lautet die Antwort `400 invalid_scope`.
+
+Der Body muss `application/x-www-form-urlencoded` sein, höchstens 16 KiB, ohne Query-String, gesendet über HTTPS. Fehler stehen unter [Fehler und Limits](./errors-and-limits.mdx#api-key-exchange-errors).
+
+## Was jede API nach der Anmeldung prüft {#what-each-api-checks-after-sign-in}
+
+nbq liest Tenant, Berechtigungen und Audience aus dem Token. Ein Token braucht die Berechtigung der Route:
+
+| nbq-Routen | Berechtigung |
+| --- | --- |
+| `/datasources`, `/timeseries/query`, `/timeseries/fleet/query`, `/snapshot/query`, `/geo/*`, `/analytics/{id}`, `/ws`, `/metrics/query` | `Thing:r` (`Tenant:u` nur für Cache-Metriken) |
+| `/timeseries/raw/query`, `/tags/query` | `Thing:u` |
+| `/events/*` | `Event:r` (Scope `events:read`) |
+| `/last-value-cache/status` | `Tenant:u` |
+| `GET /admin/analytics` | `QueryConfig:r` |
+| Andere `/admin/analytics`-Routen | `QueryConfig:x` |
+
+Der Scope `telemetry:read` gewährt `Thing:r` sowie `QueryConfig:r` und `:x`. Er erreicht also Abfragen und Analysen, aber weder Rohzeilen noch Tag-Abfragen oder Events.
+
+OCB entscheidet jede Route anhand der Berechtigungen im Token. Routen ohne deklarierte Berechtigungen lehnen Schlüssel-Tokens mit `403` `API_KEY_NOT_ALLOWED` ab, außer `GET /users/me`.
+
+## Verwandte Seiten {#related}
+
+- [API-Schlüssel](./api-keys.mdx) · [Fehler und Limits](./errors-and-limits.mdx) · [Einen API-Schlüssel anlegen](../administer/api-key.mdx)

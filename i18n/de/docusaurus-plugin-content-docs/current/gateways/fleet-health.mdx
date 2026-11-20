@@ -1,0 +1,67 @@
+---
+title: Zustand und Datenverkehr von Gateways prüfen
+sidebar_label: Zustand und Datenverkehr
+description: Sehen, welche Gateways online sind, ob Daten fließen und warum Nachrichten verworfen werden – in der Gateway-Liste und im Tab „Zustand“ eines Gateways.
+type: how-to
+sidebar_position: 7
+app:
+  routes: ["/onboarding/gateways", "/onboarding/gateways/:id"]
+  primary: ["/onboarding/gateways/:id"]
+translated_from: 3041c36
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Finden Sie heraus, welche Gateways leben, ob sie Daten senden und was die Plattform ablehnt. Was die einzelnen Signale bedeuten, steht unter [Wie Gateways funktionieren](./how-gateways-work.mdx).
+
+## Voraussetzungen {#before-you-start}
+
+- Sie sehen Gateways unter **Einstellungen › Onboarding › Gateways**.
+- Mindestens ein Gateway existiert und hat Daten gesendet. Ein Gateway, das noch nichts gesendet hat, hat noch keinen Datenverkehr anzuzeigen.
+
+## Schritte {#steps}
+
+1. Öffnen Sie **Einstellungen › Onboarding › Gateways**. Die Tabs **Alle**, **Online**, **Offline** und **Wartet auf Onboarding** grenzen die Liste ein und zeigen, wie viele Gateways in jedem liegen. Die Liste aktualisiert sich alle 30 Sekunden.
+2. Wählen Sie **Offline**, um zu sehen, welche Gateways Sie zuerst ansehen sollten. Der Status zeigt, seit wann das Gateway in diesem Zustand ist.
+3. Öffnen Sie ein Gateway. Der Tab **Zustand** zeigt **Verbindung** und einen Link zum Gateway-Thing (**Gateway-Thing öffnen**), das den Verlauf der eigenen Messwerte des Gateways enthält.
+4. Lesen Sie die Karte **Datenverkehr**:
+
+   | Zeile | Bedeutung |
+   | --- | --- |
+   | **Werte pro Minute** | Gespeicherte Messwerte, mit den letzten 24 Stunden als Balken. |
+   | **Nachrichten pro Minute** | Gespeicherte Nachrichten. |
+   | **Aktive Things** | Things mit mindestens einer gespeicherten Nachricht im letzten Fenster. |
+   | **Verworfen pro Minute** | Nachrichten, die die Plattform endgültig abgelehnt hat, mit einer Zahl je Grund. Rot, wenn größer als null. |
+   | **Letzte Daten** | Wann zuletzt Daten dieses Gateways gespeichert wurden. |
+
+<Screenshot
+  page="gateways/fleet-health"
+  id="01-traffic"
+  route="/onboarding/gateways/:id"
+  state="Health tab of an online gateway with traffic values and one discard reason"
+  alt="Der Tab „Zustand“ mit „Verbindung“ und der Karte „Datenverkehr“"
+/>
+
+5. Ist **Verworfen pro Minute** größer als null, lesen Sie den Grund daneben. Die Gründe stehen in der [Gateway-Referenz](./gateway-reference.mdx#discard-reasons). Verworfene Nachrichten werden gezählt, nicht einzeln aufgelistet.
+6. Öffnen Sie **Bereich**, um **Abgelehnte Anlagen** zu sehen: die Anzahl je Grund und wann die letzte stattfand. Der Tab **Ereignisse** listet jedes abgelehnte Anlegen eines Things und die Änderungen am Gateway.
+
+Den Datenverkehr zählt die Plattform und schreibt ihn etwa jede Minute in das Gateway-Thing. Bei mehreren Ingest-Instanzen schreibt jede ihren eigenen Anteil, ein Wert kann also die Sicht einer einzelnen Instanz sein. Er setzt ein Gateway nie auf online. Das tut nur die eigene Zustandsmeldung des Gateways. Ein Gateway, das **Offline** ist, obwohl **Letzte Daten** aktuell ist, hat also einen angehaltenen Health-Reporter und schweigt nicht.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Ein gesundes Gateway ist **Online**, zeigt **Nachrichten pro Minute** über null, solange seine Things senden, und **Verworfen pro Minute** von 0. Sendet ein Gateway nicht mehr, fallen seine Raten auf null, und **Letzte Daten** behält seine Zeit. Das Gateway wird **Offline**, wenn 15 Minuten lang keine Zustandsmeldung eintrifft.
+
+## Wenn es nicht klappt {#if-it-doesnt-work}
+
+- **Noch kein Datenverkehr gezählt**: Die Plattform hat noch keine Nachricht dieses Gateways gespeichert. Prüfen Sie zuerst, ob das Gateway **Online** ist. Bei einem MQTT-Gerät prüfen Sie seine Topics unter [Daten vieler Geräte über ein MQTT-Gateway senden](./mqtt-gateway.mdx).
+- **Online, aber ein Thing zeigt keine Daten**: Sehen Sie sich die Verwerfungsgründe an. `not_member` heißt, das Thing ist diesem Gateway nicht zugeordnet (siehe [Die Things hinter einem Gateway verwalten](./things-behind-a-gateway.mdx)), `unknown_thing`, dass es oder sein Thing-Typ nicht existiert, `invalid`, dass die Nachricht die Validierung nicht bestanden hat, `identity_mismatch`, dass die Nachricht eine andere Organisation oder ein anderes Thing nennt als ihre Verbindung, `id_missing`, dass ein Batch-Element keine `id` hat.
+- **Offline, aber die Box läuft**: Ein Periscope-Gateway braucht einen laufenden Health-Reporter und einen gültigen Schlüssel; öffnen Sie **Zugriff & Schlüssel** für **Letzte Anmeldung**. Ein MQTT-Gerät muss alle 5 Minuten auf sein **Status-Topic** veröffentlichen.
+- **Wartet auf Onboarding**: Die Box hat sich noch nicht mit ihrem Code registriert, oder der Code ist abgelaufen. Siehe [Gateway hinzufügen](./add-a-gateway.mdx).
+- **Things sind aktiv, aber ein Wert fehlt**: Dem Thing-Typ fehlt möglicherweise der Messwert, daher hat die Plattform ihn verworfen. Prüfen Sie den Thing-Typ unter [Thing-Typen, Things und Interfaces](../model/things-and-types.mdx).
+
+## Verwandte Seiten {#related}
+
+- [Gateway-Referenz](./gateway-reference.mdx) für jeden Verwerfungsgrund und jeden Datenverkehr-Messwert
+- [Den Zustand eines Things prüfen](../watch/thing-health.mdx) für den eigenen Verlauf des Gateway-Things
+- [Telemetrie erkunden](../watch/explore-telemetry.mdx)
+- [Gateway widerrufen, ersetzen oder entfernen](./revoke-and-replace.mdx)

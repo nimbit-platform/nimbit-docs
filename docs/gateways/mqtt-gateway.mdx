@@ -1,0 +1,154 @@
+---
+title: Send data for many devices through one MQTT gateway
+sidebar_label: One MQTT gateway for many devices
+description: Add an MQTT device gateway, download its config file, assign its things and publish per thing or as one batch.
+type: how-to
+sidebar_position: 4
+app:
+  routes: ["/onboarding/gateways", "/onboarding/gateways/:id"]
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import Screenshot from "@site/src/components/Screenshot";
+
+Connect a device that speaks MQTT, such as an eWON Flexy, with one credential for the gateway and send data for several things through it. For how membership and scope work, read [How gateways work](./how-gateways-work.mdx). For a Flexy, continue with [Connect an eWON Flexy](./ewon-flexy.mdx).
+
+## Before you start
+
+- You need the **Gateway** permission (the built-in **Admin** role has it).
+- The device can connect with MQTT 3.1.1, a username and password, and a client ID you choose. The broker accepts QoS 0 and 1, not 2.
+- Each device behind the gateway is a thing of your organization, or you can [register](../model/register-thing.mdx) it now. Its thing type has the measures you will send.
+
+## Add the gateway
+
+1. Open **Settings › Onboarding › Gateways** and select **Add gateway**.
+2. Under **Type**, choose **MQTT device**.
+3. Enter a **Name**. Leave **Namespace** empty, or type one.
+4. Under **Config file format**, choose **Environment file (.env)**, **JSON (.json)** or **eWON Flexy BASIC parameters (.bas)**. The credential is the same in every format.
+5. Select **Add gateway**.
+
+IoT Breeze shows **MQTT credential for** the gateway name. Copy the **Password** or select **Download config** now. The password is shown once; a file you download later holds a placeholder instead.
+
+<Screenshot
+  page="gateways/mqtt-gateway"
+  id="01-mqtt-credential"
+  route="/onboarding/gateways"
+  state="Add gateway drawer after creating an MQTT device gateway, with the connection rows and the Download config button"
+  alt="The MQTT credential result with host, port, username, password and topics"
+/>
+
+The result lists these rows. Copy them from the screen rather than building them by hand.
+
+| Row | Use |
+| --- | --- |
+| **Host**, **Port**, **TLS** | The broker. **On (mqtts)** means the listener wants TLS. |
+| **Username**, **Password** | The credential. |
+| **Client ID prefix** | `<tenant>:gateway:<gateway id>`. Use it as the client ID, or add `:<suffix>`. The broker refuses any other client ID. Two connections with one client ID evict each other. |
+| **Topic prefix** | Every topic you publish on starts with it. |
+| **Telemetry topic** | Publish one thing's data here. |
+| **Batch topic** | Publish an array of things' data here. |
+| **Status topic** | Publish the gateway's own health here. |
+
+## Put things on the gateway
+
+A gateway can send only for things that belong to it, and its messages never create things.
+
+1. Create the things in IoT Breeze, if they don't exist.
+2. Open the gateway, select the **Things** tab and select **Assign things**. Search for the things and select **Assign**. Or open a thing, edit it and choose the gateway in **Gateway**.
+
+Details, limits and what happens when you move a thing are in [Manage the things behind a gateway](./things-behind-a-gateway.mdx).
+
+## Publish data
+
+Connect with the credential, then publish JSON. Both ways use the same message fields; see [Message format](../connect/message-format.mdx).
+
+<Tabs groupId="gateway-publish">
+<TabItem value="thing" label="One thing per message" default>
+
+Publish to the **Telemetry topic**, replacing `<thing>` with the thing's ID or alternate ID:
+
+```text
+tenant/<tenant>/gateway/<gateway id>/device/<thing>/telemetry
+```
+
+```json
+{
+  "thingType": "pump",
+  "time": "2026-11-06T10:15:00Z",
+  "data": { "pressure": 4.18, "running": true }
+}
+```
+
+The topic names the thing. `tenant` and `id` are optional in the message. If you send them, they must match the topic, or the message is discarded as `identity_mismatch`. A topic level can't contain `/`, `.`, `+`, `#` or spaces, so a thing whose alternate ID has one of them needs the batch.
+
+</TabItem>
+<TabItem value="batch" label="One batch for several things">
+
+Publish to the **Batch topic** a JSON array with one element per thing. Each element names its thing with `id`, its ID or alternate ID:
+
+```text
+tenant/<tenant>/gateway/<gateway id>/telemetry
+```
+
+```json
+[
+  { "id": "pump-1", "thingType": "pump", "time": "2026-11-06T10:15:00Z", "data": { "pressure": 4.18 } },
+  { "id": "tank-3", "thingType": "tank", "data": { "level": 0.62 } }
+]
+```
+
+Leave out a device you can't reach instead of re-sending its last values. Each stored element keeps its own thing online, so a re-sent value would keep a dead device online.
+
+</TabItem>
+</Tabs>
+
+`thingType` is the thing type's name or ID, and it must be the type of the thing. Leave out `time` to use the arrival time.
+
+Every 5 minutes, publish the gateway's own health to the **Status topic**:
+
+```json
+{
+  "thingType": "mqtt_gateway",
+  "time": "2026-11-06T10:15:00Z",
+  "data": { "uptime_s": 5400, "buffer_used_pct": 0, "buffer_oldest_s": 0, "errors_per_min": 0, "clock_offset_ms": 0 }
+}
+```
+
+The gateway turns **Online** with the first message and **Offline** after three missed ones (15 minutes).
+
+## Batch limits and checks
+
+| Rule | What happens |
+| --- | --- |
+| Over 1 MiB | The whole publish is dropped. Counted once as `too_large`. |
+| More than 500 elements | The whole publish is dropped. Counted once as `too_many`. 500 is the default; your operator can set another number. |
+| Not a JSON array or object | The whole publish is dropped. Counted once as `invalid`. |
+| Empty array | Ignored. |
+| One object instead of an array | A batch of one. It needs `id` too. |
+| Element without `id` | The element is dropped, counted as `id_missing`. |
+| Element with a `tenant` other than the topic's | The element is dropped, counted as `identity_mismatch`. |
+| Element that is not a message, has no `thingType`, or has neither `data` with a value nor `geo` | The element is dropped, counted as `invalid`. |
+| Element for a thing of another gateway, or of none | The element is dropped, counted as `not_member`. |
+| Element for a thing or thing type that doesn't exist | The element is dropped, counted as `unknown_thing`. Nothing is created. |
+| Element whose `thingType` is not the thing's type | The element is dropped, counted as `invalid`. |
+
+A bad element never stops the others. The elements that pass are stored, each with its own `time`, or the arrival time without one. Reasons are counted per gateway and shown on the **Health** tab; see [Check gateway health and traffic](./fleet-health.mdx).
+
+## Check that it worked
+
+Open the gateway. The **Health** tab shows **Online**, and the **Traffic** card shows **Messages per minute** and **Things active**, within a minute or two of the first data. Open one of the things: its latest values are there.
+
+## If it doesn't work
+
+- **The broker refuses the connection**: check the client ID against **Client ID prefix**, and that you copied the password completely. Lost it? Select **New credential** from the row menu; the old credential stops working for new connections at once.
+- **A publish is acknowledged but nothing is stored**: the topic is outside the gateway's **Topic prefix**. The broker acknowledges a QoS 1 publish it then drops.
+- **Traffic shows discards**: **Discards per minute** names the reasons. Match them to the table above. The common ones are `not_member` (assign the thing) and `unknown_thing` (create the thing, or fix the name of its thing type).
+- **The gateway stays Offline while data arrives**: only its own health message makes it online. Publish to the **Status topic**.
+
+## Related
+
+- [How gateways work](./how-gateways-work.mdx) · [Gateway reference](./gateway-reference.mdx)
+- [Connect an eWON Flexy](./ewon-flexy.mdx) · [Manage the things behind a gateway](./things-behind-a-gateway.mdx)
+- [Check gateway health and traffic](./fleet-health.mdx)
+- [MQTT topics and client ID](../connect/mqtt-topics.mdx)

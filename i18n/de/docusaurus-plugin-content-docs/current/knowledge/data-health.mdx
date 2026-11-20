@@ -1,0 +1,91 @@
+---
+title: Befunde zur Datenqualität beheben
+description: Prüfen Sie, ob Ihre Quellen im Graphen angekommen sind, bestätigen Sie Verknüpfungen zu Geräten und planen Sie Abgleichsrunden.
+type: how-to
+app:
+  routes: ["/knowledge/monitoring", "/knowledge/link-review", "/knowledge/reconciliation"]
+  tour: setup-knowledge
+translated_from: b6ed908
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Finden Sie Zeilen, die nicht angekommen sind, Datensätze, die mit nichts verknüpft sind, und Quelldatensätze, zu denen noch kein Gerät passt, und beheben Sie sie. Ask Nimble beantwortet nur, was der Graph verbindet, lose Datensätze führen also zu schwächeren Antworten.
+
+## Bevor Sie beginnen {#before-you-start}
+
+- Die Berechtigung, Knowledge zu bearbeiten, um den Abgleichszeitplan zu ändern oder Transformationen auszuführen. Über Verknüpfungen zu entscheiden braucht die Berechtigung, Thing-Typen zu bearbeiten.
+- Mindestens eine geladene Quelle: siehe [Eine externe Datenquelle anbinden](./outside-source.mdx).
+
+Öffnen Sie **Einstellungen › Knowledge-Einrichtung › Datenqualität**. Die Tabs sind **Datenaufnahme**, **Verknüpfungen prüfen** und **Abgleich**. Ein Badge am Menüeintrag zeigt, wie viele Verknüpfungen offen sind.
+
+:::note Der Tab Datenaufnahme betrifft Knowledge-Quellen
+Seine Adresse ist `/knowledge/monitoring`, ein älterer Name. Für Gerätedaten nutzen Sie **Überwachung › Things**.
+:::
+
+## Zeilen beheben, die nicht angekommen sind {#fix-rows-that-did-not-land}
+
+1. Öffnen Sie **Datenaufnahme** und wählen Sie eine **Quelle**.
+2. Lesen Sie **Batches**. Jeder ist **Ausstehend**, **Verarbeitet** oder **Unter Quarantäne**.
+3. Öffnen Sie **Zu prüfen** für Zeilen, die die letzte Transformation nicht schreiben konnte. Jede Zeile nennt den Grund: ein Alias, der nicht aufgelöst wurde, eine fehlende Quell-ID oder ein Validierungsfehler.
+4. Öffnen Sie **Dead-Letters** für fehlgeschlagene Zustellungen. **Ungelöste** brauchen Handeln.
+5. Korrigieren Sie das Mapping (**Mapping öffnen**) oder die Quelldaten und wählen Sie dann **Transformation ausführen** oder bei einem Dead Letter **Erneut senden**.
+
+## Die Verknüpfungen des Graphen prüfen {#check-the-graphs-links}
+
+1. Wählen Sie auf **Datenaufnahme** unter **Graph-Zustand** **Jetzt prüfen**.
+2. Lesen Sie jede Prüfung: eine Anzahl, Beispiele und ein Ergebnis von **Kritisch**, **Warnung**, **Hinweis** oder **OK**. Große Anzahlen können von einer gekappten Stichprobe stammen.
+3. Wählen Sie **Datensätze anzeigen** oder **Prüfen**, um den Befund zu beheben.
+
+| Befund | Behebung |
+| --- | --- |
+| Datensätze ohne Typ | Weisen Sie einen Typ zu, damit ihre Felder und Messgrößen gelten. |
+| Datensätze ohne Standort | Platzieren Sie sie auf einer Ebene: [Standorte und Gebäude abbilden](./map-sites.mdx). |
+| Unverknüpfte Datensätze | Fügen Sie eine Beziehung hinzu oder hängen Sie ein Dokument an. |
+| Beziehungen ohne Verknüpfungen | Nutzen Sie die Beziehung oder entfernen Sie sie aus dem Typ. |
+| Als Text gespeicherte Verknüpfungen | Ersetzen Sie den Namen in einem Attribut durch eine Beziehung. |
+| Datensätze ohne Kennungen oder Alias | Ergänzen Sie die externe ID, damit Mappings sie finden. |
+| Datensätze ohne Beschreibung | Ergänzen Sie eine Beschreibung in einem Satz. |
+| Nicht zugeordnete Dokumente | Hängen Sie das Dokument in **Erkunden** an einen Datensatz. |
+| Messgrößen ohne Meldung | Das Gerät war nie verbunden. Prüfen Sie das Gerät. |
+| Offene Verknüpfungen zur Prüfung | Arbeiten Sie **Verknüpfungen prüfen** ab. |
+
+## Verknüpfungen zu Geräten bestätigen {#confirm-links-to-devices}
+
+Ein Quelldatensatz, etwa eine Pumpe in einem SAP-Export, wartet hier, wenn kein Gerät automatisch zu ihm passt.
+
+1. Öffnen Sie **Verknüpfungen prüfen**. Der Tab **Offen** listet Datensätze mit ihrem **Bester Treffer**, einer Bewertung (**Starker Treffer**, **Wahrscheinlicher Treffer**, **Einen Blick wert**) und den Gründen.
+2. Wählen Sie bei einem Datensatz **Prüfen** und dann **Das ist das Gerät** oder **Keines davon**.
+3. Bestätigen Sie. Die Kennung wird am Gerät gespeichert, sodass die nächste Synchronisierung es verknüpft.
+4. Um viele zu bearbeiten, haken Sie Zeilen an und nutzen **Besten Treffer bestätigen** oder **Ablehnen**.
+
+Wählen Sie **Nur in Wissen verknüpfen**, um zu verknüpfen, ohne das Gerät zu ändern. Hat das Gerät schon eine andere Nummer, werden Sie gewarnt, dass das Ersetzen alles löst, was diese Nummer jetzt verknüpft. Eine fast identische Nummer wird als **Tippfehler** markiert.
+
+<Screenshot
+  page="knowledge/data-health"
+  id="01-link-review"
+  route="/knowledge/link-review"
+  state="Link review Open tab with three records and a sheet showing candidate devices"
+  alt="Verknüpfungen prüfen mit Kandidatengeräten für einen Datensatz"
+/>
+
+## Den Abgleich planen {#schedule-reconciliation}
+
+Eine Runde läuft über alle Quellen: Sie führt Batches mit zu prüfenden Zeilen erneut aus, stellt Verknüpfungen her, die jetzt aufgelöst werden, prüft bestätigte Verknüpfungen und ordnet offene Verknüpfungen neu. Sie wählt nie von sich aus eine Verknüpfung.
+
+1. Öffnen Sie **Abgleich**.
+2. Wählen Sie einen **Zeitplan**: **Aus**, **Stündlich**, **Täglich** oder **Wöchentlich**. Zeiten sind UTC. Oder wählen Sie **Jetzt ausführen**.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Batches zeigen **Verarbeitet**, das Badge bei **Verknüpfungen prüfen** ist weg, und die Prüfungen unter **Graph-Zustand** werden besser. Die Liste unter **Abgleich** zeigt für jede Runde **Verknüpft**, **Wieder geöffnet**, **Noch offen** und **Batches erneut**.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Eine Verknüpfung steht unter Nicht am Gerät**: Das Speichern der Kennung am Gerät ist fehlgeschlagen. Wählen Sie **Erneut versuchen**.
+- **Der Zeitplan ist reiner Text**: Ihnen fehlt die Berechtigung, Knowledge zu bearbeiten.
+- **Ein wiederholter Eintrag bleibt in der Liste**: Er bleibt als **Behoben** erhalten.
+
+## Siehe auch {#related}
+
+- [Eine externe Datenquelle anbinden](./outside-source.mdx) · [Der Knowledge Graph](./knowledge-graph.mdx)

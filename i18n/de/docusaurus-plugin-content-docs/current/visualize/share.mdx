@@ -1,0 +1,60 @@
+---
+title: Ein Dashboard teilen oder einbetten
+sidebar_label: Teilen oder einbetten
+description: Festlegen, wer ein Dashboard sehen darf, einen Link senden, der den Zeitraum beibehält, oder das Dashboard in eine andere Seite einbetten.
+type: how-to
+sidebar_position: 6
+app:
+  routes: ["/dashboards", "/dashboards/:id"]
+translated_from: 810b8a2
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Legen Sie fest, wer ein Dashboard sieht, senden Sie jemandem einen Link darauf oder binden Sie es in eine andere Webseite ein.
+
+## Bevor Sie beginnen {#before-you-start}
+- Eine Rolle, die das Dashboard bearbeiten darf.
+- Empfänger mit einem Konto im Tenant und einer Rolle, die Dashboards lesen darf. Dashboards lesen, anlegen und bearbeiten sind getrennte Berechtigungen.
+
+## Festlegen, wer es sieht {#decide-who-sees-it}
+
+1. Öffnen Sie das Dashboard und wählen Sie das Zahnrad (**Dashboard Einstellungen**). Auf schmalen Bildschirmen nehmen Sie **Mehr › Dashboard Einstellungen**.
+2. Wählen Sie **Tenant-Dashboard** oder **Benutzer-Dashboard**. Ein Tenant-Dashboard sehen alle Mitglieder des Tenants. Ein Benutzer-Dashboard gehört Ihnen allein: Andere Mitglieder können es nicht öffnen.
+3. Wählen Sie **Speichern**.
+
+## Einen Link senden {#send-a-link}
+
+Kopieren Sie die Adresse des geöffneten Dashboards. Der Zeitraum ist Teil des Links, andere sehen also, was Sie sehen. Wählen Sie bei einem Smart-Dashboard zuerst das Thing.
+
+## In eine andere Seite einbetten {#embed-it-in-another-page}
+
+1. Öffnen Sie das Dashboard und wählen Sie **Mehr › Einbetten**.
+2. Wählen Sie bei **Einbettbare URL** die Schaltfläche zum Kopieren.
+3. Fügen Sie die Adresse dort ein, wo das Dashboard erscheinen soll, zum Beispiel in einem Iframe auf einer Intranetseite.
+
+<Screenshot
+  page="visualize/share"
+  id="01-embeddable-url"
+  route="/dashboards/:id"
+  state="Embeddable url dialog open with the dashboard name, the info note and the URL with a copy button"
+  alt="Der Dialog Einbettbare URL mit Kopieren-Schaltfläche"
+/>
+
+Die eingebettete Adresse hat die Form `<your IoT Breeze address>/bare/dashboard/<dashboardId>`. Sie zeigt das Dashboard ohne die Menüs der App. Bei einem Dashboard für einen Thing-Typ enthält die Adresse außerdem das Thing als `?thingId=<thingId>`.
+
+Weitere Optionen im Menü **Mehr**: **Vollbild** öffnet das Dashboard ohne Ablenkung, und **Kopiere Dashboard** erzeugt eine Kopie, die Sie frei ändern können.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Öffnen Sie den Link oder die einbettende Seite in einem privaten Fenster. Nach der Anmeldung erscheint das Dashboard. Wenn nicht, lesen Sie unten weiter.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Die Einbettung verlangt eine Anmeldung**: Die eingebettete Seite ist nicht öffentlich. Betrachter müssen im Tenant angemeldet sein.
+- **Der Betrachter sieht nichts oder einen Fehler**: Das Dashboard ist ein **Benutzer-Dashboard**, oder die Rolle des Betrachters darf keine Dashboards lesen.
+- **Die Seite lehnt die Einbettung ab**: Die Seite, die den Iframe enthält, blockiert den Frame möglicherweise. {/* TODO(product): Which origins may embed IoT Breeze (frame-ancestors / CSP), and are the embed query parameters displayHeader and widgetId supported for users? */}
+- **Kein Eintrag Einbetten**: Das Menü **Mehr** zeigt nur, was Ihre Rolle darf.
+
+## Verwandte Seiten {#related}
+- [Dashboards, Smart-Dashboards und Zeit](./dashboards.mdx) · [Ein Dashboard auf Home zeigen](./home.mdx)

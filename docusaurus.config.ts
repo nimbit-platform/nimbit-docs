@@ -1,61 +1,14 @@
 import type * as Preset from "@docusaurus/preset-classic";
 import type { Config } from "@docusaurus/types";
 import { themes as prismThemes } from "prism-react-renderer";
-
-const redocSpecUrls = {
-  dip: process.env.DIP_OPENAPI_URL ?? "https://demo.cloud.iotbreeze.com/dip/api/v1/api-json",
-  ocb: process.env.OCB_OPENAPI_URL ?? "https://demo.cloud.iotbreeze.com/ocb/api-json",
-  nbq: process.env.NBQ_OPENAPI_URL ?? "https://demo.cloud.iotbreeze.com/ocb/api-json",
-};
-
-// Remove this entire redocSpecs variable definition
-// const redocSpecs = [
-//   "redocusaurus",
-//   {
-//     theme: {
-//       // Change with your site colors
-//       primaryColor: "#1890ff",
-//       primaryColorDark: "#1890ff",
-//     },
-//     specs: [
-//       // Optionally provide individual files/urls to load
-//       {
-//         // Pass it a path to a local OpenAPI YAML file
-//         id: "dip",
-//         spec: redocSpecUrls.dip,
-//         route: "/docs/developer/api/redoc/dip",
-//       },
-//       // You can also pass it an OpenAPI spec URL
-//     ],
-//     // Theme Options for modifying how redoc renders them
-//   },
-// ] satisfies Redocusaurus.PresetEntry;
-
-// Remove this commented code block as well
-// const redocSpecs = [
-//   {
-//     id: "dip",
-//     spec: redocSpecUrls.dip,
-//     route: "/docs/developer/api/redoc/dip",
-//   },
-//   // {
-//   //   id: "ocb",
-//   //   spec: redocSpecUrls.ocb,
-//   //   route: "/docs/developer/api/redoc/ocb",
-//   // },
-//   {
-//     id: "nbq",
-//     spec: redocSpecUrls.nbq,
-//     route: "/docs/developer/api/redoc/nbq",
-//   },
-// ];
+import { EMBED_HEAD_SCRIPT } from "./src/lib/embed";
 
 const config: Config = {
   title: "NimBit Documentation",
   tagline: "Learn how NimBit builds its IoT solution.",
   favicon: "img/favicon.ico",
 
-  url: "https://cparsinnovationlab.bitbucket.io",
+  url: process.env.DOCUSAURUS_URL ?? "https://cparsinnovationlab.bitbucket.io",
   baseUrl: process.env.DOCUSAURUS_BASE_URL ?? "/nimbit/",
 
   organizationName: "Nimbit GmbH",
@@ -64,6 +17,7 @@ const config: Config = {
   onBrokenLinks: "throw",
 
   markdown: {
+    mermaid: true,
     hooks: {
       onBrokenMarkdownLinks: "warn",
     },
@@ -71,9 +25,10 @@ const config: Config = {
 
   i18n: {
     defaultLocale: "en",
-    locales: ["en"],
+    locales: ["en", "de"],
     localeConfigs: {
       en: { label: "English" },
+      de: { label: "Deutsch" },
     },
   },
 
@@ -83,11 +38,19 @@ const config: Config = {
       {
         docs: {
           sidebarPath: require.resolve("./sidebars.ts"),
-          editUrl: "https://cparsinnovationlab.bitbucket.io/nimbit",
-          docItemComponent: "@theme/ApiItem",
+          showLastUpdateTime: true,
+          // Section folders have an index.mdx that is the category's own page
+          // (linked from the label); don't list it again as a child item.
+          async sidebarItemsGenerator({ defaultSidebarItemsGenerator, ...args }) {
+            const items = await defaultSidebarItemsGenerator(args);
+            if (args.item.dirName === "get-started" || args.item.dirName === "api") return items;
+            return items.filter((i) => !(i.type === "doc" && /(^|\/)index$/.test(i.id)));
+          },
         },
         blog: {
           showReadingTime: true,
+          // The index filters on the client (src/theme/BlogListPage), so it needs every post.
+          postsPerPage: "ALL",
           blogTitle: "NimBit Blog",
           blogDescription: "Updates, guides, and insights from the NimBit IoT platform team.",
           blogSidebarTitle: "Recent Posts",
@@ -98,56 +61,17 @@ const config: Config = {
         },
       } satisfies Preset.Options,
     ],
-    [
-      "redocusaurus",
-      {
-        specs: [
-          {
-            id: "dip",
-            spec: "openapi/dip/.openapi.yaml",
-            // route: "/docs/developer/api/dip",
-          },
-          {
-            id: "ocb",
-            spec: "openapi/ocb/.openapi.yaml",
-          },
-          {
-            id: "nbq",
-            spec: "openapi/nbq/.openapi.yaml",
-          },
-        ],
-        theme: {
-          primaryColor: "#4fbbc9",
-        },
-      },
-    ],
   ],
 
+  clientModules: [require.resolve("./src/clientModules/appUrl.ts"), require.resolve("./src/clientModules/embed.ts"), require.resolve("./src/clientModules/d3Transition.ts")],
+  // Embed mode (IoT Breeze's help panel) is decided before the page paints; see src/lib/embed.ts.
+  headTags: [{ tagName: "script", attributes: {}, innerHTML: EMBED_HEAD_SCRIPT }],
+
   plugins: [
-    [
-      "docusaurus-plugin-openapi-docs",
-      {
-        id: "api",
-        docsPluginId: "classic",
-        config: {
-          dip: {
-            specPath: "https://nightly.nimbit.de/dip/api-yaml",
-            outputDir: "docs/developer/api/references/dip-api",
-            sidebarOptions: {
-              groupPathsBy: "tag",
-            },
-          },
-          // ocb: {
-          //   specPath: "https://nightly.nimbit.de/ocb/api-yaml",
-          //   outputDir: "docs/ocb-api",
-          //   sidebarOptions: {
-          //     groupPathsBy: "tag",
-          //   },
-          // },
-        },
-      },
-    ],
     "docusaurus-plugin-image-zoom",
+    require.resolve("./plugins/llms.js"),
+    require.resolve("./plugins/home-feed.js"),
+    require.resolve("./plugins/app-routes.js"),
     function customWebpackPlugin() {
       return {
         name: "custom-webpack-plugin",
@@ -169,9 +93,25 @@ const config: Config = {
     },
   ],
 
-  themes: ["docusaurus-theme-openapi-docs"],
+  themes: ["@docusaurus/theme-mermaid"],
 
   themeConfig: {
+    // Diagrams in the docs palette instead of Mermaid's default purple.
+    mermaid: {
+      theme: { light: "base", dark: "dark" },
+      options: {
+        fontFamily: "Inter Variable, Inter, system-ui, sans-serif",
+        themeVariables: {
+          primaryColor: "#e6f4f6",
+          primaryBorderColor: "#197a87",
+          primaryTextColor: "#0d0f12",
+          lineColor: "#5d646d",
+          secondaryColor: "#eef0f2",
+          tertiaryColor: "#ffffff",
+          edgeLabelBackground: "#ffffff",
+        },
+      },
+    },
     zoom: {
       selector: ".markdown img",
       background: {
@@ -198,6 +138,9 @@ const config: Config = {
       searchParameters: {},
       searchPagePath: "search",
       insights: false,
+      // Ask AI answers from the index in the search box. It needs an Algolia AI assistant; the build
+      // turns it on when ALGOLIA_ASSISTANT_ID is set.
+      ...(process.env.ALGOLIA_ASSISTANT_ID ? { askAi: process.env.ALGOLIA_ASSISTANT_ID } : {}),
     },
     docs: {
       sidebar: {
@@ -214,52 +157,14 @@ const config: Config = {
         srcDark: "img/nimbit-dark.svg",
       },
       items: [
-        {
-          label: "User Manual",
-          to: "/docs/user/overview",
-          position: "left",
-          className: "navbar-item-guides",
-        },
-        {
-          label: "API Docs",
-          type: "dropdown",
-          position: "left",
-          items: [
-            {
-              label: "API Documentation",
-              to: "/docs/developer/intro",
-            },
-            {
-              label: "OCB API Documentation",
-              to: "/docs/developer/api/ocb",
-            },
-            {
-              label: "DIP API Documentation",
-              to: "/docs/developer/api/dip",
-            },
-            {
-              label: "NBQ API Documentation",
-              to: "/docs/developer/api/nbq",
-            },
-          ],
-        },
-        {
-          label: "Changelog",
-          to: "/docs/changelog/index",
-          position: "left",
-        },
-        {
-          label: "Blog",
-          to: "/blog",
-          position: "left",
-        },
+        { label: "Get started", type: "docSidebar", sidebarId: "getStartedSidebar", position: "left" },
+        { label: "Docs", type: "docSidebar", sidebarId: "docsSidebar", position: "left" },
+        { label: "API", type: "docSidebar", sidebarId: "apiSidebar", position: "left" },
+        { label: "Changelog", type: "docSidebar", sidebarId: "changelogSidebar", position: "left" },
+        { label: "Blog", to: "/blog", position: "left" },
         { type: "search", position: "right" },
-        {
-          href: "https://outlook.office365.com/book/NimBitGmbHErstgesprchIhreDigitaleTransformation@cpars.de/",
-          label: "Book a Demo",
-          position: "right",
-          className: "navbar-book-demo",
-        },
+        // "Open IoT Breeze", on the reader's own address (src/lib/appUrl.ts).
+        { type: "custom-openApp", position: "right" },
         { type: "localeDropdown", position: "right" },
       ],
     },
@@ -270,16 +175,17 @@ const config: Config = {
         {
           title: "Documentation",
           items: [
-            { label: "User Manual", to: "/docs/user/overview" },
-            { label: "Developer Docs", to: "/docs/developer/intro" },
-            { label: "API Reference", to: "/docs/developer/api/dip" },
+            { label: "Get started", to: "/docs/get-started" },
+            { label: "Docs", to: "/docs" },
+            { label: "API", to: "/docs/api" },
           ],
         },
         {
           title: "Resources",
           items: [
             { label: "Blog", to: "/blog" },
-            { label: "Changelog", to: "/docs/changelog/index" },
+            { label: "Changelog", to: "/docs/changelog" },
+            { label: "Downloads", to: "/docs/downloads" },
           ],
         },
         {
@@ -293,7 +199,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} NimBit GmbH. All rights reserved.`,
+      copyright: `© ${new Date().getFullYear()} NimBit GmbH`,
     },
     prism: {
       theme: prismThemes.github,

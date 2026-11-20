@@ -1,0 +1,149 @@
+---
+title: Ausgänge-Referenz
+description: Die Periscope-Ausgänge tsflux_stream, tsflux, nimbit_mqtt, file und stdout mit ihren Schlüsseln, ihrer Pufferung und den Gateway-Zugangsdaten.
+type: reference
+sidebar_position: 13
+app:
+  routes: ["/onboarding/gateways"]
+translated_from: 06bddd1
+---
+
+Ausgänge liefern Werte an ihr Ziel. Verwenden Sie einen Plattform-Ausgang: Zwei würden jeden Wert doppelt speichern. Mit einer funktionierenden Tabelle `[ocb]` brauchen die Plattform-Ausgänge keine Zugangsdaten-Schlüssel.
+
+## Einen Ausgang wählen {#choose-an-output}
+
+| Ausgang | Sendet | Solange die Plattform nicht erreichbar ist | Wählen, wenn |
+| --- | --- | --- | --- |
+| `tsflux_stream` | Arrow-Batches über gRPC (HTTP/2), genau einmal | Auf der Platte in einer Warteschlange, `buffer_bytes` (256 MiB) | Produktionsstandard: kein Verlust bei Ausfällen und Neustarts. |
+| `tsflux` | JSON-Batches über HTTPS, mindestens einmal | Auf der Platte gespoolt, `buffer_bytes` (256 MiB) | HTTP/2 durchgängig nicht möglich ist, etwa hinter einem Proxy, oder Sie Tags brauchen. |
+| `nimbit_mqtt` | Den Geräte-MQTT-Vertrag mit QoS 1, mindestens einmal | Auf der Platte gespoolt, `buffer_bytes` (256 MiB) | Der Standort bereits Geräte über MQTT sendet oder nur Port 8883 offen ist. |
+| `file` | JSON-Zeilen in eine Datei | Entfällt | Versuche, Audits, Fehlersuche. |
+| `stdout` | JSON-Zeilen auf die Standardausgabe | Entfällt | Versuche mit `periscope run`. |
+
+`tsflux_stream` sendet keine Tags. Ein Tag, den ein Prozessor hinzufügt, wird verworfen und in `output.<instance>.dropped_tags` gezählt. Die Ebenen-Eigenschaften eines Things taggen weiterhin jede Serie in der Plattform.
+
+## tsflux_stream {#tsflux_stream}
+
+```toml
+[[outputs.tsflux_stream]]
+url          = "https://nimbit.example.com:8301"
+buffer_bytes = 268435456
+```
+
+| Schlüssel | Vorgabe | Bedeutung |
+| --- | --- | --- |
+| `url` | erforderlich | `https://host[:port]` (TLS), `h2c://host:port` (ohne TLS) oder `host:port`. |
+| `username`, `password` | Von der Plattform | Stattdessen feste Zugangsdaten. |
+| `tenant` | Der Tenant des `[ocb]`-Tokens | Legt den Geltungsbereich der zwischengespeicherten Zugangsdaten fest. |
+| `batch_interval` | `1s` | Der Batch jedes Thing-Typs wird mindestens so oft abgeschlossen. |
+| `max_values` | `25000` | Ein Batch wird bei dieser Zahl von Werten vorzeitig abgeschlossen. |
+| `max_bytes` | `4194304` | Oder bei etwa dieser Zahl von Bytes. Höchstens 16 MiB. |
+| `window` | `8` | Gesendete, noch nicht bestätigte Batches. |
+| `buffer_bytes` | `268435456` | Die Grenze der Platten-Warteschlange. Darüber wird das älteste Segment verworfen und in `dropped_values` gezählt. |
+| `sync_interval` | `1s` | Die Warteschlange wird so oft auf die Platte synchronisiert und vor jedem gesendeten Batch. |
+| `keepalive`, `keepalive_timeout` | `30s`, `10s` | Ping-Intervall von HTTP/2 und wie lange ein Ping unbeantwortet bleiben darf. |
+| `tls_ca`, `tls_insecure` | leer, `false` | CA-Datei für das Zertifikat oder die Prüfung überspringen (nur Testserver). |
+| `allow_insecure` | `false` | `h2c://` zu einem Host akzeptieren, der nicht Loopback ist. Sendet Zugangsdaten im Klartext. |
+
+TLS ist an für `https://` und für ein bloßes `host:port`. Ein bloßes `localhost:port` ist reines HTTP/2. `http://` wird abgelehnt, damit ein Klartextziel nie ein Tippfehler ist.
+
+Die Warteschlange liegt in `state_dir/tsflux-stream/<output>/` und braucht etwa 9 Bytes pro Wert:
+
+| Werte pro Sekunde | 256 MiB reichen | 1 GiB reicht |
+| --- | --- | --- |
+| 1.000 | 8,3 Stunden | 33 Stunden |
+| 10.000 | 50 Minuten | 3,3 Stunden |
+| 100.000 | 5 Minuten | 20 Minuten |
+
+Setzen Sie `buffer_bytes` auf die längste zu überbrückende Ausfallzeit mal die Rate mal 9 Bytes und lassen Sie unter `state_dir` doppelt so viel Platz frei. Beim Start senkt der Ausgang `buffer_bytes` auf die Hälfte seines Anteils am freien Platz und protokolliert die Obergrenze.
+
+## tsflux {#tsflux}
+
+```toml
+[[outputs.tsflux]]
+max_batch    = 500
+buffer_bytes = 268435456
+gzip         = true
+```
+
+| Schlüssel | Vorgabe | Bedeutung |
+| --- | --- | --- |
+| `url` | `[ocb] url` | Basis-URL der Plattform oder tsflux selbst, etwa `http://tsflux:8200`. |
+| `path_prefix` | `/tsflux` | Zwischen `url` und `/api/v1`. Verwenden Sie `""`, wenn `url` direkt auf tsflux zeigt. |
+| `username`, `password`, `tenant` | Von der Plattform | Stattdessen feste Zugangsdaten. |
+| `timeout` | `10s` | Pro Anfrage. |
+| `max_batch` | `500` | Nachrichten pro Anfrage. |
+| `gzip` | `false` | Anfrage-Bodys komprimieren. Schalten Sie es hinter einem Proxy erst ein, nachdem `periscope verify` mit eingeschaltetem gzip besteht. |
+| `evolve_schema` | nicht gesetzt | Wird in jeder Nachricht als `evolveSchema` gesendet. |
+| `buffer_bytes` | `268435456` | Die Grenze des Platten-Spools. |
+| `record_messages` | `500` | Die meisten Nachrichten eines Spool-Eintrags. |
+| `write_timeout` | `10s` | Die Frist eines Schreibvorgangs eines Eintrags, Wiederholungen eingeschlossen. |
+| `tls_ca`, `tls_insecure`, `allow_insecure` | leer, `false`, `false` | Wie oben. `allow_insecure` akzeptiert `http://` zu einem Host, der nicht Loopback ist. |
+
+## nimbit_mqtt {#nimbit_mqtt}
+
+```toml
+[[outputs.nimbit_mqtt]]
+qos = 1
+```
+
+| Schlüssel | Vorgabe | Bedeutung |
+| --- | --- | --- |
+| `broker` | Von der Plattform | `mqtt://host:1883` oder `mqtts://host:8883`. |
+| `username`, `password`, `tenant` | Von der Plattform | Stattdessen feste Zugangsdaten. Setzen Sie alle vier mit `broker`, um ohne die Plattform zu arbeiten. |
+| `client_suffix` | `periscope-<agent.name>` | Die Client-ID ist `<tenant>:<suffix>`. |
+| `qos` | `1` | `0` oder `1`. Der Broker kennt kein 2. |
+| `topic` | Siehe die Tabelle unten | Topic zum Veröffentlichen. `{tenant}`, `{thing}`, `{thing_type}` und, nur bei einem Gateway, `{gateway}`. |
+| `evolve_schema` | nicht gesetzt | Wird in jedem Body als `evolveSchema` gesendet. |
+| `buffer_bytes`, `record_messages`, `write_timeout` | Wie bei `tsflux` | Einstellungen des Platten-Spools. |
+| `ocb_url`, `ocb_path_prefix`, `ocb_token` | Werte aus `[ocb]` | Überschreiben, wie dieser Ausgang die Plattform erreicht. |
+| `tls_ca`, `tls_insecure`, `allow_insecure` | leer, `false`, `false` | Wie oben. `allow_insecure` akzeptiert einen Klartext-Broker auf einem Host, der nicht Loopback ist. |
+
+### Die Gateway-Zugangsdaten {#the-gateway-credential}
+
+Bei einem Gateway (`[ocb] gateway = true`) fordern die drei Plattform-Ausgänge die eigenen Daten-Zugangsdaten des Gateways an und legen sie in `state_dir/nimbit-gateway-credential.json` ab. Sie teilen sich eine Zugangsart. Sie identifizieren das Gateway: Der Broker lässt sie nur auf den Topics des Gateways veröffentlichen, und die Plattform akzeptiert mit ihnen nur die Things des Gateways. Widerrufen Sie den Schlüssel des Gateways, sind auch sie widerrufen, und einem widerrufenen Gateway werden keine ausgestellt.
+
+| | Tenant-Zugangsdaten | Gateway-Zugangsdaten |
+| --- | --- | --- |
+| Client-ID | `<tenant>:<client_suffix>` | `<tenant>:gateway:<gateway id>:<client_suffix>` |
+| Standard-Topic | `tenant/{tenant}/device/{thing}/telemetry` | `tenant/{tenant}/gateway/{gateway}/device/{thing}/telemetry` |
+| Topic der Zustandsmeldung | `tenant/<t>/device/gateway-<g>/telemetry` | `tenant/<t>/gateway/<g>/device/gateway-<g>/telemetry` |
+
+Ein eigenes `topic` darf `{gateway}` nur bei einem Gateway verwenden. Überall sonst startet der Ausgang nicht. Bei einem Gateway akzeptiert der Broker nur Topics, die die ID des Gateways enthalten. Beginnen Sie ein eigenes Topic daher mit `tenant/{tenant}/gateway/{gateway}/`.
+
+**Tokens.** `tsflux` und `tsflux_stream` senden nicht die Zugangsdaten selbst. Die Plattform lehnt die Basic-Zugangsdaten eines Gateways bei HTTP- und Stream-Ingest ab, weil sie nie ablaufen. Sie senden ein Token von höchstens 10 Minuten, das sie mit der Anmeldung des Gateways anfordern, im Speicher halten und eine Minute vor Ablauf und nach einer Ablehnung erneuern. Ein widerrufenes Gateway erhält kein neues Token, seine Schreibzugriffe enden also innerhalb einer Token-Lebensdauer. Der Stream endet mit dem Ablauf des Tokens, und der nächste Stream trägt ein neues. `nimbit_mqtt` verwendet die Zugangsdaten als Passwort für den Broker.
+
+**Fallback-Regeln.**
+
+- Die Anmeldung eines Gateways erhält nur dessen eigene Zugangsdaten. Fordert ein Ausgang die Tenant-Zugangsdaten an, antwortet die Plattform mit `403 GATEWAY_SCOPE_REQUIRED`. Periscope fällt nach einem 403 nie zurück: Bei einem widerrufenen Gateway wird zum Beispiel erneut versucht.
+- Eine Plattform, die älter ist als die Gateway-Zugangsdaten, antwortet mit `400` auf das unbekannte Feld oder stellt Tenant-Zugangsdaten aus. Dann verwendet der Ausgang die Tenant-Zugangsdaten, die Tenant-Client-ID und die Tenant-Topics, warnt einmal und fordert beim nächsten Start erneut die Gateway-Zugangsdaten an. Ein eigenes Topic mit `{gateway}` kann dann nicht bedient werden, und seine Batches bleiben in der Warteschlange.
+- Die in `nimbit-mqtt-credential.json` zwischengespeicherten Tenant-Zugangsdaten bleiben für einen Ausgang, der auf derselben Box als Servicekonto läuft.
+- Die Ausgänge lesen die ID des Gateways beim Start. Eine Änderung von `[ocb] gateway` startet sie neu. Die Box als anderes Gateway einzurichten, erfordert einen Neustart des Agents.
+
+**Zustandsmeldung.** Die Zustandsmeldung des Gateways geht live hinaus und wird nie in eine Warteschlange gestellt, sodass ein nachgesendeter Rückstau ein totes Gateway nicht online halten kann. `nimbit_mqtt` veröffentlicht sie mit QoS 0 auf seiner Verbindung, `tsflux` sendet sie einmal per POST, und `tsflux_stream` sendet sie als eigenen Batch auf einem kurzen separaten Stream. Der erste dieser Ausgänge in der Datei trägt sie. Ein Gateway ohne einen der drei Ausgänge sendet keinen Zustand und protokolliert eine Warnung. Der Dry-Run sendet keine. Über `tsflux_stream` werden die Zustands-Tags (`sw_version`, `link_type`, `config_hash`, `last_apply`) nicht übertragen.
+
+## file und stdout {#file-and-stdout}
+
+```toml
+[[outputs.file]]
+path      = "/var/lib/periscope/telemetry.jsonl"
+max_bytes = 104857600
+keep      = 3
+
+[[outputs.stdout]]
+pretty = true
+```
+
+Jede Zeile ist eine Nachricht: `{"thingId", "thingType", "time", "data": {measure: value}, "tags"}`, mit der Zeit in UTC. `file` rotiert, bevor ein Schreibvorgang `max_bytes` überschreiten würde: Es verschiebt die Datei nach `.1`, `.1` nach `.2` und so weiter und löscht die älteste jenseits von `keep`. Der Platzbedarf beträgt höchstens `max_bytes × (keep + 1)`. Ein Pfad, der keine reguläre Datei ist, etwa `/dev/null`, wird nie rotiert.
+
+## Spools und Warteschlangen {#spools-and-queues}
+
+`tsflux` und `nimbit_mqtt` halten Nachrichten in `state_dir/spool/<output>/`, bis die Plattform sie übernommen hat, bei etwa 15 Bytes pro Wert. Ein Ausfall oder ein Neustart verliert innerhalb von `buffer_bytes` nichts. `buffer_size` ist veraltet und wird ignoriert.
+
+Fehlende Zugangsdaten sind kein Konfigurationsfehler: Der Ausgang protokolliert, dass er nichts sendet, und die Nachrichten bleiben in der Warteschlange, bis Sie die Konfiguration korrigieren.
+
+## Verwandte Seiten {#related}
+
+- [Konfigurationsreferenz](./configuration.mdx)
+- [Prüfen, ob Daten angekommen sind](./verify.mdx)
+- [Periscope-Probleme beheben](./troubleshooting.mdx)

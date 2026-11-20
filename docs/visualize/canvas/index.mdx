@@ -1,0 +1,37 @@
+---
+title: Canvas
+sidebar_position: 0
+description: Draw your plant or machine, show live values on the drawing, and let people operate equipment from it.
+type: landing
+app:
+  routes: ["/canvas", "/canvas/:id"]
+  tour: canvas
+---
+
+import TourLink from "@site/src/components/TourLink";
+
+A canvas is a drawing of your plant or machine with live values on it. You place values, gauges, charts, shapes and process symbols, bind them to things, and viewers see them update as devices report. Open canvases under **Monitoring › Canvas**.
+
+<TourLink id="canvas" />
+
+```mermaid
+flowchart LR
+  P[Plan image or P&ID] --> C[Canvas]
+  C --> V[Live values]
+  V --> S[States: color, icon, motion]
+  C --> A[Actions]
+  C -->|Canvas widget| D[Dashboard]
+```
+
+## Understand
+- [How a canvas works](./how-canvas-works.mdx): what a canvas is, the kinds, how it differs from a dashboard, and how values and actions bind.
+
+## Do
+- [Draw a floor plan](./draw-a-floor-plan.mdx): start from a plan image and place live elements on it.
+- [Bind elements to live values](./bind-live-values.mdx): choose the thing, the measure and the thresholds.
+- [Show state by color, icon and motion](./states-and-colors.mdx): make trouble stand out at a glance.
+- [Run actions from a canvas](./actions.mdx): buttons that send a command, open a canvas or switch the thing.
+- [Put a canvas on a dashboard](./embed-a-canvas.mdx): show a canvas next to other widgets.
+
+## Look up
+- [Canvas editor reference](./editor-reference.mdx): every tool, element, binding option and action type.

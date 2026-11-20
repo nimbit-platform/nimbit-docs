@@ -1,0 +1,78 @@
+---
+title: Verify that data arrived
+description: Check that every applied thing receives values, with periscope verify and in IoT Breeze, and read the result and exit codes.
+type: how-to
+sidebar_position: 11
+app:
+  routes: ["/onboarding/gateways"]
+---
+
+Confirm that every thing Periscope applied receives values. `periscope verify` asks the platform's query service, nbq, and prints one row per thing. In IoT Breeze, the gateway's **Traffic** card and each thing's latest values show the same.
+
+## Before you start
+
+- Periscope has applied things and has been streaming for a few minutes.
+- For `periscope verify`: `[ocb] url` is set with a service-account credential, or you pass `-nbq-url`. The command reads the state directory and asks nbq with the agent's token.
+- On a gateway, check in IoT Breeze instead, as in the next section.
+
+{/* TODO(product): nbq accepts tokens for other audiences than the platform backend, and a gateway's token is for the backend only. Does `periscope verify` work on a gateway box (`[ocb] gateway = true`)? Expected today: exit 2. */}
+
+## Steps
+
+1. Run the command with a window that covers the time since you started streaming:
+
+   ```sh
+   periscope verify -config /etc/periscope/periscope.toml -since 5m
+   ```
+
+   `-since` defaults to `5m`. `-nbq-url http://nbq:8100` asks nbq directly, from inside the platform's network.
+
+2. Read the table:
+
+   ```text
+   window 2026-10-22T09:55:00Z .. 2026-10-22T10:00:00Z (UTC)
+
+   THING                          TYPE      RECEIVED  MEASURES  VALUES  LATEST (UTC)          PROBLEM
+   werk1-Pressing-Line1-Pump1     PumpType  yes       4/4       100     2026-10-22T09:59:58Z  -
+   werk1-Pressing-Line1-Pump2     PumpType  yes       3/4       75      2026-10-22T09:59:58Z  missing: running
+   werk1-Baking-Line2-Oven1       Oven1_…   NO        0/4       0       -                     nothing received (…)
+
+   2/3 things received data, 5 measures never seen in the window, 0 unmapped metrics since 2026-10-22T09:00:12Z
+   ```
+
+   | Column | Meaning |
+   | --- | --- |
+   | `RECEIVED` | Whether the thing had any value in the window. |
+   | `MEASURES` | Measures seen, out of the measures mapped for the thing. |
+   | `VALUES` | Values stored in the window. |
+   | `LATEST (UTC)` | Time of the thing's latest row. |
+   | `PROBLEM` | What is missing, or why nothing arrived. |
+
+3. Check the exit code:
+
+   | Exit | Meaning |
+   | --- | --- |
+   | 0 | Every applied thing received values, and none lies in the future. |
+   | 1 | An applied thing received nothing, a latest value lies in the future (more than one minute ahead of the box's clock), or nothing is applied yet. |
+   | 2 | nbq couldn't be asked. Nothing was verified. |
+
+4. In IoT Breeze, open **Settings › Onboarding › Gateways**, open the gateway, and read **Last data** and **Things active** on the **Traffic** card. Open one of its things to see the latest values. See [Check gateway health and traffic](../fleet-health.mdx).
+
+## Check that it worked
+
+`periscope verify` exits 0 with `N/N things received data`. In IoT Breeze, the gateway is **Online**, **Things active** matches the number of things you applied, and **Discards per minute** is 0.
+
+## If it doesn't work
+
+- **Exit 2**: nbq couldn't be asked, for example a connection error, a timeout or a `401`. Check the platform connection, or pass `-nbq-url`.
+- **Everything reads `nothing received` with `provisioner = "tsflux"`**: nbq looks things up by platform ID, and this provisioner has none yet. This is expected until the `ocb` provisioner has run.
+- **A value is in the future, or nothing arrives from a source in local time**: the source sends local time labeled as UTC. East of Greenwich the values land in the future, west of it in the past, where the thing reads as nothing received. Fix the source's clock or zone. For MQTT, set `timezone`.
+- **A thing is missing from the table**: only applied things are checked. Confirm and apply it first. See [Approve what Periscope discovers](./approve-discoveries.mdx).
+- **`unmapped metrics` is above 0**: the summary names the most frequent unmapped address. Confirm its proposal.
+
+More in [Troubleshoot Periscope](./troubleshooting.mdx).
+
+## Related
+
+- [Command-line reference](./commands.mdx) · [How Periscope works](./how-periscope-works.mdx)
+- [Explore telemetry](../../watch/explore-telemetry.mdx)

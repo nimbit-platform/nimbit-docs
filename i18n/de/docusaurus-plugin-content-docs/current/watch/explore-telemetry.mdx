@@ -1,0 +1,69 @@
+---
+title: Telemetrie über die Zeit untersuchen
+sidebar_position: 4
+description: Messwerte beliebiger Things über einen Zeitraum darstellen, vergleichen und das Diagrammset als Abfrage speichern, um es wieder zu öffnen oder zu teilen.
+type: how-to
+app:
+  routes: ["/monitor/telemetry", "/monitor/telemetry/query", "/monitor/telemetry/query/:id"]
+  tour: find-your-way-history
+translated_from: b6ed908
+---
+
+import Screenshot from "@site/src/components/Screenshot";
+
+Blicken Sie zurück, wie sich ein Messwert verhalten hat, vergleichen Sie zwei Things und speichern Sie das Ergebnis als Abfrage. Für eine Live-Ansicht eines Things nutzen Sie seine Thing-Seite. Für Diagramme, die für alle sichtbar bleiben, bauen Sie ein Dashboard.
+
+## Bevor Sie anfangen {#before-you-start}
+
+- Sie brauchen Zugriff auf **Überwachung › Telemetrie**.
+- Die Things, die Sie darstellen, müssen Daten gemeldet haben.
+
+## Einen Messwert darstellen {#chart-a-measure}
+
+1. Öffnen Sie **Überwachung › Telemetrie** und wählen Sie **Abfrage erstellen**. Der Explorer öffnet sich mit einem leeren Diagramm.
+2. Wählen Sie in der ersten Zeile einen **Thing-Typ**, ein **Thing** und eine **Telemetrie**. Jedes Feld hängt vom vorherigen ab.
+3. Wählen Sie eine **Aggregation**: `raw`, `avg`, `min`, `max`, `sum`, `count`, `first` oder `last`. Raw zeigt jeden Messwert. Die anderen fassen Messwerte zu Buckets zusammen.
+4. Wählen Sie **Ausführen**. Das Diagramm wird gezeichnet.
+5. Stellen Sie oben den Zeitraum ein. Standard ist die letzte Stunde. Mit den Pfeilen verschieben Sie das Fenster.
+
+<Screenshot
+  page="watch/explore-telemetry"
+  id="01-explorer-chart"
+  route="/monitor/telemetry/query"
+  state="Explorer with one chart panel: thing type Room sensor, thing Meeting room 1, measure temperature, aggregation avg, last 24 hours, line chart drawn"
+  alt="Der Explorer mit einem Temperaturdiagramm"
+/>
+
+## Vergleichen und anpassen {#compare-and-adjust}
+
+1. Wählen Sie **Abfrage hinzufügen** in einem Diagramm, um dem Diagramm eine weitere Zeile hinzuzufügen. So vergleichen Sie zwei Things oder zwei Messwerte.
+2. Wählen Sie **Diagramm hinzufügen**, um darunter ein weiteres Diagramm anzulegen.
+3. Stellen Sie oben die **Bucket-Größe** ein. **Automatisch** wählt eine Größe passend zum Zeitraum. Ein Diagramm kann sie überschreiben, und Hineinzoomen erhöht die Auflösung.
+4. Legen Sie in einer Zeile über die Stil-Schaltfläche den **Diagramm-Typ** (**Linie**, **Fläche**, **Balken** oder **Punkte**), den **Linienstil** und die **Serienfarbe** fest.
+5. Mit **Benutzerdefinierter Zeitfenster** in einem Diagramm geben Sie ihm einen eigenen Zeitraum. Sonst steht dort **Globalen Zeitfenster verwenden**.
+
+Um Daten mitzunehmen, öffnen Sie **Mehr** in einem Diagramm und wählen **Vollbild**, **CSV herunterladen** oder **SVG herunterladen**.
+
+## Eine Abfrage speichern und teilen {#save-and-share-a-query}
+
+1. Wählen Sie **Speichern** und geben Sie einen **Abfragename** ein.
+2. Wählen Sie den **Zugriffstyp**: **Tenant** für alle, die Telemetrie öffnen dürfen, oder **Persönlich** nur für Sie.
+3. Beim Tenant-Zugriff können Sie **Gruppen** hinzufügen. {/* TODO(product): Does adding groups to a Tenant query limit who can open it to members of those groups? The code stores the groups on the query, but no access rule for saved queries was found, unlike dashboards. */}
+4. Speichern Sie. Die Abfrage erscheint in der Liste.
+
+Öffnen Sie eine gespeicherte Abfrage erneut, überschreibt **Speichern** sie. **Konfiguration** öffnet Name und Zugriffseinstellungen erneut, und **Löschen** entfernt die Abfrage. Um ohne Speichern zu teilen, wählen Sie **Teilen** und kopieren den Link. Der ganze Diagrammaufbau steckt im Link, und der Empfänger braucht Zugriff auf dieselben Things.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Die Abfrage steht in der Liste unter **Überwachung › Telemetrie** mit dem gewählten Zugriff. Öffnen Sie sie, werden dieselben Diagramme gezeichnet.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Eine Zeile ist beim Ausführen markiert**: Ein Feld ist leer. Füllen Sie das markierte Feld aus.
+- **Die Schaltfläche lautet Ausführen — Diagramm ist veraltet**: Sie haben die Abfrage nach dem letzten Lauf geändert. Wählen Sie sie, um neu zu zeichnen.
+- **Das Diagramm ist leer**: Das Thing hat im Zeitraum nichts gemeldet. Erweitern Sie den Zeitraum.
+
+## Verwandte Seiten {#related}
+
+- [Den Zustand eines Things prüfen](./thing-health.mdx)
+- [Dashboards, Smart Dashboards und Zeit](../visualize/dashboards.mdx)

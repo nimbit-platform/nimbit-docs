@@ -1,0 +1,68 @@
+---
+title: Standorte und Gebäude abbilden
+description: Bauen Sie in Erkunden die Hierarchie aus Standorten, Hallen und Linien auf, platzieren Sie Ihre Things darin und hängen Sie Dashboards und Dokumente an jede Ebene.
+type: how-to
+app:
+  routes: ["/knowledge/explore"]
+  tour: build-graph
+translated_from: a4ace78
+---
+
+import TourLink from "@site/src/components/TourLink";
+import Screenshot from "@site/src/components/Screenshot";
+
+Bauen Sie den Baum aus Standorten, Werken, Hallen und Linien auf und platzieren Sie Things darin. **Erkunden** und Ask Nimble nutzen den Baum, um Fragen zu einem Ort zu beantworten. Was eine Ebene ist, steht unter [Der Knowledge Graph](./knowledge-graph.mdx).
+
+<TourLink id="graph-first-site" />
+
+## Bevor Sie beginnen {#before-you-start}
+
+- Sie brauchen die Berechtigung, Knowledge zu bearbeiten, und **Nimble fragen und Knowledge** muss für den Tenant eingeschaltet sein (siehe [Knowledge und KI](./index.mdx)).
+- Für eine Ebene muss ein Typ mit dem Trait **Hierarchical** existieren. Sagt **Standort hinzufügen** **Zuerst einen Ebenen-Typ anlegen**, legen Sie unter **Einstellungen › Knowledge-Einrichtung › Datenmodell › Typen** einen an und haken Sie die Traits **Hierarchical** und **Describable** an. Siehe [Typen und Traits](./types-and-traits.mdx).
+
+## Die Ebenen anlegen {#add-the-levels}
+
+1. Öffnen Sie **Knowledge › Erkunden** und bleiben Sie in der Ansicht **Hierarchie**.
+2. Wählen Sie über dem Baum **Standort hinzufügen** und benennen Sie ihn.
+3. Öffnen Sie das Menü des Standorts und wählen Sie **Ebene darunter hinzufügen**, um eine Halle anzulegen. Wiederholen Sie das für Linien oder Räume.
+
+Um eine Ebene umzubenennen oder zu verschieben, nutzen Sie ihr Menü oder ziehen Sie sie auf eine andere Ebene. Alles darunter wird mitverschoben. Eine Ebene lässt sich nur innerhalb ihres eigenen Typs verschieben.
+
+<Screenshot
+  page="knowledge/map-sites"
+  id="01-tree"
+  route="/knowledge/explore"
+  state="Hierarchy view with a site, two halls and a line below one hall, the site menu open on Add level below"
+  alt="Der Baum in Erkunden mit geöffnetem Ebenenmenü"
+/>
+
+## Things platzieren {#place-things}
+
+1. Wählen Sie eine Ebene, öffnen Sie den Tab **Dinge** und wählen Sie **Things hinzufügen…**.
+2. Haken Sie die Things an, die hier stehen, und fügen Sie sie hinzu. Ein Thing, das woanders platziert war, wird hierher verschoben.
+
+Um viele Things auf einmal zu platzieren, öffnen Sie die Ansicht **Tabelle**, wählen die Things aus und wählen **Auf Ebene platzieren…**.
+
+## Dashboards und Dokumente anhängen {#attach-dashboards-and-documents}
+
+- Wählen Sie auf dem Tab **Visualisierungen** **Zuweisen**, um ein vorhandenes Dashboard oder Canvas anzuhängen oder ein neues Smart-Dashboard für die Ebene anzulegen. Siehe [Ein Dashboard für alle Things einer Art bauen](../visualize/smart-dashboard.mdx).
+- Wählen Sie auf dem Tab **Dokumente** **Dokumente hinzufügen** oder hängen Sie eine Datei an, die schon in **Dateien** liegt. Dokumente, die Sie hinzufügen, werden in einem Ordner unter **Dateien** gespeichert, den alle im Tenant öffnen können. Siehe [Dateien speichern und teilen](../administer/files.mdx).
+
+## Datensätze verknüpfen und Zugriff festlegen {#relate-records-and-set-access}
+
+- Um zwei Datensätze zu verknüpfen, öffnen Sie einen und fügen auf seinem Tab **Beziehungen** eine Beziehung hinzu. Wählen Sie eine Beziehung, die der Typ deklariert.
+- Um zu steuern, wer einen geschützten Datensatz wie eine Anlage sieht, öffnen Sie ihn und fügen im Bereich **Zugriff** Gruppen oder Benutzer hinzu.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Wählen Sie die Ebene. Der Tab **Einblicke** zeigt ihre Things, deren Konnektivität und letzte Events, und **Things, die Aufmerksamkeit brauchen** listet offline oder stumm gewordene auf. Fragen Sie Ask Nimble „Was ist in Hall 2?“, und die Antwort nennt die Things, die Sie platziert haben.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **Standort hinzufügen sagt Zuerst einen Ebenen-Typ anlegen**: Kein Typ hat den Trait **Hierarchical**. Legen Sie zuerst einen an.
+- **Ein Thing wird nicht unter seiner Ebene gelistet**: Es wurde auf einer anderen Ebene platziert. Ein Datensatz liegt auf einer Ebene. Fügen Sie es hier erneut hinzu, um es zu verschieben.
+- **Fragen zu einer Halle finden nichts**: Die Things sind nicht darin platziert oder haben keinen Standort. Führen Sie **Jetzt prüfen** unter [Datenqualität](./data-health.mdx) aus und sehen Sie sich **Datensätze ohne Standort** an.
+
+## Siehe auch {#related}
+
+- [Der Knowledge Graph](./knowledge-graph.mdx) · [Typen und Traits](./types-and-traits.mdx)

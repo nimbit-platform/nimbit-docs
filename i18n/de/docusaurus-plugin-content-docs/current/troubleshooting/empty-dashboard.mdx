@@ -1,0 +1,84 @@
+---
+title: Ein Dashboard ist leer
+description: Herausfinden, warum Widgets keine Werte zeigen oder ein Thing fehlt, von Zeitraum und Thing-Auswahl bis zu Berechtigungen und Widget-Einstellungen.
+sidebar_position: 3
+type: how-to
+app:
+  routes: ["/dashboards", "/dashboards/:id"]
+translated_from: c8e4e12
+---
+
+Finden Sie heraus, warum ein Dashboard oder eines seiner Widgets nichts zeigt. Wie ein Dashboard sein Thing und seine Zeit wählt, steht unter [Dashboards, Smart Dashboards und Zeit](../visualize/dashboards.mdx).
+
+## Symptome {#symptoms}
+
+- Jedes Widget ist leer oder zeigt einen Strich oder **Keine Daten**.
+- Ein Widget ist leer, die anderen sind in Ordnung.
+- Das erwartete Thing fehlt in der Thing-Auswahl.
+
+## In dieser Reihenfolge prüfen {#check-in-this-order}
+
+### 1. Zeitraum und Datenquelle {#1-time-range-and-data-source}
+
+Sehen Sie sich die Zeitleiste oben im Dashboard an.
+
+- Der Zeitraum ist zu kurz für ein Gerät, das selten meldet. Wählen Sie **Letzte 24 Stunden** oder mehr.
+- **Zeitreise** ist an und zeigt einen früheren Zeitpunkt. Wählen Sie **Live**.
+- Der Aktualisierungsmodus ist **Manuell**. Wählen Sie die Schaltfläche zum Aktualisieren.
+- Ein Banner und die Markierung **TESTDATEN** bedeuten, dass die Datenquelle **Testdaten** oder **Datei** ist. Öffnen Sie das Menü der Datenquelle und wählen Sie **Gerät**. Dateien bleiben nach einem Neuladen nicht erhalten.
+- Die Leiste zeigt *N Widgets behalten eigene*. Diese Widgets ignorieren die Leiste. Öffnen Sie die Einstellungen des Widgets und prüfen Sie seinen eigenen Zeitraum.
+
+### 2. Das Thing, das das Widget liest {#2-the-thing-the-widget-reads}
+
+In einem Smart Dashboard folgt ein Widget entweder dem gewählten Thing oder ist an ein eigenes angeheftet.
+
+- Öffnen Sie die Thing-Auswahl und wählen Sie ein Thing, das Daten gesendet hat.
+- Ein Thing, das nur einige der Interfaces implementiert, zeigt eine Abdeckung wie **2 von 3 Schnittstellen**. Widgets auf dem fehlenden Interface bleiben leer.
+- Ein angeheftetes Widget zeigt in seinem Kopf eine Nadel und einen Thing-Namen. Ist dieses Thing nicht das, das Sie ansehen, ändert sich das Widget nicht, wenn Sie ein anderes wählen.
+
+### 3. Hat das Thing Daten in diesem Zeitraum? {#3-does-the-thing-have-data-in-that-range}
+
+Öffnen Sie das Thing (**Überwachung › Things**). **Live-Werte** zeigt den letzten Messwert jeder Telemetrie und **Letztes Signal** dessen Zeit. Für einen längeren Zeitraum wählen Sie den Messwert im Tab **Schema** und **In Explore öffnen**. Siehe [Telemetrie über die Zeit untersuchen](../watch/explore-telemetry.mdx).
+
+Gibt es überhaupt keinen Messwert, liegt es nicht am Dashboard. Gehen Sie zu [Ein Gerät zeigt kein Signal](./no-signal.mdx).
+
+### 4. Der Messwert hinter dem Widget {#4-the-measure-behind-the-widget}
+
+Öffnen Sie die Einstellungen des Widgets und vergleichen Sie seinen Messwert mit dem Tab **Schema** des Thing-Typs.
+
+- Der Messwert wurde in einer neueren veröffentlichten Version des Thing-Typs entfernt oder umbenannt. Wählen Sie ihn neu.
+- Der Messwert existiert nur in einem Entwurf. Ein Messwert, den die Plattform nicht kennt, erhält keine Daten, bis der Entwurf veröffentlicht ist. Siehe [Entwürfe, Veröffentlichen und Versionen](../model/drafts-and-versions.mdx).
+- Das Widget liest eine Eigenschaft. Eine Eigenschaft ist eine feste Tatsache, kein Messwert, und hat daher keinen Verlauf. Nur eine Eigenschaft mit eingeschaltetem **Zeitreihenrelevant** wird der Telemetrie des Things hinzugefügt. Siehe [Messwert- und Eigenschaftstypen](../model/measure-types.mdx).
+- Das Widget aggregiert einen Messwert über einen Zeitraum, und kein Messwert liegt darin.
+
+### 5. Berechtigungen und Gruppen {#5-permissions-and-groups}
+
+Sie sehen ein Thing nur, wenn eine Gruppe, der Sie angehören, es mit **Read** enthält, oder sein Thing-Typ, oder wenn Ihnen das Thing zugewiesen wurde oder Sie es angelegt haben. Eine Rolle ohne Berechtigung zum Lesen von Dashboards zeigt gar keine Dashboards.
+
+- In der Auswahl fehlt ein Thing, von dem Sie wissen, dass es existiert: Bitten Sie einen Administrator, Ihre Gruppenmitgliedschaften zu prüfen. Siehe [Benutzer, Gruppen und Rollen](../administer/access.mdx).
+- Ein Dashboard fehlt im Tab **Dashboard** eines Things: Es ist dem Thing oder seinem Thing-Typ nicht zugewiesen, oder es verlangt ein Interface, das der Thing-Typ nicht implementiert. Siehe [Ein Dashboard für jedes Thing einer Art bauen](../visualize/smart-dashboard.mdx#assign-the-dashboard).
+- Alle außer Ihnen sehen Daten: Vergleichen Sie Ihre Rolle und Gruppen mit deren.
+
+### 6. Widget-Einstellungen {#6-widget-settings}
+
+Wählen Sie **Bearbeiten** und öffnen Sie das leere Widget. Die Vorschau aktualisiert sich, wenn Sie Einstellungen ändern, und **Hilfe** oben erklärt jede einzelne.
+
+- Ein Pflichtfeld, etwa Messwert oder Thing, ist nicht gesetzt.
+- Ein Filter, zum Beispiel für **Event Typen**, **Thing Typen**, **Gruppen** oder **Verbindung**, trifft nichts. Ein leerer Filter bedeutet alle.
+- Testdaten oder eine Datei sind anderen Messwerten zugeordnet, als das Widget verwendet.
+
+Jedes Widget und seine Einstellungen: [Widget-Galerie](../visualize/widgets.mdx).
+
+## Immer noch nicht gelöst? {#still-stuck}
+
+Schreiben Sie an info@nimbit.de mit:
+
+- Ihrem Tenant-Namen, dem Namen des Dashboards und dem Link darauf. Der Link enthält den Zeitraum.
+- Dem Widget-Typ und dem Thing, das es liest, mit Namen.
+- Der Zeit des letzten erwarteten Messwerts, mit Zeitzone.
+- Einem Screenshot der Widget-Einstellungen und der **Live-Werte** des Things.
+
+## Verwandte Seiten {#related}
+
+- [Ein Dashboard für ein Thing bauen](../visualize/thing-dashboard.mdx) · [Widget-Galerie](../visualize/widgets.mdx)
+- [Ein Gerät zeigt kein Signal](./no-signal.mdx)

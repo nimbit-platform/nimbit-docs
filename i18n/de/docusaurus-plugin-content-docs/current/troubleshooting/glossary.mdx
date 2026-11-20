@@ -1,0 +1,132 @@
+---
+title: Glossar
+description: Die Begriffe in IoT Breeze und der NimBit-Plattform in alphabetischer Reihenfolge, jeweils mit Link auf die Seite, die sie erklärt.
+sidebar_position: 6
+type: reference
+translated_from: 8bbc248
+---
+
+Begriffe in IoT Breeze und der NimBit-Plattform, von A bis Z. Wie sie zusammenhängen, steht unter [Grundbegriffe](../get-started/key-concepts.mdx).
+
+
+## A {#a}
+
+**Aktion.** Ein Schritt, der etwas sendet oder tut: eine Benachrichtigung, eine E-Mail, ein Webhook, ein Event oder ein Befehl an ein Gerät. Regeln, Event-Typen und Things bieten jeweils eine andere Liste. Siehe [Aktionstypen](../automate/action-types.mdx).
+
+**Alternative Thing -ID.** Eine ID, die Sie für ein Thing wählen und die in HTTP-Nachrichten statt seiner internen ID verwendet werden kann. Sie lässt sich nach dem Anlegen nicht ändern. Siehe [Nachrichtenformat](../connect/message-format.mdx).
+
+**API-Schlüssel.** Ein Geheimnis, mit dem ein Skript oder eine Integration die Plattform aufrufen kann, ohne dass sich eine Person anmeldet. Er handelt als ein Mitglied oder Service-Account und hat Scopes und ein Ablaufdatum. Siehe [API-Schlüssel](../api/api-keys.mdx).
+
+**Ask Nimble.** Der Assistent, der Fragen in einfachen Worten aus Knowledge Graph, Live-Messwerten und Dokumenten beantwortet und seine Quellen zeigt. Siehe [Wie Ask Nimble antwortet](../knowledge/ask-nimble-answers.mdx).
+
+**Auslöser.** Der Knoten einer Regel, der entscheidet, wie aus einer erfüllten Bedingung ein Auslösen wird: bei jedem Treffer, einmal pro Wechsel oder einmal pro Zeitraum. Siehe [Regeln, Aktionen und Berichte](../automate/rules-actions-reports.mdx).
+
+**Auto-Schemas Entwicklung.** Eine Einstellung des Thing-Typs. Ein Messwert, den ein Gerät sendet und das Schema nicht kennt, wird dem Thing-Typ hinzugefügt, statt verworfen zu werden. Siehe [Entwürfe, Veröffentlichen und Versionen](../model/drafts-and-versions.mdx).
+
+## B {#b}
+
+**Benachrichtigungskanal.** Ein Ziel für Alarmnachrichten: Slack, Microsoft Teams, ein Webhook oder ntfy. Siehe [Kanaltypen](../watch/channel-types.mdx).
+
+**Bericht.** Ein Dokument aus Widgets, das IoT Breeze nach Zeitplan als PDF rendert und an Abonnenten sendet. Siehe [Einen wöchentlichen PDF-Bericht per E-Mail senden](../automate/weekly-report.mdx).
+
+## C {#c}
+
+**Canvas.** Eine Zeichnung, etwa ein Grundriss, mit Formen, die an Live-Werte gebunden sind. Siehe [Wie ein Canvas funktioniert](../visualize/canvas/how-canvas-works.mdx).
+
+**Channel.** Siehe Benachrichtigungskanal.
+
+**Client-ID.** Die Kennung, die ein MQTT-Gerät beim Verbinden vorlegt, in der Form `<tenantId>:<deviceId>`. Siehe [MQTT-Topics und Client-ID](../connect/mqtt-topics.mdx).
+
+## D {#d}
+
+**Dashboard.** Eine Seite mit Widgets, die jeweils eine Frage zu Ihren Things beantworten. Siehe [Dashboards, Smart Dashboards und Zeit](../visualize/dashboards.mdx).
+
+## E {#e}
+
+**Eigenschaft.** Eine feste Tatsache über ein Gerät, etwa eine Seriennummer. Mit eingeschaltetem **Zeitreihenrelevant** wird sie jeder Telemetrienachricht hinzugefügt. Siehe [Messwert- und Eigenschaftstypen](../model/measure-types.mdx).
+
+**E-Mail-Vorlage.** Betreff und Inhalt einer E-Mail, mit Kopf- und Fußblock, für einen Kontext wie Events. Siehe [E-Mail-Vorlagen und Platzhalter](../watch/mail-templates.mdx).
+
+**Entwurf.** Die nächste, unveröffentlichte Version eines Thing-Typs oder Interfaces. Geräte ignorieren sie, bis Sie sie veröffentlichen. Siehe [Entwürfe, Veröffentlichen und Versionen](../model/drafts-and-versions.mdx).
+
+**Episode.** Die Events eines Alarms oder Ausfalls: das Event, das ihn öffnet, und das Event, das ihn schließt. Siehe [Event-Typen](../watch/event-types.mdx).
+
+**Event.** Ein Eintrag, dass etwas passiert ist, mit Zeit, Schweregrad und meist einem Thing. Sie können ihn nicht bearbeiten. Siehe [Events, Vorfälle und Benachrichtigungen](../watch/events-incidents-notifications.mdx).
+
+**Event-Typ.** Eine benannte Art von Event. Er enthält die Aktionen, die laufen, wenn ein Event dieser Art eintritt. Siehe [Event-Typen](../watch/event-types.mdx).
+
+## G {#g}
+
+**Gateway.** Eine Box vor Ort, die mit einem einzigen Zugang für viele Geräte spricht. Sie darf nur für die ihr zugewiesenen Things senden. Siehe [Wie Gateways funktionieren](../gateways/how-gateways-work.mdx).
+
+**Geofence.** Ein gezeichneter Bereich auf der Karte. Events werden ausgelöst, wenn ein Thing ihn betritt oder verlässt. Siehe [Einen Geofence zeichnen](../watch/geofence.mdx).
+
+**Geräteschlüssel.** Der Signaturschlüssel hinter den Basic- und JWT-Zugangsdaten eines Things. Das Rotieren sperrt ältere Zugangsdaten. Siehe [Gerätezugangsdaten anlegen und rotieren](../connect/credentials.mdx).
+
+**Gruppe.** Ein Knoten in einem Baum, der Benutzer und Datensätze enthält. Ein Benutzer erreicht ein Thing nur über eine Gruppe. Siehe [Benutzer, Gruppen und Rollen](../administer/access.mdx).
+
+## I {#i}
+
+**Interface.** Ein benannter, versionierter Satz von Feldern, den mehrere Thing-Typen teilen können, sodass ein Dashboard zu allen passt. Siehe [Thing-Typen, Things und Interfaces](../model/things-and-types.mdx).
+
+## K {#k}
+
+**Knowledge Graph.** Eine optionale Karte Ihrer Things, Orte und anderen Datensätze mit ihren Beziehungen. Siehe [Der Knowledge Graph](../knowledge/knowledge-graph.mdx).
+
+## M {#m}
+
+**Messwert.** Ein Wert, den ein Gerät über die Zeit sendet, etwa `temperature`, mit Typ, Einheit und erwartetem Bereich. Siehe [Messwert- und Eigenschaftstypen](../model/measure-types.mdx).
+
+## N {#n}
+
+**nbq.** Die Query-Engine. Sie liest gespeicherte Daten für Diagramme, Dashboards und die Query-API zurück. Siehe [API-Überblick](../api/index.mdx).
+
+## O {#o}
+
+**OCB.** Der Plattformdienst hinter der API `/ocb`. Er verwaltet Things, Thing-Typen, Regeln, Dashboards, Benutzer und den Rest des Tenants. Siehe [API-Überblick](../api/index.mdx).
+
+**Organisation.** Eine Gruppe vom Typ Organisation, die Spitze eines Kunden, Unternehmens oder Standorts. Jedes Thing hat eine. Siehe [Benutzer, Gruppen und Rollen](../administer/access.mdx).
+
+## P {#p}
+
+**Periscope.** Der NimBit-Edge-Agent. Er läuft neben Ihren Anlagen, erkennt Quellen wie OPC UA, Sparkplug B, MQTT, Modbus, S7 und HTTP und streamt ihre Werte nach IoT Breeze. Siehe [Periscope](../gateways/periscope/index.mdx).
+
+## R {#r}
+
+**Regel.** Eine Kette aus Start, Bedingung, Auslöser und Aktionen, die eingehende Daten überwacht. Siehe [Regeln, Aktionen und Berichte](../automate/rules-actions-reports.mdx).
+
+**Richtlinie.** Siehe Vorfallsrichtlinie.
+
+**Rolle.** Ein benannter Satz von Berechtigungen. Sie legt fest, was eine Person tun darf, eine Gruppe, mit welchen Things. Siehe [Rollen und Berechtigungen](../administer/roles.mdx).
+
+## S {#s}
+
+**Schweregrad.** Das Gewicht eines Events: Information, Warnung, Fehler oder Kritisch. Siehe [Event-Typen](../watch/event-types.mdx).
+
+**Service-Account.** Ein nicht menschliches Mitglied eines Tenants, das API-Schlüssel besitzt, die jede einzelne Person überdauern. Siehe [Einen API-Schlüssel anlegen](../administer/api-key.mdx).
+
+**Smart Dashboard.** Ein Dashboard, das auf Interfaces statt auf einem einzelnen Gerät aufbaut. Es bedient jedes Thing, dessen Typ sie implementiert. Siehe [Ein Dashboard für jedes Thing einer Art bauen](../visualize/smart-dashboard.mdx).
+
+## T {#t}
+
+**Tenant.** Der Bereich Ihres Unternehmens in IoT Breeze. Daten, Benutzer, Einstellungen und Funktionen gehören zu einem Tenant. Siehe [Tenant-Einstellungen](../administer/tenant-settings.mdx).
+
+**Thing.** Ein Gerät oder Asset mit Thing-Typ, ID, Organisation, Gruppen und eigenen Zugangsdaten. Siehe [Ein Thing registrieren](../model/register-thing.mdx).
+
+**Thing-Typ.** Das Modell einer Art von Gerät: seine Messwerte, Eigenschaften und Einstellungen. Siehe [Thing-Typen, Things und Interfaces](../model/things-and-types.mdx).
+
+**tsflux.** Der Ingestion-Dienst. Er nimmt MQTT- und HTTP-Daten an, prüft sie gegen den Thing-Typ und speichert sie. Siehe [Wie Geräte sich verbinden](../connect/how-devices-connect.mdx).
+
+## V {#v}
+
+**Verbindungsinformationen.** Die Seitenleiste im Tab **Verbindungen** eines Things, die Gateway-URL, Benutzername, Client-ID, Topics und REST-URLs listet. Siehe [Gerätezugangsdaten anlegen und rotieren](../connect/credentials.mdx).
+
+**Veröffentlichen.** Einen Entwurf zur Live-Version eines Thing-Typs oder Interfaces machen. Die ersetzte Version wird archiviert. Siehe [Entwürfe, Veröffentlichen und Versionen](../model/drafts-and-versions.mdx).
+
+**Vorfall.** Ein Problem, das eine Person braucht. Er sammelt zusammengehörige Events und wechselt von offen zu geschlossen. Siehe [Einen Vorfall bearbeiten](../watch/work-an-incident.mdx).
+
+**Vorfallsrichtlinie.** Die Regel, die entscheidet, welche Events einen Vorfall öffnen und wie sie sich zu einem zusammenfassen. Siehe [Eine Vorfallsrichtlinie einrichten](../watch/incident-policy.mdx).
+
+## W {#w}
+
+**Widget.** Eine Kachel eines Dashboards. Es liest ein Thing oder den ganzen Tenant. Siehe [Widget-Galerie](../visualize/widgets.mdx).

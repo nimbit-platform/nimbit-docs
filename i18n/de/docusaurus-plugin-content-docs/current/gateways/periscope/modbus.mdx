@@ -1,0 +1,107 @@
+---
+title: Modbus-Register lesen
+description: Modbus-Punkte in einer Registertabelle beschreiben, einen Eingang für Modbus TCP oder RTU hinzufügen und prüfen, was Periscope vorschlägt.
+type: how-to
+sidebar_position: 5
+app:
+  routes: ["/onboarding/gateways"]
+translated_from: 4c9fc6e
+---
+
+Modbus hat keinen Adressraum zum Durchsuchen, daher beschreiben Sie jeden Punkt in einer Registertabelle. Die Tabelle ist die Erkennung: Periscope schlägt pro Zeile einen Thing-Typ, ein Thing und einen Messwert vor, und der Stream fragt die Tabelle ab. Die Stufen erklärt [Wie Periscope funktioniert](./how-periscope-works.mdx).
+
+## Voraussetzungen {#before-you-start}
+
+- Periscope ist installiert und verbunden. Siehe [Periscope installieren und die erste Quelle streamen](./install.mdx).
+- Für Modbus TCP: `host:port` des Geräts, meist 502.
+- Für Modbus RTU: das serielle Gerät auf der Box (`/dev/ttyUSB0`), Baudrate, Parität und Stoppbits sowie die Unit-IDs an der Leitung. Der Benutzer des Agents braucht Zugriff auf das serielle Gerät, meist über die Gruppe `dialout`.
+- Die Registerliste aus dem Gerätehandbuch. Verwenden Sie Protokolladressen, die bei 0 beginnen: Holding-Register 40001 hat die Adresse `0`.
+
+## Schritte {#steps}
+
+1. Schreiben Sie die Registertabelle als CSV, eine Zeile pro Punkt. Der Name lautet `<thingType>/<thing>/<measure>`:
+
+   ```csv
+   name,unit_id,register,address,type,length,bit,order,scale,offset,unit,display_name,description
+   Pump/P01/Pressure,1,holding,0,float32,,,CDAB,,,bar,Pressure,Discharge pressure
+   Pump/P01/Speed,1,holding,2,uint16,,,,0.1,,rpm,Speed,
+   Pump/P01/Running,1,coil,0,bool,,,,,,,Running,
+   Meter/M01/DoorOpen,3,holding,200,bool,,3,,,,,Door open,Bit 3 of the status word
+   ```
+
+   | Spalte | Bedeutung |
+   | --- | --- |
+   | `unit_id` | Die Unit an der Leitung. Vorgabe: die `unit_id` des Eingangs, 1. |
+   | `register` | `coil`, `discrete`, `input` oder `holding` (Vorgabe). |
+   | `address` | Die 0-basierte Protokolladresse. |
+   | `type` | `bool`, `int16`, `uint16`, `int32`, `uint32`, `int64`, `uint64`, `float32`, `float64` oder `string`. |
+   | `order` | Byte- und Wortreihenfolge: `ABCD` (Modbus-eigen), `CDAB` (niederwertiges Wort zuerst), `BADC`, `DCBA`. |
+   | `scale`, `offset` | `value × scale + offset`. |
+   | `bit` | Für ein `bool` in einem Register: das Bit, 0 bis 15. |
+   | `unit`, `display_name`, `description` | Einheit, Anzeigename und Beschreibung des Messwerts. |
+
+2. Fügen Sie für jedes Gerät oder jede Leitung einen Eingang zu `periscope.toml` hinzu:
+
+   ```toml
+   [[inputs.modbus]]
+   alias    = "pumps"
+   address  = "192.168.10.40:502"      # Modbus TCP
+   map      = "/etc/periscope/pumps.csv"
+   interval = "1s"
+
+   [[inputs.modbus]]
+   alias    = "meters"
+   port     = "/dev/ttyUSB0"           # Modbus RTU
+   baud     = 9600
+   parity   = "E"
+   map      = "/etc/periscope/meters.csv"
+   interval = "5s"
+   ```
+
+3. Um manche Punkte häufiger zu lesen als andere, fügen Sie einen Abfragezyklus hinzu, der seine Punkte per Glob nennt. Das `interval` des Eingangs liest jeden Punkt, den kein Zyklus nennt:
+
+   ```toml
+   [[inputs.modbus.cycles]]
+   name     = "fast"
+   interval = "200ms"
+   names    = ["Pump/*/Pressure"]
+   ```
+
+4. Prüfen und erkennen:
+
+   ```sh
+   periscope validate -config /etc/periscope/periscope.toml
+   periscope discover -config /etc/periscope/periscope.toml
+   ```
+
+5. Prüfen und bestätigen Sie die Vorschläge. Siehe [Periscope-Erkennungen freigeben](./approve-discoveries.mdx).
+
+Um den Aufbau ohne Hardware auszuprobieren, starten Sie `periscope sim modbus`. Es stellt eine Beispieltabelle auf `127.0.0.1:5020` bereit.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+`periscope discover` listet einen Thing-Typ pro erstem Segment und ein Thing pro zweitem Segment, mit den Einheiten und Namen aus der Tabelle:
+
+```text
+KIND       NAME   TYPE        STATUS    NOTE
+thingType  Pump   6 measures  proposed  -
+thing      P01    Pump        proposed  -
+```
+
+Nach dem Anwenden lautet die Adresse eines Punkts in Zuordnung und Metriken `<unit>:<table><address>[.<bit>]`, zum Beispiel `1:hr0` oder `3:hr200.3`.
+
+## Wenn es nicht klappt {#if-it-doesnt-work}
+
+- **`validate` nennt eine Zeile der Tabelle**: Die Zeile ist nicht verwendbar, zum Beispiel weil sie zwei Namenssegmente hat oder ein `bit` bei einer Coil. `validate` meldet alle auf einmal.
+- **Werte sind völlig falsch**, etwa `1.2e-38` oder `16384`: falsche Byte- oder Wortreihenfolge oder eine 1-basierte Adresse. Probieren Sie `CDAB` und ziehen Sie bei einer Adresse im Modicon-Stil 1 ab.
+- **`illegal data address` (Exception 2)**: Das Gerät hat dort kein Register. Dieser Lesevorgang schlägt fehl, die anderen laufen weiter.
+- **`read_errors` wächst, oder RTU läuft in einen Timeout**: falsche Baudrate oder Parität oder eine Unit, die nicht antwortet.
+- **`overruns` wächst auf dem Bildschirm Metrics**: Eine Abfrage dauert länger als `interval`. Erhöhen Sie `interval` oder `max_gap`, verringern Sie die Punkte oder legen Sie Punkte in einen langsameren Zyklus.
+- **Eine geänderte Tabelle hat keine Wirkung**: Die Tabelle wird beim Start gelesen. Starten Sie den Agent neu.
+
+Mehr unter [Periscope-Probleme beheben](./troubleshooting.mdx).
+
+## Verwandte Seiten {#related}
+
+- [Wie Periscope funktioniert](./how-periscope-works.mdx) · [Konfigurationsreferenz](./configuration.mdx)
+- [Werte transformieren, bevor sie die Edge verlassen](./processors.mdx)

@@ -1,0 +1,96 @@
+---
+title: Eine Box mit einem Onboarding-Code einrichten
+sidebar_label: Mit einem Code einrichten
+description: Einen installierten Periscope-Agent mit einem einmaligen Onboarding-Code als Gateway mit IoT Breeze verbinden, per Kommandozeile oder Einrichtungsbildschirm, und auf Online warten.
+sidebar_position: 4
+type: how-to
+app:
+  routes: ["/onboarding/gateways"]
+translated_from: 06bddd1
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+Verbinden Sie eine installierte Box als Gateway mit IoT Breeze, mit dem einmaligen Code eines Gateways, das Sie angelegt haben. Am Ende zeigt das Gateway **Online**. Den Hintergrund lesen Sie in [Wie Gateways funktionieren](../../how-gateways-work.mdx).
+
+## Voraussetzungen {#before-you-start}
+
+- Ein Gateway vom Typ **Periscope** mit einem Onboarding-Code, der weder abgelaufen noch benutzt ist. Siehe [Gateway hinzufügen](../../add-a-gateway.mdx). Der Code beginnt mit `ONB-`.
+- Periscope läuft auf der Box, [in einem Container](./run-in-a-container.mdx) oder [als Dienst](./run-as-a-service.mdx), und die Box erreicht die Plattform. Siehe die [Voraussetzungen](./requirements.mdx).
+- `[ocb] url` ist in `periscope.toml` gesetzt, `email`, `password` und `token` nicht. Eine Konfiguration mit einer zweiten Zugangsart wird abgelehnt.
+
+## Schritte {#steps}
+
+<Tabs groupId="onboard">
+<TabItem value="command" label="Kommandozeile" default>
+
+1. Führen Sie den Befehl `enroll` mit dem Code aus. In einem Container stellen Sie `docker exec periscope` voran. Als Dienst führen Sie ihn als Benutzer des Dienstes aus, mit `sudo -u periscope`.
+
+   ```sh
+   periscope enroll -config /etc/periscope/periscope.toml -code ONB-XXXX-XXXX-XXXX-XXXX
+   ```
+
+   `-code -` liest den Code von der Standardeingabe, sodass er nicht in der Shell-History landet.
+2. Lesen Sie die Ausgabe. Sie nennt das Gateway und seinen Tenant sowie die Schlüsseldatei der Box. Dann gibt sie den Namespace und das Gateway-Thing aus:
+
+   ```text
+   namespace hall-3 (prefixes the alternateIds), gateway thing gateway-<id> (<thing id>, type <type>)
+   ```
+
+3. Setzen Sie `gateway = true` unter `[ocb]` in `periscope.toml`. Der Agent lädt die Datei selbstständig neu, oder starten Sie ihn neu. Eine Box, die schon mit `gateway = true` läuft, meldet sich ohne Neuladen mit dem neuen Schlüssel an.
+
+   ```toml
+   [ocb]
+   url     = "https://nimbit.example.com"
+   gateway = true
+   ```
+
+</TabItem>
+<TabItem value="screen" label="Einrichtungsbildschirm">
+
+1. Lesen Sie den einmaligen Einrichtungscode im Log des Agents: `docker logs periscope` oder `journalctl -u periscope`. Sind Sie als Admin in der Web-Oberfläche angemeldet, brauchen Sie ihn nicht.
+2. Öffnen Sie `http://<box>:8400/ui/setup` und geben Sie den Einrichtungscode ein.
+3. Geben Sie unter **Platform** die Adresse der Plattform ein und wählen Sie neben **Sign in with** die Option **an onboarding code**.
+4. Fügen Sie den Onboarding-Code ein. Der Bildschirm zeigt jede Prüfung mit ihrem Ergebnis.
+5. Legen Sie unter **Mount** fest, wo die Things der Box liegen, wählen Sie den Ausgang und wählen Sie **Write and reload**.
+
+Der Bildschirm schreibt `ocb.gateway = true` und, wenn keine Datei einen setzt, `agent.name` aus dem Namespace in `state_dir/config.ui.toml`. Setzt `periscope.toml` `email`, `password` oder `token`, lehnt der Bildschirm ab, bevor er den Code verwendet. Entfernen Sie diesen Schlüssel zuerst.
+
+</TabItem>
+</Tabs>
+
+## Was das Onboarding festlegt {#what-onboarding-sets}
+
+| Ergebnis | Wo | Was es tut |
+| --- | --- | --- |
+| Ein Schlüsselpaar | `gateway_key.pem` | Die Box meldet sich damit an. Es gibt kein Passwort. |
+| Die IDs des Gateways | `gateway.json` | Nennt das Gateway, seinen Tenant und die Endpunkte, an denen es sich anmeldet. |
+| Der Namespace | `gateway.json`, aus `gateways.me` | Steht statt `agent.name` vor der Alternate-ID jedes Things, das die Box erkennt. |
+| Das Gateway-Thing | `gateway.json`, aus `gateways.me` | Das Thing, das die Zustandsmeldung der Box erhält. Sein Status ist der Status des Gateways. |
+
+Der Code ist verbraucht, wenn das Identitätsverzeichnis ihn akzeptiert. Die Dateien sind in [Was Periscope auf der Box aufbewahrt](./state-and-backup.mdx) beschrieben.
+
+## Wie lange bis Online {#how-long-until-online}
+
+Nachdem der Agent mit `gateway = true` gestartet ist, fragt er die Plattform nach dem Datensatz des Gateways (`gateways.me`). Bis die Plattform antwortet, erkennt und wendet der Agent nichts an und fragt jede Minute erneut. So wird kein Thing unter dem falschen Präfix angelegt.
+
+Der Agent sendet dann seine erste Zustandsmeldung etwa 15 Sekunden nach dem Start und alle 30 Sekunden, bis eine akzeptiert wird. Spätere Meldungen folgen alle `agent.health_interval`, standardmäßig 5 Minuten, möglich sind 1 bis 5 Minuten. Das Gateway ist **Online**, wenn die erste Meldung eintrifft, und **Offline** nach 15 Minuten ohne eine. Meist zeigt es innerhalb von 5 Minuten nach dem Start **Online**.
+
+Die Zustandsmeldung wird live über den ersten Ausgang vom Typ `tsflux_stream`, `tsflux` oder `nimbit_mqtt` in der Datei gesendet. Ohne einen davon geht das Gateway nie online.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Öffnen Sie in IoT Breeze **Einstellungen › Onboarding › Gateways**. Die Zeile wechselt von **Wartet auf Onboarding** zu **Online**. Nachdem Sie Vorschläge bestätigt und angewendet haben, listet der Tab **Things** des Gateways die Things der Box. Siehe [Zustand und Datenverkehr von Gateways prüfen](../../fleet-health.mdx).
+
+## Wenn es nicht klappt {#if-it-doesnt-work}
+
+- **Der Code wird abgelehnt**: Er ist unbekannt, benutzt oder abgelaufen. Stellen Sie in IoT Breeze mit **Neuer Onboarding-Code** einen neuen aus.
+- **`the gateway's namespace is not known yet`**: Die Plattform hat `gateways.me` nicht beantwortet. Prüfen Sie die Route der Box zur Plattform. Der Agent fragt jede Minute erneut.
+- **Das Gateway bleibt Offline**: Prüfen Sie, dass `gateway = true` gesetzt und ein Ausgang konfiguriert ist. Siehe [Periscope-Probleme beheben](../troubleshooting.mdx).
+- **Banner `Not connected to Nimbit`**: `gateway = true` ist gesetzt, aber `gateway.json` fehlt. Richten Sie die Box mit einem neuen Code ein.
+
+## Verwandte Seiten {#related}
+
+- [Gateway hinzufügen](../../add-a-gateway.mdx) · [Kommandozeilen-Referenz](../commands.mdx#enroll)
+- [Eine Box aktualisieren](./upgrade.mdx) · [Eine Box ersetzen](./replace-a-box.mdx)

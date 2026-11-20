@@ -1,0 +1,113 @@
+---
+title: Regelbedingungen und Funktionen
+sidebar_position: 7
+description: Operatoren, Fensterfunktionen und die Syntax der erweiterten Ausdrücke für den Knoten Bedingung einer Regel.
+type: reference
+app:
+  routes: ["/automation/rule-designer/:id"]
+translated_from: 679f3a4
+---
+
+Der Knoten **Bedingung** einer Regel hat zwei Tabs, **Einfach** und **Erweitert**. Nur der gewählte Tab wird ausgewertet. Solange **Erweitert** gewählt ist, bleiben die Zeilen von **Einfach** als Entwurf erhalten und werden ignoriert.
+
+## Tab Einfach {#simple-tab}
+
+Jede Zeile prüft einen Messwert. Eine Zeile hat eine **Telemetrie**, optional **Betrachten** (nur bei numerischen Messwerten), einen **Operator** und einen Wert. Das Wertfeld ist mit **Bedingung** beschriftet. Wählen Sie **Bedingung hinzufügen**, um Zeilen hinzuzufügen, und verknüpfen Sie sie mit **Und** oder **oder**.
+
+| Verknüpfung | Ergebnis |
+| --- | --- |
+| Mit **Und** verknüpfte Zeilen | Alle müssen zutreffen. |
+| Mit **oder** verknüpfte Zeilen | Mindestens eine muss zutreffen. Die Gruppe der **oder**-Zeilen wird dann mit **Und** mit den übrigen Zeilen kombiniert. |
+
+Eine Zeile besteht nur, wenn der Messwert in der Nachricht vorhanden ist. Eine Nachricht ohne den Messwert trifft nie auf eine Zeile zu.
+
+### Operatoren {#operators}
+
+| Operator | Messwerttypen | Bedeutung |
+| --- | --- | --- |
+| **Größer als**, **Kleiner als** | Zahl | `>` und `<` |
+| **Größer als oder gleich**, **Kleiner als oder gleich** | Zahl | `>=` und `<=` |
+| **Gleich**, **Ungleich** | Zahl, String, Boolean | `==` und `!=` |
+| **Modulo** | Zahl | Trifft zu, wenn der Wert geteilt durch Ihren Teiler ohne Rest aufgeht. |
+| **Beginnt mit**, **Endet mit** | String | Treffer am Anfang und am Ende. |
+| **Enthält**, **Enthält nicht** | String | Treffer auf eine Teilzeichenfolge. |
+| **In (Array)**, **Nicht in (Array)** | String | Der Wert ist einer der aufgelisteten Werte, oder er ist keiner davon. Öffnen Sie **Werte**, um sie einzugeben. |
+
+Bei einem booleschen Messwert ist der Wert eine Auswahl **Wahr** oder **Falsch**.
+
+### Betrachten {#look-at}
+
+| Option | Braucht | Was die Zeile vergleicht |
+| --- | --- | --- |
+| **Aktueller Wert** | nichts | Den Wert der aktuellen Nachricht. Das ist der Standard. |
+| **Durchschnitt**, **Minimum**, **Maximum**, **Summe**, **Anzahl**, **Steigung** | **Fenster**, optional **Mit vorherigem Zeitraum vergleichen** | Die Aggregation über das Fenster. **Steigung** ist die Änderung nach der Methode der kleinsten Quadrate in Einheiten pro Sekunde. |
+| **Änderung zum vorherigen Wert** | nichts | Den aktuellen Wert minus den vorherigen Messwert. |
+| **Vorheriger Wert** | Eine Nummer, 1 oder höher | Den Wert des n-ten Messwerts vor dieser Nachricht. |
+| **Steigend**, **Fallend** | Optional **Fenster**, optional **Minimale Änderung** | Ob der Messwert über das Fenster um mehr als die minimale Änderung gestiegen oder gefallen ist. |
+
+**Steigend** und **Fallend** sind für sich wahr oder falsch, deshalb hat die Zeile keinen **Operator** und keinen Wert. Sie antworten falsch, bis der gespeicherte Verlauf das ganze Fenster abdeckt.
+
+**Fenster** bietet `1m`, `5m`, `15m`, `30m`, `1h`, `6h`, `24h` und **Benutzerdefiniert**, wo Sie eine Dauer wie `90s` oder `1h30m` eingeben. Der Standard ist `15m`. **Mit vorherigem Zeitraum vergleichen** verschiebt das Fenster um diese Dauer zurück, sodass Sie diese Stunde mit der davor vergleichen können. Ist **Standard** gewählt, endet das Fenster bei der aktuellen Nachricht und enthält ihren Wert.
+
+## Tab Erweitert {#advanced-tab}
+
+Wählen Sie **Editor öffnen** und schreiben Sie eine Grule-`when`-Klausel. Die Daten des Things sind das Objekt `event`. Wählen Sie **Testen**, um den Ausdruck gegen eine JSON-Beispielpayload zu prüfen. Der Editor meldet **Gültig** oder **Ungültiger Ausdruck**. **Testen** hat keinen Verlauf, deshalb gelten Fensterfunktionen als fehlend: Testen Sie sie mit Live-Daten.
+
+```
+event.HasNumeric("temperature") && event.Numeric("temperature") > 25.0
+```
+
+Operatoren sind `&&`, `||`, `!`, `==`, `!=`, `<`, `<=`, `>`, `>=` und `%`. Sichern Sie jedes Lesen immer mit dem passenden `Has`-Aufruf ab: Das Lesen eines fehlenden Feldes liefert `0`, `""` oder `false`, keinen Fehler.
+
+### Felder lesen {#reading-fields}
+
+| Funktion | Liefert | Wenn fehlend oder von anderem Typ |
+| --- | --- | --- |
+| `event.HasField("m")` | true, wenn das Feld existiert, jeder Typ | false |
+| `event.HasNumeric("m")`, `event.HasString("m")`, `event.HasBool("m")` | true, wenn das Feld mit diesem Typ existiert | false |
+| `event.Numeric("m")` | Zahl | `0` |
+| `event.Str("m")` | String. Unterstützt `.HasPrefix("x")`, `.HasSuffix("x")` und `.Contains("x")`. | `""` |
+| `event.Bool("m")` | Boolean | `false` |
+
+### Identität, Tags und Labels {#identity-tags-and-labels}
+
+| Funktion | Liefert |
+| --- | --- |
+| `event.DeviceID()`, `event.ThingType()`, `event.Tenant()`, `event.Timestamp()` | Das Thing, seinen Thing-Typ, den Tenant und die Zeit der Nachricht. |
+| `event.HasTag("k")`, `event.TagValue("k")` | Ob die Nachricht oder das Thing den Tag `k` trägt, und seinen Wert. |
+| `event.HasLabel("l")` | Ob das Thing das Label trägt. |
+
+### Fensterfunktionen {#window-functions}
+
+`m` ist ein Messwertname, `w` und `offset` sind Dauern als Strings wie `"15m"`, `n` ist eine ganze Zahl ab 1, und `minDelta` ist eine Zahl ab 0.
+
+| Funktion | Bedeutung |
+| --- | --- |
+| `event.Avg(m, w)`, `Min`, `Max`, `Sum`, `Slope`, `Count` | Die Aggregation der Messwerte von `w` vor der aktuellen Nachricht bis zu ihr, plus den aktuellen Wert. `Count` liefert eine ganze Zahl. Leere Fenster liefern `0`. |
+| `event.Avg(m, w, offset)` und dasselbe für die anderen | Dasselbe über das Fenster, das `offset` früher endet. Der aktuelle Wert ist ausgeschlossen. |
+| `event.HasPrev(m)`, `event.HasPrev(m, n)` | Ob der n-te vorherige Messwert existiert. `n` ist standardmäßig 1. |
+| `event.Prev(m)`, `event.Prev(m, n)` | Sein Wert. |
+| `event.Delta(m)` | Aktueller Wert minus vorheriger Messwert. `0`, wenn einer von beiden fehlt. |
+| `event.Span(m, n)` | Sekunden vom n-ten vorherigen Messwert bis zur aktuellen Nachricht, als Dezimalzahl. |
+| `event.Rising(m)`, `event.Rising(m, minDelta)` | True, wenn der Messwert über das Standardfenster der Plattform für den Thing-Typ um mehr als `minDelta` gestiegen ist. |
+| `event.RisingFor(m, w)`, `event.RisingFor(m, w, minDelta)` | Dasselbe über das Fenster, das Sie angeben. |
+| `event.Falling(m)`, `event.FallingFor(m, w)` | Spiegelbild der Rising-Funktionen. |
+
+```
+event.Count("temperature", "1h") >= 10 && event.Avg("temperature", "1h") > event.Avg("temperature", "1h", "1h") + 2.0
+```
+
+Regeln für Argumente:
+
+- Messwertnamen, Dauern, `n` und `minDelta` müssen Literale sein. Eine Variable oder ein verschachtelter Aufruf wird nicht akzeptiert.
+- Dauern sind Go-Dauern: `"30s"`, `"15m"`, `"2h"`.
+- Vergleichen Sie `Span` mit einer Dezimalzahl wie `900.0`. Vergleichen Sie `Count` mit einer ganzen Zahl.
+- Fensterfunktionen nutzen nur numerische Messwerte. Es gibt keinen Verlauf von Strings oder Booleans.
+
+{/* TODO(product): The trend-window design notes say an invalid window call, such as a non-literal argument or an unparsable duration, rejects the whole rule set for the tenant and keeps the previous rules running. Does the Advanced editor's Test or validity check catch this before the rule is saved? If not, the docs should warn. */}
+
+## Verwandte Seiten {#related}
+
+- [Alarmieren, wenn ein Wert eine Grenze überschreitet](./threshold-alert.mdx)
+- [Regeln, Aktionen und Berichte](./rules-actions-reports.mdx)
+- [Aktionstypen](./action-types.mdx)

@@ -6,8 +6,8 @@ import { SECTIONS, type Section } from "./sections";
 import styles from "./styles.module.css";
 
 function getActiveSection(pathname: string): Section {
-    const match = SECTIONS.find((s) => pathname.includes(`/docs/${s.id}/`));
-    return match ?? SECTIONS[0];
+    const segment = pathname.match(/\/docs\/?([^/]*)/)?.[1] ?? "";
+    return SECTIONS.find((s) => s.paths.includes(segment)) ?? SECTIONS[1];
 }
 
 export default function SidebarMenu(): React.JSX.Element {

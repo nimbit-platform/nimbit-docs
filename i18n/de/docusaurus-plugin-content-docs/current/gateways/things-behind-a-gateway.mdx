@@ -1,0 +1,112 @@
+---
+title: Die Things hinter einem Gateway verwalten
+description: Things einem Gateway zuordnen, zwischen Gateways verschieben, festlegen, was ein Gateway haben darf, und wissen, was beim Löschen eines Things passiert.
+type: how-to
+sidebar_position: 6
+app:
+  routes: ["/onboarding/gateways/:id", "/onboarding/things/:id"]
+translated_from: 06bddd1
+---
+
+Ordnen Sie Things einem Gateway zu, verschieben oder geben Sie sie frei, und halten Sie den Scope eines Gateways im Einklang mit dem, was es haben soll. Ein Thing gehört zu höchstens einem Gateway. Die Zugehörigkeit folgt dem Eintrag des Things, nie dem Weg, auf dem seine Daten ankamen. Das Modell erklärt [Wie Gateways funktionieren](./how-gateways-work.mdx).
+
+## Voraussetzungen {#before-you-start}
+
+- Um Things zuzuordnen, brauchen Sie die Berechtigung zum Ändern von Gateways und von Things. Ohne beide erscheinen **Things zuordnen** und das Feld **Gateway** nicht.
+- Das Gateway existiert. Siehe [Gateway hinzufügen](./add-a-gateway.mdx).
+
+## Things einem Gateway zuordnen {#assign-things-to-a-gateway}
+
+Es gibt zwei Wege.
+
+**Vom Gateway aus**
+
+1. Öffnen Sie **Einstellungen › Onboarding › Gateways** und öffnen Sie das Gateway.
+2. Wählen Sie den Tab **Things**, dann **Things zuordnen**.
+3. Suchen Sie, wählen Sie bis zu 200 Things und wählen Sie **Zuordnen**.
+4. Lesen Sie die Zusammenfassung, zum Beispiel `3 zugeordnet · 1 unverändert · 1 abgelehnt`. Bei jedem abgelehnten Thing steht der Grund.
+
+**Von einem Thing aus**
+
+1. Öffnen Sie **Einstellungen › Onboarding › Things**, öffnen Sie das Thing und wählen Sie **Bearbeiten**.
+2. Wählen Sie unter **Gateway** das Gateway oder **Kein Gateway**, um das Thing freizugeben.
+3. Speichern Sie. IoT Breeze übernimmt zuerst die anderen Felder, dann das Gateway. Lehnt das Gateway ab, bleibt das Formular offen, und eine Meldung sagt **Nicht geändert** mit dem Grund.
+
+Ein Thing, das an einem anderen Gateway hängt, wechselt zum neuen. Um ein Thing im Tab **Things** freizugeben, wählen Sie in seiner Zeile **Vom Gateway entfernen**. Das eigene Thing eines Gateways lässt sich nicht zuordnen: Es bleibt bei seinem Gateway.
+
+Der Kopf des Things zeigt sein Gateway, und die Things-Liste zeigt einen Chip mit dem Namen des Gateways. Der Filter **Gateway** der Things-Liste findet Things, die an einem beliebigen Gateway hängen oder an keinem.
+
+## Warum eine Zuordnung abgelehnt wird {#why-an-assignment-is-refused}
+
+| Meldung | Ursache |
+| --- | --- |
+| **Thing-Limit erreicht** | Das Gateway hat schon so viele Things, wie sein **Thing-Limit** erlaubt. |
+| **Thing-Typ nicht erlaubt** | Der Typ des Things steht nicht in den **Erlaubten Thing-Typen** des Gateways. |
+| **Außerhalb des Namespace** | Ein **Periscope**-Gateway nimmt nur Things, deren Alternate-ID innerhalb seines Namespace liegt. Siehe unten. |
+| **Das eigene Thing eines Gateways bleibt bei seinem Gateway** | Sie wollten ein Gateway-Thing verschieben. |
+| **Nicht gefunden oder nicht von dir änderbar** | Das Thing existiert nicht, oder Sie können es nicht ändern. |
+
+Das **Anlegen von Things** gilt nicht für eine Zuordnung. Sie können einem **gesperrten** Gateway Things zuordnen.
+
+## Namespace und Alternate-IDs {#namespace-and-alternate-ids}
+
+Eine Periscope-Box findet ihre Things über Alternate-IDs, die mit ihrem Namespace gefolgt von `-` beginnen. Ordnen Sie ein Thing von außerhalb zu, würde die Box ein Duplikat anlegen. IoT Breeze lehnt das Thing daher ab, es sei denn, Sie wählen **Alternate-IDs in den Namespace verschieben**. Das Thing bekommt dann den Namespace und einen Bindestrich vor seine Alternate-ID. Andere Zeichen als Buchstaben, Ziffern, `_` und `-` werden zu einem einzigen Bindestrich.
+
+Diese Fälle lehnen das Verschieben ab:
+
+- **Sein Provider behält seine Alternate-ID**: Nur Things des Providers NimBit lassen sich umbenennen.
+- **Die verschobene Alternate-ID gehört einem anderen Thing**.
+- **Daraus lässt sich keine Alternate-ID im Namespace bilden**: Das Ergebnis wäre leer oder länger als 128 Zeichen.
+
+Bei einem Gateway vom Typ **MQTT-Gerät** prüft beim Zuordnen von Things nichts den Namespace. Ein Thing behält seine Alternate-ID.
+
+## Festlegen, was ein Gateway haben darf {#set-what-a-gateway-may-have}
+
+Öffnen Sie das Gateway, wählen Sie den Tab **Bereich**, ändern Sie die Felder und wählen Sie **Bereich speichern**.
+
+| Feld | Wirkung |
+| --- | --- |
+| **Thing-Limit** | Things, die das Gateway neben seinem eigenen Thing haben darf, 0 bis 100.000. Leer: nur die Limits Ihrer Organisation. Geprüft beim Zuordnen und beim Anlegen. |
+| **Erlaubte Thing-Typen** | Bis zu 200. Leer: jeder. Geprüft beim Zuordnen und beim Anlegen. |
+| **Anlegen von Things** | **Offen** erlaubt einer Periscope-Box, Things innerhalb ihres Namespace anzulegen. **Gesperrt** legt auf keinem Weg welche an. Bestehende Things arbeiten weiter. Nachrichten eines MQTT-Geräts legen nie Things an, die Einstellung ändert für es also nichts. |
+
+Der **Namespace** steht fest, sobald das Gateway Things hat oder seine Periscope-Box registriert ist. Ihn früher umzubenennen verschiebt keine Things.
+
+## Namen an einem Gateway {#names-on-a-gateway}
+
+Thing-Namen sind in Ihrer Organisation eindeutig. Zwei Gateways vor derselben Anlage können denselben Namen versuchen. Ist ein Name, den ein Gateway anlegt, schon vergeben, versucht es das Gateway noch einmal mit `<name> (<namespace>)`, gekürzt auf 256 Zeichen. Ist auch dieser Name vergeben, schlägt das Anlegen fehl. Eine Periscope-Box behält den Namen, den sie verwendet hat, ein späteres Anwenden benennt das Thing also nie um.
+
+## Things löschen {#delete-things}
+
+Die Things eines Gateways löschen Sie wie jedes andere Thing, mit der Berechtigung zum Löschen von Things.
+
+Das eigene Thing eines Gateways mit der Alternate-ID `gateway-<gateway id>` lässt sich nicht löschen. **Löschen** ist deaktiviert und zeigt **Wird mit seinem Gateway entfernt**. Eine Massenlöschung, die es einschließt, wird als Ganzes abgelehnt. Die API antwortet mit 403 und dem Code `GATEWAY_THING_PROTECTED`. Es verschwindet, wenn Sie das Gateway löschen; siehe [Gateway widerrufen, ersetzen oder entfernen](./revoke-and-replace.mdx).
+
+Ein gelöschtes Thing kommt zurück, wenn eine Periscope-Box noch dafür sendet und das Gateway **Offen** ist: Die Box legt es neu an, höchstens einmal pro Thing alle fünf Minuten. Bei einem **gesperrten** Gateway wird es nicht neu angelegt, und die Ablehnung erscheint unter **Abgelehnte Anlagen** im Tab **Bereich**. Ein Thing, das von einem MQTT-Geräte-Gateway gelöscht wurde, bleibt gelöscht. Seine Nachrichten werden als `unknown_thing` verworfen.
+
+## Was mit den Daten passiert {#what-happens-to-data}
+
+Das Zuordnen, Verschieben oder Freigeben eines Things wirkt mit seiner nächsten Nachricht, einige Sekunden nach dem Speichern. Die nächste Nachricht des alten Gateways für das Thing wird als `not_member` verworfen. Das Thing behält seine ID und Alternate-ID.
+
+Ein Thing an einem Gateway kann auch eigene Gerätezugangsdaten haben. Seine Nachrichten auf seinem eigenen Topic werden gespeichert. Sie tragen kein Gateway, die Zahlen des Gateways enthalten sie also nicht. Die Zugangsdaten eines Gateways können nicht auf dem eigenen Topic eines Things veröffentlichen: Der Broker bestätigt eine QoS-1-Veröffentlichung und verwirft sie.
+
+## Präsenz von Things hinter einem Gateway {#presence-of-things-behind-a-gateway}
+
+Ein Thing ist nur **Verbunden**, solange Nachrichten für es ankommen. Ein Gateway sendet nichts für ein Gerät, das es nicht erreicht, daher läuft dieses Thing in den Timeout und zeigt **Getrennt**, während das Gateway **Online** bleibt. Die Zustandsmeldung des Gateways hält nie ein Gerät online. Erneut gesendete Werte täten es, senden Sie sie also nicht erneut.
+
+{/* TODO(product): Name the field on the thing type that sets how long a thing may stay silent before it shows Disconnected, as the UI labels it. */}
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Im Tab **Things** des Gateways ist das Thing aufgeführt. Nach seiner nächsten Nachricht zeigt die Karte **Datenverkehr** **Aktive Things** mit ihm mitgezählt, und die Seite des Things zeigt neue Werte.
+
+## Wenn es nicht klappt {#if-it-doesnt-work}
+
+- **Die Zuordnung wird abgelehnt**: Lesen Sie die Meldung in der Tabelle oben.
+- **Daten für ein zugeordnetes Thing werden verworfen**: Die Box sendet die falsche ID oder den falschen Thing-Typ. Prüfen Sie die Verwerfungsgründe auf der Karte **Datenverkehr**; siehe [Zustand und Datenverkehr von Gateways prüfen](./fleet-health.mdx).
+- **Eine Periscope-Box legt nach einer Zuordnung ein Duplikat an**: Die Alternate-ID lag außerhalb des Namespace. Ordnen Sie erneut zu, mit **Alternate-IDs in den Namespace verschieben**.
+
+## Verwandte Seiten {#related}
+
+- [Gateway-Referenz](./gateway-reference.mdx) · [Thing-Typen, Things und Interfaces](../model/things-and-types.mdx)
+- [Daten vieler Geräte über ein MQTT-Gateway senden](./mqtt-gateway.mdx)

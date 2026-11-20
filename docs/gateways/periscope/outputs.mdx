@@ -1,0 +1,148 @@
+---
+title: Outputs reference
+description: The Periscope outputs tsflux_stream, tsflux, nimbit_mqtt, file and stdout, with their keys, buffering and the gateway credential.
+type: reference
+sidebar_position: 13
+app:
+  routes: ["/onboarding/gateways"]
+---
+
+Outputs deliver values to their destination. Use one platform output: two would store every value twice. With a working `[ocb]` table, the platform outputs need no credential keys.
+
+## Choose an output
+
+| Output | Sends | While the platform is unreachable | Choose it when |
+| --- | --- | --- | --- |
+| `tsflux_stream` | Arrow batches over gRPC (HTTP/2), exactly once | Queued on disk, `buffer_bytes` (256 MiB) | Production default: no loss across outages and restarts. |
+| `tsflux` | JSON batches over HTTPS, at least once | Spooled on disk, `buffer_bytes` (256 MiB) | HTTP/2 isn't possible end to end, for example behind a proxy, or you need tags. |
+| `nimbit_mqtt` | The device MQTT contract at QoS 1, at least once | Spooled on disk, `buffer_bytes` (256 MiB) | The site already sends devices over MQTT, or only port 8883 is open. |
+| `file` | JSON lines into a file | Not applicable | Trials, audits, debugging. |
+| `stdout` | JSON lines on standard output | Not applicable | Trials with `periscope run`. |
+
+`tsflux_stream` sends no tags. A tag that a processor adds is dropped and counted in `output.<instance>.dropped_tags`. The level properties of a thing still tag every series in the platform.
+
+## tsflux_stream
+
+```toml
+[[outputs.tsflux_stream]]
+url          = "https://nimbit.example.com:8301"
+buffer_bytes = 268435456
+```
+
+| Key | Default | Meaning |
+| --- | --- | --- |
+| `url` | required | `https://host[:port]` (TLS), `h2c://host:port` (no TLS), or `host:port`. |
+| `username`, `password` | From the platform | A fixed credential instead. |
+| `tenant` | The `[ocb]` token's tenant | Scopes the cached credential. |
+| `batch_interval` | `1s` | Every thing type's batch is cut at least this often. |
+| `max_values` | `25000` | A batch is cut early at this many values. |
+| `max_bytes` | `4194304` | Or at about this many bytes. At most 16 MiB. |
+| `window` | `8` | Batches sent and not yet acknowledged. |
+| `buffer_bytes` | `268435456` | The disk queue's bound. Beyond it the oldest segment is dropped and counted in `dropped_values`. |
+| `sync_interval` | `1s` | The queue is synced to disk this often, and before any batch is sent. |
+| `keepalive`, `keepalive_timeout` | `30s`, `10s` | HTTP/2 ping interval and how long a ping may go unanswered. |
+| `tls_ca`, `tls_insecure` | empty, `false` | CA file for the certificate, or skip verification (test servers only). |
+| `allow_insecure` | `false` | Accept `h2c://` to a host that isn't loopback. Sends credentials in cleartext. |
+
+TLS is on for `https://` and for a bare `host:port`. A bare `localhost:port` is plain HTTP/2. `http://` is refused so a plaintext target is never a typo.
+
+The queue lives in `state_dir/tsflux-stream/<output>/` and holds about 9 bytes per value:
+
+| Values per second | 256 MiB lasts | 1 GiB lasts |
+| --- | --- | --- |
+| 1,000 | 8.3 hours | 33 hours |
+| 10,000 | 50 minutes | 3.3 hours |
+| 100,000 | 5 minutes | 20 minutes |
+
+Set `buffer_bytes` to the longest outage to ride out times the rate times 9 bytes, and leave twice that much free disk under `state_dir`. At start the output lowers `buffer_bytes` to half of its share of the free space and logs the cap.
+
+## tsflux
+
+```toml
+[[outputs.tsflux]]
+max_batch    = 500
+buffer_bytes = 268435456
+gzip         = true
+```
+
+| Key | Default | Meaning |
+| --- | --- | --- |
+| `url` | `[ocb] url` | Platform base URL, or tsflux itself such as `http://tsflux:8200`. |
+| `path_prefix` | `/tsflux` | Between `url` and `/api/v1`. Use `""` when `url` points at tsflux directly. |
+| `username`, `password`, `tenant` | From the platform | A fixed credential instead. |
+| `timeout` | `10s` | Per request. |
+| `max_batch` | `500` | Messages per request. |
+| `gzip` | `false` | Compress request bodies. Turn it on only after `periscope verify` passes with it on, behind a proxy. |
+| `evolve_schema` | unset | Sent as `evolveSchema` in every message. |
+| `buffer_bytes` | `268435456` | The disk spool's bound. |
+| `record_messages` | `500` | The most messages of one spool record. |
+| `write_timeout` | `10s` | The deadline of one write of a record, retries included. |
+| `tls_ca`, `tls_insecure`, `allow_insecure` | empty, `false`, `false` | As above. `allow_insecure` accepts `http://` to a host that isn't loopback. |
+
+## nimbit_mqtt
+
+```toml
+[[outputs.nimbit_mqtt]]
+qos = 1
+```
+
+| Key | Default | Meaning |
+| --- | --- | --- |
+| `broker` | From the platform | `mqtt://host:1883` or `mqtts://host:8883`. |
+| `username`, `password`, `tenant` | From the platform | A fixed credential instead. Set all four with `broker` to run without the platform. |
+| `client_suffix` | `periscope-<agent.name>` | The client ID is `<tenant>:<suffix>`. |
+| `qos` | `1` | `0` or `1`. The broker takes no 2. |
+| `topic` | See the table below | Publish topic. `{tenant}`, `{thing}`, `{thing_type}` and, on a gateway only, `{gateway}`. |
+| `evolve_schema` | unset | Sent as `evolveSchema` in every body. |
+| `buffer_bytes`, `record_messages`, `write_timeout` | As `tsflux` | Disk spool settings. |
+| `ocb_url`, `ocb_path_prefix`, `ocb_token` | `[ocb]` values | Override how this output reaches the platform. |
+| `tls_ca`, `tls_insecure`, `allow_insecure` | empty, `false`, `false` | As above. `allow_insecure` accepts a plaintext broker on a host that isn't loopback. |
+
+### The gateway credential
+
+On a gateway (`[ocb] gateway = true`), the three platform outputs request the gateway's own data credential and cache it in `state_dir/nimbit-gateway-credential.json`. They share one credential. It identifies the gateway: the broker lets it publish only on the gateway's topics, and the platform accepts only the gateway's things with it. Revoking the gateway's key revokes it, and a revoked gateway is issued none.
+
+| | Tenant credential | Gateway credential |
+| --- | --- | --- |
+| Client ID | `<tenant>:<client_suffix>` | `<tenant>:gateway:<gateway id>:<client_suffix>` |
+| Default topic | `tenant/{tenant}/device/{thing}/telemetry` | `tenant/{tenant}/gateway/{gateway}/device/{thing}/telemetry` |
+| Health message topic | `tenant/<t>/device/gateway-<g>/telemetry` | `tenant/<t>/gateway/<g>/device/gateway-<g>/telemetry` |
+
+A custom `topic` may use `{gateway}` on a gateway only. Anywhere else the output refuses to start. On a gateway, the broker accepts only topics that contain the gateway's ID, so start a custom topic with `tenant/{tenant}/gateway/{gateway}/`.
+
+**Tokens.** `tsflux` and `tsflux_stream` don't send the credential itself. The platform refuses a gateway's basic credential on HTTP and stream ingest, because it never expires. They send a token of at most 10 minutes that they request with the gateway's sign-in, hold in memory and renew a minute before it expires and after a refusal. A revoked gateway gets no new token, so its writes end within one token lifetime. The stream ends at the token's expiry and the next stream carries a new one. `nimbit_mqtt` uses the credential as the broker's password.
+
+**Fallback rules.**
+
+- A gateway's sign-in is only issued its own credential. If an output asks for the tenant credential, the platform answers `403 GATEWAY_SCOPE_REQUIRED`. Periscope never falls back after a 403: a revoked gateway, for example, is retried.
+- A platform that predates the gateway credential answers `400` for the unknown field, or issues a tenant credential. Then the output uses the tenant credential, the tenant client ID and the tenant topics, warns once, and asks for the gateway credential again at the next start. A custom topic with `{gateway}` can't be served then, and its batches stay queued.
+- The tenant credential cached in `nimbit-mqtt-credential.json` stays for an output that runs as a service account on the same box.
+- The outputs read the gateway's ID when they start. A change of `[ocb] gateway` restarts them. Onboarding the box as another gateway needs a restart of the agent.
+
+**Health message.** The gateway's health message goes out live and is never queued, so a replayed backlog can't keep a dead gateway online. `nimbit_mqtt` publishes it at QoS 0 on its connection, `tsflux` posts it once, and `tsflux_stream` sends it as a batch of its own on a short separate stream. The first of these outputs in the file carries it. A gateway with none of the three outputs sends no health and logs a warning. The dry run sends none. Over `tsflux_stream` the health tags (`sw_version`, `link_type`, `config_hash`, `last_apply`) aren't carried.
+
+## file and stdout
+
+```toml
+[[outputs.file]]
+path      = "/var/lib/periscope/telemetry.jsonl"
+max_bytes = 104857600
+keep      = 3
+
+[[outputs.stdout]]
+pretty = true
+```
+
+Every line is one message: `{"thingId", "thingType", "time", "data": {measure: value}, "tags"}`, with time in UTC. `file` rotates before a write would pass `max_bytes`, moving the file to `.1`, `.1` to `.2` and so on, and deleting the oldest beyond `keep`. Disk use is at most `max_bytes × (keep + 1)`. A path that isn't a regular file, such as `/dev/null`, is never rotated.
+
+## Spools and queues
+
+`tsflux` and `nimbit_mqtt` keep messages in `state_dir/spool/<output>/` until the platform took them, at about 15 bytes per value. An outage or a restart loses nothing within `buffer_bytes`. `buffer_size` is deprecated and ignored.
+
+A missing credential isn't a configuration error: the output logs that it sends nothing, and the messages stay queued until you fix the configuration.
+
+## Related
+
+- [Configuration reference](./configuration.mdx)
+- [Verify that data arrived](./verify.mdx)
+- [Troubleshoot Periscope](./troubleshooting.mdx)
