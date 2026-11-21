@@ -1,0 +1,117 @@
+---
+title: Formelreferenz
+description: Operatoren, Funktionen, Aggregationen je Schritt, fehlende Werte und Grenzen der Formeln in berechneten Messwerten und berechneten Reihen.
+type: reference
+sidebar_position: 8.5
+app:
+  routes: ["/onboarding/thing-types/:id", "/dashboards/:id"]
+translated_from: 9db83b3
+---
+
+Was eine Formel enthalten kann, in einem [berechneten Messwert](./calculated-measures.mdx) an einem Thing-Typ und in einer [berechneten Reihe](../visualize/calculated-series.mdx) in einem Diagramm. Wo sich beide unterscheiden, sagt es die Tabelle.
+
+## Namen und Werte {#names-and-values}
+
+| Element | Bedeutung |
+| --- | --- |
+| Zahlen | Ganze Zahlen und Dezimalzahlen, `true` und `false`. Ein boolesches Ergebnis zählt als 1 oder 0. Text wird nicht unterstützt. |
+| Namen | Nur die Aliase der Eingaben der Formel. |
+| Eine einzelne Eingabe | Eine Eingabe, die ein Thing liest (**Dieses Thing**, **Gewähltes Thing**, ein Slot mit **Ein Mitglied**), ist eine Zahl. |
+| Eine Listeneingabe | Eine Eingabe, die mehrere Things liest (ein Slot mit **Mehrere Mitglieder**, mehrere **Feste Things**), ist eine Liste. Verwenden Sie sie nur in einer Listenfunktion. |
+
+## Operatoren {#operators}
+
+| Operator | Bedeutung |
+| --- | --- |
+| `+ - * /` | Arithmetik. |
+| `**` oder `^` | Potenz. Es gibt kein `%`. |
+| `== != < > <= >=` | Vergleich. Das Ergebnis ist 1 oder 0. |
+| `and or not`, `&& \|\| !` | Logik. |
+| `cond ? a : b`, `if cond { a } else { b }` | Bedingung. |
+
+## Funktionen {#functions}
+
+| Funktion | Ergebnis |
+| --- | --- |
+| `abs(x)`, `sign(x)` | Betrag, Vorzeichen. |
+| `round(x)`, `round(x, digits)`, `floor(x)`, `ceil(x)` | Runden. |
+| `sqrt(x)`, `exp(x)`, `ln(x)`, `log10(x)` | Wurzel, Exponentialfunktion, Logarithmen. |
+| `clamp(x, lo, hi)` | `x` begrenzt auf den Bereich von `lo` bis `hi`. |
+| `min(a, b, …)`, `max(a, b, …)` | Das kleinste oder größte Argument. |
+| `coalesce(a, b, …)` | Das erste Argument, das einen Wert hat. |
+| `sum(v)`, `avg(v)`, `min(v)`, `max(v)`, `count(v)` | Über eine Listeneingabe. |
+| `median(v)`, `stddev(v)`, `variance(v)`, `range(v)` | Über eine Listeneingabe. |
+
+Nicht verfügbar: `pow` (verwenden Sie `**`), `if(…)` als Funktion, `isnull` (verwenden Sie `coalesce`), Text, Indizierung und Bedingungen in einer Listenfunktion wie `count(v > 80)`.
+
+Eine Rechnung ohne Ergebnis, etwa die Wurzel einer negativen Zahl, der Logarithmus von 0 oder eine Division durch null, lässt diesen Schritt ohne Wert. Die Abfrage schlägt nicht fehl.
+
+## Je Schritt {#per-step}
+
+Wie die Messwerte einer Eingabe innerhalb eines Schritts zu einem Wert werden.
+
+| Gruppe | Aggregation | Berechneter Messwert | Berechnete Reihe |
+| --- | --- | --- | --- |
+| **Pegel** | Durchschnitt (Standard), Summe, Minimum, Maximum, erster Wert, letzter Wert | Ja | Ja |
+| **Pegel** | **Zeitgewichteter Mittelwert**, **Zeitgewichteter Mittelwert (letzter Wert fortgeführt)** | Ja | Nein |
+| **Anzahl** | Anzahl | Ja | Ja |
+| **Summen** | **Zunahme**: die Zunahme eines steigenden Zählers, auch über Rücksetzungen. **Delta-Zähler**. **Integral**: das Zeitintegral einer Rate, mit **Pro** (Standard `1h`, 1s bis 7d). | Ja | Nein |
+| **Änderung** | **Delta** (letzter minus erster Wert), **Änderungsrate** (Delta je Sekunde) | Ja | Nein |
+| **Statistiken** | **Spannweite**, **Standardabweichung**, **Varianz**, das 10., 25., 50., 75., 90., 95. und 99. Perzentil | Ja | Nein |
+
+- **Zunahme** sucht im **Rückblick** (Standard `7d`, 1s bis 31d) nach dem vorigen Messwert.
+- Die beiden zeitgewichteten Mittelwerte lesen jeden Rohwert und können über einen langen Zeitraum langsam sein.
+- Die Statistiken brauchen **Schritt** auf **Automatisch**. Perzentile sind näherungsweise.
+- Eine Eingabe, die einen anderen berechneten Messwert liest, erlaubt nur Durchschnitt, Summe, Minimum, Maximum, ersten oder letzten Wert.
+
+## Bei fehlendem Wert {#when-missing}
+
+| Option | Wirkung |
+| --- | --- |
+| **Schritt überspringen** | Standard. Der Schritt hat für diese Eingabe keinen Wert. In einer Liste fällt das Thing weg. |
+| **0 verwenden** | Der fehlende Wert zählt als 0. |
+| **Letzten Wert halten** | Der letzte Wert wird höchstens für **Höchstens halten** verwendet (zum Beispiel `15m`, höchstens `7d`). Nicht bei **Zunahme** verfügbar. |
+
+Die Statistiken erlauben nur **Schritt überspringen**. Für einen aktuellen Wert gilt ein Messwert, der älter als 15 Minuten oder älter als **Höchstens halten** ist, als fehlend.
+
+## Schritt und Zusammenfassen von Schritten {#step-and-combining-steps}
+
+| Einstellung | Werte |
+| --- | --- |
+| **Schritt** | **Automatisch** (Standard) oder 1s, 5s, 15s, 30s, 1m, 5m, 15m oder 1h. In einem Diagramm muss er das Intervall des Diagramms teilen. |
+| **Schritte zusammenfassen per** | Durchschnitt (Standard), Summe, Minimum, Maximum, erster Wert, letzter Wert. Ein berechneter Messwert bietet außerdem **Spannweite**, **Anzahl**, **Standardabweichung**, **Varianz** und die Perzentile; diese brauchen einen festen **Schritt**, außer bei einer Formel mit einer Eingabe, die linear oder ein Schwellwert ist. |
+
+Die Formel läuft auf den Eingabewerten jedes Schritts, und die Ergebnisse werden zum Intervall des Diagramms zusammengefasst. Liest ein Widget einen berechneten Messwert, fasst die Aggregation des Widgets die Schritte zusammen; **Schritte zusammenfassen per** des Messwerts gilt nur, wenn nichts anderes verlangt wird.
+
+## Grenzen {#limits}
+
+| Grenze | Wert |
+| --- | --- |
+| Ausdruck | 2048 Zeichen, 256 Elemente |
+| Eingaben | 16 je Formel |
+| Alias | Buchstaben A–Z, Ziffern und `_`, bis zu 64 Zeichen, nicht mit einer Ziffer oder `__` am Anfang, kein Funktionsname oder Schlüsselwort |
+| Berechnete Messwerte, die berechnete Messwerte lesen | 3 Ebenen an einem Thing-Typ |
+| Ineinander verschachtelte Aggregate | 4 Ebenen; 500 Mitglieds-Things je berechnetem Messwert |
+| Eine Anfrage | 2.000 Mitgliedsreihen und insgesamt 2.000.000 Eingabewerte |
+| Berechnete Reihen | 1000 Things je Eingabe; 64 Eingabereihen und 50.000 Schritte je Reihe |
+
+## Meldungen im Editor {#messages-in-the-editor}
+
+| Meldung | Was zu tun ist |
+| --- | --- |
+| „\{identifier\}“ ist keine Eingabe dieser Formel: verwenden Sie den Alias einer Eingabe | Verwenden Sie einen Alias oder fügen Sie die Eingabe hinzu. Bei einem Tippfehler schlägt die Meldung den ähnlichsten Alias vor. |
+| Eine Eingabe, die mehrere Things liest, kann nur in sum, avg, min, max oder count verwendet werden | Setzen Sie die Listeneingabe in eine Listenfunktion. |
+| \{function\} arbeitet mit einer Eingabe, die mehrere Things liest; diese Eingabe liest eines | Verwenden Sie die Listenfunktion mit einer Listeneingabe. |
+| Die Funktion „\{name\}“ wird nicht unterstützt. Verfügbar: \{available\} | Verwenden Sie eine der oben genannten Funktionen. |
+| Der Operator „\{operator\}“ wird nicht unterstützt | Verwenden Sie einen der oben genannten Operatoren. |
+| Diese ( wird nie geschlossen / Zu dieser ) fehlt die öffnende ( | Schließen Sie die Klammern paarweise. |
+| Der Ausdruck endet zu früh / Nach „?“ fehlen „:“ und ein Wert für den anderen Fall | Vervollständigen Sie den Ausdruck. |
+| Text wird nicht unterstützt: verwenden Sie Zahlen und die Namen der Eingaben | Entfernen Sie den Text. |
+| Der Ausdruck ist zu lang: Es sind höchstens \{max\} Zeichen erlaubt | Kürzen Sie den Ausdruck. |
+| Der Ausdruck verwendet keine der Eingaben / Fügen Sie mindestens eine Eingabe hinzu | Verwenden Sie eine Eingabe oder fügen Sie eine hinzu. |
+| Eine Reihe kann höchstens \{max\} Eingaben haben | Entfernen Sie Eingaben. Der Thing-Typ verwendet diesen Wortlaut ebenfalls. |
+| „Höchstens halten“ muss eine Dauer wie 15m, 2h oder 7d sein, höchstens 7d | Geben Sie eine gültige Dauer ein. |
+
+## Siehe auch {#related}
+
+- [Einen berechneten Messwert hinzufügen](./calculated-measures.mdx) · [Things zu einem Aggregat-Thing zusammenfassen](./aggregate-things.mdx) · [Einem Diagramm eine berechnete Reihe hinzufügen](../visualize/calculated-series.mdx)

@@ -1,0 +1,81 @@
+---
+title: Einen berechneten Messwert hinzufügen
+sidebar_label: Berechnete Messwerte
+description: Berechnen Sie einen Messwert mit einer Formel aus den anderen Messwerten eines Thing-Typs, prüfen Sie ihn beim Tippen, testen Sie ihn an einem Thing und veröffentlichen Sie ihn.
+type: how-to
+sidebar_position: 6.4
+app:
+  routes: ["/onboarding/thing-types/:id"]
+translated_from: 9db83b3
+---
+
+Ein berechneter Messwert hat keinen Sensor. Sein Wert ist eine Formel über andere Messwerte, etwa `temp_f = temp * 1.8 + 32`, die bei jedem Lesen berechnet wird. Nichts wird gespeichert. Dashboards, Canvases, Berichte und die API lesen ihn über seinen Namen wie jeden anderen Messwert. Die Funktionen und Aggregationen, die eine Formel nutzen kann, stehen in der [Formelreferenz](./formula-reference.mdx).
+
+## Voraussetzungen {#before-you-start}
+
+- Sie brauchen die Berechtigung, **Thing type** zu ändern. **Administrator**, **Manager** und **Modellierer** haben sie.
+- Der Thing-Typ hat die Messwerte, die die Formel liest, als numerische Messwerte oder als berechnete boolesche Messwerte.
+- Um die Messwerte mehrerer Things zu kombinieren, etwa aller Wechselrichter einer Anlage, nutzen Sie stattdessen ein Aggregat-Thing: siehe [Things zu einem Aggregat-Thing zusammenfassen](./aggregate-things.mdx).
+
+## Schritte {#steps}
+
+1. Öffnen Sie den Thing-Typ unter **Einstellungen › Onboarding › Thing Typen**, dann **Schema** › **Telemetrien**.
+2. Wählen Sie **Berechnete Telemetrie hinzufügen** neben **Telemetrie hinzufügen**.
+3. Geben Sie unter **Allgemein** den **Anzeigenamen** und den **Namen** ein und wählen Sie als **Typ** **Numerisch** oder **Boolescher Wert**. Setzen Sie bei einer Zahl die **Maßeinheit** selbst: Ein berechneter Messwert ermittelt keine Einheit. **Dezimalstellen**, **Mindestwert** und **Maximaler Wert** sind optional.
+4. Fügen Sie unter **Formel** die **Eingaben** hinzu. Wählen Sie **Eingabe hinzufügen** für jeden Messwert, den die Formel liest, und setzen Sie:
+   - **Alias**: der Name, den der Ausdruck verwendet, zum Beispiel `temp`. Buchstaben A–Z, Ziffern und `_`, bis zu 64 Zeichen, nicht mit einer Ziffer am Anfang.
+   - **Messwert**: ein numerischer Messwert dieses Thing-Typs oder ein anderer berechneter Messwert (mit ƒx markiert).
+   - **Je Schritt**: wie die Messwerte eines Schritts zu einem Wert werden. Standard ist **Durchschnitt**. Für einen steigenden Zähler nutzen Sie **Zunahme**. Um eine Rate in eine Summe umzurechnen, nutzen Sie **Integral** mit **Pro** `1h` (kW zu kWh) oder `1m` (l/min zu Litern).
+   - **Bei fehlendem Wert**: **Schritt überspringen** (Standard), **0 verwenden** oder **Letzten Wert halten**, mit **Höchstens halten**, zum Beispiel `15m`.
+5. Tippen Sie den **Ausdruck** ein, zum Beispiel `temp * 1.8 + 32`. Drücken Sie Strg+Leertaste für Vorschläge, oder beginnen Sie mit den **Vorlagen** im Menü **Funktionen**. Unter dem Editor prüft IoT Breeze die Formel beim Tippen: **Wird geprüft …**, dann **Der Ausdruck ist gültig** oder jedes Problem mit Zeile und Spalte.
+6. Öffnen Sie optional **Erweitert**, um einen festen **Schritt** und **Schritte zusammenfassen per** festzulegen. Lassen Sie **Schritt** auf **Automatisch**, es sei denn, Sie brauchen einen festen.
+7. Wählen Sie **Speichern**. Der Messwert kommt in den Entwurf des Thing-Typs. **Speichern** bleibt deaktiviert, bis die Formel vollständig und gültig ist.
+8. Wählen Sie im Kopfbereich die Schaltfläche zum Veröffentlichen (zum Beispiel **v2 veröffentlichen**), beschreiben Sie die Änderung unter **Änderungsnotiz** und wählen Sie **Veröffentlichen**. Things lesen nur den veröffentlichten Thing-Typ.
+
+## An einem Thing testen {#test-it-on-a-thing}
+
+Sobald der Thing-Typ veröffentlicht ist, öffnen Sie den Messwert erneut. Wählen Sie unter **An einem Thing testen** mit **Thing wählen** ein Thing dieses Typs. Sie sehen **Aktueller Wert** und eine Tabelle mit **Zeit** und **Ergebnis** für die letzten 10 Stunden. Stunden ohne Messwerte fehlen.
+
+Der Test führt die **veröffentlichte** Formel aus, wie ein Dashboard. Gibt es unveröffentlichte Änderungen, sagt er das: Veröffentlichen Sie den Entwurf, um sie zu testen.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+- In der Tabelle der Messwerte ist die Zeile als **Berechnet** (ƒx) markiert.
+- Auf der Seite eines Things und in einem Diagramm zeigt der Messwert Werte.
+- Wer den Typ nicht bearbeiten kann, sieht an der Zeile **Formel ansehen**, mit der Formel und ihren Eingaben, schreibgeschützt.
+
+## In Dashboards nutzen {#use-it-in-dashboards}
+
+Ein Widget liest einen berechneten Messwert wie jeden Messwert. **Die Aggregation des Widgets bestimmt, wie Schritte zusammengefasst werden**, nicht **Schritte zusammenfassen per** des Messwerts. Für eine Summe, etwa Stück, Liter oder kWh, wählen Sie im Widget **Summe**.
+
+Die Formel läuft zuerst auf den Werten jedes Schritts, danach werden die Ergebnisse zusammengefasst. So ergibt `torque > 15 ? 1 : 0` über 45 Minuten bei 20 und 15 Minuten bei 10 im Mittel 0,75. Mit **Schritt** auf **Automatisch** zählt ein Schwellwert mit einer Eingabe Messwerte, nicht Zeit. Für den Zeitanteil eines Signals, das nur bei Änderung gesendet wird, nutzen Sie **Je Schritt** **Zeitgewichteter Mittelwert (letzter Wert fortgeführt)** oder einen festen **Schritt** mit **Letzten Wert halten**.
+
+## Wie die Formel geprüft wird {#how-the-formula-is-checked}
+
+| Wann | Was passiert |
+| --- | --- |
+| Beim Tippen | Die Abfrage-Engine prüft die Definition etwa 400 ms, nachdem Sie aufgehört haben zu tippen. Sie prüft nicht, welche Things es gibt oder wer sie lesen darf. |
+| Beim Speichern | Der Entwurf wird immer gespeichert. Ein Problem erscheint als Warnung: „Im Entwurf gespeichert, aber die Abfrage-Engine hat in … ein Problem gefunden“. Hat die Engine nicht geantwortet, zeigt die Zeile **Nicht geprüft**. |
+| Beim Veröffentlichen | Veröffentlichen wird abgelehnt, solange ein berechneter Messwert ungültig ist oder nicht geprüft werden konnte: „Nicht veröffentlicht: Die berechneten Telemetrien konnten gerade nicht geprüft werden. Versuchen Sie es gleich noch einmal.“ Jedes Problem verlinkt auf seinen Messwert. |
+
+Eine Definition, die Sie nicht geändert haben, wird nicht erneut geprüft.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **„… ist keine Eingabe dieser Formel“**: Der Ausdruck verwendet einen Namen, der kein Alias ist. Verwenden Sie den Alias oder fügen Sie die Eingabe hinzu.
+- **„Der Thing-Typ wurde nicht gespeichert:“** gefolgt von einer englischen Meldung: Der Server hat die Definition abgelehnt, zum Beispiel einen Schlüssel mit `__`, einen anderen Typ als numerisch oder boolesch, eine Eingabe, die sich selbst liest, oder mehr als drei Ebenen berechneter Messwerte, die einander lesen. Die Meldung sagt, was zu ändern ist. Diese Meldungen zeigt IoT Breeze auf Englisch.
+- **Ein Widget meldet, dass Filter mit berechneten Messwerten nicht funktionieren**: Messwertfilter, **Nur solange**-Bedingungen und Intervallfilter funktionieren mit berechneten Messwerten noch nicht. Entfernen Sie sie oder zeigen Sie den Messwert in einem eigenen Widget.
+- **Kein aktueller Wert auf einer Kachel**: Eine Eingabe über **Zunahme**, **Integral**, eine Änderung oder eine Statistik hat keinen Momentanwert. Ein Eingabewert, der älter als 15 Minuten oder älter als **Höchstens halten** ist, gilt als fehlend.
+
+## Grenzen {#limits}
+
+- Regeln können keinen berechneten Messwert nutzen, und Rollups und Simulation lassen ihn aus.
+- Sendet ein Gerät noch Werte unter demselben Namen, gewinnt der berechnete Wert.
+- Höchstens 16 Eingaben und 2048 Zeichen je Ausdruck.
+- Höchstens drei Ebenen berechneter Messwerte, die berechnete Messwerte lesen, an einem Thing-Typ. Eine Eingabe über einen berechneten Messwert erlaubt nur Durchschnitt, Summe, Minimum, Maximum, ersten oder letzten Wert.
+- Rohdaten, Flottenabfragen und **Nur solange**-Filter sind für berechnete Messwerte nicht verfügbar.
+- Löschen Sie einen Messwert, den ein berechneter Messwert liest, ist das Veröffentlichen gesperrt, bis dieser berechnete Messwert eine andere Eingabe hat.
+
+## Siehe auch {#related}
+
+- [Formelreferenz](./formula-reference.mdx) · [Things zu einem Aggregat-Thing zusammenfassen](./aggregate-things.mdx) · [Einem Diagramm eine berechnete Reihe hinzufügen](../visualize/calculated-series.mdx) · [Entwürfe, Veröffentlichen und Versionen](./drafts-and-versions.mdx)

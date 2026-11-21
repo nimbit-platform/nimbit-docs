@@ -5,7 +5,7 @@ description: Beschreiben Sie Ihre Geräte einmal als Thing-Typen, registrieren S
 type: landing
 app:
   routes: ["/onboarding/thing-types", "/onboarding/things", "/onboarding/interfaces"]
-translated_from: 810b8a2
+translated_from: 9db83b3
 ---
 
 Wie beschreibe ich meine Geräte, damit IoT Breeze weiß, was sie senden? Legen Sie pro Art von Gerät einen Thing-Typ an, registrieren Sie jedes echte Gerät als Thing und teilen Sie Felder zwischen Thing-Typen über Interfaces. Alle drei finden Sie unter **Einstellungen › Onboarding**.
@@ -26,7 +26,10 @@ flowchart LR
 - [Ein Thing registrieren](./register-thing.mdx): ein echtes Gerät oder eine Anlage hinzufügen.
 - [Ein Interface für mehrere Thing-Typen wiederverwenden](./reuse-interface.mdx): Felder teilen, abweichende Namen zuordnen, Smart-Dashboards erhalten.
 - [Eingehende Daten bereinigen](./clean-up-data.mdx): Nachrichten vor dem Speichern umrechnen, prüfen oder anreichern.
+- [Einen berechneten Messwert hinzufügen](./calculated-measures.mdx): einen Messwert beim Lesen mit einer Formel aus anderen Messwerten berechnen.
+- [Things zu einem Aggregat-Thing zusammenfassen](./aggregate-things.mdx): die Messwerte von Mitglieds-Things summieren oder mitteln, etwa aller Wechselrichter einer Anlage.
 
 ## Nachschlagen {#look-up}
 - [Messwert- und Eigenschaftstypen](./measure-types.mdx): jeder Datentyp, jede Option und Validierungsregel.
 - [Mitgelieferte Interfaces](./shipped-interfaces.mdx): die Interfaces, die mit der Plattform kommen.
+- [Formelreferenz](./formula-reference.mdx): Operatoren, Funktionen und Aggregationen berechneter Messwerte und Reihen.

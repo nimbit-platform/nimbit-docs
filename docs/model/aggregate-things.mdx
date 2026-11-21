@@ -1,0 +1,89 @@
+---
+title: Combine things into an aggregate thing
+sidebar_label: Aggregate things
+description: Hold member things in slots of an aggregate thing and combine their measures in calculated measures, such as the total power of all inverters of a plant.
+type: how-to
+sidebar_position: 6.6
+app:
+  routes: ["/onboarding/thing-types/:id", "/onboarding/things/:id", "/monitor/thing-details/:id"]
+---
+
+An aggregate thing has no device of its own. It holds member things in named **slots** and combines their measures in calculated measures, for example the total power of all inverters of a plant. Aggregates can nest: a line in a hall, a hall in a site.
+
+This page builds a plant `pv_plant` whose calculated measure `total_power` sums the `power` of its inverters.
+
+## Before you start
+
+- To create the aggregate thing type you need the **Thing type** create permission; to add slots and calculated measures, update. To create the aggregate thing you need **Thing** create; to change its members, **Thing** update and read access to every member you add. **Admin**, **Manager** and **Modeler** have all of these.
+- The member things exist, for example the inverters, and each has the measure the formula reads, here `power`.
+
+## 1. Create an aggregate thing type
+
+1. Open **Settings › Onboarding › Thing Types** and select **Create Thing Type**.
+2. Under **Kind**, choose **Aggregate thing**. The kind cannot be changed after the thing type is created.
+3. Enter the **Display name** and **Name**, for example `pv_plant`, and save.
+
+An aggregate thing type has only calculated measures, and no connector, interfaces, commands, pipeline or schema evolution. Its properties are entered by users.
+
+## 2. Add a slot
+
+1. On the thing type, open **Schema** › **Slots** and select **Add slot**.
+2. Enter a **Name**, for example `inverters`. Formulas refer to the slot by this name: letters, digits and underscores.
+3. Under **Holds**, choose **Many members** (the default) or **One member**.
+4. Optionally choose a **Required interface**: only things that implement it can join the slot. **Any thing** allows every thing.
+5. Save.
+
+Slots are not part of the draft: a change applies to every thing of this type right away.
+
+## 3. Add the calculated measure
+
+1. Open **Schema** › **Measures** and select **Add calculated measure**.
+2. Enter `total_power` as the **Name**, choose **Numeric** and set the **Unit of measure**, for example `kW`.
+3. Add an input: **Alias** `inverters`, **Reads** **Slot inverters**, and type `power` as the **Measure**. Members can be of any type, so the measure is entered by name.
+4. Enter the expression `sum(inverters)`. An input that reads a slot with **Many members** is a list: use it inside `sum`, `avg`, `min`, `max`, `count`, `median`, `stddev`, `variance` or `range`.
+5. Optionally switch on **Count reporting members**.
+6. Save, then publish the thing type.
+
+An input can also read **This thing**, the aggregate itself. For an energy total, read an energy counter with **Increase**, or `power` with **Integral** and **Per** `1h`, and have the widget use **Sum**. The steps and options are the same as in [Add a calculated measure](./calculated-measures.mdx).
+
+**Members that don't report.** With **When missing** on **Skip the step**, a member without a value in a step is left out, so the sum covers only the members that reported. With several many-member inputs, set **Use 0** on each: otherwise a step in which every member of one input is silent has no value.
+
+## 4. Create the aggregate thing and add members
+
+1. Open **Settings › Onboarding › Things**, select **Create thing** and choose the aggregate thing type. No connector, authentication or gateway is asked for.
+2. On the thing's page, open the **Members** tab. There is one section per slot.
+3. Select **Add members** (**Choose member** or **Replace member** for a slot with one member), search, pick the things and select **Done**. Only things that fit the slot are offered.
+
+A member change applies at once and is audited; it is not part of a draft. To remove a member, use its remove button: **Undo** in the message brings it back.
+
+## Check that it worked
+
+- In the thing list, aggregate things carry the **Aggregate** chip. The **Kind** filter shows devices or aggregate things.
+- On the aggregate thing's page, the live value of `total_power` shows how many members report, for example "2 of 2 reporting". It is shown as a warning when fewer than all report. A member counts while its latest value is at most 15 minutes old, or within **Hold for at most**.
+- The **Resolved** pane of **Members** shows, per calculated measure, how many things it reads and how deep the members nest. It warns when a thing is reached by more than one path, and so may be counted twice, and when a measure is close to the limit of things it may read.
+
+## Who sees what
+
+Whoever can read the aggregate thing can read its calculated values, even without access to every member. Members you can't see are counted, never named, and their values never show under their own names.
+
+## If it doesn't work
+
+When IoT Breeze refuses a member change, it shows "The members were not changed:" followed by the reasons, in English. The usual ones:
+
+- a member that does not implement the slot's required interface, or belongs to another organization;
+- one member too many for a slot that holds one member;
+- a thing added to itself, or a cycle ("adding X would form a cycle: A -> B -> A");
+- more than four levels of nested aggregates;
+- more than 500 things one calculated measure would read.
+
+Removing a slot that a calculated measure reads is blocked until you change or remove that measure.
+
+## Limits
+
+- At most four levels of aggregates in each other, and 500 member things per calculated measure.
+- At most three levels of calculated measures reading calculated measures on one thing type.
+- After a member change, values can include a removed member for up to 5 minutes.
+
+## Related
+
+- [Add a calculated measure](./calculated-measures.mdx) · [Formula reference](./formula-reference.mdx) · [Thing types, things and interfaces](./things-and-types.mdx)

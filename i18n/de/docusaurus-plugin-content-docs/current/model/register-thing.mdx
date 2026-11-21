@@ -6,14 +6,14 @@ type: how-to
 app:
   routes: ["/onboarding/things", "/onboarding/things/:id"]
   primary: true
-translated_from: 3041c36
+translated_from: 9db83b3
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
 
 Registrieren Sie ein echtes Gerät oder eine Anlage, etwa einen Sensor in einem Raum, damit IoT Breeze seine Daten annehmen und den richtigen Personen zeigen kann. Hintergrund: [Thing-Typen, Things und Interfaces](./things-and-types.mdx).
 
-## Bevor Sie beginnen {#before-you-start}
+## Voraussetzungen {#before-you-start}
 
 - Ein [Thing-Typ](./create-thing-type.mdx) existiert und sein Schema ist veröffentlicht. Gibt es keinen, bietet die Seite **Erstellen Sie zuerst den Thing Typ** an.
 - Ihre Rolle darf Things anlegen.
@@ -37,6 +37,8 @@ Registrieren Sie ein echtes Gerät oder eine Anlage, etwa einen Sensor in einem 
 
 3. Ist der Konnektor des Thing-Typs Azure IoT Hub, erscheint ein Feld **Authentifizierungsart**: Wählen Sie **SAS-Token** oder **X.509 Certificate**. Es lässt sich später nicht ändern.
 4. Wählen Sie **Speichern**. Die Seite des Things öffnet sich.
+
+Ein Thing eines Aggregat-Thing-Typs hat kein Gerät: Das Formular fragt nicht nach Konnektor, Authentifizierung oder Gateway, und seine Mitglieder fügen Sie im Tab **Mitglieder** hinzu. Siehe [Things zu einem Aggregat-Thing zusammenfassen](./aggregate-things.mdx).
 
 {/* TODO(product): What does Authentication type offer for the AWS IoT Core and SAP connectors? ThingForm.tsx lists options only for AZURE (SAS Token, X.509 Certificate) and SAP (X.509 Certificate), and falls back to X.509 for any other connector. */}
 

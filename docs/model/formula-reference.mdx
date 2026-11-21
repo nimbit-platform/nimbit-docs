@@ -1,0 +1,115 @@
+---
+title: Formula reference
+description: Operators, functions, per-step aggregations, missing values and limits of the formulas in calculated measures and calculated series.
+type: reference
+sidebar_position: 8.5
+app:
+  routes: ["/onboarding/thing-types/:id", "/dashboards/:id"]
+---
+
+What a formula can contain, in a [calculated measure](./calculated-measures.mdx) on a thing type and in a [calculated series](../visualize/calculated-series.mdx) on a chart. Where the two differ, the table says so.
+
+## Names and values
+
+| Element | Meaning |
+| --- | --- |
+| Numbers | Integers and decimals, `true` and `false`. A boolean result counts as 1 or 0. Text is not supported. |
+| Names | Only the aliases of the formula's inputs. |
+| A single input | An input that reads one thing (**This thing**, **Selected thing**, a slot with **One member**) is a number. |
+| A list input | An input that reads several things (a slot with **Many members**, several **Fixed things**) is a list. Use it only inside a list function. |
+
+## Operators
+
+| Operator | Meaning |
+| --- | --- |
+| `+ - * /` | Arithmetic. |
+| `**` or `^` | Power. There is no `%`. |
+| `== != < > <= >=` | Comparison. The result is 1 or 0. |
+| `and or not`, `&& \|\| !` | Logic. |
+| `cond ? a : b`, `if cond { a } else { b }` | Condition. |
+
+## Functions
+
+| Function | Result |
+| --- | --- |
+| `abs(x)`, `sign(x)` | Absolute value, sign. |
+| `round(x)`, `round(x, digits)`, `floor(x)`, `ceil(x)` | Rounding. |
+| `sqrt(x)`, `exp(x)`, `ln(x)`, `log10(x)` | Root, exponential, logarithms. |
+| `clamp(x, lo, hi)` | `x` limited to the range from `lo` to `hi`. |
+| `min(a, b, …)`, `max(a, b, …)` | The smallest or largest argument. |
+| `coalesce(a, b, …)` | The first argument that has a value. |
+| `sum(v)`, `avg(v)`, `min(v)`, `max(v)`, `count(v)` | Over a list input. |
+| `median(v)`, `stddev(v)`, `variance(v)`, `range(v)` | Over a list input. |
+
+Not available: `pow` (use `**`), `if(…)` as a function, `isnull` (use `coalesce`), text, indexing and conditions inside a list function such as `count(v > 80)`.
+
+A calculation that has no result, such as the square root of a negative number, the logarithm of 0 or a division by zero, leaves that step without a value. The query does not fail.
+
+## Per step
+
+How one input's readings within one step become one value.
+
+| Group | Aggregation | Calculated measure | Calculated series |
+| --- | --- | --- | --- |
+| **Level** | average (default), sum, minimum, maximum, first value, last value | Yes | Yes |
+| **Level** | **Time-weighted average**, **Time-weighted average (last value carried)** | Yes | No |
+| **Count** | count | Yes | Yes |
+| **Totals** | **Increase**: the increase of a rising counter, across resets. **Delta Counter**. **Integral**: the time integral of a rate, with **Per** (default `1h`, 1s to 7d). | Yes | No |
+| **Change** | **Delta** (last minus first), **Rate of change** (delta per second) | Yes | No |
+| **Statistics** | **Range**, **Standard deviation**, **Variance**, the 10th, 25th, 50th, 75th, 90th, 95th and 99th percentile | Yes | No |
+
+- **Increase** looks back **Look back** (default `7d`, 1s to 31d) for the previous reading.
+- The two time-weighted averages read every raw reading and can be slow over a long time range.
+- The statistics need **Step** on **Automatic**. Percentiles are approximate.
+- An input that reads another calculated measure takes only average, sum, minimum, maximum, first or last value.
+
+## When missing
+
+| Option | Effect |
+| --- | --- |
+| **Skip the step** | Default. The step has no value for this input. In a list, the thing is left out. |
+| **Use 0** | The missing value counts as 0. |
+| **Hold last value** | The last value is used for at most **Hold for at most** (for example `15m`, at most `7d`). Not offered with **Increase**. |
+
+The statistics take **Skip the step** only. For a latest value, a reading older than 15 minutes, or older than **Hold for at most**, counts as missing.
+
+## Step and combining steps
+
+| Setting | Values |
+| --- | --- |
+| **Step** | **Automatic** (default), or 1s, 5s, 15s, 30s, 1m, 5m, 15m or 1h. In a chart it must divide the chart's interval. |
+| **Combine steps by** | Average (default), sum, minimum, maximum, first value, last value. A calculated measure also offers **Range**, **Count**, **Standard deviation**, **Variance** and the percentiles; these need a fixed **Step**, except for a single-input formula that is linear or a threshold. |
+
+The formula runs on each step's input values, and the results are combined into the chart's interval. When a widget reads a calculated measure, the widget's aggregation combines the steps; the measure's **Combine steps by** applies only when nothing else is asked for.
+
+## Limits
+
+| Limit | Value |
+| --- | --- |
+| Expression | 2048 characters, 256 elements |
+| Inputs | 16 per formula |
+| Alias | Letters A–Z, digits and `_`, up to 64 characters, not starting with a digit or `__`, not a function name or keyword |
+| Calculated measures reading calculated measures | 3 levels on one thing type |
+| Aggregates in each other | 4 levels; 500 member things per calculated measure |
+| One request | 2,000 member series and 2,000,000 input values in all |
+| Calculated series | 1000 things per input; 64 input series and 50,000 steps per series |
+
+## Messages in the editor
+
+| Message | What to do |
+| --- | --- |
+| "\{name\}" is not an input of this formula: use the alias of an input | Use an alias, or add the input. With a typo, it suggests the closest alias. |
+| "\{alias\}" reads several things: use it inside sum, avg, min, max or count | Wrap the list input in a list function. |
+| "\{alias\}" reads one thing: \{fn\} needs an input that reads several things | Use the list function on a list input. |
+| The function "\{name\}" is not supported | Use a function listed above. |
+| The operator "\{operator\}" is not supported | Use an operator listed above. |
+| This ( is never closed / This ) has no matching ( | Balance the brackets. |
+| The expression ends too early / "?" needs a ":" and a value for the other case | Finish the expression. |
+| Text is not supported: use numbers and the names of the inputs | Remove the text. |
+| The expression uses none of the inputs / Add at least one input | Use or add an input. |
+| A series can have at most \{max\} inputs | Remove inputs. The thing type uses this wording too. |
+| "Hold for at most" must be a duration such as 15m, 2h or 7d, and at most 7d | Enter a valid duration. |
+
+## Related
+
+- [Add a calculated measure](./calculated-measures.mdx) · [Combine things into an aggregate thing](./aggregate-things.mdx) · [Add a calculated series to a chart](../visualize/calculated-series.mdx)

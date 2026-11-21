@@ -3,7 +3,7 @@ title: "Als Nächstes"
 description: Änderungen, die nach 0.12.5 zusammengeführt wurden und noch nicht veröffentlicht sind. Inhalt und Version können sich ändern.
 type: reference
 sidebar_position: 1
-translated_from: 70da89f
+translated_from: 9db83b3
 ---
 
 {/* TODO(product): confirm what ships in the next release and its version */}
@@ -15,6 +15,8 @@ Diese Seite listet Änderungen, die seit 0.12.5 (17. August 2026) zusammengefüh
 ## Neu {#new}
 
 **Dashboards**
+- Diagramme: eine berechnete Reihe hinzufügen, berechnet aus Messwerten des gewählten Things oder fester Things. Wählen Sie **Berechnete Reihe hinzufügen** neben **Telemetrie hinzufügen**. Eine berechnete Reihe kann noch keinen berechneten Messwert als Eingabe nutzen.
+- Auswahllisten für Messwerte markieren berechnete Messwerte mit ƒx.
 - Widgets: eine neue Widget-Auswahl und Widget-Einrichtung, neue Widgets und Standard-Dashboards.
 - Widgets: einen Wert nach Schwellenwerten einfärben, mit Hilfetext in der Widget-Einrichtung.
 - Vorfälle-Widget: zeigt aktive oder alle Vorfälle auf einem Dashboard.
@@ -26,6 +28,33 @@ Diese Seite listet Änderungen, die seit 0.12.5 (17. August 2026) zusammengefüh
 - Die Tabs des Thing-Typs sind neu gestaltet: Things, Schema, Statistik, Rollups, Aktionen, Dashboards, Versionen und Dokumente.
 - Im Tab **Aktionen** können Sie eine Aktion auslösen und ihren Zustand an/aus sehen.
 - Die Seite des Things sowie die Listen- und Detailseiten der Interfaces folgen dem neuen Stil des Thing-Typs.
+- Berechnete Messwerte: Fügen Sie einem Thing-Typ einen Messwert hinzu, der bei jedem Lesen mit einer Formel aus seinen anderen Messwerten berechnet wird. Nichts wird gespeichert. Die Formel wird beim Tippen geprüft, und **An einem Thing testen** zeigt ihren aktuellen Wert und die letzten 10 Stunden, sobald der Thing-Typ veröffentlicht ist. Regeln können berechnete Messwerte nicht nutzen.
+- Aggregat-Things: Ein Thing-Typ der Art **Aggregat-Thing** hält Mitglieds-Things in benannten Slots und kombiniert ihre Messwerte in berechneten Messwerten, zum Beispiel die Gesamtleistung aller Wechselrichter einer Anlage. Mitglieder fügen Sie im Tab **Mitglieder** des Things hinzu. Ein berechneter Messwert über einen Slot zeigt, wie viele Mitglieder melden, zum Beispiel „2 von 2 melden“.
+- Liste der Things: Aggregat-Things tragen den Chip **Aggregat**, und der neue Filter **Art** zeigt Geräte oder Aggregat-Things.
+- Ein Gerätefeld, das wie ein berechneter Messwert heißt, wird gespeichert, ist aber nicht das, was Diagramme zeigen. Es wird als Pipeline-Fehler **Calculated measure sent** gemeldet.
+
+**Verwaltungsschale**
+- Eine schreibgeschützte AAS-API unter `/ocb/aas/v3`, kompatibel mit den Leseprofilen von IDTA Part 2 v3.2, die sie unter `/description` auflistet. Sie ist nicht zertifiziert. Sie liefert nur Things, die Sie einzeln mit **Als Verwaltungsschale freigeben** freigeben, an Aufrufer, die sie lesen dürfen. API-Schlüssel brauchen den Scope `aas:read`.
+- Schreibgeschützte Routen für AAS Registry, Submodel Registry und Discovery, gebildet aus den Verwaltungsschalen, die Sie lesen können.
+- Submodelle: Digital Nameplate, Technical Data, Handover Documentation (VDI 2770), Time Series, Carbon Footprint und Hierarchical Structures für Aggregat-Things. Verwaltungsschalen lassen sich auch als AASX-Pakete exportieren.
+- Administration › Mandanteneinstellungen › Funktionen: **Vorgaben für veröffentlichte Verwaltungsschalen** legt Herstellername, Kontakt-E-Mail und Kontakt-URL für jedes Thing fest, das keine setzt.
+- Knowledge › Erkunden: Die Dokumente eines Things nach VDI 2770 **Klassifizieren**. Nur klassifizierte Dokumente werden in der Handover Documentation veröffentlicht.
+
+**Produktlinks**
+- Geben Sie einem Thing oder Thing-Typ eine öffentliche Seite mit den Feldern und Dokumenten, die Sie veröffentlichen, und drucken Sie sein Etikett als QR-Code oder Data Matrix.
+- Produktkennungen (GS1 Digital Link, IEC 61406, DID, DOI) lassen sich einem Link hinzufügen, und Sie können Ihr GS1-Firmenpräfix beanspruchen, das Nimbit prüft. Beides geht nur über die API, mit dem Token eines angemeldeten Benutzers: API-Schlüssel werden abgelehnt, und es gibt noch keine Oberfläche.
+- Ein GS1 Digital Link auf der Link-Adresse öffnet den Produktlink. Seriennummern öffnen den eigenen Link des Artikels erst, wenn ein Tenant-Admin **Seriennummern auflösen** einschaltet. Bis dahin öffnen sie den Link des Modells oder der Charge.
+- Der öffentliche Link antwortet auch in AAS-v3.2-Form (`Accept: application/aas+json`). Er kann ein einzelnes Datenelement liefern und lässt sich über eine Produktkennung lesen.
+
+**Dataspace**
+- Bieten Sie freigegebene Things als Verwaltungsschalen in Ihrem eigenen EDC-basierten Connector an. IoT Breeze hält die Angebote auf Stand. Neue Verbindungen sind **Andere (EDC-basiert)**; sovity EDC Community Edition ist der getestete Connector. Eine Dataspace-Zertifizierung wird nicht beansprucht.
+- Nimbit erzeugt den Callback-Schlüssel, den Ihr Connector verwendet, und erneuert ihn, bevor er abläuft. **Jetzt erneuern** ersetzt ihn sofort. Sie können weiterhin einen eigenen Schlüssel verwenden.
+- Eine Verbindung je Dataspace, mit einer Partnerrichtlinie.
+- Bestehende Catena-X-Verbindungen zeigen eine Warnung, dass ihr Richtlinienvokabular nicht gegen einen laufenden Connector geprüft ist.
+- Administration › API-Schlüssel: Das Dataspace-Dienstkonto, das Nimbit verwaltet, zeigt **Von Nimbit verwaltet** und lässt sich dort weder bearbeiten noch mit Schlüsseln versehen oder löschen.
+
+**Hilfe**
+- Der Hilfebereich zeigt die Seite der neuen Dokumentation, die den Bildschirm behandelt, auf dem Sie sind, mit verwandten Seiten, und lässt sich in einem eigenen Fenster öffnen.
 
 **Anmeldung**
 - IoT Breeze leitet Sie auf die NimBit-Anmeldeseite, und Einladungen werden dort angenommen.

@@ -37,6 +37,8 @@ Register one real device or asset, such as a sensor in a room, so IoT Breeze can
 3. If the thing type's connector is Azure IoT Hub, an **Authentication type** field appears: choose **SAS Token** or **X.509 Certificate**. It can't be changed later.
 4. Select **Save**. The thing page opens.
 
+A thing of an aggregate thing type has no device: the form asks for no connector, authentication or gateway, and you add its members on its **Members** tab. See [Combine things into an aggregate thing](./aggregate-things.mdx).
+
 {/* TODO(product): What does Authentication type offer for the AWS IoT Core and SAP connectors? ThingForm.tsx lists options only for AZURE (SAS Token, X.509 Certificate) and SAP (X.509 Certificate), and falls back to X.509 for any other connector. */}
 
 <Screenshot

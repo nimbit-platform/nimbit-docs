@@ -1,0 +1,80 @@
+---
+title: Add a calculated measure
+sidebar_label: Calculated measures
+description: Work out a measure from a formula over a thing type's other measures, check it as you type, test it on a thing and publish it.
+type: how-to
+sidebar_position: 6.4
+app:
+  routes: ["/onboarding/thing-types/:id"]
+---
+
+A calculated measure has no sensor. Its value is a formula over other measures, such as `temp_f = temp * 1.8 + 32`, worked out each time something reads it. Nothing is stored. Dashboards, canvases, reports and the API read it by name, like any other measure. For the functions and aggregations a formula can use, see [Formula reference](./formula-reference.mdx).
+
+## Before you start
+
+- You need the **Thing type** update permission. **Admin**, **Manager** and **Modeler** have it.
+- The thing type has the measures the formula reads, as numeric measures or calculated boolean measures.
+- To combine the measures of several things, such as all inverters of a plant, use an aggregate thing instead: see [Combine things into an aggregate thing](./aggregate-things.mdx).
+
+## Steps
+
+1. Open the thing type under **Settings › Onboarding › Thing Types**, then **Schema** › **Measures**.
+2. Select **Add calculated measure**, next to **Add measure**.
+3. Under **General**, enter the **Display name** and **Name**, and choose **Numeric** or **Boolean** as the **Type**. For a number, set the **Unit of measure** yourself: a calculated measure doesn't work out a unit. **Decimals**, **Min value** and **Max value** are optional.
+4. Under **Formula**, add the **Inputs**. Select **Add input** for each measure the formula reads, and set:
+   - **Alias**: the name the expression uses, for example `temp`. Letters A–Z, digits and `_`, up to 64 characters, not starting with a digit.
+   - **Measure**: a numeric measure of this thing type, or another calculated measure (marked ƒx).
+   - **Per step**: how the readings in one step become one value. **Average** is the default. For a rising counter, use **Increase**. To turn a rate into a total, use **Integral** with **Per** `1h` (kW to kWh) or `1m` (l/min to litres).
+   - **When missing**: **Skip the step** (default), **Use 0** or **Hold last value**, with **Hold for at most**, for example `15m`.
+5. Type the **Expression**, for example `temp * 1.8 + 32`. Press Ctrl+Space for suggestions, or start from the **Templates** in the **Functions** menu. Under the editor, IoT Breeze checks the formula as you type: **Checking…**, then **The expression is valid**, or each problem with its line and column.
+6. Optionally open **Advanced** to set a fixed **Step** and how to **Combine steps by**. Leave **Step** on **Automatic** unless you need a fixed one.
+7. Select **Save**. The measure goes into the thing type's draft. **Save** stays disabled until the formula is complete and valid.
+8. Select **Publish** in the header (for example **Publish v2**), describe the change under **Changelog** and select **Publish**. Things read only the published thing type.
+
+## Test it on a thing
+
+Once the thing type is published, open the measure again. Under **Test on a thing**, **Choose a thing** of this type. You see its **Latest value** and a table of **Time** and **Result** for the last 10 hours. Hours without readings are left out.
+
+The test runs the **published** formula, as a dashboard would. With unpublished changes it says so: publish the draft to test them.
+
+## Check that it worked
+
+- In the measure table the row is marked **Calculated** (ƒx).
+- On a thing's page and in a chart, the measure shows values.
+- Someone who cannot edit the type sees **View formula** on the row, with the formula and its inputs, read-only.
+
+## Use it in dashboards
+
+A widget reads a calculated measure like any measure. **The widget's aggregation decides how steps are combined**, not the measure's **Combine steps by**. For a total, such as pieces, litres or kWh, choose **Sum** in the widget.
+
+The formula runs on each step's values first, and the results are combined afterwards. So `torque > 15 ? 1 : 0` over 45 minutes at 20 and 15 minutes at 10 averages to 0.75. With **Step** on **Automatic**, a single-input threshold counts readings, not time. For the share of time of a signal sent only on change, use **Per step** **Time-weighted average (last value carried)**, or a fixed **Step** with **Hold last value**.
+
+## How the formula is checked
+
+| When | What happens |
+| --- | --- |
+| As you type | The query engine checks the definition about 400 ms after you stop typing. It does not check which things exist or who may read them. |
+| On save | The draft is always saved. A problem shows as a warning: "Saved to the draft, but the query engine found a problem in …". If the engine didn't answer, the row shows **Not checked**. |
+| On publish | Publishing is refused while a calculated measure is invalid, or if it could not be checked: "Not published: the calculated measures could not be checked right now. Try again in a moment." Each problem links to its measure. |
+
+A definition you didn't change is not checked again.
+
+## If it doesn't work
+
+- **"… is not an input of this formula"**: the expression uses a name that is not an alias. Use the alias, or add the input.
+- **"The thing type was not saved:"** followed by an English message: the server refused the definition, for example a key with `__`, a type other than numeric or boolean, an input that reads itself, or more than three levels of calculated measures reading each other. The message says what to change.
+- **A widget says filters don't work with calculated measures**: reading filters, **Only while** conditions and interval filters don't work with calculated measures yet. Remove them, or show the measure in a widget of its own.
+- **No latest value on a tile**: an input over **Increase**, **Integral**, a change or a statistic has no instantaneous value. An input reading older than 15 minutes, or older than **Hold for at most**, counts as missing.
+
+## Limits
+
+- Rules can't use a calculated measure, and rollups and simulation leave it out.
+- If a device still sends values under the same name, the calculated value wins.
+- At most 16 inputs and 2048 characters per expression.
+- At most three levels of calculated measures reading calculated measures on one thing type. An input over a calculated measure takes only average, sum, minimum, maximum, first or last value.
+- Raw data, fleet queries and **Only while** filters are not available for calculated measures.
+- Deleting a measure a calculated measure reads blocks publishing until that calculated measure has another input.
+
+## Related
+
+- [Formula reference](./formula-reference.mdx) · [Combine things into an aggregate thing](./aggregate-things.mdx) · [Add a calculated series to a chart](../visualize/calculated-series.mdx) · [Drafts, publishing and versions](./drafts-and-versions.mdx)

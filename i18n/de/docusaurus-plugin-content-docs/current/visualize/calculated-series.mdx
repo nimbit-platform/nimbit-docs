@@ -1,0 +1,65 @@
+---
+title: Einem Diagramm eine berechnete Reihe hinzufügen
+sidebar_label: Berechnete Reihen
+description: Zeichnen Sie in einem Diagramm eine Reihe, die aus Messwerten des gewählten Things oder fester Things berechnet wird, ohne den Thing-Typ zu ändern.
+type: how-to
+sidebar_position: 3.5
+app:
+  routes: ["/dashboards/:id"]
+translated_from: 9db83b3
+---
+
+Eine berechnete Reihe ist eine Formelzeile in einem Diagramm, zum Beispiel die Summe der Leistung dreier fester Wechselrichter oder eine in °F umgerechnete Temperatur. Sie wird mit dem Widget gespeichert, nicht am Thing-Typ. Soll eine Formel überall verfügbar sein, wo ein Messwert gelesen wird, fügen Sie dem Thing-Typ stattdessen einen [berechneten Messwert](../model/calculated-measures.mdx) hinzu.
+
+## Voraussetzungen {#before-you-start}
+
+- Sie brauchen die Berechtigung, **Dashboard** zu ändern.
+- Das Diagramm ist ein Widget **Diagramm** oder ein älteres Widget für Linie, Balken oder Kombination. Berechnete Reihen gibt es nicht bei Snapshot-, Gauge- oder Zustands-Widgets und nicht, solange die X-Achse des Diagramms ein Messwert ist.
+- Um feste Things zu lesen, braucht jeder, der das Dashboard ansieht, Lesezugriff auf jedes davon.
+
+## Schritte {#steps}
+
+1. Öffnen Sie das Dashboard, bearbeiten Sie es und öffnen Sie die Einstellungen des Diagramms.
+2. Wählen Sie unter den Zeilen der Telemetrien **Berechnete Reihe hinzufügen** neben **Telemetrie hinzufügen**.
+3. Geben Sie einen **Namen** ein oder behalten Sie **Berechnete Reihe 1**. Die **Einheit** wird ausgefüllt, wenn der Ausdruck eine Eingabe ist oder eine Summe oder Differenz von Eingaben mit derselben Einheit. Eine Einheit, die Sie eintippen, bleibt erhalten.
+4. Wählen Sie unter **Liest** **Gewähltes Thing** (das Thing, das das Widget zeigt) oder **Feste Things**. Alle Zeilen eines Widgets lesen dieselbe Art. Auf einem Smart-Dashboard entscheidet die eigene Folgen- oder Anheften-Einstellung des Widgets.
+5. Fügen Sie die Eingaben hinzu. Setzen Sie für jede den **Alias**, bei **Feste Things** die Things (**Thing hinzufügen**), die **Telemetrie**, **Je Schritt**, **Bei fehlendem Wert** und bei **Letzten Wert halten** **Höchstens halten**. Eine Eingabe, die mehrere Things liest, ist eine Liste: Verwenden Sie sie in `sum(…)` oder einer anderen Listenfunktion.
+6. Geben Sie den **Ausdruck** ein, zum Beispiel `sum(inverters)`. Er wird beim Tippen geprüft, wie bei einem berechneten Messwert.
+7. Wählen Sie **Testen**. Der Test führt die Reihe über die letzten 10 Intervalle des Diagramms aus und zeigt **Zeit**, jede Eingabe und **Ergebnis**, und bei Eingaben über mehrere Things, wie viele davon gemeldet haben.
+8. Öffnen Sie optional **Erweitert** für **Schritt** und **Schritte zusammenfassen per**.
+9. Speichern Sie das Widget.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+Die Zeile zeigt ƒx und wird wie eine Telemetrie-Zeile gezeichnet, mit eigener Farbe, eigenem Linienstil und eigener Achse. Lässt sich eine Reihe nicht zeichnen, sagt das Diagramm, wie viele nicht gezeichnet werden konnten: Fahren Sie mit der Maus darüber, um die Gründe zu sehen. Jede Reihe wird einzeln gelesen, eine fehlerhafte Reihe verdeckt also nicht die anderen.
+
+## Wie sie sich von einem berechneten Messwert unterscheidet {#how-it-differs-from-a-calculated-measure}
+
+| | Berechnete Reihe | Berechneter Messwert |
+| --- | --- | --- |
+| Liegt in | Einem Diagramm-Widget | Dem Thing-Typ, für jeden, der liest |
+| Eingaben | Nur gespeicherte numerische Messwerte, keine berechneten Messwerte | Messwerte des Typs, berechnete Messwerte, Slots eines Aggregats |
+| **Je Schritt** | Durchschnitt, Summe, Minimum, Maximum, erster Wert, letzter Wert, Anzahl | Außerdem **Zunahme**, **Integral**, Änderungen, zeitgewichtete Mittelwerte und Statistiken |
+| **Schritte zusammenfassen per** | Durchschnitt, Summe, Minimum, Maximum, erster Wert, letzter Wert | Außerdem Spannweite, Anzahl und Statistiken |
+| Abdeckung | Der Test zeigt, wie viele Things gemeldet haben | **Meldende Mitglieder zählen** und „n von m melden“ |
+
+Die vollständige Liste steht in der [Formelreferenz](../model/formula-reference.mdx).
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+- **„… wird berechnet, und eine berechnete Reihe kann berechnete Telemetrien noch nicht lesen“**: Wählen Sie einen gespeicherten Messwert als Eingabe oder zeigen Sie den berechneten Messwert als eigene Telemetrie.
+- **„Eine berechnete Reihe braucht ein Zeitintervall“**: Wählen Sie eine andere Detailstufe des Diagramms als den ganzen Zeitraum.
+- **„Der Schritt von … teilt die Detailstufe des Diagramms nicht“**: Setzen Sie **Schritt** auf **Automatisch** oder auf einen Schritt, der sie teilt.
+- **„Diese berechnete Reihe folgt dem gewählten Thing, und es ist kein Thing ausgewählt“**: Wählen Sie ein Thing oder lesen Sie **Feste Things**.
+- **„… liest zu viele Things“** oder **„… würde für diesen Zeitraum zu viele Werte lesen“**: Verwenden Sie weniger Things oder einen kürzeren Zeitraum.
+
+## Grenzen {#limits}
+
+- **Nur solange** und Intervallfilter gelten noch nicht für berechnete Reihen.
+- Nicht verfügbar für Beispiel- oder Dateidaten.
+- Höchstens 16 Eingaben, ein Ausdruck mit 2048 Zeichen und 1000 Things je Eingabe.
+- Ein Widget kann nicht auf das gewählte Thing umschalten, solange eine Reihe mehrere feste Things liest.
+
+## Siehe auch {#related}
+
+- [Einen berechneten Messwert hinzufügen](../model/calculated-measures.mdx) · [Formelreferenz](../model/formula-reference.mdx) · [Widget-Galerie](./widgets.mdx#chart)

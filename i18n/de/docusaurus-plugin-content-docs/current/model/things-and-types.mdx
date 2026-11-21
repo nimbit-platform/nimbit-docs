@@ -5,7 +5,7 @@ description: Ein Thing-Typ legt das Schema fest, Things sind die echten Geräte,
 type: concept
 app:
   routes: ["/onboarding/thing-types", "/onboarding/things", "/onboarding/interfaces"]
-translated_from: b6ed908
+translated_from: 9db83b3
 ---
 
 IoT Breeze trennt, was eine Art von Gerät ist, von den einzelnen Geräten. Ein **Thing-Typ** legt fest, welche Werte ein Gerät sendet und welche festen Angaben es hat. Ein **Thing** ist ein echtes Gerät, das einem Thing-Typ folgt. Ein **Interface** ist eine Menge von Feldern, die mehrere Thing-Typen teilen können, sodass ein Dashboard für alle funktioniert.
@@ -25,8 +25,9 @@ flowchart LR
 | --- | --- | --- |
 | **Thing-Typ** | Das Modell eines Geräts: seine Messwerte und Eigenschaften, plus Einstellungen wie Konnektor, Schema-Evolution und Bereinigungs-Pipeline. | **Einstellungen › Onboarding › Thing Typen** |
 | **Thing** | Ein echtes Gerät oder eine Anlage. Es hat einen Namen, eine ID, die das Gerät verwendet, einen Thing-Typ, eine Organisation und Gruppen. | **Einstellungen › Onboarding › Things** |
+| **Aggregat-Thing** | Ein Thing ohne Gerät, von einem Thing-Typ der Art **Aggregat-Thing**. Es hält Mitglieds-Things in Slots und kombiniert ihre Messwerte in berechneten Messwerten. Siehe [Things zu einem Aggregat-Thing zusammenfassen](./aggregate-things.mdx). | **Einstellungen › Onboarding › Things**, Tab **Mitglieder** |
 | **Interface** | Eine benannte, versionierte Menge von Feldern. Ein Thing-Typ, der es anhängt, erhält diese Felder. | **Einstellungen › Onboarding › Interfaces** |
-| **Messwert** | Ein Wert, den das Gerät über die Zeit sendet, etwa `temperature`. | Schema eines Thing-Typs oder Interfaces |
+| **Messwert** | Ein Wert, den das Gerät über die Zeit sendet, etwa `temperature`. Ein **berechneter Messwert** wird beim Lesen mit einer Formel berechnet; siehe [Einen berechneten Messwert hinzufügen](./calculated-measures.mdx). | Schema eines Thing-Typs oder Interfaces |
 | **Eigenschaft** | Eine feste Angabe zum Gerät, etwa eine Seriennummer oder ein Nennvolumenstrom. | Schema eines Thing-Typs oder Interfaces |
 
 Messwerte und Eigenschaften heißen zusammen Felder. Die vollständige Liste der Optionen steht unter [Messwert- und Eigenschaftstypen](./measure-types.mdx).

@@ -1,0 +1,90 @@
+---
+title: Things zu einem Aggregat-Thing zusammenfassen
+sidebar_label: Aggregat-Things
+description: Fassen Sie Mitglieds-Things in Slots eines Aggregat-Things zusammen und kombinieren Sie ihre Messwerte in berechneten Messwerten, etwa die Gesamtleistung aller Wechselrichter einer Anlage.
+type: how-to
+sidebar_position: 6.6
+app:
+  routes: ["/onboarding/thing-types/:id", "/onboarding/things/:id", "/monitor/thing-details/:id"]
+translated_from: 9db83b3
+---
+
+Ein Aggregat-Thing hat kein eigenes Gerät. Es hält Mitglieds-Things in benannten **Slots** und kombiniert ihre Messwerte in berechneten Messwerten, zum Beispiel die Gesamtleistung aller Wechselrichter einer Anlage. Aggregate lassen sich verschachteln: eine Linie in einer Halle, eine Halle in einem Standort.
+
+Diese Seite baut eine Anlage `pv_plant`, deren berechneter Messwert `total_power` die `power` ihrer Wechselrichter summiert.
+
+## Voraussetzungen {#before-you-start}
+
+- Um den Aggregat-Thing-Typ anzulegen, brauchen Sie die Berechtigung, **Thing type** zu erstellen; um Slots und berechnete Messwerte hinzuzufügen, ihn zu ändern. Um das Aggregat-Thing anzulegen, brauchen Sie die Berechtigung, **Thing** zu erstellen; um seine Mitglieder zu ändern, **Thing** zu ändern, und Lesezugriff auf jedes Mitglied, das Sie hinzufügen. **Administrator**, **Manager** und **Modellierer** haben all das.
+- Die Mitglieds-Things existieren, zum Beispiel die Wechselrichter, und jedes hat den Messwert, den die Formel liest, hier `power`.
+
+## 1. Einen Aggregat-Thing-Typ anlegen {#1-create-an-aggregate-thing-type}
+
+1. Öffnen Sie **Einstellungen › Onboarding › Thing Typen** und wählen Sie **Thing Typ erstellen**.
+2. Wählen Sie unter **Art** **Aggregat-Thing**. Die Art kann nach dem Anlegen des Thing-Typs nicht mehr geändert werden.
+3. Geben Sie den **Anzeigenamen** und den **Namen** ein, zum Beispiel `pv_plant`, und speichern Sie.
+
+Ein Aggregat-Thing-Typ hat nur berechnete Messwerte und keinen Konnektor, keine Interfaces, Befehle, Pipeline oder Schema-Evolution. Seine Eigenschaften geben Benutzer ein.
+
+## 2. Einen Slot hinzufügen {#2-add-a-slot}
+
+1. Öffnen Sie am Thing-Typ **Schema** › **Slots** und wählen Sie **Slot hinzufügen**.
+2. Geben Sie einen **Namen** ein, zum Beispiel `inverters`. Formeln verweisen über diesen Namen auf den Slot: Buchstaben, Ziffern und Unterstriche.
+3. Wählen Sie unter **Enthält** **Mehrere Mitglieder** (Standard) oder **Ein Mitglied**.
+4. Wählen Sie optional ein **Erforderliches Interface**: Nur Things, die es implementieren, können in den Slot. **Beliebiges Thing** erlaubt jedes Thing.
+5. Speichern Sie.
+
+Slots sind nicht Teil des Entwurfs: Eine Änderung gilt sofort für alle Things dieses Typs.
+
+## 3. Den berechneten Messwert hinzufügen {#3-add-the-calculated-measure}
+
+1. Öffnen Sie **Schema** › **Telemetrien** und wählen Sie **Berechnete Telemetrie hinzufügen**.
+2. Geben Sie `total_power` als **Name** ein, wählen Sie **Numerisch** und setzen Sie die **Maßeinheit**, zum Beispiel `kW`.
+3. Fügen Sie eine Eingabe hinzu: **Alias** `inverters`, **Liest** **Slot inverters**, und tippen Sie `power` als **Messwert** ein. Mitglieder können jeden Typ haben, deshalb geben Sie den Messwert über seinen Namen ein.
+4. Geben Sie den Ausdruck `sum(inverters)` ein. Eine Eingabe, die einen Slot mit **Mehrere Mitglieder** liest, ist eine Liste: Verwenden Sie sie in `sum`, `avg`, `min`, `max`, `count`, `median`, `stddev`, `variance` oder `range`.
+5. Schalten Sie optional **Meldende Mitglieder zählen** ein.
+6. Speichern Sie und veröffentlichen Sie dann den Thing-Typ.
+
+Eine Eingabe kann auch **Dieses Thing** lesen, das Aggregat selbst. Für eine Energiesumme lesen Sie einen Energiezähler mit **Zunahme** oder `power` mit **Integral** und **Pro** `1h`, und lassen Sie das Widget **Summe** verwenden. Die Schritte und Optionen sind dieselben wie in [Einen berechneten Messwert hinzufügen](./calculated-measures.mdx).
+
+**Mitglieder, die nicht melden.** Mit **Bei fehlendem Wert** auf **Schritt überspringen** fällt ein Mitglied ohne Wert in einem Schritt weg, die Summe deckt also nur die Mitglieder ab, die gemeldet haben. Bei mehreren Eingaben mit mehreren Mitgliedern setzen Sie bei jeder **0 verwenden**: Sonst hat ein Schritt, in dem alle Mitglieder einer Eingabe schweigen, keinen Wert.
+
+## 4. Das Aggregat-Thing anlegen und Mitglieder hinzufügen {#4-create-the-aggregate-thing-and-add-members}
+
+1. Öffnen Sie **Einstellungen › Onboarding › Things**, wählen Sie **Thing erstellen** und den Aggregat-Thing-Typ. Konnektor, Authentifizierung und Gateway werden nicht abgefragt.
+2. Öffnen Sie auf der Seite des Things den Tab **Mitglieder**. Es gibt einen Abschnitt je Slot.
+3. Wählen Sie **Mitglieder hinzufügen** (**Mitglied wählen** oder **Mitglied ersetzen** bei einem Slot mit einem Mitglied), suchen Sie, wählen Sie die Things und dann **Fertig**. Angeboten werden nur Things, die in den Slot passen.
+
+Eine Änderung der Mitglieder gilt sofort und wird protokolliert; sie ist nicht Teil eines Entwurfs. Um ein Mitglied zu entfernen, nutzen Sie seine Schaltfläche zum Entfernen: **Rückgängig** in der Meldung holt es zurück.
+
+## Prüfen, ob es geklappt hat {#check-that-it-worked}
+
+- In der Liste der Things tragen Aggregat-Things den Chip **Aggregat**. Der Filter **Art** zeigt Geräte oder Aggregat-Things.
+- Auf der Seite des Aggregat-Things zeigt der Live-Wert von `total_power`, wie viele Mitglieder melden, zum Beispiel „2 von 2 melden“. Melden weniger als alle, erscheint er als Warnung. Ein Mitglied zählt, solange sein neuester Wert höchstens 15 Minuten alt ist oder innerhalb von **Höchstens halten** liegt.
+- Der Bereich **Aufgelöst** unter **Mitglieder** zeigt je berechnetem Messwert, wie viele Things er liest und wie tief die Mitglieder verschachtelt sind. Er warnt, wenn ein Thing über mehr als einen Weg erreicht und so vielleicht doppelt gezählt wird, und wenn ein Messwert nahe an der Grenze der Things ist, die er lesen darf.
+
+## Wer was sieht {#who-sees-what}
+
+Wer das Aggregat-Thing lesen kann, kann seine berechneten Werte lesen, auch ohne Zugriff auf jedes Mitglied. Mitglieder, die Sie nicht sehen können, werden gezählt, aber nie genannt, und ihre Werte erscheinen nie unter ihrem eigenen Namen.
+
+## Wenn es nicht funktioniert {#if-it-doesnt-work}
+
+Lehnt IoT Breeze eine Änderung der Mitglieder ab, zeigt es „Die Mitglieder wurden nicht geändert:“ und danach die Gründe. Diese Meldungen zeigt IoT Breeze auf Englisch. Die häufigsten:
+
+- ein Mitglied, das das erforderliche Interface des Slots nicht implementiert oder zu einer anderen Organisation gehört;
+- ein Mitglied zu viel für einen Slot mit einem Mitglied;
+- ein Thing, das sich selbst hinzugefügt wird, oder ein Zyklus („adding X would form a cycle: A -> B -> A“);
+- mehr als vier Ebenen verschachtelter Aggregate;
+- mehr als 500 Things, die ein berechneter Messwert lesen würde.
+
+Einen Slot, den ein berechneter Messwert liest, können Sie erst entfernen, wenn Sie diesen Messwert ändern oder entfernen.
+
+## Grenzen {#limits}
+
+- Höchstens vier Ebenen ineinander verschachtelter Aggregate und 500 Mitglieds-Things je berechnetem Messwert.
+- Höchstens drei Ebenen berechneter Messwerte, die berechnete Messwerte lesen, an einem Thing-Typ.
+- Nach einer Änderung der Mitglieder können Werte ein entferntes Mitglied noch bis zu 5 Minuten enthalten.
+
+## Siehe auch {#related}
+
+- [Einen berechneten Messwert hinzufügen](./calculated-measures.mdx) · [Formelreferenz](./formula-reference.mdx) · [Thing-Typen, Things und Interfaces](./things-and-types.mdx)
