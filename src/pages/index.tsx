@@ -222,6 +222,26 @@ const standards: { title: string; to: string; lines: string[] }[] = [
       }),
     ],
   },
+  {
+    title: "GS1 Digital Link",
+    to: "/docs/share/product-links#open-a-link-by-its-gs1-digital-link",
+    lines: [
+      translate({
+        id: "home.standards.gs1.text",
+        message: "Compatible: resolves GS1 Digital Link URIs (GTIN with variant, lot and serial) to the product link.",
+      }),
+    ],
+  },
+  {
+    title: "Data Matrix",
+    to: "/docs/share/product-links#print-a-label",
+    lines: [
+      translate({
+        id: "home.standards.dataMatrix.text",
+        message: "Labels with a Data Matrix (ISO/IEC 16022) or QR code (ISO/IEC 18004), as EN 18220 names them.",
+      }),
+    ],
+  },
 ];
 
 const curl = (
@@ -472,8 +492,15 @@ export default function Home(): React.JSX.Element {
               </p>
             </div>
             <div className="grid min-w-0 flex-[2_1_600px] grid-cols-1 overflow-hidden rounded-[10px] border border-solid border-[var(--docs-color-border)] bg-[var(--docs-color-border)] [gap:1px] lg:grid-cols-3">
-              {standards.map((s) => (
-                <Link key={s.to} to={s.to} className={`group flex flex-col gap-2 bg-[var(--docs-color-background)] p-[18px] ${plainLink}`}>
+              {standards.map((s, i) => (
+                <Link
+                  key={s.to}
+                  to={s.to}
+                  // A last card alone in a row of two fills it, so no empty cell shows.
+                  className={`group flex flex-col gap-2 bg-[var(--docs-color-background)] p-[18px] ${plainLink} ${
+                    i === standards.length - 1 && standards.length % 3 === 2 ? "lg:col-span-2" : ""
+                  }`}
+                >
                   <span className="nb-eyebrow mb-1 text-[var(--docs-color-text-100)] group-hover:text-[var(--ifm-color-primary)]">{s.title}</span>
                   {s.lines.map((l) => (
                     <span key={l} className="text-sm leading-5 text-[var(--docs-color-muted)]">
