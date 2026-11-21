@@ -40,6 +40,8 @@ A service account is a tenant member for integrations. It never signs in and act
 
 If you change its roles, its keys get them with their next token. If you delete it, its live keys are revoked.
 
+A service account marked **Managed by Nimbit** belongs to the dataspace connection. Nimbit creates it and rotates its key, so you cannot edit it, give it keys or delete it here. Change it under **Administration › Tenant Settings › Features › Dataspace connector**; see [Offer things in your dataspace connector](../share/dataspace-offers.mdx#the-callback-key).
+
 ## Rotate or revoke a key
 
 | Action | Effect |

@@ -74,7 +74,26 @@ Besides its own address, a link can carry identifiers your products already have
 - **One link each**: an identifier belongs to one link of your tenant. You can remove it until the link is first activated. After that it is permanent, because it may be printed.
 - **Your GS1 company prefix**: a GS1 identifier resolves only under a GS1 company prefix Nimbit has verified for your tenant. You request the claim, and Nimbit checks your GS1 licence. If a claim is revoked, its identifiers stop resolving at once. A GTIN-8 is never resolved.
 
-IoT Breeze has no screen for identifiers yet. Register them through the API (`POST /rest/v2/passport/links/<token>/identifiers`), and contact Nimbit support to verify your GS1 company prefix.
+IoT Breeze has no screen for identifiers yet. Both steps below go through the platform API, under `/ocb` on the host you open IoT Breeze on, and need the **Passport** update permission, as a user or an API key with that scope; see [Authentication](../api/authentication.mdx).
+
+1. **Claim your GS1 company prefix**, once:
+
+   ```bash
+   curl -X POST "https://<host>/ocb/rest/v2/passport/gs1-prefixes" \
+     -H "Authorization: Bearer <access-token>" -H "Content-Type: application/json" \
+     -d '{ "prefix": "9506000" }'
+   ```
+
+   A U.S. UPC company prefix has 6 to 11 digits and adds `"upc": true`. The claim starts as pending. Contact Nimbit support: they check your GS1 licence and verify the claim. Only then do GS1 Digital Links under that prefix resolve.
+2. **Register an identifier** on a link:
+
+   ```bash
+   curl -X POST "https://<host>/ocb/rest/v2/passport/links/<link-token>/identifiers" \
+     -H "Authorization: Bearer <access-token>" -H "Content-Type: application/json" \
+     -d '{ "scheme": "gs1_digital_link", "value": "/01/09506000134352/21/ABC123" }'
+   ```
+
+   `<link-token>` is the link's token, the part of its address after `/L/`.
 
 ## Open a link by its GS1 Digital Link
 
@@ -86,7 +105,7 @@ https://<link address>/01/<GTIN>[/22/<variant>][/10/<lot>][/21/<serial>]
 
 - **Fallback**: as a GS1 resolver does, IoT Breeze tries the full value first, then without the serial, then without the lot, then without the variant. The most specific link that is active and shows something opens. If none does, the answer is the same "not found" as for an unknown link.
 - **Browser or API**: a browser goes to the page. A client whose `Accept` header asks for JSON or the AAS API is sent there.
-- **Serial numbers are off by default.** Then every serial opens the model's or batch's link, which reveals nothing about which serials exist. To open each item's own link, a tenant admin switches on **Resolve serial numbers** under **Administration › Tenant Settings › Features › Product links** and confirms with **Turn on**. Anyone can then try serial numbers one after another: if yours are sequential, others can find and count your items' links. Switch it on only if your serials are random, or you accept that.
+- **Serial numbers are off by default.** Then every serial opens the model's or batch's link, which reveals nothing about which serials exist. To open each item's own link, a tenant admin switches on **Resolve serial numbers** under **Administration › Tenant Settings › Features › Product links** and confirms with **Turn on**. Anyone can then try serial numbers one after another: if yours are sequential, others can find and count your items' links. Switch it on only if your serials are random, or you accept that. The switch applies only to GS1 identifiers registered through the API under a GS1 company prefix Nimbit has verified for your tenant.
 - **Not resolved**: DIDs, DOIs and IEC 61406 links, which resolve through their own infrastructure; GS1 keys other than the GTIN; a GS1 Digital Link under a path prefix. GS1 resolver link sets and link types are not implemented.
 
 The labels print the link's own address, not a GS1 Digital Link.

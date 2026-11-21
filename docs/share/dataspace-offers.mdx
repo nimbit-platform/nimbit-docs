@@ -14,7 +14,7 @@ IoT Breeze does not run, configure or monitor your connector, its dataspace iden
 
 ## Before you start
 
-- You have your own connector. IoT Breeze is tested with sovity EDC Community Edition. Tractus-X EDC is supported in what IoT Breeze writes, but not yet tested. No dataspace certification (such as Catena-X or Manufacturing-X) is claimed. Check partner enforcement on your own connector before relying on it.
+- You have your own EDC-based connector. sovity EDC Community Edition is the connector IoT Breeze is tested with end to end. No dataspace certification is claimed. Check partner enforcement on your own connector before relying on it.
 - Your platform operator has set up dataspace offers for the installation: the address your connector uses to reach the AAS API, and, for a connector on a private network address, permission to call it. Otherwise the sync fails with a message saying so.
 - The things to offer are exposed as Asset Administration Shells; see [Publish things as Asset Administration Shells](./asset-administration-shell.mdx). Their thing type has the `dataspace-offer` interface from the `aas-essentials` pack.
 - Seeing the connector needs the **Tenant** read permission. Saving, syncing or removing it needs **Tenant** update and **Aas** update. Offering a thing needs **Aas** update and the **Thing** update permission on it. **Admin** has all of them.
@@ -22,19 +22,18 @@ IoT Breeze does not run, configure or monitor your connector, its dataspace iden
 ## Steps
 
 1. **Turn the feature on.** Open **Administration › Tenant Settings › Features**, switch on **Asset Administration Shell** and **Dataspace offers**, and save. The **Dataspace connector** card appears at the bottom of the tab once the feature is saved.
-2. **Create the callback key.** Your connector uses it to fetch the offered shells. Under **Administration › API keys**, create a service account for the dataspace and give it no group, share or ownership of things. Create a key for it with only the `aas:read` scope. See [Create an API key](../administer/api-key.mdx). Personal keys are refused.
-3. **Save the connection.** On the **Dataspace connector** card, fill in:
+2. **Save the connection.** On the **Dataspace connector** card, fill in:
 
    | Field | Value |
    | --- | --- |
+   | Kind | **Other (EDC-based)**. |
    | **Management API URL** | Your connector's management API, ending before `/v3`, for example `https://connector.example.com/api/management`. Only `https`, unless your operator allows the address. |
-   | **Connector distribution** | **sovity EDC Community Edition** or **Tractus-X EDC**. |
-   | **Partners** | The participant IDs (or BPNs) of the partners who may get the offers, one per line. Empty admits nobody. |
-   | **Management API key** | The key of your connector's management API. |
-   | **Callback key** | The key from step 2. |
+   | **Partners** | The participant IDs of the partners who may get the offers, one per line. Empty admits nobody. |
+   | **Management API key** | The key of your connector's management API. Required the first time. |
+   | **Callback key** | Leave it empty. Nimbit then creates the key your connector uses to fetch the offered shells, and replaces it before it expires. |
 
-   Select **Save connector**. Both keys are required the first time. Afterwards they show **Set**; leave a field empty to keep the stored key. Saving checks the callback key and refuses it if it belongs to another tenant, is a personal key, has any scope besides `aas:read`, or its account can already see something. Both keys are stored encrypted and never shown again.
-4. **Offer things.** Open each thing. On **Overview**, under **Dataspace**, switch on **Offer to dataspace**. Each thing is offered by itself: a thing type default never offers one. A thing that is not exposed as an AAS is not offered, even with the switch on.
+   Select **Save connector**. The card then shows **Managed by Nimbit · key rotates on** a date. The key itself is never shown. Later, the management key shows **Set**; leave the field empty to keep it. Keys are stored encrypted.
+3. **Offer things.** Open each thing. On **Overview**, under **Dataspace**, switch on **Offer to dataspace**. Each thing is offered by itself: a thing type default never offers one. A thing that is not exposed as an AAS is not offered, even with the switch on.
 
 ## Check that it worked
 
@@ -46,13 +45,17 @@ What a partner gets: one catalog entry per offered thing, and after a contract t
 
 An offer you withdraw while a partner still holds a contract agreement for it leaves the catalog at once. The connector keeps the asset until the agreement ends, and IoT Breeze removes it then.
 
-## Renew the callback key
+## The callback key
 
-The callback key expires like any key, after 90 days by default. Before then, create a new key for the **same** service account and save the connection with it. The next sync gives it to your connector. The old key keeps reading the offered things until you revoke it, and the card warns you of that. Revoke it once running transfers have ended.
+**Managed by Nimbit (the default).** Nimbit replaces the key before it expires and gives the new one to your connector with the next sync. Select **Rotate now** to replace it at once. On **Administration › API keys**, its service account shows **Managed by Nimbit** and cannot be edited, given keys or deleted there.
+
+**Your own key.** If you need to, open **Advanced: use your own key** and enter a key yourself. Create it for a service account made for the dataspace, with no group, share or ownership of things, and only the `aas:read` scope; see [Create an API key](../administer/api-key.mdx). Saving refuses a personal key, a key of another tenant, a key with any other scope, and a key whose account can already see something. Nimbit never rotates, revokes or deletes a key you enter. It expires like any key, after 90 days by default: before then, create a new key for the **same** service account and save the connection with it. The old key keeps reading the offered things until you revoke it, and the card warns you of that. Revoke it once running transfers have ended.
+
+**Switch to a managed key.** A connection that uses its own key shows **Let Nimbit manage the key**. After the switch, the old service account reads nothing. Delete it in the identity directory.
 
 ## Move to another connector or remove it
 
-- **Another connector**: a new **Management API URL** needs a new management key and a callback key of a **new** service account. IoT Breeze first withdraws everything from the old connector. If something is left there, saving stops and says what, and you can move anyway. Then revoke the old callback key: the old connector still holds it.
+- **Another connector**: a new **Management API URL** needs a new management key. With your own callback key, it also needs a key of a **new** service account; revoke the old key afterwards, because the old connector still holds it. IoT Breeze first withdraws everything from the old connector. If something is left there, saving stops and says what, and you can move anyway.
 - **Remove**: **Remove connector** withdraws every offer first. If the connector cannot be reached, or agreements still hold assets, you can remove the connection anyway. What is left stays in the connector until its operator removes it.
 
 ## Who sees what
@@ -63,7 +66,8 @@ The callback key expires like any key, after 90 days by default. Before then, cr
 
 ## Limits
 
-- One connector and one policy per tenant: every offered thing goes to the same partners.
+- One connection per dataspace, with one policy: every offered thing goes to the same partners.
+- A connection set up earlier for Catena-X shows a warning that its policy vocabulary is not verified against a running connector.
 - One asset per thing, with the whole shell. No offers per submodel, and no registry or Digital Twin Registry entries.
 - Partners get no time series values: the latest values are empty, and the link to the time series route does not work through the connector.
 - Documents appear as metadata only: their links point at a route partners cannot call through the connector.
