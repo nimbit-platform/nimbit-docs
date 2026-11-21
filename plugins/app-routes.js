@@ -6,13 +6,14 @@
  *
  *   { "version": 1, "locale": "en", "pages": [
  *     { "route": "/onboarding/gateways/:id", "permalink": "/nimbit/docs/gateways/add-a-gateway",
- *       "title": "Add a gateway", "description": "…", "type": "how-to", "tour": "…" } ] }
+ *       "title": "Add a gateway", "description": "…", "type": "how-to", "tour": "…", "primary": true } ] }
  *
  * One entry per page and route. `route` has no locale prefix; `permalink` is absolute on the docs host.
  * Entries are sorted by route, then the route's preferred page first, then permalink. A page is preferred
  * on a route when its front matter says `app.primary: true` (all its routes) or lists the route
- * (`app.primary: ["/onboarding/gateways/:id"]`). The app takes the first entry among equals, so set
- * `primary` on the page it should open when several pages cover the same screen.
+ * (`app.primary: ["/onboarding/gateways/:id"]`). Such an entry also carries `"primary": true` (other entries have no
+ * `primary` key), so the app can open it whatever its page type. Set `primary` on the page the app should
+ * open when several pages cover the same screen.
  */
 const fs = require("fs");
 const path = require("path");
@@ -48,8 +49,8 @@ module.exports = function appRoutesPlugin(context) {
         (a, b) =>
           a.route.localeCompare(b.route) || Number(b.primary) - Number(a.primary) || a.permalink.localeCompare(b.permalink),
       );
-      // `primary` only orders the list; the contract's entries stay as documented.
-      pages = pages.map(({ primary, ...page }) => page);
+      // `primary` is written only where it is true, so existing entries are unchanged.
+      pages = pages.map(({ primary, ...page }) => (primary ? { ...page, primary } : page));
     },
     async postBuild({ outDir }) {
       const file = { version: 1, locale: context.i18n.currentLocale, pages };
