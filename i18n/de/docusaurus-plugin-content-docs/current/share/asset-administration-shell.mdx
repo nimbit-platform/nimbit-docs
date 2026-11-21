@@ -5,8 +5,8 @@ description: Die schreibgeschützte AAS-API einschalten, Things freigeben, Typen
 type: how-to
 sidebar_position: 2
 app:
-  routes: ["/monitor/thing-details/:id", "/onboarding/things/:id"]
-translated_from: b82e1f6
+  routes: ["/monitor/thing-details/:id", "/onboarding/things/:id", "/tenant-settings", "/knowledge/explore"]
+translated_from: e55fcb7
 ---
 
 Stellen Sie ausgewählte Things als Verwaltungsschalen (Asset Administration Shell, AAS) bereit: über eine schreibgeschützte API in der Struktur von IDTA Part 2 und als AASX-Pakete, die Sie als Dateien weitergeben. Bereitgestellt werden nur Things, die Sie einzeln freigeben, und nur für Aufrufer, die sie in IoT Breeze lesen dürfen.
@@ -28,17 +28,42 @@ Die API ist kompatibel mit den Lese-Profilen von IDTA Part 2 v3.2, die sie unter
 
 - Um ein Thing freizugeben, brauchen Sie die Berechtigung, **Aas** zu ändern. **Administrator** und **System Admin** haben sie. **Manager** und **Viewer** können Verwaltungsschalen lesen, aber keine Things freigeben.
 - Ein Tenant-Admin schaltet die Funktion ein (Schritt 1).
-- Dokumenten eine VDI-2770-Klasse zu geben braucht das Knowledge-Modul und die Berechtigung, **Knowledge** zu ändern.
+- Dokumente zu klassifizieren braucht das Knowledge-Modul und die Berechtigung, dort Dokumente an den Eintrag des Things anzuhängen.
 
 ## Schritte {#steps}
 
-1. **Funktion einschalten.** Öffnen Sie **Administration › Mandanteneinstellungen › Funktionen**, schalten Sie **Verwaltungsschale** ein und speichern Sie. Ein Standard-Herstellername, eine Kontakt-E-Mail und eine Kontakt-URL können das Typenschild überall dort füllen, wo ein Thing keinen eigenen Wert hat. Die App zeigt diese Felder noch nicht. Der Nimbit-Support legt sie für Ihren Tenant fest. Alles Weitere können Sie vorbereiten, solange die Funktion aus ist. Bereitgestellt wird erst, wenn sie an ist.
+1. **Funktion einschalten.** Öffnen Sie **Administration › Mandanteneinstellungen › Funktionen**, schalten Sie **Verwaltungsschale** ein und speichern Sie. Optional [legen Sie Ihre Standardwerte fest](#set-your-defaults) für das Typenschild. Alles Weitere können Sie vorbereiten, solange die Funktion aus ist. Bereitgestellt wird erst, wenn sie an ist.
 2. **Thing-Typ vorbereiten.** Installieren Sie das Paket `aas-essentials` unter **Administration › Mandanteneinstellungen › Pakete**. Es wird nicht automatisch installiert. Fügen Sie dem Thing-Typ das Interface `aas-exposure` hinzu, und nach Bedarf `aas-digital-nameplate`, `aas-technical-data` und `aas-carbon-footprint`. Ein Aggregat-Typ kann keine Interfaces anhängen: Deklarieren Sie `aasEnabled` und die Eigenschaften des CO2-Fußabdrucks direkt an ihm.
 3. **Thing freigeben.** Öffnen Sie das Thing. Schalten Sie im Tab **Übersicht** unter **Verwaltungsschale** den Schalter **Als Verwaltungsschale freigeben** ein. Ein Standardwert am Thing-Typ gibt nie ein Thing frei: Jedes Thing wird einzeln freigegeben, von jemandem mit der Berechtigung, **Aas** zu ändern.
 4. **Typenschild und technische Daten füllen.** Setzen Sie die Werte am Thing oder als Anfangswerte am Typ. Veröffentlicht werden nur Elemente mit Wert. Fehlt ein Element, das die Vorlage verlangt, etwa `OrderCodeOfManufacturer` oder die Adressteile `Street`, `Zipcode`, `CityTown` und `NationalCode`, wird das Submodell ohne es veröffentlicht. Ein Werkzeug, das gegen die Vorlage prüft, meldet dann die Lücke. Der Herstellername kommt vom Thing, sonst vom Standard des Tenants, sonst vom Namen des Tenants.
 5. **CO2-Fußabdruck ergänzen.** Mit `aas-carbon-footprint` am Typ setzen Sie die Werte als Anfangswerte des Typs (ein Fußabdruck für den Produkttyp) oder an jedem Thing. Pflicht sind Berechnungsmethode, CO2-Äquivalent, Bezugseinheit, Menge, Lebenszyklusphase und Veröffentlichungsdatum. Methode, Einheit und Phase nehmen nur die Werte der Listen der IDTA-Vorlage an, etwa `ISO 14067`, `kg` und `A1-A3`. Fehlt ein Pflichtwert oder ist er ungültig, wird das ganze Submodell CarbonFootprint zurückgehalten, bis Sie es vervollständigen.
-6. **Übergabedokumente ergänzen.** Ein Dokument wird nur mit einer VDI-2770-Klasse veröffentlicht, etwa `02-01` (technische Spezifikation) oder `03-01` (Betriebsanleitung). Die App kann die Klasse eines Dokuments noch nicht setzen. Dokumente erhalten ihre Klasse über die API oder vom Nimbit-Support. Solange ein Dokument keine hat, wird es nicht in der Verwaltungsschale veröffentlicht. Es zählen nur die zwölf Klassen der VDI 2770 Blatt 1:2020. Dokumente ohne Klasse, mit einem anderen Klassifikationssystem und Dateien, die nur im Ordner des Things liegen, werden nicht veröffentlicht. Das Submodell nennt, wie viele ausgelassen wurden, nicht welche.
+6. **Übergabedokumente ergänzen.** Hängen Sie die Dokumente in Knowledge an das Thing an und [klassifizieren Sie sie](#classify-documents-for-the-handover-documentation). Veröffentlicht werden nur Dokumente mit einer Klasse der VDI 2770 Blatt 1:2020. Dokumente ohne Klasse, mit einem anderen Klassifikationssystem und Dateien, die nur im Ordner des Things liegen, werden nicht veröffentlicht. Das Submodell nennt, wie viele ausgelassen wurden, nicht welche.
 7. **Ihrer Integration Zugriff geben.** Erstellen Sie einen API-Schlüssel mit dem Scope `aas:read`, wie in [Einen API-Schlüssel erstellen](../administer/api-key.mdx) beschrieben. Fügen Sie `telemetry:read` hinzu, wenn er Zeitreihenwerte braucht. Ein Schlüssel nur mit `aas:read` liest die AAS-API und sonst nichts in IoT Breeze.
+
+## Standardwerte festlegen {#set-your-defaults}
+
+Das digitale Typenschild und die Übergabedokumentation verwenden diese Werte für jedes Thing, das keine eigenen setzt.
+
+1. Öffnen Sie **Administration › Mandanteneinstellungen › Funktionen**. Ist **Verwaltungsschale** an, zeigt ihr Abschnitt **Defaults for published shells**.
+2. Geben Sie einen **Manufacturer name**, eine **Contact e-mail** und eine **Contact URL** ein. Alle drei sind optional. Ohne Herstellernamen wird der Name des Mandanten verwendet.
+3. Speichern Sie.
+
+**Shell identifiers** zeigt die Basis der Kennungen Ihrer Verwaltungsschalen. Die Angabe ist schreibgeschützt: Eine Änderung gäbe jeder veröffentlichten Verwaltungsschale eine neue Kennung, deshalb legt nur der Nimbit-Support sie fest.
+
+## Dokumente für die Übergabedokumentation klassifizieren {#classify-documents-for-the-handover-documentation}
+
+Ein Dokument erscheint in der Übergabedokumentation eines Things erst, wenn es eine Klasse der VDI 2770 Blatt 1:2020 hat. Wer Dokumente an den Eintrag des Things anhängen darf, kann sie klassifizieren.
+
+1. Öffnen Sie **Knowledge › Erkunden**, wählen Sie das Thing und öffnen Sie den Tab **Dokumente**. Ein Banner zeigt, wie viele Dokumente des Things veröffentlicht sind.
+2. Bei einem nicht klassifizierten Dokument steht **Not published in the AAS until it has a VDI 2770 class.** Wählen Sie **Classify**. Bei einem klassifizierten wählen Sie im Zeilenmenü **Edit classification…**.
+3. Wählen Sie eine der zwölf Klassen. Sie stehen in vier Gruppen: 01 Identifikation, 02 Technische Beschaffenheit, 03 Tätigkeitsbezogene Dokumente und 04 Vertragsunterlagen. Eine Betriebsanleitung etwa gehört zu `03-02` Bedienung.
+4. Prüfen Sie den Titel. Er beginnt als Dateiname und wird als Titel des Dokuments veröffentlicht.
+5. Wählen Sie die Sprache des Dokuments, eine der 24 Amtssprachen der EU.
+6. Wählen Sie **Save**.
+
+Die Zeile zeigt dann die Klasse, etwa **03-02 Operation**, und die Sprache. Um ein Dokument wieder aus der Übergabedokumentation zu nehmen, öffnen Sie den Dialog und wählen **Remove classification**.
+
+{/* TODO(product): German labels of nimbit#2336 and #2338 (Defaults for published shells, Manufacturer name, Contact e-mail, Contact URL, Shell identifiers, Classify, Edit classification…, Save, Remove classification, the not-published hint, the class names). Replace the English labels above once the app's de/common.json has them. */}
 
 ## Verwaltungsschalen mit einem API-Schlüssel lesen {#read-shells-with-an-api-key}
 
