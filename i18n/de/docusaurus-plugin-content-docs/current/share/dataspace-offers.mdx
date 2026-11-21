@@ -6,7 +6,7 @@ type: how-to
 sidebar_position: 4
 app:
   routes: ["/tenant-settings"]
-translated_from: 999253e
+translated_from: 4b535b3
 ---
 
 Nimmt Ihr Unternehmen an einem Dataspace teil, haben Sie bereits einen Connector, meist einen auf Basis der Eclipse Dataspace Components (EDC). IoT Breeze veröffentlicht die Verwaltungsschalen der Things, die Sie auswählen, als Angebote in diesem Connector und hält sie aktuell. Ihre Partner verhandeln in ihrem Connector einen Vertrag und holen die Verwaltungsschale über Ihren ab.
@@ -15,7 +15,7 @@ IoT Breeze betreibt, konfiguriert und überwacht weder Ihren Connector noch sein
 
 ## Voraussetzungen {#before-you-start}
 
-- Sie haben einen eigenen Connector. IoT Breeze ist mit der sovity EDC Community Edition getestet. Tractus-X EDC ist in dem, was IoT Breeze schreibt, berücksichtigt, aber noch nicht getestet. Eine Dataspace-Zertifizierung (etwa Catena-X oder Manufacturing-X) wird nicht beansprucht. Prüfen Sie die Durchsetzung der Partner an Ihrem eigenen Connector, bevor Sie sich darauf verlassen.
+- Sie haben einen eigenen Connector auf EDC-Basis. Die sovity EDC Community Edition ist der Connector, mit dem IoT Breeze durchgängig getestet ist. Eine Dataspace-Zertifizierung wird nicht beansprucht. Prüfen Sie die Durchsetzung der Partner an Ihrem eigenen Connector, bevor Sie sich darauf verlassen.
 - Ihr Plattformbetreiber hat Dataspace-Angebote für die Installation eingerichtet: die Adresse, über die Ihr Connector die AAS-API erreicht, und für einen Connector unter einer privaten Netzwerkadresse die Erlaubnis, ihn aufzurufen. Sonst schlägt der Abgleich mit einer Meldung fehl, die das sagt.
 - Die anzubietenden Things sind als Verwaltungsschalen freigegeben, siehe [Things als Verwaltungsschalen veröffentlichen](./asset-administration-shell.mdx). Ihr Thing-Typ hat das Interface `dataspace-offer` aus dem Paket `aas-essentials`.
 - Den Connector zu sehen braucht die Berechtigung, **Tenant** zu lesen. Ihn zu speichern, abzugleichen oder zu entfernen braucht die Berechtigungen, **Tenant** und **Aas** zu ändern. Ein Thing anzubieten braucht die Berechtigung, **Aas** zu ändern, und die Berechtigung, dieses **Thing** zu ändern. **Administrator** hat alle.
@@ -23,19 +23,18 @@ IoT Breeze betreibt, konfiguriert und überwacht weder Ihren Connector noch sein
 ## Schritte {#steps}
 
 1. **Funktion einschalten.** Öffnen Sie **Administration › Mandanteneinstellungen › Funktionen**, schalten Sie **Verwaltungsschale** und **Dataspace-Angebote** ein und speichern Sie. Die Karte **Dataspace-Connector** erscheint unten im Tab, sobald die Funktion gespeichert ist.
-2. **Rückruf-Schlüssel anlegen.** Ihr Connector holt damit die angebotenen Verwaltungsschalen ab. Legen Sie unter **Administration › API-Schlüssel** ein Dienstkonto für den Dataspace an und geben Sie ihm keine Gruppe, keine Freigabe und keinen Besitz von Things. Erstellen Sie dafür einen Schlüssel nur mit dem Scope `aas:read`. Siehe [Einen API-Schlüssel erstellen](../administer/api-key.mdx). Persönliche Schlüssel werden abgelehnt.
-3. **Verbindung speichern.** Füllen Sie auf der Karte **Dataspace-Connector** aus:
+2. **Verbindung speichern.** Füllen Sie auf der Karte **Dataspace-Connector** aus:
 
    | Feld | Wert |
    | --- | --- |
+   | Art | **Andere (EDC-basiert)**. |
    | **URL der Management-API** | Die Management-API Ihres Connectors, endet vor `/v3`, zum Beispiel `https://connector.example.com/api/management`. Nur `https`, außer Ihr Betreiber gibt die Adresse frei. |
-   | **Connector-Distribution** | **sovity EDC Community Edition** oder **Tractus-X EDC**. |
-   | **Partner** | Die Teilnehmer-IDs (oder BPNs) der Partner, die die Angebote erhalten dürfen, eine pro Zeile. Leer lässt niemanden zu. |
-   | **Schlüssel der Management-API** | Der Schlüssel der Management-API Ihres Connectors. |
-   | **Rückruf-Schlüssel** | Der Schlüssel aus Schritt 2. |
+   | **Partner** | Die Teilnehmer-IDs der Partner, die die Angebote erhalten dürfen, eine pro Zeile. Leer lässt niemanden zu. |
+   | **Schlüssel der Management-API** | Der Schlüssel der Management-API Ihres Connectors. Beim ersten Mal erforderlich. |
+   | **Rückruf-Schlüssel** | Lassen Sie ihn leer. Nimbit legt dann den Schlüssel an, mit dem Ihr Connector die angebotenen Verwaltungsschalen abholt, und ersetzt ihn, bevor er abläuft. |
 
-   Wählen Sie **Connector speichern**. Beim ersten Mal sind beide Schlüssel nötig. Danach zeigen sie **Hinterlegt**; lassen Sie ein Feld leer, um den gespeicherten Schlüssel zu behalten. Beim Speichern wird der Rückruf-Schlüssel geprüft und abgelehnt, wenn er zu einem anderen Tenant gehört, ein persönlicher Schlüssel ist, einen anderen Scope als `aas:read` hat oder sein Konto bereits etwas sieht. Beide Schlüssel werden verschlüsselt gespeichert und nie wieder angezeigt.
-4. **Things anbieten.** Öffnen Sie jedes Thing. Schalten Sie im Tab **Übersicht** unter **Dataspace** den Schalter **Im Dataspace anbieten** ein. Jedes Thing wird einzeln angeboten: Ein Standardwert am Thing-Typ bietet keines an. Ein Thing, das nicht als Verwaltungsschale freigegeben ist, wird nicht angeboten, auch wenn der Schalter an ist.
+   Wählen Sie **Connector speichern**. Die Karte zeigt dann **Von Nimbit verwaltet · Schlüssel wird am … erneuert**, mit dem Datum. Der Schlüssel selbst wird nie angezeigt. Danach zeigt der Schlüssel der Management-API **Hinterlegt**; lassen Sie das Feld leer, um ihn zu behalten. Schlüssel werden verschlüsselt gespeichert.
+3. **Things anbieten.** Öffnen Sie jedes Thing. Schalten Sie im Tab **Übersicht** unter **Dataspace** den Schalter **Im Dataspace anbieten** ein. Jedes Thing wird einzeln angeboten: Ein Standardwert am Thing-Typ bietet keines an. Ein Thing, das nicht als Verwaltungsschale freigegeben ist, wird nicht angeboten, auch wenn der Schalter an ist.
 
 ## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
@@ -47,13 +46,17 @@ Was ein Partner erhält: einen Katalogeintrag je angebotenem Thing und nach eine
 
 Ein Angebot, das Sie zurückziehen, während ein Partner noch eine Vertragsvereinbarung dafür hält, verschwindet sofort aus dem Katalog. Der Connector behält das Asset, bis die Vereinbarung endet, und IoT Breeze entfernt es dann.
 
-## Den Rückruf-Schlüssel erneuern {#renew-the-callback-key}
+## Der Rückruf-Schlüssel {#the-callback-key}
 
-Der Rückruf-Schlüssel läuft ab wie jeder Schlüssel, standardmäßig nach 90 Tagen. Erstellen Sie vorher einen neuen Schlüssel für **dasselbe** Dienstkonto und speichern Sie die Verbindung damit. Der nächste Abgleich gibt ihn an Ihren Connector. Der alte Schlüssel liest die angebotenen Things weiter, bis Sie ihn widerrufen, und die Karte weist darauf hin. Widerrufen Sie ihn, sobald laufende Übertragungen beendet sind.
+**Von Nimbit verwaltet (Standard).** Nimbit ersetzt den Schlüssel, bevor er abläuft, und gibt den neuen mit dem nächsten Abgleich an Ihren Connector. Mit **Jetzt erneuern** ersetzen Sie ihn sofort. Unter **Administration › API-Schlüssel** zeigt sein Dienstkonto **Von Nimbit verwaltet** und lässt sich dort weder bearbeiten noch mit Schlüsseln versehen oder löschen.
+
+**Eigener Schlüssel.** Wenn nötig, öffnen Sie **Erweitert: eigenen Schlüssel verwenden** und geben selbst einen Schlüssel ein. Erstellen Sie ihn für ein eigens für den Dataspace angelegtes Dienstkonto ohne Gruppe, Freigabe oder Besitz von Things, nur mit dem Scope `aas:read`; siehe [Einen API-Schlüssel erstellen](../administer/api-key.mdx). Beim Speichern werden ein persönlicher Schlüssel, ein Schlüssel eines anderen Tenants, ein Schlüssel mit einem anderen Scope und ein Schlüssel, dessen Konto bereits etwas sieht, abgelehnt. Nimbit erneuert, widerruft oder löscht einen von Ihnen eingegebenen Schlüssel nie. Er läuft ab wie jeder Schlüssel, standardmäßig nach 90 Tagen: Erstellen Sie vorher einen neuen Schlüssel für **dasselbe** Dienstkonto und speichern Sie die Verbindung damit. Der alte Schlüssel liest die angebotenen Things weiter, bis Sie ihn widerrufen, und die Karte weist darauf hin. Widerrufen Sie ihn, sobald laufende Übertragungen beendet sind.
+
+**Zu einem verwalteten Schlüssel wechseln.** Eine Verbindung mit eigenem Schlüssel zeigt **Schlüssel von Nimbit verwalten lassen**. Nach dem Wechsel liest das alte Dienstkonto nichts mehr. Löschen Sie es im Identity Directory.
 
 ## Zu einem anderen Connector wechseln oder ihn entfernen {#move-to-another-connector-or-remove-it}
 
-- **Anderer Connector**: Eine neue **URL der Management-API** braucht einen neuen Schlüssel der Management-API und einen Rückruf-Schlüssel eines **neuen** Dienstkontos. IoT Breeze zieht zuerst alles aus dem alten Connector zurück. Bleibt dort etwas übrig, hält das Speichern an und sagt, was, und Sie können trotzdem wechseln. Widerrufen Sie danach den alten Rückruf-Schlüssel im Identity Directory: Der alte Connector hat ihn noch.
+- **Anderer Connector**: Eine neue **URL der Management-API** braucht einen neuen Schlüssel der Management-API. Mit eigenem Rückruf-Schlüssel braucht sie außerdem einen Schlüssel eines **neuen** Dienstkontos; widerrufen Sie den alten danach im Identity Directory, denn der alte Connector hat ihn noch. IoT Breeze zieht zuerst alles aus dem alten Connector zurück. Bleibt dort etwas übrig, hält das Speichern an und sagt, was, und Sie können trotzdem wechseln.
 - **Entfernen**: **Connector entfernen** zieht zuerst jedes Angebot zurück. Ist der Connector nicht erreichbar oder halten Vereinbarungen noch Assets, können Sie die Verbindung trotzdem entfernen. Was übrig ist, bleibt im Connector, bis dessen Betreiber es entfernt.
 
 ## Wer was sieht {#who-sees-what}
@@ -64,7 +67,8 @@ Der Rückruf-Schlüssel läuft ab wie jeder Schlüssel, standardmäßig nach 90 
 
 ## Grenzen {#limits}
 
-- Ein Connector und eine Richtlinie je Tenant: Jedes angebotene Thing geht an dieselben Partner.
+- Eine Verbindung je Dataspace, mit einer Richtlinie: Jedes angebotene Thing geht an dieselben Partner.
+- Eine früher für Catena-X eingerichtete Verbindung zeigt einen Hinweis, dass ihr Policy-Vokabular nicht gegen einen laufenden Connector geprüft ist.
 - Ein Asset je Thing, mit der ganzen Verwaltungsschale. Keine Angebote je Submodell und keine Einträge in einer Registry oder Digital Twin Registry.
 - Partner erhalten keine Zeitreihenwerte: Die neuesten Werte sind leer, und der Link auf die Zeitreihenroute funktioniert über den Connector nicht.
 - Dokumente erscheinen nur als Metadaten: Ihre Links zeigen auf eine Route, die Partner über den Connector nicht aufrufen können.
