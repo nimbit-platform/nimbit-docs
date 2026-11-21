@@ -6,7 +6,7 @@ type: how-to
 sidebar_position: 2
 app:
   routes: ["/monitor/thing-details/:id", "/onboarding/things/:id", "/tenant-settings", "/knowledge/explore"]
-translated_from: e55fcb7
+translated_from: cc88e41
 ---
 
 Stellen Sie ausgewählte Things als Verwaltungsschalen (Asset Administration Shell, AAS) bereit: über eine schreibgeschützte API in der Struktur von IDTA Part 2 und als AASX-Pakete, die Sie als Dateien weitergeben. Bereitgestellt werden nur Things, die Sie einzeln freigeben, und nur für Aufrufer, die sie in IoT Breeze lesen dürfen.
@@ -44,26 +44,24 @@ Die API ist kompatibel mit den Lese-Profilen von IDTA Part 2 v3.2, die sie unter
 
 Das digitale Typenschild und die Übergabedokumentation verwenden diese Werte für jedes Thing, das keine eigenen setzt.
 
-1. Öffnen Sie **Administration › Mandanteneinstellungen › Funktionen**. Ist **Verwaltungsschale** an, zeigt ihr Abschnitt **Defaults for published shells**.
-2. Geben Sie einen **Manufacturer name**, eine **Contact e-mail** und eine **Contact URL** ein. Alle drei sind optional. Ohne Herstellernamen wird der Name des Mandanten verwendet.
+1. Öffnen Sie **Administration › Mandanteneinstellungen › Funktionen**. Ist **Verwaltungsschale** an, zeigt ihr Abschnitt **Vorgaben für veröffentlichte Verwaltungsschalen**.
+2. Geben Sie **Herstellername**, **Kontakt-E-Mail** und **Kontakt-URL** ein. Alle drei sind optional. Ohne Herstellernamen wird der Name des Tenants verwendet.
 3. Speichern Sie.
 
-**Shell identifiers** zeigt die Basis der Kennungen Ihrer Verwaltungsschalen. Die Angabe ist schreibgeschützt: Eine Änderung gäbe jeder veröffentlichten Verwaltungsschale eine neue Kennung, deshalb legt nur der Nimbit-Support sie fest.
+**Kennungen der Verwaltungsschalen** zeigt die Basis der Kennungen Ihrer Verwaltungsschalen. Die Angabe ist schreibgeschützt: Eine Änderung gäbe jeder veröffentlichten Verwaltungsschale eine neue Kennung, deshalb legt nur der Nimbit-Support sie fest.
 
 ## Dokumente für die Übergabedokumentation klassifizieren {#classify-documents-for-the-handover-documentation}
 
 Ein Dokument erscheint in der Übergabedokumentation eines Things erst, wenn es eine Klasse der VDI 2770 Blatt 1:2020 hat. Wer Dokumente an den Eintrag des Things anhängen darf, kann sie klassifizieren.
 
 1. Öffnen Sie **Knowledge › Erkunden**, wählen Sie das Thing und öffnen Sie den Tab **Dokumente**. Ein Banner zeigt, wie viele Dokumente des Things veröffentlicht sind.
-2. Bei einem nicht klassifizierten Dokument steht **Not published in the AAS until it has a VDI 2770 class.** Wählen Sie **Classify**. Bei einem klassifizierten wählen Sie im Zeilenmenü **Edit classification…**.
-3. Wählen Sie eine der zwölf Klassen. Sie stehen in vier Gruppen: 01 Identifikation, 02 Technische Beschaffenheit, 03 Tätigkeitsbezogene Dokumente und 04 Vertragsunterlagen. Eine Betriebsanleitung etwa gehört zu `03-02` Bedienung.
-4. Prüfen Sie den Titel. Er beginnt als Dateiname und wird als Titel des Dokuments veröffentlicht.
-5. Wählen Sie die Sprache des Dokuments, eine der 24 Amtssprachen der EU.
-6. Wählen Sie **Save**.
+2. Bei einem nicht klassifizierten Dokument steht **Wird erst mit einer VDI-2770-Klasse in der AAS veröffentlicht.** Wählen Sie **Klassifizieren**. Bei einem klassifizierten wählen Sie im Zeilenmenü **Klassifizierung bearbeiten…**.
+3. Wählen Sie unter **Dokumentklasse** eine der zwölf Klassen. Sie stehen in vier Gruppen: 01 Identifikation, 02 Technische Beschaffenheit, 03 Tätigkeitsbezogene Dokumente und 04 Vertragsunterlagen. Eine Betriebsanleitung etwa gehört zu `03-02` Bedienung.
+4. Prüfen Sie den **Titel**. Er beginnt als Dateiname und wird als Titel des Dokuments veröffentlicht.
+5. Wählen Sie unter **Sprache** die Sprache des Dokuments, eine der 24 Amtssprachen der EU.
+6. Wählen Sie **Speichern**.
 
-Die Zeile zeigt dann die Klasse, etwa **03-02 Operation**, und die Sprache. Um ein Dokument wieder aus der Übergabedokumentation zu nehmen, öffnen Sie den Dialog und wählen **Remove classification**.
-
-{/* TODO(product): German labels of nimbit#2336 and #2338 (Defaults for published shells, Manufacturer name, Contact e-mail, Contact URL, Shell identifiers, Classify, Edit classification…, Save, Remove classification, the not-published hint, the class names). Replace the English labels above once the app's de/common.json has them. */}
+Die Zeile zeigt dann die Klasse, etwa **03-02 Bedienung**, und die Sprache. Um ein Dokument wieder aus der Übergabedokumentation zu nehmen, öffnen Sie den Dialog und wählen **Klassifizierung entfernen**.
 
 ## Verwaltungsschalen mit einem API-Schlüssel lesen {#read-shells-with-an-api-key}
 
