@@ -14,6 +14,8 @@ This page lists changes merged since 0.12.5 (17 August 2026). They are not relea
 ## New
 
 **Dashboards**
+- Charts: add a calculated series, worked out from measures of the selected thing or of fixed things. Select **Add calculated series** next to **Add measure**. A calculated series can't use a calculated measure as input yet.
+- Measure pickers mark calculated measures with ƒx.
 - Widgets: a new widget picker and widget setup, new widgets, and default dashboards.
 - Widgets: color a value by thresholds, with help text in the widget setup.
 - Incidents widget: shows active or all incidents on a dashboard.
@@ -25,6 +27,33 @@ This page lists changes merged since 0.12.5 (17 August 2026). They are not relea
 - Thing type tabs are redesigned: Things, Schema, Statistics, Rollups, Actions, Dashboards, Versions and Documents.
 - On the **Actions** tab you can fire an action and see its on/off state.
 - The thing page and the interface list and detail pages follow the new thing type style.
+- Calculated measures: add a measure to a thing type that is worked out from a formula over its other measures each time it is read. Nothing is stored. The formula is checked as you type, and **Test on a thing** shows its latest value and the last 10 hours once the thing type is published. Rules can't use calculated measures.
+- Aggregate things: a thing type of the kind **Aggregate thing** holds member things in named slots and combines their measures in calculated measures, for example the total power of all inverters of a plant. Members are added on the thing's **Members** tab. A calculated measure over a slot shows how many members report, for example "2 of 2 reporting".
+- Things list: aggregate things carry an **Aggregate** chip, and the new **Kind** filter shows devices or aggregate things.
+- A device field named like a calculated measure is stored but is not what charts show. It is reported as the pipeline error **Calculated measure sent**.
+
+**Asset Administration Shell**
+- A read-only AAS API at `/ocb/aas/v3`, compatible with the read profiles of IDTA Part 2 v3.2 it lists at `/description`. It is not certified. It serves only things you expose one by one with **Expose as Asset Administration Shell**, to callers who may read them. API keys need the scope `aas:read`.
+- Read-only AAS Registry, Submodel Registry and Discovery routes, built from the shells you can read.
+- Submodels: Digital Nameplate, Technical Data, Handover Documentation (VDI 2770), Time Series, Carbon Footprint, and Hierarchical Structures for aggregate things. Shells can also be exported as AASX packages.
+- Tenant Settings › Features: **Defaults for published shells** sets the manufacturer name, contact e-mail and contact URL for every thing that sets none.
+- Knowledge › Explore: **Classify** a thing's documents by VDI 2770. Only classified documents are published in the Handover Documentation.
+
+**Product links**
+- Give a thing or thing type a public page with the fields and documents you publish, and print its label as a QR code or Data Matrix.
+- Product identifiers (GS1 Digital Link, IEC 61406, DID, DOI) can be added to a link, and you can claim your GS1 company prefix, which Nimbit verifies. Both are API only, with a signed-in user's token: API keys are refused, and there is no screen yet.
+- A GS1 Digital Link on the link address opens the product link. Serial numbers open the item's own link only after a tenant admin turns on **Resolve serial numbers**. Until then they open the model's or batch's link.
+- The public link also answers in AAS v3.2 form (`Accept: application/aas+json`). It can return a single data element, and it can be read by product identifier.
+
+**Dataspace**
+- Offer exposed things as Asset Administration Shells in your own EDC-based connector. IoT Breeze keeps the offers in step. New connections are **Other (EDC-based)**; sovity EDC Community Edition is the tested connector. No dataspace certification is claimed.
+- Nimbit creates the callback key your connector uses and rotates it before it expires. **Rotate now** replaces it at once. You can still use your own key.
+- One connection per dataspace, with one partner policy.
+- Existing Catena-X connections show a warning that their policy vocabulary is not verified against a running connector.
+- Administration › API keys: the dataspace service account Nimbit manages shows **Managed by Nimbit** and can't be edited, given keys or deleted there.
+
+**Help**
+- The help panel shows the page of the new documentation site that covers the screen you are on, with related pages, and can open in its own window.
 
 **Sign-in**
 - IoT Breeze sends you to the NimBit sign-in page, and invitations are accepted there.

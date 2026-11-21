@@ -1,0 +1,64 @@
+---
+title: Add a calculated series to a chart
+sidebar_label: Calculated series
+description: Draw a series on a chart that is worked out from measures of the selected thing or of fixed things, without changing the thing type.
+type: how-to
+sidebar_position: 3.5
+app:
+  routes: ["/dashboards/:id"]
+---
+
+A calculated series is a formula row in one chart, for example the sum of the power of three fixed inverters, or a temperature converted to °F. It is saved with the widget, not on the thing type. To make a formula available everywhere a measure is read, add a [calculated measure](../model/calculated-measures.mdx) to the thing type instead.
+
+## Before you start
+
+- You need the **Dashboard** update permission.
+- The chart is a **Chart** widget, or an older **Line**, **Bar** or **Combination** widget. Calculated series are not available on snapshot, gauge or state widgets, or while the chart's X axis is a measure.
+- To read fixed things, everyone who views the dashboard needs read access to each of them.
+
+## Steps
+
+1. Open the dashboard, edit it and open the chart's settings.
+2. Under the measure rows, select **Add calculated series**, next to **Add measure**.
+3. Enter a **Name**, or keep **Calculated series 1**. The **Unit** is filled in when the expression is one input, or a sum or difference of inputs with the same unit. A unit you type is kept.
+4. Under **Reads**, choose **Selected thing** (the thing the widget shows) or **Fixed things**. All rows of a widget read the same kind. On a Smart dashboard the widget's own follow or pin setting decides.
+5. Add the inputs. For each, set the **Alias**, with **Fixed things** the things (**Add thing**), the **Measure**, **Per step**, **When missing** and, with **Hold last value**, **Hold for at most**. An input that reads several things is a list: use it in `sum(…)` or another list function.
+6. Enter the **Expression**, for example `sum(inverters)`. It is checked as you type, as in a calculated measure.
+7. Select **Test**. It runs the series on the latest 10 intervals of the chart and shows **Time**, each input and **Result**, and for inputs over several things how many of them reported.
+8. Optionally open **Advanced** for **Step** and **Combine steps by**.
+9. Save the widget.
+
+## Check that it worked
+
+The row shows ƒx and is drawn like a measure row, with its own color, line style and axis. If a series can't be drawn, the chart says how many could not be drawn: hover for the reasons. Each series is read on its own, so one failing series doesn't hide the others.
+
+## How it differs from a calculated measure
+
+| | Calculated series | Calculated measure |
+| --- | --- | --- |
+| Lives in | One chart widget | The thing type, for every reader |
+| Inputs | Stored numeric measures only, not calculated measures | Measures of the type, calculated measures, slots of an aggregate |
+| **Per step** | Average, sum, minimum, maximum, first value, last value, count | Also **Increase**, **Integral**, changes, time-weighted averages and statistics |
+| **Combine steps by** | Average, sum, minimum, maximum, first value, last value | Also range, count and statistics |
+| Coverage | The test shows how many things reported | **Count reporting members** and "n of m reporting" |
+
+The full list is in [Formula reference](../model/formula-reference.mdx).
+
+## If it doesn't work
+
+- **"… a calculated series cannot read a calculated measure yet"**: choose a stored measure as its input, or show the calculated measure as a measure of its own.
+- **"A calculated series needs a time interval"**: choose a chart detail other than the whole range.
+- **"The step of … does not divide the detail of the chart"**: set **Step** to **Automatic**, or to a step that divides it.
+- **"This calculated series follows the selected thing, and no thing is selected"**: select a thing, or read **Fixed things**.
+- **"… reads too many things"** or **"… would read too many values for this time range"**: use fewer things or a shorter time range.
+
+## Limits
+
+- **Only while** and interval filters don't apply to calculated series yet.
+- Not available for sample or file data.
+- At most 16 inputs, a 2048-character expression and 1000 things per input.
+- A widget can't switch to following the selected thing while a series reads several fixed things.
+
+## Related
+
+- [Add a calculated measure](../model/calculated-measures.mdx) · [Formula reference](../model/formula-reference.mdx) · [Widget gallery](./widgets.mdx#chart)

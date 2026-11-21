@@ -24,8 +24,9 @@ flowchart LR
 | --- | --- | --- |
 | **Thing type** | The model of a device: its measures and properties, plus settings such as the connector, schema evolution and the cleanup pipeline. | **Settings › Onboarding › Thing Types** |
 | **Thing** | One real device or asset. It has a name, an ID the device uses, one thing type, an organization and groups. | **Settings › Onboarding › Things** |
+| **Aggregate thing** | A thing without a device, of a thing type of the kind **Aggregate thing**. It holds member things in slots and combines their measures in calculated measures. See [Combine things into an aggregate thing](./aggregate-things.mdx). | **Settings › Onboarding › Things**, **Members** tab |
 | **Interface** | A named, versioned set of fields. A thing type that attaches it gets those fields. | **Settings › Onboarding › Interfaces** |
-| **Measure** | A value the device sends over time, such as `temperature`. | Schema of a thing type or interface |
+| **Measure** | A value the device sends over time, such as `temperature`. A **calculated measure** is worked out from a formula when it is read; see [Add a calculated measure](./calculated-measures.mdx). | Schema of a thing type or interface |
 | **Property** | A fixed fact about the device, such as a serial number or a rated flow. | Schema of a thing type or interface |
 
 Measures and properties are both called fields. The full list of options is in [Measure and property types](./measure-types.mdx).

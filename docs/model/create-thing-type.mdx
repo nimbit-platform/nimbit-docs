@@ -24,6 +24,7 @@ Define the values a kind of device sends and the fixed facts it has, and publish
 
    | Field | What to enter |
    | --- | --- |
+   | **Kind** | **Device**: things of this type send their own data. **Aggregate thing**: things of this type hold member things and combine their measures; see [Combine things into an aggregate thing](./aggregate-things.mdx). The kind can't be changed later. |
    | **Display name** | The name people see, for example `Room sensor`. Required. |
    | **Name** | The technical name. It is filled in from the display name. It must be unique in your tenant, can't be changed later, and may use letters, digits and underscores. It can't start with a digit or an underscore, and can't end with an underscore. |
    | **Connector** | The service the devices send data through, usually **Nimbit**. You see the connectors your tenant has switched on. |
@@ -32,7 +33,7 @@ Define the values a kind of device sends and the fixed facts it has, and publish
    | **Quantile Profile Generation** | Calculates percentile profiles regularly, used for anomaly detection. Leave it off unless you need that. |
 
 3. Select **Save**. The thing type page opens on **Published · v1**.
-4. Open **Schema**, and in the **Measures** pane select **Add measure**. Enter the **Display name**, check the **Name** matches what the device sends, choose the **Type** and, for numbers, the **Unit of measure**. Save. Repeat for each value.
+4. Open **Schema**, and in the **Measures** pane select **Add measure**. Enter the **Display name**, check the **Name** matches what the device sends, choose the **Type** and, for numbers, the **Unit of measure**. Save. Repeat for each value. For a value worked out from others, select **Add calculated measure** instead; see [Add a calculated measure](./calculated-measures.mdx).
 5. In the **Properties** pane, select **Add property** for each fixed fact, such as a serial number. Set **Timeseries relevant** if you want to filter or group telemetry by it.
 6. Review the draft. The header shows the draft and its number of changes, for example **Draft v2 · 2 changes**. Select **Compare with v1** in the draft line to check it.
 7. Select **Publish v2** in the header, describe the change in **Changelog** and confirm.
