@@ -6,14 +6,14 @@ type: how-to
 app:
   routes: ["/onboarding/thing-types", "/onboarding/thing-types/:id"]
   primary: true
-translated_from: 3041c36
+translated_from: 9db83b3
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
 
 Legen Sie die Werte fest, die eine Art von Gerät sendet, und die festen Angaben, die sie hat, und veröffentlichen Sie dieses Schema. Wie Thing-Typen zu Things und Interfaces stehen, lesen Sie unter [Thing-Typen, Things und Interfaces](./things-and-types.mdx).
 
-## Bevor Sie beginnen {#before-you-start}
+## Voraussetzungen {#before-you-start}
 
 - Ihre Rolle darf Thing-Typen anlegen und bearbeiten. Fehlt **Thing Typen** unter **Einstellungen › Onboarding**, fragen Sie Ihren Tenant-Admin.
 - Kennen Sie die Namen, unter denen Ihr Gerät seine Werte sendet, zum Beispiel `temperature`.
@@ -25,6 +25,7 @@ Legen Sie die Werte fest, die eine Art von Gerät sendet, und die festen Angaben
 
    | Feld | Was Sie eingeben |
    | --- | --- |
+   | **Art** | **Gerät**: Things dieses Typs senden eigene Daten. **Aggregat-Thing**: Things dieses Typs halten Mitglieds-Things und kombinieren deren Messwerte; siehe [Things zu einem Aggregat-Thing zusammenfassen](./aggregate-things.mdx). Die Art lässt sich später nicht ändern. |
    | **Anzeigename** | Der Name, den Menschen sehen, zum Beispiel `Room sensor`. Pflicht. |
    | **Name** | Der technische Name. Er wird aus dem Anzeigenamen ausgefüllt. Er muss in Ihrem Tenant eindeutig sein, lässt sich später nicht ändern und darf Buchstaben, Ziffern und Unterstriche enthalten. Er darf nicht mit einer Ziffer oder einem Unterstrich beginnen und nicht mit einem Unterstrich enden. |
    | **Konnektor** | Der Dienst, über den die Geräte Daten senden, meist **Nimbit**. Sie sehen die Konnektoren, die Ihr Tenant eingeschaltet hat. |
@@ -33,7 +34,7 @@ Legen Sie die Werte fest, die eine Art von Gerät sendet, und die festen Angaben
    | **Quantilprofil-Generierung** | Berechnet regelmäßig Perzentilprofile, die für die Anomalieerkennung dienen. Lassen Sie sie aus, es sei denn, Sie brauchen das. |
 
 3. Wählen Sie **Speichern**. Die Seite des Thing-Typs öffnet sich mit **Veröffentlicht · v1**.
-4. Öffnen Sie **Schema** und wählen Sie im Bereich **Telemetrien** **Telemetrie hinzufügen**. Geben Sie den **Anzeigenamen** ein, prüfen Sie, dass der **Name** dem entspricht, was das Gerät sendet, wählen Sie den **Typ** und bei Zahlen die **Maßeinheit**. Speichern Sie. Wiederholen Sie das für jeden Wert.
+4. Öffnen Sie **Schema** und wählen Sie im Bereich **Telemetrien** **Telemetrie hinzufügen**. Geben Sie den **Anzeigenamen** ein, prüfen Sie, dass der **Name** dem entspricht, was das Gerät sendet, wählen Sie den **Typ** und bei Zahlen die **Maßeinheit**. Speichern Sie. Wiederholen Sie das für jeden Wert. Für einen Wert, der aus anderen berechnet wird, wählen Sie stattdessen **Berechnete Telemetrie hinzufügen**; siehe [Einen berechneten Messwert hinzufügen](./calculated-measures.mdx).
 5. Wählen Sie im Bereich **Eigenschaften** für jede feste Angabe, etwa eine Seriennummer, **Eigenschaft erstellen**. Setzen Sie **Zeitreihenrelevant**, wenn Sie Telemetrie danach filtern oder gruppieren möchten.
 6. Prüfen Sie den Entwurf. Der Kopfbereich zeigt den Entwurf und die Zahl seiner Änderungen, zum Beispiel **Entwurf v2 · 2 Änderungen**. Wählen Sie in der Entwurfszeile **Mit v1 vergleichen**, um ihn zu prüfen.
 7. Wählen Sie im Kopfbereich **v2 veröffentlichen**, beschreiben Sie die Änderung in **Änderungsnotiz** und bestätigen Sie.

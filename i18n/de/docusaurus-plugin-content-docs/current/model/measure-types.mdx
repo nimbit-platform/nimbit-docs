@@ -5,7 +5,7 @@ description: Jeder Datentyp, jedes Feld, jede Option und Validierungsregel der F
 type: reference
 app:
   routes: ["/onboarding/thing-types/:id", "/onboarding/interfaces/:id"]
-translated_from: 153e54b
+translated_from: 9db83b3
 ---
 
 Die Formulare für Messwerte und Eigenschaften sind auf dem Tab **Schema** eines Thing-Typs und auf dem Tab **Schema** eines Interfaces gleich, außer wo vermerkt. Die Formulare öffnen sich über **Telemetrie hinzufügen**, **Eigenschaft erstellen** oder die Bearbeiten-Schaltfläche einer Zeile.
@@ -40,6 +40,8 @@ Das Eigenschaften-Formular hat keine Typauswahl: Eine Eigenschaft, die Sie in Io
 | **In der Übersicht anzeigen** | Nur Thing-Typen | Heftet den Messwert an die Spitze der Live-Werte in der Übersicht jedes Things dieses Typs. Ist nichts angeheftet, wechselt die Übersicht durch alle Messwerte. Ein Schalter in der Liste der Messwerte, sofort gespeichert. |
 
 Ein `boolean`-Messwert hat nur **Anzeigename**, **Name**, **Beschreibung** (und **Aliase** bei einem Interface).
+
+Ein berechneter Messwert (**Berechnete Telemetrie hinzufügen**) ist `numeric` oder `boolean` und hat weder **Ausreißer ignorieren**, **Versatz**, **Faktor** noch Aliase: Sein Wert kommt aus einer Formel. Siehe [Einen berechneten Messwert hinzufügen](./calculated-measures.mdx).
 
 ## Felder von Eigenschaften {#property-fields}
 
