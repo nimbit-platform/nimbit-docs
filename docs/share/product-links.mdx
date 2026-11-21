@@ -5,7 +5,7 @@ description: Give a thing or thing type a public page with the fields and docume
 type: how-to
 sidebar_position: 3
 app:
-  routes: ["/monitor/thing-details/:id", "/onboarding/things/:id", "/onboarding/thing-types/:id"]
+  routes: ["/monitor/thing-details/:id", "/onboarding/things/:id", "/onboarding/thing-types/:id", "/tenant-settings"]
 ---
 
 A product link is a web address printed on a product, usually as a QR code. It opens a public page with the fields and documents you publish for that thing or thing type, and nothing else.
@@ -44,17 +44,52 @@ The QR code and **Print label** appear once the link is active.
 
 1. Select **Print label**.
 2. Choose a **Label size**: **Small**, **Medium** or **Large**. Optionally enter a **Caption**.
-3. Select **Print**. Print at actual size (100 %), or save as PDF. The label shows the QR code and the link as text.
+3. Under **Code type**, choose **QR code** or **Data Matrix**. Both encode the same link, so either opens the same page.
+4. Select **Print**. Print at actual size (100 %), or save as PDF. The label shows the code and the link as text.
 
-| Size | Label | QR code | Caption |
-| --- | --- | --- | --- |
-| **Small** | 40 × 32 mm | 20 mm | 1 line |
-| **Medium** | 62 × 50 mm | 32 mm | 2 lines |
-| **Large** | 90 × 72 mm | 48 mm | 3 lines |
+| Size | Label | Code | Smallest module | Caption |
+| --- | --- | --- | --- | --- |
+| **Small** | 40 × 32 mm | 20 mm | 0.40 mm | 1 line |
+| **Medium** | 62 × 50 mm | 32 mm | 0.50 mm | 2 lines |
+| **Large** | 90 × 72 mm | 48 mm | 0.60 mm | 3 lines |
 
-The QR code size includes the blank margin around it. **Small** is checked to scan when printed at 203 and 300 dpi, the usual resolutions of thermal label printers.
+The code size includes the blank margin around it. A QR code (ISO/IEC 18004) uses error correction level M on **Small** and Q on the larger sizes. A Data Matrix (ISO/IEC 16022, ECC 200) is square, from 10 × 10 to 48 × 48 modules, and the smallest symbol that holds the link is used. Both are checked to scan when printed at 203 and 300 dpi, the usual resolutions of thermal label printers. If the link is too long for a size's smallest module, that size prints a notice instead of a code: choose a larger size.
+
+QR code and Data Matrix are two of the data carriers EN 18220 names. Which one a product group needs is set by its own regulation. RFID and NFC tags, print-quality grading of real prints and an IEC 61406 frame around the code are not covered.
 
 Labels exist only for an active link.
+
+## Add product identifiers
+
+Besides its own address, a link can carry identifiers your products already have, such as a GTIN. The link's own token stays its primary identifier.
+
+| Scheme | Identifier |
+| --- | --- |
+| `gs1_digital_link` | A GTIN (AI 01), optionally with variant (22), lot (10) and serial (21), in that order. The check digit is verified and the GTIN padded to 14 digits. |
+| `iec61406` | An `https` identification link. |
+| `did` | A decentralized identifier. |
+| `doi` | A digital object identifier. |
+
+- **Item or model**: a serial names one item, so it belongs on a thing's link. A lot names a batch, and a GTIN alone or with a variant names a model, so they belong on a thing type's link.
+- **One link each**: an identifier belongs to one link of your tenant. You can remove it until the link is first activated. After that it is permanent, because it may be printed.
+- **Your GS1 company prefix**: a GS1 identifier resolves only under a GS1 company prefix Nimbit has verified for your tenant. You request the claim, and Nimbit checks your GS1 licence. If a claim is revoked, its identifiers stop resolving at once. A GTIN-8 is never resolved.
+
+IoT Breeze has no screen for identifiers yet. Register them through the API (`POST /rest/v2/passport/links/<token>/identifiers`), and contact Nimbit support to verify your GS1 company prefix.
+
+## Open a link by its GS1 Digital Link
+
+A GS1 Digital Link on your link address opens the product link, as `/L/<TOKEN>` does:
+
+```
+https://<link address>/01/<GTIN>[/22/<variant>][/10/<lot>][/21/<serial>]
+```
+
+- **Fallback**: as a GS1 resolver does, IoT Breeze tries the full value first, then without the serial, then without the lot, then without the variant. The most specific link that is active and shows something opens. If none does, the answer is the same "not found" as for an unknown link.
+- **Browser or API**: a browser goes to the page. A client whose `Accept` header asks for JSON or the AAS API is sent there.
+- **Serial numbers are off by default.** Then every serial opens the model's or batch's link, which reveals nothing about which serials exist. To open each item's own link, a tenant admin switches on **Resolve serial numbers** under **Administration › Tenant Settings › Features › Product links** and confirms with **Turn on**. Anyone can then try serial numbers one after another: if yours are sequential, others can find and count your items' links. Switch it on only if your serials are random, or you accept that.
+- **Not resolved**: DIDs, DOIs and IEC 61406 links, which resolve through their own infrastructure; GS1 keys other than the GTIN; a GS1 Digital Link under a path prefix. GS1 resolver link sets and link types are not implemented.
+
+The labels print the link's own address, not a GS1 Digital Link.
 
 ## Suspend, resume or retire
 

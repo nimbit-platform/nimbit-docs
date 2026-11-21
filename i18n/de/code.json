@@ -1153,5 +1153,11 @@
   },
   "home.standards.dataspace.text": {
     "message": "Bietet Ihre Verwaltungsschalen über Ihren eigenen Connector auf Basis der Eclipse Dataspace Components (EDC) an; getestet mit der sovity EDC Community Edition."
+  },
+  "home.standards.gs1.text": {
+    "message": "Kompatibel: löst GS1 Digital Link URIs (GTIN mit Variante, Charge und Seriennummer) zum Produktlink auf."
+  },
+  "home.standards.dataMatrix.text": {
+    "message": "Etiketten mit Data Matrix (ISO/IEC 16022) oder QR-Code (ISO/IEC 18004), wie EN 18220 sie nennt."
   }
 }
