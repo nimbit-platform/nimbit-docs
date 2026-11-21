@@ -6,7 +6,7 @@ type: how-to
 sidebar_position: 4
 app:
   routes: ["/tenant-settings"]
-translated_from: 4b535b3
+translated_from: b799038
 ---
 
 Nimmt Ihr Unternehmen an einem Dataspace teil, haben Sie bereits einen Connector, meist einen auf Basis der Eclipse Dataspace Components (EDC). IoT Breeze veröffentlicht die Verwaltungsschalen der Things, die Sie auswählen, als Angebote in diesem Connector und hält sie aktuell. Ihre Partner verhandeln in ihrem Connector einen Vertrag und holen die Verwaltungsschale über Ihren ab.
@@ -27,7 +27,7 @@ IoT Breeze betreibt, konfiguriert und überwacht weder Ihren Connector noch sein
 
    | Feld | Wert |
    | --- | --- |
-   | Art | **Andere (EDC-basiert)**. |
+   | **Dataspace** | **Andere (EDC-basiert)**. |
    | **URL der Management-API** | Die Management-API Ihres Connectors, endet vor `/v3`, zum Beispiel `https://connector.example.com/api/management`. Nur `https`, außer Ihr Betreiber gibt die Adresse frei. |
    | **Partner** | Die Teilnehmer-IDs der Partner, die die Angebote erhalten dürfen, eine pro Zeile. Leer lässt niemanden zu. |
    | **Schlüssel der Management-API** | Der Schlüssel der Management-API Ihres Connectors. Beim ersten Mal erforderlich. |
@@ -56,7 +56,7 @@ Ein Angebot, das Sie zurückziehen, während ein Partner noch eine Vertragsverei
 
 ## Zu einem anderen Connector wechseln oder ihn entfernen {#move-to-another-connector-or-remove-it}
 
-- **Anderer Connector**: Eine neue **URL der Management-API** braucht einen neuen Schlüssel der Management-API. Mit eigenem Rückruf-Schlüssel braucht sie außerdem einen Schlüssel eines **neuen** Dienstkontos; widerrufen Sie den alten danach im Identity Directory, denn der alte Connector hat ihn noch. IoT Breeze zieht zuerst alles aus dem alten Connector zurück. Bleibt dort etwas übrig, hält das Speichern an und sagt, was, und Sie können trotzdem wechseln.
+- **Anderer Connector**: Eine neue **URL der Management-API** braucht ihren eigenen Schlüssel der Management-API. Mit verwaltetem Rückruf-Schlüssel erstellt Nimbit dafür einen neuen und entfernt das alte verwaltete Konto. Mit eigenem Rückruf-Schlüssel brauchen Sie außerdem einen Schlüssel eines **neuen** Dienstkontos; widerrufen Sie den alten danach im Identity Directory, denn der alte Connector hat ihn noch. IoT Breeze zieht zuerst alles aus dem alten Connector zurück. Bleibt dort etwas übrig, hält das Speichern an und sagt, was, und Sie können trotzdem wechseln.
 - **Entfernen**: **Connector entfernen** zieht zuerst jedes Angebot zurück. Ist der Connector nicht erreichbar oder halten Vereinbarungen noch Assets, können Sie die Verbindung trotzdem entfernen. Was übrig ist, bleibt im Connector, bis dessen Betreiber es entfernt.
 
 ## Wer was sieht {#who-sees-what}

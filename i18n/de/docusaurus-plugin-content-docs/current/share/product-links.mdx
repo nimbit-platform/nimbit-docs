@@ -6,7 +6,7 @@ type: how-to
 sidebar_position: 3
 app:
   routes: ["/monitor/thing-details/:id", "/onboarding/things/:id", "/onboarding/thing-types/:id", "/tenant-settings"]
-translated_from: 4b535b3
+translated_from: b799038
 ---
 
 Ein Produktlink ist eine Webadresse, die auf ein Produkt gedruckt wird, meist als QR-Code. Er öffnet eine öffentliche Seite mit den Feldern und Dokumenten, die Sie für dieses Thing oder diesen Thing-Typ veröffentlichen, und sonst nichts.
@@ -75,7 +75,7 @@ Neben seiner eigenen Adresse kann ein Link Kennungen tragen, die Ihre Produkte s
 - **Ein Link je Kennung**: Eine Kennung gehört zu einem Link Ihres Tenants. Sie können sie entfernen, bis der Link zum ersten Mal aktiviert wird. Danach ist sie dauerhaft, weil sie gedruckt sein kann.
 - **Ihre GS1-Basisnummer**: Eine GS1-Kennung wird nur unter einer GS1-Basisnummer (Company Prefix) aufgelöst, die Nimbit für Ihren Tenant geprüft hat. Sie beantragen die Zuordnung, und Nimbit prüft Ihre GS1-Lizenz. Wird eine Zuordnung widerrufen, werden ihre Kennungen sofort nicht mehr aufgelöst. Eine GTIN-8 wird nie aufgelöst.
 
-IoT Breeze hat für Kennungen noch keine Oberfläche. Beide Schritte unten laufen über die Plattform-API, unter `/ocb` auf dem Host, auf dem Sie IoT Breeze öffnen, und brauchen die Berechtigung, **Passport** zu ändern. Senden Sie ein Benutzer-Zugriffstoken; die Zuordnung der Basisnummer nimmt auch einen API-Schlüssel mit dieser Berechtigung an. Siehe [Authentifizierung](../api/authentication.mdx).
+IoT Breeze hat für Kennungen noch keine Oberfläche. Beide Schritte unten laufen über die Plattform-API, unter `/ocb` auf dem Host, auf dem Sie IoT Breeze öffnen, und brauchen das Zugriffstoken eines angemeldeten Benutzers mit der Berechtigung, **Passport** zu ändern. API-Schlüssel werden abgelehnt. Siehe [Authentifizierung](../api/authentication.mdx).
 
 1. **GS1-Basisnummer beantragen**, einmalig:
 
