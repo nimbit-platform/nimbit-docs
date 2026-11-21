@@ -74,7 +74,7 @@ Besides its own address, a link can carry identifiers your products already have
 - **One link each**: an identifier belongs to one link of your tenant. You can remove it until the link is first activated. After that it is permanent, because it may be printed.
 - **Your GS1 company prefix**: a GS1 identifier resolves only under a GS1 company prefix Nimbit has verified for your tenant. You request the claim, and Nimbit checks your GS1 licence. If a claim is revoked, its identifiers stop resolving at once. A GTIN-8 is never resolved.
 
-IoT Breeze has no screen for identifiers yet. Both steps below go through the platform API, under `/ocb` on the host you open IoT Breeze on, and need the **Passport** update permission. Send a user access token; the prefix claim also accepts an API key with that permission. See [Authentication](../api/authentication.mdx).
+IoT Breeze has no screen for identifiers yet. Both steps below go through the platform API, under `/ocb` on the host you open IoT Breeze on, and need a signed-in user's access token with the **Passport** update permission. API keys are refused. See [Authentication](../api/authentication.mdx).
 
 1. **Claim your GS1 company prefix**, once:
 

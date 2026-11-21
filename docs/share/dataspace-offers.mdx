@@ -26,7 +26,7 @@ IoT Breeze does not run, configure or monitor your connector, its dataspace iden
 
    | Field | Value |
    | --- | --- |
-   | Kind | **Other (EDC-based)**. |
+   | **Dataspace** | **Other (EDC-based)**. |
    | **Management API URL** | Your connector's management API, ending before `/v3`, for example `https://connector.example.com/api/management`. Only `https`, unless your operator allows the address. |
    | **Partners** | The participant IDs of the partners who may get the offers, one per line. Empty admits nobody. |
    | **Management API key** | The key of your connector's management API. Required the first time. |
@@ -55,7 +55,7 @@ An offer you withdraw while a partner still holds a contract agreement for it le
 
 ## Move to another connector or remove it
 
-- **Another connector**: a new **Management API URL** needs a new management key. With your own callback key, it also needs a key of a **new** service account; revoke the old key afterwards, because the old connector still holds it. IoT Breeze first withdraws everything from the old connector. If something is left there, saving stops and says what, and you can move anyway.
+- **Another connector**: a new **Management API URL** needs its own management key. With a managed callback key, Nimbit creates a new one for the new connector and removes the old managed account. With your own callback key, you also need a key of a **new** service account; revoke the old key afterwards, because the old connector still holds it. IoT Breeze first withdraws everything from the old connector. If something is left there, saving stops and says what, and you can move anyway.
 - **Remove**: **Remove connector** withdraws every offer first. If the connector cannot be reached, or agreements still hold assets, you can remove the connection anyway. What is left stays in the connector until its operator removes it.
 
 ## Who sees what
