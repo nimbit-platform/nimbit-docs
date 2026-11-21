@@ -5,7 +5,7 @@ type: how-to
 sidebar_position: 5
 app:
   routes: ["/administration/api-keys"]
-translated_from: dd3e5a5
+translated_from: 4b535b3
 ---
 
 Geben Sie einem Skript, einer Integration oder einem KI-Assistenten einen eigenen Schlüssel, statt ein Passwort zu teilen. Ein Schlüssel ist auf seine Scopes begrenzt, läuft ab und hat nie mehr Rechte als sein Eigentümer. Wie Sie einen Schlüssel in Anfragen verwenden, lesen Sie unter [Authentifizierung](../api/authentication.mdx).
@@ -40,6 +40,8 @@ Ein Dienstkonto ist ein Tenant-Mitglied für Integrationen. Es meldet sich nie a
 3. Speichern Sie und erstellen Sie dann Schlüssel mit **Handelt als** auf diesem Konto.
 
 Ändern Sie seine Rollen, erhalten seine Schlüssel sie mit ihrem nächsten Token. Löschen Sie es, werden seine aktiven Schlüssel widerrufen.
+
+Ein Dienstkonto mit der Kennzeichnung **Von Nimbit verwaltet** gehört zur Dataspace-Verbindung. Nimbit legt es an und erneuert seinen Schlüssel, deshalb können Sie es hier weder bearbeiten noch mit Schlüsseln versehen oder löschen. Ändern Sie es unter **Administration › Mandanteneinstellungen › Funktionen › Dataspace-Connector**; siehe [Things im eigenen Dataspace-Connector anbieten](../share/dataspace-offers.mdx#the-callback-key).
 
 ## Einen Schlüssel ersetzen oder widerrufen {#rotate-or-revoke-a-key}
 

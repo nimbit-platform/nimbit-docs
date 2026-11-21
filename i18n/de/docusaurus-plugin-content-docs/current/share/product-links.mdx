@@ -6,7 +6,7 @@ type: how-to
 sidebar_position: 3
 app:
   routes: ["/monitor/thing-details/:id", "/onboarding/things/:id", "/onboarding/thing-types/:id", "/tenant-settings"]
-translated_from: 056d30a
+translated_from: b799038
 ---
 
 Ein Produktlink ist eine Webadresse, die auf ein Produkt gedruckt wird, meist als QR-Code. Er öffnet eine öffentliche Seite mit den Feldern und Dokumenten, die Sie für dieses Thing oder diesen Thing-Typ veröffentlichen, und sonst nichts.
@@ -75,7 +75,26 @@ Neben seiner eigenen Adresse kann ein Link Kennungen tragen, die Ihre Produkte s
 - **Ein Link je Kennung**: Eine Kennung gehört zu einem Link Ihres Tenants. Sie können sie entfernen, bis der Link zum ersten Mal aktiviert wird. Danach ist sie dauerhaft, weil sie gedruckt sein kann.
 - **Ihre GS1-Basisnummer**: Eine GS1-Kennung wird nur unter einer GS1-Basisnummer (Company Prefix) aufgelöst, die Nimbit für Ihren Tenant geprüft hat. Sie beantragen die Zuordnung, und Nimbit prüft Ihre GS1-Lizenz. Wird eine Zuordnung widerrufen, werden ihre Kennungen sofort nicht mehr aufgelöst. Eine GTIN-8 wird nie aufgelöst.
 
-IoT Breeze hat für Kennungen noch keine Oberfläche. Registrieren Sie sie über die API (`POST /rest/v2/passport/links/<token>/identifiers`) und wenden Sie sich an den Nimbit-Support, um Ihre GS1-Basisnummer prüfen zu lassen.
+IoT Breeze hat für Kennungen noch keine Oberfläche. Beide Schritte unten laufen über die Plattform-API, unter `/ocb` auf dem Host, auf dem Sie IoT Breeze öffnen, und brauchen das Zugriffstoken eines angemeldeten Benutzers mit der Berechtigung, **Passport** zu ändern. API-Schlüssel werden abgelehnt. Siehe [Authentifizierung](../api/authentication.mdx).
+
+1. **GS1-Basisnummer beantragen**, einmalig:
+
+   ```bash
+   curl -X POST "https://<host>/ocb/rest/v2/passport/gs1-prefixes" \
+     -H "Authorization: Bearer <access-token>" -H "Content-Type: application/json" \
+     -d '{ "prefix": "9506000" }'
+   ```
+
+   Eine US-amerikanische UPC-Basisnummer hat 6 bis 11 Stellen und ergänzt `"upc": true`. Die Zuordnung beginnt als ausstehend. Wenden Sie sich an den Nimbit-Support: Er prüft Ihre GS1-Lizenz und bestätigt die Zuordnung. Erst dann werden GS1 Digital Links unter dieser Basisnummer aufgelöst.
+2. **Eine Kennung registrieren**, an einem Link:
+
+   ```bash
+   curl -X POST "https://<host>/ocb/rest/v2/passport/links/<link-token>/identifiers" \
+     -H "Authorization: Bearer <access-token>" -H "Content-Type: application/json" \
+     -d '{ "scheme": "gs1_digital_link", "value": "/01/09506000134352/21/ABC123" }'
+   ```
+
+   `<link-token>` ist das Token des Links, der Teil seiner Adresse nach `/L/`.
 
 ## Einen Link über seinen GS1 Digital Link öffnen {#open-a-link-by-its-gs1-digital-link}
 
@@ -87,7 +106,7 @@ https://<link address>/01/<GTIN>[/22/<variant>][/10/<lot>][/21/<serial>]
 
 - **Rückfall**: Wie ein GS1-Resolver versucht IoT Breeze zuerst den vollen Wert, dann ohne Seriennummer, dann ohne Charge, dann ohne Variante. Es öffnet sich der genaueste Link, der aktiv ist und etwas zeigt. Gibt es keinen, kommt dieselbe Antwort „nicht gefunden“ wie bei einem unbekannten Link.
 - **Browser oder API**: Ein Browser kommt auf die Seite. Ein Client, dessen `Accept`-Header JSON oder die AAS-API verlangt, wird dorthin geleitet.
-- **Seriennummern sind standardmäßig aus.** Dann öffnet jede Seriennummer den Link des Modells oder der Charge, was nichts darüber verrät, welche Seriennummern es gibt. Damit sich der eigene Link jedes Stücks öffnet, schaltet ein Tenant-Admin unter **Administration › Mandanteneinstellungen › Funktionen › Produktlinks** **Seriennummern auflösen** ein und bestätigt mit **Einschalten**. Dann kann jeder Seriennummern der Reihe nach ausprobieren: Sind Ihre fortlaufend, lassen sich so die Links Ihrer Things finden und zählen. Schalten Sie es nur ein, wenn Ihre Seriennummern zufällig sind oder Sie das in Kauf nehmen.
+- **Seriennummern sind standardmäßig aus.** Dann öffnet jede Seriennummer den Link des Modells oder der Charge, was nichts darüber verrät, welche Seriennummern es gibt. Damit sich der eigene Link jedes Stücks öffnet, schaltet ein Tenant-Admin unter **Administration › Mandanteneinstellungen › Funktionen › Produktlinks** **Seriennummern auflösen** ein und bestätigt mit **Einschalten**. Dann kann jeder Seriennummern der Reihe nach ausprobieren: Sind Ihre fortlaufend, lassen sich so die Links Ihrer Things finden und zählen. Schalten Sie es nur ein, wenn Ihre Seriennummern zufällig sind oder Sie das in Kauf nehmen. Der Schalter gilt nur für GS1-Kennungen, die über die API unter einer GS1-Basisnummer registriert sind, die Nimbit für Ihren Tenant bestätigt hat.
 - **Nicht aufgelöst**: DIDs, DOIs und IEC-61406-Links, die über ihre eigene Infrastruktur aufgelöst werden; andere GS1-Schlüssel als die GTIN; ein GS1 Digital Link unter einem Pfadpräfix. Linksets und Link-Typen eines GS1-Resolvers sind nicht umgesetzt.
 
 Die Etiketten drucken die eigene Adresse des Links, keinen GS1 Digital Link.
