@@ -5,7 +5,7 @@ description: Turn on the read-only AAS API, choose which things it serves, fill 
 type: how-to
 sidebar_position: 2
 app:
-  routes: ["/monitor/thing-details/:id", "/onboarding/things/:id"]
+  routes: ["/monitor/thing-details/:id", "/onboarding/things/:id", "/tenant-settings", "/knowledge/explore"]
 ---
 
 Serve selected things as Asset Administration Shells (AAS): a read-only API in the structure of IDTA Part 2, and AASX packages to hand over as files. Only things you expose one by one are served, and only to callers who may read them in IoT Breeze.
@@ -27,17 +27,40 @@ The API is compatible with the read profiles of IDTA Part 2 v3.2 that it lists a
 
 - To expose a thing you need the **Aas** update permission. **Admin** and **System Admin** have it. **Manager** and **Viewer** can read shells but not expose things.
 - A tenant admin turns the feature on (step 1).
-- Giving documents a VDI 2770 class needs the Knowledge module and the **Knowledge** update permission.
+- Classifying documents needs the Knowledge module, and permission to attach documents to the thing's record there.
 
 ## Steps
 
-1. **Turn the feature on.** Open **Administration › Tenant Settings › Features**, switch on **Asset Administration Shell** and save. A default manufacturer name, contact e-mail and contact URL can fill the nameplate wherever a thing has no value of its own. The app doesn't show these fields yet. Nimbit support sets them for your tenant. You can prepare everything below while the feature is off. Nothing is served until it is on.
+1. **Turn the feature on.** Open **Administration › Tenant Settings › Features**, switch on **Asset Administration Shell** and save. Optionally [set your defaults](#set-your-defaults) for the nameplate. You can prepare everything below while the feature is off. Nothing is served until it is on.
 2. **Prepare the thing type.** Install the `aas-essentials` pack under **Administration › Tenant Settings › Packs**. It is not installed automatically. Add the `aas-exposure` interface to the thing type, plus `aas-digital-nameplate`, `aas-technical-data` and `aas-carbon-footprint` as you need them. An aggregate type cannot attach interfaces, so declare `aasEnabled` and the carbon footprint properties on it directly.
 3. **Expose the thing.** Open the thing. On **Overview**, under **Asset Administration Shell**, switch on **Expose as Asset Administration Shell**. A default value on the thing type never exposes a thing: each thing is exposed by itself, by someone with the **Aas** update permission.
 4. **Fill in the nameplate and technical data.** Set the values on the thing, or as initial values on the type. Only elements with a value are published. If you leave out an element the template requires, such as `OrderCodeOfManufacturer` or the address parts `Street`, `Zipcode`, `CityTown` and `NationalCode`, the submodel is published without it. A tool that checks against the template then reports the gap. The manufacturer name comes from the thing, else the tenant default, else the tenant's name.
 5. **Add a carbon footprint.** With `aas-carbon-footprint` on the type, set the values as the type's initial values (one footprint for the product type) or on each thing. Calculation method, CO2 equivalent, reference unit, quantity, life cycle phase and publication date are required. The method, unit and phase take only the values of the IDTA template's lists, such as `ISO 14067`, `kg` and `A1-A3`. If one required value is missing or invalid, the whole CarbonFootprint submodel is withheld until you complete it.
-6. **Add handover documents.** A document is published only with a VDI 2770 class, such as `02-01` (technical specification) or `03-01` (operating manual). The app can't set a document's class yet. Documents get their class through the API or from Nimbit support. Until a document has one, it isn't published in the AAS. Only the twelve classes of VDI 2770 Blatt 1:2020 count. Documents without a class, with another classification system, and files only placed in the thing's folder are not published. The submodel says how many were left out, not which.
+6. **Add handover documents.** Attach the documents to the thing in Knowledge and [classify them](#classify-documents-for-the-handover-documentation). Only documents with a VDI 2770 Blatt 1:2020 class are published. Documents without a class, with another classification system, and files only placed in the thing's folder are not. The submodel says how many were left out, not which.
 7. **Give your integration access.** Create an API key with the scope `aas:read`, as described in [Create an API key](../administer/api-key.mdx). Add `telemetry:read` if it needs time series values. An `aas:read`-only key reads the AAS API and nothing else in IoT Breeze.
+
+## Set your defaults
+
+The Digital Nameplate and the Handover Documentation use these values for every thing that sets none of its own.
+
+1. Open **Administration › Tenant Settings › Features**. With **Asset Administration Shell** on, its section shows **Defaults for published shells**.
+2. Enter a **Manufacturer name**, a **Contact e-mail** and a **Contact URL**. Each is optional. Without a manufacturer name, the tenant's name is used.
+3. Save.
+
+**Shell identifiers** shows the base of your shells' identifiers. It is read-only: changing it gives every published shell a new identifier, so only Nimbit support sets it.
+
+## Classify documents for the Handover Documentation
+
+A document is published in a thing's Handover Documentation only once it has a VDI 2770 Blatt 1:2020 class. Anyone who can attach documents to the thing's record can classify them.
+
+1. Open **Knowledge › Explore**, select the thing and open the **Documents** tab. A banner says how many of the thing's documents are published.
+2. An unclassified document says **Not published in the AAS until it has a VDI 2770 class.** Select **Classify**. For a classified one, choose **Edit classification…** in the row menu.
+3. Choose one of the twelve classes. They come in four groups: 01 Identification, 02 Technical characteristics, 03 Activity-related documents and 04 Contractual documents. For example, an operating manual is `03-02` Operation.
+4. Check the title. It starts as the file name and is published as the document's title.
+5. Choose the document's language, one of the 24 official EU languages.
+6. Select **Save**.
+
+The row then shows the class, such as **03-02 Operation**, and the language. To take a document out of the Handover Documentation again, open the dialog and select **Remove classification**.
 
 ## Read shells with an API key
 
