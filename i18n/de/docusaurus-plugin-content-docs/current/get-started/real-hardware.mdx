@@ -4,7 +4,7 @@ sidebar_position: 3
 description: Zugangsdaten für das Quickstart-Thing anlegen und mit mosquitto_pub per MQTT den ersten echten Messwert senden.
 type: tutorial
 app:
-  routes: ["/onboarding/things/:id"]
+  routes: ["/devices/things/:id"]
 translated_from: 810b8a2
 ---
 
@@ -24,7 +24,7 @@ Läuft die Simulation aus dem Quickstart noch, öffnen Sie das Thing und wählen
 
 ## 2. Zugangsdaten anlegen {#2-create-credentials}
 
-1. Öffnen Sie **Einstellungen › Onboarding › Things**, wählen Sie `Meeting room 1` und öffnen Sie den Tab **Verbindungen**.
+1. Öffnen Sie **Geräte › Things**, wählen Sie `Meeting room 1` und öffnen Sie den Tab **Verbindungen**.
 2. Wählen Sie im Block **Nimbit** unter **Basisauthentifizierung** die Option **Primär** und dann **Anmeldedaten generieren**.
 3. Kopieren Sie **Nutzername** und **Passwort**.
 
@@ -33,7 +33,7 @@ Basic-Zugangsdaten laufen nie ab. Das Passwort gilt nur für dieses Thing: Ein G
 <Screenshot
   page="get-started/real-hardware"
   id="01-credentials"
-  route="/onboarding/things/:id"
+  route="/devices/things/:id"
   state="Connections tab, Nimbit block, Basic authentication with generated Username and Password"
   alt="Für ein Thing generierte Zugangsdaten der Basisauthentifizierung"
 />

@@ -17,14 +17,14 @@ Load rows from another system into the graph as records of your own types. A con
 ## Before you start
 
 - You need permission to edit Knowledge. Saving a mapping and running a transform need the modeler or admin role. Creating credentials needs the tenant admin.
-- The record type must exist. Create it in **Settings › Knowledge setup › Data model**, or install a pack from the **Library** tab. See [Types and traits](./types-and-traits.mdx).
+- The record type must exist. Create it in **Knowledge › Data model**, or install a pack from the **Library** tab. See [Types and traits](./types-and-traits.mdx).
 - For an API or database that needs a secret, have it ready.
 
 ## Create a credential (optional)
 
 Do this when several connectors share a secret or when the secret must not sit in a connector.
 
-1. Open **Settings › Knowledge setup › Sources › Credentials** and select **Create**.
+1. Open **Knowledge › Sources › Credentials** and select **Create**.
 2. Enter a **Name**. It cannot be changed later.
 3. Choose **User and password**, **Bearer token**, **API key** or **OAuth 2 client credentials**, and enter the secret.
 4. Under **Allowed hosts**, list one host per line. The credential is only sent to these hosts. `*.example.com` covers subdomains.
@@ -63,7 +63,7 @@ To load a file once instead, use **Upload data** on the mapping screen. It accep
 
 ## Check that it worked
 
-The connector shows **Running** or **Completed**. After the transform, open **Settings › Knowledge setup › Data health › Ingestion**, pick your source and confirm the batch is **Processed**. Search the record in **Explore**.
+The connector shows **Running** or **Completed**. After the transform, open **Knowledge › Data health › Ingestion**, pick your source and confirm the batch is **Processed**. Search the record in **Explore**.
 
 ## If it doesn't work
 

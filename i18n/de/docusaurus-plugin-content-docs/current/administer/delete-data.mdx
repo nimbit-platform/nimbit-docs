@@ -4,7 +4,7 @@ description: Löschen Sie aufgezeichnete Messwerte eines Tenants, Thing-Typs ode
 type: how-to
 sidebar_position: 8
 app:
-  routes: ["/tenant-settings", "/onboarding/things/:id"]
+  routes: ["/workspace/settings", "/devices/things/:id"]
 translated_from: b6ed908
 ---
 
@@ -19,7 +19,7 @@ Entfernen Sie aufgezeichnete Messwerte, zum Beispiel Testdaten des Simulators vo
 
 ## Messwerte löschen {#delete-readings}
 
-1. Öffnen Sie **Administration › Mandanteneinstellungen › Daten**.
+1. Öffnen Sie **Arbeitsbereich › Arbeitsbereich-Einstellungen › Daten**.
 2. Wählen Sie unter **Welche Daten** die Option **Alle Daten**, **Simulierte Daten** oder **Daten mit einem Tag**. Geben Sie bei einem Tag den **Tag** und seinen **Wert** ein.
 3. Wählen Sie unter **Von welchen Things** die Option **Ein Thing-Typ** oder **Ausgewählte Things**. **Der ganze Tenant** gibt es nur für simulierte Daten oder einen Tag.
 4. Legen Sie den **Zeitraum** fest: **Gesamter Zeitraum**, **Letzte 7 Tage**, **Letzte 30 Tage** oder einen eigenen Bereich.
@@ -41,7 +41,7 @@ Die Option erscheint nur, wenn Sie die Berechtigung „Datenlöschung“ haben.
 
 ## Eine Löschung abbrechen oder verfolgen {#cancel-or-follow-a-deletion}
 
-Öffnen Sie **Administration › Mandanteneinstellungen › Zeitpläne**. Der Auftrag steht dort in der Liste. Bei verzögertem Start können Sie ihn 10 Minuten lang abbrechen. Eine sofortige Löschung lässt sich stoppen, aber bereits gelöschte Zeilen bleiben gelöscht.
+Öffnen Sie **Automatisierung › Zeitpläne**. Der Auftrag steht dort in der Liste. Bei verzögertem Start können Sie ihn 10 Minuten lang abbrechen. Eine sofortige Löschung lässt sich stoppen, aber bereits gelöschte Zeilen bleiben gelöscht.
 
 :::warning Das Löschen von Daten lässt sich nicht rückgängig machen
 Prüfen Sie Umfang und Zeitraum unter **Was gelöscht wird**, bevor Sie bestätigen. Diagramme, Exporte, Berichte und die Regelhistorie verlieren die Daten. Diagramme, die Rollups lesen, wechseln für den betroffenen Zeitraum auf Rohdaten, bis die Rollups neu synchronisiert sind.

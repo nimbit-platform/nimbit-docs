@@ -4,7 +4,7 @@ description: Erstellen Sie einen API-Schlüssel für sich oder ein Dienstkonto, 
 type: how-to
 sidebar_position: 5
 app:
-  routes: ["/administration/api-keys"]
+  routes: ["/access/api-keys"]
 translated_from: 4b535b3
 ---
 
@@ -18,7 +18,7 @@ Geben Sie einem Skript, einer Integration oder einem KI-Assistenten einen eigene
 
 ## Schritte {#steps}
 
-1. Öffnen Sie **Administration › API-Schlüssel** und wählen Sie **Schlüssel erstellen**.
+1. Öffnen Sie **Personen & Zugriff › API-Schlüssel** und wählen Sie **Schlüssel erstellen**.
 2. Geben Sie einen **Name** ein, zum Beispiel `SAP PM sync`.
 3. Wählen Sie unter **Handelt als** **Ich** oder ein Dienstkonto.
 4. Optional: Wählen Sie unter **Vorlage** **Nur lesen**, **KI-Assistent** oder **ERP- oder MES-Integration**.
@@ -41,7 +41,7 @@ Ein Dienstkonto ist ein Tenant-Mitglied für Integrationen. Es meldet sich nie a
 
 Ändern Sie seine Rollen, erhalten seine Schlüssel sie mit ihrem nächsten Token. Löschen Sie es, werden seine aktiven Schlüssel widerrufen.
 
-Ein Dienstkonto mit der Kennzeichnung **Von Nimbit verwaltet** gehört zur Dataspace-Verbindung. Nimbit legt es an und erneuert seinen Schlüssel, deshalb können Sie es hier weder bearbeiten noch mit Schlüsseln versehen oder löschen. Ändern Sie es unter **Administration › Mandanteneinstellungen › Funktionen › Dataspace-Connector**; siehe [Things im eigenen Dataspace-Connector anbieten](../share/dataspace-offers.mdx#the-callback-key).
+Ein Dienstkonto mit der Kennzeichnung **Von Nimbit verwaltet** gehört zur Dataspace-Verbindung. Nimbit legt es an und erneuert seinen Schlüssel, deshalb können Sie es hier weder bearbeiten noch mit Schlüsseln versehen oder löschen. Ändern Sie es unter **Arbeitsbereich › Arbeitsbereich-Einstellungen › Funktionen › Dataspace-Connector**; siehe [Things im eigenen Dataspace-Connector anbieten](../share/dataspace-offers.mdx#the-callback-key).
 
 ## Einen Schlüssel ersetzen oder widerrufen {#rotate-or-revoke-a-key}
 

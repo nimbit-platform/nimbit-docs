@@ -4,7 +4,7 @@ description: Things einem Gateway zuordnen, zwischen Gateways verschieben, festl
 type: how-to
 sidebar_position: 6
 app:
-  routes: ["/onboarding/gateways/:id", "/onboarding/things/:id"]
+  routes: ["/devices/gateways/:id", "/devices/things/:id"]
 translated_from: 06bddd1
 ---
 
@@ -21,14 +21,14 @@ Es gibt zwei Wege.
 
 **Vom Gateway aus**
 
-1. Öffnen Sie **Einstellungen › Onboarding › Gateways** und öffnen Sie das Gateway.
+1. Öffnen Sie **Geräte › Gateways** und öffnen Sie das Gateway.
 2. Wählen Sie den Tab **Things**, dann **Things zuordnen**.
 3. Suchen Sie, wählen Sie bis zu 200 Things und wählen Sie **Zuordnen**.
 4. Lesen Sie die Zusammenfassung, zum Beispiel `3 zugeordnet · 1 unverändert · 1 abgelehnt`. Bei jedem abgelehnten Thing steht der Grund.
 
 **Von einem Thing aus**
 
-1. Öffnen Sie **Einstellungen › Onboarding › Things**, öffnen Sie das Thing und wählen Sie **Bearbeiten**.
+1. Öffnen Sie **Geräte › Things**, öffnen Sie das Thing und wählen Sie **Bearbeiten**.
 2. Wählen Sie unter **Gateway** das Gateway oder **Kein Gateway**, um das Thing freizugeben.
 3. Speichern Sie. IoT Breeze übernimmt zuerst die anderen Felder, dann das Gateway. Lehnt das Gateway ab, bleibt das Formular offen, und eine Meldung sagt **Nicht geändert** mit dem Grund.
 

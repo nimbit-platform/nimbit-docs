@@ -4,7 +4,7 @@ sidebar_position: 7
 description: Rechnen Sie Einheiten um, prüfen Sie die Form oder ergänzen Sie berechnete Werte in jeder Nachricht eines Thing-Typs, bevor sie gespeichert wird.
 type: how-to
 app:
-  routes: ["/onboarding/thing-types/:id", "/onboarding/thing-types/:id/graph"]
+  routes: ["/devices/thing-types/:id", "/devices/thing-types/:id/graph"]
 translated_from: 810b8a2
 ---
 
@@ -20,7 +20,7 @@ Schicken Sie jede eingehende Nachricht eines Thing-Typs vor dem Speichern durch 
 
 ## Schritte {#steps}
 
-1. Öffnen Sie **Einstellungen › Onboarding › Thing Typen** und wählen Sie den Thing-Typ. Auf der **Übersicht** zeigt die Karte **Pipeline** die **Transformation** als **Aktiv** oder **Inaktiv**. Wählen Sie **Editor öffnen** oder nutzen Sie **Weitere Aktionen › Pipeline-Editor öffnen**. Der Editor öffnet sich als **Transformationsregel (Version 1)** mit einem Knoten **Request**, der mit einem Knoten **Response** verbunden ist.
+1. Öffnen Sie **Geräte › Thing Typen** und wählen Sie den Thing-Typ. Auf der **Übersicht** zeigt die Karte **Pipeline** die **Transformation** als **Aktiv** oder **Inaktiv**. Wählen Sie **Editor öffnen** oder nutzen Sie **Weitere Aktionen › Pipeline-Editor öffnen**. Der Editor öffnet sich als **Transformationsregel (Version 1)** mit einem Knoten **Request**, der mit einem Knoten **Response** verbunden ist.
 2. Ziehen Sie einen Knoten **Expression** aus dem Bereich **Components** auf die Fläche. Verbinden Sie **Request** mit ihm und ihn mit **Response**: Ziehen Sie vom Anschluss rechts an einem Knoten zum Anschluss links am nächsten.
 3. Wählen Sie am Knoten **Edit Expression** und fügen Sie eine Zeile hinzu. Setzen Sie **Key** auf `data.temperature` und **Expression** auf `(data.temperature - 32) * 5 / 9`.
 4. Öffnen Sie den **Simulator** in der linken Seitenleiste. Er füllt eine Testnachricht mit Zufallswerten für Ihre Messwerte. Setzen Sie `data.temperature` auf `212` und wählen Sie **Run**. Das Ergebnis zeigt `data.temperature` als `100`, der Rest der Nachricht bleibt unverändert.
@@ -30,7 +30,7 @@ Schicken Sie jede eingehende Nachricht eines Thing-Typs vor dem Speichern durch 
 <Screenshot
   page="model/clean-up-data"
   id="01-editor"
-  route="/onboarding/thing-types/:id/graph"
+  route="/devices/thing-types/:id/graph"
   state="Pipeline editor with Request, one Expression node and Response connected, the simulator open with a successful result, Save and Activate in the header"
   alt="Der Pipeline-Editor mit einer Pipeline aus drei Knoten"
 />

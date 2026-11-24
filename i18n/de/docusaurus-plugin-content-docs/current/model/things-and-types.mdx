@@ -4,7 +4,7 @@ sidebar_position: 2
 description: Ein Thing-Typ legt das Schema fest, Things sind die echten Geräte, und Interfaces teilen Felder zwischen Typen.
 type: concept
 app:
-  routes: ["/onboarding/thing-types", "/onboarding/things", "/onboarding/interfaces"]
+  routes: ["/devices/thing-types", "/devices/things", "/devices/interfaces"]
 translated_from: 9db83b3
 ---
 
@@ -23,10 +23,10 @@ flowchart LR
 
 | Bestandteil | Was es ist | Wo |
 | --- | --- | --- |
-| **Thing-Typ** | Das Modell eines Geräts: seine Messwerte und Eigenschaften, plus Einstellungen wie Konnektor, Schema-Evolution und Bereinigungs-Pipeline. | **Einstellungen › Onboarding › Thing Typen** |
-| **Thing** | Ein echtes Gerät oder eine Anlage. Es hat einen Namen, eine ID, die das Gerät verwendet, einen Thing-Typ, eine Organisation und Gruppen. | **Einstellungen › Onboarding › Things** |
-| **Aggregat-Thing** | Ein Thing ohne Gerät, von einem Thing-Typ der Art **Aggregat-Thing**. Es hält Mitglieds-Things in Slots und kombiniert ihre Messwerte in berechneten Messwerten. Siehe [Things zu einem Aggregat-Thing zusammenfassen](./aggregate-things.mdx). | **Einstellungen › Onboarding › Things**, Tab **Mitglieder** |
-| **Interface** | Eine benannte, versionierte Menge von Feldern. Ein Thing-Typ, der es anhängt, erhält diese Felder. | **Einstellungen › Onboarding › Interfaces** |
+| **Thing-Typ** | Das Modell eines Geräts: seine Messwerte und Eigenschaften, plus Einstellungen wie Konnektor, Schema-Evolution und Bereinigungs-Pipeline. | **Geräte › Thing Typen** |
+| **Thing** | Ein echtes Gerät oder eine Anlage. Es hat einen Namen, eine ID, die das Gerät verwendet, einen Thing-Typ, eine Organisation und Gruppen. | **Geräte › Things** |
+| **Aggregat-Thing** | Ein Thing ohne Gerät, von einem Thing-Typ der Art **Aggregat-Thing**. Es hält Mitglieds-Things in Slots und kombiniert ihre Messwerte in berechneten Messwerten. Siehe [Things zu einem Aggregat-Thing zusammenfassen](./aggregate-things.mdx). | **Geräte › Things**, Tab **Mitglieder** |
+| **Interface** | Eine benannte, versionierte Menge von Feldern. Ein Thing-Typ, der es anhängt, erhält diese Felder. | **Geräte › Interfaces** |
 | **Messwert** | Ein Wert, den das Gerät über die Zeit sendet, etwa `temperature`. Ein **berechneter Messwert** wird beim Lesen mit einer Formel berechnet; siehe [Einen berechneten Messwert hinzufügen](./calculated-measures.mdx). | Schema eines Thing-Typs oder Interfaces |
 | **Eigenschaft** | Eine feste Angabe zum Gerät, etwa eine Seriennummer oder ein Nennvolumenstrom. | Schema eines Thing-Typs oder Interfaces |
 

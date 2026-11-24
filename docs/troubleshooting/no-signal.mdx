@@ -4,7 +4,7 @@ description: Find out why a thing says No signal yet or stopped reporting, from 
 sidebar_position: 2
 type: how-to
 app:
-  routes: ["/monitor/thing-details/:id", "/onboarding/things/:id"]
+  routes: ["/monitor/thing-details/:id", "/devices/things/:id"]
 ---
 
 Work out why data from a device does not show up on its thing. How a message travels is in [How devices connect](../connect/how-devices-connect.mdx).
@@ -19,7 +19,7 @@ Work out why data from a device does not show up on its thing. How a message tra
 
 ### 1. Send a test message from IoT Breeze
 
-Open the thing (**Settings › Onboarding › Things**), select **More actions › Send data** and send one message. See [Simulate a device](../connect/simulate.mdx).
+Open the thing (**Devices › Things**), select **More actions › Send data** and send one message. See [Simulate a device](../connect/simulate.mdx).
 
 - **It appears on Overview**: the thing, its thing type and the platform work. The problem is on the device side. Continue with checks 2 to 5.
 - **It does not appear**: the problem is in the thing type or the thing. Go to checks 6 and 7.

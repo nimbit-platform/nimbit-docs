@@ -4,7 +4,7 @@ description: Assign things to a gateway, move them between gateways, set what a 
 type: how-to
 sidebar_position: 6
 app:
-  routes: ["/onboarding/gateways/:id", "/onboarding/things/:id"]
+  routes: ["/devices/gateways/:id", "/devices/things/:id"]
 ---
 
 Put things on a gateway, move or release them, and keep a gateway's scope in line with what it should have. A thing belongs to at most one gateway. Membership follows the thing's record, never where its data arrived. For the model, read [How gateways work](./how-gateways-work.mdx).
@@ -20,14 +20,14 @@ Use one of two ways.
 
 **From the gateway**
 
-1. Open **Settings › Onboarding › Gateways** and open the gateway.
+1. Open **Devices › Gateways** and open the gateway.
 2. Select the **Things** tab, then **Assign things**.
 3. Search, select up to 200 things and select **Assign**.
 4. Read the summary, for example `3 assigned · 1 unchanged · 1 refused`. Each refused thing says why.
 
 **From a thing**
 
-1. Open **Settings › Onboarding › Things**, open the thing and select **Edit**.
+1. Open **Devices › Things**, open the thing and select **Edit**.
 2. Under **Gateway**, choose the gateway, or **No gateway** to release the thing.
 3. Save. IoT Breeze applies the other fields first, then the gateway. If the gateway refuses, the form stays open and a message says **Not changed** with the reason.
 

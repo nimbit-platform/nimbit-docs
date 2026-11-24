@@ -4,7 +4,7 @@ description: Herausfinden, warum eine Alarm-E-Mail nicht ankommt, von abgeschalt
 sidebar_position: 5
 type: how-to
 app:
-  routes: ["/monitor/events", "/manage/event-types/:id", "/manage/mail-templates", "/manage/notification-channels"]
+  routes: ["/monitor/events", "/alerting/event-types/:id", "/alerting/mail-templates", "/alerting/notification-channels"]
 translated_from: 679f3a4
 ---
 
@@ -33,7 +33,7 @@ Ein Benachrichtigungskanal kann keine E-Mail-Adresse sein. Vorfälle erreichen e
 Öffnen Sie **Überwachung › Events** und suchen Sie das Event.
 
 - **Kein Event**: Die Regel hat nicht ausgelöst. Siehe [Eine Regel löst nicht aus](./rule-not-firing.mdx).
-- **Ein Event eines anderen Typs**: Die Aktion **E-Mail** hängt an einem anderen Event-Typ. Öffnen Sie **Einstellungen › Konfiguration › Event Typen**, den Typ des Events und seinen Tab **Aktionen**.
+- **Ein Event eines anderen Typs**: Die Aktion **E-Mail** hängt an einem anderen Event-Typ. Öffnen Sie **Alarmierung › Ereignistypen**, den Typ des Events und seinen Tab **Aktionen**.
 - **Die Aktion ist da, ihr Schalter Aktiv ist aus**: Aktionen, die an einem Event-Typ hinzugefügt werden, werden ausgeschaltet angelegt. Schalten Sie sie ein.
 - **Das Event beendet einen Alarm**: Events, die einen Zustand beenden, etwa ein Thing, das wieder online ist, führen keine Aktionen aus.
 - **Die Aktion ist fehlgeschlagen**: Ein fehlgeschlagener Lauf wird als eigenes Event aufgezeichnet. Öffnen Sie es für den Grund.
@@ -52,13 +52,13 @@ Ein Benachrichtigungskanal kann keine E-Mail-Adresse sein. Vorfälle erreichen e
 - Format **Plain**: **Betreff** und **Inhalt** sind Pflicht, und `{{placeholders}}` darin werden gefüllt.
 - Format **Mail-Vorlage**: Platzhalter in **Betreff** und **Inhalt** gelten nicht. Verwendet wird die Vorlage, die Sie in der Aktion wählen, unabhängig davon, was im Tab **Zuweisung** zugewiesen ist.
 - Die Vorlage braucht den Kontext **Event**. In einer Aktion **E-Mail** eines Event-Typs ist `{{event}}` das Event, also ist `{{event.title}}` sein Titel.
-- Öffnen Sie **Einstellungen › Konfiguration › Mail-Vorlagen** und wählen Sie **Test-Mail senden**, um die Vorlage gerendert zu sehen. Bleibt ein Wert leer, steht der Platzhalter nicht in der Liste unter **Dynamische Variablen**.
+- Öffnen Sie **Alarmierung › Mail-Vorlagen** und wählen Sie **Test-Mail senden**, um die Vorlage gerendert zu sehen. Bleibt ein Wert leer, steht der Platzhalter nicht in der Liste unter **Dynamische Variablen**.
 
 Bestandteile und Platzhalter von Vorlagen: [E-Mail-Vorlagen und Platzhalter](../watch/mail-templates.mdx).
 
 ### 5. Der Mailserver und der Spam-Ordner {#5-the-mail-server-and-the-spam-folder}
 
-E-Mails laufen über den Mailserver Ihres Tenants, wenn einer eingerichtet ist, sonst über den Mailserver der Plattform. Ein Administrator öffnet **Administration › Mandanteneinstellungen › Email**:
+E-Mails laufen über den Mailserver Ihres Tenants, wenn einer eingerichtet ist, sonst über den Mailserver der Plattform. Ein Administrator öffnet **Arbeitsbereich › Arbeitsbereich-Einstellungen › Email**:
 
 - **Systemstandard**, **Microsoft 365** oder **Eigener SMTP-Server**: Prüfen Sie, welcher verwendet wird. Bei Microsoft 365 muss die Anmeldung aktiv sein. Bei SMTP prüfen Sie **Host**, **Port**, die Verschlüsselung (**STARTTLS** oder **SSL/TLS**), **Benutzername** und **Passwort**.
 - Wählen Sie **Test-Mail senden**. Schlägt das fehl oder kommt nichts an, liegt das Problem am Mailserver, nicht am Alarm.
@@ -67,7 +67,7 @@ E-Mails laufen über den Mailserver Ihres Tenants, wenn einer eingerichtet ist, 
 
 ### 6. Chat- oder Webhook-Nachricht fehlt {#6-chat-or-webhook-message-missing}
 
-Öffnen Sie **Einstellungen › Konfiguration › Benachrichtigungskanäle**.
+Öffnen Sie **Alarmierung › Benachrichtigungskanäle**.
 
 - **Aktiv** muss an sein. Ein deaktivierter Kanal erhält nichts, und seine Zustellungen zeigen **Unterdrückt**.
 - Die Zeile zeigt **Nur Aktion**, wenn **Automatisches Routing** aus ist. Der Kanal bekommt dann nur Nachrichten von Aktionen, die ihn nennen.

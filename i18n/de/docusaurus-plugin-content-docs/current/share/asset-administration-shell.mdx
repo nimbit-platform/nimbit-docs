@@ -5,7 +5,7 @@ description: Die schreibgeschützte AAS-API einschalten, Things freigeben, Typen
 type: how-to
 sidebar_position: 2
 app:
-  routes: ["/monitor/thing-details/:id", "/onboarding/things/:id", "/tenant-settings", "/knowledge/explore"]
+  routes: ["/monitor/thing-details/:id", "/devices/things/:id", "/workspace/settings", "/knowledge/explore"]
 translated_from: b9fe8f3
 ---
 
@@ -32,8 +32,8 @@ Die API ist kompatibel mit den Lese-Profilen von IDTA Part 2 v3.2, die sie unter
 
 ## Schritte {#steps}
 
-1. **Funktion einschalten.** Öffnen Sie **Administration › Mandanteneinstellungen › Funktionen**, schalten Sie **Verwaltungsschale** ein und speichern Sie. Optional [legen Sie Ihre Standardwerte fest](#set-your-defaults) für das Typenschild. Alles Weitere können Sie vorbereiten, solange die Funktion aus ist. Bereitgestellt wird erst, wenn sie an ist.
-2. **Thing-Typ vorbereiten.** Installieren Sie das Paket `aas-essentials` unter **Administration › Mandanteneinstellungen › Pakete**. Es wird nicht automatisch installiert. Fügen Sie dem Thing-Typ das Interface `aas-exposure` hinzu, und nach Bedarf `aas-digital-nameplate`, `aas-technical-data` und `aas-carbon-footprint`. Ein Aggregat-Typ kann keine Interfaces anhängen: Deklarieren Sie `aasEnabled` und die Eigenschaften des CO2-Fußabdrucks direkt an ihm.
+1. **Funktion einschalten.** Öffnen Sie **Arbeitsbereich › Arbeitsbereich-Einstellungen › Funktionen**, schalten Sie **Verwaltungsschale** ein und speichern Sie. Optional [legen Sie Ihre Standardwerte fest](#set-your-defaults) für das Typenschild. Alles Weitere können Sie vorbereiten, solange die Funktion aus ist. Bereitgestellt wird erst, wenn sie an ist.
+2. **Thing-Typ vorbereiten.** Installieren Sie das Paket `aas-essentials` unter **Geräte › Pakete**. Es wird nicht automatisch installiert. Fügen Sie dem Thing-Typ das Interface `aas-exposure` hinzu, und nach Bedarf `aas-digital-nameplate`, `aas-technical-data` und `aas-carbon-footprint`. Ein Aggregat-Typ kann keine Interfaces anhängen: Deklarieren Sie `aasEnabled` und die Eigenschaften des CO2-Fußabdrucks direkt an ihm.
 3. **Thing freigeben.** Öffnen Sie das Thing. Schalten Sie im Tab **Übersicht** unter **Verwaltungsschale** den Schalter **Als Verwaltungsschale freigeben** ein. Ein Standardwert am Thing-Typ gibt nie ein Thing frei: Jedes Thing wird einzeln freigegeben, von jemandem mit der Berechtigung, **Aas** zu ändern.
 4. **Typenschild und technische Daten füllen.** Setzen Sie die Werte am Thing oder als Anfangswerte am Typ. Veröffentlicht werden nur Elemente mit Wert. Fehlt ein Element, das die Vorlage verlangt, etwa `OrderCodeOfManufacturer` oder die Adressteile `Street`, `Zipcode`, `CityTown` und `NationalCode`, wird das Submodell ohne es veröffentlicht. Ein Werkzeug, das gegen die Vorlage prüft, meldet dann die Lücke. Der Herstellername kommt vom Thing, sonst vom Standard des Tenants, sonst vom Namen des Tenants.
 5. **CO2-Fußabdruck ergänzen.** Mit `aas-carbon-footprint` am Typ setzen Sie die Werte als Anfangswerte des Typs (ein Fußabdruck für den Produkttyp) oder an jedem Thing. Pflicht sind Berechnungsmethode, CO2-Äquivalent, Bezugseinheit, Menge, Lebenszyklusphase und Veröffentlichungsdatum. Methode, Einheit und Phase nehmen nur die Werte der Listen der IDTA-Vorlage an, etwa `ISO 14067`, `kg` und `A1-A3`. Fehlt ein Pflichtwert oder ist er ungültig, wird das ganze Submodell CarbonFootprint zurückgehalten, bis Sie es vervollständigen.
@@ -44,7 +44,7 @@ Die API ist kompatibel mit den Lese-Profilen von IDTA Part 2 v3.2, die sie unter
 
 Das digitale Typenschild und die Übergabedokumentation verwenden diese Werte für jedes Thing, das keine eigenen setzt.
 
-1. Öffnen Sie **Administration › Mandanteneinstellungen › Funktionen**. Ist **Verwaltungsschale** an, zeigt ihr Abschnitt **Vorgaben für veröffentlichte Verwaltungsschalen**.
+1. Öffnen Sie **Arbeitsbereich › Arbeitsbereich-Einstellungen › Funktionen**. Ist **Verwaltungsschale** an, zeigt ihr Abschnitt **Vorgaben für veröffentlichte Verwaltungsschalen**.
 2. Geben Sie **Herstellername**, **Kontakt-E-Mail** und **Kontakt-URL** ein. Alle drei sind optional. Ohne Herstellernamen wird der Name des Tenants verwendet.
 3. Speichern Sie.
 

@@ -21,7 +21,7 @@ Finden Sie heraus, warum eine Regel nicht tut, was Sie erwarten, wenn Daten eint
 
 ### 1. Die Regel ist aktiv und die Änderung veröffentlicht {#1-the-rule-is-active-and-the-change-is-published}
 
-Öffnen Sie **Einstellungen › Automatisierung › Regel-Designer**. Die Liste zeigt **Aktiv** oder **Inaktiv**.
+Öffnen Sie **Automatisierung › Regeln**. Die Liste zeigt **Aktiv** oder **Inaktiv**.
 
 - **Inaktiv**: Öffnen Sie die Regel und wählen Sie **Aktivieren**. Ist **Aktivieren** deaktiviert, hat die Regel noch keine veröffentlichte Version. Wählen Sie zuerst das Häkchen in der schwebenden Leiste.
 - Sie haben eine aktive Regel bearbeitet, aber das alte Verhalten bleibt: Änderungen sind ein Entwurf, bis Sie das Häkchen wählen, das **Entwurf anwenden** heißt, sobald eine Version existiert. Von einer Regel ist jeweils eine Version aktiv.
@@ -68,7 +68,7 @@ Um ein **Umschalten** zu testen, senden Sie einen Wert, der die Bedingung nicht 
 
 Die Regel löst aus, aber nichts erreicht Sie:
 
-- Aktion **Ereignis**: Die Regel hat ein Event erzeugt. Öffnen Sie **Überwachung › Events** und suchen Sie es. Möglicherweise sehen Sie es nicht, wenn die **Gruppen** des Event-Typs keine Ihrer Gruppen enthalten. Prüfen Sie dann den Tab **Aktionen** dieses Event-Typs unter **Einstellungen › Konfiguration › Event Typen**. Eine dort hinzugefügte Aktion wird mit ausgeschaltetem Schalter **Aktiv** angelegt. Eine ausgeschaltete Aktion läuft nicht.
+- Aktion **Ereignis**: Die Regel hat ein Event erzeugt. Öffnen Sie **Überwachung › Events** und suchen Sie es. Möglicherweise sehen Sie es nicht, wenn die **Gruppen** des Event-Typs keine Ihrer Gruppen enthalten. Prüfen Sie dann den Tab **Aktionen** dieses Event-Typs unter **Alarmierung › Ereignistypen**. Eine dort hinzugefügte Aktion wird mit ausgeschaltetem Schalter **Aktiv** angelegt. Eine ausgeschaltete Aktion läuft nicht.
 - **Benachrichtigung**: **Benutzer und Gruppen** muss Sie oder eine Gruppe enthalten, der Sie angehören.
 - **Webhook**: Ein fehlgeschlagener Aufruf wird als Event aufgezeichnet. Ein `405` bedeutet, dass die **Method** falsch ist, `401` oder `403` die **Autorisierung**, und ein Timeout, dass der Empfänger nicht rechtzeitig geantwortet hat. Siehe [Ein anderes System aus einer Regel aufrufen](../automate/webhook-from-rule.mdx).
 - **Benachrichtigungskanal**: Prüfen Sie, ob der Kanal aktiviert ist und seine Filter die Nachricht durchlassen. Siehe [Eine Alarm-E-Mail kommt nie an](./email-not-arriving.mdx).

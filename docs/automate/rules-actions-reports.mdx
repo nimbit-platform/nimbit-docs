@@ -4,7 +4,7 @@ sidebar_position: 2
 description: How rules, actions and reports differ, which actions each place offers, and how to choose.
 type: concept
 app:
-  routes: ["/automation/rule-designer", "/reports", "/onboarding/thing-types/:id"]
+  routes: ["/automation/rule-designer", "/automation/reports", "/devices/thing-types/:id"]
 ---
 
 IoT Breeze automates in three ways. A rule watches incoming data and runs actions when a condition holds. A device command is an action a person fires on purpose. A report builds a PDF on a schedule. The word "action" appears in all three places, and the lists of action types are different in each.
@@ -24,11 +24,11 @@ flowchart LR
 
 | Part | What it is | Where you build it |
 | --- | --- | --- |
-| **Rule** | A chain of four nodes: **Start**, **Condition**, **Trigger**, **Actions**. It is evaluated each time a thing in scope sends data. | **Settings › Automation › Rule Designer** |
+| **Rule** | A chain of four nodes: **Start**, **Condition**, **Trigger**, **Actions**. It is evaluated each time a thing in scope sends data. | **Automation › Rules** |
 | **Rule action** | A step a rule runs when its trigger fires. | The **Actions** node of a rule |
-| **Event type action** | A step that runs whenever an event of that type is created, whatever created it, except events that close an episode. It starts switched off: turn on **Active** after you create it. | **Actions** tab of an event type under **Settings › Configuration › Event Types** |
+| **Event type action** | A step that runs whenever an event of that type is created, whatever created it, except events that close an episode. It starts switched off: turn on **Active** after you create it. | **Actions** tab of an event type under **Alerting › Event types** |
 | **Thing action** | A command defined once on a thing type or a thing and fired by a person or a dashboard. | **Actions** tab of a thing type or thing |
-| **Report** | A document of widgets that IoT Breeze renders to PDF, stores in a folder and sends to subscribers. | **Settings › Automation › Reports** |
+| **Report** | A document of widgets that IoT Breeze renders to PDF, stores in a folder and sends to subscribers. | **Automation › Reports** |
 
 ## Three lists of actions
 

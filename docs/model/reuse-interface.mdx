@@ -4,7 +4,7 @@ sidebar_position: 6
 description: Share one set of fields between thing types, map fields that have other names, and keep thing types on the version they chose.
 type: how-to
 app:
-  routes: ["/onboarding/interfaces", "/onboarding/interfaces/:id", "/onboarding/thing-types/:id"]
+  routes: ["/devices/interfaces", "/devices/interfaces/:id", "/devices/thing-types/:id"]
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
@@ -22,14 +22,14 @@ Skip this if the interface already exists.
 
 **From fields you already have on a thing type**
 
-1. Open **Settings › Onboarding › Thing Types**, select the thing type and open **Schema › Interfaces**.
+1. Open **Devices › Thing Types**, select the thing type and open **Schema › Interfaces**.
 2. Select **Move to interface** and tick the published own fields to move.
 3. Choose **New interface** to create it from the selection, as **Experimental** with v1 published. Or choose **Existing interface** to publish the selection as the next version of one of your interfaces.
 4. Confirm. The thing type pins the new version, so its schema doesn't change.
 
 **From scratch**
 
-1. Open **Settings › Onboarding › Interfaces**, select **New interface**, enter **Display name**, **Name** and **Description** and save.
+1. Open **Devices › Interfaces**, select **New interface**, enter **Display name**, **Name** and **Description** and save.
 2. On the interface page, select **Edit schema**, then **Add measure** or **Add property** in the **Measures** and **Properties** panes.
 3. Select **Publish v1** in the header, describe the change in **Changelog** and confirm.
 
@@ -44,7 +44,7 @@ The interface appears under **Attached interfaces**, labeled **Pinned v1**. Its 
 <Screenshot
   page="model/reuse-interface"
   id="01-attach-interface"
-  route="/onboarding/thing-types/:id"
+  route="/devices/thing-types/:id"
   state="Thing type Schema tab, Interfaces pane, the Attach interface dialog open with Temperature Sensing selected"
   alt="Attaching an interface to a thing type"
 />

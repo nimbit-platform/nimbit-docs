@@ -4,7 +4,7 @@ sidebar_position: 4
 description: Define a kind of device with its measures and properties, then publish the schema so devices can use it.
 type: how-to
 app:
-  routes: ["/onboarding/thing-types", "/onboarding/thing-types/:id"]
+  routes: ["/devices/thing-types", "/devices/thing-types/:id"]
   primary: true
 ---
 
@@ -14,12 +14,12 @@ Define the values a kind of device sends and the fixed facts it has, and publish
 
 ## Before you start
 
-- Your role can create and edit thing types. If **Thing Types** is missing from **Settings › Onboarding**, ask your tenant admin.
+- Your role can create and edit thing types. If **Thing Types** is missing from **Devices**, ask your tenant admin.
 - Know the names your device sends its values under, for example `temperature`.
 
 ## Steps
 
-1. Open **Settings › Onboarding › Thing Types** and select **Create Thing Type**.
+1. Open **Devices › Thing Types** and select **Create Thing Type**.
 2. Fill in the form:
 
    | Field | What to enter |
@@ -41,7 +41,7 @@ Define the values a kind of device sends and the fixed facts it has, and publish
 <Screenshot
   page="model/create-thing-type"
   id="01-schema-measures"
-  route="/onboarding/thing-types/:id"
+  route="/devices/thing-types/:id"
   state="Schema tab, Measures pane, two measures in the table, a draft line reading Draft v2 · 2 changes, Publish v2 button in the header"
   alt="A thing type schema with two measures in draft"
 />

@@ -4,7 +4,7 @@ description: Create a gateway in IoT Breeze, set what it may create, and onboard
 type: how-to
 sidebar_position: 3
 app:
-  routes: ["/onboarding/gateways"]
+  routes: ["/devices/gateways"]
   primary: true
 ---
 
@@ -21,7 +21,7 @@ Create a gateway record, get a one-time onboarding code, and connect a Periscope
 
 ## Steps
 
-1. Open **Settings › Onboarding › Gateways** and select **Add gateway**.
+1. Open **Devices › Gateways** and select **Add gateway**.
 2. Under **Type**, choose **Periscope**.
 3. Enter a **Name**, for example `Hall 3 line controller`. It can be up to 100 characters.
 4. **Namespace** follows the name until you type one of your own. Leave it to use the derived one; IoT Breeze adds a suffix if another gateway already has it. A namespace you type has 1 to 64 characters from `a-z`, `0-9`, `_` and `-`. The alternate IDs of the gateway's things start with it. The word `gateway` is reserved. A namespace that equals, starts with or extends another gateway's is refused.
@@ -41,7 +41,7 @@ Create a gateway record, get a one-time onboarding code, and connect a Periscope
 <Screenshot
   page="gateways/add-a-gateway"
   id="01-onboarding-code"
-  route="/onboarding/gateways"
+  route="/devices/gateways"
   state="Add gateway drawer after creating a Periscope gateway, showing the onboarding code and the enroll command"
   alt="The result of Add gateway: the onboarding code and the command to run on the gateway"
 />

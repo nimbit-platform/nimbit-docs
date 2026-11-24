@@ -5,7 +5,7 @@ description: Ein MQTT-Geräte-Gateway hinzufügen, seine Konfigurationsdatei her
 type: how-to
 sidebar_position: 4
 app:
-  routes: ["/onboarding/gateways", "/onboarding/gateways/:id"]
+  routes: ["/devices/gateways", "/devices/gateways/:id"]
 translated_from: 06bddd1
 ---
 
@@ -23,7 +23,7 @@ Verbinden Sie ein Gerät, das MQTT spricht, etwa einen eWON Flexy, mit einem Sat
 
 ## Das Gateway hinzufügen {#add-the-gateway}
 
-1. Öffnen Sie **Einstellungen › Onboarding › Gateways** und wählen Sie **Gateway hinzufügen**.
+1. Öffnen Sie **Geräte › Gateways** und wählen Sie **Gateway hinzufügen**.
 2. Wählen Sie unter **Typ** die Option **MQTT-Gerät**.
 3. Geben Sie einen **Namen** ein. Lassen Sie **Namespace** leer oder geben Sie einen ein.
 4. Wählen Sie unter **Format der Konfigurationsdatei** die Option **Umgebungsdatei (.env)**, **JSON (.json)** oder **eWON-Flexy-BASIC-Parameter (.bas)**. Die Zugangsdaten sind in jedem Format gleich.
@@ -34,7 +34,7 @@ IoT Breeze zeigt **MQTT-Zugangsdaten für** den Namen des Gateways. Kopieren Sie
 <Screenshot
   page="gateways/mqtt-gateway"
   id="01-mqtt-credential"
-  route="/onboarding/gateways"
+  route="/devices/gateways"
   state="Add gateway drawer after creating an MQTT device gateway, with the connection rows and the Download config button"
   alt="Das Ergebnis der MQTT-Zugangsdaten mit Host, Port, Benutzername, Passwort und Topics"
 />

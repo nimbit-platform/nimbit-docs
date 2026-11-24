@@ -5,7 +5,7 @@ description: Give a thing or thing type a public page with the fields and docume
 type: how-to
 sidebar_position: 3
 app:
-  routes: ["/monitor/thing-details/:id", "/onboarding/things/:id", "/onboarding/thing-types/:id", "/tenant-settings"]
+  routes: ["/monitor/thing-details/:id", "/devices/things/:id", "/devices/thing-types/:id", "/workspace/settings"]
 ---
 
 A product link is a web address printed on a product, usually as a QR code. It opens a public page with the fields and documents you publish for that thing or thing type, and nothing else.
@@ -16,14 +16,14 @@ It is printed on the product, so anyone who sees the product can open it. Publis
 
 ## Before you start
 
-- A tenant admin has switched on **Asset Administration Shell** and **Product links** under **Administration › Tenant Settings › Features**. Product links stay off while the AAS feature is off.
+- A tenant admin has switched on **Asset Administration Shell** and **Product links** under **Workspace › Workspace settings › Features**. Product links stay off while the AAS feature is off.
 - For a thing's link, the thing is exposed as an Asset Administration Shell; see [Publish things as Asset Administration Shells](./asset-administration-shell.mdx). Otherwise the link shows nothing, and the tab says so.
 - Seeing links, published fields and the preview needs the **Passport** read permission: **Admin**, **System Admin** and **Manager** have it. Creating and changing links, and publishing, needs the **Passport** update permission: **Admin** and **System Admin**.
 - API keys cannot manage product links.
 
 ## Create a link and choose what it shows
 
-1. Open the thing, or the thing type under **Settings › Onboarding › Thing Types**, and select the **Product link** tab.
+1. Open the thing, or the thing type under **Devices › Thing Types**, and select the **Product link** tab.
 2. Select **Create product link**. The link starts as **Not public yet**: it shows nothing to anyone until you activate it.
 3. Under **Fields**, publish fields on the thing type. Select **Publish** on a field, and under **Value** choose **The type's value** or **Each Thing's own value**. A thing type's own link shows only fields with the type's value.
 4. On a single thing, the fields are those published on its type. To keep one off this thing's page, turn off **Show on this Thing**. The field then shows **Hidden on this Thing**.
@@ -105,7 +105,7 @@ https://<link address>/01/<GTIN>[/22/<variant>][/10/<lot>][/21/<serial>]
 
 - **Fallback**: as a GS1 resolver does, IoT Breeze tries the full value first, then without the serial, then without the lot, then without the variant. The most specific link that is active and shows something opens. If none does, the answer is the same "not found" as for an unknown link.
 - **Browser or API**: a browser goes to the page. A client whose `Accept` header asks for JSON or the AAS API is sent there.
-- **Serial numbers are off by default.** Then every serial opens the model's or batch's link, which reveals nothing about which serials exist. To open each item's own link, a tenant admin switches on **Resolve serial numbers** under **Administration › Tenant Settings › Features › Product links** and confirms with **Turn on**. Anyone can then try serial numbers one after another: if yours are sequential, others can find and count your items' links. Switch it on only if your serials are random, or you accept that. The switch applies only to GS1 identifiers registered through the API under a GS1 company prefix Nimbit has verified for your tenant.
+- **Serial numbers are off by default.** Then every serial opens the model's or batch's link, which reveals nothing about which serials exist. To open each item's own link, a tenant admin switches on **Resolve serial numbers** under **Workspace › Workspace settings › Features › Product links** and confirms with **Turn on**. Anyone can then try serial numbers one after another: if yours are sequential, others can find and count your items' links. Switch it on only if your serials are random, or you accept that. The switch applies only to GS1 identifiers registered through the API under a GS1 company prefix Nimbit has verified for your tenant.
 - **Not resolved**: DIDs, DOIs and IEC 61406 links, which resolve through their own infrastructure; GS1 keys other than the GTIN; a GS1 Digital Link under a path prefix. GS1 resolver link sets and link types are not implemented.
 
 The labels print the link's own address, not a GS1 Digital Link.

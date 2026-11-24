@@ -40,4 +40,4 @@ Jeder sieht nur die Datensätze, die er öffnen darf, in Erkunden wie in Nimbles
 
 ## Einschalten
 
-Knowledge und Ask Nimble werden pro Tenant eingeschaltet: Ein Tenant-Admin schaltet **Nimble fragen und Knowledge** unter **Administration › Mandanteneinstellungen › Funktionen** ein. Was dafür nötig ist, steht unter [Knowledge und KI](/docs/knowledge), was Nimble liest und wo es aufhört, unter [Wie Ask Nimble antwortet](/docs/knowledge/ask-nimble-answers).
+Knowledge und Ask Nimble werden pro Tenant eingeschaltet: Ein Tenant-Admin schaltet **Nimble fragen und Knowledge** unter **Arbeitsbereich › Arbeitsbereich-Einstellungen › Funktionen** ein. Was dafür nötig ist, steht unter [Knowledge und KI](/docs/knowledge), was Nimble liest und wo es aufhört, unter [Wie Ask Nimble antwortet](/docs/knowledge/ask-nimble-answers).

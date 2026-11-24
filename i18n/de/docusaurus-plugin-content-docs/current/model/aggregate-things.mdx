@@ -5,7 +5,7 @@ description: Fassen Sie Mitglieds-Things in Slots eines Aggregat-Things zusammen
 type: how-to
 sidebar_position: 6.6
 app:
-  routes: ["/onboarding/thing-types/:id", "/onboarding/things/:id", "/monitor/thing-details/:id"]
+  routes: ["/devices/thing-types/:id", "/devices/things/:id", "/monitor/thing-details/:id"]
 translated_from: 9db83b3
 ---
 
@@ -20,7 +20,7 @@ Diese Seite baut eine Anlage `pv_plant`, deren berechneter Messwert `total_power
 
 ## 1. Einen Aggregat-Thing-Typ anlegen {#1-create-an-aggregate-thing-type}
 
-1. Öffnen Sie **Einstellungen › Onboarding › Thing Typen** und wählen Sie **Thing Typ erstellen**.
+1. Öffnen Sie **Geräte › Thing Typen** und wählen Sie **Thing Typ erstellen**.
 2. Wählen Sie unter **Art** **Aggregat-Thing**. Die Art kann nach dem Anlegen des Thing-Typs nicht mehr geändert werden.
 3. Geben Sie den **Anzeigenamen** und den **Namen** ein, zum Beispiel `pv_plant`, und speichern Sie.
 
@@ -51,7 +51,7 @@ Eine Eingabe kann auch **Dieses Thing** lesen, das Aggregat selbst. Für eine En
 
 ## 4. Das Aggregat-Thing anlegen und Mitglieder hinzufügen {#4-create-the-aggregate-thing-and-add-members}
 
-1. Öffnen Sie **Einstellungen › Onboarding › Things**, wählen Sie **Thing erstellen** und den Aggregat-Thing-Typ. Konnektor, Authentifizierung und Gateway werden nicht abgefragt.
+1. Öffnen Sie **Geräte › Things**, wählen Sie **Thing erstellen** und den Aggregat-Thing-Typ. Konnektor, Authentifizierung und Gateway werden nicht abgefragt.
 2. Öffnen Sie auf der Seite des Things den Tab **Mitglieder**. Es gibt einen Abschnitt je Slot.
 3. Wählen Sie **Mitglieder hinzufügen** (**Mitglied wählen** oder **Mitglied ersetzen** bei einem Slot mit einem Mitglied), suchen Sie, wählen Sie die Things und dann **Fertig**. Angeboten werden nur Things, die in den Slot passen.
 

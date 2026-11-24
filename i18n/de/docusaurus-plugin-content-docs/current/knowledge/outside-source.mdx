@@ -18,14 +18,14 @@ Laden Sie Zeilen aus einem anderen System als Datensätze Ihrer eigenen Typen in
 ## Bevor Sie beginnen {#before-you-start}
 
 - Sie brauchen die Berechtigung, Knowledge zu bearbeiten. Ein Mapping speichern und eine Transformation ausführen braucht die Rolle Modeler oder Admin. Zugangsdaten anlegen braucht den Tenant-Admin.
-- Der Datensatztyp muss existieren. Legen Sie ihn unter **Einstellungen › Knowledge-Einrichtung › Datenmodell** an oder installieren Sie ein Paket im Tab **Bibliothek**. Siehe [Typen und Traits](./types-and-traits.mdx).
+- Der Datensatztyp muss existieren. Legen Sie ihn unter **Knowledge › Datenmodell** an oder installieren Sie ein Paket im Tab **Bibliothek**. Siehe [Typen und Traits](./types-and-traits.mdx).
 - Halten Sie das Geheimnis bereit, wenn eine API oder Datenbank eines braucht.
 
 ## Zugangsdaten anlegen (optional) {#create-a-credential-optional}
 
 Tun Sie das, wenn mehrere Konnektoren ein Geheimnis teilen oder das Geheimnis nicht in einem Konnektor liegen soll.
 
-1. Öffnen Sie **Einstellungen › Knowledge-Einrichtung › Quellen › Zugangsdaten** und wählen Sie **Erstellen**.
+1. Öffnen Sie **Knowledge › Quellen › Zugangsdaten** und wählen Sie **Erstellen**.
 2. Geben Sie einen **Name** ein. Er lässt sich später nicht ändern.
 3. Wählen Sie **Benutzer und Passwort**, **Bearer-Token**, **API-Schlüssel** oder **OAuth-2-Client-Credentials** und geben Sie das Geheimnis ein.
 4. Listen Sie unter **Erlaubte Hosts** einen Host pro Zeile auf. Die Zugangsdaten werden nur an diese Hosts gesendet. `*.example.com` deckt Subdomains ab.
@@ -64,7 +64,7 @@ Um eine Datei einmalig zu laden, nutzen Sie stattdessen **Daten hochladen** auf 
 
 ## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-Der Konnektor zeigt **Läuft** oder **Abgeschlossen**. Öffnen Sie nach der Transformation **Einstellungen › Knowledge-Einrichtung › Datenqualität › Datenaufnahme**, wählen Sie Ihre Quelle und prüfen Sie, dass der Batch **Verarbeitet** ist. Suchen Sie den Datensatz in **Erkunden**.
+Der Konnektor zeigt **Läuft** oder **Abgeschlossen**. Öffnen Sie nach der Transformation **Knowledge › Datenqualität › Datenaufnahme**, wählen Sie Ihre Quelle und prüfen Sie, dass der Batch **Verarbeitet** ist. Suchen Sie den Datensatz in **Erkunden**.
 
 ## Wenn es nicht funktioniert {#if-it-doesnt-work}
 

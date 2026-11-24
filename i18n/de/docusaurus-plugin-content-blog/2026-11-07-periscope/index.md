@@ -41,7 +41,7 @@ Ein Periscope liest beliebige Kombinationen dieser Quellen. Jeder Eingang ist sc
 
 ## Ein Gateway, das Sie sehen
 
-Verbinden Sie Periscope mit einem Onboarding-Code aus **Einstellungen › Onboarding › Gateways**, wird er in IoT Breeze zum Gateway: Er meldet sich mit einem eigenen Schlüssel an, darf nur seine eigenen Things anlegen und ändern und zeigt seinen Zustand und Datenverkehr auf der Gateway-Seite. Siehe [Wie Gateways funktionieren](/docs/gateways/how-gateways-work).
+Verbinden Sie Periscope mit einem Onboarding-Code aus **Geräte › Gateways**, wird er in IoT Breeze zum Gateway: Er meldet sich mit einem eigenen Schlüssel an, darf nur seine eigenen Things anlegen und ändern und zeigt seinen Zustand und Datenverkehr auf der Gateway-Seite. Siehe [Wie Gateways funktionieren](/docs/gateways/how-gateways-work).
 
 ## Periscope bekommen
 

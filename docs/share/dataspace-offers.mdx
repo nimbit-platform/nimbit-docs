@@ -5,7 +5,7 @@ description: Connect your own EDC connector, choose the things to offer, and let
 type: how-to
 sidebar_position: 4
 app:
-  routes: ["/tenant-settings"]
+  routes: ["/workspace/settings"]
 ---
 
 If your company takes part in a dataspace, you already have a connector, usually one built on Eclipse Dataspace Components (EDC). IoT Breeze publishes the Asset Administration Shells of the things you choose as offers in that connector and keeps them in step. Your partners negotiate a contract in their connector and fetch the shell through yours.
@@ -21,7 +21,7 @@ IoT Breeze does not run, configure or monitor your connector, its dataspace iden
 
 ## Steps
 
-1. **Turn the feature on.** Open **Administration › Tenant Settings › Features**, switch on **Asset Administration Shell** and **Dataspace offers**, and save. The **Dataspace connector** card appears at the bottom of the tab once the feature is saved.
+1. **Turn the feature on.** Open **Workspace › Workspace settings › Features**, switch on **Asset Administration Shell** and **Dataspace offers**, and save. The **Dataspace connector** card appears at the bottom of the tab once the feature is saved.
 2. **Save the connection.** On the **Dataspace connector** card, fill in:
 
    | Field | Value |
@@ -47,7 +47,7 @@ An offer you withdraw while a partner still holds a contract agreement for it le
 
 ## The callback key
 
-**Managed by Nimbit (the default).** Nimbit replaces the key before it expires and gives the new one to your connector with the next sync. Select **Rotate now** to replace it at once. On **Administration › API keys**, its service account shows **Managed by Nimbit** and cannot be edited, given keys or deleted there.
+**Managed by Nimbit (the default).** Nimbit replaces the key before it expires and gives the new one to your connector with the next sync. Select **Rotate now** to replace it at once. On **People & access › API keys**, its service account shows **Managed by Nimbit** and cannot be edited, given keys or deleted there.
 
 **Your own key.** If you need to, open **Advanced: use your own key** and enter a key yourself. Create it for a service account made for the dataspace, with no group, share or ownership of things, and only the `aas:read` scope; see [Create an API key](../administer/api-key.mdx). Saving refuses a personal key, a key of another tenant, a key with any other scope, and a key whose account can already see something. Nimbit never rotates, revokes or deletes a key you enter. It expires like any key, after 90 days by default: before then, create a new key for the **same** service account and save the connection with it. The old key keeps reading the offered things until you revoke it, and the card warns you of that. Revoke it once running transfers have ended.
 
@@ -74,4 +74,4 @@ An offer you withdraw while a partner still holds a contract agreement for it le
 
 ## Related
 
-- [Publish things as Asset Administration Shells](./asset-administration-shell.mdx) · [Create an API key](../administer/api-key.mdx) · [Tenant settings](../administer/tenant-settings.mdx)
+- [Publish things as Asset Administration Shells](./asset-administration-shell.mdx) · [Create an API key](../administer/api-key.mdx) · [Workspace settings](../administer/tenant-settings.mdx)

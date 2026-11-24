@@ -4,7 +4,7 @@ sidebar_position: 2
 description: Wie sich Regeln, Aktionen und Berichte unterscheiden, welche Aktionen jeder Ort bietet und wie Sie wählen.
 type: concept
 app:
-  routes: ["/automation/rule-designer", "/reports", "/onboarding/thing-types/:id"]
+  routes: ["/automation/rule-designer", "/automation/reports", "/devices/thing-types/:id"]
 translated_from: 679f3a4
 ---
 
@@ -25,11 +25,11 @@ flowchart LR
 
 | Baustein | Was es ist | Wo Sie es bauen |
 | --- | --- | --- |
-| **Regel** | Eine Kette aus vier Knoten: **Start**, **Bedingung**, **Auslöser**, **Aktionen**. Sie wird jedes Mal ausgewertet, wenn ein Thing im Geltungsbereich Daten sendet. | **Einstellungen › Automatisierung › Regel-Designer** |
+| **Regel** | Eine Kette aus vier Knoten: **Start**, **Bedingung**, **Auslöser**, **Aktionen**. Sie wird jedes Mal ausgewertet, wenn ein Thing im Geltungsbereich Daten sendet. | **Automatisierung › Regeln** |
 | **Regelaktion** | Ein Schritt, den eine Regel ausführt, wenn ihr Auslöser feuert. | Der Knoten **Aktionen** einer Regel |
-| **Aktion eines Event-Typs** | Ein Schritt, der jedes Mal läuft, wenn ein Event dieses Typs entsteht, egal was es erzeugt hat, außer bei Events, die eine Episode beenden. Sie startet ausgeschaltet: Schalten Sie nach dem Anlegen **Aktiv** ein. | Tab **Aktionen** eines Event-Typs unter **Einstellungen › Konfiguration › Event Typen** |
+| **Aktion eines Event-Typs** | Ein Schritt, der jedes Mal läuft, wenn ein Event dieses Typs entsteht, egal was es erzeugt hat, außer bei Events, die eine Episode beenden. Sie startet ausgeschaltet: Schalten Sie nach dem Anlegen **Aktiv** ein. | Tab **Aktionen** eines Event-Typs unter **Alarmierung › Ereignistypen** |
 | **Thing-Aktion** | Ein Befehl, der einmal an einem Thing-Typ oder Thing definiert und von einer Person oder einem Dashboard ausgelöst wird. | Tab **Aktionen** eines Thing-Typs oder Things |
-| **Bericht** | Ein Dokument aus Widgets, das IoT Breeze zu PDF rendert, in einem Ordner ablegt und an Abonnenten sendet. | **Einstellungen › Automatisierung › Berichte** |
+| **Bericht** | Ein Dokument aus Widgets, das IoT Breeze zu PDF rendert, in einem Ordner ablegt und an Abonnenten sendet. | **Automatisierung › Berichte** |
 
 ## Drei Listen von Aktionen {#three-lists-of-actions}
 

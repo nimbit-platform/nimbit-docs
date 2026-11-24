@@ -5,7 +5,7 @@ description: Hold member things in slots of an aggregate thing and combine their
 type: how-to
 sidebar_position: 6.6
 app:
-  routes: ["/onboarding/thing-types/:id", "/onboarding/things/:id", "/monitor/thing-details/:id"]
+  routes: ["/devices/thing-types/:id", "/devices/things/:id", "/monitor/thing-details/:id"]
 ---
 
 An aggregate thing has no device of its own. It holds member things in named **slots** and combines their measures in calculated measures, for example the total power of all inverters of a plant. Aggregates can nest: a line in a hall, a hall in a site.
@@ -19,7 +19,7 @@ This page builds a plant `pv_plant` whose calculated measure `total_power` sums 
 
 ## 1. Create an aggregate thing type
 
-1. Open **Settings › Onboarding › Thing Types** and select **Create Thing Type**.
+1. Open **Devices › Thing Types** and select **Create Thing Type**.
 2. Under **Kind**, choose **Aggregate thing**. The kind cannot be changed after the thing type is created.
 3. Enter the **Display name** and **Name**, for example `pv_plant`, and save.
 
@@ -50,7 +50,7 @@ An input can also read **This thing**, the aggregate itself. For an energy total
 
 ## 4. Create the aggregate thing and add members
 
-1. Open **Settings › Onboarding › Things**, select **Create thing** and choose the aggregate thing type. No connector, authentication or gateway is asked for.
+1. Open **Devices › Things**, select **Create thing** and choose the aggregate thing type. No connector, authentication or gateway is asked for.
 2. On the thing's page, open the **Members** tab. There is one section per slot.
 3. Select **Add members** (**Choose member** or **Replace member** for a slot with one member), search, pick the things and select **Done**. Only things that fit the slot are offered.
 

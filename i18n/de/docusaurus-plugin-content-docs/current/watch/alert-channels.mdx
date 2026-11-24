@@ -5,7 +5,7 @@ sidebar_position: 7
 description: Warnungen und Fehler Ihrer Things in einen Chat-Kanal oder ein anderes System posten.
 type: how-to
 app:
-  routes: ["/manage/notification-channels"]
+  routes: ["/alerting/notification-channels"]
   primary: true
 translated_from: 3041c36
 ---
@@ -18,7 +18,7 @@ Posten Sie Warnungen und Fehler Ihrer Things in einen Microsoft-Teams- oder Slac
 
 ## Bevor Sie anfangen {#before-you-start}
 
-- Sie brauchen eine Rolle, die Benachrichtigungskanäle anlegen darf, und für einen Test eine, die sie ausführen darf. Der Eintrag **Benachrichtigungskanäle** erscheint unter **Einstellungen › Konfiguration**, wenn Sie Zugriff haben.
+- Sie brauchen eine Rolle, die Benachrichtigungskanäle anlegen darf, und für einen Test eine, die sie ausführen darf. Der Eintrag **Benachrichtigungskanäle** erscheint unter **Alarmierung**, wenn Sie Zugriff haben.
 - Besorgen Sie die Adresse, an die IoT Breeze postet:
 
 <Tabs groupId="channel">
@@ -46,7 +46,7 @@ Wählen Sie ein ntfy-Topic. Nutzen Sie nicht den öffentlichen ntfy-Server, halt
 
 ## Schritte {#steps}
 
-1. Öffnen Sie **Einstellungen › Konfiguration › Benachrichtigungskanäle** und wählen Sie **Kanal erstellen**.
+1. Öffnen Sie **Alarmierung › Benachrichtigungskanäle** und wählen Sie **Kanal erstellen**.
 2. Geben Sie einen **Name** ein, zum Beispiel `Plant 1 alerts`, und wählen Sie den **Kanaltyp**. Den Typ können Sie später nicht ändern.
 3. Füllen Sie das Feld des Typs aus: **Teams-Workflow-Webhook-URL**, **Slack-Webhook-URL**, **Webhook-URL** (und **HMAC-Geheimnis (optional)**) oder **ntfy-Topic**.
 4. Schalten Sie **Automatisches Routing** ein und setzen Sie **Mindestschweregrad** auf **Warnung**. Lassen Sie **Ereignistypen** leer, um alle zu senden, oder wählen Sie die, die dieser Kanal bekommen soll.
@@ -56,7 +56,7 @@ Wählen Sie ein ntfy-Topic. Nutzen Sie nicht den öffentlichen ntfy-Server, halt
 <Screenshot
   page="watch/alert-channels"
   id="01-create-channel"
-  route="/manage/notification-channels"
+  route="/alerting/notification-channels"
   state="Create channel drawer, type Microsoft Teams, Automatic routing on, Minimum severity Warning"
   alt="Der Drawer Kanal erstellen, eingerichtet für Microsoft Teams"
 />

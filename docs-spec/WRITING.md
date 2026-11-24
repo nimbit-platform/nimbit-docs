@@ -36,7 +36,7 @@ sidebar_label: Alerts to Teams, Slack or webhook # optional, only if the title i
 description: Post warnings and errors from your things into a Teams channel.  # ≤ 160 chars, one sentence, used in search and link cards
 type: how-to
 app:
-  routes: ["/manage/notification-channels"]   # IoT Breeze routes this page helps with (help drawer)
+  routes: ["/alerting/notification-channels"]   # IoT Breeze routes this page helps with (help drawer)
   tour: find-your-way-alerts                     # only if a guided tour exists for exactly this
 ---
 ```
@@ -141,7 +141,7 @@ Complete. If something can't be confirmed from code, leave it out and add a `{/*
 ## Writing rules
 
 - Second person, present tense, active voice, short sentences. Say what to do; say why only when the reader needs it to choose.
-- UI labels in **bold**, exactly as the English UI shows them. Menu paths as **Settings › Onboarding › Thing Types** only where the reader must navigate there.
+- UI labels in **bold**, exactly as the English UI shows them. Menu paths as **Devices › Thing Types** only where the reader must navigate there.
 - Reader words in headings and titles, not internal names. "Clean up incoming data", not "Transformation pipeline". Mention the UI name in the text.
 - Code must run as pasted except for placeholders in angle brackets inside backticks: `<tenantId>`. Use `<Tabs>` for protocols or languages; `groupId` so choices persist.
 - At most two admonitions per page. Use `:::tip`, `:::info`, `:::warning`; `:::danger` only for data loss.

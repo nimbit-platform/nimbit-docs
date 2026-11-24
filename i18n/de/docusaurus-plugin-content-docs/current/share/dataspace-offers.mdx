@@ -5,7 +5,7 @@ description: Den eigenen EDC-Connector verbinden, die anzubietenden Things wähl
 type: how-to
 sidebar_position: 4
 app:
-  routes: ["/tenant-settings"]
+  routes: ["/workspace/settings"]
 translated_from: b799038
 ---
 
@@ -22,7 +22,7 @@ IoT Breeze betreibt, konfiguriert und überwacht weder Ihren Connector noch sein
 
 ## Schritte {#steps}
 
-1. **Funktion einschalten.** Öffnen Sie **Administration › Mandanteneinstellungen › Funktionen**, schalten Sie **Verwaltungsschale** und **Dataspace-Angebote** ein und speichern Sie. Die Karte **Dataspace-Connector** erscheint unten im Tab, sobald die Funktion gespeichert ist.
+1. **Funktion einschalten.** Öffnen Sie **Arbeitsbereich › Arbeitsbereich-Einstellungen › Funktionen**, schalten Sie **Verwaltungsschale** und **Dataspace-Angebote** ein und speichern Sie. Die Karte **Dataspace-Connector** erscheint unten im Tab, sobald die Funktion gespeichert ist.
 2. **Verbindung speichern.** Füllen Sie auf der Karte **Dataspace-Connector** aus:
 
    | Feld | Wert |
@@ -48,7 +48,7 @@ Ein Angebot, das Sie zurückziehen, während ein Partner noch eine Vertragsverei
 
 ## Der Rückruf-Schlüssel {#the-callback-key}
 
-**Von Nimbit verwaltet (Standard).** Nimbit ersetzt den Schlüssel, bevor er abläuft, und gibt den neuen mit dem nächsten Abgleich an Ihren Connector. Mit **Jetzt erneuern** ersetzen Sie ihn sofort. Unter **Administration › API-Schlüssel** zeigt sein Dienstkonto **Von Nimbit verwaltet** und lässt sich dort weder bearbeiten noch mit Schlüsseln versehen oder löschen.
+**Von Nimbit verwaltet (Standard).** Nimbit ersetzt den Schlüssel, bevor er abläuft, und gibt den neuen mit dem nächsten Abgleich an Ihren Connector. Mit **Jetzt erneuern** ersetzen Sie ihn sofort. Unter **Personen & Zugriff › API-Schlüssel** zeigt sein Dienstkonto **Von Nimbit verwaltet** und lässt sich dort weder bearbeiten noch mit Schlüsseln versehen oder löschen.
 
 **Eigener Schlüssel.** Wenn nötig, öffnen Sie **Erweitert: eigenen Schlüssel verwenden** und geben selbst einen Schlüssel ein. Erstellen Sie ihn für ein eigens für den Dataspace angelegtes Dienstkonto ohne Gruppe, Freigabe oder Besitz von Things, nur mit dem Scope `aas:read`; siehe [Einen API-Schlüssel erstellen](../administer/api-key.mdx). Beim Speichern werden ein persönlicher Schlüssel, ein Schlüssel eines anderen Tenants, ein Schlüssel mit einem anderen Scope und ein Schlüssel, dessen Konto bereits etwas sieht, abgelehnt. Nimbit erneuert, widerruft oder löscht einen von Ihnen eingegebenen Schlüssel nie. Er läuft ab wie jeder Schlüssel, standardmäßig nach 90 Tagen: Erstellen Sie vorher einen neuen Schlüssel für **dasselbe** Dienstkonto und speichern Sie die Verbindung damit. Der alte Schlüssel liest die angebotenen Things weiter, bis Sie ihn widerrufen, und die Karte weist darauf hin. Widerrufen Sie ihn, sobald laufende Übertragungen beendet sind.
 

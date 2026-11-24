@@ -4,7 +4,7 @@ description: Was ein Gateway ist, wie es sich anmeldet, für welche Things es se
 type: concept
 sidebar_position: 2
 app:
-  routes: ["/onboarding/gateways", "/onboarding/gateways/:id"]
+  routes: ["/devices/gateways", "/devices/gateways/:id"]
 translated_from: 06bddd1
 ---
 
@@ -24,7 +24,7 @@ flowchart LR
 
 | Baustein | Was es ist |
 | --- | --- |
-| **Gateway** | Ein Eintrag in Ihrer Organisation mit Name, Typ, Namespace und Scope. Sie verwalten ihn unter **Einstellungen › Onboarding › Gateways**. |
+| **Gateway** | Ein Eintrag in Ihrer Organisation mit Name, Typ, Namespace und Scope. Sie verwalten ihn unter **Geräte › Gateways**. |
 | **Typ** | **Periscope**: ein [Periscope](./periscope/index.mdx)-Agent, der sich mit einem eigenen Schlüssel anmeldet. **MQTT-Gerät**: ein Gerät, das sich per MQTT mit Benutzername und Passwort verbindet, zum Beispiel ein eWON Flexy. |
 | **Gateway-Thing** | Ein Thing, das IoT Breeze zusammen mit dem Gateway anlegt, mit der Alternate-ID `gateway-<gateway id>`. Sein Verbindungsstatus ist der Status des Gateways. Es wird mit dem Gateway entfernt. Niemand kann es einzeln löschen: **Löschen** ist deaktiviert und zeigt **Wird mit seinem Gateway entfernt**. |
 | **Namespace** | Das Präfix der Alternate-IDs der Things des Gateways: Sie entsprechen dem Namespace oder beginnen mit `<namespace>-`. IoT Breeze leitet ihn aus dem Namen ab, wenn Sie keinen eingeben. Bei **Periscope**-Gateways wird er durchgesetzt. Bei einem Gateway vom Typ **MQTT-Gerät** wird er beim Zuordnen von Things nicht geprüft. |

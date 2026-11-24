@@ -4,7 +4,7 @@ sidebar_position: 4
 description: Legen Sie eine Art von Gerät mit ihren Messwerten und Eigenschaften fest und veröffentlichen Sie das Schema, damit Geräte es nutzen können.
 type: how-to
 app:
-  routes: ["/onboarding/thing-types", "/onboarding/thing-types/:id"]
+  routes: ["/devices/thing-types", "/devices/thing-types/:id"]
   primary: true
 translated_from: 9db83b3
 ---
@@ -15,12 +15,12 @@ Legen Sie die Werte fest, die eine Art von Gerät sendet, und die festen Angaben
 
 ## Voraussetzungen {#before-you-start}
 
-- Ihre Rolle darf Thing-Typen anlegen und bearbeiten. Fehlt **Thing Typen** unter **Einstellungen › Onboarding**, fragen Sie Ihren Tenant-Admin.
+- Ihre Rolle darf Thing-Typen anlegen und bearbeiten. Fehlt **Thing Typen** unter **Geräte**, fragen Sie Ihren Tenant-Admin.
 - Kennen Sie die Namen, unter denen Ihr Gerät seine Werte sendet, zum Beispiel `temperature`.
 
 ## Schritte {#steps}
 
-1. Öffnen Sie **Einstellungen › Onboarding › Thing Typen** und wählen Sie **Thing Typ erstellen**.
+1. Öffnen Sie **Geräte › Thing Typen** und wählen Sie **Thing Typ erstellen**.
 2. Füllen Sie das Formular aus:
 
    | Feld | Was Sie eingeben |
@@ -42,7 +42,7 @@ Legen Sie die Werte fest, die eine Art von Gerät sendet, und die festen Angaben
 <Screenshot
   page="model/create-thing-type"
   id="01-schema-measures"
-  route="/onboarding/thing-types/:id"
+  route="/devices/thing-types/:id"
   state="Schema tab, Measures pane, two measures in the table, a draft line reading Draft v2 · 2 changes, Publish v2 button in the header"
   alt="Das Schema eines Thing-Typs mit zwei Messwerten im Entwurf"
 />

@@ -8,31 +8,31 @@
   {
     "id": "canvas",
     "title": "Canvas: an introduction",
-    "route": "/canvas",
+    "route": "/monitor/canvas",
     "titleDe": "Canvas: eine Einführung"
   },
   {
     "id": "canvas-view",
     "title": "Canvas: read a canvas",
-    "route": "/canvas/:canvasId",
+    "route": "/monitor/canvas/:canvasId",
     "titleDe": "Canvas: ein Canvas lesen"
   },
   {
     "id": "canvas-build",
     "title": "Canvas: build a canvas",
-    "route": "/canvas/:canvasId",
+    "route": "/monitor/canvas/:canvasId",
     "titleDe": "Canvas: ein Canvas bauen"
   },
   {
     "id": "canvas-data",
     "title": "Canvas: connect live data",
-    "route": "/canvas/:canvasId",
+    "route": "/monitor/canvas/:canvasId",
     "titleDe": "Canvas: Live-Daten verbinden"
   },
   {
     "id": "getting-started-thing-type",
     "title": "Create a thing type",
-    "route": "/onboarding/thing-types",
+    "route": "/devices/thing-types",
     "guide": "getting-started",
     "guideTitle": "Get your first device online",
     "titleDe": "Einen Thing Typ anlegen",
@@ -41,7 +41,7 @@
   {
     "id": "getting-started-thing",
     "title": "Create a thing",
-    "route": "/onboarding/things",
+    "route": "/devices/things",
     "guide": "getting-started",
     "guideTitle": "Get your first device online",
     "titleDe": "Ein Thing anlegen",
@@ -50,7 +50,7 @@
   {
     "id": "getting-started-data",
     "title": "See live data",
-    "route": "/onboarding/things/:thingId",
+    "route": "/devices/things/:thingId",
     "guide": "getting-started",
     "guideTitle": "Get your first device online",
     "titleDe": "Live-Daten sehen",
@@ -86,7 +86,7 @@
   {
     "id": "explore-trust",
     "title": "Read and trust the answer",
-    "route": "/knowledge/chat?conversation=:conversation",
+    "route": "/chat?conversation=:conversation",
     "guide": "explore-and-ask",
     "guideTitle": "Explore and ask",
     "titleDe": "Die Antwort lesen und ihr vertrauen",
@@ -95,7 +95,7 @@
   {
     "id": "explore-keep-going",
     "title": "Keep going",
-    "route": "/knowledge/chat?conversation=:conversation",
+    "route": "/chat?conversation=:conversation",
     "guide": "explore-and-ask",
     "guideTitle": "Explore and ask",
     "titleDe": "Weitermachen",
@@ -239,7 +239,7 @@
   {
     "id": "find-your-way-alerts",
     "title": "Get told when it matters",
-    "route": "/manage/event-types",
+    "route": "/alerting/event-types",
     "guide": "find-your-way",
     "guideTitle": "Find your way around",
     "titleDe": "Informiert werden, wenn es zählt",
@@ -248,7 +248,7 @@
   {
     "id": "find-your-way-tenant",
     "title": "Run the tenant",
-    "route": "/administration/users",
+    "route": "/access/users",
     "guide": "find-your-way",
     "guideTitle": "Find your way around",
     "titleDe": "Den Mandanten führen",
@@ -311,7 +311,7 @@
   {
     "id": "build-dashboards-assign",
     "title": "Assign it where people look",
-    "route": "/onboarding/things/:thingId?tab=dashboard",
+    "route": "/devices/things/:thingId?tab=dashboard",
     "guide": "build-dashboards",
     "guideTitle": "Build dashboards",
     "titleDe": "Dort zuweisen, wo man hinschaut",

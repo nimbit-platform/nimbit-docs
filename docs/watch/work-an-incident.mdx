@@ -4,7 +4,7 @@ sidebar_position: 5
 description: Pick up an incident, take it from open to closed, and report one by hand when no policy caught the problem.
 type: how-to
 app:
-  routes: ["/monitor/incidents", "/monitor/incidents/:id"]
+  routes: ["/incidents", "/incidents/:id"]
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
@@ -18,7 +18,7 @@ Take an incident from open to closed: acknowledge it, assign it, record the fix 
 
 ## Pick up an incident
 
-1. Open **Monitoring › Incidents**. The menu entry shows how many open incidents nobody has acknowledged.
+1. Open **Incidents**. The menu entry shows how many open incidents nobody has acknowledged.
 2. Stay on the **Active** tab, or open **Unacknowledged**. Each tab shows its count.
 3. To narrow the list, search by title or incident number such as `INC-1042`, or use the filters **Severity**, **Status**, **Policy**, **Assignee** and **Thing**. **Assigned to me** and **Watching** show yours.
 4. Select the incident.
@@ -28,7 +28,7 @@ To act on several at once, tick the rows and use **Acknowledge** or **Assign** i
 <Screenshot
   page="watch/work-an-incident"
   id="01-incident-detail"
-  route="/monitor/incidents/:id"
+  route="/incidents/:id"
   state="Incident detail: header with title, severity, status and Acknowledge, Assign, Resolve buttons; Events section with an episode; Activity thread with a comment; side panels Details, Watchers, Links"
   alt="An incident page with workflow buttons, events and activity"
 />
@@ -67,7 +67,7 @@ A manual incident works like any other: assign, comment, resolve.
 
 ## Check that it worked
 
-The incident's status reads **Resolved** or **Closed**, and **Activity** shows each step with who did it. Under **Monitoring › Incidents**, the **Active** count drops by one.
+The incident's status reads **Resolved** or **Closed**, and **Activity** shows each step with who did it. Under **Incidents**, the **Active** count drops by one.
 
 ## If it doesn't work
 
