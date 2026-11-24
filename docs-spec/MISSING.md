@@ -6,7 +6,7 @@ Everything the docs wait on: features that haven't landed, screenshots, files an
 
 | What | Docs affected | Waiting on | Then |
 |---|---|---|---|
-| Gateways under **Devices › Gateways** (`/devices/gateways`), the gateway detail page (Traffic card, Scope and Events tabs) | All of `gateways/` (21 pages) | PR 1623 (gateway thing, namespaces, scope, credentials). Current builds still have Gateways under Administration, with no detail page. | Capture the 4 gateway screenshots; check menu labels and tab names against the merged UI |
+| Gateways under **Devices › Gateways** (`/devices/gateways`), the gateway detail page (Traffic card, Scope and Events tabs) | All of `gateways/` (21 pages) | The IoT Breeze route move (CU-1247yh20874). PR 1623 has landed: current builds have **Devices › Gateways** and the detail page, still at `/onboarding/gateways`. | Capture the 4 gateway screenshots; check menu labels and tab names against the merged UI |
 
 ## Screenshots
 
