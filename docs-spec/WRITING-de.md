@@ -17,14 +17,14 @@ Bold text is a label on screen. Write it exactly as the German IoT Breeze shows 
 Look labels up in the app's translations:
 
 ```
-pnpm i18n:label "Add measure" "Settings › Onboarding › Thing Types"
+pnpm i18n:label "Add measure" "Devices › Thing Types"
 ```
 
 The tool lists every German translation of the English string with its namespace and key. When there are several, take the one from the screen the step is on: `rule:` keys on the rule canvas, `thing-details:` on a thing's page, `shell:` in the menu. If unsure, grep `apps/iot-breeze` for the key to see where it is used. For a string with a placeholder (`Published · v{version}`), grep the German file for the key and fill in the value (`Veröffentlicht · v1`).
 
 When a label has no German translation in the app, keep the English label in bold, and add it to the list in your report: the app has to translate it.
 
-Menu paths use ` › ` between levels, as in English: **Einstellungen › Onboarding › Thing Typen**.
+Menu paths use ` › ` between levels, as in English: **Geräte › Thing Typen**.
 
 ## Words in running text
 

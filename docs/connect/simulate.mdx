@@ -4,7 +4,7 @@ description: Send one test message or run a simulated device from the thing page
 sidebar_position: 7
 type: how-to
 app:
-  routes: ["/onboarding/things/:id"]
+  routes: ["/devices/things/:id"]
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
@@ -20,7 +20,7 @@ Fill charts and test dashboards or rules before the real device is online. IoT B
 
 ### Send one message
 
-1. Open the thing (**Settings › Onboarding › Things**).
+1. Open the thing (**Devices › Things**).
 2. Select **More actions**, then **Send data**. The **Send once** tab opens. On a thing that never reported, **Overview** also offers **Send a test message**.
 3. Each measure of the thing type is a row with **Measure** and **Value**. Untick measures you do not want to send, or use **Include all measures**.
 4. Under **Timestamp**, choose **Now** or **Pick a time…**.
@@ -31,7 +31,7 @@ To add location or tags, edit the message as JSON. Delete a measure to leave it 
 <Screenshot
   page="connect/simulate"
   id="01-send-once"
-  route="/onboarding/things/:id"
+  route="/devices/things/:id"
   state="Send data dialog on the Send once tab with two measures filled in and the Timestamp set to Now"
   alt="The Send once form"
 />
@@ -55,7 +55,7 @@ To add location or tags, edit the message as JSON. Delete a measure to leave it 
 <Screenshot
   page="connect/simulate"
   id="02-simulate"
-  route="/onboarding/things/:id"
+  route="/devices/things/:id"
   state="Send data dialog on the Simulate tab: Run for 15 min, Every 10 s, a temperature measure on Wave with min 18 and max 26 and a preview"
   alt="The Simulate form"
 />
@@ -78,7 +78,7 @@ The values appear in **Live values** on the thing's **Overview** within a second
 
 - **The buttons are missing**: you lack the permission to send data to devices.
 - **The banner says Simulation stopped: the data could not be sent**: select **Dismiss**, then check that the thing type is published and start again.
-- **Simulated values are in a real device's history**: charts do not tell them apart. Remove them in **Administration › Tenant Settings › Data** with **Simulated data**, after stopping running simulations. Readings your devices sent are not touched.
+- **Simulated values are in a real device's history**: charts do not tell them apart. Remove them in **Workspace › Workspace settings › Data** with **Simulated data**, after stopping running simulations. Readings your devices sent are not touched.
 
 ## Related
 

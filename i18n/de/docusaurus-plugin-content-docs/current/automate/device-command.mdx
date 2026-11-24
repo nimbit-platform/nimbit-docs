@@ -4,8 +4,8 @@ sidebar_position: 4
 description: Definieren Sie einen MQTT-Befehl an einem Thing-Typ und lösen Sie ihn von einer Thing-Seite oder einem Dashboard aus.
 type: how-to
 app:
-  routes: ["/onboarding/thing-types/:id", "/onboarding/things/:id"]
-translated_from: 1579ffe
+  routes: ["/devices/thing-types/:id", "/devices/things/:id"]
+translated_from: be26cb0
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
@@ -20,7 +20,7 @@ Definieren Sie einen Befehl wie **Restart pump** einmal an einem Thing-Typ und l
 
 ## Den Befehl anlegen {#create-the-command}
 
-1. Öffnen Sie **Einstellungen › Onboarding › Thing Typen**, öffnen Sie den Thing-Typ und gehen Sie zu seinem Tab **Aktionen**.
+1. Öffnen Sie **Geräte › Thing Typen**, öffnen Sie den Thing-Typ und gehen Sie zu seinem Tab **Aktionen**.
 2. Wählen Sie **Aktion erstellen** und dann **MQTT**.
 3. Geben Sie einen **Name** ein, zum Beispiel `Restart pump`.
 4. Geben Sie unter **Unterthema** die Ebene ein, auf der das Gerät lauscht, zum Beispiel `restart`. Lassen Sie es leer, um auf der bloßen Ebene `cmd` zu veröffentlichen. Verwenden Sie Buchstaben, Ziffern, `_` oder `-`, getrennt durch `/`.
@@ -37,14 +37,14 @@ Definieren Sie einen Befehl wie **Restart pump** einmal an einem Thing-Typ und l
 <Screenshot
   page="automate/device-command"
   id="01-create-mqtt-action"
-  route="/onboarding/thing-types/:id"
+  route="/devices/thing-types/:id"
   state="Create action drawer, type MQTT, name Restart pump, sub-topic restart, format JSON, payload filled in"
   alt="Die Schublade „Aktion erstellen“ für einen MQTT-Befehl"
 />
 
 ## Ihn an einem Thing auslösen {#fire-it-at-a-thing}
 
-1. Öffnen Sie **Einstellungen › Onboarding › Things** und öffnen Sie das Thing.
+1. Öffnen Sie **Geräte › Things** und öffnen Sie das Thing.
 2. Gehen Sie zu **Aktionen** und wählen Sie neben `Restart pump` **Auslösen**.
 
 Auf der Seite eines Thing-Typs fragt **Auslösen**, an welches **Thing** der Befehl gehen soll.

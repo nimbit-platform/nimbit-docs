@@ -4,8 +4,8 @@ sidebar_position: 5
 description: Einen Vorfall übernehmen, von offen bis geschlossen führen und einen von Hand melden, wenn keine Richtlinie das Problem erfasst hat.
 type: how-to
 app:
-  routes: ["/monitor/incidents", "/monitor/incidents/:id"]
-translated_from: b6ed908
+  routes: ["/incidents", "/incidents/:id"]
+translated_from: be26cb0
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
@@ -19,7 +19,7 @@ Führen Sie einen Vorfall von offen bis geschlossen: quittieren, zuweisen, die B
 
 ## Einen Vorfall übernehmen {#pick-up-an-incident}
 
-1. Öffnen Sie **Überwachung › Vorfälle**. Der Menüeintrag zeigt, wie viele offene Vorfälle niemand quittiert hat.
+1. Öffnen Sie **Vorfälle**. Der Menüeintrag zeigt, wie viele offene Vorfälle niemand quittiert hat.
 2. Bleiben Sie im Tab **Aktiv** oder öffnen Sie **Nicht quittiert**. Jeder Tab zeigt seine Anzahl.
 3. Um die Liste einzugrenzen, suchen Sie nach Titel oder Vorfallsnummer wie `INC-1042`, oder nutzen Sie die Filter **Schweregrad**, **Status**, **Richtlinie**, **Zugewiesen an** und **Thing**. **Mir zugewiesen** und **Beobachtet** zeigen Ihre.
 4. Wählen Sie den Vorfall.
@@ -29,7 +29,7 @@ Um mehrere auf einmal zu bearbeiten, haken Sie die Zeilen an und nutzen **Quitti
 <Screenshot
   page="watch/work-an-incident"
   id="01-incident-detail"
-  route="/monitor/incidents/:id"
+  route="/incidents/:id"
   state="Incident detail: header with title, severity, status and Acknowledge, Assign, Resolve buttons; Events section with an episode; Activity thread with a comment; side panels Details, Watchers, Links"
   alt="Eine Vorfallsseite mit Workflow-Schaltflächen, Events und Aktivität"
 />
@@ -68,7 +68,7 @@ Ein manueller Vorfall funktioniert wie jeder andere: zuweisen, kommentieren, lö
 
 ## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-Der Status des Vorfalls lautet **Gelöst** oder **Geschlossen**, und **Aktivität** zeigt jeden Schritt mit der Person, die ihn ausgeführt hat. Unter **Überwachung › Vorfälle** sinkt die Zahl bei **Aktiv** um eins.
+Der Status des Vorfalls lautet **Gelöst** oder **Geschlossen**, und **Aktivität** zeigt jeden Schritt mit der Person, die ihn ausgeführt hat. Unter **Vorfälle** sinkt die Zahl bei **Aktiv** um eins.
 
 ## Wenn es nicht funktioniert {#if-it-doesnt-work}
 

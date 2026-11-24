@@ -4,7 +4,7 @@ description: Find and fix the errors Periscope shows in its log, on its Overview
 type: how-to
 sidebar_position: 15
 app:
-  routes: ["/onboarding/gateways"]
+  routes: ["/devices/gateways"]
 ---
 
 Find the cause of an error Periscope reports and fix it. Errors of a single plant protocol are at the end of each source page, for example [Connect an OPC UA server](./opc-ua.mdx). The agent also serves a longer list at `http://<listen>/ui/docs`.
@@ -48,7 +48,7 @@ Find your symptom in the group that matches.
 These apply to a box with `[ocb] gateway = true`. See [Gateway reference](../gateway-reference.mdx) for the platform's side.
 
 - **`the gateway's namespace is not known yet (gateways.me has not answered)`**: the agent asks the platform for its gateway's record and discovers and applies nothing until it answers, so no thing gets the wrong prefix. `discover` and `apply` fail with this message, and `serve` asks again every minute. Check that `[ocb] url` is set and that the box reaches the platform. In a container, run `docker exec periscope periscope validate`.
-- **`OCB has no record of this gateway yet; asked again before the next discovery`**: the platform knows the route but not the gateway. Check in **Settings › Onboarding › Gateways** that the gateway exists, and that this box was onboarded with its code. The agent asks again before each discovery, at most once a minute.
+- **`OCB has no record of this gateway yet; asked again before the next discovery`**: the platform knows the route but not the gateway. Check in **Devices › Gateways** that the gateway exists, and that this box was onboarded with its code. The agent asks again before each discovery, at most once a minute.
 - **`the platform has no /rest/v2/gateways/me (an older OCB)`**: the platform predates the gateway's record. The agent keeps `agent.name` as the prefix and sends its health to `gateway-<gateway id>`. Upgrade the platform, then restart the agent.
 - **`403 GATEWAY_SCOPE_REQUIRED`**: the box asked for the tenant credential, and the platform issues a gateway only its own. Upgrade Periscope. See [Upgrade a box](./deploy/upgrade.mdx).
 - **`403 GATEWAY_TOKEN_REQUIRED`**: the request asked for the gateway credential with a token that isn't a gateway's. Check that `periscope validate` shows the gateway as the credential and that the box was onboarded as this gateway.

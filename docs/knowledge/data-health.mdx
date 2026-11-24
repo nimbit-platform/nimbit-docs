@@ -16,15 +16,15 @@ Find rows that did not land, records that are linked to nothing, and source reco
 - Permission to edit Knowledge to change the reconciliation schedule or run transforms. Deciding links needs permission to edit thing types.
 - At least one source loaded: see [Bring in an outside data source](./outside-source.mdx).
 
-Open **Settings › Knowledge setup › Data health**. The tabs are **Ingestion**, **Link review** and **Reconciliation**. A badge on the menu entry shows how many links are open.
+Open **Knowledge › Data health**. The tabs are **Import runs**, **Link review** and **Conflicts**. A badge on the menu entry shows how many links are open.
 
-:::note The Ingestion tab covers knowledge sources
+:::note The Import runs tab covers knowledge sources
 Its address is `/knowledge/monitoring`, an older name. For device data use **Monitoring › Things**.
 :::
 
 ## Fix rows that did not land
 
-1. Open **Ingestion** and pick a **Source**.
+1. Open **Import runs** and pick a **Source**.
 2. Read **Batches**. Each is **Pending**, **Processed** or **Quarantined**.
 3. Open **Needs review** for rows the last transform could not write. Each row gives the reason: an alias that did not resolve, a missing source id, or a validation failure.
 4. Open **Dead letters** for failed deliveries. **Unresolved** ones need action.
@@ -32,7 +32,7 @@ Its address is `/knowledge/monitoring`, an older name. For device data use **Mon
 
 ## Check the graph's links
 
-1. On **Ingestion**, under **Graph health**, select **Check now**.
+1. On **Import runs**, under **Graph health**, select **Check now**.
 2. Read each check: a count, examples and a result of **Critical**, **Warning**, **Info** or **OK**. Large counts may come from a capped sample.
 3. Select **Show records** or **Review** to fix the finding.
 
@@ -72,12 +72,12 @@ Choose **Link in Knowledge only** to link without changing the device. If the de
 
 A round runs across all sources: it re-runs batches that have rows in review, makes links that now resolve, checks confirmed links and ranks open links again. It never picks a link for you.
 
-1. Open **Reconciliation**.
+1. Open **Conflicts**.
 2. Choose a **Schedule**: **Off**, **Every hour**, **Every day** or **Every week**. Times are UTC. Or select **Run now**.
 
 ## Check that it worked
 
-Batches show **Processed**, the **Link review** badge is gone, and the **Graph health** checks improve. The **Reconciliation** list shows **Linked**, **Reopened**, **Still open** and **Batches re-run** for each round.
+Batches show **Processed**, the **Link review** badge is gone, and the **Graph health** checks improve. The **Conflicts** list shows **Linked**, **Reopened**, **Still open** and **Batches re-run** for each round.
 
 ## If it doesn't work
 

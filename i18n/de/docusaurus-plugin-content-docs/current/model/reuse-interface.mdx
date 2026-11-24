@@ -4,8 +4,8 @@ sidebar_position: 6
 description: Teilen Sie eine Menge von Feldern zwischen Thing-Typen, ordnen Sie Felder mit anderen Namen zu und lassen Sie Thing-Typen auf der gewählten Version.
 type: how-to
 app:
-  routes: ["/onboarding/interfaces", "/onboarding/interfaces/:id", "/onboarding/thing-types/:id"]
-translated_from: 679f3a4
+  routes: ["/devices/interfaces", "/devices/interfaces/:id", "/devices/thing-types/:id"]
+translated_from: be26cb0
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
@@ -23,14 +23,14 @@ Legen Sie Felder einmal als Interface fest, hängen Sie es an mehrere Thing-Type
 
 **Aus Feldern, die Sie schon an einem Thing-Typ haben**
 
-1. Öffnen Sie **Einstellungen › Onboarding › Thing Typen**, wählen Sie den Thing-Typ und öffnen Sie **Schema › Interfaces**.
+1. Öffnen Sie **Geräte › Thing Typen**, wählen Sie den Thing-Typ und öffnen Sie **Schema › Interfaces**.
 2. Wählen Sie **In Schnittstelle verschieben** und haken Sie die veröffentlichten eigenen Felder an, die verschoben werden sollen.
 3. Wählen Sie **Neue Schnittstelle**, um es aus der Auswahl zu erstellen, als **Experimentell** mit veröffentlichter v1. Oder wählen Sie **Vorhandene Schnittstelle**, um die Auswahl als nächste Version eines Ihrer Interfaces zu veröffentlichen.
 4. Bestätigen Sie. Der Thing-Typ fixiert die neue Version, sein Schema ändert sich also nicht.
 
 **Von Grund auf**
 
-1. Öffnen Sie **Einstellungen › Onboarding › Interfaces**, wählen Sie **Neues Interface**, geben Sie **Anzeigename**, **Name** und **Beschreibung** ein und speichern Sie.
+1. Öffnen Sie **Geräte › Interfaces**, wählen Sie **Neues Interface**, geben Sie **Anzeigename**, **Name** und **Beschreibung** ein und speichern Sie.
 2. Wählen Sie auf der Interface-Seite **Schema bearbeiten** und dann in den Bereichen **Telemetrien** und **Eigenschaften** **Telemetrie hinzufügen** oder **Eigenschaft erstellen**.
 3. Wählen Sie im Kopfbereich **v1 veröffentlichen**, beschreiben Sie die Änderung im **Änderungsprotokoll** und bestätigen Sie.
 
@@ -45,7 +45,7 @@ Das Interface erscheint unter **Angehängte Interfaces** mit der Beschriftung **
 <Screenshot
   page="model/reuse-interface"
   id="01-attach-interface"
-  route="/onboarding/thing-types/:id"
+  route="/devices/thing-types/:id"
   state="Thing type Schema tab, Interfaces pane, the Attach interface dialog open with Temperature Sensing selected"
   alt="Ein Interface an einen Thing-Typ anhängen"
 />

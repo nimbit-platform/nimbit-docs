@@ -4,8 +4,8 @@ description: Die Fehler finden und beheben, die Periscope in seinem Log, auf sei
 type: how-to
 sidebar_position: 15
 app:
-  routes: ["/onboarding/gateways"]
-translated_from: 06bddd1
+  routes: ["/devices/gateways"]
+translated_from: be26cb0
 ---
 
 Finden Sie die Ursache eines Fehlers, den Periscope meldet, und beheben Sie ihn. Fehler einzelner Anlagenprotokolle stehen am Ende der jeweiligen Quellenseite, zum Beispiel [Einen OPC-UA-Server verbinden](./opc-ua.mdx). Der Agent liefert außerdem eine längere Liste unter `http://<listen>/ui/docs`.
@@ -49,7 +49,7 @@ Suchen Sie Ihr Symptom in der passenden Gruppe.
 Das gilt für eine Box mit `[ocb] gateway = true`. Die Seite der Plattform steht in der [Gateway-Referenz](../gateway-reference.mdx).
 
 - **`the gateway's namespace is not known yet (gateways.me has not answered)`**: Der Agent fragt die Plattform nach dem Datensatz seines Gateways und erkennt und wendet nichts an, bis sie antwortet, damit kein Thing das falsche Präfix bekommt. `discover` und `apply` schlagen mit dieser Meldung fehl, und `serve` fragt jede Minute erneut. Prüfen Sie, dass `[ocb] url` gesetzt ist und die Box die Plattform erreicht. In einem Container führen Sie `docker exec periscope periscope validate` aus.
-- **`OCB has no record of this gateway yet; asked again before the next discovery`**: Die Plattform kennt die Route, aber nicht das Gateway. Prüfen Sie unter **Einstellungen › Onboarding › Gateways**, dass das Gateway existiert und diese Box mit seinem Code eingerichtet wurde. Der Agent fragt vor jeder Erkennung erneut, höchstens einmal pro Minute.
+- **`OCB has no record of this gateway yet; asked again before the next discovery`**: Die Plattform kennt die Route, aber nicht das Gateway. Prüfen Sie unter **Geräte › Gateways**, dass das Gateway existiert und diese Box mit seinem Code eingerichtet wurde. Der Agent fragt vor jeder Erkennung erneut, höchstens einmal pro Minute.
 - **`the platform has no /rest/v2/gateways/me (an older OCB)`**: Die Plattform ist älter als der Datensatz des Gateways. Der Agent behält `agent.name` als Präfix und sendet seinen Zustand an `gateway-<gateway id>`. Aktualisieren Sie die Plattform und starten Sie den Agent neu.
 - **`403 GATEWAY_SCOPE_REQUIRED`**: Die Box hat die Tenant-Zugangsdaten angefordert, und die Plattform stellt einem Gateway nur seine eigenen aus. Aktualisieren Sie Periscope. Siehe [Eine Box aktualisieren](./deploy/upgrade.mdx).
 - **`403 GATEWAY_TOKEN_REQUIRED`**: Die Anfrage hat die Gateway-Zugangsdaten mit einem Token angefordert, das keinem Gateway gehört. Prüfen Sie, dass `periscope validate` das Gateway als Zugangsart zeigt und die Box als dieses Gateway eingerichtet wurde.

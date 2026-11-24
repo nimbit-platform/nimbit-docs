@@ -19,7 +19,7 @@ export interface ScreenshotProps {
   page: string;
   /** The step id, e.g. "05-connection-info"; stable once published. */
   id: string;
-  /** The app route to open, without locale, e.g. "/onboarding/things/:id". */
+  /** The app route to open, without locale, e.g. "/devices/things/:id". */
   route: string;
   /** What must be on screen, in words the script author can act on. */
   state?: string;

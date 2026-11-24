@@ -4,8 +4,8 @@ description: Das Periscope eines Gateways auf neue Hardware setzen oder eine Box
 sidebar_position: 8
 type: how-to
 app:
-  routes: ["/onboarding/gateways"]
-translated_from: 06bddd1
+  routes: ["/devices/gateways"]
+translated_from: be26cb0
 ---
 
 Ersetzen Sie die Hardware hinter einem Gateway oder geben Sie einer Box einen neuen Schlüssel, und behalten Sie Namespace, Gateway-Thing und Things des Gateways. Sie ersetzen die Box, nicht das Gateway: Ein neues Gateway hat einen neuen Namespace und neue Things.
@@ -18,7 +18,7 @@ Ersetzen Sie die Hardware hinter einem Gateway oder geben Sie einer Box einen ne
 
 ## Schritte {#steps}
 
-1. Öffnen Sie in IoT Breeze **Einstellungen › Onboarding › Gateways**, öffnen Sie das Zeilenmenü des Gateways und wählen Sie **Neuer Onboarding-Code**. Kopieren Sie den Code. Ein früherer Code funktioniert sofort nicht mehr.
+1. Öffnen Sie in IoT Breeze **Geräte › Gateways**, öffnen Sie das Zeilenmenü des Gateways und wählen Sie **Neuer Onboarding-Code**. Kopieren Sie den Code. Ein früherer Code funktioniert sofort nicht mehr.
 2. Installieren Sie Periscope auf der neuen Box, [in einem Container](./run-in-a-container.mdx) oder [als Dienst](./run-as-a-service.mdx), mit der alten `periscope.toml` und den Dateien, die Sie im State-Verzeichnis behalten haben.
 3. Richten Sie die neue Box mit dem neuen Code ein. Ihr State-Verzeichnis hat kein Gateway, Sie brauchen also kein `-force`:
 

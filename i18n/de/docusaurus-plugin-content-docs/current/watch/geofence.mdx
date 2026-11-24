@@ -4,9 +4,9 @@ sidebar_position: 8
 description: Einen Bereich auf der Karte zeichnen, damit IoT Breeze ein Event aufzeichnet, wenn ein Thing ihn betritt oder verlässt.
 type: how-to
 app:
-  routes: ["/geo/map"]
+  routes: ["/map"]
   tour: find-your-way-watch
-translated_from: 679f3a4
+translated_from: be26cb0
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
@@ -15,12 +15,12 @@ Zeichnen Sie einen Kreis, ein Rechteck oder ein Polygon auf die Karte. Solange d
 
 ## Bevor Sie anfangen {#before-you-start}
 
-- Sie brauchen die Berechtigung, Geofences zu schreiben, um den Eintrag **Geofences** unter **Einstellungen › Konfiguration** zu sehen.
+- Sie brauchen die Berechtigung, Geofences zu schreiben. Geofences sind ein Modus der **Karte**, kein eigener Eintrag.
 - Die Things müssen eine Position melden. Ein Thing, das Breiten- und Längengrad sendet, setzt sie selbst. Für andere Things nutzen Sie **Standort festlegen** auf der Thing-Seite.
 
 ## Schritte {#steps}
 
-1. Öffnen Sie **Einstellungen › Konfiguration › Geofences** oder öffnen Sie **Überwachung › Karte** und wechseln Sie zu **Geofences**. Beide öffnen denselben Bildschirm.
+1. Öffnen Sie **Karte** und wechseln Sie zu **Geofences**.
 2. Wählen Sie **Geofence erstellen**.
 3. Geben Sie einen **Name** ein, zum Beispiel `Hamburg depot`, und optional eine **Beschreibung**.
 4. Wählen Sie eine **Form**: **Kreis**, **Rechteck** oder **Polygon**, und zeichnen Sie sie auf der Karte.
@@ -36,7 +36,7 @@ Zeichnen Sie einen Kreis, ein Rechteck oder ein Polygon auf die Karte. Solange d
 <Screenshot
   page="watch/geofence"
   id="01-geofence-editor"
-  route="/geo/map?mode=fences"
+  route="/map?mode=fences"
   state="Geofences mode with the editor panel open: a circle drawn on the map, Applies to Tags with one tag, Status Active, Save visible"
   alt="Der Geofence-Editor mit einem auf die Karte gezeichneten Kreis"
 />

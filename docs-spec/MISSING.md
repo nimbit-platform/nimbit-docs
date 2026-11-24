@@ -6,7 +6,7 @@ Everything the docs wait on: features that haven't landed, screenshots, files an
 
 | What | Docs affected | Waiting on | Then |
 |---|---|---|---|
-| Gateways under **Settings › Onboarding › Gateways** (`/onboarding/gateways`), the gateway detail page (Traffic card, Scope and Events tabs) | All of `gateways/` (21 pages) | PR 1623 (gateway thing, namespaces, scope, credentials). Current builds still have Gateways under Administration, with no detail page. | Capture the 4 gateway screenshots; check menu labels and tab names against the merged UI |
+| Gateways under **Devices › Gateways** (`/devices/gateways`), the gateway detail page (Traffic card, Scope and Events tabs) | All of `gateways/` (21 pages) | The IoT Breeze route move (CU-1247yh20874). PR 1623 has landed: `development` builds have **Devices › Gateways** and the detail page, still at `/onboarding/gateways` until the route move merges; on its branch they are at `/devices/gateways`. | Capture the 4 gateway screenshots; check menu labels and tab names against the merged UI |
 
 ## Screenshots
 
@@ -31,7 +31,7 @@ Found while translating the docs. The German docs follow the app's labels exactl
 | Rule alarms per thing, Connectivity outages, Geofence dwell | Shipped incident policy names (`ocb-contracts`) |
 | Number (custom field type) | Incident fields: only `enum` and `text` have keys |
 | Shape, Series, Chart definition, Image source, Search labels | Widget setup (Gauge, Custom chart, Image, File list) |
-| On until | Tenant settings › Features, Ask Nimble and Knowledge |
+| On until | Workspace settings › Features, Ask Nimble and Knowledge |
 | Method, Headers | Webhook action |
 | X.509 Certificate | Thing credentials |
 | Read the platform and the other API key scope labels | API key scopes |

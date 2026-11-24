@@ -4,8 +4,8 @@ description: Wie Periscope Quellen erkennt, Things vorschlägt, anwendet, Werte 
 type: concept
 sidebar_position: 1
 app:
-  routes: ["/onboarding/gateways"]
-translated_from: 06bddd1
+  routes: ["/devices/gateways"]
+translated_from: be26cb0
 ---
 
 Periscope ist ein einzelnes Go-Binary, das mit einer TOML-Datei konfiguriert wird. Es erledigt über eine Verbindung zu Ihrer Anlage zwei Aufgaben: die Erkennung, die das Modell erzeugt, und das Streaming, das die Werte sendet. Es braucht keine Änderung an anderen Diensten, und nichts muss es erreichen außer den Personen, die seine Web-Oberfläche öffnen.
@@ -45,7 +45,7 @@ flowchart LR
 
 ## Ist eine Periscope-Instanz ein Gateway? {#is-a-periscope-instance-a-gateway}
 
-Nur wenn Sie sie mit einem Onboarding-Code aus **Einstellungen › Onboarding › Gateways** einrichten. Setzen Sie `[ocb] gateway = true`, dann meldet sich der Agent mit seinem eigenen Schlüssel an, sendet mit Zugangsdaten, die das Gateway nennen, und darf nur seine eigenen Things anlegen und aktualisieren. IoT Breeze zeigt ihn als Gateway mit Status, Namespace und Scope. Siehe [Wie Gateways funktionieren](../how-gateways-work.mdx).
+Nur wenn Sie sie mit einem Onboarding-Code aus **Geräte › Gateways** einrichten. Setzen Sie `[ocb] gateway = true`, dann meldet sich der Agent mit seinem eigenen Schlüssel an, sendet mit Zugangsdaten, die das Gateway nennen, und darf nur seine eigenen Things anlegen und aktualisieren. IoT Breeze zeigt ihn als Gateway mit Status, Namespace und Scope. Siehe [Wie Gateways funktionieren](../how-gateways-work.mdx).
 
 Auf einem Gateway tut der Agent außerdem drei Dinge, die der andere Modus nicht tut. Er fragt die Plattform nach dem Datensatz seines Gateways (`gateways.me`) und verwendet dessen Namespace als Präfix jeder Alternate-ID. Bis die Plattform antwortet, erkennt und wendet er nichts an. Er fordert die eigenen Datenzugangsdaten des Gateways für seine Ausgänge an und erneuert die kurzlebigen Tokens, die der Ingest braucht. Und er sendet alle `agent.health_interval` eine Zustandsmeldung, die das Gateway auf **Online** setzt. [Eine Box einrichten](./deploy/onboard.mdx) zeigt die Schritte.
 

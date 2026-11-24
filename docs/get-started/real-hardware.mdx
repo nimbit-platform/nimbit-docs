@@ -4,7 +4,7 @@ sidebar_position: 3
 description: Create credentials for the quickstart thing and send its first real reading with mosquitto_pub over MQTT.
 type: tutorial
 app:
-  routes: ["/onboarding/things/:id"]
+  routes: ["/devices/things/:id"]
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
@@ -23,7 +23,7 @@ If the simulation from the quickstart is still running, open the thing and selec
 
 ## 2. Create credentials
 
-1. Open **Settings › Onboarding › Things**, select `Meeting room 1` and open the **Connections** tab.
+1. Open **Devices › Things**, select `Meeting room 1` and open the **Connections** tab.
 2. In the **Nimbit** block, under **Basic authentication**, select **Primary**, then **Generate credentials**.
 3. Copy **Username** and **Password**.
 
@@ -32,7 +32,7 @@ Basic credentials never expire. The password is for this thing only: a device ca
 <Screenshot
   page="get-started/real-hardware"
   id="01-credentials"
-  route="/onboarding/things/:id"
+  route="/devices/things/:id"
   state="Connections tab, Nimbit block, Basic authentication with generated Username and Password"
   alt="Basic authentication credentials generated for a thing"
 />

@@ -39,7 +39,7 @@ Ein Smart-Dashboard bauen Sie für Interfaces, nicht für ein einzelnes Thing. E
 
 ## Ihr Dashboard auf Home
 
-Ein Dashboard, das kein Thing braucht, etwa mit Tenant-Kennzahlen oder angehefteten Widgets, kann auf Home: für alle oder nur für Sie. Tenant-Dashboards wie Getting started, Tenant health und Tenant metrics fügen Sie unter **Administration › Mandanteneinstellungen › Pakete** hinzu. Siehe [Ein Dashboard auf Home zeigen](/docs/visualize/home).
+Ein Dashboard, das kein Thing braucht, etwa mit Tenant-Kennzahlen oder angehefteten Widgets, kann auf Home: für alle oder nur für Sie. Tenant-Dashboards wie Getting started, Tenant health und Tenant metrics fügen Sie unter **Geräte › Pakete** hinzu. Siehe [Ein Dashboard auf Home zeigen](/docs/visualize/home).
 
 ## Ausprobieren
 

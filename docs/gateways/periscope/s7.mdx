@@ -4,7 +4,7 @@ description: Export a TIA Portal tag table, add an S7 input for an S7-300, 400, 
 type: how-to
 sidebar_position: 6
 app:
-  routes: ["/onboarding/gateways"]
+  routes: ["/devices/gateways"]
 ---
 
 Periscope reads one Siemens CPU per `[[inputs.s7]]` table over S7comm on port 102. S7 has no address space, so discovery reads a tag file whose tag names carry the mapping, and the stream polls those tags. For the stages, read [How Periscope works](./how-periscope-works.mdx).

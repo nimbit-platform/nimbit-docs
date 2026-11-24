@@ -4,14 +4,14 @@ description: Find out why an alert email does not arrive, from switched-off acti
 sidebar_position: 5
 type: how-to
 app:
-  routes: ["/monitor/events", "/manage/event-types/:id", "/manage/mail-templates", "/manage/notification-channels"]
+  routes: ["/monitor/events", "/alerting/event-types/:id", "/alerting/mail-templates", "/alerting/notification-channels"]
 ---
 
 Find out why an event happened but the email did not follow. Email and notification channels are separate paths, explained in [Events, incidents and notifications](../watch/events-incidents-notifications.mdx).
 
 ## Symptoms
 
-- An event or incident exists under **Monitoring**, and nobody got a mail.
+- An event exists under **Monitoring › Events**, or an incident under **Incidents**, and nobody got a mail.
 - The mail arrives with empty or wrong content.
 - You expected a Teams, Slack or webhook message and got none.
 
@@ -32,7 +32,7 @@ A notification channel cannot be an email address. Incidents reach a channel onl
 Open **Monitoring › Events** and find the event.
 
 - **No event**: the rule did not fire. See [A rule doesn't fire](./rule-not-firing.mdx).
-- **An event of another type**: the **Email** action is on a different event type. Open **Settings › Configuration › Event Types**, the type of the event, and its **Actions** tab.
+- **An event of another type**: the **Email** action is on a different event type. Open **Alerting › Event types**, the type of the event, and its **Actions** tab.
 - **The action is there with its Active switch off**: actions added on an event type are created switched off. Switch it on.
 - **The event closes an alarm**: events that end a state, such as a thing coming back online, run no actions.
 - **The action failed**: a failed run is recorded as its own event. Open it for the reason.
@@ -51,13 +51,13 @@ Open the **Email** action. At least one user, group or external address is neede
 - Format **Plain**: **Subject** and **Body** are required, and `{{placeholders}}` in them are filled in.
 - Format **Mail template**: placeholders in **Subject** and **Body** do not apply. The template you pick in the action is used, whatever is assigned on the **Assignment** tab.
 - The template needs the context **Event**. On an event type's **Email** action, `{{event}}` is the event, so `{{event.title}}` is its title.
-- Open **Settings › Configuration › Mail templates**, then **Send test mail** to see the template render. A value that stays empty means the placeholder is not in the list under **Dynamic Variables**.
+- Open **Alerting › Mail templates**, then **Send test mail** to see the template render. A value that stays empty means the placeholder is not in the list under **Dynamic Variables**.
 
 Template parts and placeholders: [Mail templates and placeholders](../watch/mail-templates.mdx).
 
 ### 5. The mail server and the spam folder
 
-Mail goes through your tenant's mail server if one is set up, and otherwise through the platform mail server. An administrator opens **Administration › Tenant Settings › Email**:
+Mail goes through your tenant's mail server if one is set up, and otherwise through the platform mail server. An administrator opens **Workspace › Workspace settings › Email**:
 
 - **System default**, **Microsoft 365** or **Custom SMTP**: check which one is in use. For Microsoft 365, the sign-in must be active. For SMTP, check **Host**, **Port**, security (**STARTTLS** or **SSL/TLS**), **Username** and **Password**.
 - Select **Send a test mail**. If it fails or does not arrive, the problem is the mail server, not the alert.
@@ -66,7 +66,7 @@ Mail goes through your tenant's mail server if one is set up, and otherwise thro
 
 ### 6. Chat or webhook message missing
 
-Open **Settings › Configuration › Notification Channels**.
+Open **Alerting › Notification Channels**.
 
 - **Enabled** must be on. A disabled channel receives nothing, and its deliveries show **Suppressed**.
 - The row says **Action only** when **Automatic routing** is off. The channel then gets messages only from actions that name it.

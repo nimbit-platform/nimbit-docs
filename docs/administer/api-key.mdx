@@ -4,7 +4,7 @@ description: Create an API key for yourself or a service account, copy it once, 
 type: how-to
 sidebar_position: 5
 app:
-  routes: ["/administration/api-keys"]
+  routes: ["/access/api-keys"]
 ---
 
 Give a script, integration or AI assistant its own key instead of sharing a password. A key is limited to its scopes, expires, and never holds more rights than its owner. To use a key in requests, see [Authentication](../api/authentication.mdx).
@@ -17,7 +17,7 @@ Give a script, integration or AI assistant its own key instead of sharing a pass
 
 ## Steps
 
-1. Open **Administration › API keys** and select **Create key**.
+1. Open **People & access › API keys** and select **Create key**.
 2. Enter a **Name**, for example `SAP PM sync`.
 3. Under **Acts as**, choose **Me** or a service account.
 4. Optional: under **Start from**, choose **Read only**, **AI assistant** or **ERP or MES integration**.
@@ -40,7 +40,7 @@ A service account is a tenant member for integrations. It never signs in and act
 
 If you change its roles, its keys get them with their next token. If you delete it, its live keys are revoked.
 
-A service account marked **Managed by Nimbit** belongs to the dataspace connection. Nimbit creates it and rotates its key, so you cannot edit it, give it keys or delete it here. Change it under **Administration › Tenant Settings › Features › Dataspace connector**; see [Offer things in your dataspace connector](../share/dataspace-offers.mdx#the-callback-key).
+A service account marked **Managed by Nimbit** belongs to the dataspace connection. Nimbit creates it and rotates its key, so you cannot edit it, give it keys or delete it here. Change it under **Workspace › Workspace settings › Features › Dataspace connector**; see [Offer things in your dataspace connector](../share/dataspace-offers.mdx#the-callback-key).
 
 ## Rotate or revoke a key
 
@@ -84,4 +84,4 @@ A `200` answer with a user object means the key is valid and reaches OCB. A `401
 
 - [Authentication](../api/authentication.mdx)
 - [Roles and permissions](./roles.mdx)
-- [Tenant settings](./tenant-settings.mdx)
+- [Workspace settings](./tenant-settings.mdx)

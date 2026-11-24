@@ -5,7 +5,7 @@ description: Work out a measure from a formula over a thing type's other measure
 type: how-to
 sidebar_position: 6.4
 app:
-  routes: ["/onboarding/thing-types/:id"]
+  routes: ["/devices/thing-types/:id"]
 ---
 
 A calculated measure has no sensor. Its value is a formula over other measures, such as `temp_f = temp * 1.8 + 32`, worked out each time something reads it. Nothing is stored. Dashboards, canvases, reports and the API read it by name, like any other measure. For the functions and aggregations a formula can use, see [Formula reference](./formula-reference.mdx).
@@ -18,7 +18,7 @@ A calculated measure has no sensor. Its value is a formula over other measures, 
 
 ## Steps
 
-1. Open the thing type under **Settings › Onboarding › Thing Types**, then **Schema** › **Measures**.
+1. Open the thing type under **Devices › Thing Types**, then **Schema** › **Measures**.
 2. Select **Add calculated measure**, next to **Add measure**.
 3. Under **General**, enter the **Display name** and **Name**, and choose **Numeric** or **Boolean** as the **Type**. For a number, set the **Unit of measure** yourself: a calculated measure doesn't work out a unit. **Decimals**, **Min value** and **Max value** are optional.
 4. Under **Formula**, add the **Inputs**. Select **Add input** for each measure the formula reads, and set:

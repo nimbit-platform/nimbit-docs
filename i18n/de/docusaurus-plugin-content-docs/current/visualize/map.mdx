@@ -4,10 +4,10 @@ description: Things auf der Karte finden, filtern und die Routen mobiler Things 
 type: how-to
 sidebar_position: 8
 app:
-  routes: ["/geo/map"]
+  routes: ["/map"]
   primary: true
   tour: find-your-way-watch
-translated_from: 3041c36
+translated_from: be26cb0
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
@@ -20,7 +20,7 @@ Auf der Karte sehen Sie jedes Thing, das eine Position gemeldet hat, können sie
 
 ## Things finden {#find-things}
 
-1. Öffnen Sie **Überwachung › Karte**. Der Modus ist **Erkunden**. Die Kopfzeile des Panels lautet **Things auf der Karte** mit einer Anzahl wie `12 von 15 mit einer Position`.
+1. Öffnen Sie **Karte**. Der Modus ist **Erkunden**. Die Kopfzeile des Panels lautet **Things auf der Karte** mit einer Anzahl wie `12 von 15 mit einer Position`.
 2. Geben Sie im Suchfeld einen Namen oder eine ID ein. Es zeigt die ersten Treffer. Verfeinern Sie die Suche, um mehr zu sehen.
 3. Schränken Sie die Karte mit Filtern ein. **Zurücksetzen** löscht sie.
 4. Wählen Sie einen Marker, um Name, Verbindung und letzte Position des Things zu sehen. **Thing öffnen** führt zu seiner Seite.
@@ -41,7 +41,7 @@ Mit **Farbe nach** färben Sie Marker nach **Status** oder **Thing-Typ**. Eckige
 <Screenshot
   page="visualize/map"
   id="01-map-explore"
-  route="/geo/map"
+  route="/map"
   state="Explore mode with 15 things around one city, some clustered; side panel open showing Things on map count and filters; legend visible"
   alt="Die Karte im Modus Erkunden mit dem Filterpanel"
 />
@@ -59,7 +59,7 @@ Mit **Farbe nach** färben Sie Marker nach **Status** oder **Thing-Typ**. Eckige
 <Screenshot
   page="visualize/map"
   id="02-map-routes"
-  route="/geo/map?mode=routes"
+  route="/map?mode=routes"
   state="Routes mode with two mobile things selected, 7 days window, routes drawn, Stops and dwell list with three stops"
   alt="Der Modus Routen mit zwei Routen und der Liste der Stopps"
 />

@@ -4,7 +4,7 @@ sidebar_position: 8
 description: Draw an area on the map so IoT Breeze records an event when a thing enters or leaves it.
 type: how-to
 app:
-  routes: ["/geo/map"]
+  routes: ["/map"]
   tour: find-your-way-watch
 ---
 
@@ -14,12 +14,12 @@ Draw a circle, rectangle or polygon on the map. While the geofence is active, Io
 
 ## Before you start
 
-- You need permission to write geofences to see the **Geofences** entry under **Settings › Configuration**.
+- You need permission to write geofences. Geofences are a mode of **Map**, not an entry of their own.
 - The things must report a position. A thing that sends latitude and longitude sets this by itself. For other things, use **Set location** on the thing page.
 
 ## Steps
 
-1. Open **Settings › Configuration › Geofences**, or open **Monitoring › Map** and switch to **Geofences**. Both open the same screen.
+1. Open **Map** and switch to **Geofences**.
 2. Select **Create geofence**.
 3. Enter a **Name**, for example `Hamburg depot`, and optionally a **Description**.
 4. Pick a **Shape**: **Circle**, **Rectangle** or **Polygon**, then draw it on the map.
@@ -35,7 +35,7 @@ Draw a circle, rectangle or polygon on the map. While the geofence is active, Io
 <Screenshot
   page="watch/geofence"
   id="01-geofence-editor"
-  route="/geo/map?mode=fences"
+  route="/map?mode=fences"
   state="Geofences mode with the editor panel open: a circle drawn on the map, Applies to Tags with one tag, Status Active, Save visible"
   alt="The geofence editor with a circle drawn on the map"
 />

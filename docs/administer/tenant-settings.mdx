@@ -1,14 +1,14 @@
 ---
-title: "Tenant settings"
-description: "Every tab of Tenant Settings: general, features, theme, email, statistics, schedules, data, packs and connections."
+title: "Workspace settings"
+description: "Every tab of Workspace settings: general, features, theme, email, statistics, data and connections."
 type: reference
 sidebar_position: 10
 app:
-  routes: ["/tenant-settings"]
+  routes: ["/workspace/settings", "/devices/packs"]
   primary: true
 ---
 
-The tabs of **Administration › Tenant Settings**, which apply to everyone in the tenant. Only the **Admin** role can open it (it needs permission to update the tenant).
+The tabs of **Workspace › Workspace settings**, which apply to everyone in the tenant. Only the **Admin** role can open it (it needs permission to update the tenant).
 
 Changes on **General**, **Features**, **Theme** and **Email** are saved together with **Save**. A badge shows **Unsaved changes**. **Reset to default** resets theme colors, branding images and email settings after confirmation and cannot be undone.
 
@@ -62,16 +62,7 @@ Read only.
 
 ## Schedules
 
-Read only list of the tenant's task schedules.
-
-| Column | Meaning |
-| --- | --- |
-| **URI**, **Owner** | What runs and who owns it. |
-| **Timing** | For example `every 15m`, `cron: 0 6 * * *` or `once @ date`. |
-| **Invocation**, **Status**, **Enabled** | How it runs, its state and whether it is on. |
-| **Last run**, **Next run** | Run times. |
-
-Data deletions appear here while they are scheduled or running. See [Delete data](./delete-data.mdx).
+Schedules are no longer a tab here: they are under **Automation › Schedules**, data deletions on its **Data deletion** tab. See [Delete data](./delete-data.mdx).
 
 ## Data
 
@@ -79,7 +70,7 @@ Shows the data stores to everyone who may read them. **Delete recorded data** ne
 
 ## Packs
 
-Packs are starter content from Nimbit: mail templates and blocks, interfaces, dashboards and canvases. Installed items belong to your tenant and you can edit them.
+Packs are no longer a tab here: they are under **Devices › Packs**. Packs are starter content from Nimbit: mail templates and blocks, interfaces, dashboards and canvases. Installed items belong to your tenant and you can edit them.
 
 | State | Meaning |
 | --- | --- |

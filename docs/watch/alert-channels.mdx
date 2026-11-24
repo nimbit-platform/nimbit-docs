@@ -5,7 +5,7 @@ sidebar_position: 7
 description: Post warnings and errors from your things into a chat channel or another system.
 type: how-to
 app:
-  routes: ["/manage/notification-channels"]
+  routes: ["/alerting/notification-channels"]
   primary: true
 ---
 
@@ -17,7 +17,7 @@ Post warnings and errors from your things into a Microsoft Teams or Slack channe
 
 ## Before you start
 
-- You need a role that may create notification channels, and to send a test, one that may run them. The entry **Notification Channels** appears under **Settings › Configuration** when you have access.
+- You need a role that may create notification channels, and to send a test, one that may run them. The entry **Notification Channels** appears under **Alerting** when you have access.
 - Get the address IoT Breeze posts to:
 
 <Tabs groupId="channel">
@@ -45,7 +45,7 @@ Choose an ntfy topic. If you don't use the public ntfy server, have your server 
 
 ## Steps
 
-1. Open **Settings › Configuration › Notification Channels** and select **Create channel**.
+1. Open **Alerting › Notification Channels** and select **Create channel**.
 2. Enter a **Name**, for example `Plant 1 alerts`, and choose the **Channel type**. You can't change the type later.
 3. Fill in the field of the type: **Teams workflow webhook URL**, **Slack webhook URL**, **Webhook URL** (and **HMAC secret (optional)**), or **ntfy topic**.
 4. Turn on **Automatic routing** and set **Minimum severity** to **Warning**. Leave **Event types** empty to send all of them, or pick the ones this channel should get.
@@ -55,7 +55,7 @@ Choose an ntfy topic. If you don't use the public ntfy server, have your server 
 <Screenshot
   page="watch/alert-channels"
   id="01-create-channel"
-  route="/manage/notification-channels"
+  route="/alerting/notification-channels"
   state="Create channel drawer, type Microsoft Teams, Automatic routing on, Minimum severity Warning"
   alt="The Create channel drawer set up for Microsoft Teams"
 />

@@ -1,17 +1,17 @@
 ---
-title: "Tenant-Einstellungen"
-description: "Jeder Tab der Mandanteneinstellungen: Allgemein, Funktionen, Theme, E-Mail, Statistiken, Zeitpläne, Daten, Pakete und Verbindungen."
+title: "Arbeitsbereich-Einstellungen"
+description: "Jeder Tab der Arbeitsbereich-Einstellungen: Allgemein, Funktionen, Farbschema, E-Mail, Statistiken, Daten und Verbindungen."
 type: reference
 sidebar_position: 10
 app:
-  routes: ["/tenant-settings"]
+  routes: ["/workspace/settings", "/devices/packs"]
   primary: true
-translated_from: 354aa0d
+translated_from: caccca8
 ---
 
-Die Tabs unter **Administration › Mandanteneinstellungen**, die für alle im Tenant gelten. Nur die Rolle **Administrator** kann sie öffnen (sie braucht die Berechtigung, den Tenant zu aktualisieren).
+Die Tabs unter **Arbeitsbereich › Arbeitsbereich-Einstellungen**, die für alle im Tenant gelten. Nur die Rolle **Administrator** kann sie öffnen (sie braucht die Berechtigung, den Tenant zu aktualisieren).
 
-Änderungen auf **Allgemein**, **Funktionen**, **Theme** und **Email** werden gemeinsam mit **Speichern** gespeichert. Ein Badge zeigt **Ungespeicherte Änderungen**. **Zurücksetzen** setzt Themefarben, Branding-Bilder und E-Mail-Einstellungen nach einer Bestätigung zurück und lässt sich nicht rückgängig machen.
+Änderungen auf **Allgemein**, **Funktionen**, **Farbschema** und **E-Mail** werden gemeinsam mit **Speichern** gespeichert. Ein Badge zeigt **Ungespeicherte Änderungen**. **Zurücksetzen** setzt Themefarben, Branding-Bilder und E-Mail-Einstellungen nach einer Bestätigung zurück und lässt sich nicht rückgängig machen.
 
 ## Allgemein {#general}
 
@@ -34,14 +34,14 @@ Die Tabs unter **Administration › Mandanteneinstellungen**, die für alle im T
 | **Produktlinks** | Ein öffentlicher Link und QR-Code je Thing und Thing-Typ. Setzt **Verwaltungsschale** voraus. Siehe [Produktlinks und QR-Codes erstellen](../share/product-links.mdx). |
 | **Dataspace-Angebote** | Veröffentlicht ausgewählte Verwaltungsschalen als Angebote im eigenen Dataspace-Connector, eingerichtet auf der Karte **Dataspace-Connector** unter den Funktionen. Setzt **Verwaltungsschale** voraus. Siehe [Things im eigenen Dataspace-Connector anbieten](../share/dataspace-offers.mdx). |
 
-## Theme {#theme}
+## Farbschema {#theme}
 
 | Einstellung | Bedeutung |
 | --- | --- |
 | **Standarddarstellung des Tenants** | **Hell** oder **Dunkel**, für Personen ohne eigene Vorgabe. Sie können sie mit dem Theme-Schalter im Kopfbereich überschreiben. |
 | Theme-Editor | Farben, Layout und Schatten je Farbmodus. Wählen Sie eine Vorschau, um diesen Modus zu bearbeiten. |
 
-## Email {#email}
+## E-Mail {#email}
 
 | Anbieter | Bedeutung |
 | --- | --- |
@@ -63,16 +63,7 @@ Schreibgeschützt.
 
 ## Zeitpläne {#schedules}
 
-Schreibgeschützte Liste der Aufgabenzeitpläne des Tenants.
-
-| Spalte | Bedeutung |
-| --- | --- |
-| **URI**, **Eigentümer** | Was läuft und wem es gehört. |
-| **Zeitsteuerung** | Zum Beispiel `every 15m`, `cron: 0 6 * * *` oder `once @ date`. |
-| **Aufruf**, **Status**, **Aktiviert** | Wie es läuft, in welchem Zustand und ob es an ist. |
-| **Letzter Lauf**, **Nächster Lauf** | Laufzeiten. |
-
-Datenlöschungen erscheinen hier, solange sie geplant sind oder laufen. Siehe [Daten löschen](./delete-data.mdx).
+Zeitpläne sind kein Tab mehr: Sie stehen unter **Automatisierung › Zeitpläne**, Datenlöschungen dort auf dem Tab **Datenlöschung**. Siehe [Daten löschen](./delete-data.mdx).
 
 ## Daten {#data}
 
@@ -80,7 +71,7 @@ Zeigt die Datenspeicher allen, die sie lesen dürfen. **Aufgezeichnete Daten lö
 
 ## Pakete {#packs}
 
-Pakete sind Startinhalte von Nimbit: E-Mail-Vorlagen und -Bausteine, Interfaces, Dashboards und Canvases. Installierte Elemente gehören Ihrem Tenant, und Sie können sie bearbeiten.
+Pakete sind kein Tab mehr: Sie stehen unter **Geräte › Pakete**. Pakete sind Startinhalte von Nimbit: E-Mail-Vorlagen und -Bausteine, Interfaces, Dashboards und Canvases. Installierte Elemente gehören Ihrem Tenant, und Sie können sie bearbeiten.
 
 | Zustand | Bedeutung |
 | --- | --- |

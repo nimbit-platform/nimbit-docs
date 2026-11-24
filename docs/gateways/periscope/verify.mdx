@@ -4,7 +4,7 @@ description: Check that every applied thing receives values, with periscope veri
 type: how-to
 sidebar_position: 11
 app:
-  routes: ["/onboarding/gateways"]
+  routes: ["/devices/gateways"]
 ---
 
 Confirm that every thing Periscope applied receives values. `periscope verify` asks the platform's query service, nbq, and prints one row per thing. In IoT Breeze, the gateway's **Traffic** card and each thing's latest values show the same.
@@ -56,7 +56,7 @@ Confirm that every thing Periscope applied receives values. `periscope verify` a
    | 1 | An applied thing received nothing, a latest value lies in the future (more than one minute ahead of the box's clock), or nothing is applied yet. |
    | 2 | nbq couldn't be asked. Nothing was verified. |
 
-4. In IoT Breeze, open **Settings › Onboarding › Gateways**, open the gateway, and read **Last data** and **Things active** on the **Traffic** card. Open one of its things to see the latest values. See [Check gateway health and traffic](../fleet-health.mdx).
+4. In IoT Breeze, open **Devices › Gateways**, open the gateway, and read **Last data** and **Things active** on the **Traffic** card. Open one of its things to see the latest values. See [Check gateway health and traffic](../fleet-health.mdx).
 
 ## Check that it worked
 

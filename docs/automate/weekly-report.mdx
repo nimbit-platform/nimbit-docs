@@ -4,7 +4,7 @@ sidebar_position: 6
 description: Build a report from widgets, schedule it weekly, add subscribers and publish it.
 type: how-to
 app:
-  routes: ["/reports", "/reports/:id"]
+  routes: ["/automation/reports", "/automation/reports/:id"]
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
@@ -19,7 +19,7 @@ Build a report of the last seven days that IoT Breeze renders to PDF every week,
 
 ## Create the report
 
-1. Open **Settings › Automation › Reports** and select **Create report**.
+1. Open **Automation › Reports** and select **Create report**.
 2. Enter a unique **Name**, for example `Weekly overview`.
 3. Under **File settings**, enter the **File name**. Press `@` and choose a date value, so each week's PDF gets its own name. Select the **Folder** button, pick a folder, and select **Select this folder**.
 4. Under **Things**, choose the things the report covers.
@@ -29,7 +29,7 @@ Build a report of the last seven days that IoT Breeze renders to PDF every week,
 <Screenshot
   page="automate/weekly-report"
   id="01-create-report"
-  route="/reports"
+  route="/automation/reports"
   state="Create new report drawer filled in: name, file name with a date value, folder, one thing, Start date, Start time, Timeframe Last 7 days, Repeat every 1 Week"
   alt="The Create new report drawer with a weekly schedule"
 />
@@ -59,7 +59,7 @@ After about 30 seconds the PDF is in the folder you chose, which you can open in
 ## If it doesn't work
 
 - **Publish is refused: the timeframe is not fully defined**: open the report settings with the gear and fill in **Start date**, **Start time** and **Repeat every**.
-- **A warning says no mail server is configured**: subscriptions are not sent as email. Choose **Send notification**, or ask your administrator to set up a mail server in [Tenant settings](../administer/tenant-settings.mdx).
+- **A warning says no mail server is configured**: subscriptions are not sent as email. Choose **Send notification**, or ask your administrator to set up a mail server in [Workspace settings](../administer/tenant-settings.mdx).
 - **The PDF is not in the folder**: wait the full 30 seconds, then check the exact folder chosen under **File settings**.
 - **The PDF covers the wrong period**: the **Timeframe** is relative to the moment the run starts. Change it in the report settings.
 

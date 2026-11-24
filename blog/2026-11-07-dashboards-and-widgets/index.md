@@ -39,7 +39,7 @@ A Smart dashboard is built for interfaces, not for one thing. It works for every
 
 ## Your dashboard on Home
 
-A dashboard that needs no thing, such as tenant figures or pinned widgets, can go on Home: for everyone, or just for you. Tenant dashboards such as Getting started, Tenant health and Tenant metrics can be added from **Administration › Tenant Settings › Packs**. See [Put a dashboard on Home](/docs/visualize/home).
+A dashboard that needs no thing, such as tenant figures or pinned widgets, can go on Home: for everyone, or just for you. Tenant dashboards such as Getting started, Tenant health and Tenant metrics can be added from **Devices › Packs**. See [Put a dashboard on Home](/docs/visualize/home).
 
 ## Try it
 

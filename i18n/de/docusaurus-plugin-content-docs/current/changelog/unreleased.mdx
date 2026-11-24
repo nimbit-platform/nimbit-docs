@@ -3,7 +3,7 @@ title: "Als Nächstes"
 description: Änderungen, die nach 0.12.5 zusammengeführt wurden und noch nicht veröffentlicht sind. Inhalt und Version können sich ändern.
 type: reference
 sidebar_position: 1
-translated_from: 9db83b3
+translated_from: caccca8
 ---
 
 {/* TODO(product): confirm what ships in the next release and its version */}
@@ -37,7 +37,7 @@ Diese Seite listet Änderungen, die seit 0.12.5 (17. August 2026) zusammengefüh
 - Eine schreibgeschützte AAS-API unter `/ocb/aas/v3`, kompatibel mit den Leseprofilen von IDTA Part 2 v3.2, die sie unter `/description` auflistet. Sie ist nicht zertifiziert. Sie liefert nur Things, die Sie einzeln mit **Als Verwaltungsschale freigeben** freigeben, an Aufrufer, die sie lesen dürfen. API-Schlüssel brauchen den Scope `aas:read`.
 - Schreibgeschützte Routen für AAS Registry, Submodel Registry und Discovery, gebildet aus den Verwaltungsschalen, die Sie lesen können.
 - Submodelle: Digital Nameplate, Technical Data, Handover Documentation (VDI 2770), Time Series, Carbon Footprint und Hierarchical Structures für Aggregat-Things. Verwaltungsschalen lassen sich auch als AASX-Pakete exportieren.
-- Administration › Mandanteneinstellungen › Funktionen: **Vorgaben für veröffentlichte Verwaltungsschalen** legt Herstellername, Kontakt-E-Mail und Kontakt-URL für jedes Thing fest, das keine setzt.
+- Arbeitsbereich › Arbeitsbereich-Einstellungen › Funktionen: **Vorgaben für veröffentlichte Verwaltungsschalen** legt Herstellername, Kontakt-E-Mail und Kontakt-URL für jedes Thing fest, das keine setzt.
 - Knowledge › Erkunden: Die Dokumente eines Things nach VDI 2770 **Klassifizieren**. Nur klassifizierte Dokumente werden in der Handover Documentation veröffentlicht.
 
 **Produktlinks**
@@ -51,7 +51,7 @@ Diese Seite listet Änderungen, die seit 0.12.5 (17. August 2026) zusammengefüh
 - Nimbit erzeugt den Callback-Schlüssel, den Ihr Connector verwendet, und erneuert ihn, bevor er abläuft. **Jetzt erneuern** ersetzt ihn sofort. Sie können weiterhin einen eigenen Schlüssel verwenden.
 - Eine Verbindung je Dataspace, mit einer Partnerrichtlinie.
 - Bestehende Catena-X-Verbindungen zeigen eine Warnung, dass ihr Richtlinienvokabular nicht gegen einen laufenden Connector geprüft ist.
-- Administration › API-Schlüssel: Das Dataspace-Dienstkonto, das Nimbit verwaltet, zeigt **Von Nimbit verwaltet** und lässt sich dort weder bearbeiten noch mit Schlüsseln versehen oder löschen.
+- Personen & Zugriff › API-Schlüssel: Das Dataspace-Dienstkonto, das Nimbit verwaltet, zeigt **Von Nimbit verwaltet** und lässt sich dort weder bearbeiten noch mit Schlüsseln versehen oder löschen.
 
 **Hilfe**
 - Der Hilfebereich zeigt die Seite der neuen Dokumentation, die den Bildschirm behandelt, auf dem Sie sind, mit verwandten Seiten, und lässt sich in einem eigenen Fenster öffnen.
@@ -79,3 +79,4 @@ Diese Seite listet Änderungen, die seit 0.12.5 (17. August 2026) zusammengefüh
 - Die Query-API (NBQ) lehnt jetzt eine Aggregation ab, die nicht zum Datentyp des Messwerts passt, und liefert Status 400. Wenn sich ein Client auf einen solchen Request verlassen hat, ändern Sie die Aggregation oder den Messwert.
 - Hosts für Remote-VNC-Server müssen private Adressen sein. Prüfen Sie Ihre VNC-Verbindungen.
 - Selbst gehostete Installationen: Das Präfix `DIP_` der Umgebungsvariablen des Telemetrie-Ingest-Dienstes ist jetzt `TSFLUX_`. Benennen Sie Ihre Einstellungen vor dem Upgrade um.
+- Das Menü ist neu gegliedert. **Home**, **Dashboards**, **Karte**, **Vorfälle** und **Nimble fragen** stehen für sich; **Überwachung** und **Knowledge** stehen unter **Betrieb**; **Geräte**, **Automatisierung** und **Alarmierung** stehen unter **Einrichtung**; **Personen & Zugriff** und **Arbeitsbereich** folgen unter einer Trennlinie. Die Seiten haben URLs, die ihren Bereich nennen, zum Beispiel `/devices/things` und `/automation/schedules`. Alte Links und Lesezeichen liefern 404: Passen Sie sie an.

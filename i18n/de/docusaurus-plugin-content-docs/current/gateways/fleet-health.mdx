@@ -5,9 +5,9 @@ description: Sehen, welche Gateways online sind, ob Daten fließen und warum Nac
 type: how-to
 sidebar_position: 7
 app:
-  routes: ["/onboarding/gateways", "/onboarding/gateways/:id"]
-  primary: ["/onboarding/gateways/:id"]
-translated_from: 3041c36
+  routes: ["/devices/gateways", "/devices/gateways/:id"]
+  primary: ["/devices/gateways/:id"]
+translated_from: be26cb0
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
@@ -16,12 +16,12 @@ Finden Sie heraus, welche Gateways leben, ob sie Daten senden und was die Plattf
 
 ## Voraussetzungen {#before-you-start}
 
-- Sie sehen Gateways unter **Einstellungen › Onboarding › Gateways**.
+- Sie sehen Gateways unter **Geräte › Gateways**.
 - Mindestens ein Gateway existiert und hat Daten gesendet. Ein Gateway, das noch nichts gesendet hat, hat noch keinen Datenverkehr anzuzeigen.
 
 ## Schritte {#steps}
 
-1. Öffnen Sie **Einstellungen › Onboarding › Gateways**. Die Tabs **Alle**, **Online**, **Offline** und **Wartet auf Onboarding** grenzen die Liste ein und zeigen, wie viele Gateways in jedem liegen. Die Liste aktualisiert sich alle 30 Sekunden.
+1. Öffnen Sie **Geräte › Gateways**. Die Tabs **Alle**, **Online**, **Offline** und **Wartet auf Onboarding** grenzen die Liste ein und zeigen jeweils die Anzahl der Gateways. Die Liste aktualisiert sich alle 30 Sekunden.
 2. Wählen Sie **Offline**, um zu sehen, welche Gateways Sie zuerst ansehen sollten. Der Status zeigt, seit wann das Gateway in diesem Zustand ist.
 3. Öffnen Sie ein Gateway. Der Tab **Zustand** zeigt **Verbindung** und einen Link zum Gateway-Thing (**Gateway-Thing öffnen**), das den Verlauf der eigenen Messwerte des Gateways enthält.
 4. Lesen Sie die Karte **Datenverkehr**:
@@ -37,7 +37,7 @@ Finden Sie heraus, welche Gateways leben, ob sie Daten senden und was die Plattf
 <Screenshot
   page="gateways/fleet-health"
   id="01-traffic"
-  route="/onboarding/gateways/:id"
+  route="/devices/gateways/:id"
   state="Health tab of an online gateway with traffic values and one discard reason"
   alt="Der Tab „Zustand“ mit „Verbindung“ und der Karte „Datenverkehr“"
 />

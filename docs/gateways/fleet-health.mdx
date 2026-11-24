@@ -5,8 +5,8 @@ description: See which gateways are online, whether data is flowing and why mess
 type: how-to
 sidebar_position: 7
 app:
-  routes: ["/onboarding/gateways", "/onboarding/gateways/:id"]
-  primary: ["/onboarding/gateways/:id"]
+  routes: ["/devices/gateways", "/devices/gateways/:id"]
+  primary: ["/devices/gateways/:id"]
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
@@ -15,12 +15,12 @@ Find out which gateways are alive, whether they are sending data, and what the p
 
 ## Before you start
 
-- You can see gateways in **Settings › Onboarding › Gateways**.
+- You can see gateways in **Devices › Gateways**.
 - At least one gateway exists and has sent data. A gateway that hasn't has no traffic to show yet.
 
 ## Steps
 
-1. Open **Settings › Onboarding › Gateways**. The tabs **All**, **Online**, **Offline** and **Waiting for onboarding** narrow the list and show how many gateways are in each. The list refreshes every 30 seconds.
+1. Open **Devices › Gateways**. The tabs **All**, **Online**, **Offline** and **Waiting for onboarding** narrow the list and show how many gateways are in each. The list refreshes every 30 seconds.
 2. Select **Offline** to see the gateways to look at first. The status shows since when the gateway has been in that state.
 3. Open a gateway. The **Health** tab shows **Connectivity** and a link to the gateway thing (**Open the gateway thing**), which holds the history of the gateway's own measures.
 4. Read the **Traffic** card:
@@ -36,7 +36,7 @@ Find out which gateways are alive, whether they are sending data, and what the p
 <Screenshot
   page="gateways/fleet-health"
   id="01-traffic"
-  route="/onboarding/gateways/:id"
+  route="/devices/gateways/:id"
   state="Health tab of an online gateway with traffic values and one discard reason"
   alt="The Health tab with Connectivity and the Traffic card"
 />

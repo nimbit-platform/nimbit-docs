@@ -4,9 +4,9 @@ description: Ein Gateway in IoT Breeze anlegen, festlegen, was es anlegen darf, 
 type: how-to
 sidebar_position: 3
 app:
-  routes: ["/onboarding/gateways"]
+  routes: ["/devices/gateways"]
   primary: true
-translated_from: 3041c36
+translated_from: be26cb0
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
@@ -22,7 +22,7 @@ Legen Sie einen Gateway-Eintrag an, holen Sie sich einen einmaligen Onboarding-C
 
 ## Schritte {#steps}
 
-1. Öffnen Sie **Einstellungen › Onboarding › Gateways** und wählen Sie **Gateway hinzufügen**.
+1. Öffnen Sie **Geräte › Gateways** und wählen Sie **Gateway hinzufügen**.
 2. Wählen Sie unter **Typ** die Option **Periscope**.
 3. Geben Sie einen **Namen** ein, zum Beispiel `Hall 3 line controller`. Er darf bis zu 100 Zeichen lang sein.
 4. **Namespace** folgt dem Namen, bis Sie einen eigenen eingeben. Lassen Sie ihn leer, um den abgeleiteten zu verwenden; IoT Breeze hängt ein Suffix an, wenn ihn schon ein anderes Gateway hat. Ein Namespace, den Sie eingeben, hat 1 bis 64 Zeichen aus `a-z`, `0-9`, `_` und `-`. Die Alternate-IDs der Things des Gateways beginnen damit. Das Wort `gateway` ist reserviert. Ein Namespace, der dem eines anderen Gateways entspricht, damit beginnt oder ihn erweitert, wird abgelehnt.
@@ -42,7 +42,7 @@ Legen Sie einen Gateway-Eintrag an, holen Sie sich einen einmaligen Onboarding-C
 <Screenshot
   page="gateways/add-a-gateway"
   id="01-onboarding-code"
-  route="/onboarding/gateways"
+  route="/devices/gateways"
   state="Add gateway drawer after creating a Periscope gateway, showing the onboarding code and the enroll command"
   alt="Das Ergebnis von „Gateway hinzufügen“: der Onboarding-Code und der Befehl, der auf dem Gateway auszuführen ist"
 />

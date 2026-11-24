@@ -4,8 +4,8 @@ sidebar_position: 6
 description: Die mitgelieferten Vorfallsrichtlinien einschalten, eigene schreiben und eine Aktion einmal ausführen, wenn ein Vorfall sich öffnet oder unquittiert bleibt.
 type: how-to
 app:
-  routes: ["/manage/incident-policies", "/manage/incident-policies/new", "/manage/incident-policies/:id", "/manage/incident-policies/:id/automations", "/manage/incident-settings"]
-translated_from: 810b8a2
+  routes: ["/alerting/incident-policies", "/alerting/incident-policies/new", "/alerting/incident-policies/:id", "/alerting/incident-policies/:id/automations", "/alerting/incident-settings"]
+translated_from: be26cb0
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
@@ -20,7 +20,7 @@ Legen Sie fest, welche Events Vorfälle öffnen, wie sie zu einem Vorfall gruppi
 
 ## Die mitgelieferten Richtlinien einschalten {#turn-on-the-shipped-policies}
 
-1. Öffnen Sie **Einstellungen › Konfiguration › Vorfälle**. Der Tab **Vorfallsrichtlinien** listet Ihre Richtlinien.
+1. Öffnen Sie **Alarmierung › Vorfallsrichtlinien**. Der Tab **Vorfallsrichtlinien** listet Ihre Richtlinien.
 2. Wählen Sie **Standardrichtlinien importieren** und dann **Importieren**. IoT Breeze legt **Rule alarms per thing**, **Connectivity outages** und **Geofence dwell** an, außer denen, die Sie schon haben. Zweimal importieren legt nichts Neues an.
 3. Die neuen Richtlinien sind ausgeschaltet. Schalten Sie die gewünschten mit dem Schalter **Aktiv** in der Liste ein.
 
@@ -39,7 +39,7 @@ Dieses Beispiel öffnet für Türalarme einen Vorfall pro Thing und löst ihn ze
 <Screenshot
   page="watch/incident-policy"
   id="01-policy-editor"
-  route="/manage/incident-policies/:id"
+  route="/alerting/incident-policies/:id"
   state="Policy editor for Rule alarms per thing: Which events with Raised by Rule engine, Group by Thing selected, Timing section with Quiet window 10 minutes and Close after 1 day, In short summary visible"
   alt="Der Richtlinien-Editor mit der Zusammenfassung Kurz gefasst"
 />
@@ -66,7 +66,7 @@ Eine Automatisierung überspringt eine ausgeschaltete Aktion, und jede Aktion, d
 
 ## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-Die Richtlinie steht mit eingeschaltetem **Aktiv** in der Liste. Trifft ein passendes Event ein, zeigt **Letzter Treffer** die Zeit, und unter **Überwachung › Vorfälle** erscheint ein neuer Vorfall mit dem Namen der Richtlinie unter **Richtlinie**.
+Die Richtlinie steht mit eingeschaltetem **Aktiv** in der Liste. Trifft ein passendes Event ein, zeigt **Letzter Treffer** die Zeit, und unter **Vorfälle** erscheint ein neuer Vorfall mit dem Namen der Richtlinie unter **Richtlinie**.
 
 ## Wenn es nicht funktioniert {#if-it-doesnt-work}
 

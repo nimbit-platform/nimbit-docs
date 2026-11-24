@@ -5,7 +5,7 @@ description: Turn on the read-only AAS API, choose which things it serves, fill 
 type: how-to
 sidebar_position: 2
 app:
-  routes: ["/monitor/thing-details/:id", "/onboarding/things/:id", "/tenant-settings", "/knowledge/explore"]
+  routes: ["/monitor/thing-details/:id", "/devices/things/:id", "/workspace/settings", "/knowledge/explore"]
 ---
 
 Serve selected things as Asset Administration Shells (AAS): a read-only API in the structure of IDTA Part 2, and AASX packages to hand over as files. Only things you expose one by one are served, and only to callers who may read them in IoT Breeze.
@@ -31,8 +31,8 @@ The API is compatible with the read profiles of IDTA Part 2 v3.2 that it lists a
 
 ## Steps
 
-1. **Turn the feature on.** Open **Administration › Tenant Settings › Features**, switch on **Asset Administration Shell** and save. Optionally [set your defaults](#set-your-defaults) for the nameplate. You can prepare everything below while the feature is off. Nothing is served until it is on.
-2. **Prepare the thing type.** Install the `aas-essentials` pack under **Administration › Tenant Settings › Packs**. It is not installed automatically. Add the `aas-exposure` interface to the thing type, plus `aas-digital-nameplate`, `aas-technical-data` and `aas-carbon-footprint` as you need them. An aggregate type cannot attach interfaces, so declare `aasEnabled` and the carbon footprint properties on it directly.
+1. **Turn the feature on.** Open **Workspace › Workspace settings › Features**, switch on **Asset Administration Shell** and save. Optionally [set your defaults](#set-your-defaults) for the nameplate. You can prepare everything below while the feature is off. Nothing is served until it is on.
+2. **Prepare the thing type.** Install the `aas-essentials` pack under **Devices › Packs**. It is not installed automatically. Add the `aas-exposure` interface to the thing type, plus `aas-digital-nameplate`, `aas-technical-data` and `aas-carbon-footprint` as you need them. An aggregate type cannot attach interfaces, so declare `aasEnabled` and the carbon footprint properties on it directly.
 3. **Expose the thing.** Open the thing. On **Overview**, under **Asset Administration Shell**, switch on **Expose as Asset Administration Shell**. A default value on the thing type never exposes a thing: each thing is exposed by itself, by someone with the **Aas** update permission.
 4. **Fill in the nameplate and technical data.** Set the values on the thing, or as initial values on the type. Only elements with a value are published. If you leave out an element the template requires, such as `OrderCodeOfManufacturer` or the address parts `Street`, `Zipcode`, `CityTown` and `NationalCode`, the submodel is published without it. A tool that checks against the template then reports the gap. The manufacturer name comes from the thing, else the tenant default, else the tenant's name.
 5. **Add a carbon footprint.** With `aas-carbon-footprint` on the type, set the values as the type's initial values (one footprint for the product type) or on each thing. Calculation method, CO2 equivalent, reference unit, quantity, life cycle phase and publication date are required. The method, unit and phase take only the values of the IDTA template's lists, such as `ISO 14067`, `kg` and `A1-A3`. If one required value is missing or invalid, the whole CarbonFootprint submodel is withheld until you complete it.
@@ -43,7 +43,7 @@ The API is compatible with the read profiles of IDTA Part 2 v3.2 that it lists a
 
 The Digital Nameplate and the Handover Documentation use these values for every thing that sets none of its own.
 
-1. Open **Administration › Tenant Settings › Features**. With **Asset Administration Shell** on, its section shows **Defaults for published shells**.
+1. Open **Workspace › Workspace settings › Features**. With **Asset Administration Shell** on, its section shows **Defaults for published shells**.
 2. Enter a **Manufacturer name**, a **Contact e-mail** and a **Contact URL**. Each is optional. Without a manufacturer name, the tenant's name is used.
 3. Save.
 

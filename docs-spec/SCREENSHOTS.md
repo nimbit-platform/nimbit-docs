@@ -12,7 +12,7 @@ Until then the page shows a placeholder with the route and the state below.
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⬜ | ⬜ | [`01-create-mqtt-action`](../docs/automate/device-command.mdx#L36) | `/onboarding/thing-types/:id` | Create action drawer, type MQTT, name Restart pump, sub-topic restart, format JSON, payload filled in |
+| ⬜ | ⬜ | [`01-create-mqtt-action`](../docs/automate/device-command.mdx#L36) | `/devices/thing-types/:id` | Create action drawer, type MQTT, name Restart pump, sub-topic restart, format JSON, payload filled in |
 
 ## docs/automate/threshold-alert.mdx
 
@@ -30,51 +30,51 @@ Until then the page shows a placeholder with the route and the state below.
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⬜ | ⬜ | [`01-create-report`](../docs/automate/weekly-report.mdx#L29) | `/reports` | Create new report drawer filled in: name, file name with a date value, folder, one thing, Start date, Start time, Timeframe Last 7 days, Repeat every 1 Week |
+| ⬜ | ⬜ | [`01-create-report`](../docs/automate/weekly-report.mdx#L29) | `/automation/reports` | Create new report drawer filled in: name, file name with a date value, folder, one thing, Start date, Start time, Timeframe Last 7 days, Repeat every 1 Week |
 
 ## docs/connect/credentials.mdx
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⬜ | ⬜ | [`01-generate-token`](../docs/connect/credentials.mdx#L42) | `/onboarding/things/:id` | JWT authentication drawer open with an expiry chosen and a generated token with Username, Token and Expires at |
+| ⬜ | ⬜ | [`01-generate-token`](../docs/connect/credentials.mdx#L42) | `/devices/things/:id` | JWT authentication drawer open with an expiry chosen and a generated token with Username, Token and Expires at |
 
 ## docs/connect/simulate.mdx
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⬜ | ⬜ | [`01-send-once`](../docs/connect/simulate.mdx#L31) | `/onboarding/things/:id` | Send data dialog on the Send once tab with two measures filled in and the Timestamp set to Now |
-| ⬜ | ⬜ | [`02-simulate`](../docs/connect/simulate.mdx#L55) | `/onboarding/things/:id` | Send data dialog on the Simulate tab: Run for 15 min, Every 10 s, a temperature measure on Wave with min 18 and max 26 and a preview |
+| ⬜ | ⬜ | [`01-send-once`](../docs/connect/simulate.mdx#L31) | `/devices/things/:id` | Send data dialog on the Send once tab with two measures filled in and the Timestamp set to Now |
+| ⬜ | ⬜ | [`02-simulate`](../docs/connect/simulate.mdx#L55) | `/devices/things/:id` | Send data dialog on the Simulate tab: Run for 15 min, Every 10 s, a temperature measure on Wave with min 18 and max 26 and a preview |
 
 ## docs/gateways/add-a-gateway.mdx
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⏸ | ⬜ | [`01-onboarding-code`](../docs/gateways/add-a-gateway.mdx#L40) | `/onboarding/gateways` | Add gateway drawer after creating a Periscope gateway, showing the onboarding code and the enroll command<br>**Blocked:** Needs the gateways work (PR 1623): `/onboarding/gateways` and the gateway detail page. |
+| ⏸ | ⬜ | [`01-onboarding-code`](../docs/gateways/add-a-gateway.mdx#L40) | `/devices/gateways` | Add gateway drawer after creating a Periscope gateway, showing the onboarding code and the enroll command<br>**Blocked:** Needs the gateways work (PR 1623): `/devices/gateways` and the gateway detail page. |
 
 ## docs/gateways/fleet-health.mdx
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⏸ | ⬜ | [`01-traffic`](../docs/gateways/fleet-health.mdx#L35) | `/onboarding/gateways/:id` | Health tab of an online gateway with traffic values and one discard reason<br>**Blocked:** Needs the gateways work (PR 1623): `/onboarding/gateways` and the gateway detail page. |
+| ⏸ | ⬜ | [`01-traffic`](../docs/gateways/fleet-health.mdx#L35) | `/devices/gateways/:id` | Health tab of an online gateway with traffic values and one discard reason<br>**Blocked:** Needs the gateways work (PR 1623): `/devices/gateways` and the gateway detail page. |
 
 ## docs/gateways/mqtt-gateway.mdx
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⏸ | ⬜ | [`01-mqtt-credential`](../docs/gateways/mqtt-gateway.mdx#L33) | `/onboarding/gateways` | Add gateway drawer after creating an MQTT device gateway, with the connection rows and the Download config button<br>**Blocked:** Needs the gateways work (PR 1623): `/onboarding/gateways` and the gateway detail page. |
+| ⏸ | ⬜ | [`01-mqtt-credential`](../docs/gateways/mqtt-gateway.mdx#L33) | `/devices/gateways` | Add gateway drawer after creating an MQTT device gateway, with the connection rows and the Download config button<br>**Blocked:** Needs the gateways work (PR 1623): `/devices/gateways` and the gateway detail page. |
 
 ## docs/gateways/periscope/install.mdx
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⏸ | ⬜ | [`01-gateway-online`](../docs/gateways/periscope/install.mdx#L83) | `/onboarding/gateways` | Gateway list with the new gateway Online<br>**Blocked:** Needs the gateways work (PR 1623): `/onboarding/gateways` and the gateway detail page. |
+| ⏸ | ⬜ | [`01-gateway-online`](../docs/gateways/periscope/install.mdx#L83) | `/devices/gateways` | Gateway list with the new gateway Online<br>**Blocked:** Needs the gateways work (PR 1623): `/devices/gateways` and the gateway detail page. |
 
 ## docs/get-started/quickstart.mdx
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⬜ | ⬜ | [`01-thing-type-schema`](../docs/get-started/quickstart.mdx#L37) | `/onboarding/thing-types/:id` | Schema tab of Room sensor with the temperature measure, draft state, Publish button visible in the header |
-| ⬜ | ⬜ | [`02-simulate`](../docs/get-started/quickstart.mdx#L66) | `/onboarding/things/:id` | Simulate tab of the Send data dialog: Run for 15 min, Every 10 s, temperature on Random, min 15, max 35 |
+| ⬜ | ⬜ | [`01-thing-type-schema`](../docs/get-started/quickstart.mdx#L37) | `/devices/thing-types/:id` | Schema tab of Room sensor with the temperature measure, draft state, Publish button visible in the header |
+| ⬜ | ⬜ | [`02-simulate`](../docs/get-started/quickstart.mdx#L66) | `/devices/things/:id` | Simulate tab of the Send data dialog: Run for 15 min, Every 10 s, temperature on Random, min 15, max 35 |
 | ⬜ | ⬜ | [`03-dashboard`](../docs/get-started/quickstart.mdx#L85) | `/dashboards/:id` | Dashboard Meeting room 1 with one line chart of temperature, several minutes of simulated data |
 | ⬜ | ⬜ | [`04-rule`](../docs/get-started/quickstart.mdx#L108) | `/automation/rule-designer/:id` | Finished rule Room too warm: Start (Room sensor), Condition temperature greater than 28, Toggle In, Event action; rule Active |
 | ⬜ | ⬜ | [`05-event`](../docs/get-started/quickstart.mdx#L120) | `/monitor/events` | Events list with a Warning event titled Room too warm for Meeting room 1 |
@@ -83,7 +83,7 @@ Until then the page shows a placeholder with the route and the state below.
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⬜ | ⬜ | [`01-credentials`](../docs/get-started/real-hardware.mdx#L32) | `/onboarding/things/:id` | Connections tab, Nimbit block, Basic authentication with generated Username and Password |
+| ⬜ | ⬜ | [`01-credentials`](../docs/get-started/real-hardware.mdx#L32) | `/devices/things/:id` | Connections tab, Nimbit block, Basic authentication with generated Username and Password |
 
 ## docs/knowledge/ai-model.mdx
 
@@ -95,7 +95,7 @@ Until then the page shows a placeholder with the route and the state below.
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⬜ | ⬜ | [`01-answer`](../docs/knowledge/ask.mdx#L43) | `/knowledge/chat` | Answer to 'Which things in Hall 2 are offline?' with a rows table, numbered sources and the steps line |
+| ⬜ | ⬜ | [`01-answer`](../docs/knowledge/ask.mdx#L43) | `/chat` | Answer to 'Which things in Hall 2 are offline?' with a rows table, numbered sources and the steps line |
 
 ## docs/knowledge/data-health.mdx
 
@@ -119,43 +119,43 @@ Until then the page shows a placeholder with the route and the state below.
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⬜ | ⬜ | [`01-editor`](../docs/model/clean-up-data.mdx#L29) | `/onboarding/thing-types/:id/graph` | Pipeline editor with Request, one Expression node and Response connected, the simulator open with a successful result, Save and Activate in the header |
+| ⬜ | ⬜ | [`01-editor`](../docs/model/clean-up-data.mdx#L29) | `/devices/thing-types/:id/graph` | Pipeline editor with Request, one Expression node and Response connected, the simulator open with a successful result, Save and Activate in the header |
 
 ## docs/model/create-thing-type.mdx
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⬜ | ⬜ | [`01-schema-measures`](../docs/model/create-thing-type.mdx#L39) | `/onboarding/thing-types/:id` | Schema tab, Measures pane, two measures in the table, a draft line reading Draft v2 · 2 changes, Publish v2 button in the header |
+| ⬜ | ⬜ | [`01-schema-measures`](../docs/model/create-thing-type.mdx#L39) | `/devices/thing-types/:id` | Schema tab, Measures pane, two measures in the table, a draft line reading Draft v2 · 2 changes, Publish v2 button in the header |
 
 ## docs/model/register-thing.mdx
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⬜ | ⬜ | [`01-create-thing`](../docs/model/register-thing.mdx#L41) | `/onboarding/things` | Create new thing drawer filled in: name, generated alternate ID, thing type, organization and one group selected |
+| ⬜ | ⬜ | [`01-create-thing`](../docs/model/register-thing.mdx#L41) | `/devices/things` | Create new thing drawer filled in: name, generated alternate ID, thing type, organization and one group selected |
 
 ## docs/model/reuse-interface.mdx
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⬜ | ⬜ | [`01-attach-interface`](../docs/model/reuse-interface.mdx#L44) | `/onboarding/thing-types/:id` | Thing type Schema tab, Interfaces pane, the Attach interface dialog open with Temperature Sensing selected |
+| ⬜ | ⬜ | [`01-attach-interface`](../docs/model/reuse-interface.mdx#L44) | `/devices/thing-types/:id` | Thing type Schema tab, Interfaces pane, the Attach interface dialog open with Temperature Sensing selected |
 
 ## docs/visualize/canvas/actions.mdx
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⬜ | ⬜ | [`01-action-tab`](../docs/visualize/canvas/actions.mdx#L41) | `/canvas/:id` | Inspector Action tab for a Button: type Run an action, action Start pump selected, Confirmation on, Expected result with a within time |
+| ⬜ | ⬜ | [`01-action-tab`](../docs/visualize/canvas/actions.mdx#L41) | `/monitor/canvas/:id` | Inspector Action tab for a Button: type Run an action, action Start pump selected, Confirmation on, Expected result with a within time |
 
 ## docs/visualize/canvas/bind-live-values.mdx
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⬜ | ⬜ | [`01-bind-value`](../docs/visualize/canvas/bind-live-values.mdx#L32) | `/canvas/:id` | Editor with a Value element selected, Data tab open, Source set to From context, the Bind value dialog showing a measure and its current value |
+| ⬜ | ⬜ | [`01-bind-value`](../docs/visualize/canvas/bind-live-values.mdx#L32) | `/monitor/canvas/:id` | Editor with a Value element selected, Data tab open, Source set to From context, the Bind value dialog showing a measure and its current value |
 
 ## docs/visualize/canvas/draw-a-floor-plan.mdx
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⬜ | ⬜ | [`01-editor-overview`](../docs/visualize/canvas/draw-a-floor-plan.mdx#L35) | `/canvas/:id` | Canvas editor with a floor plan image as background, the Elements library open on the left, three Value elements placed on the plan, Layers and the Inspector on the right |
+| ⬜ | ⬜ | [`01-editor-overview`](../docs/visualize/canvas/draw-a-floor-plan.mdx#L35) | `/monitor/canvas/:id` | Canvas editor with a floor plan image as background, the Elements library open on the left, three Value elements placed on the plan, Layers and the Inspector on the right |
 
 ## docs/visualize/canvas/embed-a-canvas.mdx
 
@@ -167,7 +167,7 @@ Until then the page shows a placeholder with the route and the state below.
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⬜ | ⬜ | [`01-states-tab`](../docs/visualize/canvas/states-and-colors.mdx#L32) | `/canvas/:id` | Inspector States tab for a Value element with two rules: greater than 80 named high alarm with severity Alarm, and Otherwise named normal |
+| ⬜ | ⬜ | [`01-states-tab`](../docs/visualize/canvas/states-and-colors.mdx#L32) | `/monitor/canvas/:id` | Inspector States tab for a Value element with two rules: greater than 80 named high alarm with severity Alarm, and Otherwise named normal |
 
 ## docs/visualize/home.mdx
 
@@ -179,8 +179,8 @@ Until then the page shows a placeholder with the route and the state below.
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⬜ | ⬜ | [`01-map-explore`](../docs/visualize/map.mdx#L39) | `/geo/map` | Explore mode with 15 things around one city, some clustered; side panel open showing Things on map count and filters; legend visible |
-| ⬜ | ⬜ | [`02-map-routes`](../docs/visualize/map.mdx#L57) | `/geo/map?mode=routes` | Routes mode with two mobile things selected, 7 days window, routes drawn, Stops and dwell list with three stops |
+| ⬜ | ⬜ | [`01-map-explore`](../docs/visualize/map.mdx#L39) | `/map` | Explore mode with 15 things around one city, some clustered; side panel open showing Things on map count and filters; legend visible |
+| ⬜ | ⬜ | [`02-map-routes`](../docs/visualize/map.mdx#L57) | `/map?mode=routes` | Routes mode with two mobile things selected, 7 days window, routes drawn, Stops and dwell list with three stops |
 
 ## docs/visualize/share.mdx
 
@@ -253,7 +253,7 @@ Until then the page shows a placeholder with the route and the state below.
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⬜ | ⬜ | [`01-create-channel`](../docs/watch/alert-channels.mdx#L54) | `/manage/notification-channels` | Create channel drawer, type Microsoft Teams, Automatic routing on, Minimum severity Warning |
+| ⬜ | ⬜ | [`01-create-channel`](../docs/watch/alert-channels.mdx#L54) | `/alerting/notification-channels` | Create channel drawer, type Microsoft Teams, Automatic routing on, Minimum severity Warning |
 
 ## docs/watch/explore-telemetry.mdx
 
@@ -265,19 +265,19 @@ Until then the page shows a placeholder with the route and the state below.
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⬜ | ⬜ | [`01-geofence-editor`](../docs/watch/geofence.mdx#L35) | `/geo/map?mode=fences` | Geofences mode with the editor panel open: a circle drawn on the map, Applies to Tags with one tag, Status Active, Save visible |
+| ⬜ | ⬜ | [`01-geofence-editor`](../docs/watch/geofence.mdx#L35) | `/map?mode=fences` | Geofences mode with the editor panel open: a circle drawn on the map, Applies to Tags with one tag, Status Active, Save visible |
 
 ## docs/watch/incident-policy.mdx
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⬜ | ⬜ | [`01-policy-editor`](../docs/watch/incident-policy.mdx#L38) | `/manage/incident-policies/:id` | Policy editor for Rule alarms per thing: Which events with Raised by Rule engine, Group by Thing selected, Timing section with Quiet window 10 minutes and Close after 1 day, In short summary visible |
+| ⬜ | ⬜ | [`01-policy-editor`](../docs/watch/incident-policy.mdx#L38) | `/alerting/incident-policies/:id` | Policy editor for Rule alarms per thing: Which events with Raised by Rule engine, Group by Thing selected, Timing section with Quiet window 10 minutes and Close after 1 day, In short summary visible |
 
 ## docs/watch/mail-templates.mdx
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⬜ | ⬜ | [`01-templates-list`](../docs/watch/mail-templates.mdx#L14) | `/manage/mail-templates` | Templates tab with a System template (lock chip) for each context and one custom Event template marked Active; columns Template, Context, Blocks, Languages, Updated, Status |
+| ⬜ | ⬜ | [`01-templates-list`](../docs/watch/mail-templates.mdx#L14) | `/alerting/mail-templates` | Templates tab with a System template (lock chip) for each context and one custom Event template marked Active; columns Template, Context, Blocks, Languages, Updated, Status |
 
 ## docs/watch/thing-health.mdx
 
@@ -289,4 +289,4 @@ Until then the page shows a placeholder with the route and the state below.
 
 | EN | DE | Id | Route | What the screen shows |
 |---|---|---|---|---|
-| ⬜ | ⬜ | [`01-incident-detail`](../docs/watch/work-an-incident.mdx#L28) | `/monitor/incidents/:id` | Incident detail: header with title, severity, status and Acknowledge, Assign, Resolve buttons; Events section with an episode; Activity thread with a comment; side panels Details, Watchers, Links |
+| ⬜ | ⬜ | [`01-incident-detail`](../docs/watch/work-an-incident.mdx#L28) | `/incidents/:id` | Incident detail: header with title, severity, status and Acknowledge, Assign, Resolve buttons; Events section with an episode; Activity thread with a comment; side panels Details, Watchers, Links |

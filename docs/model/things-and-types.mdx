@@ -4,7 +4,7 @@ sidebar_position: 2
 description: A thing type defines the schema, things are the real devices, and interfaces share fields between types.
 type: concept
 app:
-  routes: ["/onboarding/thing-types", "/onboarding/things", "/onboarding/interfaces"]
+  routes: ["/devices/thing-types", "/devices/things", "/devices/interfaces"]
 ---
 
 IoT Breeze separates what a kind of device is from the individual devices. A **thing type** defines which values a device sends and which fixed facts it has. A **thing** is one real device that follows a thing type. An **interface** is a set of fields several thing types can share, so one dashboard works for all of them.
@@ -22,10 +22,10 @@ flowchart LR
 
 | Part | What it is | Where |
 | --- | --- | --- |
-| **Thing type** | The model of a device: its measures and properties, plus settings such as the connector, schema evolution and the cleanup pipeline. | **Settings › Onboarding › Thing Types** |
-| **Thing** | One real device or asset. It has a name, an ID the device uses, one thing type, an organization and groups. | **Settings › Onboarding › Things** |
-| **Aggregate thing** | A thing without a device, of a thing type of the kind **Aggregate thing**. It holds member things in slots and combines their measures in calculated measures. See [Combine things into an aggregate thing](./aggregate-things.mdx). | **Settings › Onboarding › Things**, **Members** tab |
-| **Interface** | A named, versioned set of fields. A thing type that attaches it gets those fields. | **Settings › Onboarding › Interfaces** |
+| **Thing type** | The model of a device: its measures and properties, plus settings such as the connector, schema evolution and the cleanup pipeline. | **Devices › Thing Types** |
+| **Thing** | One real device or asset. It has a name, an ID the device uses, one thing type, an organization and groups. | **Devices › Things** |
+| **Aggregate thing** | A thing without a device, of a thing type of the kind **Aggregate thing**. It holds member things in slots and combines their measures in calculated measures. See [Combine things into an aggregate thing](./aggregate-things.mdx). | **Devices › Things**, **Members** tab |
+| **Interface** | A named, versioned set of fields. A thing type that attaches it gets those fields. | **Devices › Interfaces** |
 | **Measure** | A value the device sends over time, such as `temperature`. A **calculated measure** is worked out from a formula when it is read; see [Add a calculated measure](./calculated-measures.mdx). | Schema of a thing type or interface |
 | **Property** | A fixed fact about the device, such as a serial number or a rated flow. | Schema of a thing type or interface |
 

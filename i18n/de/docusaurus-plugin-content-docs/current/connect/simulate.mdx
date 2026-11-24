@@ -4,8 +4,8 @@ description: Eine Testnachricht senden oder ein simuliertes Gerät von der Seite
 sidebar_position: 7
 type: how-to
 app:
-  routes: ["/onboarding/things/:id"]
-translated_from: f26536e
+  routes: ["/devices/things/:id"]
+translated_from: be26cb0
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
@@ -21,7 +21,7 @@ Füllen Sie Diagramme und testen Sie Dashboards oder Regeln, bevor das echte Ger
 
 ### Eine Nachricht senden {#send-one-message}
 
-1. Öffnen Sie das Thing (**Einstellungen › Onboarding › Things**).
+1. Öffnen Sie das Thing (**Geräte › Things**).
 2. Wählen Sie **Weitere Aktionen**, dann **Daten senden**. Der Tab **Einmal senden** öffnet sich. Bei einem Thing, das noch nie Daten gemeldet hat, bietet auch die **Übersicht** die Option **Testnachricht senden**.
 3. Jeder Messwert des Thing-Typs ist eine Zeile mit **Telemetrie** und **Wert**. Entfernen Sie den Haken bei Messwerten, die Sie nicht senden möchten, oder wählen Sie **Alle Messwerte einschließen**.
 4. Wählen Sie unter **Zeitstempel** **Jetzt** oder **Zeit wählen…**.
@@ -32,7 +32,7 @@ Um Standort oder Tags hinzuzufügen, bearbeiten Sie die Nachricht als JSON. Lös
 <Screenshot
   page="connect/simulate"
   id="01-send-once"
-  route="/onboarding/things/:id"
+  route="/devices/things/:id"
   state="Send data dialog on the Send once tab with two measures filled in and the Timestamp set to Now"
   alt="Das Formular Einmal senden"
 />
@@ -56,7 +56,7 @@ Um Standort oder Tags hinzuzufügen, bearbeiten Sie die Nachricht als JSON. Lös
 <Screenshot
   page="connect/simulate"
   id="02-simulate"
-  route="/onboarding/things/:id"
+  route="/devices/things/:id"
   state="Send data dialog on the Simulate tab: Run for 15 min, Every 10 s, a temperature measure on Wave with min 18 and max 26 and a preview"
   alt="Das Formular Simulieren"
 />
@@ -79,7 +79,7 @@ Die Werte erscheinen innerhalb einer Sekunde unter **Live-Werte** auf der **Übe
 
 - **Die Schaltflächen fehlen**: Ihnen fehlt die Berechtigung, Daten an Geräte zu senden.
 - **Das Banner meldet „Simulation beendet: Die Daten konnten nicht gesendet werden“**: Wählen Sie **Ausblenden**, prüfen Sie, ob der Thing-Typ veröffentlicht ist, und starten Sie erneut.
-- **Simulierte Werte stehen im Verlauf eines echten Geräts**: Diagramme unterscheiden sie nicht. Entfernen Sie sie unter **Administration › Mandanteneinstellungen › Daten** mit **Simulierte Daten**, nachdem Sie laufende Simulationen gestoppt haben. Messwerte, die Ihre Geräte gesendet haben, bleiben unberührt.
+- **Simulierte Werte stehen im Verlauf eines echten Geräts**: Diagramme unterscheiden sie nicht. Entfernen Sie sie unter **Arbeitsbereich › Arbeitsbereich-Einstellungen › Daten** mit **Simulierte Daten**, nachdem Sie laufende Simulationen gestoppt haben. Messwerte, die Ihre Geräte gesendet haben, bleiben unberührt.
 
 ## Verwandte Seiten {#related}
 

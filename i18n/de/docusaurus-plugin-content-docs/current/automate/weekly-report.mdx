@@ -4,8 +4,8 @@ sidebar_position: 6
 description: Erstellen Sie einen Bericht aus Widgets, planen Sie ihn wöchentlich, fügen Sie Abonnenten hinzu und veröffentlichen Sie ihn.
 type: how-to
 app:
-  routes: ["/reports", "/reports/:id"]
-translated_from: 679f3a4
+  routes: ["/automation/reports", "/automation/reports/:id"]
+translated_from: be26cb0
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
@@ -20,7 +20,7 @@ Erstellen Sie einen Bericht über die letzten sieben Tage, den IoT Breeze jede W
 
 ## Den Bericht anlegen {#create-the-report}
 
-1. Öffnen Sie **Einstellungen › Automatisierung › Berichte** und wählen Sie **Bericht erstellen**.
+1. Öffnen Sie **Automatisierung › Berichte** und wählen Sie **Bericht erstellen**.
 2. Geben Sie einen eindeutigen **Name** ein, zum Beispiel `Weekly overview`.
 3. Geben Sie unter **Dateieinstellungen** den **Dateiname** ein. Drücken Sie `@` und wählen Sie einen Datumswert, damit das PDF jeder Woche einen eigenen Namen erhält. Wählen Sie die Schaltfläche **Ordner**, suchen Sie einen Ordner aus und wählen Sie **Ordner auswählen**.
 4. Wählen Sie unter **Things** die Things, die der Bericht abdeckt.
@@ -30,7 +30,7 @@ Erstellen Sie einen Bericht über die letzten sieben Tage, den IoT Breeze jede W
 <Screenshot
   page="automate/weekly-report"
   id="01-create-report"
-  route="/reports"
+  route="/automation/reports"
   state="Create new report drawer filled in: name, file name with a date value, folder, one thing, Start date, Start time, Timeframe Last 7 days, Repeat every 1 Week"
   alt="Die Schublade „Neuen Bericht erstellen“ mit einem wöchentlichen Zeitplan"
 />
@@ -60,7 +60,7 @@ Nach etwa 30 Sekunden liegt das PDF im gewählten Ordner, den Sie im Datei-Explo
 ## Wenn es nicht funktioniert {#if-it-doesnt-work}
 
 - **Das Veröffentlichen wird abgelehnt: Der Bericht kann nicht veröffentlicht werden, da der Zeitraum nicht vollständig definiert ist**: Öffnen Sie mit dem Zahnrad die Berichtseinstellungen und füllen Sie **Startdatum**, **Startzeit** und **Wiederhole jeden** aus.
-- **Eine Warnung sagt, es ist kein Mailserver konfiguriert**: Abonnements werden nicht als E-Mail gesendet. Wählen Sie **Benachrichtigung**, oder bitten Sie Ihren Administrator, in den [Tenant-Einstellungen](../administer/tenant-settings.mdx) einen Mailserver einzurichten.
+- **Eine Warnung sagt, es ist kein Mailserver konfiguriert**: Abonnements werden nicht als E-Mail gesendet. Wählen Sie **Benachrichtigung**, oder bitten Sie Ihren Administrator, in den [Arbeitsbereich-Einstellungen](../administer/tenant-settings.mdx) einen Mailserver einzurichten.
 - **Das PDF liegt nicht im Ordner**: Warten Sie die vollen 30 Sekunden und prüfen Sie dann genau den Ordner, den Sie unter **Dateieinstellungen** gewählt haben.
 - **Das PDF deckt den falschen Zeitraum ab**: Das **Zeitfenster** ist relativ zum Moment, in dem der Lauf startet. Ändern Sie es in den Berichtseinstellungen.
 

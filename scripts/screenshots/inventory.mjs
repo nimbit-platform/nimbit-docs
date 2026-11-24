@@ -17,7 +17,7 @@ const OUT = path.join(ROOT, "docs-spec/SCREENSHOTS.md");
 const captured = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, "src/data/screenshots.json"), "utf8")));
 
 const BLOCKED = {
-  "gateways/": "Needs the gateways work (PR 1623): `/onboarding/gateways` and the gateway detail page.",
+  "gateways/": "Needs the gateways work (PR 1623): `/devices/gateways` and the gateway detail page.",
 };
 
 const walk = (dir) =>

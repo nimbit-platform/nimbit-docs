@@ -4,7 +4,7 @@ description: What a gateway is, how it signs in, which things it may send for, a
 type: concept
 sidebar_position: 2
 app:
-  routes: ["/onboarding/gateways", "/onboarding/gateways/:id"]
+  routes: ["/devices/gateways", "/devices/gateways/:id"]
 ---
 
 A gateway is one box on site that speaks for many devices. Instead of giving every device its own credential, you give the box one credential. The platform lets that credential send data only for the things assigned to the gateway, and watches the box's own heartbeat to tell you whether it is alive.
@@ -23,7 +23,7 @@ flowchart LR
 
 | Part | What it is |
 | --- | --- |
-| **Gateway** | A record in your organization with a name, a type, a namespace and a scope. You manage it under **Settings › Onboarding › Gateways**. |
+| **Gateway** | A record in your organization with a name, a type, a namespace and a scope. You manage it under **Devices › Gateways**. |
 | **Type** | **Periscope**: a [Periscope](./periscope/index.mdx) agent that signs in with its own key. **MQTT device**: a device that connects over MQTT with a username and password, for example an eWON Flexy. |
 | **Gateway thing** | One thing that IoT Breeze creates with the gateway, with the alternate ID `gateway-<gateway id>`. Its connection status is the gateway's status. It is removed with the gateway. Nobody can delete it on its own: **Delete** is disabled and says **Removed with its gateway**. |
 | **Namespace** | The prefix of the alternate IDs of the gateway's things: they equal the namespace or start with `<namespace>-`. IoT Breeze derives it from the name unless you type one. It is enforced for **Periscope** gateways. For an **MQTT device** gateway it is not checked when you assign things. |

@@ -4,7 +4,7 @@ sidebar_position: 7
 description: Convert units, check the shape or add calculated values to every message of a thing type before it is stored.
 type: how-to
 app:
-  routes: ["/onboarding/thing-types/:id", "/onboarding/thing-types/:id/graph"]
+  routes: ["/devices/thing-types/:id", "/devices/thing-types/:id/graph"]
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
@@ -19,7 +19,7 @@ Run every incoming message of a thing type through a small graph of steps, the *
 
 ## Steps
 
-1. Open **Settings › Onboarding › Thing Types** and select the thing type. On **Overview**, the **Pipeline** card shows **Transformation** as **Active** or **Inactive**. Select **Open editor**, or use **More actions › Open pipeline editor**. The editor opens as **Transformation rule (Version 1)** with a **Request** node connected to a **Response** node.
+1. Open **Devices › Thing Types** and select the thing type. On **Overview**, the **Pipeline** card shows **Transformation** as **Active** or **Inactive**. Select **Open editor**, or use **More actions › Open pipeline editor**. The editor opens as **Transformation rule (Version 1)** with a **Request** node connected to a **Response** node.
 2. Drag an **Expression** node from the **Components** panel onto the canvas. Connect **Request** to it, and it to **Response**: drag from the handle on the right of a node to the handle on the left of the next.
 3. Select **Edit Expression** on the node and add a row. Set **Key** to `data.temperature` and **Expression** to `(data.temperature - 32) * 5 / 9`.
 4. Open the **Simulator** from the left sidebar. It fills a test message with random values for your measures. Set `data.temperature` to `212` and select **Run**. The result shows `data.temperature` as `100`, and the rest of the message unchanged.
@@ -29,7 +29,7 @@ Run every incoming message of a thing type through a small graph of steps, the *
 <Screenshot
   page="model/clean-up-data"
   id="01-editor"
-  route="/onboarding/thing-types/:id/graph"
+  route="/devices/thing-types/:id/graph"
   state="Pipeline editor with Request, one Expression node and Response connected, the simulator open with a successful result, Save and Activate in the header"
   alt="The pipeline editor with a three-node pipeline"
 />

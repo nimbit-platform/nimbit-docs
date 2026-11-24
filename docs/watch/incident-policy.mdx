@@ -4,7 +4,7 @@ sidebar_position: 6
 description: Turn on the shipped incident policies, write your own, and run an action once when an incident opens or goes unacknowledged.
 type: how-to
 app:
-  routes: ["/manage/incident-policies", "/manage/incident-policies/new", "/manage/incident-policies/:id", "/manage/incident-policies/:id/automations", "/manage/incident-settings"]
+  routes: ["/alerting/incident-policies", "/alerting/incident-policies/new", "/alerting/incident-policies/:id", "/alerting/incident-policies/:id/automations", "/alerting/incident-settings"]
 ---
 
 import Screenshot from "@site/src/components/Screenshot";
@@ -19,7 +19,7 @@ Decide which events open incidents, how they group into one incident, and who is
 
 ## Turn on the shipped policies
 
-1. Open **Settings › Configuration › Incidents**. The **Incident policies** tab lists your policies.
+1. Open **Alerting › Incident policies**. The **Incident policies** tab lists your policies.
 2. Select **Import default policies**, then **Import**. IoT Breeze creates **Rule alarms per thing**, **Connectivity outages** and **Geofence dwell**, except those you already have. Importing twice creates nothing new.
 3. The new policies are switched off. Switch on the ones you want with the **Active** switch in the list.
 
@@ -38,7 +38,7 @@ This example opens one incident per thing for door alarms and resolves it ten mi
 <Screenshot
   page="watch/incident-policy"
   id="01-policy-editor"
-  route="/manage/incident-policies/:id"
+  route="/alerting/incident-policies/:id"
   state="Policy editor for Rule alarms per thing: Which events with Raised by Rule engine, Group by Thing selected, Timing section with Quiet window 10 minutes and Close after 1 day, In short summary visible"
   alt="The policy editor with the In short summary"
 />
@@ -65,7 +65,7 @@ An automation skips an action that is switched off, and every action you create 
 
 ## Check that it worked
 
-The policy shows in the list with **Active** on. When a matching event arrives, **Last match** shows the time and a new incident appears under **Monitoring › Incidents** with the policy's name in **Policy**.
+The policy shows in the list with **Active** on. When a matching event arrives, **Last match** shows the time and a new incident appears under **Incidents** with the policy's name in **Policy**.
 
 ## If it doesn't work
 

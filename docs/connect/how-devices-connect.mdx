@@ -4,7 +4,7 @@ description: How a device or gateway proves who it is, the ways onto the MQTT br
 sidebar_position: 2
 type: concept
 app:
-  routes: ["/onboarding/things/:id"]
+  routes: ["/devices/things/:id"]
 ---
 
 Data comes into IoT Breeze mainly over MQTT. Whoever connects proves who they are with a credential, and the credential decides which things they may send for: a device's credential covers its own thing, a gateway's credential covers the things assigned to the gateway. Every message is checked against the thing's thing type before it is stored.

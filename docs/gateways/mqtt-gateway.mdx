@@ -5,7 +5,7 @@ description: Add an MQTT device gateway, download its config file, assign its th
 type: how-to
 sidebar_position: 4
 app:
-  routes: ["/onboarding/gateways", "/onboarding/gateways/:id"]
+  routes: ["/devices/gateways", "/devices/gateways/:id"]
 ---
 
 import Tabs from "@theme/Tabs";
@@ -22,7 +22,7 @@ Connect a device that speaks MQTT, such as an eWON Flexy, with one credential fo
 
 ## Add the gateway
 
-1. Open **Settings › Onboarding › Gateways** and select **Add gateway**.
+1. Open **Devices › Gateways** and select **Add gateway**.
 2. Under **Type**, choose **MQTT device**.
 3. Enter a **Name**. Leave **Namespace** empty, or type one.
 4. Under **Config file format**, choose **Environment file (.env)**, **JSON (.json)** or **eWON Flexy BASIC parameters (.bas)**. The credential is the same in every format.
@@ -33,7 +33,7 @@ IoT Breeze shows **MQTT credential for** the gateway name. Copy the **Password**
 <Screenshot
   page="gateways/mqtt-gateway"
   id="01-mqtt-credential"
-  route="/onboarding/gateways"
+  route="/devices/gateways"
   state="Add gateway drawer after creating an MQTT device gateway, with the connection rows and the Download config button"
   alt="The MQTT credential result with host, port, username, password and topics"
 />
