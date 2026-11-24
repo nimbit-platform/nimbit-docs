@@ -31,7 +31,7 @@ Found while translating the docs. The German docs follow the app's labels exactl
 | Rule alarms per thing, Connectivity outages, Geofence dwell | Shipped incident policy names (`ocb-contracts`) |
 | Number (custom field type) | Incident fields: only `enum` and `text` have keys |
 | Shape, Series, Chart definition, Image source, Search labels | Widget setup (Gauge, Custom chart, Image, File list) |
-| On until | Tenant settings › Features, Ask Nimble and Knowledge |
+| On until | Workspace settings › Features, Ask Nimble and Knowledge |
 | Method, Headers | Webhook action |
 | X.509 Certificate | Thing credentials |
 | Read the platform and the other API key scope labels | API key scopes |

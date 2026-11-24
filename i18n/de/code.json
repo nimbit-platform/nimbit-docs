@@ -294,7 +294,7 @@
     "message": "Dashboard für alle Things"
   },
   "home.area.tenant": {
-    "message": "Tenant-Einstellungen"
+    "message": "Arbeitsbereich-Einstellungen"
   },
   "home.area.thingType": {
     "message": "Thing-Typ anlegen"
@@ -357,7 +357,7 @@
     "message": "Für Administratoren"
   },
   "home.path.administer.text": {
-    "message": "Benutzer, Gruppen und Rollen, API-Schlüssel, Tenant-Einstellungen."
+    "message": "Benutzer, Gruppen und Rollen, API-Schlüssel, Arbeitsbereich-Einstellungen."
   },
   "home.path.administer.title": {
     "message": "Verwalten"

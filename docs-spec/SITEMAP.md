@@ -171,7 +171,7 @@ apps/periscope/README.md and apps/periscope/docs/ (served in the agent at /ui/do
 | files.mdx | how-to | Store and share files | administration/files |
 | delete-data.mdx | how-to | Delete data | administration/tenant-data-and-connections, onboarding/things |
 | roles.mdx | reference | Roles and permissions | administration/roles |
-| tenant-settings.mdx | reference | Tenant settings | administration/tenant-settings, tenant-data-and-connections |
+| tenant-settings.mdx | reference | Workspace settings | administration/tenant-settings, tenant-data-and-connections |
 | audit-log.mdx | reference | Audit log | administration/audit-log |
 
 ## troubleshooting/ — "Troubleshooting"

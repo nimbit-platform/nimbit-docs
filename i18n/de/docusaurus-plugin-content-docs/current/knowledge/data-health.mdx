@@ -17,15 +17,15 @@ Finden Sie Zeilen, die nicht angekommen sind, Datensätze, die mit nichts verkn�
 - Die Berechtigung, Knowledge zu bearbeiten, um den Abgleichszeitplan zu ändern oder Transformationen auszuführen. Über Verknüpfungen zu entscheiden braucht die Berechtigung, Thing-Typen zu bearbeiten.
 - Mindestens eine geladene Quelle: siehe [Eine externe Datenquelle anbinden](./outside-source.mdx).
 
-Öffnen Sie **Knowledge › Datenqualität**. Die Tabs sind **Datenaufnahme**, **Verknüpfungen prüfen** und **Abgleich**. Ein Badge am Menüeintrag zeigt, wie viele Verknüpfungen offen sind.
+Öffnen Sie **Knowledge › Datenqualität**. Die Tabs sind **Importläufe**, **Verknüpfungen prüfen** und **Konflikte**. Ein Badge am Menüeintrag zeigt, wie viele Verknüpfungen offen sind.
 
-:::note Der Tab Datenaufnahme betrifft Knowledge-Quellen
+:::note Der Tab Importläufe betrifft Knowledge-Quellen
 Seine Adresse ist `/knowledge/monitoring`, ein älterer Name. Für Gerätedaten nutzen Sie **Überwachung › Things**.
 :::
 
 ## Zeilen beheben, die nicht angekommen sind {#fix-rows-that-did-not-land}
 
-1. Öffnen Sie **Datenaufnahme** und wählen Sie eine **Quelle**.
+1. Öffnen Sie **Importläufe** und wählen Sie eine **Quelle**.
 2. Lesen Sie **Batches**. Jeder ist **Ausstehend**, **Verarbeitet** oder **Unter Quarantäne**.
 3. Öffnen Sie **Zu prüfen** für Zeilen, die die letzte Transformation nicht schreiben konnte. Jede Zeile nennt den Grund: ein Alias, der nicht aufgelöst wurde, eine fehlende Quell-ID oder ein Validierungsfehler.
 4. Öffnen Sie **Dead-Letters** für fehlgeschlagene Zustellungen. **Ungelöste** brauchen Handeln.
@@ -33,7 +33,7 @@ Seine Adresse ist `/knowledge/monitoring`, ein älterer Name. Für Gerätedaten 
 
 ## Die Verknüpfungen des Graphen prüfen {#check-the-graphs-links}
 
-1. Wählen Sie auf **Datenaufnahme** unter **Graph-Zustand** **Jetzt prüfen**.
+1. Wählen Sie im Tab **Importläufe** unter **Graph-Zustand** **Jetzt prüfen**.
 2. Lesen Sie jede Prüfung: eine Anzahl, Beispiele und ein Ergebnis von **Kritisch**, **Warnung**, **Hinweis** oder **OK**. Große Anzahlen können von einer gekappten Stichprobe stammen.
 3. Wählen Sie **Datensätze anzeigen** oder **Prüfen**, um den Befund zu beheben.
 
@@ -73,12 +73,12 @@ Wählen Sie **Nur in Wissen verknüpfen**, um zu verknüpfen, ohne das Gerät zu
 
 Eine Runde läuft über alle Quellen: Sie führt Batches mit zu prüfenden Zeilen erneut aus, stellt Verknüpfungen her, die jetzt aufgelöst werden, prüft bestätigte Verknüpfungen und ordnet offene Verknüpfungen neu. Sie wählt nie von sich aus eine Verknüpfung.
 
-1. Öffnen Sie **Abgleich**.
+1. Öffnen Sie **Konflikte**.
 2. Wählen Sie einen **Zeitplan**: **Aus**, **Stündlich**, **Täglich** oder **Wöchentlich**. Zeiten sind UTC. Oder wählen Sie **Jetzt ausführen**.
 
 ## Prüfen, ob es geklappt hat {#check-that-it-worked}
 
-Batches zeigen **Verarbeitet**, das Badge bei **Verknüpfungen prüfen** ist weg, und die Prüfungen unter **Graph-Zustand** werden besser. Die Liste unter **Abgleich** zeigt für jede Runde **Verknüpft**, **Wieder geöffnet**, **Noch offen** und **Batches erneut**.
+Batches zeigen **Verarbeitet**, das Badge bei **Verknüpfungen prüfen** ist weg, und die Prüfungen unter **Graph-Zustand** werden besser. Die Liste unter **Konflikte** zeigt für jede Runde **Verknüpft**, **Wieder geöffnet**, **Noch offen** und **Batches erneut**.
 
 ## Wenn es nicht funktioniert {#if-it-doesnt-work}
 

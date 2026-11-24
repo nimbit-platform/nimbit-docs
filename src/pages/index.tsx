@@ -79,7 +79,7 @@ const paths = [
   },
   {
     title: translate({ id: "home.path.administer.title", message: "Administer" }),
-    text: translate({ id: "home.path.administer.text", message: "Users, groups and roles, API keys, tenant settings." }),
+    text: translate({ id: "home.path.administer.text", message: "Users, groups and roles, API keys, workspace settings." }),
     cta: translate({ id: "home.path.administer.cta", message: "For administrators" }),
     to: "/docs/get-started/roles/administrator",
   },
@@ -170,7 +170,7 @@ const areas: { title: string; to: string; links: { label: string; to: string }[]
       { label: translate({ id: "home.area.invite", message: "Invite a colleague" }), to: "/docs/administer/invite" },
       { label: translate({ id: "home.area.roles", message: "Roles and permissions" }), to: "/docs/administer/roles" },
       { label: translate({ id: "home.area.apiKey", message: "Create an API key" }), to: "/docs/administer/api-key" },
-      { label: translate({ id: "home.area.tenant", message: "Tenant settings" }), to: "/docs/administer/tenant-settings" },
+      { label: translate({ id: "home.area.tenant", message: "Workspace settings" }), to: "/docs/administer/tenant-settings" },
     ],
   },
   {

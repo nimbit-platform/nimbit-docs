@@ -41,7 +41,7 @@ When the plant changes, the next discovery sends the changed items back for revi
 
 ## A gateway you can see
 
-Onboard Periscope with an onboarding code from **Settings › Onboarding › Gateways** and it becomes a gateway in IoT Breeze: it signs in with its own key, may create and update only its own things, and shows its health and traffic on the gateway page. See [How gateways work](/docs/gateways/how-gateways-work).
+Onboard Periscope with an onboarding code from **Devices › Gateways** and it becomes a gateway in IoT Breeze: it signs in with its own key, may create and update only its own things, and shows its health and traffic on the gateway page. See [How gateways work](/docs/gateways/how-gateways-work).
 
 ## Get Periscope
 

@@ -2,7 +2,7 @@
 /**
  * Looks up how IoT Breeze labels a UI string in German, so translated docs use the app's words.
  *
- *   node scripts/i18n/ui-label.mjs "Add measure" ["Settings › Onboarding"] [--repo ../nimbit]
+ *   node scripts/i18n/ui-label.mjs "Add measure" ["Devices › Thing Types"] [--repo ../nimbit]
  *
  * Prints every German translation of the English string with its namespace and key, most used
  * first. Breadcrumbs ("A › B") are looked up part by part. When the same English string has several

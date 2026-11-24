@@ -40,4 +40,4 @@ Everyone sees only the records they may open, in Explore and in Nimble's answers
 
 ## Turn it on
 
-Knowledge and Ask Nimble are switched on per tenant: a tenant admin turns on **Ask Nimble and Knowledge** in **Administration › Tenant Settings › Features**. See [Knowledge and AI](/docs/knowledge) for what it needs and [How Ask Nimble answers](/docs/knowledge/ask-nimble-answers) for what it reads and where it stops.
+Knowledge and Ask Nimble are switched on per tenant: a tenant admin turns on **Ask Nimble and Knowledge** in **Workspace › Workspace settings › Features**. See [Knowledge and AI](/docs/knowledge) for what it needs and [How Ask Nimble answers](/docs/knowledge/ask-nimble-answers) for what it reads and where it stops.
